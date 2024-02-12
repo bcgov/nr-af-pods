@@ -1,0 +1,240 @@
+{
+  "name": "ABPP1 - B.C. Agri-Business Planning Program",
+  "hiddenSteps": "",
+  "sections": [
+    {
+      "name": "ApplicantInfoStep",
+      "fields": [
+        {
+          "name": "quartech_indigenousapplicant",
+          "required": true,
+          "elementType": "DropdownSelect"
+        },
+        {
+          "name": "quartech_recipienttype",
+          "required": true,
+          "elementType": "DropdownSelect",
+          "label": "Type of Business / Organization. If your operation does both processing and primary production, please select the one that will primarily benefit from this program."
+        },
+        {
+          "name": "quartech_commodity",
+          "visibleIf": {
+            "fieldName": "quartech_recipienttype",
+            "selectedValue": 255550001
+          }
+        },
+        {
+          "name": "quartech_othercommoditiesproducedharvested",
+          "visibleIf": {
+            "fieldName": "quartech_recipienttype",
+            "selectedValue": 255550001
+          }
+        },
+        {
+          "name": "quartech_primarilyprocess",
+          "visibleIf": {
+            "fieldName": "quartech_recipienttype",
+            "selectedValue": 255550002
+          }
+        },
+        {
+          "name": "quartech_otherproductsprocessed",
+          "visibleIf": {
+            "fieldName": "quartech_recipienttype",
+            "selectedValue": 255550002
+          }
+        },
+        {
+          "name": "quartech_applicanttype",
+          "required": true,
+          "elementType": "DropdownSelect"
+        },
+        {
+          "name": "quartech_yearproductionestablished",
+          "required": true,
+          "validation": {
+            "type": "numeric",
+            "value": "1900",
+            "comparison": "greaterThan"
+          }
+        },
+        {
+          "name": "quartech_numberoffulltimeemployees",
+          "format": "number",
+          "required": true,
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          }
+        },
+        {
+          "name": "quartech_numberofparttimeemployees",
+          "format": "number",
+          "required": true,
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          }
+        },
+        {
+          "name": "quartech_previousyeargrossincome",
+          "required": true,
+          "format": "currency",
+          "maxDigits": 13,
+          "emptyInitialValue": true,
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          }
+        },
+        {
+          "name": "quartech_previousyearnetincome",
+          "required": true,
+          "format": "currency",
+          "maxDigits": 13,
+          "emptyInitialValue": true,
+          "allowNegatives": true
+        },
+        {
+          "name": "quartech_operationdoesprocessingandprimaryproducti",
+          "required": true,
+          "elementType": "DropdownSelect"
+        },
+        {
+          "name": "quartech_agriprogramsubscriber",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_tipreportenrolled",
+          "visibleIf": {
+            "fieldName": "quartech_agriprogramsubscriber",
+            "selectedValue": 255550001
+          }
+        },
+        {
+          "name": "quartech_businessdescription",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "EligibilityStep",
+      "fields": [
+        {
+          "name": "quartech_primaryproducer100or51percent",
+          "label": "Are you either a\n1) Primary Agriculture Producer growing or raising fresh food or agricultural products which are 100% grown or raised in British Columbia and are intended for sale.\n\n OR\n\n2) Agriculture, Food and Beverage Processor processing food, beverage, or agricultural products which are processed and packaged in B.C. with 51% or more of the direct cost of producing the product in its final form (i.e., the sum of raw materials, direct labour, variable processing, and packaging) originating in B.C. When the main raw materials are available in sufficient quantities from B.C. producers, they must be used?",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_bcregisteredbusinessentity",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_farmbusinessistaxableentity",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_allproprietersarebcresidents",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_annualgrossrevenueoverlimit",
+          "elementType": "DropdownSelect",
+          "required": true,
+          "label": "Did you report total annual gross revenues greater than $50,000/year in the previous year to Canada Revenue Agency? - This eligibility requirement may not be applicable to Indigenous applicants."
+        },
+        {
+          "name": "quartech_abppsupportoverlimit",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_abppsupportoverlimitdetail",
+          "visibleIf": {
+            "fieldName": "quartech_abppsupportoverlimit",
+            "selectedValue": 255550000,
+            "techComment": "Yes value"
+          }
+        },
+        {
+          "name": "quartech_supportreceivedduringscap",
+          "elementType": "DropdownSelect",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "ProjectStep",
+      "fields": [
+        {
+          "name": "quartech_applicantsprojectname",
+          "required": true,
+          "label": "Event/Training Title",
+          "tooltipText": "The name of the event/training"
+        },
+        {
+          "name": "quartech_projectdescription",
+          "required": true,
+          "label": "Event/Training Description"
+        },
+        {
+          "name": "quartech_whenistheprojectstartdate",
+          "required": true,
+          "elementType": "DatePicker"
+        },
+        {
+          "name": "quartech_activityenddate",
+          "required": true,
+          "elementType": "DatePicker"
+        },
+        {
+          "name": "Consultant Information",
+          "type": "SectionTitle",
+          "hidden": true
+        },
+        {
+          "name": "Business Plan",
+          "type": "SectionTitle",
+          "hidden": true
+        }
+      ]
+    },
+    {
+      "name": "DeliverablesBudgetStep",
+      "fields": [
+        {
+          "name": "quartech_estimatedbudgettotalactivitycost",
+          "format": "currency",
+          "maxDigits": 11,
+          "required": true,
+          "label": "Total proposed budget",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          }
+        },
+        {
+          "name": "quartech_detailedproposedbudget",
+          "required": true,
+          "maxLength": 10000,
+          "label": "You can either upload an event/training budget document as an attachment or explain the proposed budget in the following text box. If you are uploading the budget as an attachment (in the Documents tab), please enter the file name in this text box (1000 words max)."
+        },
+        {
+          "name": "quartech_deliverables",
+          "required": true,
+          "maxLength": 10000,
+          "label": "Please describe the expected learnings or takeaways you have of the experience and how this will improve your business."
+        }
+      ]
+    }
+  ]
+}

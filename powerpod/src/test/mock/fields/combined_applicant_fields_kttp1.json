@@ -1,0 +1,230 @@
+[
+    {
+        "name": "quartech_legalbusinessororganizationname",
+        "tooltipText": "For a partnership, it is the names of the partners or the name the business was registered under with provincial or territorial authorities (e.g., farm name or if none provided use 'First name Last name'). For a corporation, it is the name that appears on the certificate of incorporation.",
+        "required": true
+    },
+    {
+        "name": "quartech_businessregistrationnumber",
+        "required": true,
+        "maxLength": 9,
+        "validation": {
+            "type": "length",
+            "value": 9,
+            "comparison": "equalTo",
+            "postfix": "digits"
+        },
+        "visibleIf": {
+            "fieldName": "quartech_nocragstnumber",
+            "selectedValue": false
+        }
+    },
+    {
+        "name": "quartech_nocragstnumber"
+    },
+    {
+        "name": "quartech_reasonwhynocraorgstnumber",
+        "required": true,
+        "visibleIf": {
+            "fieldName": "quartech_nocragstnumber",
+            "selectedValue": true
+        }
+    },
+    {
+        "name": "quartech_businesssuitenumberoptional",
+        "visible": true
+    },
+    {
+        "name": "quartech_businessstreetnumber",
+        "required": true,
+        "validation": {
+            "intervalBased": true
+        }
+    },
+    {
+        "name": "quartech_businessstreet",
+        "required": true,
+        "validation": {
+            "intervalBased": true
+        }
+    },
+    {
+        "name": "quartech_businesscity",
+        "required": true,
+        "validation": {
+            "intervalBased": true
+        }
+    },
+    {
+        "name": "quartech_businessprovinceterritory",
+        "required": true,
+        "validation": {
+            "intervalBased": true
+        }
+    },
+    {
+        "name": "quartech_businesspostalcode",
+        "required": true,
+        "validation": {
+            "intervalBased": true
+        }
+    },
+    {
+        "name": "quartech_businessphonenumber",
+        "required": true,
+        "validation": {
+            "type": "length",
+            "value": 14,
+            "comparison": "equalTo",
+            "postfix": "digits",
+            "overrideDisplayValue": 10
+        }
+    },
+    {
+        "name": "quartech_businessemailaddress",
+        "required": true
+    },
+    {
+        "name": "quartech_legalnamefirst",
+        "required": true
+    },
+    {
+        "name": "quartech_legalnamelast",
+        "required": true
+    },
+    {
+        "name": "quartech_positionorjobtitle",
+        "required": true
+    },
+    {
+        "name": "quartech_city",
+        "required": true
+    },
+    {
+        "name": "quartech_telephone",
+        "required": true,
+        "validation": {
+            "type": "length",
+            "value": 14,
+            "comparison": "equalTo",
+            "postfix": "digits",
+            "overrideDisplayValue": 10
+        }
+    },
+    {
+        "name": "quartech_email",
+        "required": true
+    },
+    {
+        "name": "quartech_indigenousapplicant",
+        "required": true,
+        "elementType": "DropdownSelect"
+    },
+    {
+        "name": "quartech_recipienttype",
+        "required": true,
+        "elementType": "DropdownSelect",
+        "label": "Type of Business / Organization. If your operation does both processing and primary production, please select the one that will primarily benefit from this program."
+    },
+    {
+        "name": "quartech_commodity",
+        "visibleIf": {
+            "fieldName": "quartech_recipienttype",
+            "selectedValue": 255550001
+        }
+    },
+    {
+        "name": "quartech_othercommoditiesproducedharvested",
+        "visibleIf": {
+            "fieldName": "quartech_recipienttype",
+            "selectedValue": 255550001
+        }
+    },
+    {
+        "name": "quartech_primarilyprocess",
+        "visibleIf": {
+            "fieldName": "quartech_recipienttype",
+            "selectedValue": 255550002
+        }
+    },
+    {
+        "name": "quartech_otherproductsprocessed",
+        "visibleIf": {
+            "fieldName": "quartech_recipienttype",
+            "selectedValue": 255550002
+        }
+    },
+    {
+        "name": "quartech_operationdoesprocessingandprimaryproducti",
+        "required": true,
+        "elementType": "DropdownSelect"
+    },
+    {
+        "name": "quartech_applicanttype",
+        "required": true,
+        "elementType": "DropdownSelect"
+    },
+    {
+        "name": "quartech_yearproductionestablished",
+        "required": true,
+        "validation": {
+            "type": "numeric",
+            "value": "1900",
+            "comparison": "greaterThan"
+        }
+    },
+    {
+        "name": "quartech_numberoffulltimeemployees",
+        "required": true,
+        "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+        }
+    },
+    {
+        "name": "quartech_numberofparttimeemployees",
+        "required": true,
+        "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+        }
+    },
+    {
+        "name": "quartech_previousyeargrossincome",
+        "required": true,
+        "format": "currency",
+        "maxDigits": 13,
+        "emptyInitialValue": true,
+        "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+        }
+    },
+    {
+        "name": "quartech_previousyearnetincome",
+        "required": true,
+        "format": "currency",
+        "maxDigits": 13,
+        "emptyInitialValue": true,
+        "allowNegatives": true
+    },
+    {
+        "name": "quartech_agriprogramsubscriber",
+        "elementType": "DropdownSelect",
+        "required": true
+    },
+    {
+        "name": "quartech_tipreportenrolled",
+        "visibleIf": {
+            "fieldName": "quartech_agriprogramsubscriber",
+            "selectedValue": 255550001
+        }
+    },
+    {
+        "name": "quartech_businessdescription",
+        "required": true
+    }
+]

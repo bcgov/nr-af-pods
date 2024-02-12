@@ -1,0 +1,42 @@
+{
+  "@odata.context": "https://af-pods-dev.powerappsportals.com/_api/$metadata#environmentvariabledefinitions(schemaname,environmentvariabledefinitionid,environmentvariabledefinition_environmentvariablevalue(value))",
+  "@Microsoft.Dynamics.CRM.totalrecordcount": -1,
+  "@Microsoft.Dynamics.CRM.totalrecordcountlimitexceeded": false,
+  "@Microsoft.Dynamics.CRM.globalmetadataversion": "21207433",
+  "value": [
+    {
+      "@odata.etag": "W/\"21194307\"",
+      "schemaname": "quartech_AfPodsNotificationUserGuid",
+      "environmentvariabledefinitionid": "1da52af9-a5b9-ee11-9079-002248b2119b",
+      "environmentvariabledefinition_environmentvariablevalue": [
+        {
+          "@odata.etag": "W/\"21194321\"",
+          "value": "8c1303c1-2c1c-ee11-8f6d-002248ae0846",
+          "_environmentvariabledefinitionid_value@OData.Community.Display.V1.FormattedValue": "quartech_AfPodsNotificationUserGuid",
+          "_environmentvariabledefinitionid_value@Microsoft.Dynamics.CRM.associatednavigationproperty": "EnvironmentVariableDefinitionId",
+          "_environmentvariabledefinitionid_value@Microsoft.Dynamics.CRM.lookuplogicalname": "environmentvariabledefinition",
+          "_environmentvariabledefinitionid_value": "1da52af9-a5b9-ee11-9079-002248b2119b",
+          "environmentvariablevalueid": "04525bfa-a5b9-ee11-9078-6045bd5f4613"
+        }
+      ],
+      "environmentvariabledefinition_environmentvariablevalue@odata.nextLink": "https://af-pods-dev.powerappsportals.com/_api/environmentvariabledefinitions(1da52af9-a5b9-ee11-9079-002248b2119b)/environmentvariabledefinition_environmentvariablevalue?$select=value"
+    },
+    {
+      "@odata.etag": "W/\"20820648\"",
+      "schemaname": "quartech_ChefsDemographicDataFormId",
+      "environmentvariabledefinitionid": "810540d6-bfb4-ee11-a569-002248b2119b",
+      "environmentvariabledefinition_environmentvariablevalue": [
+        {
+          "@odata.etag": "W/\"20820372\"",
+          "value": "bf28608c-905e-4e89-a17d-6164b7a16cb1",
+          "_environmentvariabledefinitionid_value@OData.Community.Display.V1.FormattedValue": "quartech_ChefsDemographicDataFormId",
+          "_environmentvariabledefinitionid_value@Microsoft.Dynamics.CRM.associatednavigationproperty": "EnvironmentVariableDefinitionId",
+          "_environmentvariabledefinitionid_value@Microsoft.Dynamics.CRM.lookuplogicalname": "environmentvariabledefinition",
+          "_environmentvariabledefinitionid_value": "810540d6-bfb4-ee11-a569-002248b2119b",
+          "environmentvariablevalueid": "680c89db-bfb4-ee11-a568-6045bd5f4328"
+        }
+      ],
+      "environmentvariabledefinition_environmentvariablevalue@odata.nextLink": "https://af-pods-dev.powerappsportals.com/_api/environmentvariabledefinitions(810540d6-bfb4-ee11-a569-002248b2119b)/environmentvariabledefinition_environmentvariablevalue?$select=value"
+    }
+  ]
+}

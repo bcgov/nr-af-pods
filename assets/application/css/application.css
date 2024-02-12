@@ -1,0 +1,140 @@
+label {
+  font-weight: unset;
+}
+
+.error_message {
+  color: red;
+}
+
+#actions_div {
+  width: 100% !important;
+}
+
+input::placeholder {
+  opacity: 0.5;
+}
+
+/* Applicant Info step */
+.columnBlockLayout {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}
+fieldset:has(> table[data-name='applicantInfoTab_CodingSection']),
+fieldset:has(> table[data-name='eligibilityTab_CodingSection']),
+fieldset:has(> table[data-name='projectTab_CodingSection']),
+fieldset:has(> table[data-name='tab_Deliverables_Budget_section_Coding']),
+fieldset:has(> table[data-name='documentsTab_CodingSection']),
+fieldset:has(> table[data-name='section_Coding']),
+fieldset:has(> table[data-name='tab_Declaration_Consent_section_Coding']) {
+  display: none !important;
+}
+
+/*  Demographic Info step */
+table[data-name='Q1a_Section'],
+table[data-name='Q2c_Section'],
+table[data-name='DemographicInfoChefsSubmissionSection'] {
+  .info {
+    float: left;
+    width: 72%;
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+  .control {
+    display: inline-block;
+    width: 18%;
+  }
+}
+
+#quartech_chefsconfirmationid {
+  background-color: #fff3cd !important;
+  font-weight: 700;
+}
+
+fieldset:has(
+    > table[data-name='Q1a_Section'],
+    > table[data-name='Q2c_Section']
+  ) {
+  .section-title h3 {
+    font-size: 15px;
+    line-height: 1.42857;
+  }
+}
+
+td:has(> input[id='quartech_declinetoidentifypercentageshares']) {
+  padding-left: 20px !important;
+}
+
+.crmEntityFormView {
+  border: none !important;
+
+  .cell {
+    padding-left: 0px !important;
+  }
+}
+
+footer div {
+  background-color: rgb(0, 51, 102);
+
+  p {
+    color: white;
+  }
+}
+
+.panel-heading {
+  background-color: darkgrey !important;
+}
+
+.messageLengthAlert {
+  display: none;
+}
+
+.blue-links {
+  color: blue;
+}
+
+.popover {
+  max-width: 600px;
+}
+
+/* start loader control */
+#loader {
+  height: calc(
+    100vh - 140px
+  ); /* Calculate screen height - header + footer hegiht */
+  cursor: pointer;
+  display: none; /* Default to hidden */
+  justify-content: center;
+  align-items: center;
+  z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+}
+#spinner {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+/* end loader control */
