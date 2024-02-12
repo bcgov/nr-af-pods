@@ -1,0 +1,116 @@
+#quartech_businessaddress:focus {
+  border: 0px;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+#quartech_businessphonenumber:focus {
+  border: 0px;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+#quartech_businessemailaddress:focus {
+  border: 0px;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.columnBlockLayout {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}
+
+.tab-title {
+  display: none;
+}
+
+#AttachFile {
+  display: none;
+}
+
+.note-actions {
+  display: none;
+}
+
+.control .text-muted {
+  display: none;
+}
+
+fieldset:has(> table[data-name='claimInfoTab_CodingSection']),
+fieldset:has(> table[data-name='documentTab_CodingSection']),
+fieldset:has(> table[data-name='projectIndicatorsTab_CodingSection']),
+fieldset:has(> table[data-name='documentsTab_CodingSection']),
+fieldset:has(> table[data-name='consentTab_CodingSection']) {
+  display: none !important;
+}
+
+.crmEntityFormView {
+  border: none !important;
+
+  .cell {
+    padding-left: 0px !important;
+  }
+}
+
+/*  Claim Info step */
+table[data-name='applicationInfoSection'],
+table[data-name='claimInfoSection'],
+table[data-name='indicatorsSection'] {
+  .info {
+    float: left;
+    padding-right: 8px;
+    width: 50%;
+  }
+  .control {
+    display: inline-block;
+    width: 50%;
+  }
+}
+#quartech_businessaddress {
+  max-height: 80px;
+}
+/*  Project Indicators step */
+
+/* start loader control */
+#loader {
+  height: calc(
+    100vh - 140px
+  ); /* Calculate screen height - header + footer hegiht */
+  cursor: pointer;
+  display: none; /* Default to hidden */
+  justify-content: center;
+  align-items: center;
+  z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+}
+#spinner {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+/* end loader control */

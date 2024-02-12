@@ -1,0 +1,10 @@
+export function validateRequiredFields(): void;
+export function validateStepFields(stepName: any, returnString: any): string | undefined;
+export function validateRequiredField(fieldName: any, elemType?: string, errorMessage?: string): string;
+export function validateNumericFieldValue(fieldName: any, comparisonValue: any, operator: any, forceRequired: any): string | undefined;
+export function validateFieldLength(fieldName: any, comparisonValue: any, operator: any, forceRequired?: boolean, postfix?: undefined, overrideDisplayValue?: undefined): string | undefined;
+export function validateEmailAddressField(fieldName: any): void;
+export function displayValidationErrors(validationErrorHtml: any): void;
+export function addValidationCheck(fieldName: any, validation: any): void;
+export function setInputMaxLength(fieldName: any, maxLength: any): void;
+export function setFieldReadOnly(fieldName: any): void;

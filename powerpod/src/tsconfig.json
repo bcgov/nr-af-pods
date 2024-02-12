@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "resolveJsonModule": true,
+    "module": "es2015",
+    "allowJs": true,
+    "checkJs": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "outDir": "../dist",
+    "declaration": true,
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "experimentalDecorators": true,
+    "useDefineForClassFields": false // If you do not set this @property works but @query do not
+  },
+  "updateImportsOnFileMove": "prompt",
+  "include": ["js/**/*"]
+}

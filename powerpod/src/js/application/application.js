@@ -1,0 +1,267 @@
+import { FormStep } from '../common/constants.js';
+import { getApplicationFormData } from '../common/fetch.js';
+import { hideLoadingAnimation } from '../common/loading.js';
+import { Logger } from '../common/logger.js';
+import {
+  getCurrentStep,
+  getProgramAbbreviation,
+  getProgramId,
+} from '../common/program.ts';
+import { validateRequiredFields } from '../common/validation.js';
+
+// step logic
+import { customizeApplicantInfoStep } from './steps/applicantInfo.js';
+import { customizeProjectStep } from './steps/project.js';
+import { customizeEligibilityStep } from './steps/eligibility.js';
+import { customizeDeclarationConsentStep } from './steps/declarationConsent.js';
+import { customizeDeliverablesBudgetStep } from './steps/deliverablesBudget.js';
+import { customizeDemographicInfoStep } from './steps/demographicInfo.js';
+import { customizeDocumentsStep } from './steps/documents.js';
+import { hideFields, hideFieldsAndSections } from '../common/html.js';
+
+const logger = Logger('application/application');
+
+export function initApplication() {
+  hideFieldsAndSections();
+
+  const currentStep = getCurrentStep();
+  const isDemographicInfoStep = currentStep === FormStep.DemographicInfo;
+
+  if (isDemographicInfoStep) {
+    var demographicInfoStepIframe = document.getElementById(
+      'ApplicationDemographicInfoStepQuickViewForm'
+    );
+    demographicInfoStepIframe.addEventListener('load', function () {
+      var programid = document
+        .querySelector('#ApplicationDemographicInfoStepQuickViewForm')
+        // @ts-ignore
+        ?.contentWindow?.document?.querySelector('#quartech_program')?.value;
+
+      updatePageForSelectedProgram(programid);
+    });
+  } else {
+    updatePageForSelectedProgram();
+  }
+
+  addNewAppSystemNotice();
+
+  customizePageForFirefox();
+}
+
+function addNewAppSystemNotice() {
+  const newAppSystemNoticeDiv = document.createElement('div');
+  newAppSystemNoticeDiv.id = `new_app_system_notice_div`;
+  // @ts-ignore
+  newAppSystemNoticeDiv.style = 'float: left;';
+  newAppSystemNoticeDiv.innerHTML =
+    '<br/><p>This is a new application system. Please bear with us as we work to improve the system. If you have any technical issues with the system or wish to provide feedback to help us to make it as user friendly as possible, please contact: <a href = "mailto: PODS@gov.bc.ca">PODS@gov.bc.ca</a>​</p>';
+
+  const actionsDiv = $(`#NextButton`).parent().parent().parent();
+  actionsDiv.append(newAppSystemNoticeDiv);
+}
+
+function customizePageForFirefox() {
+  // if (!navigator.userAgent.includes("Firefox")) return;
+
+  let codingSection = $("[data-name='applicantInfoTab_CodingSection']");
+  if (codingSection.length > 0) {
+    codingSection.parent().css('display', 'none');
+  }
+
+  codingSection = $("[data-name='eligibilityTab_CodingSection']");
+  if (codingSection.length > 0) {
+    codingSection.parent().css('display', 'none');
+  }
+
+  codingSection = $("[data-name='projectTab_CodingSection']");
+  if (codingSection.length > 0) {
+    codingSection.parent().css('display', 'none');
+  }
+
+  codingSection = $("[data-name='tab_Deliverables_Budget_section_Coding']");
+  if (codingSection.length > 0) {
+    codingSection.parent().css('display', 'none');
+  }
+
+  codingSection = $("[data-name='documentsTab_CodingSection']");
+  if (codingSection.length > 0) {
+    codingSection.parent().css('display', 'none');
+  }
+
+  codingSection = $("[data-name='section_Coding']");
+  if (codingSection.length > 0) {
+    codingSection.parent().css('display', 'none');
+  }
+
+  codingSection = $("[data-name='tab_Declaration_Consent_section_Coding']");
+  if (codingSection.length > 0) {
+    codingSection.parent().css('display', 'none');
+  }
+}
+
+function updatePageForSelectedProgram(programid = undefined) {
+  if (!programid) programid = getProgramId();
+
+  logger.info({
+    fn: updatePageForSelectedProgram,
+    message: `Retrieving Program data for the selected programid querystring: ${programid}`,
+  });
+
+  getApplicationFormData({
+    programId: programid,
+    beforeSend: () => {
+      logger.info({
+        fn: updatePageForSelectedProgram,
+        message: 'clear any cached data from previous page loads',
+      });
+      localStorage.clear();
+    },
+    onSuccess: (programData, textStatus, xhr) => {
+      if (programData) {
+        logger.info({
+          fn: updatePageForSelectedProgram,
+          message: 'Retrieved Program data:',
+          data: programData,
+        });
+
+        localStorage.setItem('programData', JSON.stringify(programData));
+
+        logger.info({
+          fn: updatePageForSelectedProgram,
+          message: 'Update application page with the program data.',
+        });
+        updateFormStepForSelectedProgram(programData);
+        hideLoadingAnimation();
+        validateRequiredFields();
+      }
+    },
+  });
+}
+
+function populateProgramLookup(programGuid, programName) {
+  $('#quartech_program').val(programGuid);
+  $('#quartech_program_name').val(programName);
+  $('#quartech_program_entityname').val('msgov_program');
+}
+
+function populateContentForSelectedProgramStream(programData) {
+  // Populate the Page Title, Sub-Title and Description
+  $('#page-title').text(programData.quartech_portalapplicationpagetitle);
+  $('#page-subtitle').text(programData.quartech_portalapplicationpagesubtitle);
+  $('#page-description').html(
+    programData.quartech_portalapplicationpagedescription
+  );
+
+  // Populate the Program lookup, hidden at the bottom of the Applicant Information step/tab
+  let selectedProgramGuid = $('#quartech_program').val();
+
+  if (!selectedProgramGuid) {
+    // auto-select the program lookup, hidden field on the Applicant Info step based on the selected programid
+    populateProgramLookup(
+      programData.msgov_programid,
+      programData.msgov_programname
+    );
+  }
+}
+
+function updateFormStepForSelectedProgram(programData) {
+  populateContentForSelectedProgramStream(programData);
+
+  const programAbbreviation = getProgramAbbreviation();
+
+  if (programAbbreviation && programAbbreviation === 'NEFBA') {
+    $("div[id*='ProgressIndicator'] li:contains('Deliverables & Budget')").css(
+      'display',
+      'none'
+    );
+    $("div[id*='ProgressIndicator'] li:contains('Documents')").css(
+      'display',
+      'none'
+    );
+  } else if (programAbbreviation && programAbbreviation.includes('KTTP')) {
+    $("div[id*='ProgressIndicator'] li:contains('Documents')").css(
+      'display',
+      'none'
+    );
+    $("div[id*='ProgressIndicator'] li:contains('Eligibility')").css(
+      'display',
+      'none'
+    );
+  }
+
+  const currentStep = getCurrentStep();
+  switch (currentStep) {
+    case FormStep.ApplicantInfo:
+      customizeApplicantInfoStep(programData);
+      break;
+    case FormStep.Eligibility:
+      customizeEligibilityStep(programData);
+      break;
+    case FormStep.Project:
+      customizeProjectStep(programData);
+      break;
+    case FormStep.DeliverablesBudget:
+      customizeDeliverablesBudgetStep();
+      // customizeEstimatedActivityBudgetStepForKTTP(programData);
+      // initEstimatedActivityBudgetCalculationForKTTP(programData);
+      break;
+    case FormStep.Documents:
+      customizeDocumentsStep();
+      break;
+    case FormStep.DemographicInfo:
+      customizeDemographicInfoStep(programData);
+      break;
+    case FormStep.DeclarationAndConsent:
+      customizeDeclarationConsentStep(programData);
+      break;
+    default:
+      break;
+  }
+
+  updateFieldsHintTextsByConfigData(
+    programData?.quartech_ApplicantPortalConfig?.quartech_configdata
+  );
+}
+
+function updateFieldsHintTextsByConfigData(configDataJSON) {
+  if (!configDataJSON) return;
+
+  const podsConfigData = JSON.parse(configDataJSON);
+  const fieldsHintTexts = podsConfigData?.FieldsHintTexts;
+
+  if (!fieldsHintTexts) return;
+
+  const currentStep = getCurrentStep();
+  switch (currentStep) {
+    case FormStep.ApplicantInfo:
+      updateFieldsHintTexts(fieldsHintTexts.ForApplicantInfoStep);
+      break;
+    case FormStep.Project:
+      updateFieldsHintTexts(fieldsHintTexts.ForProjectStep);
+      break;
+    case FormStep.EstimatedActivityBudget:
+      updateFieldsHintTexts(fieldsHintTexts.ForEstimatedActivityBudgetStep);
+      break;
+    case FormStep.DemographicInfo:
+      updateFieldsHintTexts(fieldsHintTexts.ForDemographicInfoStep);
+      break;
+    case FormStep.DeclarationAndConsent:
+      updateFieldsHintTexts(fieldsHintTexts.ForDeclarationAndConsentStep);
+      break;
+    default:
+      break;
+  }
+}
+
+function updateFieldsHintTexts(fieldsHintTextsMap) {
+  if (!fieldsHintTextsMap) return;
+
+  fieldsHintTextsMap.forEach((fieldData, index) => {
+    const fieldName = fieldData?.FieldName;
+    const hintText = fieldData?.HintText;
+
+    if (fieldName && hintText) {
+      $(`#${fieldName}`).attr('placeholder', hintText);
+    }
+  });
+}
