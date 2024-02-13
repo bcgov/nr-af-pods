@@ -9,5 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Run JSON Lint
+        env:
+          REPORT_ONLY: true
+          SHOW_ERRORS: true
+          SHOW_SKIPPED: true
         run: bash <(curl -s
           https://raw.githubusercontent.com/CICDToolbox/json-lint/master/pipeline.sh)
