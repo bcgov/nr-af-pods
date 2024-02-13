@@ -12,9 +12,10 @@ jobs:
 
       - name: Run JSON Lint
         env:
-          REPORT_ONLY: true
+          REPORT_ONLY: false
           SHOW_ERRORS: true
           SHOW_SKIPPED: true
+          EXCLUDE_FILES: powerpod/*
         run: |
           chmod +x ./scripts/pipeline.sh
           ./scripts/pipeline.sh
