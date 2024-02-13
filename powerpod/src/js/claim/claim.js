@@ -93,7 +93,7 @@ function updateClaimFormStepForSelectedProgram() {
     case FormStep.Documents:
       customizeDocumentsStep();
       break;
-    case FormStep.Consent:
+    case FormStep.DeclarationAndConsent:
       customizeDeclarationConsentStep();
       break;
     default:

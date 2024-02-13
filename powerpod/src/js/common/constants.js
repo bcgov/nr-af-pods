@@ -42,7 +42,6 @@ export const FormStep = {
   // Claim Steps:
   ProjectResults: 'ProjectResultsStep',
   ClaimInfo: 'ClaimInfoStep',
-  Consent: 'ConsentStep',
   // Unknown
   Unknown: 'UnknownStep',
 };
@@ -50,7 +49,10 @@ export const FormStep = {
 export const TabNames = {
   // Shared Steps:
   [FormStep.Documents]: 'Documents',
-  [FormStep.DeclarationAndConsent]: 'Application Declaration and Consent',
+  [FormStep.DeclarationAndConsent]: [
+    'Application Declaration and Consent',
+    'Declaration and Consent',
+  ],
   // Application Steps:
   [FormStep.ApplicantInfo]: 'Applicant Information',
   [FormStep.Eligibility]: 'Eligibility',

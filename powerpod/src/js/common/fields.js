@@ -147,7 +147,7 @@ export function getFieldsBySectionClaim(stepName, forceRefresh = false) {
   const claimSection = claimSections?.find((s) => s.name === stepName);
 
   if (!claimSection || !claimSection?.fields?.length) {
-    logger.error({
+    logger.warn({
       fn: getFieldsBySectionClaim,
       message: `no configuration section found by sectionName: ${stepName}`,
       data: {
