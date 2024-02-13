@@ -18,13 +18,13 @@ POWERPOD.fields = {
 const logger = Logger('common/fields');
 
 // To be used with new global & application level configs
-export function getFieldsBySectionNew(sectionName, forceRefresh = false) {
+export function getFieldsBySectionNew(stepName, forceRefresh = false) {
   let programName = getProgramAbbreviation();
 
   // load cached results unless forceRefresh flag is passed
   if (!forceRefresh) {
     const savedData = localStorage.getItem(
-      `fieldsData-${programName}-${sectionName}`
+      `fieldsData-${programName}-${stepName}`
     );
     if (savedData) {
       return JSON.parse(savedData);
@@ -48,18 +48,18 @@ export function getFieldsBySectionNew(sectionName, forceRefresh = false) {
   const applicationSections = applicationConfigData?.sections;
 
   const applicationSection = applicationSections?.find(
-    (s) => s.name === sectionName
+    (s) => s.name === stepName
   );
-  const globalSection = globalSections.find((s) => s.name === sectionName);
+  const globalSection = globalSections.find((s) => s.name === stepName);
 
   let fields = [];
 
   if (!applicationSection && !globalSection) {
     logger.error({
       fn: getFieldsBySectionNew,
-      message: `no configuration section found by sectionName: ${sectionName}`,
+      message: `no configuration section found by sectionName: ${stepName}`,
       data: {
-        sectionName,
+        sectionName: stepName,
         forceRefresh,
         globalSections,
         applicationSections,
@@ -71,9 +71,9 @@ export function getFieldsBySectionNew(sectionName, forceRefresh = false) {
   if (!applicationSection || !applicationSection.fields?.length) {
     logger.warn({
       fn: getFieldsBySectionNew,
-      message: `no applicationSection section found by sectionName: ${sectionName}`,
+      message: `no applicationSection section found by sectionName: ${stepName}`,
       data: {
-        sectionName,
+        sectionName: stepName,
         forceRefresh,
         globalSections,
         applicationSections,
@@ -86,9 +86,9 @@ export function getFieldsBySectionNew(sectionName, forceRefresh = false) {
   if (!globalSection || !globalSection.fields?.length) {
     logger.warn({
       fn: getFieldsBySectionNew,
-      message: `no globalSection section found by sectionName: ${sectionName}`,
+      message: `no globalSection section found by sectionName: ${stepName}`,
       data: {
-        sectionName,
+        sectionName: stepName,
         forceRefresh,
         globalSections,
         applicationSections,
@@ -109,7 +109,7 @@ export function getFieldsBySectionNew(sectionName, forceRefresh = false) {
   });
 
   localStorage.setItem(
-    `fieldsData-${programName}-${sectionName}`,
+    `fieldsData-${programName}-${stepName}`,
     JSON.stringify(fields)
   );
 
@@ -155,7 +155,7 @@ export function getFieldsBySectionOld(sectionName, forceRefresh = false) {
     }
   }
 
-  const fieldsConfigData = getGlobalConfigData()?.FieldsConfig;
+  const fieldsConfigData = getClaimConfigData()?.FieldsConfig;
 
   logger.info({
     fn: getFieldsBySectionOld,
@@ -189,6 +189,7 @@ export function getFieldsBySectionOld(sectionName, forceRefresh = false) {
             fields.splice(existingFieldIndex, 1);
           }
         }
+        showFieldRow(field.name);
         fields.push(field);
       });
     });

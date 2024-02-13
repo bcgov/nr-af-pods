@@ -5,10 +5,12 @@ import { hideFieldsAndSections } from '../common/html.js';
 import { hideLoadingAnimation } from '../common/loading.js';
 import { Logger } from '../common/logger.js';
 import { getCurrentStep, getProgramId } from '../common/program.ts';
-import { customizeClaimInfoStep } from './steps/claimInfo.js';
+import { addNewAppSystemNotice } from '../common/system.js';
+import { validateRequiredFields } from '../common/validation.js';
+import { customizeApplicantInfoStep } from './steps/applicantInfo.js';
 import { customizeDeclarationConsentStep } from './steps/declarationConsent.js';
 import { customizeDocumentsStep } from './steps/documents.js';
-import { customizeProjectIndicatorStep } from './steps/projectIndicators.js';
+import { customizeProjectResultsStep } from './steps/projectResults.js';
 
 const logger = Logger('claim/claim');
 
@@ -53,6 +55,7 @@ function updatePageForSelectedProgram(programid = undefined) {
         });
         populateContentForSelectedProgramStream(programData);
         hideLoadingAnimation();
+        validateRequiredFields();
       }
     },
   });
@@ -77,11 +80,11 @@ function populateContentForSelectedProgramStream(programData) {
 function updateClaimFormStepForSelectedProgram(programData) {
   const currentStep = getCurrentStep();
   switch (currentStep) {
-    case FormStep.ClaimInfo:
-      customizeClaimInfoStep();
+    case FormStep.ApplicantInfo:
+      customizeApplicantInfoStep();
       break;
-    case FormStep.ProjectIndicators:
-      customizeProjectIndicatorStep(currentStep);
+    case FormStep.ProjectResults:
+      customizeProjectResultsStep();
       break;
     case FormStep.Documents:
       customizeDocumentsStep(currentStep);
@@ -92,16 +95,4 @@ function updateClaimFormStepForSelectedProgram(programData) {
     default:
       break;
   }
-}
-
-function addNewAppSystemNotice() {
-  const newAppSystemNoticeDiv = document.createElement('div');
-  newAppSystemNoticeDiv.id = `new_app_system_notice_div`;
-  // @ts-ignore
-  newAppSystemNoticeDiv.style = 'float: left;';
-  const systemNotice = getClaimConfigData()?.SystemNotice;
-  newAppSystemNoticeDiv.innerHTML = systemNotice;
-
-  const actionsDiv = $(`#NextButton`).parent().parent().parent();
-  actionsDiv.append(newAppSystemNoticeDiv);
 }

@@ -18,6 +18,8 @@ import { customizeDeliverablesBudgetStep } from './steps/deliverablesBudget.js';
 import { customizeDemographicInfoStep } from './steps/demographicInfo.js';
 import { customizeDocumentsStep } from './steps/documents.js';
 import { hideFields, hideFieldsAndSections } from '../common/html.js';
+import { addNewAppSystemNotice } from '../common/system.js';
+import { getGlobalConfigData } from '../common/config.js';
 
 const logger = Logger('application/application');
 
@@ -46,18 +48,6 @@ export function initApplication() {
   addNewAppSystemNotice();
 
   customizePageForFirefox();
-}
-
-function addNewAppSystemNotice() {
-  const newAppSystemNoticeDiv = document.createElement('div');
-  newAppSystemNoticeDiv.id = `new_app_system_notice_div`;
-  // @ts-ignore
-  newAppSystemNoticeDiv.style = 'float: left;';
-  newAppSystemNoticeDiv.innerHTML =
-    '<br/><p>This is a new application system. Please bear with us as we work to improve the system. If you have any technical issues with the system or wish to provide feedback to help us to make it as user friendly as possible, please contact: <a href = "mailto: PODS@gov.bc.ca">PODS@gov.bc.ca</a>​</p>';
-
-  const actionsDiv = $(`#NextButton`).parent().parent().parent();
-  actionsDiv.append(newAppSystemNoticeDiv);
 }
 
 function customizePageForFirefox() {
@@ -218,16 +208,11 @@ function updateFormStepForSelectedProgram(programData) {
       break;
   }
 
-  updateFieldsHintTextsByConfigData(
-    programData?.quartech_ApplicantPortalConfig?.quartech_configdata
-  );
+  updateFieldsHintTextsByConfigData();
 }
 
-function updateFieldsHintTextsByConfigData(configDataJSON) {
-  if (!configDataJSON) return;
-
-  const podsConfigData = JSON.parse(configDataJSON);
-  const fieldsHintTexts = podsConfigData?.FieldsHintTexts;
+function updateFieldsHintTextsByConfigData() {
+  const fieldsHintTexts = getGlobalConfigData()?.FieldsHintTexts;
 
   if (!fieldsHintTexts) return;
 
@@ -238,9 +223,6 @@ function updateFieldsHintTextsByConfigData(configDataJSON) {
       break;
     case FormStep.Project:
       updateFieldsHintTexts(fieldsHintTexts.ForProjectStep);
-      break;
-    case FormStep.EstimatedActivityBudget:
-      updateFieldsHintTexts(fieldsHintTexts.ForEstimatedActivityBudgetStep);
       break;
     case FormStep.DemographicInfo:
       updateFieldsHintTexts(fieldsHintTexts.ForDemographicInfoStep);

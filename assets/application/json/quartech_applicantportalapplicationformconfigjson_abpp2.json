@@ -1,8 +1,8 @@
 {
   "tags": ["Application", "StaffPortal"],
   "version": "1.0.0",
-  "name": "ABPP - Agri-Business and Leadership Development",
-  "abbreviation": "ABPP1",
+  "name": "ABPP - Business Planning, Preparedness, and Disaster Recovery",
+  "abbreviation": "ABPP2",
   "hiddenSteps": "",
   "sections": [
     {
@@ -48,6 +48,11 @@
           }
         },
         {
+          "name": "quartech_operationdoesprocessingandprimaryproducti",
+          "required": true,
+          "elementType": "DropdownSelect"
+        },
+        {
           "name": "quartech_applicanttype",
           "required": true,
           "elementType": "DropdownSelect"
@@ -63,7 +68,6 @@
         },
         {
           "name": "quartech_numberoffulltimeemployees",
-          "format": "number",
           "required": true,
           "validation": {
             "type": "numeric",
@@ -73,7 +77,6 @@
         },
         {
           "name": "quartech_numberofparttimeemployees",
-          "format": "number",
           "required": true,
           "validation": {
             "type": "numeric",
@@ -108,8 +111,8 @@
         },
         {
           "name": "quartech_agriprogramsubscriber",
-          "elementType": "DropdownSelect",
-          "required": true
+          "required": true,
+          "elementType": "DropdownSelect"
         },
         {
           "name": "quartech_tipreportenrolled",
@@ -128,36 +131,30 @@
       "name": "EligibilityStep",
       "fields": [
         {
-          "name": "quartech_primaryproducer100or51percent",
-          "label": "Are you either a\n1) Primary Agriculture Producer growing or raising fresh food or agricultural products which are 100% grown or raised in British Columbia and are intended for sale.\n\n OR\n\n2) Agriculture, Food and Beverage Processor processing food, beverage, or agricultural products which are processed and packaged in B.C. with 51% or more of the direct cost of producing the product in its final form (i.e., the sum of raw materials, direct labour, variable processing, and packaging) originating in B.C. When the main raw materials are available in sufficient quantities from B.C. producers, they must be used?",
-          "elementType": "DropdownSelect",
-          "required": true
-        },
-        {
           "name": "quartech_bcregisteredbusinessentity",
-          "elementType": "DropdownSelect",
-          "required": true
+          "required": true,
+          "elementType": "DropdownSelect"
         },
         {
           "name": "quartech_farmbusinessistaxableentity",
-          "elementType": "DropdownSelect",
-          "required": true
+          "required": true,
+          "elementType": "DropdownSelect"
         },
         {
           "name": "quartech_allproprietersarebcresidents",
-          "elementType": "DropdownSelect",
-          "required": true
+          "required": true,
+          "elementType": "DropdownSelect"
         },
         {
           "name": "quartech_annualgrossrevenueoverlimit",
-          "elementType": "DropdownSelect",
           "required": true,
+          "elementType": "DropdownSelect",
           "label": "Did you report total annual gross revenues greater than $50,000/year in the previous year to Canada Revenue Agency? - This eligibility requirement may not be applicable to Indigenous applicants."
         },
         {
           "name": "quartech_abppsupportoverlimit",
-          "elementType": "DropdownSelect",
-          "required": true
+          "required": true,
+          "elementType": "DropdownSelect"
         },
         {
           "name": "quartech_abppsupportoverlimitdetail",
@@ -169,8 +166,16 @@
         },
         {
           "name": "quartech_supportreceivedduringscap",
-          "elementType": "DropdownSelect",
-          "required": true
+          "required": true,
+          "elementType": "DropdownSelect"
+        },
+        {
+          "name": "quartech_supportduringscapdetails",
+          "visibleIf": {
+            "fieldName": "quartech_supportreceivedduringscap",
+            "selectedValue": 255550000,
+            "techComment": "Yes value"
+          }
         }
       ]
     },
@@ -178,15 +183,39 @@
       "name": "ProjectStep",
       "fields": [
         {
+          "name": "quartech_businessplanningcategory",
+          "required": true,
+          "elementType": "DropdownSelect"
+        },
+        {
+          "name": "quartech_singleorgroupapplication",
+          "required": true,
+          "elementType": "DropdownSelect"
+        },
+        {
+          "name": "quartech_coapplicatntsnames",
+          "maxLength": 10000,
+          "visibleIf": {
+            "fieldName": "quartech_singleorgroupapplication",
+            "selectedValue": 255550001,
+            "techComment": "Group Application value"
+          }
+        },
+        {
           "name": "quartech_applicantsprojectname",
           "required": true,
-          "label": "Event/Training Title",
-          "tooltipText": "The name of the event/training"
+          "label": "Project Title",
+          "tooltipText": "The name of the project"
+        },
+        {
+          "name": "quartech_projectlocation",
+          "required": true,
+          "label": "Project Location"
         },
         {
           "name": "quartech_projectdescription",
           "required": true,
-          "label": "Event/Training Description"
+          "label": "Project Description"
         },
         {
           "name": "quartech_whenistheprojectstartdate",
@@ -199,9 +228,105 @@
           "elementType": "DatePicker"
         },
         {
-          "name": "Consultant Information",
-          "type": "SectionTitle",
-          "hidden": true
+          "name": "quartech_ifotherpleasedescribe",
+          "visibleIf": {
+            "fieldName": "quartech_inordertocontinuouslyimprovecommunications",
+            "selectedValue": 255550006,
+            "techComment": "Other value"
+          }
+        },
+        {
+          "name": "quartech_consultantcompanyname",
+          "required": true,
+          "maxLength": 160
+        },
+        {
+          "name": "quartech_consultantfullname",
+          "required": true,
+          "maxLength": 160
+        },
+        {
+          "name": "quartech_consultantpositiontitle",
+          "required": true,
+          "maxLength": 160
+        },
+        {
+          "name": "quartech_consultantbusinessregistrationgstnumber",
+          "required": true,
+          "maxLength": 9
+        },
+        {
+          "name": "quartech_consultantrelevantknowledgeandexpertise",
+          "required": true,
+          "maxLength": 5000
+        },
+        {
+          "name": "quartech_consultantphonenumber",
+          "required": true,
+          "maxLength": 14
+        },
+        {
+          "name": "quartech_consultantemailaddress",
+          "required": true,
+          "maxLength": 160
+        },
+        {
+          "name": "quartech_useofsupportingconsultant",
+          "required": true,
+          "elementType": "DropdownSelect"
+        },
+        {
+          "name": "quartech_consultantcompletingoverlimit",
+          "visibleIf": {
+            "fieldName": "quartech_useofsupportingconsultant",
+            "selectedValue": 255550000,
+            "techComment": "Yes value"
+          }
+        },
+        {
+          "name": "quartech_supportingconsultantcompanyName",
+          "maxLength": 160,
+          "visibleIf": {
+            "fieldName": "quartech_useofsupportingconsultant",
+            "selectedValue": 255550000,
+            "techComment": "Yes value"
+          }
+        },
+        {
+          "name": "quartech_supportingconsultantfullname",
+          "maxLength": 160,
+          "visibleIf": {
+            "fieldName": "quartech_useofsupportingconsultant",
+            "selectedValue": 255550000,
+            "techComment": "Yes value"
+          }
+        },
+        {
+          "name": "quartech_supportingconsultantfullname",
+          "maxLength": 160,
+          "visibleIf": {
+            "fieldName": "quartech_useofsupportingconsultant",
+            "selectedValue": 255550000,
+            "techComment": "Yes value"
+          }
+        },
+        {
+          "name": "quartech_supportingconsultantpositiontitle",
+          "maxLength": 160,
+          "visibleIf": {
+            "fieldName": "quartech_useofsupportingconsultant",
+            "selectedValue": 255550000,
+            "techComment": "Yes value"
+          }
+        },
+        {
+          "name": "quartech_supportingconsultantrationale",
+          "maxLength": 10000,
+          "visibleIf": {
+            "fieldName": "quartech_useofsupportingconsultant",
+            "selectedValue": 255550000,
+            "techComment": "Yes value"
+          }
         },
         {
           "name": "Business Plan",
@@ -229,7 +354,7 @@
           "name": "quartech_detailedproposedbudget",
           "required": true,
           "maxLength": 10000,
-          "label": "You can either upload an event/training budget document as an attachment or explain the proposed budget in the following text box. If you are uploading the budget as an attachment (in the Documents tab), please enter the file name in this text box (1000 words max)."
+          "label": "You can either upload a project budget document as an attachment or explain the proposed budget in the following text box. If you are uploading the budget as an attachment (in the Documents tab), please enter the file name in this text box (1000 words max)."
         },
         {
           "name": "quartech_deliverables",

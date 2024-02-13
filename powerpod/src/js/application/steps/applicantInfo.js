@@ -1,10 +1,17 @@
+import { getGlobalConfigData } from '../../common/config.js';
 import { YES_VALUE } from '../../common/constants.js';
-import { getOrgbookAutocompleteData, getOrgbookTopicData } from '../../common/fetch.js';
+import {
+  getOrgbookAutocompleteData,
+  getOrgbookTopicData,
+} from '../../common/fetch.js';
 import { initOnChange_DependentRequiredField } from '../../common/fieldLogic.js';
 import { addTextAboveField, addTextBelowField } from '../../common/html.js';
 import { Logger } from '../../common/logger.js';
 import { initInputMasking } from '../../common/masking.js';
-import { getProgramAbbreviation } from '../../common/program.ts';
+import {
+  getProgramAbbreviation,
+  getProgramData,
+} from '../../common/program.ts';
 import { setStepRequiredFields } from '../../common/setRequired.js';
 import {
   validateEmailAddressField,
@@ -13,7 +20,7 @@ import {
 
 const logger = Logger('application/steps/applicantInfo');
 
-export function customizeApplicantInfoStep(programData) {
+export function customizeApplicantInfoStep() {
   setupApplicantInfoStepFields();
 
   initOnChange_PreviouslyReceivedKttpFunding();
@@ -30,14 +37,10 @@ export function customizeApplicantInfoStep(programData) {
 
   initOrgNameAutocomplete();
 
-  // initInputMasking();
-
-  setApplicantInfoStepEmailValidation();
-
-  customizeTypesOfBusinessOrganization(programData);
+  customizeTypesOfBusinessOrganization();
 
   if (getProgramAbbreviation().includes('ABPP')) {
-    customizeApplicantInfoStepForABPP(programData);
+    customizeApplicantInfoStepForABPP();
   }
 
   if (getProgramAbbreviation() === 'NEFBA') {
@@ -533,22 +536,15 @@ function showOrHideTipNotice() {
   }
 }
 
-function setApplicantInfoStepEmailValidation() {
-  // validateEmailAddressField('quartech_businessemailaddress');
-  // validateEmailAddressField('quartech_email');
+function customizeTypesOfBusinessOrganization() {
+  hideTypesOfBusinessOrganization();
+
+  addTooltipsToTypesOfBusinessOrganization();
 }
 
-function customizeTypesOfBusinessOrganization(programData) {
-  hideTypesOfBusinessOrganization(
-    programData.quartech_typesofbusinesstodisplay
-  );
-
-  addTooltipsToTypesOfBusinessOrganization(
-    programData?.quartech_ApplicantPortalConfig?.quartech_configdata
-  );
-}
-
-function hideTypesOfBusinessOrganization(typesOfBusinessToDisplay) {
+function hideTypesOfBusinessOrganization() {
+  const typesOfBusinessToDisplay =
+    getProgramData()?.quartech_typesofbusinesstodisplay;
   if (!typesOfBusinessToDisplay) return;
 
   const typesOfBusinessToDisplayDictionary = JSON.parse(
@@ -572,11 +568,9 @@ function hideTypesOfBusinessOrganization(typesOfBusinessToDisplay) {
   });
 }
 
-function addTooltipsToTypesOfBusinessOrganization(configDataJSON) {
-  if (!configDataJSON) return;
-
-  const podsConfigData = JSON.parse(configDataJSON);
-  const typeOfBusiness_ToolTips = podsConfigData?.TypeOfBusiness_ToolTips;
+function addTooltipsToTypesOfBusinessOrganization() {
+  const typeOfBusiness_ToolTips =
+    getGlobalConfigData()?.TypeOfBusiness_ToolTips;
 
   if (!typeOfBusiness_ToolTips) return;
 
@@ -594,7 +588,7 @@ function addTooltipsToTypesOfBusinessOrganization(configDataJSON) {
   });
 }
 
-function customizeApplicantInfoStepForABPP(programData) {
+function customizeApplicantInfoStepForABPP() {
   let htmlContentToAddAboveBusinessDesc = `<div style="padding-bottom: 15px;">
     <div>Please provide a brief description of your business e.g.,</div>
     <ul>

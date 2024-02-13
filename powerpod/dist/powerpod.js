@@ -541,13 +541,12 @@
     DeliverablesBudget: 'DeliverablesBudgetStep',
     DemographicInfo: 'DemographicInfoStep',
     // Claim Steps:
-    ClaimInfo: 'ClaimInfoStep',
-    ProjectIndicators: 'ProjectIndicatorsStep',
+    ProjectResults: 'ProjectResultsStep',
     Consent: 'ConsentStep',
     // Unknown
     Unknown: 'UnknownStep'
   };
-  var TabNames = _defineProperty(_defineProperty(_defineProperty(_defineProperty(_defineProperty(_defineProperty(_defineProperty(_defineProperty(_defineProperty({}, FormStep.Documents, 'Documents'), FormStep.DeclarationAndConsent, 'Application Declaration and Consent'), FormStep.ApplicantInfo, 'Applicant Information'), FormStep.Eligibility, 'Eligibility'), FormStep.Project, 'Project'), FormStep.DeliverablesBudget, 'Deliverables & Budget'), FormStep.DemographicInfo, 'Demographic Information'), FormStep.ClaimInfo, 'Claim Information'), FormStep.ProjectIndicators, 'Project Results');
+  var TabNames = _defineProperty(_defineProperty(_defineProperty(_defineProperty(_defineProperty(_defineProperty(_defineProperty(_defineProperty({}, FormStep.Documents, 'Documents'), FormStep.DeclarationAndConsent, 'Application Declaration and Consent'), FormStep.ApplicantInfo, 'Applicant Information'), FormStep.Eligibility, 'Eligibility'), FormStep.Project, 'Project'), FormStep.DeliverablesBudget, 'Deliverables & Budget'), FormStep.DemographicInfo, 'Demographic Information'), FormStep.ProjectResults, 'Project Results');
   var YES_VALUE = '255550000';
   var NO_VALUE = '255550001';
   var OTHER_VALUE = '255550010';
@@ -557,6 +556,7 @@
   // TODO: move this to some kind of state management module
   // cache common elements
   var POWERPOD = {
+    programId: null,
     test: {},
     shared: {}
   };
@@ -763,6 +763,17 @@
     var _JSON$parse2;
     var programData = localStorage.getItem('programData');
     var configDataJSON = (_JSON$parse2 = JSON.parse(programData)) === null || _JSON$parse2 === void 0 ? void 0 : _JSON$parse2.quartech_applicantportalclaimformjson;
+    if (!configDataJSON) {
+      logger$i.error({
+        fn: getClaimConfigData,
+        message: 'Failed to get Claim config data, check quartech_applicantportalclaimformjson for the program in MS Dynamics.',
+        data: {
+          programData: programData,
+          configDataJSON: configDataJSON
+        }
+      });
+      return;
+    }
     var podsConfigData = JSON.parse(configDataJSON);
     logger$i.info({
       fn: getApplicationConfigData,
@@ -795,9 +806,17 @@
    * @function
    */
   function getProgramId() {
-      var programId = $('#quartech_program').val(), params = new URLSearchParams(doc.location.search), programIdParam = params.get('programid');
-      if (!programIdParam) {
+      var _a;
+      // Try to pull programId from hidden field
+      const programId = (_a = $('#quartech_program')) === null || _a === void 0 ? void 0 : _a.val();
+      if (programId) {
           return programId;
+      }
+      // Try and get it from URL path
+      const params = new URLSearchParams(doc.location.search);
+      const programIdParam = params.get('programid');
+      if (programIdParam) {
+          return programIdParam;
       }
       if (programId && programIdParam && programId != programIdParam) {
           // @ts-ignore
@@ -862,6 +881,10 @@
       const programEmailAddress = (_a = JSON.parse(programData)) === null || _a === void 0 ? void 0 : _a.quartech_programemailaddress;
       return programEmailAddress;
   }
+  function getProgramData() {
+      const programData = localStorage.getItem('programData');
+      return JSON.parse(programData);
+  }
 
   POWERPOD.fields = {
     getFieldsBySection: getFieldsBySection,
@@ -871,14 +894,14 @@
   var logger$g = Logger('common/fields');
 
   // To be used with new global & application level configs
-  function getFieldsBySectionNew(sectionName) {
+  function getFieldsBySectionNew(stepName) {
     var _applicationSection$f, _applicationSection$f2, _globalSection$fields, _globalSection$fields2;
     var forceRefresh = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
     var programName = getProgramAbbreviation();
 
     // load cached results unless forceRefresh flag is passed
     if (!forceRefresh) {
-      var savedData = localStorage.getItem("fieldsData-".concat(programName, "-").concat(sectionName));
+      var savedData = localStorage.getItem("fieldsData-".concat(programName, "-").concat(stepName));
       if (savedData) {
         return JSON.parse(savedData);
       }
@@ -898,18 +921,18 @@
     var globalSections = globalConfigData === null || globalConfigData === void 0 ? void 0 : globalConfigData.sections;
     var applicationSections = applicationConfigData === null || applicationConfigData === void 0 ? void 0 : applicationConfigData.sections;
     var applicationSection = applicationSections === null || applicationSections === void 0 ? void 0 : applicationSections.find(function (s) {
-      return s.name === sectionName;
+      return s.name === stepName;
     });
     var globalSection = globalSections.find(function (s) {
-      return s.name === sectionName;
+      return s.name === stepName;
     });
     var fields = [];
     if (!applicationSection && !globalSection) {
       logger$g.error({
         fn: getFieldsBySectionNew,
-        message: "no configuration section found by sectionName: ".concat(sectionName),
+        message: "no configuration section found by sectionName: ".concat(stepName),
         data: {
-          sectionName: sectionName,
+          sectionName: stepName,
           forceRefresh: forceRefresh,
           globalSections: globalSections,
           applicationSections: applicationSections
@@ -920,9 +943,9 @@
     if (!applicationSection || !((_applicationSection$f = applicationSection.fields) !== null && _applicationSection$f !== void 0 && _applicationSection$f.length)) {
       logger$g.warn({
         fn: getFieldsBySectionNew,
-        message: "no applicationSection section found by sectionName: ".concat(sectionName),
+        message: "no applicationSection section found by sectionName: ".concat(stepName),
         data: {
-          sectionName: sectionName,
+          sectionName: stepName,
           forceRefresh: forceRefresh,
           globalSections: globalSections,
           applicationSections: applicationSections
@@ -935,9 +958,9 @@
     if (!globalSection || !((_globalSection$fields = globalSection.fields) !== null && _globalSection$fields !== void 0 && _globalSection$fields.length)) {
       logger$g.warn({
         fn: getFieldsBySectionNew,
-        message: "no globalSection section found by sectionName: ".concat(sectionName),
+        message: "no globalSection section found by sectionName: ".concat(stepName),
         data: {
-          sectionName: sectionName,
+          sectionName: stepName,
           forceRefresh: forceRefresh,
           globalSections: globalSections,
           applicationSections: applicationSections
@@ -955,7 +978,7 @@
       });
       showFieldRow(s.name);
     });
-    localStorage.setItem("fieldsData-".concat(programName, "-").concat(sectionName), JSON.stringify(fields));
+    localStorage.setItem("fieldsData-".concat(programName, "-").concat(stepName), JSON.stringify(fields));
     logger$g.info({
       fn: getFieldsBySectionNew,
       message: 'fieldsData:',
@@ -977,7 +1000,7 @@
   // TODO: Remove this old func
   // Still used in application.js
   function getFieldsBySectionOld(sectionName) {
-    var _getGlobalConfigData2;
+    var _getClaimConfigData;
     var forceRefresh = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
     var programName = getProgramAbbreviation();
     var generateFilterCondition = function generateFilterCondition(program) {
@@ -996,7 +1019,7 @@
         return JSON.parse(savedData);
       }
     }
-    var fieldsConfigData = (_getGlobalConfigData2 = getGlobalConfigData()) === null || _getGlobalConfigData2 === void 0 ? void 0 : _getGlobalConfigData2.FieldsConfig;
+    var fieldsConfigData = (_getClaimConfigData = getClaimConfigData()) === null || _getClaimConfigData === void 0 ? void 0 : _getClaimConfigData.FieldsConfig;
     logger$g.info({
       fn: getFieldsBySectionOld,
       message: 'fieldsConfigData:',
@@ -1023,6 +1046,7 @@
             fields.splice(existingFieldIndex, 1);
           }
         }
+        showFieldRow(field.name);
         fields.push(field);
       });
     });
@@ -1035,7 +1059,7 @@
     return fields;
   }
   function getFieldsBySection(sectionName) {
-    var _getClaimConfigData;
+    var _getClaimConfigData2;
     var forceRefresh = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
     var programName = getProgramAbbreviation();
 
@@ -1046,7 +1070,7 @@
         return JSON.parse(savedData);
       }
     }
-    var fieldsConfigData = (_getClaimConfigData = getClaimConfigData()) === null || _getClaimConfigData === void 0 ? void 0 : _getClaimConfigData.FieldsConfig;
+    var fieldsConfigData = (_getClaimConfigData2 = getClaimConfigData()) === null || _getClaimConfigData2 === void 0 ? void 0 : _getClaimConfigData2.FieldsConfig;
     logger$g.info({
       fn: getFieldsBySection,
       message: 'fieldsConfigData:',
@@ -2042,6 +2066,19 @@
         while (1) switch (_context4.prev = _context4.next) {
           case 0:
             programId = _ref3.programId, beforeSend = _ref3.beforeSend, onSuccess = _ref3.onSuccess, options = _objectWithoutProperties(_ref3, _excluded2);
+            if (programId) {
+              _context4.next = 4;
+              break;
+            }
+            logger$d.error({
+              fn: getClaimFormData,
+              message: 'Missing required params',
+              data: {
+                programId: programId
+              }
+            });
+            return _context4.abrupt("return");
+          case 4:
             return _context4.abrupt("return", fetch(_objectSpread2({
               url: ENDPOINT_URL.get_claim_form_data(programId),
               contentType: CONTENT_TYPE.json,
@@ -2051,7 +2088,7 @@
               beforeSend: beforeSend,
               onSuccess: onSuccess
             }, options)));
-          case 2:
+          case 5:
           case "end":
             return _context4.stop();
         }
@@ -2282,7 +2319,7 @@
 
   function customizeDeliverablesBudgetStep() {
     var programAbbreviation = getProgramAbbreviation();
-    setStepRequiredFields('DeliverablesBudgetStep');
+    setStepRequiredFields();
 
     // START ALL PROGRAMS/STREAMS CUSTOMIZATION
     var deliverablesBudgetTabTitleElement = document.querySelector('#EntityFormView > h2');
@@ -2329,7 +2366,7 @@
     }
     // END KTTP PROGRAMS/STREAMS CUSTOMIZATION
 
-    setStepRequiredFields('DeliverablesBudgetStep');
+    setStepRequiredFields();
   }
   function setOnKeypressBudgetInput(elementId) {
     $(document).on('keypress', "#".concat(elementId), function () {
@@ -2839,16 +2876,29 @@
   }
 
   var logger$8 = Logger('common/setRequired');
-  function setStepRequiredFields(stepName) {
+  function setStepRequiredFields() {
+    var stepName = getCurrentStep();
+    logger$8.info({
+      fn: setStepRequiredFields,
+      message: "configuring fields for step: ".concat(stepName, "...")
+    });
     // TODO: Remove this old func usage
     var fields;
     if (getOptions().form === Form.Application) {
       // fields = getFieldsBySectionOld(stepName);
       fields = getFieldsBySectionNew(stepName);
     } else {
-      fields = getFieldsBySection(stepName);
+      fields = getFieldsBySectionOld(stepName);
     }
     if (!fields) return;
+    logger$8.info({
+      fn: setStepRequiredFields,
+      message: 'configuring fields...',
+      data: {
+        stepName: stepName,
+        fields: fields
+      }
+    });
     for (var i = 0; i < fields.length; i++) {
       var _fields$i = fields[i],
         name = _fields$i.name,
@@ -2874,8 +2924,14 @@
         fileTypes = _fields$i.fileTypes;
       logger$8.info({
         fn: setStepRequiredFields,
-        message: "setting field definition for ".concat(name)
+        message: "setting field definition for field name: ".concat(name)
       });
+      if (!$("#".concat(name))) {
+        logger$8.error({
+          fn: setStepRequiredFields,
+          message: "could not find existing element for field name: ".concat(name)
+        });
+      }
       if (hasUpperCase(name)) {
         logger$8.warn({
           fn: setStepRequiredFields,
@@ -3025,7 +3081,7 @@
       // fields = getFieldsBySectionOld(stepName);
       fields = getFieldsBySectionNew(stepName);
     } else {
-      fields = getFieldsBySection(stepName);
+      fields = getFieldsBySectionOld(stepName);
     }
     if (!fields) return;
     Object.keys(localStorage).filter(function (x) {
@@ -3201,7 +3257,7 @@
   }
 
   var logger$7 = Logger('application/steps/applicantInfo');
-  function customizeApplicantInfoStep(programData) {
+  function customizeApplicantInfoStep$1() {
     setupApplicantInfoStepFields();
     initOnChange_PreviouslyReceivedKttpFunding();
     initOnChange_OrganizationReceivedFundingFromBC();
@@ -3210,7 +3266,7 @@
     initOnChange_AdaptedEventForAdultLearning();
     handleApplicantWithAndWithoutCRA_GST();
     initOrgNameAutocomplete();
-    customizeTypesOfBusinessOrganization(programData);
+    customizeTypesOfBusinessOrganization();
     if (getProgramAbbreviation().includes('ABPP')) {
       customizeApplicantInfoStepForABPP();
     }
@@ -3450,7 +3506,7 @@
     $(orgBNInput).trigger('change');
   }
   function setupApplicantInfoStepFields() {
-    setStepRequiredFields('ApplicantInfoStep');
+    setStepRequiredFields();
     var programAbbreviation = getProgramAbbreviation();
     if (programAbbreviation && programAbbreviation === 'NEFBA') {
       // @ts-ignore
@@ -3553,12 +3609,13 @@
       });
     }
   }
-  function customizeTypesOfBusinessOrganization(programData) {
-    var _programData$quartech;
-    hideTypesOfBusinessOrganization(programData.quartech_typesofbusinesstodisplay);
-    addTooltipsToTypesOfBusinessOrganization(programData === null || programData === void 0 || (_programData$quartech = programData.quartech_ApplicantPortalConfig) === null || _programData$quartech === void 0 ? void 0 : _programData$quartech.quartech_configdata);
+  function customizeTypesOfBusinessOrganization() {
+    hideTypesOfBusinessOrganization();
+    addTooltipsToTypesOfBusinessOrganization();
   }
-  function hideTypesOfBusinessOrganization(typesOfBusinessToDisplay) {
+  function hideTypesOfBusinessOrganization() {
+    var _getProgramData;
+    var typesOfBusinessToDisplay = (_getProgramData = getProgramData()) === null || _getProgramData === void 0 ? void 0 : _getProgramData.quartech_typesofbusinesstodisplay;
     if (!typesOfBusinessToDisplay) return;
     var typesOfBusinessToDisplayDictionary = JSON.parse(typesOfBusinessToDisplay);
     if (!typesOfBusinessToDisplayDictionary) return;
@@ -3576,10 +3633,9 @@
       }
     });
   }
-  function addTooltipsToTypesOfBusinessOrganization(configDataJSON) {
-    if (!configDataJSON) return;
-    var podsConfigData = JSON.parse(configDataJSON);
-    var typeOfBusiness_ToolTips = podsConfigData === null || podsConfigData === void 0 ? void 0 : podsConfigData.TypeOfBusiness_ToolTips;
+  function addTooltipsToTypesOfBusinessOrganization() {
+    var _getGlobalConfigData;
+    var typeOfBusiness_ToolTips = (_getGlobalConfigData = getGlobalConfigData()) === null || _getGlobalConfigData === void 0 ? void 0 : _getGlobalConfigData.TypeOfBusiness_ToolTips;
     if (!typeOfBusiness_ToolTips) return;
 
     // @ts-ignore
@@ -3592,7 +3648,7 @@
       }
     });
   }
-  function customizeApplicantInfoStepForABPP(programData) {
+  function customizeApplicantInfoStepForABPP() {
     var htmlContentToAddAboveBusinessDesc = "<div style=\"padding-bottom: 15px;\">\n    <div>Please provide a brief description of your business e.g.,</div>\n    <ul>\n      <li>For Primary Producer - farm size in production in units such as acres, metres squared, and number and type of animals, marketing channels (farm gate, wholesale, retail/use of social media)</li>\n      <li>OR For Processor - size of processing area in units such as square feet or metres, number and type of B.C. products used and/or produced, marketing channels (direct, wholesale, retail/use of social media)</li>\n    </ul>\n  </div>";
     addTextAboveField('quartech_businessdescription', htmlContentToAddAboveBusinessDesc);
   }
@@ -3692,7 +3748,7 @@
     }
   }
   function setProjectStepRequiredFields() {
-    setStepRequiredFields('ProjectStep');
+    setStepRequiredFields();
     var programAbbreviation = getProgramAbbreviation();
 
     // START KTTP PROJECT STEP CUSTOMIZATION
@@ -4253,7 +4309,7 @@
     setupEligibilityStepFields();
   }
   function setupEligibilityStepFields() {
-    setStepRequiredFields('EligibilityStep');
+    setStepRequiredFields();
     var programAbbreviation = getProgramAbbreviation();
     if (programAbbreviation && (programAbbreviation.includes('ABPP') || programAbbreviation === 'NEFBA')) {
       var fieldToAddElgibilityNote = '';
@@ -4332,7 +4388,7 @@
     $("[data-name='DemographicData_Tab1']").parent().prepend(div);
   }
   function setDemographicInfoRequiredFields() {
-    setStepRequiredFields('DemographicInfoStep');
+    setStepRequiredFields();
   }
   function addViewExampleTo_Q1a() {
     var div = document.createElement('div');
@@ -4618,6 +4674,18 @@
     }
   }
 
+  function addNewAppSystemNotice() {
+    var _getGlobalConfigData;
+    var newAppSystemNoticeDiv = document.createElement('div');
+    newAppSystemNoticeDiv.id = "new_app_system_notice_div";
+    // @ts-ignore
+    newAppSystemNoticeDiv.style = 'float: left;';
+    var systemNotice = (_getGlobalConfigData = getGlobalConfigData()) === null || _getGlobalConfigData === void 0 ? void 0 : _getGlobalConfigData.SystemNotice;
+    newAppSystemNoticeDiv.innerHTML = systemNotice;
+    var actionsDiv = $("#NextButton").parent().parent().parent();
+    actionsDiv.append(newAppSystemNoticeDiv);
+  }
+
   var logger$4 = Logger('application/application');
   function initApplication() {
     hideFieldsAndSections();
@@ -4635,17 +4703,8 @@
     } else {
       updatePageForSelectedProgram$1();
     }
-    addNewAppSystemNotice$1();
+    addNewAppSystemNotice();
     customizePageForFirefox();
-  }
-  function addNewAppSystemNotice$1() {
-    var newAppSystemNoticeDiv = document.createElement('div');
-    newAppSystemNoticeDiv.id = "new_app_system_notice_div";
-    // @ts-ignore
-    newAppSystemNoticeDiv.style = 'float: left;';
-    newAppSystemNoticeDiv.innerHTML = '<br/><p>This is a new application system. Please bear with us as we work to improve the system. If you have any technical issues with the system or wish to provide feedback to help us to make it as user friendly as possible, please contact: <a href = "mailto: PODS@gov.bc.ca">PODS@gov.bc.ca</a>​</p>';
-    var actionsDiv = $("#NextButton").parent().parent().parent();
-    actionsDiv.append(newAppSystemNoticeDiv);
   }
   function customizePageForFirefox() {
     // if (!navigator.userAgent.includes("Firefox")) return;
@@ -4733,7 +4792,6 @@
     }
   }
   function updateFormStepForSelectedProgram(programData) {
-    var _programData$quartech;
     populateContentForSelectedProgramStream$1(programData);
     var programAbbreviation = getProgramAbbreviation();
     if (programAbbreviation && programAbbreviation === 'NEFBA') {
@@ -4746,7 +4804,7 @@
     var currentStep = getCurrentStep();
     switch (currentStep) {
       case FormStep.ApplicantInfo:
-        customizeApplicantInfoStep(programData);
+        customizeApplicantInfoStep$1();
         break;
       case FormStep.Eligibility:
         customizeEligibilityStep();
@@ -4769,12 +4827,11 @@
         customizeDeclarationConsentStep$1(programData);
         break;
     }
-    updateFieldsHintTextsByConfigData(programData === null || programData === void 0 || (_programData$quartech = programData.quartech_ApplicantPortalConfig) === null || _programData$quartech === void 0 ? void 0 : _programData$quartech.quartech_configdata);
+    updateFieldsHintTextsByConfigData();
   }
-  function updateFieldsHintTextsByConfigData(configDataJSON) {
-    if (!configDataJSON) return;
-    var podsConfigData = JSON.parse(configDataJSON);
-    var fieldsHintTexts = podsConfigData === null || podsConfigData === void 0 ? void 0 : podsConfigData.FieldsHintTexts;
+  function updateFieldsHintTextsByConfigData() {
+    var _getGlobalConfigData;
+    var fieldsHintTexts = (_getGlobalConfigData = getGlobalConfigData()) === null || _getGlobalConfigData === void 0 ? void 0 : _getGlobalConfigData.FieldsHintTexts;
     if (!fieldsHintTexts) return;
     var currentStep = getCurrentStep();
     switch (currentStep) {
@@ -4783,9 +4840,6 @@
         break;
       case FormStep.Project:
         updateFieldsHintTexts(fieldsHintTexts.ForProjectStep);
-        break;
-      case FormStep.EstimatedActivityBudget:
-        updateFieldsHintTexts(fieldsHintTexts.ForEstimatedActivityBudgetStep);
         break;
       case FormStep.DemographicInfo:
         updateFieldsHintTexts(fieldsHintTexts.ForDemographicInfoStep);
@@ -4822,8 +4876,8 @@
     }
   }
 
-  function customizeClaimInfoStep() {
-    setStepRequiredFields('ClaimInfoStep');
+  function customizeApplicantInfoStep() {
+    setStepRequiredFields();
     var programAbbreviation = getProgramAbbreviation();
 
     // START step specific functions
@@ -4956,7 +5010,7 @@
   }
 
   function customizeDocumentsStep(currentStep) {
-    setStepRequiredFields(currentStep);
+    setStepRequiredFields();
     var programAbbreviation = getProgramAbbreviation();
     if (programAbbreviation === 'NEFBA') {
       observeIframeChanges(customizeBusinessPlanDocumentsQuestions, null, 'quartech_completingcategory');
@@ -4988,11 +5042,11 @@
     }
   }
 
-  function customizeProjectIndicatorStep(currentStep) {
+  function customizeProjectResultsStep() {
     // initInputMasking();
-    setStepRequiredFields(currentStep);
+    setStepRequiredFields();
     var programAbbreviation = getProgramAbbreviation();
-    if (programAbbreviation.includes('ABPP') || programAbbreviation === 'NEFBA') {
+    if (programAbbreviation.includes('ABPP') || programAbbreviation === 'NEFBA' || programAbbreviation.includes('KTTP')) {
       // @ts-ignore
       initOnChange_DependentRequiredField({
         dependentOnValue: YES_VALUE,
@@ -5047,6 +5101,7 @@
           });
           populateContentForSelectedProgramStream(programData);
           hideLoadingAnimation();
+          validateRequiredFields();
         }
       }
     });
@@ -5067,30 +5122,19 @@
   function updateClaimFormStepForSelectedProgram(programData) {
     var currentStep = getCurrentStep();
     switch (currentStep) {
-      case FormStep.ClaimInfo:
-        customizeClaimInfoStep();
+      case FormStep.ApplicantInfo:
+        customizeApplicantInfoStep();
         break;
-      case FormStep.ProjectIndicators:
-        customizeProjectIndicatorStep(currentStep);
+      case FormStep.ProjectResults:
+        customizeProjectResultsStep();
         break;
       case FormStep.Documents:
-        customizeDocumentsStep(currentStep);
+        customizeDocumentsStep();
         break;
       case FormStep.Consent:
         customizeDeclarationConsentStep(programData);
         break;
     }
-  }
-  function addNewAppSystemNotice() {
-    var _getClaimConfigData;
-    var newAppSystemNoticeDiv = document.createElement('div');
-    newAppSystemNoticeDiv.id = "new_app_system_notice_div";
-    // @ts-ignore
-    newAppSystemNoticeDiv.style = 'float: left;';
-    var systemNotice = (_getClaimConfigData = getClaimConfigData()) === null || _getClaimConfigData === void 0 ? void 0 : _getClaimConfigData.SystemNotice;
-    newAppSystemNoticeDiv.innerHTML = systemNotice;
-    var actionsDiv = $("#NextButton").parent().parent().parent();
-    actionsDiv.append(newAppSystemNoticeDiv);
   }
 
   var logger$2 = Logger('powerpod');

@@ -6,8 +6,8 @@ const logger = Logger('common/config');
 POWERPOD.config = {
   getGlobalConfigData,
   getClaimConfigData,
-  getApplicationConfigData
-}
+  getApplicationConfigData,
+};
 
 export function getGlobalConfigData() {
   const programData = localStorage.getItem('programData');
@@ -28,6 +28,20 @@ export function getClaimConfigData() {
   const programData = localStorage.getItem('programData');
   const configDataJSON =
     JSON.parse(programData)?.quartech_applicantportalclaimformjson;
+
+  if (!configDataJSON) {
+    logger.error({
+      fn: getClaimConfigData,
+      message:
+        'Failed to get Claim config data, check quartech_applicantportalclaimformjson for the program in MS Dynamics.',
+      data: {
+        programData,
+        configDataJSON,
+      },
+    });
+    return;
+  }
+
   const podsConfigData = JSON.parse(configDataJSON);
 
   logger.info({

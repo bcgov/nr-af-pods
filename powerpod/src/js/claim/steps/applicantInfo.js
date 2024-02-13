@@ -10,8 +10,8 @@ import { setStepRequiredFields } from '../../common/setRequired.js';
 import { setFieldReadOnly } from '../../common/validation.js';
 import { customizeSingleOrGroupApplicantQuestions } from '../fieldLogic.js';
 
-export function customizeClaimInfoStep() {
-  setStepRequiredFields('ClaimInfoStep');
+export function customizeApplicantInfoStep() {
+  setStepRequiredFields();
 
   const programAbbreviation = getProgramAbbreviation();
 
