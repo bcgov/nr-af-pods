@@ -16,5 +16,6 @@
     "useDefineForClassFields": false // If you do not set this @property works but @query do not
   },
   "updateImportsOnFileMove": "prompt",
-  "include": ["js/**/*"]
+  "include": ["js/**/*"],
+  "exclude": ["node_modules"]
 }
