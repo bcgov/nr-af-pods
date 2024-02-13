@@ -80,7 +80,7 @@ export function getFieldsBySectionNew(sectionName, forceRefresh = false) {
       },
     });
   } else if (applicationSection.fields?.length) {
-    fields.push(applicationSection.fields);
+    fields.push(...applicationSection.fields);
   }
 
   if (!globalSection || !globalSection.fields?.length) {
