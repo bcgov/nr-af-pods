@@ -79,5 +79,5 @@ export function sortArrayByProperty(array, propertyName) {
 }
 
 export function hasUpperCase(str) {
-  return str !== str.toLowerCase();
+  return str && str !== str.toLowerCase();
 }

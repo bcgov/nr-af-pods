@@ -1,5 +1,5 @@
 /*!
-* powerpod 0.6.1
+* powerpod 0.6.2
 * https://github.com/bcgov/nr-af-pods/powerpod
 *
 * @license GPLv3 for open source use only
@@ -929,7 +929,8 @@
         }
       });
     } else if ((_applicationSection$f2 = applicationSection.fields) !== null && _applicationSection$f2 !== void 0 && _applicationSection$f2.length) {
-      fields.push(applicationSection.fields);
+      var _fields;
+      (_fields = fields).push.apply(_fields, _toConsumableArray(applicationSection.fields));
     }
     if (!globalSection || !((_globalSection$fields = globalSection.fields) !== null && _globalSection$fields !== void 0 && _globalSection$fields.length)) {
       logger$g.warn({
@@ -1662,7 +1663,7 @@
     return prop ? Object.values(mergedObj) : mergedObj;
   }
   function hasUpperCase(str) {
-    return str !== str.toLowerCase();
+    return str && str !== str.toLowerCase();
   }
 
   // TODO: Update for production
@@ -5156,7 +5157,7 @@
       };
     };
     // @ts-ignore
-    POWERPOD.version = '0.6.1';
+    POWERPOD.version = '0.6.2';
     // @ts-ignore
     win.powerpod = POWERPOD;
   }
