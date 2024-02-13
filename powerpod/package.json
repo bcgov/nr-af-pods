@@ -1,7 +1,7 @@
 {
   "name": "powerpod",
   "type": "module",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Powerpod is a jQuery plugin that enhances functionality of Power Pages components.",
   "main": "dist/powerpod",
   "scripts": {
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:mihailistov/powerpod.git"
+    "url": "git@github.com:bcgov/nr-af-pods.git"
   },
   "keywords": [
     "jquery",
@@ -32,9 +32,9 @@
   ],
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/mihailistov/powerpod/issues"
+    "url": "https://github.com/bcgov/nr-af-pods/issues"
   },
-  "homepage": "https://github.com/mihailistov/powerpod",
+  "homepage": "https://github.com/bcgov/nr-af-pods/powerpod",
   "namespace": "powerpod",
   "devDependencies": {
     "@babel/preset-env": "^7.23.8",
