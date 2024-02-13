@@ -14,5 +14,5 @@ jobs:
           SHOW_ERRORS: true
           SHOW_SKIPPED: true
         run: |
-          chmod +x ./scripts/test.sh
-          ./scripts/test.sh
+          chmod +x ./scripts/pipeline.sh
+          ./scripts/pipeline.sh
