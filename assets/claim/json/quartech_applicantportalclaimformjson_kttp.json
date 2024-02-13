@@ -1,6 +1,6 @@
 {
   "tags": ["Claim", "KTTP", "KTTP-SMEA", "KTTP-StreamTwo", "KTTP-Stream3"],
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Claim form field config used for all KTTP streams",
   "hiddenSteps": "",
   "sections": [
@@ -65,6 +65,51 @@
             "value": "0",
             "comparison": "greaterThan"
           }
+        }
+      ]
+    },
+    {
+      "name": "ClaimInfoStep",
+      "fields": [
+        {
+          "name": "quartech_authorizedclaimedamount",
+          "label": "Approved Amount as per Authorization Letter (Consultant Fee, GST, Total)",
+          "readOnly": true
+        },
+        {
+          "name": "quartech_interimorfinalpayment",
+          "label": "Are you requesting an interim claim or a final claim?",
+          "required": true,
+          "elementType": "DropdownSelect"
+        },
+        {
+          "name": "quartech_totalprojectcost",
+          "label": "Total Project Cost",
+          "format": "currency",
+          "required": true,
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThan"
+          },
+          "emptyInitialValue": true
+        },
+        {
+          "name": "quartech_totalfees",
+          "label": "Your requested amount in this current claim",
+          "format": "currency",
+          "required": true,
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThan"
+          },
+          "emptyInitialValue": true
+        },
+        {
+          "name": "quartech_claimcoapplicants",
+          "label": "Please provide the names of the co-applicants for the claims and the cost and a brief description of the services they are claiming",
+          "required": true
         }
       ]
     },
