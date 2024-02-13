@@ -1,0 +1,21 @@
+---
+name: JSON Linter
+run-name: ${{ github.actor }} executed run JSON linter
+on:
+  - pull_request
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # required for accessing files in repository.
+
+      - name: Run JSON Lint
+        env:
+          REPORT_ONLY: false
+          SHOW_ERRORS: true
+          SHOW_SKIPPED: true
+          EXCLUDE_FILES: powerpod/*
+        run: |
+          chmod +x ./scripts/pipeline.sh
+          ./scripts/pipeline.sh

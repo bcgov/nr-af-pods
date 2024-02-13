@@ -13,8 +13,9 @@
     "allowImportingTsExtensions": true,
     "noEmit": true,
     "experimentalDecorators": true,
-    "useDefineForClassFields": false // If you do not set this @property works but @query do not
+    "useDefineForClassFields": false
   },
   "updateImportsOnFileMove": "prompt",
-  "include": ["js/**/*"]
+  "include": ["js/**/*"],
+  "exclude": ["node_modules"]
 }

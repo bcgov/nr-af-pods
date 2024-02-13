@@ -1,11 +1,13 @@
-{	"name": "KTTP S3 - Staff Portal - Project Form JSON Config",
-	"tabs": [
-		{	"name": "ProjectReview",
-			"fields": [
-			  { "name": "quartech_applicantmaterialsreceived"},
-			  { "name": "quartech_gcpeapproved"},
-			  { "name": "quartech_materialssenttogcpe"}
-			]
-		}
-	]
+{
+  "name": "KTTP S3 - Staff Portal - Project Form JSON Config",
+  "tabs": [
+    {
+      "name": "ProjectReview",
+      "fields": [
+        { "name": "quartech_applicantmaterialsreceived" },
+        { "name": "quartech_gcpeapproved" },
+        { "name": "quartech_materialssenttogcpe" }
+      ]
+    }
+  ]
 }
