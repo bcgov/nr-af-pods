@@ -1,11 +1,13 @@
-import { hideFieldsAndSections } from "../../common/html.js";
+import { hideFieldsAndSections } from '../../common/html.js';
+import { getProgramData } from '../../common/program.js';
 
-export function customizeDeclarationConsentStep(programData) {
+export function customizeDeclarationConsentStep() {
   hideFieldsAndSections(false);
-  addConsent(programData?.quartech_applicantportalprogramname);
+  addConsent();
 }
 
-function addConsent(programName) {
+function addConsent() {
+  const programName = getProgramData()?.quartech_applicantportalprogramname;
   const programNameTag = '%%ProgramName%%';
 
   let htmlConsent = `

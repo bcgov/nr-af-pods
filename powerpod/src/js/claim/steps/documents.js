@@ -1,9 +1,9 @@
 import { hideQuestion, observeIframeChanges } from '../../common/html.js';
-import { getProgramAbbreviation } from '../../common/program.ts';
+import { getCurrentStep, getProgramAbbreviation } from '../../common/program.ts';
 import { setStepRequiredFields } from '../../common/setRequired.js';
 
-export function customizeDocumentsStep(currentStep) {
-  setStepRequiredFields(currentStep);
+export function customizeDocumentsStep() {
+  setStepRequiredFields();
 
   const programAbbreviation = getProgramAbbreviation();
 

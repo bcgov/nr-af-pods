@@ -1,8 +1,7 @@
 {
-  "tags": ["Claim"],
+  "tags": ["Claim", "KTTP", "KTTP-SMEA", "KTTP-StreamTwo", "KTTP-Stream3"],
   "version": "1.0.0",
-  "name": "KTTP - Regenerative Agriculture Activities",
-  "abbreviation": "KTTP-Stream3",
+  "description": "Claim form field config used for all KTTP streams",
   "hiddenSteps": "",
   "sections": [
     {

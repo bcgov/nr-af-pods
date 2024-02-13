@@ -10,18 +10,46 @@ import { setStepRequiredFields } from '../../common/setRequired.js';
 import { setFieldReadOnly } from '../../common/validation.js';
 import { customizeSingleOrGroupApplicantQuestions } from '../fieldLogic.js';
 
-export function customizeApplicantInfoStep() {
+export function customizeClaimInfoStep() {
   setStepRequiredFields();
 
   const programAbbreviation = getProgramAbbreviation();
 
+  // START step specific functions
+  function addRequestedClaimAmountNote() {
+    if (!document.querySelector('#requestedClaimAmountNote')) {
+      const requestedClaimAmountNoteHtmlContent = `<div id="requestedClaimAmountNote" style="padding-bottom: 20px;">
+        The Program covers costs up to the maximum amount indicated in your Approval Letter.<br />
+        Any additional fees invoiced will not be covered by the B.C. Ministry of Agriculture and Food
+      </div>`;
+
+      $('#quartech_totalfees')
+        .closest('tr')
+        .before(requestedClaimAmountNoteHtmlContent);
+    }
+  }
+
+  function addClaimAmountCaveatNote() {
+    if ($('#quartech_interimorfinalpayment').val() === '255550000') {
+      if (!document.querySelector('#claimAmountCaveatNote')) {
+        const claimAmountCaveatNoteHtmlContent = `
+          <div id='claimAmountCaveatNote' style="padding-bottom: 20px;">
+            The requested amount must fall within the range of $500.00 to the authorized amount specified on the Authorization Letter.
+          </div>
+        `;
+
+        $('#requestedClaimAmountNote').after(claimAmountCaveatNoteHtmlContent);
+      } else {
+        $('#claimAmountCaveatNote')?.css({ display: '' });
+      }
+    } else {
+      $('#claimAmountCaveatNote')?.css({ display: 'none' });
+    }
+  }
+  // END step specific functions
+
   if (programAbbreviation === 'NEFBA') {
-    // @ts-ignore
-    initOnChange_DependentRequiredField({
-      dependentOnValue: NO_VALUE,
-      dependentOnElementTag: 'quartech_applicantinformationconfirmation',
-      requiredFieldTag: 'quartech_applicantinformationcorrections',
-    });
+    addRequestedClaimAmountNote();
 
     observeIframeChanges(
       customizeBusinessPlanDependentQuestions,
@@ -31,13 +59,6 @@ export function customizeApplicantInfoStep() {
   }
 
   if (programAbbreviation.includes('ABPP')) {
-    // @ts-ignore
-    initOnChange_DependentRequiredField({
-      dependentOnValue: NO_VALUE,
-      dependentOnElementTag: 'quartech_applicantinformationconfirmation',
-      requiredFieldTag: 'quartech_applicantinformationcorrections',
-    });
-
     const iframe = document.querySelector(
       'fieldset[aria-label="Coding Section (DO NOT REMOVE)"] iframe'
     );
@@ -58,6 +79,11 @@ export function customizeApplicantInfoStep() {
     }
 
     addRequestedClaimAmountNote();
+
+    addClaimAmountCaveatNote();
+    $('select[id*="quartech_interimorfinalpayment"]').on('change', function () {
+      addClaimAmountCaveatNote();
+    });
   }
 
   if (programAbbreviation === 'ABPP1') {
@@ -86,6 +112,11 @@ export function customizeApplicantInfoStep() {
         claimInformationNoteHtmlContent
       );
     }
+
+    observeChanges(
+      $('#quartech_requestedinterimpaymentamount')[0],
+      customizeInterimPaymentAmountField()
+    );
 
     observeIframeChanges(
       customizeSingleOrGroupApplicantQuestions,
@@ -133,3 +164,20 @@ function customizeBusinessPlanDependentQuestions() {
     }
   }
 }
+
+function customizeInterimPaymentAmountField() {
+  const iterimPaymentAmount = $(
+    '#quartech_requestedinterimpaymentamount'
+  )?.val();
+  // @ts-ignore
+  let value = parseFloat(iterimPaymentAmount.replace(/,/g, ''));
+  if (isNaN(value)) value = 0.0;
+
+  if (value > 0) {
+    setFieldReadOnly('quartech_requestedinterimpaymentamount');
+    setFieldReadOnly('quartech_interimorfinalpayment');
+  } else {
+    hideQuestion('quartech_requestedinterimpaymentamount');
+  }
+}
+

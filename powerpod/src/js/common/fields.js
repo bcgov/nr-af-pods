@@ -122,9 +122,70 @@ export function getFieldsBySectionNew(stepName, forceRefresh = false) {
   return fields;
 }
 
+export function getFieldsBySectionClaim(stepName, forceRefresh = false) {
+  let programName = getProgramAbbreviation();
+
+  // load cached results unless forceRefresh flag is passed
+  if (!forceRefresh) {
+    const savedData = localStorage.getItem(
+      `fieldsData-${programName}-${stepName}`
+    );
+    if (savedData) {
+      return JSON.parse(savedData);
+    }
+  }
+
+  const claimConfigData = getClaimConfigData();
+  logger.info({
+    fn: getFieldsBySectionClaim,
+    message: 'claimConfigData:',
+    data: claimConfigData,
+  });
+
+  const claimSections = claimConfigData?.sections;
+
+  const claimSection = claimSections?.find((s) => s.name === stepName);
+
+  if (!claimSection || !claimSection?.fields?.length) {
+    logger.error({
+      fn: getFieldsBySectionClaim,
+      message: `no configuration section found by sectionName: ${stepName}`,
+      data: {
+        sectionName: stepName,
+        forceRefresh,
+        claimSections,
+      },
+    });
+    return;
+  }
+
+  let fields = claimSection.fields;
+
+  fields.forEach((s) => {
+    logger.info({
+      fn: getFieldsBySectionClaim,
+      message: `showing field name: ${s.name}`,
+    });
+    showFieldRow(s.name);
+  });
+
+  localStorage.setItem(
+    `fieldsData-${programName}-${stepName}`,
+    JSON.stringify(fields)
+  );
+
+  logger.info({
+    fn: getFieldsBySectionClaim,
+    message: 'fieldsData:',
+    data: fields,
+  });
+
+  return fields;
+}
+
 export function getGlobalFieldsConfig() {
   // @ts-ignore
-  logger.info({ data: getGlobalConfigData() });
+  logger.info({ fn: getGlobalConfigData, data: getGlobalConfigData() });
   return getGlobalConfigData()?.FieldsConfig?.programs?.find(
     (program) => program.name === 'ALL'
   );
@@ -155,7 +216,7 @@ export function getFieldsBySectionOld(sectionName, forceRefresh = false) {
     }
   }
 
-  const fieldsConfigData = getClaimConfigData()?.FieldsConfig;
+  const fieldsConfigData = getClaimConfigData();
 
   logger.info({
     fn: getFieldsBySectionOld,
@@ -221,7 +282,7 @@ export function getFieldsBySection(sectionName, forceRefresh = false) {
     }
   }
 
-  const fieldsConfigData = getClaimConfigData()?.FieldsConfig;
+  const fieldsConfigData = getClaimConfigData();
 
   logger.info({
     fn: getFieldsBySection,

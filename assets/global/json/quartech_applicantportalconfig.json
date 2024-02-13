@@ -1,5 +1,5 @@
 {
-  "tags": ["Global"],
+  "tags": ["Global", "ALL", "Application", "StaffPortal"],
   "version": "1.0.0",
   "description": "Global JSON config used in Applications",
   "FieldsConfig": {
@@ -2433,7 +2433,7 @@
         ]
       }
     ]
-  }
+  },
   "TypeOfBusiness_ToolTips": {
     "255550001": {
       "Option": "Primary Producer",

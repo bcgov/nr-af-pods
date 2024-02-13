@@ -1,5 +1,5 @@
 {
-  "tags": ["Application", "StaffPortal"],
+  "tags": ["Application", "StaffPortal", "KTTP-SMEA", "KTTP1"],
   "version": "1.0.0",
   "name": "KTTP - Subject Matter Expert Activities",
   "abbreviation": "KTTP-SMEA",

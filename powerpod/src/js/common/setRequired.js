@@ -1,7 +1,7 @@
 import { Form, HtmlElementType } from './constants.js';
 import { customizeCurrencyInput } from './currency.js';
 import {
-  getFieldsBySection,
+  getFieldsBySectionClaim,
   getFieldsBySectionNew,
   getFieldsBySectionOld,
 } from './fields.js';
@@ -35,7 +35,7 @@ export function setStepRequiredFields() {
     // fields = getFieldsBySectionOld(stepName);
     fields = getFieldsBySectionNew(stepName);
   } else {
-    fields = getFieldsBySectionOld(stepName);
+    fields = getFieldsBySectionClaim(stepName);
   }
 
   if (!fields) return;

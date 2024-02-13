@@ -41,6 +41,7 @@ export const FormStep = {
   DemographicInfo: 'DemographicInfoStep',
   // Claim Steps:
   ProjectResults: 'ProjectResultsStep',
+  ClaimInfo: 'ClaimInfoStep',
   Consent: 'ConsentStep',
   // Unknown
   Unknown: 'UnknownStep',
@@ -57,7 +58,7 @@ export const TabNames = {
   [FormStep.DeliverablesBudget]: 'Deliverables & Budget',
   [FormStep.DemographicInfo]: 'Demographic Information',
   // Claim Steps:
-  // [FormStep.ClaimInfo]: 'Claim Information', // NOTE: renamed to ApplicantInfoStep
+  [FormStep.ClaimInfo]: 'Claim Information',
   [FormStep.ProjectResults]: 'Project Results',
 };
 
