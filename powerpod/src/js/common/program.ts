@@ -64,9 +64,21 @@ export function getCurrentStep() {
   }
 
   activeStep =
-    Object.keys(TabNames).find(
-      (formStep) => TabNames[formStep] === activeTabName
-    ) ?? activeStep;
+    Object.keys(TabNames).find((formStep) => {
+      logger.info({
+        fn: getCurrentStep,
+        message: `Trying to find formStep for activeTabName: ${activeTabName}`,
+        data: {
+          TabNames,
+          formStep,
+          stepName: TabNames[formStep],
+        },
+      });
+      return (
+        TabNames[formStep] === activeTabName ||
+        TabNames[formStep].includes(activeTabName)
+      );
+    }) ?? activeStep;
 
   logger.info({
     fn: getCurrentStep,

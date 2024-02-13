@@ -1,4 +1,7 @@
+import { Logger } from './logger.js';
 import { validateRequiredFields } from './validation.js';
+
+const logger = new Logger('common/html');
 
 export function showFieldsetElement(fieldsetName) {
   const sectionElement = $(`fieldset[aria-label="${fieldsetName}"]`);
@@ -232,6 +235,17 @@ export function hideFieldSets(hidden = true) {
 }
 
 export function hideFieldsAndSections(hidden = true) {
+  if (!hidden) {
+    logger.info({
+      fn: hideFieldsAndSections,
+      message: 'Unhiding fields and sections',
+    });
+  } else {
+    logger.info({
+      fn: hideFieldsAndSections,
+      message: 'Hiding fields and sections',
+    });
+  }
   hideFields(hidden);
   hideFieldSets(hidden);
 }

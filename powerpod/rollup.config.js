@@ -4,7 +4,7 @@ import babel from '@rollup/plugin-babel';
 import typescript from '@rollup/plugin-typescript';
 
 const licenseContent = `/*!
-* powerpod 0.6.4
+* powerpod 0.6.5
 * https://github.com/bcgov/nr-af-pods/powerpod
 *
 * @license GPLv3 for open source use only

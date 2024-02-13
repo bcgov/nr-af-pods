@@ -67,6 +67,17 @@
           }
         }
       ]
+    },
+    {
+      "name": "DocumentsStep",
+      "fields": [
+        {
+          "name": "quartech_activityreport",
+          "label": "Activity Report",
+          "required": true,
+          "elementType": "FileInput"
+        }
+      ]
     }
   ]
 }

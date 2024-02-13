@@ -1,5 +1,8 @@
 import { hideQuestion, observeIframeChanges } from '../../common/html.js';
-import { getCurrentStep, getProgramAbbreviation } from '../../common/program.ts';
+import {
+  getCurrentStep,
+  getProgramAbbreviation,
+} from '../../common/program.ts';
 import { setStepRequiredFields } from '../../common/setRequired.js';
 
 export function customizeDocumentsStep() {
@@ -15,7 +18,11 @@ export function customizeDocumentsStep() {
     );
   }
 
-  if (programAbbreviation.includes('ABPP') || programAbbreviation === 'NEFBA') {
+  if (
+    programAbbreviation.includes('ABPP') ||
+    programAbbreviation === 'NEFBA' ||
+    programAbbreviation.includes('KTTP')
+  ) {
     if (!document.querySelector('#supportingDocumentationNote')) {
       const supportingDocumentationNoteHtmlContent = `
       <div id="supportingDocumentationNote" style="padding-bottom: 20px;">
@@ -47,10 +54,10 @@ function customizeBusinessPlanDocumentsQuestions() {
   );
   // @ts-ignore
   const innerDoc = iframe?.contentDocument
-    // @ts-ignore
-    ? iframe.contentDocument
-    // @ts-ignore
-    : iframe.contentWindow.document;
+    ? // @ts-ignore
+      iframe.contentDocument
+    : // @ts-ignore
+      iframe.contentWindow.document;
   const completingCategoryElement = innerDoc?.getElementById(
     'quartech_completingcategory'
   );
