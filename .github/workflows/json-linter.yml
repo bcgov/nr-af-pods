@@ -13,4 +13,4 @@ jobs:
           REPORT_ONLY: true
           SHOW_ERRORS: true
           SHOW_SKIPPED: true
-        run: bash pipeline.sh
+        run: ./pipeline.sh
