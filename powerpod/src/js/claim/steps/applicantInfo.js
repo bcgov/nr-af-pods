@@ -56,8 +56,6 @@ export function customizeApplicantInfoStep() {
         hideQuestion('quartech_claimcoapplicants');
       }
     }
-
-    addRequestedClaimAmountNote();
   }
 
   if (programAbbreviation === 'ABPP1') {
