@@ -4,12 +4,12 @@ import babel from '@rollup/plugin-babel';
 import typescript from '@rollup/plugin-typescript';
 
 const licenseContent = `/*!
-* powerpod 0.6.0
-* https://github.com/mihailistov/powerpod
+* powerpod 0.6.1
+* https://github.com/bcgov/nr-af-pods/powerpod
 *
 * @license GPLv3 for open source use only
 *
-* Copyright (C) 2024 http://github.com/mihailistov/powerpod - A project by Mihai Listov
+* Copyright (C) 2024 https://github.com/bcgov/nr-af-pods/powerpod - A project by Mihai Listov
 */
 `;
 

@@ -1,10 +1,10 @@
 /*!
-* powerpod 0.6.0
-* https://github.com/mihailistov/powerpod
+* powerpod 0.6.1
+* https://github.com/bcgov/nr-af-pods/powerpod
 *
 * @license GPLv3 for open source use only
 *
-* Copyright (C) 2024 http://github.com/mihailistov/powerpod - A project by Mihai Listov
+* Copyright (C) 2024 https://github.com/bcgov/nr-af-pods/powerpod - A project by Mihai Listov
 */
 
 (function (global, factory) {
@@ -5156,7 +5156,7 @@
       };
     };
     // @ts-ignore
-    POWERPOD.version = '0.6.0';
+    POWERPOD.version = '0.6.1';
     // @ts-ignore
     win.powerpod = POWERPOD;
   }

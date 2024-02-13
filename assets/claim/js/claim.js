@@ -1,6 +1,6 @@
 (function () {
   const src =
-    'https://cdn.jsdelivr.net/gh/mihailistov/powerpod-pub/powerpod-0.6.0.min.js';
+    'https://cdn.jsdelivr.net/gh/bcgov/nr-af-pods@dev/powerpod/releases/powerpod-0.6.1.min.js';
   const script = document.createElement('script');
   script.setAttribute('async', '');
   script.src = src;
