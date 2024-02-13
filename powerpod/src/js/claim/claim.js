@@ -4,11 +4,14 @@ import { getClaimFormData } from '../common/fetch.js';
 import { hideFieldsAndSections } from '../common/html.js';
 import { hideLoadingAnimation } from '../common/loading.js';
 import { Logger } from '../common/logger.js';
-import { getCurrentStep, getProgramId } from '../common/program.ts';
-import { customizeClaimInfoStep } from './steps/claimInfo.js';
+import { getCurrentStep, getProgramData, getProgramId } from '../common/program.ts';
+import { addNewAppSystemNotice } from '../common/system.js';
+import { validateRequiredFields } from '../common/validation.js';
+import { customizeApplicantInfoStep } from './steps/applicantInfo.js';
+import { customizeClaimInfoStep } from './steps/claimInfoStep.js';
 import { customizeDeclarationConsentStep } from './steps/declarationConsent.js';
 import { customizeDocumentsStep } from './steps/documents.js';
-import { customizeProjectIndicatorStep } from './steps/projectIndicators.js';
+import { customizeProjectResultsStep } from './steps/projectResults.js';
 
 const logger = Logger('claim/claim');
 
@@ -51,14 +54,15 @@ function updatePageForSelectedProgram(programid = undefined) {
           fn: updatePageForSelectedProgram,
           message: 'Update application page with the program data.',
         });
-        populateContentForSelectedProgramStream(programData);
+        populateContentForSelectedProgramStream();
         hideLoadingAnimation();
+        validateRequiredFields();
       }
     },
   });
 }
 
-function populateContentForSelectedProgramStream(programData) {
+function populateContentForSelectedProgramStream() {
   // cleanup unnecessary divs
   document.querySelector('#page-title-container > p:nth-child(5)')?.remove();
   document.querySelector('#page-title')?.remove();
@@ -68,40 +72,31 @@ function populateContentForSelectedProgramStream(programData) {
 
   // Populate the Page Title, Sub-Title and Description
   $('#page-title-container').prepend(
-    programData.quartech_claimformheaderhtmlcontent
+    getProgramData()?.quartech_claimformheaderhtmlcontent
   );
 
-  updateClaimFormStepForSelectedProgram(programData);
+  updateClaimFormStepForSelectedProgram();
 }
 
-function updateClaimFormStepForSelectedProgram(programData) {
+function updateClaimFormStepForSelectedProgram() {
   const currentStep = getCurrentStep();
   switch (currentStep) {
+    case FormStep.ApplicantInfo:
+      customizeApplicantInfoStep();
+      break;
+    case FormStep.ProjectResults:
+      customizeProjectResultsStep();
+      break;
     case FormStep.ClaimInfo:
       customizeClaimInfoStep();
       break;
-    case FormStep.ProjectIndicators:
-      customizeProjectIndicatorStep(currentStep);
-      break;
     case FormStep.Documents:
-      customizeDocumentsStep(currentStep);
+      customizeDocumentsStep();
       break;
     case FormStep.Consent:
-      customizeDeclarationConsentStep(programData);
+      customizeDeclarationConsentStep();
       break;
     default:
       break;
   }
-}
-
-function addNewAppSystemNotice() {
-  const newAppSystemNoticeDiv = document.createElement('div');
-  newAppSystemNoticeDiv.id = `new_app_system_notice_div`;
-  // @ts-ignore
-  newAppSystemNoticeDiv.style = 'float: left;';
-  const systemNotice = getClaimConfigData()?.SystemNotice;
-  newAppSystemNoticeDiv.innerHTML = systemNotice;
-
-  const actionsDiv = $(`#NextButton`).parent().parent().parent();
-  actionsDiv.append(newAppSystemNoticeDiv);
 }

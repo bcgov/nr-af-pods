@@ -3,11 +3,7 @@ import {
   validateIsConsultantEitherBciaOrCpa,
 } from '../application/validation.js';
 import { Form, FormStep, HtmlElementType } from './constants.js';
-import {
-  getFieldsBySection,
-  getFieldsBySectionNew,
-  // getFieldsBySectionOld,
-} from './fields.js';
+import { getFieldsBySectionClaim, getFieldsBySectionNew } from './fields.js';
 import { Logger } from './logger.js';
 import { getOptions } from './options.js';
 import { getCurrentStep, getProgramAbbreviation } from './program.ts';
@@ -36,10 +32,16 @@ export function validateStepFields(stepName, returnString) {
     // fields = getFieldsBySectionOld(stepName);
     fields = getFieldsBySectionNew(stepName);
   } else {
-    fields = getFieldsBySection(stepName);
+    fields = getFieldsBySectionClaim(stepName);
   }
 
   if (!fields) return '';
+
+  logger.info({
+    fn: validateStepFields,
+    message: 'loop through fields to get validation errors',
+    data: { validationErrorHtml },
+  });
 
   for (let i = 0; i < fields.length; i++) {
     const { name, required, elementType, validation } = fields[i];
@@ -50,12 +52,16 @@ export function validateStepFields(stepName, returnString) {
       } else {
         errorMsg = validateRequiredField(name);
       }
-      validationErrorHtml = validationErrorHtml.concat(errorMsg);
+      if (errorMsg && errorMsg.length) {
+        validationErrorHtml = validationErrorHtml.concat(errorMsg);
+      }
     }
     if (validation?.type === 'numeric') {
       const { value, comparison } = validation;
       const errorMsg = validateNumericFieldValue(name, value, comparison);
-      validationErrorHtml = validationErrorHtml.concat(errorMsg);
+      if (errorMsg && errorMsg.length) {
+        validationErrorHtml = validationErrorHtml.concat(errorMsg);
+      }
     }
     if (validation?.type === 'length') {
       const {
@@ -73,6 +79,11 @@ export function validateStepFields(stepName, returnString) {
         postfix,
         overrideDisplayValue
       );
+      logger.info({
+        fn: validateStepFields,
+        message: 'Generate length validation error html...',
+        data: { validationErrorHtml },
+      });
       // Display instant feedback on field input
       if (errorMsg && errorMsg.length > 0) {
         $(`#${name}_error_message`).html(errorMsg);
@@ -85,13 +96,29 @@ export function validateStepFields(stepName, returnString) {
         validationErrorHtml = validationErrorHtml.concat(
           `<div>${errorMsgPrefix}${errorMsg}</div>`
         );
+        logger.info({
+          fn: validateStepFields,
+          message: 'Done generating length validation error html...',
+          data: { validationErrorHtml },
+        });
       } else {
+        logger.info({
+          fn: validateStepFields,
+          message: 'Nothing to display for length validation error html...',
+          data: { validationErrorHtml },
+        });
         $(`#${name}`).off('focusout');
         $(`#${name}_error_message`).css({ display: 'none' });
         $(`#${name}`).css({ border: '' });
       }
     }
   }
+
+  logger.info({
+    fn: validateStepFields,
+    message: 'Go through dynamic fields to generate validation error html',
+    data: { validationErrorHtml },
+  });
 
   // check which fields we are dynamically requiring validation
   Object.keys(localStorage)
@@ -112,9 +139,6 @@ export function validateStepFields(stepName, returnString) {
       validationErrorHtml = validationErrorHtml.concat(errorMsg);
     });
 
-  if (returnString) {
-    return validationErrorHtml;
-  }
   if (stepName === 'ProjectStep') {
     const programAbbreviation = getProgramAbbreviation();
     if (programAbbreviation && programAbbreviation === 'NEFBA') {
@@ -124,6 +148,20 @@ export function validateStepFields(stepName, returnString) {
       );
     }
   }
+
+  if (returnString) {
+    logger.info({
+      fn: validateStepFields,
+      message: 'returning string',
+      data: validationErrorHtml,
+    });
+    return validationErrorHtml;
+  }
+  logger.info({
+    fn: validateStepFields,
+    message: 'Done! Displaying validation error html',
+    data: { validationErrorHtml },
+  });
   displayValidationErrors(validationErrorHtml);
 }
 
@@ -336,6 +374,9 @@ export function displayValidationErrors(validationErrorHtml) {
   logger.info({
     fn: displayValidationErrors,
     message: 'displaying validation errors',
+    data: {
+      validationErrorHtml,
+    },
   });
 
   if (validationErrorsDiv.length == 0) {
@@ -372,9 +413,12 @@ export function addValidationCheck(fieldName, validation) {
   if (validation?.intervalBased) {
     setInterval(() => validateStepFields(), 100);
   } else {
-    $(`input[id*='${fieldName}']`).on(validation?.event ?? 'onchange', function () {
-      validateStepFields();
-    });
+    $(`input[id*='${fieldName}']`).on(
+      validation?.event ?? 'onchange',
+      function () {
+        validateStepFields();
+      }
+    );
   }
 }
 

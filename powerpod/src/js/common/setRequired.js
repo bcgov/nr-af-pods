@@ -1,14 +1,15 @@
 import { Form, HtmlElementType } from './constants.js';
 import { customizeCurrencyInput } from './currency.js';
 import {
-  getFieldsBySection,
+  getFieldsBySectionClaim,
   getFieldsBySectionNew,
-  // getFieldsBySectionOld,
+  getFieldsBySectionOld,
 } from './fields.js';
 import { hideFieldByFieldName, observeChanges } from './html.js';
 import { Logger } from './logger.js';
 import { FieldMaskType, maskInput } from './masking.js';
 import { getOptions } from './options.js';
+import { getCurrentStep } from './program.js';
 import { setupTooltip } from './tooltip.js';
 import { hasUpperCase } from './utils.js';
 import {
@@ -22,17 +23,31 @@ import {
 
 const logger = Logger('common/setRequired');
 
-export function setStepRequiredFields(stepName) {
+export function setStepRequiredFields() {
+  const stepName = getCurrentStep();
+  logger.info({
+    fn: setStepRequiredFields,
+    message: `configuring fields for step: ${stepName}...`,
+  });
   // TODO: Remove this old func usage
   let fields;
   if (getOptions().form === Form.Application) {
     // fields = getFieldsBySectionOld(stepName);
     fields = getFieldsBySectionNew(stepName);
   } else {
-    fields = getFieldsBySection(stepName);
+    fields = getFieldsBySectionClaim(stepName);
   }
 
   if (!fields) return;
+
+  logger.info({
+    fn: setStepRequiredFields,
+    message: 'configuring fields...',
+    data: {
+      stepName,
+      fields,
+    },
+  });
 
   for (let i = 0; i < fields.length; i++) {
     const {
@@ -59,8 +74,14 @@ export function setStepRequiredFields(stepName) {
     } = fields[i];
     logger.info({
       fn: setStepRequiredFields,
-      message: `setting field definition for ${name}`,
+      message: `setting field definition for field name: ${name}`,
     });
+    if (!$(`#${name}`)) {
+      logger.error({
+        fn: setStepRequiredFields,
+        message: `could not find existing element for field name: ${name}`,
+      });
+    }
     if (hasUpperCase(name)) {
       logger.warn({
         fn: setStepRequiredFields,
@@ -207,7 +228,7 @@ export function setDynamicallyRequiredFields(stepName) {
     // fields = getFieldsBySectionOld(stepName);
     fields = getFieldsBySectionNew(stepName);
   } else {
-    fields = getFieldsBySection(stepName);
+    fields = getFieldsBySectionOld(stepName);
   }
 
   if (!fields) return;

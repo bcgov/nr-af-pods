@@ -40,8 +40,8 @@ export const FormStep = {
   DeliverablesBudget: 'DeliverablesBudgetStep',
   DemographicInfo: 'DemographicInfoStep',
   // Claim Steps:
+  ProjectResults: 'ProjectResultsStep',
   ClaimInfo: 'ClaimInfoStep',
-  ProjectIndicators: 'ProjectIndicatorsStep',
   Consent: 'ConsentStep',
   // Unknown
   Unknown: 'UnknownStep',
@@ -59,7 +59,7 @@ export const TabNames = {
   [FormStep.DemographicInfo]: 'Demographic Information',
   // Claim Steps:
   [FormStep.ClaimInfo]: 'Claim Information',
-  [FormStep.ProjectIndicators]: 'Project Results',
+  [FormStep.ProjectResults]: 'Project Results',
 };
 
 export const YES_VALUE = '255550000';
@@ -71,6 +71,7 @@ export const SECTOR_WIDE_ID_VALUE = '6ce2584f-4740-ee11-be6e-000d3af3ac95';
 // TODO: move this to some kind of state management module
 // cache common elements
 export const POWERPOD = {
+  programId: null,
   test: {},
   shared: {},
 };

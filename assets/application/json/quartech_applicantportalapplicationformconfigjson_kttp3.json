@@ -1,5 +1,8 @@
 {
-  "name": "KTTP Stream Three - Regenerative Agriculture Activities",
+  "tags": ["Application", "StaffPortal", "KTTP-Stream3", "KTTP3"],
+  "version": "1.0.0",
+  "name": "KTTP - Regenerative Agriculture Activities",
+  "abbreviation": "KTTP-Stream3",
   "hiddenSteps": "tab_eligibility",
   "sections": [
     {

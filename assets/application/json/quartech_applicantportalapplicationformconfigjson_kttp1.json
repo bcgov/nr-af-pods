@@ -1,5 +1,8 @@
 {
-  "name": "KTTP-SMEA - KTTP Stream One - Subject Matter Expert Activities",
+  "tags": ["Application", "StaffPortal", "KTTP-SMEA", "KTTP1"],
+  "version": "1.0.0",
+  "name": "KTTP - Subject Matter Expert Activities",
+  "abbreviation": "KTTP-SMEA",
   "hiddenSteps": "tab_eligibility",
   "sections": [
     {

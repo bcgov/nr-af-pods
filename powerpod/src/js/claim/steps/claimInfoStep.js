@@ -11,7 +11,7 @@ import { setFieldReadOnly } from '../../common/validation.js';
 import { customizeSingleOrGroupApplicantQuestions } from '../fieldLogic.js';
 
 export function customizeClaimInfoStep() {
-  setStepRequiredFields('ClaimInfoStep');
+  setStepRequiredFields();
 
   const programAbbreviation = getProgramAbbreviation();
 
@@ -49,13 +49,6 @@ export function customizeClaimInfoStep() {
   // END step specific functions
 
   if (programAbbreviation === 'NEFBA') {
-    // @ts-ignore
-    initOnChange_DependentRequiredField({
-      dependentOnValue: NO_VALUE,
-      dependentOnElementTag: 'quartech_applicantinformationconfirmation',
-      requiredFieldTag: 'quartech_applicantinformationcorrections',
-    });
-
     addRequestedClaimAmountNote();
 
     observeIframeChanges(
@@ -66,13 +59,6 @@ export function customizeClaimInfoStep() {
   }
 
   if (programAbbreviation.includes('ABPP')) {
-    // @ts-ignore
-    initOnChange_DependentRequiredField({
-      dependentOnValue: NO_VALUE,
-      dependentOnElementTag: 'quartech_applicantinformationconfirmation',
-      requiredFieldTag: 'quartech_applicantinformationcorrections',
-    });
-
     const iframe = document.querySelector(
       'fieldset[aria-label="Coding Section (DO NOT REMOVE)"] iframe'
     );

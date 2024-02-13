@@ -1,0 +1,226 @@
+{
+  "tags": ["Application", "StaffPortal", "NEFBA"],
+  "version": "1.0.0",
+  "name": "New Entrant Farm Business Accelerator",
+  "abbreviation": "NEFBA",
+  "hiddenSteps": "tab_Deliverables_Budget",
+  "sections": [
+    {
+      "name": "ApplicantInfoStep",
+      "fields": [
+        {
+          "name": "quartech_indigenousapplicant",
+          "required": true,
+          "elementType": "DropdownSelect"
+        },
+        {
+          "name": "quartech_ownorleaseland",
+          "required": true
+        },
+        {
+          "name": "quartech_landsizeusedforoperation",
+          "required": true
+        },
+        {
+          "name": "quartech_fillingfarmingincomeontaxreturn",
+          "required": true,
+          "elementType": "DropdownSelect"
+        },
+        {
+          "name": "quartech_firstyearclaimedfarmingincome",
+          "visibleIf": {
+            "fieldName": "quartech_fillingfarmingincomeontaxreturn",
+            "selectedValue": 255550001
+          },
+          "validation": {
+            "type": "numeric",
+            "value": "1900",
+            "comparison": "greaterThan"
+          }
+        },
+        {
+          "name": "quartech_firstyearfarmoperationgeneratingrevenue",
+          "visibleIf": {
+            "fieldName": "quartech_fillingfarmingincomeontaxreturn",
+            "selectedValue": 255550000
+          },
+          "validation": {
+            "type": "numeric",
+            "value": "1900",
+            "comparison": "greaterThan"
+          }
+        },
+        {
+          "name": "quartech_numberoffulltimeemployees",
+          "required": true,
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          }
+        },
+        {
+          "name": "quartech_numberofparttimeemployees",
+          "required": true,
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          }
+        },
+        {
+          "name": "quartech_previousyeargrossincome",
+          "required": true,
+          "format": "currency",
+          "maxDigits": 13,
+          "emptyInitialValue": true,
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          }
+        },
+        {
+          "name": "quartech_previousyearnetincome",
+          "required": true,
+          "format": "currency",
+          "maxDigits": 13,
+          "emptyInitialValue": true,
+          "allowNegatives": true
+        },
+        {
+          "name": "quartech_recipienttype",
+          "required": true,
+          "elementType": "DropdownSelect",
+          "label": "Type of Business / Organization. If your operation does both processing and primary production, please select the one that will primarily benefit from this program."
+        },
+        {
+          "name": "quartech_commodity",
+          "required": true,
+          "elementType": "DropdownSelect"
+        },
+        {
+          "name": "quartech_operationdoesprocessingandprimaryproducti",
+          "required": true,
+          "elementType": "DropdownSelect"
+        },
+        {
+          "name": "quartech_livestockprimarytypeandnumber",
+          "required": true,
+          "elementType": "DropdownSelect"
+        },
+        {
+          "name": "Business Overview",
+          "type": "SectionTitle",
+          "hidden": true
+        }
+      ]
+    },
+    {
+      "name": "EligibilityStep",
+      "fields": [
+        {
+          "name": "quartech_isaprimaryproducergrowingsellingproducts",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_bcregisteredbusinessentity",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_committedbizregistrationbeforecompletion",
+          "visibleIf": {
+            "fieldName": "quartech_bcregisteredbusinessentity",
+            "selectedValue": 255550001
+          },
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_farmbusinessistaxableentity",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_allproprietersarebcresidents",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_reportedfarmincomemorethan5yrs",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_appliedforcostsharefundingfrombmporoffs",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_receivedfundingforthesameactivityfromifs",
+          "elementType": "DropdownSelect",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "ProjectStep",
+      "fields": [
+        {
+          "name": "quartech_completingcategory",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_projectlocation",
+          "elementType": "DropdownSelect",
+          "required": true,
+          "label": "Project Location (Community)"
+        },
+        {
+          "name": "quartech_businessgoals",
+          "required": true
+        },
+        {
+          "name": "quartech_stepstocompletethebusinessplan",
+          "visibleIf": {
+            "fieldName": "quartech_completingcategory",
+            "selectedValue": 255550000
+          }
+        },
+        {
+          "name": "quartech_businessconsultantinformation",
+          "visibleIf": {
+            "fieldName": "quartech_completingcategory",
+            "selectedValue": 255550001
+          }
+        },
+        {
+          "name": "quartech_bciaregisteredconsultant",
+          "visibleIf": {
+            "fieldName": "quartech_completingcategory",
+            "selectedValue": 255550001
+          }
+        },
+        {
+          "name": "quartech_cpaconsultant",
+          "visibleIf": {
+            "fieldName": "quartech_completingcategory",
+            "selectedValue": 255550001
+          }
+        },
+        {
+          "name": "Consultant Information",
+          "type": "SectionTitle",
+          "hidden": true
+        }
+      ]
+    },
+    {
+      "name": "DeliverablesBudgetStep",
+      "fields": []
+    }
+  ]
+}

@@ -15,12 +15,19 @@ POWERPOD.program = {
  * @function
  */
 export function getProgramId() {
-  var programId = $('#quartech_program').val(),
-    params = new URLSearchParams(doc.location.search),
-    programIdParam = params.get('programid');
+  // Try to pull programId from hidden field
+  const programId = $('#quartech_program')?.val();
 
-  if (!programIdParam) {
+  if (programId) {
     return programId;
+  }
+
+  // Try and get it from URL path
+  const params = new URLSearchParams(doc.location.search);
+  const programIdParam = params.get('programid');
+
+  if (programIdParam) {
+    return programIdParam;
   }
 
   if (programId && programIdParam && programId != programIdParam) {
@@ -99,4 +106,9 @@ export function getProgramEmailAddress() {
   const programEmailAddress =
     JSON.parse(programData)?.quartech_programemailaddress;
   return programEmailAddress;
+}
+
+export function getProgramData() {
+  const programData = localStorage.getItem('programData');
+  return JSON.parse(programData);
 }

@@ -12,6 +12,4 @@ gulp/secret.js
 build/**
 local/**
 dist/**
-!dist/powerpod.js
-!dist/powerpod.min.js
 rollup.ext.config.js

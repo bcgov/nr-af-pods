@@ -172,6 +172,16 @@ export async function getClaimFormData({
   onSuccess,
   ...options
 }) {
+  if (!programId) {
+    logger.error({
+      fn: getClaimFormData,
+      message: 'Missing required params',
+      data: {
+        programId,
+      },
+    });
+    return;
+  }
   return fetch({
     url: ENDPOINT_URL.get_claim_form_data(programId),
     contentType: CONTENT_TYPE.json,

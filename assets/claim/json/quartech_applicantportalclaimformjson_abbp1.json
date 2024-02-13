@@ -1,246 +1,168 @@
 {
-  "TypeOfBusiness_ToolTips": {
-    "255550001": {
-      "Option": "Primary Producer",
-      "Tooltip": ""
-    },
-    "255550002": {
-      "Option": "Processor",
-      "Tooltip": ""
-    },
-    "255550003": {
-      "Option": "Industry Organization",
-      "Tooltip": ""
-    },
-    "255550004": {
-      "Option": "Research Body (Institution)",
-      "Tooltip": "Universities and colleges (e.g., private universities and colleges, public degree-granting colleges, public degree-granting universities, public community colleges and vocational schools), foundations, and other educational institutions/school board (public and private), agriculture-based academic institutions, non-for-profit research institutions, research centers, institutions, organizations (i.e., diversification centers), or associations, knowledge transfer and exchange centers, support agencies for research initiatives, circumpolar research organizations, educators/teachers, veterinary colleges (public and private institutions), national researcher, research station."
-    },
-    "255550006": {
-      "Option": "Service Provider",
-      "Tooltip": "agri-business service provider (e.g., feed mills), custom applicators, auctions, animal health practitioner (e.g., veterinaries), industry service providers, grain storage and elevators, external consultants (i.e., business consultant, human resource consultant), agricultural network consulting, food distributor, auction mart, assembly yard, watershed districts, direct food contract packaging manufacturer, farrier, food distributor, livestock transporter, community councils, sheep shearer, direct food contact packaging manufacturer, food distributor, livestock transporter, veterinarian or animal health technician,  equipment providers, equipment maintenance services, food processing (processor) services, husbandry, AI services, animal health provider/services, veterinary clinics, workforce planning boards, brewpubs"
-    },
-    "255550007": {
-      "Option": "Provincial / Territorial / Municipal Government",
-      "Tooltip": "Government departments, crown corporations, school districts, school board. Municipal: RCM (regional, county, municipality), government departments, municipalities, other government bodies (e.g., municipal districts including counties, hamlets, special areas, specialized municipalities, and improvement districts)."
-    },
-    "255550008": {
-      "Option": "Indigenous",
-      "Tooltip": "Indigenous businesses, communities, and organizations (e.g., Industry organization: Producer organization, Processor organization, other industry organization), includes not-for-profit organization and for-profit organization, other Indigenous groups undertaking agricultural initiatives, government, Indigenous self-government, Tribal Councils, associations, Political Territorial Organizations (PTOs)."
-    },
-    "255550009": {
-      "Option": "Student",
-      "Tooltip": "A student pursuing a post-secondary education in agriculture who applies for the Agriculture Student Scholarship through the ministry and receives funds directly to go towards their studies."
-    }
-  },
-  "FieldsHintTexts": {
-    "ForApplicantInfoStep": [
-      {
-        "HintText": "Type to search BC OrgBook",
-        "Field": "Telephone",
-        "FieldName": "quartech_legalbusinessororganizationname"
-      },
-      {
-        "HintText": "(___) ___-____",
-        "Field": "Telephone",
-        "FieldName": "quartech_telephone"
-      }
-    ],
-    "ForProjectStep": [
-      {
-        "HintText": "",
-        "Field": "A field on the Project step",
-        "FieldName": "aField"
-      }
-    ],
-    "ForEstimatedActivityBudgetStep": [
-      {
-        "HintText": "",
-        "Field": "A field on the Estimated Activity Budget step",
-        "FieldName": "aField"
-      }
-    ],
-    "ForDemographicInfoStep": [
-      {
-        "HintText": "",
-        "Field": "A field on the Demographic Info step",
-        "FieldName": "aField"
-      }
-    ],
-    "DeclarationAndConsentStep": [
-      {
-        "HintText": "",
-        "Field": "A field on the Declaration And Consent step",
-        "FieldName": "aField"
-      }
-    ]
-  },
-  "SystemNotice": "<br/><p>This is a new application system. Please bear with us as we work to improve the system. If you have any technical issues with the system or wish to provide feedback to help us to make it as user friendly as possible, please contact: <a href = 'mailto: PODS@gov.bc.ca'>PODS@gov.bc.ca</a>​</p>",
-  "FieldsConfig": {
-    "programs": [
-      {
-        "name": "ABPP1",
-        "sections": [
-          {
-            "name": "ClaimInfoStep",
-            "fieldsets": [
-              {
-                "name": "Application Information for Reimbursement",
-                "fields": [
-                  {
-                    "name": "quartech_legalbusinessororganizationname",
-                    "label": "Legal Business or Organization Name"
-                  },
-                  {
-                    "name": "quartech_businessaddress",
-                    "label": "Business Address"
-                  },
-                  {
-                    "name": "quartech_businessphonenumber",
-                    "format": "phoneNumber",
-                    "label": "Tel",
-                    "validation": {
-                      "type": "length",
-                      "value": 14,
-                      "comparison": "equalTo",
-                      "postfix": "digits",
-                      "overrideDisplayValue": 10
-                    }
-                  },
-                  {
-                    "name": "quartech_businessemailaddress",
-                    "format": "email",
-                    "label": "Email"
-                  },
-                  {
-                    "name": "quartech_applicantinformationconfirmation",
-                    "label": "I / We confirm the above information is correct",
-                    "required": true,
-                    "elementType": "DropdownSelect"
-                  },
-                  {
-                    "name": "quartech_applicantinformationcorrections",
-                    "label": "Please provide further detail",
-                    "required": true,
-                    "maxLength": 10000
-                  },
-                  {
-                    "name": "quartech_filenumber",
-                    "label": "File number (from authorization letter)",
-                    "readOnly": true
-                  },
-                  {
-                    "name": "quartech_projectenddate",
-                    "label": "Project End Date",
-                    "required": true,
-                    "elementType": "DatePicker",
-                    "tooltipText": "If the project is not yet completed, please provide an estimated project end date"
-                  }
-                ]
-              },
-              {
-                "name": "Claim Information",
-                "fields": [
-                  {
-                    "name": "quartech_authorizedclaimedamount",
-                    "label": "Approved Amount as per Authorization Letter (Consultant Fee, GST, Total)",
-                    "readOnly": true
-                  },
-                  {
-                    "name": "quartech_totalfees",
-                    "label": "Your requested amount in this current claim",
-                    "format": "currency",
-                    "required": true,
-                    "validation": {
-                      "type": "numeric",
-                      "value": "0",
-                      "comparison": "greaterThan"
-                    },
-                    "emptyInitialValue": true
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "name": "ProjectIndicatorsStep",
-            "fieldsets": [
-              {
-                "name": "Project Results",
-                "fields": [
-                  {
-                    "name": "quartech_businessmanagementtrainingparticipants",
-                    "label": "How many people participated in the training funded by this project, including the applicant?",
-                    "required": true,
-                    "format": "number",
-                    "validation": {
-                      "type": "numeric",
-                      "value": "0",
-                      "comparison": "greaterThan"
-                    }
-                  },
-                  {
-                    "name": "quartech_adoptedprojectresults",
-                    "label": "Did you adopt any technologies, equipment, practices or processes as a result of this project?",
-                    "required": true,
-                    "elementType": "DropdownSelect"
-                  },
-                  {
-                    "name": "quartech_adoptednumber",
-                    "label": "How many?",
-                    "required": true,
-                    "format": "number",
-                    "validation": {
-                      "type": "numeric",
-                      "value": "0",
-                      "comparison": "greaterThan"
-                    }
-                  },
-                  {
-                    "name": "quartech_environmentallybeneficialadoptedresults",
-                    "label": "Did you adopt any technologies, processes or equipment that are environmentally beneficial as a result of this project?",
-                    "required": true,
-                    "elementType": "DropdownSelect"
-                  },
-                  {
-                    "name": "quartech_environmentallybeneficialadoptednumber",
-                    "label": "How many?",
-                    "required": true,
-                    "format": "number",
-                    "validation": {
-                      "type": "numeric",
-                      "value": "0",
-                      "comparison": "greaterThan"
-                    }
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "name": "DocumentsStep",
-            "fieldsets": [
-              {
-                "name": "Supporting Documents",
-                "fields": [
-                  {
-                    "name": "quartech_invoices",
-                    "label": "Invoice(s) from Learning Provider(s) (as per approved learning action plan)",
-                    "required": true,
-                    "elementType": "FileInput"
-                  },
-                  {
-                    "name": "quartech_proofofpayment",
-                    "label": "Proof of payment",
-                    "required": true,
-                    "elementType": "FileInput"
-                  }
-                ]
-              }
-            ]
+  "tags": ["Claim", "ABBP1"],
+  "version": "1.0.1",
+  "name": "ABPP - Agri-Business and Leadership Development",
+  "abbreviation": "ABPP1",
+  "hiddenSteps": "",
+  "sections": [
+    {
+      "name": "ApplicantInfoStep",
+      "fields": [
+        {
+          "name": "quartech_legalbusinessororganizationname",
+          "label": "Legal Business or Organization Name"
+        },
+        {
+          "name": "quartech_businessaddress",
+          "label": "Business Address"
+        },
+        {
+          "name": "quartech_businessphonenumber",
+          "format": "phoneNumber",
+          "label": "Tel",
+          "validation": {
+            "type": "length",
+            "value": 14,
+            "comparison": "equalTo",
+            "postfix": "digits",
+            "overrideDisplayValue": 10
           }
-        ]
-      }
-    ]
-  }
+        },
+        {
+          "name": "quartech_businessemailaddress",
+          "format": "email",
+          "label": "Email"
+        },
+        {
+          "name": "quartech_applicantinformationconfirmation",
+          "label": "I / We confirm the above information is correct",
+          "required": true,
+          "elementType": "DropdownSelect"
+        },
+        {
+          "name": "quartech_applicantinformationcorrections",
+          "label": "Please provide further detail",
+          "required": true,
+          "maxLength": 10000
+        },
+        {
+          "name": "quartech_filenumber",
+          "label": "File number (from authorization letter)",
+          "readOnly": true
+        }
+      ]
+    },
+    {
+      "name": "ProjectResultsStep",
+      "fields": [
+        {
+          "name": "quartech_businessmanagementtrainingparticipants",
+          "label": "How many people participated in the training funded by this project, including the applicant?",
+          "required": true,
+          "format": "number",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThan"
+          }
+        },
+        {
+          "name": "quartech_adoptedprojectresults",
+          "label": "Did you adopt any technologies, equipment, practices or processes as a result of this project?",
+          "required": true,
+          "elementType": "DropdownSelect"
+        },
+        {
+          "name": "quartech_adoptednumber",
+          "label": "How many?",
+          "required": true,
+          "format": "number",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThan"
+          }
+        },
+        {
+          "name": "quartech_environmentallybeneficialadoptedresults",
+          "label": "Did you adopt any technologies, processes or equipment that are environmentally beneficial as a result of this project?",
+          "required": true,
+          "elementType": "DropdownSelect"
+        },
+        {
+          "name": "quartech_environmentallybeneficialadoptednumber",
+          "label": "How many?",
+          "required": true,
+          "format": "number",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThan"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ClaimInfoStep",
+      "fields": [
+        {
+          "name": "quartech_authorizedclaimedamount",
+          "label": "Approved Amount as per Authorization Letter (Consultant Fee, GST, Total)",
+          "readOnly": true
+        },
+        {
+          "name": "quartech_interimorfinalpayment",
+          "label": "Are you requesting an interim claim or a final claim?",
+          "required": true,
+          "elementType": "DropdownSelect"
+        },
+        {
+          "name": "quartech_totalprojectcost",
+          "label": "Total Project Cost",
+          "format": "currency",
+          "required": true,
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThan"
+          },
+          "emptyInitialValue": true
+        },
+        {
+          "name": "quartech_totalfees",
+          "label": "Your requested amount in this current claim",
+          "format": "currency",
+          "required": true,
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThan"
+          },
+          "emptyInitialValue": true
+        },
+        {
+          "name": "quartech_claimcoapplicants",
+          "label": "Please provide the names of the co-applicants for the claims and the cost and a brief description of the services they are claiming",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "DocumentsStep",
+      "fields": [
+        {
+          "name": "quartech_invoices",
+          "label": "Invoice(s) from Learning Provider(s) (as per approved learning action plan)",
+          "required": true,
+          "elementType": "FileInput"
+        },
+        {
+          "name": "quartech_proofofpayment",
+          "label": "Proof of payment",
+          "required": true,
+          "elementType": "FileInput"
+        }
+      ]
+    }
+  ]
 }
