@@ -2,7 +2,6 @@
 name: JSON Linter
 run-name: ${{ github.actor }} executed run JSON linter
 on:
-  - push
   - pull_request
 jobs:
   build:
