@@ -8,6 +8,7 @@ POWERPOD.fetch = {
   getApplicationFormData,
   getClaimFormData,
   getMunicipalData,
+  getExpenseTypeData,
   getOrgbookAutocompleteData,
   getOrgbookTopicData,
   getOrgbookCredentialsData,
@@ -22,6 +23,8 @@ export const ENDPOINT_URL = {
     `/_api/msgov_programs(${programId})?$select=msgov_programid, msgov_programname, quartech_applicantportalprogramname, quartech_claimformheaderhtmlcontent, quartech_applicantportalclaimformjson, quartech_applicantportalprogramstreamjsonconfig, quartech_portalapplicationpagetitle, quartech_portalapplicationpagesubtitle, quartech_portalapplicationpagedescription, quartech_programabbreviation, quartech_programemailaddress, quartech_portalappactivityinfohiddenfields, quartech_portalappprojectdeschiddenfields, quartech_portalappfieldsdisplaynamesmapping, quartech_typesofbusinesstodisplay, quartech_applicantportalapplicationformconfigjson, quartech_activitiestypestodisplay&$expand=quartech_ApplicantPortalConfig($select=quartech_name,quartech_configdata)`,
   get_municipal_data:
     '/_api/quartech_municipals?$select=quartech_name,quartech_municipalid&$expand=quartech_RegionalDistrict($select=quartech_name,quartech_regionaldistrictid,_quartech_censusofagricultureregion_value)',
+  get_expense_type_data:
+    '/_api/quartech_expensetypes?$select=quartech_expensetypeid,quartech_expensetype',
   get_orgbook_autocomplete_data:
     'https://orgbook.gov.bc.ca/api/v3/search/autocomplete',
   get_orgbook_topic_data: 'https://orgbook.gov.bc.ca/api/v4/search/topic',
@@ -202,6 +205,18 @@ export async function getMunicipalData({ onSuccess = null, ...options }) {
     includeODataHeaders: true,
     async: false,
     onSuccess,
+    ...options,
+  });
+}
+
+export async function getExpenseTypeData({ ...options } = {}) {
+  return fetch({
+    url: ENDPOINT_URL.get_expense_type_data,
+    contentType: CONTENT_TYPE.json,
+    datatype: DATATYPE.json,
+    includeODataHeaders: true,
+    async: false,
+    returnData: true,
     ...options,
   });
 }

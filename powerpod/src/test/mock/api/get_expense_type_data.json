@@ -1,0 +1,40 @@
+{
+  "@odata.context": "https://af-pods-dev.crm3.dynamics.com/api/data/v9.1/$metadata#quartech_expensetypes(quartech_expensetypeid,quartech_expensetype)",
+  "value": [
+    {
+      "@odata.etag": "W/\"21936850\"",
+      "quartech_expensetypeid": "14252197-4cc1-ee11-9078-6045bd5f4613",
+      "quartech_expensetype": "SME Fee"
+    },
+    {
+      "@odata.etag": "W/\"21936857\"",
+      "quartech_expensetypeid": "aa3a689d-4cc1-ee11-9078-6045bd5f4613",
+      "quartech_expensetype": "Facilitator Fee"
+    },
+    {
+      "@odata.etag": "W/\"21936863\"",
+      "quartech_expensetypeid": "b13a689d-4cc1-ee11-9078-6045bd5f4613",
+      "quartech_expensetype": "SME/Facilitator Travel"
+    },
+    {
+      "@odata.etag": "W/\"21936869\"",
+      "quartech_expensetypeid": "b0b4cca3-4cc1-ee11-9078-6045bd5f4613",
+      "quartech_expensetype": "Facility, equipment, technology rental"
+    },
+    {
+      "@odata.etag": "W/\"21936875\"",
+      "quartech_expensetypeid": "010881ac-4cc1-ee11-9078-6045bd5f4613",
+      "quartech_expensetype": "Advertising/communications"
+    },
+    {
+      "@odata.etag": "W/\"21936881\"",
+      "quartech_expensetypeid": "7c267ab2-4cc1-ee11-9078-6045bd5f4613",
+      "quartech_expensetype": "Administration Costs"
+    },
+    {
+      "@odata.etag": "W/\"21936887\"",
+      "quartech_expensetypeid": "b52accb9-4cc1-ee11-9078-6045bd5f4613",
+      "quartech_expensetype": "Other Costs"
+    }
+  ]
+}

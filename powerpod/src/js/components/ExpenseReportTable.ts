@@ -2,7 +2,7 @@ import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import './CurrencyInput';
 
-type ExpenseItem = {
+type RowItem = {
   [key: string]: string | number;
 };
 
@@ -47,44 +47,24 @@ class ExpenseReportTable extends LitElement {
     }
   `;
 
-  @property()
-  headings: Headings;
-  rows: ExpenseItem[];
-
-  constructor() {
-    super();
-    this.headings = {
-      type: 'Expense Type',
-      description: 'Description',
-      amount: 'Amount ($CAD)',
-    };
-    this.rows = [
-      {
-        type: 'SME Fee',
-        description: 'This is for our contractor',
-        amount: "50.00",
-      },
-      {
-        type: 'Facilitator Fee',
-        description: 'Agriculture fees for facilitating resources',
-        amount: "65.00",
-      },
-    ];
-  }
+  @property({ type: Object }) headings: Headings = {};
+  @property({ type: Array }) rows: RowItem[] = [];
 
   render() {
     return html`
       <table class="styled-table">
         <thead>
           <tr>
-            ${Object.keys(this.headings).map(
+            ${this.headings &&
+            Object.keys(this.headings).map(
               (key) => html`<th>${this.headings[key]}</th>`
             )}
           </tr>
         </thead>
         <tbody>
-          ${this.rows.map(
-            (i: ExpenseItem) => html`
+          ${this.rows?.length &&
+          this.rows.map(
+            (i: RowItem) => html`
               <tr>
                 ${Object.keys(i).map((key: string) => {
                   if (key === 'amount') {

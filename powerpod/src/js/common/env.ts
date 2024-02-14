@@ -23,6 +23,11 @@ export function getEnv() {
     return;
   }
 
+  logger.info({
+    fn: getEnv,
+    message: `successfully determined current env: ${env}`,
+  });
+
   return env;
 }
 

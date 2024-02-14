@@ -4,9 +4,9 @@ POWERPOD.locations = {
   processLocationData,
 };
 
-interface DataBlob {
+type DataBlob = {
   value: Array<MunicipalBlob>;
-}
+};
 
 type MunicipalBlob = {
   quartech_name: string;
@@ -15,9 +15,9 @@ type MunicipalBlob = {
   };
 };
 
-export interface Municipals {
+export type Municipals = {
   [key: string]: Locations;
-}
+};
 
 type Locations = string[];
 

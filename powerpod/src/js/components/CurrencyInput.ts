@@ -35,26 +35,18 @@ class CurrencyInput extends LitElement {
     }
   `;
 
-  @query('#inputElement') inputElement: HTMLInputElement;
+  @query('#inputElement') inputElement: HTMLInputElement | undefined;
   @property({ type: String }) inputValue: string = '0.00';
   @property({ type: Boolean }) allowNegatives: boolean = true;
   @property({ type: Number }) maxValue: number | null = null;
   private cursorPosition: number = 0;
   private previousInputValue: string = '';
 
-  firstUpdated(props): void {
-    console.log(props);
-    console.log(this.inputValue);
-    console.log(this.inputElement.value);
+  firstUpdated(): void {
     if (this.inputValue) {
       const event = new Event('blur', { bubbles: true, composed: true });
-      this.inputElement.dispatchEvent(event);
+      this.inputElement?.dispatchEvent(event);
     }
-  }
-
-  attributeChangedCallback(name, oldVal, newVal) {
-    console.log('attribute change: ', name, newVal);
-    super.attributeChangedCallback(name, oldVal, newVal);
   }
 
   // Method to format currency input for real-time input
@@ -99,10 +91,9 @@ class CurrencyInput extends LitElement {
     if (event.inputType !== 'insertText') {
       return;
     }
-    const inputElement = event.target as HTMLInputElement;
-    this.cursorPosition = inputElement.selectionStart || 0;
+    this.cursorPosition = this.inputElement?.selectionStart || 0;
 
-    let formattedValue = this.formatCurrencyInput(inputElement.value);
+    let formattedValue = this.formatCurrencyInput(this.inputElement?.value);
 
     // Handle replacing the first decimal place without affecting the second one
     if (formattedValue.includes('.')) {
@@ -118,35 +109,47 @@ class CurrencyInput extends LitElement {
     }
 
     this.previousInputValue = formattedValue;
-    inputElement.value = formattedValue;
+    this.inputElement.value = formattedValue;
     this.inputValue = formattedValue;
 
     // Adjust cursor position after input change
-    inputElement.setSelectionRange(this.cursorPosition, this.cursorPosition);
+    this.inputElement?.setSelectionRange(
+      this.cursorPosition,
+      this.cursorPosition
+    );
   }
 
   handleInputFocus(event: Event) {
-    const inputElement = event.target as HTMLInputElement;
-    this.cursorPosition = inputElement.selectionStart || 0;
+    if (this.inputElement?.value) {
+      this.cursorPosition = this.inputElement?.selectionStart || 0;
 
-    // Remove comma separators for editing
-    inputElement.value = inputElement.value.replace(/,/g, '');
+      // Remove comma separators for editing
+      this.inputElement.value = this.inputElement?.value.replace(/,/g, '');
 
-    // Calculate the new cursor position after removing commas
-    const commasRemoved = (
-      inputElement.value.substring(0, this.cursorPosition).match(/,/g) || []
-    ).length;
-    this.cursorPosition -= commasRemoved;
+      // Calculate the new cursor position after removing commas
+      const commasRemoved = (
+        this.inputElement?.value
+          .substring(0, this.cursorPosition)
+          .match(/,/g) || []
+      ).length;
+      this.cursorPosition -= commasRemoved;
 
-    // Adjust cursor position after removing commas
-    inputElement.setSelectionRange(this.cursorPosition, this.cursorPosition);
+      // Adjust cursor position after removing commas
+      this.inputElement?.setSelectionRange(
+        this.cursorPosition,
+        this.cursorPosition
+      );
+    }
   }
 
   handleInputBlur(event: Event) {
-    const inputElement = event.target as HTMLInputElement;
-    const formattedValue = this.formatCurrencyOnBlur(inputElement.value);
-    inputElement.value = formattedValue;
-    this.inputValue = formattedValue;
+    if (this.inputElement?.value) {
+      const formattedValue = this.formatCurrencyOnBlur(
+        this.inputElement?.value
+      );
+      this.inputElement.value = formattedValue;
+      this.inputValue = formattedValue;
+    }
   }
 
   handleBeforeInput(event: InputEvent) {
@@ -163,13 +166,12 @@ class CurrencyInput extends LitElement {
       return false;
     }
 
-    const inputElement = event.target as HTMLInputElement;
-    this.cursorPosition = inputElement.selectionStart || 0;
+    this.cursorPosition = this.inputElement?.selectionStart || 0;
 
     // If entire input is selected, allow input to proceed as it wil be overwritten
     if (
-      inputElement.selectionStart === 0 &&
-      inputElement.selectionEnd === inputElement.value.length
+      this.inputElement?.selectionStart === 0 &&
+      this.inputElement?.selectionEnd === this.inputElement?.value.length
     ) {
       return true;
     }
@@ -178,11 +180,11 @@ class CurrencyInput extends LitElement {
     // simply move the cursor over to the right, as well as prevent input
     if (
       keyPressed === '-' &&
-      (this.cursorPosition !== 0 || inputElement.value.includes('-'))
+      (this.cursorPosition !== 0 || this.inputElement?.value.includes('-'))
     ) {
-      const negativeSignIndex = inputElement.value.indexOf('-');
+      const negativeSignIndex = this.inputElement?.value.indexOf('-');
       if (this.cursorPosition === negativeSignIndex) {
-        inputElement.setSelectionRange(
+        this.inputElement?.setSelectionRange(
           this.cursorPosition + 1,
           this.cursorPosition + 1
         );
@@ -193,10 +195,10 @@ class CurrencyInput extends LitElement {
 
     // If there's an existing '.' point and it's to the right of the cursor
     // simply move the cursor over to the right, as well as prevent input
-    if (keyPressed === '.' && inputElement.value.includes('.')) {
-      const decimalIndex = inputElement.value.indexOf('.');
+    if (keyPressed === '.' && this.inputElement?.value.includes('.')) {
+      const decimalIndex = this.inputElement?.value.indexOf('.');
       if (this.cursorPosition === decimalIndex) {
-        inputElement.setSelectionRange(
+        this.inputElement?.setSelectionRange(
           this.cursorPosition + 1,
           this.cursorPosition + 1
         );
