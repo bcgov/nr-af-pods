@@ -1,3 +1,14 @@
+<!--
+  -------------------
+  FILE INFO
+  -------------------
+  version: 1.0.1
+  name: Head/Bottom
+  type: Content Snippet/HTML
+  description: This is added to Global Content Snippets configuration in Portal Management, 
+    right now it's used for adding required stylesheets, scripts, Address Complete config,
+    Sign In/Register page customization, and global custom CSS.
+-->
 <!-- START: CUSTOM MULTISELECT & ADDITIONAL LOCATIONS FIELD -->
 <link
   rel="stylesheet"
@@ -187,3 +198,30 @@
     control = new pca.Address(fields, options);
 </script>
 <!-- END: CANADA POST / ADDRESS COMPLETE INTEGRATION -->
+
+<!-- START: SIGN-IN PAGE CUSTOMIZATION -->
+<script type="text/javascript">
+  const { pathname: path } = window.location;
+  // Only execute this on SignIn page
+  if (path === '/SignIn') {
+    function hideRegisterTab() {
+      const registerTabElement = document
+        .querySelector('li > a[aria-label="Register"')
+        ?.closest('li');
+      if (registerTabElement) {
+        registerTabElement.style.display = 'none';
+      }
+    }
+    if (
+      document?.readyState === 'complete' ||
+      document?.readyState === 'interactive'
+    ) {
+      hideRegisterTab();
+    } else if (document?.addEventListener) {
+      document.addEventListener('DOMContentLoaded', function () {
+        hideRegisterTab();
+      });
+    }
+  }
+</script>
+<!-- END: SIGN-IN PAGE CUSTOMIZATION -->
