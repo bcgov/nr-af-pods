@@ -1,7 +1,8 @@
 export { default } from './powerpod.js';
 import { Environment, Form, doc, win } from './common/constants.js';
+import { getEnv } from './common/env.js';
 import { Logger } from './common/logger.js';
-import { getOptions } from './common/options.js';
+import { ENV_LOG_LEVEL, getOptions } from './common/options.js';
 import { initJQueryAdapter } from './jquery-adapter.js';
 
 const logger = Logger('app');
@@ -15,8 +16,7 @@ function autoinit() {
 
   // TODO: auto-detect environment based on host URL
   // for now manually configure these options:
-  let env = Environment.DEV,
-    logging = true;
+  const env = getEnv() || Environment.DEV;
 
   // ensure that powerpod is allowed to run in the current env
   if (!getOptions().allowedEnvs.includes(env)) {
@@ -52,7 +52,7 @@ function autoinit() {
 
   const options = {
     env,
-    logging,
+    logLevel: ENV_LOG_LEVEL[env],
   };
   logger.info({
     fn: autoinit,

@@ -1,35 +1,49 @@
 import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { Task, TaskStatus } from '@lit/task';
 import { getMunicipalData } from '../common/fetch';
 import { Municipals, processLocationData } from '../common/locations';
 import { useScript } from '../common/scripts';
 
+interface HTMLChosenElement extends JQuery<HTMLElement> {
+  chosen: () => void;
+}
+
 @customElement('location-multiselect')
 class LocationMultiSelect extends LitElement {
-  @property()
-  municipals?: Municipals;
+  // unique identifier so no 2 components have the same id in the DOM
+  @property({ type: String }) id: string = crypto.randomUUID();
+  @property({ type: Object }) municipals?: Municipals;
+  @property({ type: String, reflect: true }) selectedValues: string = '';
+  @property({ type: Boolean }) loaded: boolean = false;
 
+  // needed for jQuery
   createRenderRoot() {
     return this;
   }
-  updated() {
-    useScript('chosen', () => {
-      this.municipals && this.generateOptions(this.municipals);
-      // @ts-ignore
-      $('.chosen-select').chosen();
-    });
+
+  // make fetch call as soon as component is mounted
+  connectedCallback(): void {
+    super.connectedCallback();
+    this.getMunicipals();
   }
-  private _municipalsTask = new Task(this, {
-    task: async ([]) => {
-      const data = await getMunicipalData({ async: true, returnData: true });
-      if (!data) {
-        throw new Error('Locations task failed');
-      }
-      this.municipals = processLocationData(data);
-    },
-    args: () => [],
-  });
+
+  // only update the elements once chosen is loaded
+  updated(props: Map<string, string>) {
+    if (this.loaded && props.has('selectedValues')) {
+      this.updateChosen();
+    }
+  }
+
+  async getMunicipals() {
+    const data = await getMunicipalData({ async: true, returnData: true });
+    if (!data) {
+      throw new Error('Locations task failed');
+    }
+    this.municipals = processLocationData(data);
+    this.generateOptions(this.municipals);
+    useScript('chosen', this.setupChosen(this));
+  }
+
   generateOptions(municipals: Municipals) {
     Object.keys(municipals).forEach((regionalDistrictName) => {
       const group = $('<optgroup label="' + regionalDistrictName + '" />');
@@ -38,23 +52,64 @@ class LocationMultiSelect extends LitElement {
           .html(municipalName)
           .appendTo(group);
       });
-      group.appendTo($('#additionalLocationControl'));
+      group.appendTo($(`#${this.id}`));
     });
   }
-  render() {
-    return this._municipalsTask.render({
-      pending: () => html` <div>Loading...</div> `,
-      complete: () => {
-        return html`
-          <select
-            id="additionalLocationControl"
-            data-placeholder="Select locations"
-            class="chosen-select"
-            multiple
-            tabindex="6"
-          />
-        `;
+
+  setupChosen(context: this) {
+    return () => {
+      ($(`#${context.id}`) as HTMLChosenElement).chosen();
+
+      // set initial chosen values, if any
+      context.updateChosen();
+
+      // update dynamics field value on change of chosen field
+      $(`#${context.id}`).on('change', context.handleOnChange(this));
+
+      context.loaded = true;
+    };
+  }
+
+  updateChosen() {
+    $(`#${this.id}`).val(this.selectedValues.split(', '));
+    $(`#${this.id}`).trigger('chosen:updated');
+  }
+
+  handleOnChange(context: this) {
+    return () => {
+      const newSelectedLocations = $(`#${this.id}`).val();
+      const selectedLocationsString = (newSelectedLocations as string[])?.join(
+        ', '
+      );
+      context.selectedValues = selectedLocationsString || '';
+      context.emitEvent();
+    };
+  }
+
+  // so we can listen for changes outside of this component
+  emitEvent() {
+    let event = new CustomEvent('onChangeSelectedValues', {
+      detail: {
+        message: 'Selected values have changed',
+        id: this.id,
+        value: this.selectedValues,
       },
+      bubbles: true,
+      composed: true,
     });
+    this.dispatchEvent(event);
+  }
+
+  render() {
+    return html`
+      <select
+        id=${this.id}
+        data-placeholder="Select locations"
+        class="chosen-select"
+        style="display:none;"
+        multiple
+        tabindex="6"
+      />
+    `;
   }
 }
