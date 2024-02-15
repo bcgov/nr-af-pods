@@ -1,4 +1,4 @@
-import getExpenseTypesDataJson from '../mock/api/get_expense_type_data.json';
+import getExpenseTypeDataJson from '../mock/api/get_expense_type_data.json';
 import { getExpenseTypes } from '../../js/common/expenseTypes.ts';
 import * as fetch from '../../js/common/fetch.js';
 
@@ -14,7 +14,7 @@ const EXPECTED_RESULT = [
 
 describe('env - getEnvVars', () => {
   it('should return environment variables map', async () => {
-    fetch.getExpenseTypesData = jest.fn(() => getExpenseTypesDataJson);
+    fetch.getExpenseTypeData = jest.fn(() => getExpenseTypeDataJson);
 
     const result = getExpenseTypes();
 

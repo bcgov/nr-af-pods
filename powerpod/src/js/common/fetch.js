@@ -8,7 +8,7 @@ POWERPOD.fetch = {
   getApplicationFormData,
   getClaimFormData,
   getMunicipalData,
-  getExpenseTypesData,
+  getExpenseTypeData,
   getOrgbookAutocompleteData,
   getOrgbookTopicData,
   getOrgbookCredentialsData,
@@ -209,7 +209,7 @@ export async function getMunicipalData({ onSuccess = null, ...options }) {
   });
 }
 
-export async function getExpenseTypesData({ ...options } = {}) {
+export async function getExpenseTypeData({ ...options } = {}) {
   return fetch({
     url: ENDPOINT_URL.get_expense_type_data,
     contentType: CONTENT_TYPE.json,

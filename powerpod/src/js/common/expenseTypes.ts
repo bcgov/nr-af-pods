@@ -1,4 +1,4 @@
-import { getExpenseTypesData } from './fetch';
+import { getExpenseTypeData } from './fetch';
 import { Logger } from './logger';
 
 const logger = new Logger('common/expenseTypes');
@@ -15,7 +15,7 @@ type ExpenseTypeBlob = {
 export type ExpenseType = string;
 
 export async function getExpenseTypes() {
-  const data = await getExpenseTypesData();
+  const data = await getExpenseTypeData();
 
   if (data) {
     logger.info({
@@ -40,7 +40,7 @@ export async function getExpenseTypes() {
   return Promise.reject(new Error(errorMsg));
 }
 
-function processExpenseTypesData(json: ExpenseTypesDataBlob) {
+export function processExpenseTypesData(json: ExpenseTypesDataBlob) {
   const dataArray = json?.value;
 
   const res = dataArray.reduce(

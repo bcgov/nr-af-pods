@@ -1,4 +1,5 @@
 import { useArgs } from '@storybook/client-api';
+import { action } from '@storybook/addon-actions';
 import type { Meta, StoryObj } from '@storybook/web-components';
 import './LocationMultiSelect.ts';
 
@@ -18,8 +19,10 @@ export const Primary: Story = {
     const [{ selectedValues }, updateArgs] = useArgs();
     return html`<location-multiselect
       selectedvalues=${selectedValues}
-      @onChangeSelectedValues=${(e: CustomEvent) =>
-        updateArgs({ selectedValues: e.detail.selectedValues })}
+      @onChangeSelectedValues=${(e: CustomEvent) => {
+        action('onChangeSelectedValues')(e);
+        updateArgs({ selectedValues: e.detail.value });
+      }}
       primary
     ></location-multiselect>`;
   },

@@ -42,8 +42,8 @@ class CurrencyInput extends LitElement {
   private cursorPosition: number = 0;
   private previousInputValue: string = '';
 
-  firstUpdated(): void {
-    if (this.inputValue) {
+  firstUpdated(props: Map<string, string>): void {
+    if (props.has('inputValue') && this.inputElement) {
       const event = new Event('blur', { bubbles: true, composed: true });
       this.inputElement?.dispatchEvent(event);
     }
@@ -149,7 +149,22 @@ class CurrencyInput extends LitElement {
       );
       this.inputElement.value = formattedValue;
       this.inputValue = formattedValue;
+      this.emitEvent();
     }
+  }
+
+  emitEvent() {
+    let event = new CustomEvent('onChangeCurrencyInput', {
+      detail: {
+        message: 'Currency input value has changed',
+        // @ts-ignore
+        id: this.id,
+        value: this.inputValue,
+      },
+      bubbles: true,
+      composed: true,
+    });
+    this.dispatchEvent(event);
   }
 
   handleBeforeInput(event: InputEvent) {
