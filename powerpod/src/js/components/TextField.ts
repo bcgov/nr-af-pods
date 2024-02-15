@@ -27,7 +27,7 @@ class TextField extends LitElement {
         style=${unsafeCSS(this.customStyle)}
         id="inputElement"
         type="text"
-        .value=${this.inputValue}
+        .value=${this.inputValue || ''}
         @change=${(event: Event) => {
           const { target } = event;
           if (target)

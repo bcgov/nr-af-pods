@@ -128,64 +128,65 @@ class ExpenseReportTable extends LitElement {
           </tr>
         </thead>
         <tbody>
-          ${this.rows?.length &&
-          this.rows.map(
-            (row: RowItem, rowIndex: number) => html`
-              <tr>
-                ${this.columns.map((col) => {
-                  const cellValue = row[col.id];
-                  if (col.id === 'type' && this.expenseTypes?.length) {
-                    return html` <td>
-                      <dropdown-search
-                        .options=${this.expenseTypes}
-                        .selectedValue=${cellValue}
-                        @onChangeDropdownValue=${(e: CustomEvent) => {
-                          this.updateTableData(
-                            rowIndex,
-                            col.id,
-                            e.detail.value
-                          );
-                        }}
-                      ></dropdown-search>
-                    </td>`;
-                  } else if (col.id === 'description') {
-                    return html` <td>
-                      <text-field
-                        customStyle="width: 100%"
-                        .inputValue=${cellValue}
-                        @onChangeTextField=${(e: CustomEvent) => {
-                          this.updateTableData(
-                            rowIndex,
-                            col.id,
-                            e.detail.value
-                          );
-                        }}
-                      ></text-field>
-                    </td>`;
-                  } else if (col.id === 'amount') {
-                    return html`<td>
-                      <currency-input
-                        .inputValue=${cellValue}
-                        @onChangeCurrencyInput=${(e: CustomEvent) => {
-                          this.updateTableData(
-                            rowIndex,
-                            col.id,
-                            e.detail.value
-                          );
-                        }}
-                      ></currency-input>
-                    </td>`;
-                  }
-                  return html`<td>${cellValue}</td>`;
-                })}
-                <td>
-                  <button @click=${() => this.handleDeleteRow(rowIndex)}>
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            `
-          )}
+          ${this.rows?.length > 0
+            ? this.rows.map(
+                (row: RowItem, rowIndex: number) => html`
+                  <tr>
+                    ${this.columns.map((col) => {
+                      const cellValue = row[col.id];
+                      if (col.id === 'type' && this.expenseTypes?.length) {
+                        return html` <td>
+                          <dropdown-search
+                            .options=${this.expenseTypes}
+                            .selectedValue=${cellValue}
+                            @onChangeDropdownValue=${(e: CustomEvent) => {
+                              this.updateTableData(
+                                rowIndex,
+                                col.id,
+                                e.detail.value
+                              );
+                            }}
+                          ></dropdown-search>
+                        </td>`;
+                      } else if (col.id === 'description') {
+                        return html` <td>
+                          <text-field
+                            customStyle="width: 100%"
+                            .inputValue=${cellValue}
+                            @onChangeTextField=${(e: CustomEvent) => {
+                              this.updateTableData(
+                                rowIndex,
+                                col.id,
+                                e.detail.value
+                              );
+                            }}
+                          ></text-field>
+                        </td>`;
+                      } else if (col.id === 'amount') {
+                        return html`<td>
+                          <currency-input
+                            .inputValue=${cellValue}
+                            @onChangeCurrencyInput=${(e: CustomEvent) => {
+                              this.updateTableData(
+                                rowIndex,
+                                col.id,
+                                e.detail.value
+                              );
+                            }}
+                          ></currency-input>
+                        </td>`;
+                      }
+                      return html`<td>${cellValue}</td>`;
+                    })}
+                    <td>
+                      <button @click=${() => this.handleDeleteRow(rowIndex)}>
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                `
+              )
+            : ''}
           <tr>
             <td><button @click=${this.handleAddRow}>Add another</button></td>
           </tr>
