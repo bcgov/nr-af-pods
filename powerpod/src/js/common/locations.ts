@@ -4,7 +4,7 @@ POWERPOD.locations = {
   processLocationData,
 };
 
-type DataBlob = {
+type LocationsDataBlob = {
   value: Array<MunicipalBlob>;
 };
 
@@ -21,7 +21,7 @@ export type Municipals = {
 
 type Locations = string[];
 
-export function processLocationData(json: DataBlob) {
+export function processLocationData(json: LocationsDataBlob) {
   const dataArray = json?.value;
 
   const res = dataArray.reduce((acc: Municipals, municipal: MunicipalBlob) => {

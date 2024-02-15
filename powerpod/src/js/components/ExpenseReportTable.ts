@@ -1,6 +1,7 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import './CurrencyInput';
+import './DropdownSearch';
 
 type RowItem = {
   [key: string]: string | number;
@@ -64,15 +65,35 @@ class ExpenseReportTable extends LitElement {
         <tbody>
           ${this.rows?.length &&
           this.rows.map(
-            (i: RowItem) => html`
+            (row: RowItem) => html`
               <tr>
-                ${Object.keys(i).map((key: string) => {
-                  if (key === 'amount') {
+                ${Object.keys(row).map((col: string, rowIndex: number) => {
+                  if (col === 'type') {
                     return html`<td>
-                      <currency-input inputValue=${i[key]}></currency-input>
+                      <dropdown-search
+                        selectedvalue=${row[col]}
+                        @onChangeDropdownValue=${(e: CustomEvent) => {
+                          // here we listen to changes in expense type
+                          // as needed, this will update master JSON record.
+                          // updateExpenseType(rowIndex)
+                          console.log(e);
+                        }}
+                      ></dropdown-search>
+                    </td>`;
+                  } else if (col === 'amount') {
+                    return html`<td>
+                      <currency-input
+                        inputvalue=${row[col]}
+                        @onChangeInputValue=${(e: CustomEvent) => {
+                          // here we listen to changes in currency value and update our row data
+                          // as needed, this will update master JSON record.
+                          // updateCurrencyInput(rowIndex)
+                          console.log(e);
+                        }}
+                      ></currency-input>
                     </td>`;
                   }
-                  return html`<td>${i[key]}</td>`;
+                  return html`<td>${row[col]}</td>`;
                 })}
               </tr>
             `

@@ -9,28 +9,21 @@ import { useScript } from '../common/scripts';
 class LocationMultiSelect extends LitElement {
   @property({ type: String }) id: string = crypto.randomUUID();
   @property({ type: Object }) municipals?: Municipals;
-  @property({ type: String, reflect: true }) selectedvalues: string = '';
+  @property({ type: String, reflect: true }) selectedValues: string = '';
   @property({ type: Boolean }) loaded: boolean = false;
-  @property() onSelect = () => {};
-
-  attributeChangedCallback(name, oldval, newval) {
-    console.log('attribute change: ', name, newval);
-    super.attributeChangedCallback(name, oldval, newval);
-  }
 
   createRenderRoot() {
     return this;
   }
   updated(props: Map<string, string>) {
-    console.log(this.onSelect);
     if (!this.loaded) {
       useScript('chosen', () => {
         this.municipals && this.generateOptions(this.municipals);
         // @ts-ignore
         $(`#${this.id}`).chosen();
 
-        if (props.has('selectedvalues')) {
-          $(`#${this.id}`).val(this.selectedvalues.split(', '));
+        if (props.has('selectedValues')) {
+          $(`#${this.id}`).val(this.selectedValues.split(', '));
           $(`#${this.id}`).trigger('chosen:updated');
         }
         // update dynamics field value on change of chosen field
@@ -40,13 +33,21 @@ class LocationMultiSelect extends LitElement {
           const selectedLocationsString = newSelectedLocations?.join(', ');
           // @ts-ignore
           this.selectedValues = selectedLocationsString || '';
-          // @ts-ignore
-          this.onSelect(this.selectedValues);
+          let event = new CustomEvent('onChangeSelectedValues', {
+            detail: {
+              message: 'Selected values have changed',
+              // @ts-ignore
+              selectedValues: this.selectedValues,
+            },
+            bubbles: true,
+            composed: true,
+          });
+          this.dispatchEvent(event);
         });
       });
       this.loaded = true;
-    } else if (props.has('selectedvalues')) {
-      $(`#${this.id}`).val(this.selectedvalues.split(', '));
+    } else if (props.has('selectedValues')) {
+      $(`#${this.id}`).val(this.selectedValues.split(', '));
       $(`#${this.id}`).trigger('chosen:updated');
     }
   }
@@ -61,7 +62,6 @@ class LocationMultiSelect extends LitElement {
     args: () => [],
   });
   generateOptions(municipals: Municipals) {
-    console.log('generating options');
     Object.keys(municipals).forEach((regionalDistrictName) => {
       const group = $('<optgroup label="' + regionalDistrictName + '" />');
       municipals[regionalDistrictName].forEach((municipalName) => {
@@ -73,7 +73,6 @@ class LocationMultiSelect extends LitElement {
     });
   }
   render() {
-    console.log('rendering');
     return this._municipalsTask.render({
       pending: () => html` <div>Loading...</div> `,
       complete: () => {

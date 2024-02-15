@@ -10,15 +10,17 @@ const meta: Meta = {
 export default meta;
 type Story = StoryObj;
 
-export const Primary: Story = () => {
-  const [{ selectedvalues }, updateArgs] = useArgs();
-  return html`<location-multiselect
-    selectedvalues=${selectedvalues}
-    onSelect=${(values: string) => updateArgs({ selectedvalues: values })}
-    primary
-  ></location-multiselect>`;
-};
-
-Primary.args = {
-  selectedvalues: 'Metchosin, North Saanich, Oak Bay',
+export const Primary: Story = {
+  args: {
+    selectedValues: 'Metchosin, North Saanich, Oak Bay',
+  },
+  render: function Render(args) {
+    const [{ selectedValues }, updateArgs] = useArgs();
+    return html`<location-multiselect
+      selectedvalues=${selectedValues}
+      @onChangeSelectedValues=${(e: CustomEvent) =>
+        updateArgs({ selectedValues: e.detail.selectedValues })}
+      primary
+    ></location-multiselect>`;
+  },
 };

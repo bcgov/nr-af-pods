@@ -2,7 +2,7 @@ export { default } from './powerpod.js';
 import { Environment, Form, doc, win } from './common/constants.js';
 import { getEnv } from './common/env.js';
 import { Logger } from './common/logger.js';
-import { getOptions } from './common/options.js';
+import { ENV_LOG_LEVEL, getOptions } from './common/options.js';
 import { initJQueryAdapter } from './jquery-adapter.js';
 
 const logger = Logger('app');

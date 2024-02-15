@@ -5,13 +5,9 @@ type Option = string;
 
 @customElement('dropdown-search')
 class DropdownSearch extends LitElement {
-  @property()
-  id: string = crypto.randomUUID();
-  options?: Option[];
-
-  createRenderRoot() {
-    return this;
-  }
+  @property({ type: String }) id: string = crypto.randomUUID();
+  @property({ type: Array }) options: Option[] = [];
+  @property({ type: String }) selectedValue: string = '';
 
   render() {
     return html`
