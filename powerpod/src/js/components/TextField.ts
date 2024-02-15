@@ -1,16 +1,11 @@
-import { LitElement, PropertyValueMap, css, html } from 'lit';
+import { LitElement, PropertyValueMap, css, html, unsafeCSS } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 
 @customElement('text-field')
 class TextField extends LitElement {
   @query('#inputElement') inputElement: HTMLInputElement | undefined;
   @property({ type: String }) inputValue: string = '';
-
-  firstUpdated(props: Map<string, string>): void {
-    if (props.has('selectedValue') && this.inputElement) {
-      this.inputElement.value = this.inputValue || '';
-    }
-  }
+  @property() customStyle = '';
 
   emitEvent() {
     let event = new CustomEvent('onChangeTextField', {
@@ -29,7 +24,7 @@ class TextField extends LitElement {
   render() {
     return html`
       <input
-        style="width: 100%;"
+        style=${unsafeCSS(this.customStyle)}
         id="inputElement"
         type="text"
         .value=${this.inputValue}

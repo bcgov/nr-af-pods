@@ -44,8 +44,19 @@ class CurrencyInput extends LitElement {
 
   firstUpdated(props: Map<string, string>): void {
     if (props.has('inputValue') && this.inputElement) {
-      const event = new Event('blur', { bubbles: true, composed: true });
-      this.inputElement?.dispatchEvent(event);
+      this.inputElement?.dispatchEvent(new Event('blur'));
+    }
+  }
+
+  attributeChangedCallback(
+    name: string,
+    oldval: string | null,
+    newval: string | null
+  ) {
+    super.attributeChangedCallback(name, oldval, newval);
+    if (name === 'inputvalue' && this.inputElement && newval) {
+      this.inputElement.value = newval;
+      this.inputElement.dispatchEvent(new Event('blur'));
     }
   }
 
@@ -93,7 +104,9 @@ class CurrencyInput extends LitElement {
     }
     this.cursorPosition = this.inputElement?.selectionStart || 0;
 
-    let formattedValue = this.formatCurrencyInput(this.inputElement?.value);
+    let formattedValue = this.formatCurrencyInput(
+      this.inputElement?.value ?? ''
+    );
 
     // Handle replacing the first decimal place without affecting the second one
     if (formattedValue.includes('.')) {
@@ -108,8 +121,8 @@ class CurrencyInput extends LitElement {
       }
     }
 
+    if (this.inputElement) this.inputElement.value = formattedValue;
     this.previousInputValue = formattedValue;
-    this.inputElement.value = formattedValue;
     this.inputValue = formattedValue;
 
     // Adjust cursor position after input change

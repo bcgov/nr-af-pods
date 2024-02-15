@@ -54,6 +54,9 @@ class ExpenseReportTable extends LitElement {
       font-weight: bold;
       color: #009879;
     }
+    ::sloted(input) {
+      width: 100%;
+    }
   `;
 
   @property({ type: String, reflect: true }) id: string = crypto.randomUUID();
@@ -109,6 +112,11 @@ class ExpenseReportTable extends LitElement {
 
   render() {
     return html`
+      <style>
+        text-field {
+          width: 100%;
+        }
+      </style>
       <table class="styled-table">
         <thead>
           <tr>
@@ -127,7 +135,7 @@ class ExpenseReportTable extends LitElement {
                 ${this.columns.map((col) => {
                   const cellValue = row[col.id];
                   if (col.id === 'type' && this.expenseTypes?.length) {
-                    return html`<td>
+                    return html` <td>
                       <dropdown-search
                         .options=${this.expenseTypes}
                         .selectedValue=${cellValue}
@@ -141,8 +149,9 @@ class ExpenseReportTable extends LitElement {
                       ></dropdown-search>
                     </td>`;
                   } else if (col.id === 'description') {
-                    return html`<td>
+                    return html` <td>
                       <text-field
+                        customStyle="width: 100%"
                         .inputValue=${cellValue}
                         @onChangeTextField=${(e: CustomEvent) => {
                           this.updateTableData(

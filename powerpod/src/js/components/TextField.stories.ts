@@ -18,7 +18,7 @@ export const Primary: Story = {
   render: function Render(args) {
     const [{ inputValue }, updateArgs] = useArgs();
     return html`<text-field
-      inputValue=${inputValue}
+      .inputValue=${inputValue}
       @onChangeTextField=${(e: CustomEvent) => {
         action('onChangeTextField')(e);
         updateArgs({ inputValue: e.detail.value });

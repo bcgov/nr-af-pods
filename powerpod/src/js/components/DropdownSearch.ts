@@ -12,6 +12,8 @@ class DropdownSearch extends LitElement {
     return html` <option value=${value}>${value}</option> `;
   }
 
+  // select elements behave funny, so we have to set the value ourselves
+  // on the very first load of the component
   firstUpdated(props: Map<string, string>) {
     if (props.has('selectedValue') && this.selectElement) {
       this.selectElement.value = this.selectedValue || '';
@@ -35,6 +37,7 @@ class DropdownSearch extends LitElement {
     return html`
       <select
         id="selectElement"
+        .value=${this.selectedValue}
         @change=${(event: Event) => {
           const { target } = event;
           if (target)
