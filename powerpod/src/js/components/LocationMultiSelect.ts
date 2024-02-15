@@ -91,7 +91,6 @@ class LocationMultiSelect extends LitElement {
     let event = new CustomEvent('onChangeSelectedValues', {
       detail: {
         message: 'Selected values have changed',
-        // @ts-ignore
         id: this.id,
         value: this.selectedValues,
       },
