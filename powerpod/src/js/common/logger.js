@@ -1,4 +1,4 @@
-import { win } from './constants.js';
+import { Environment, win } from './constants.js';
 import { getOptions } from './options.js';
 
 const LogType = {
@@ -14,7 +14,11 @@ const LogLevel = {
 };
 
 function log({ namespace, fn, level, message, data }) {
-  const { logging: enableLogging } = getOptions();
+  const { logging: enableLogging, logLevel: envLogLevel } = getOptions();
+
+  // if level of requested log is less than log level of env, do not log
+  if (level < envLogLevel) return;
+
   if (!win.console || !win.console[level])
     win.console.error('[POWERPOD]: issue using logger');
 

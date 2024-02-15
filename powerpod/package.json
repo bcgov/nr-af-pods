@@ -9,7 +9,7 @@
     "extensions": "rollup --config rollup.ext.config.js && gulp update-version &&  gulp css && gulp moveExtensions & wait",
     "dev": "rimraf dist && rollup -c --watch",
     "test": "jest --config=./jest.config.cjs --verbose",
-    "devtest": "jest --config=./jest.config.dev.cjs  --verbose --watch",
+    "devtest": "jest --config=./jest.config.dev.cjs  --verbose --watchAll",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
@@ -38,6 +38,7 @@
   "namespace": "powerpod",
   "devDependencies": {
     "@babel/preset-env": "^7.23.8",
+    "@babel/preset-typescript": "^7.23.3",
     "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-node-resolve": "^15.2.3",
@@ -46,6 +47,8 @@
     "@storybook/addon-essentials": "^7.6.13",
     "@storybook/addon-links": "^7.6.13",
     "@storybook/blocks": "^7.6.13",
+    "@storybook/client-api": "^7.6.15",
+    "@storybook/manager-api": "^7.6.15",
     "@storybook/web-components": "^7.6.13",
     "@storybook/web-components-vite": "^7.6.13",
     "@types/jquery": "^3.5.29",

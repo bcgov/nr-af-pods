@@ -7,7 +7,7 @@ import '../src/assets/css/bootstrap.css';
 /** @type { import('@storybook/web-components').Preview } */
 const preview = {
   parameters: {
-    actions: { argTypesRegex: '^on[A-Z].*' },
+    actions: { argTypesRegex: '^on.*' },
     controls: {
       matchers: {
         color: /(background|color)$/i,

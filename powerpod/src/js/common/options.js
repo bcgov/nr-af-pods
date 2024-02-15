@@ -14,13 +14,17 @@ const ALLOWED_PATHS = [
   '/application/',
   '/application-dev/',
 ];
-
+export const ENV_LOG_LEVEL = {
+  [Environment.DEV]: 10, // show all on DEV
+  [Environment.TEST]: 20, // only show WARN & ERROR on TEST
+  [Environment.PROD]: 90, // only show ERROR on PROD
+};
 const defaultOptions = {
   autoinit: true,
   env: Environment.DEV,
   logging: true,
   // TODO: implement log level filtering
-  logLevel: 90, // Only show errors on PROD
+  logLevel: ENV_LOG_LEVEL[Environment.DEV],
   form: null, // if null, will try to auto-detect the form
   allowedHosts: [...ALLOWED_HOSTS],
   allowedPaths: [...ALLOWED_PATHS],
