@@ -39,6 +39,23 @@ export function addTextBelowField(fieldName, htmlContentToAdd) {
 }
 
 export function observeChanges(element, customFunc) {
+  logger.info({
+    fn: observeChanges,
+    message: 'observing changes...',
+    data: {
+      element,
+    },
+  });
+  if (!element) {
+    logger.error({
+      fn: observeChanges,
+      message: 'failed to observe changes, null element',
+      data: {
+        element,
+      },
+    });
+    return;
+  }
   // initial load:
   if (customFunc) {
     customFunc();
@@ -66,6 +83,14 @@ export function observeIframeChanges(
   fieldNameToPass,
   fieldNameToObserve
 ) {
+  logger.info({
+    fn: observeIframeChanges,
+    message: 'observing iframe changes...',
+    data: {
+      fieldNameToPass,
+      fieldNameToObserve,
+    },
+  });
   const iframe = document.querySelector(
     'fieldset[aria-label="Coding Section (DO NOT REMOVE)"] iframe'
   );

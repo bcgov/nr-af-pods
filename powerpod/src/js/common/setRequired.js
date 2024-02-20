@@ -184,15 +184,27 @@ export function setRequiredField(
 
   switch (elemType) {
     case HtmlElementType.FileInput:
-      observeChanges($(`input[id=${fieldName}_AttachFile]`)[0]);
+      const fileInputElement = $(`input[id=${fieldName}_AttachFile]`)[0];
+      logger.info({
+        fn: setRequiredField,
+        message: 'observe changes on file input element',
+        data: { fileInputElement },
+      });
+      observeChanges(fileInputElement);
       $(`#${fieldName}_AttachFile`).on('blur input', () => {
         validateRequiredFields();
       });
       break;
     case HtmlElementType.DatePicker:
-      observeChanges(
-        $(`input[id=${fieldName}_datepicker_description]`).parent()[0]
-      );
+      const datePickerElement = $(
+        `input[id=${fieldName}_datepicker_description]`
+      ).parent()[0];
+      logger.info({
+        fn: setRequiredField,
+        message: 'observe changes on date picker element',
+        data: { datePickerElement },
+      });
+      observeChanges(datePickerElement);
       $(`#${fieldName}_datepicker_description`).on('blur input', () => {
         validateRequiredFields();
       });

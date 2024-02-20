@@ -20,16 +20,6 @@
         {
           "name": "quartech_filenumber",
           "readOnly": true
-        },
-        {
-          "name": "quartech_projectenddate",
-          "required": true,
-          "elementType": "DatePicker",
-          "tooltipText": "If the project is not yet completed, please provide an estimated project end date"
-        },
-        {
-          "name": "quartech_authorizedclaimedamount",
-          "readOnly": true
         }
       ]
     },
