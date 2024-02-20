@@ -31,7 +31,7 @@ class ExpenseReportTable extends LitElement {
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
     }
     .styled-table thead tr {
-      background-color: #009879;
+      background-color: #2f5fee;
       color: #ffffff;
       text-align: left;
     }
@@ -48,7 +48,7 @@ class ExpenseReportTable extends LitElement {
     }
 
     .styled-table tbody tr:last-of-type {
-      border-bottom: 2px solid #009879;
+      border-bottom: 2px solid #2f5fee;
     }
     .styled-table tbody tr.active-row {
       font-weight: bold;
@@ -180,7 +180,7 @@ class ExpenseReportTable extends LitElement {
                     })}
                     <td>
                       <button @click=${() => this.handleDeleteRow(rowIndex)}>
-                        Delete
+                        <i class="fa fa-trash"></i> Delete
                       </button>
                     </td>
                   </tr>

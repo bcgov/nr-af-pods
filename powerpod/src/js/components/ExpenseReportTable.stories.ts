@@ -23,12 +23,12 @@ export const Primary: Story = {
       {
         id: 'description',
         name: 'Description',
-        width: '60%',
+        width: '70%',
       },
       {
         id: 'amount',
         name: 'Amount',
-        width: '20%'
+        width: '10%'
       },
     ],
     rows: [

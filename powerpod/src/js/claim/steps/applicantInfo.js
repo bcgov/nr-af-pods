@@ -5,10 +5,13 @@ import {
   observeChanges,
   observeIframeChanges,
 } from '../../common/html.js';
+import { Logger } from '../../common/logger.js';
 import { getProgramAbbreviation } from '../../common/program.ts';
 import { setStepRequiredFields } from '../../common/setRequired.js';
 import { setFieldReadOnly } from '../../common/validation.js';
 import { customizeSingleOrGroupApplicantQuestions } from '../fieldLogic.js';
+
+const logger = new Logger('claim/steps/applicantInfo');
 
 export function customizeApplicantInfoStep() {
   setStepRequiredFields();
@@ -22,6 +25,12 @@ export function customizeApplicantInfoStep() {
       dependentOnElementTag: 'quartech_applicantinformationconfirmation',
       requiredFieldTag: 'quartech_applicantinformationcorrections',
     });
+
+    logger.info({
+      fn: customizeApplicantInfoStep,
+      message: 'Observing changes on quartech_completingcategory...',
+    })
+
 
     observeIframeChanges(
       customizeBusinessPlanDependentQuestions,
