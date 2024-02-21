@@ -13,6 +13,7 @@ const script = {
   loadmap: [], // used to track already loaded scripts
   sourcemap: {
     jquery: 'https://code.jquery.com/jquery-3.6.2.min.js',
+    jqueryui: 'https://code.jquery.com/ui/1.12.1/jquery-ui.min.js',
     chosen:
       'https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.jquery.js',
     jquerymask:
