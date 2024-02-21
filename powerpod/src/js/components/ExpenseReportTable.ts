@@ -5,9 +5,10 @@ import './DropdownSearch';
 import './TextField';
 import { processExpenseTypesData } from '../common/expenseTypes';
 import { getExpenseTypeData } from '../common/fetch';
+import 'fa-icons';
 
 type RowItem = {
-  [key: string]: string | number;
+  [key: string]: string;
 };
 
 type Column = {
@@ -20,6 +21,11 @@ type Headings = {
 
 @customElement('expense-report-table')
 class ExpenseReportTable extends LitElement {
+  @property({ type: String, reflect: true }) id: string = crypto.randomUUID();
+  @property({ type: Object }) columns: Column[] = [];
+  @property({ type: Array }) rows: RowItem[] = [];
+  @property({ type: Array }) expenseTypes: string[] = [];
+
   static styles = css`
     .styled-table {
       width: 100%;
@@ -57,12 +63,10 @@ class ExpenseReportTable extends LitElement {
     ::sloted(input) {
       width: 100%;
     }
+    .add-another {
+      background-color: #fff !important;
+    }
   `;
-
-  @property({ type: String, reflect: true }) id: string = crypto.randomUUID();
-  @property({ type: Object }) columns: Column[] = [];
-  @property({ type: Array }) rows: RowItem[] = [];
-  @property({ type: Array }) expenseTypes: string[] = [];
 
   // make fetch call as soon as component is mounted
   connectedCallback(): void {
@@ -76,6 +80,7 @@ class ExpenseReportTable extends LitElement {
         id: this.id,
         message: 'Expense report data has changed',
         value: JSON.stringify(this.rows),
+        total: this.getTotalExpenseAmount(),
       },
       bubbles: true,
       composed: true,
@@ -91,22 +96,41 @@ class ExpenseReportTable extends LitElement {
     this.expenseTypes = processExpenseTypesData(data);
   }
 
-  updateTableData(rowIndex: number, columnKey: string, newValue: string) {
-    this.rows[rowIndex][columnKey] = newValue;
+  getTotalExpenseAmount() {
+    let floatValue = this.rows.reduce((acc: number, row: RowItem) => {
+      const amount = row['amount'];
+      if (!!amount) return acc + parseFloat(amount);
+      return acc;
+    }, 0.0);
+    const formattedValue = floatValue.toLocaleString('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+    return formattedValue;
+  }
+
+  handleUpdateCell(rowIndex: number, columnKey: string, newValue: string) {
+    const rowData = this.rows;
+    rowData[rowIndex][columnKey] = newValue;
+    this.rows = rowData;
     this.emitEvent();
   }
 
   handleAddRow() {
-    this.rows.push({
+    const rowData = this.rows;
+    rowData.push({
       type: '',
       description: '',
       amount: '',
     });
+    this.rows = rowData;
     this.emitEvent();
   }
 
   handleDeleteRow(rowIndex: number) {
-    this.rows.splice(rowIndex, 1);
+    const rowData = this.rows;
+    rowData.splice(rowIndex, 1);
+    this.rows = rowData;
     this.emitEvent();
   }
 
@@ -140,7 +164,7 @@ class ExpenseReportTable extends LitElement {
                             .options=${this.expenseTypes}
                             .selectedValue=${cellValue}
                             @onChangeDropdownValue=${(e: CustomEvent) => {
-                              this.updateTableData(
+                              this.handleUpdateCell(
                                 rowIndex,
                                 col.id,
                                 e.detail.value
@@ -154,7 +178,7 @@ class ExpenseReportTable extends LitElement {
                             customStyle="width: 100%"
                             .inputValue=${cellValue}
                             @onChangeTextField=${(e: CustomEvent) => {
-                              this.updateTableData(
+                              this.handleUpdateCell(
                                 rowIndex,
                                 col.id,
                                 e.detail.value
@@ -167,7 +191,7 @@ class ExpenseReportTable extends LitElement {
                           <currency-input
                             .inputValue=${cellValue}
                             @onChangeCurrencyInput=${(e: CustomEvent) => {
-                              this.updateTableData(
+                              this.handleUpdateCell(
                                 rowIndex,
                                 col.id,
                                 e.detail.value
@@ -180,14 +204,18 @@ class ExpenseReportTable extends LitElement {
                     })}
                     <td>
                       <button @click=${() => this.handleDeleteRow(rowIndex)}>
-                        <i class="fa fa-trash"></i> Delete
+                        <fa-icon
+                          style="padding-top: 1px"
+                          class="fa fa-trash"
+                          size="1em"
+                        ></fa-icon>
                       </button>
                     </td>
                   </tr>
                 `
               )
             : ''}
-          <tr>
+          <tr class="add-another">
             <td><button @click=${this.handleAddRow}>Add another</button></td>
           </tr>
         </tbody>

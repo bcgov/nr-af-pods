@@ -33,6 +33,14 @@ class CurrencyInput extends LitElement {
       padding-right: 25px;
       text-align: right;
     }
+
+    .form-control {
+      padding: 0.675em 0em 0.675em 1em;
+      background-color: #fff;
+      border: 1px solid #caced1;
+      border-radius: 0.25rem;
+      color: #000;
+    }
   `;
 
   @query('#inputElement') inputElement: HTMLInputElement | undefined;
