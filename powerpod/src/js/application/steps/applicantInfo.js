@@ -12,6 +12,7 @@ import {
   getProgramAbbreviation,
   getProgramData,
 } from '../../common/program.ts';
+import { useScript } from '../../common/scripts.js';
 import { setStepRequiredFields } from '../../common/setRequired.js';
 import {
   validateEmailAddressField,
@@ -311,24 +312,27 @@ function initOrgNameAutocomplete() {
     '#quartech_legalbusinessororganizationname'
   );
   if (!legalBusinessOrgNameElement) return;
-  // @ts-ignore
-  $(legalBusinessOrgNameElement).autocomplete({
-    source: function (request, response) {
-      getOrgbookAutocompleteData({
-        searchStr: request.term,
-        onSuccess: (data) => {
-          var results = data.total ? data.results : [];
-          response(results);
-        },
-      });
-    },
-    minLength: 2,
-    select: function (event, ui) {
-      let isApplicantWithoutCraOrGstNumber = $('#quartech_nocragstnumber').prop(
-        'checked'
-      );
-      if (!isApplicantWithoutCraOrGstNumber) getTopic(ui.item);
-    },
+
+  useScript('jqueryui', () => {
+    // @ts-ignore
+    $(legalBusinessOrgNameElement).autocomplete({
+      source: function (request, response) {
+        getOrgbookAutocompleteData({
+          searchStr: request.term,
+          onSuccess: (data) => {
+            var results = data.total ? data.results : [];
+            response(results);
+          },
+        });
+      },
+      minLength: 2,
+      select: function (event, ui) {
+        let isApplicantWithoutCraOrGstNumber = $(
+          '#quartech_nocragstnumber'
+        ).prop('checked');
+        if (!isApplicantWithoutCraOrGstNumber) getTopic(ui.item);
+      },
+    });
   });
 }
 
