@@ -107,39 +107,6 @@ export function customizeClaimInfoStep() {
         .before(requestedClaimAmountNoteHtmlContent);
     }
   }
-
-  function addSumNotEqualNote() {
-    const totalSumNotEqualNoteHtml = `
-      <div id="totalSumDoesNotEqualRequestAmountWarning" style="padding-bottom: 20px;">
-        <span style="color: red">Your requested amount does not equal the total of reported expenses! Please make sure this is the correct amount you want to request before continuing.</span>
-      </div>
-    `;
-    if (!document.querySelector('#totalSumDoesNotEqualRequestAmountWarning')) {
-      const totalSumNotEqualNoteHtml = `
-        <div id="totalSumDoesNotEqualRequestAmountWarning" style="padding-bottom: 20px;">
-          <span style="color: red">Your requested amount does not equal the total of reported expenses! Please make sure this is the correct amount you want to request before continuing.</span>
-        </div>
-      `;
-      $('#quartech_totalfees').closest('tr').after(totalSumNotEqualNoteHtml);
-    }
-  }
-
-  function verifyTotalSumEqualsRequestedAmount() {
-    if (
-      $('#quartech_totalfees')?.val() !==
-      $('#quartech_totalsumofreportedexpenses')?.val()
-    ) {
-      addSumNotEqualNote();
-    }
-    $('#quartech_totalfees').on('change keyup blur', (e) => {
-      // @ts-ignore
-      if (e.target.value !== $('#quartech_totalsumofreportedexpenses').val()) {
-        addSumNotEqualNote();
-      } else if ($('#totalSumDoesNotEqualRequestAmountWarning')) {
-        $('#totalSumDoesNotEqualRequestAmountWarning').css('display', 'none');
-      }
-    });
-  }
   // END step specific functions
 
   if (programAbbreviation.includes('KTTP')) {
@@ -147,7 +114,12 @@ export function customizeClaimInfoStep() {
     addExpenseReportGrid();
     addKttpFundingInformationNote();
     addKttpRequestedClaimAmountNote();
+
     verifyTotalSumEqualsRequestedAmount();
+
+    $('#quartech_totalfees').on('change keyup blur', () => {
+      verifyTotalSumEqualsRequestedAmount();
+    });
   }
 
   if (programAbbreviation === 'NEFBA') {
@@ -283,6 +255,35 @@ function customizeInterimPaymentAmountField() {
   }
 }
 
+function showSumNotEqualWarning(show) {
+  const totalSumNotEqualNoteHtml = `
+    <div id="totalSumDoesNotEqualRequestAmountWarning" style="padding-bottom: 20px;">
+      <span style="color: red">Your requested amount does not equal the total of reported expenses! Please make sure this is the correct amount you want to request before continuing.</span>
+    </div>
+  `;
+  if (
+    show &&
+    !document.querySelector('#totalSumDoesNotEqualRequestAmountWarning')
+  ) {
+    $('#quartech_totalfees').closest('tr').after(totalSumNotEqualNoteHtml);
+  } else if (show) {
+    $('#totalSumDoesNotEqualRequestAmountWarning').css('display', '');
+  } else if (!show) {
+    $('#totalSumDoesNotEqualRequestAmountWarning').css('display', 'none');
+  }
+}
+
+function verifyTotalSumEqualsRequestedAmount() {
+  if (
+    $('#quartech_totalfees')?.val() !==
+    $('#quartech_totalsumofreportedexpenses')?.val()
+  ) {
+    showSumNotEqualWarning(true);
+  } else {
+    showSumNotEqualWarning(false);
+  }
+}
+
 function addExpenseReportGrid() {
   const eligibleExpensesId = 'quartech_eligibleexpenses';
   if (!$(`#${eligibleExpensesId}`)) return;
@@ -335,6 +336,7 @@ function addExpenseReportGrid() {
       // @ts-ignore
       getTotalExpenseAmount(JSON.parse(existingEligibleExpenses))
     );
+    verifyTotalSumEqualsRequestedAmount();
   }
 
   expenseReportTableElement.addEventListener(
@@ -353,6 +355,7 @@ function addExpenseReportGrid() {
       setFieldValue(eligibleExpensesId, JSON.stringify(rows));
       // @ts-ignore
       setFieldValue('quartech_totalsumofreportedexpenses', e.detail.total);
+      verifyTotalSumEqualsRequestedAmount();
     }
   );
 }
