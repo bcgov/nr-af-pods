@@ -1,3 +1,12 @@
+/*
+  -------------------
+  FILE INFO
+  -------------------
+  version: 1.0.0
+  name: Claim CSS
+  type: CSS
+  description: This is the CSS used on the Claim web page
+*/
 #quartech_businessaddress:focus {
   border: 0px;
   box-shadow: none !important;
@@ -39,6 +48,8 @@
   display: none;
 }
 
+fieldset:has(> table[data-name='projectResultsTab_CodingSection']),
+fieldset:has(> table[data-name='applicantInfoTab_codingSection']),
 fieldset:has(> table[data-name='claimInfoTab_CodingSection']),
 fieldset:has(> table[data-name='documentTab_CodingSection']),
 fieldset:has(> table[data-name='projectIndicatorsTab_CodingSection']),
