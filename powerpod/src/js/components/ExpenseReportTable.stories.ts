@@ -27,7 +27,7 @@ export const Primary: Story = {
       },
       {
         id: 'amount',
-        name: 'Amount',
+        name: 'Amount ($CAD)',
         width: '10%'
       },
     ],

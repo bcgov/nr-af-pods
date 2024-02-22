@@ -1,6 +1,6 @@
 {
   "tags": ["Claim", "KTTP", "KTTP-SMEA", "KTTP-StreamTwo", "KTTP-Stream3"],
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Claim form field config used for all KTTP streams",
   "hiddenSteps": "",
   "sections": [
@@ -61,6 +61,14 @@
     {
       "name": "ClaimInfoStep",
       "fields": [
+        {
+          "name": "quartech_eligibleexpenses",
+          "label": "Eligible Expenses"
+        },
+        {
+          "name": "quartech_totalsumofreportedexpenses",
+          "label": "Total Sum of Reported Expenses ($CAD)"
+        },
         {
           "name": "quartech_authorizedclaimedamount",
           "label": "Approved Amount as per Authorization Letter (Consultant Fee, GST, Total)",

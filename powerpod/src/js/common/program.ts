@@ -16,6 +16,13 @@ POWERPOD.program = {
  */
 export function getProgramId() {
   // Try to pull programId from hidden field
+  logger.info({
+    fn: getProgramId,
+    message: 'attempting to get program id',
+    data: {
+      readyState: doc.readyState,
+    }
+  })
   const programId = $('#quartech_program')?.val();
 
   if (programId) {

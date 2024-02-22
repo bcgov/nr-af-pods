@@ -1,7 +1,28 @@
+import { doc } from './constants.js';
 import { Logger } from './logger.js';
 import { validateRequiredFields } from './validation.js';
 
 const logger = new Logger('common/html');
+
+export function onDocumentReadyState(fn) {
+  logger.info({
+    fn: onDocumentReadyState,
+    message: `checking document readyState: ${doc.readyState}`,
+  });
+  if (doc.readyState === 'complete') {
+    fn();
+  } else {
+    doc.addEventListener('readystatechange', () => {
+      if (doc.readyState === 'complete') {
+        logger.info({
+          fn: onDocumentReadyState,
+          message: 'document ready!',
+        });
+        fn();
+      }
+    });
+  }
+}
 
 export function showFieldsetElement(fieldsetName) {
   const sectionElement = $(`fieldset[aria-label="${fieldsetName}"]`);

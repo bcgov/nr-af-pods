@@ -1,4 +1,9 @@
-import { GROUP_APPLICATION_VALUE, NO_VALUE } from '../../common/constants.js';
+import { html } from 'lit';
+import {
+  GROUP_APPLICATION_VALUE,
+  NO_VALUE,
+  doc,
+} from '../../common/constants.js';
 import { initOnChange_DependentRequiredField } from '../../common/fieldLogic.js';
 import {
   hideQuestion,
@@ -9,6 +14,10 @@ import { getProgramAbbreviation } from '../../common/program.ts';
 import { setStepRequiredFields } from '../../common/setRequired.js';
 import { setFieldReadOnly } from '../../common/validation.js';
 import { customizeSingleOrGroupApplicantQuestions } from '../fieldLogic.js';
+import '../../components/ExpenseReportTable.ts';
+import '../../components/CurrencyInput.ts';
+import '../../components/DropdownSearch.ts';
+import '../../components/TextField.ts';
 
 export function customizeClaimInfoStep() {
   setStepRequiredFields();
@@ -47,6 +56,19 @@ export function customizeClaimInfoStep() {
     }
   }
   // END step specific functions
+
+  if (programAbbreviation.includes('KTTP')) {
+    const eligibleExpensesId = 'quartech_eligibleexpenses';
+
+    if (!$(`#${eligibleExpensesId}`)) return;
+
+    const fieldControlDiv = $(`#${eligibleExpensesId}`).closest('div');
+
+    const expenseReportTableElement = doc.createElement('expense-report-table');
+    expenseReportTableElement.setAttribute('primary', 'true');
+
+    $(fieldControlDiv)?.append(expenseReportTableElement);
+  }
 
   if (programAbbreviation === 'NEFBA') {
     addRequestedClaimAmountNote();
@@ -180,4 +202,3 @@ function customizeInterimPaymentAmountField() {
     hideQuestion('quartech_requestedinterimpaymentamount');
   }
 }
-

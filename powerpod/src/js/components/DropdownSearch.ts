@@ -50,6 +50,11 @@ class DropdownSearch extends LitElement {
       border-top: var(--size) solid black;
       top: 55%;
     }
+
+    span {
+      position: absolute;
+      padding-top: 2px;
+    }
   `;
 
   generateOption(value: string) {
@@ -93,7 +98,7 @@ class DropdownSearch extends LitElement {
           ${this.options?.map((option) => this.generateOption(option))}
         </select>
       </div>
-      <span>Note: here goes</span>
+      <span>See program guide for eligible expenses</span>
     `;
   }
 }

@@ -41,9 +41,11 @@ class ExpenseReportTable extends LitElement {
       color: #ffffff;
       text-align: left;
     }
-    .styled-table th,
-    .styled-table td {
+    .styled-table th {
       padding: 12px 15px;
+    }
+    .styled-table td {
+      padding: 12px 15px 24px;
     }
     .styled-table tbody tr {
       border-bottom: 1px solid #dddddd;
@@ -63,10 +65,54 @@ class ExpenseReportTable extends LitElement {
     ::sloted(input) {
       width: 100%;
     }
-    .add-another {
+    .add-another-row {
       background-color: #fff !important;
+      line-height: 20px;
+    }
+    .add-another-row td {
+      line-height: 20px;
+      padding: 10px 15px 10px;
+    }
+    .add-another-btn {
+      line-height: 1.5;
+    }
+    .add-another-btn span {
+      padding-bottom: 2px;
     }
   `;
+
+  // constructor() {
+  //   super();
+  //   this.columns = [
+  //     {
+  //       id: 'type',
+  //       name: 'Expense Type',
+  //       width: '20%',
+  //     },
+  //     {
+  //       id: 'description',
+  //       name: 'Description',
+  //       width: '70%',
+  //     },
+  //     {
+  //       id: 'amount',
+  //       name: 'Amount ($CAD)',
+  //       width: '10%',
+  //     },
+  //   ];
+  //   this.rows = [
+  //     {
+  //       type: 'Facility, equipment, technology rental',
+  //       description: 'This is for our contractor',
+  //       amount: '50.00',
+  //     },
+  //     {
+  //       type: 'Administration Costs',
+  //       description: 'Agriculture fees for facilitating resources',
+  //       amount: '65.00',
+  //     },
+  //   ];
+  // }
 
   // make fetch call as soon as component is mounted
   connectedCallback(): void {
@@ -75,11 +121,12 @@ class ExpenseReportTable extends LitElement {
   }
 
   emitEvent() {
+    const rowData = this.rows;
     const customEvent = new CustomEvent('onChangeExpenseReportData', {
       detail: {
         id: this.id,
         message: 'Expense report data has changed',
-        value: JSON.stringify(this.rows),
+        value: JSON.stringify(rowData),
         total: this.getTotalExpenseAmount(),
       },
       bubbles: true,
@@ -96,10 +143,11 @@ class ExpenseReportTable extends LitElement {
     this.expenseTypes = processExpenseTypesData(data);
   }
 
-  getTotalExpenseAmount() {
+  private getTotalExpenseAmount() {
     let floatValue = this.rows.reduce((acc: number, row: RowItem) => {
       const amount = row['amount'];
-      if (!!amount) return acc + parseFloat(amount);
+      const numericValue = amount.replace(/[^\d.-]/g, '');
+      if (!!numericValue) return acc + parseFloat(numericValue);
       return acc;
     }, 0.0);
     const formattedValue = floatValue.toLocaleString('en-US', {
@@ -109,14 +157,18 @@ class ExpenseReportTable extends LitElement {
     return formattedValue;
   }
 
-  handleUpdateCell(rowIndex: number, columnKey: string, newValue: string) {
+  private handleUpdateCell(
+    rowIndex: number,
+    columnKey: string,
+    newValue: string
+  ) {
     const rowData = this.rows;
     rowData[rowIndex][columnKey] = newValue;
     this.rows = rowData;
     this.emitEvent();
   }
 
-  handleAddRow() {
+  private handleAddRow() {
     const rowData = this.rows;
     rowData.push({
       type: '',
@@ -127,7 +179,7 @@ class ExpenseReportTable extends LitElement {
     this.emitEvent();
   }
 
-  handleDeleteRow(rowIndex: number) {
+  private handleDeleteRow(rowIndex: number) {
     const rowData = this.rows;
     rowData.splice(rowIndex, 1);
     this.rows = rowData;
@@ -169,6 +221,7 @@ class ExpenseReportTable extends LitElement {
                                 col.id,
                                 e.detail.value
                               );
+                              e.stopImmediatePropagation();
                             }}
                           ></dropdown-search>
                         </td>`;
@@ -183,6 +236,7 @@ class ExpenseReportTable extends LitElement {
                                 col.id,
                                 e.detail.value
                               );
+                              e.stopImmediatePropagation();
                             }}
                           ></text-field>
                         </td>`;
@@ -196,6 +250,7 @@ class ExpenseReportTable extends LitElement {
                                 col.id,
                                 e.detail.value
                               );
+                              e.stopImmediatePropagation();
                             }}
                           ></currency-input>
                         </td>`;
@@ -203,7 +258,10 @@ class ExpenseReportTable extends LitElement {
                       return html`<td>${cellValue}</td>`;
                     })}
                     <td>
-                      <button @click=${() => this.handleDeleteRow(rowIndex)}>
+                      <button
+                        type="button"
+                        @click=${() => this.handleDeleteRow(rowIndex)}
+                      >
                         <fa-icon
                           style="padding-top: 1px"
                           class="fa fa-trash"
@@ -215,8 +273,21 @@ class ExpenseReportTable extends LitElement {
                 `
               )
             : ''}
-          <tr class="add-another">
-            <td><button @click=${this.handleAddRow}>Add another</button></td>
+          <tr class="add-another-row">
+            <td>
+              <button
+                type="button"
+                class="add-another-btn"
+                @click=${this.handleAddRow}
+              >
+                <fa-icon
+                  style="padding: 1px 1px 0px 0px"
+                  class="fa fa-plus"
+                  size="1em"
+                ></fa-icon>
+                <span>Add Another</span>
+              </button>
+            </td>
           </tr>
         </tbody>
       </table>
