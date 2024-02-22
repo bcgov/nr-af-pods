@@ -31,6 +31,26 @@ export function customizeClaimInfoStep() {
   const programAbbreviation = getProgramAbbreviation();
 
   // START step specific functions
+  function addInstructions() {
+    if (!document.querySelector('#claimInfoInstructionsNote')) {
+      const claimInfoInstructionsNoteHtmlContent = `
+        <div id="claimInfoInstructionsNote" style="padding-bottom: 20px;">
+          <b>Instructions:</b>
+          <ul style="font-size: inherit;">
+            <li>List all eligible expenses for which you seek reimbursement in this claim</li>
+            <li>Please see the program guide for eligible expenses</li>
+            <li>Do not include expenses that are excluded from reimbursement</li>
+            <li>As a condition of reimbursement, you will be required to maintain books of account, invoices, receipts, and vouchers for all expenses incurred in relation to the event until March 31, 2031</li>
+          </ul>
+        </div>
+      `;
+
+      $('#quartech_eligibleexpenses')
+        .closest('tr')
+        .before(claimInfoInstructionsNoteHtmlContent);
+    }
+  }
+
   function addRequestedClaimAmountNote() {
     if (!document.querySelector('#requestedClaimAmountNote')) {
       const requestedClaimAmountNoteHtmlContent = `<div id="requestedClaimAmountNote" style="padding-bottom: 20px;">
@@ -61,80 +81,73 @@ export function customizeClaimInfoStep() {
       $('#claimAmountCaveatNote')?.css({ display: 'none' });
     }
   }
+
+  function addKttpFundingInformationNote() {
+    if (!document.querySelector('#claimInformationNote')) {
+      const fundingInformationNoteHtmlContent = `
+        <div id="claimInformationNote" style="padding-bottom: 20px;">
+          The amount requested for reimbursement should not exceed the amount approved in the Authorization Letter.
+        </div>
+      `;
+
+      $('fieldset[aria-label="Funding Information"] > legend').after(
+        fundingInformationNoteHtmlContent
+      );
+    }
+  }
+
+  function addKttpRequestedClaimAmountNote() {
+    if (!document.querySelector('#requestedClaimAmountNote')) {
+      const requestedClaimAmountNoteHtmlContent = `<div id="requestedClaimAmountNote" style="padding-bottom: 20px;">
+        The amount requested for reimbursement includes all eligible costs (such as training, courses, registration, tuition) in $CAD.
+      </div>`;
+
+      $('#quartech_totalfees')
+        .closest('tr')
+        .before(requestedClaimAmountNoteHtmlContent);
+    }
+  }
+
+  function addSumNotEqualNote() {
+    const totalSumNotEqualNoteHtml = `
+      <div id="totalSumDoesNotEqualRequestAmountWarning" style="padding-bottom: 20px;">
+        <span style="color: red">Your requested amount does not equal the total of reported expenses! Please make sure this is the correct amount you want to request before continuing.</span>
+      </div>
+    `;
+    if (!document.querySelector('#totalSumDoesNotEqualRequestAmountWarning')) {
+      const totalSumNotEqualNoteHtml = `
+        <div id="totalSumDoesNotEqualRequestAmountWarning" style="padding-bottom: 20px;">
+          <span style="color: red">Your requested amount does not equal the total of reported expenses! Please make sure this is the correct amount you want to request before continuing.</span>
+        </div>
+      `;
+      $('#quartech_totalfees').closest('tr').after(totalSumNotEqualNoteHtml);
+    }
+  }
+
+  function verifyTotalSumEqualsRequestedAmount() {
+    if (
+      $('#quartech_totalfees')?.val() !==
+      $('#quartech_totalsumofreportedexpenses')?.val()
+    ) {
+      addSumNotEqualNote();
+    }
+    $('#quartech_totalfees').on('change keyup blur', (e) => {
+      // @ts-ignore
+      if (e.target.value !== $('#quartech_totalsumofreportedexpenses').val()) {
+        addSumNotEqualNote();
+      } else if ($('#totalSumDoesNotEqualRequestAmountWarning')) {
+        $('#totalSumDoesNotEqualRequestAmountWarning').css('display', 'none');
+      }
+    });
+  }
   // END step specific functions
 
   if (programAbbreviation.includes('KTTP')) {
-    const eligibleExpensesId = 'quartech_eligibleexpenses';
-    if (!$(`#${eligibleExpensesId}`)) return;
-    const fieldControlDiv = $(`#${eligibleExpensesId}`).closest('div');
-    const columns = [
-      {
-        id: 'type',
-        name: 'Expense Type',
-        width: '35%',
-      },
-      {
-        id: 'description',
-        name: 'Description',
-        width: '50%',
-      },
-      {
-        id: 'amount',
-        name: 'Amount ($CAD)',
-        width: '15%',
-      },
-    ];
-
-    let rows = [
-      {
-        type: '',
-        description: '',
-        amount: '',
-      },
-    ];
-
-    const expenseReportTableElement = doc.createElement('expense-report-table');
-    expenseReportTableElement.setAttribute('primary', 'true');
-    expenseReportTableElement.setAttribute('columns', JSON.stringify(columns));
-    expenseReportTableElement.setAttribute('rows', JSON.stringify(rows));
-
-    $(fieldControlDiv)?.append(expenseReportTableElement);
-
-    // hide dynamics field
-    $(`#${eligibleExpensesId}`).css({ display: 'none' });
-
-    // fetch pre-selected options, if any
-    const existingEligibleExpenses = $(`#${eligibleExpensesId}`).val();
-
-    // @ts-ignore
-    if (existingEligibleExpenses?.length > 0) {
-      // @ts-ignore
-      expenseReportTableElement.setAttribute('rows', existingEligibleExpenses);
-      setFieldValue(
-        'quartech_totalsumofreportedexpenses',
-        // @ts-ignore
-        getTotalExpenseAmount(JSON.parse(existingEligibleExpenses))
-      );
-    }
-
-    expenseReportTableElement.addEventListener(
-      'onChangeExpenseReportData',
-      (e) => {
-        logger.info({
-          fn: customizeClaimInfoStep,
-          message: 'onChangeExpenseReportData event listener triggered',
-          data: {
-            e,
-          },
-        });
-        // @ts-ignore
-        rows = JSON.parse(e.detail.value);
-        expenseReportTableElement.setAttribute('rows', JSON.stringify(rows));
-        setFieldValue(eligibleExpensesId, JSON.stringify(rows));
-        // @ts-ignore
-        setFieldValue('quartech_totalsumofreportedexpenses', e.detail.total);
-      }
-    );
+    addInstructions();
+    addExpenseReportGrid();
+    addKttpFundingInformationNote();
+    addKttpRequestedClaimAmountNote();
+    verifyTotalSumEqualsRequestedAmount();
   }
 
   if (programAbbreviation === 'NEFBA') {
@@ -268,4 +281,78 @@ function customizeInterimPaymentAmountField() {
   } else {
     hideQuestion('quartech_requestedinterimpaymentamount');
   }
+}
+
+function addExpenseReportGrid() {
+  const eligibleExpensesId = 'quartech_eligibleexpenses';
+  if (!$(`#${eligibleExpensesId}`)) return;
+  const fieldControlDiv = $(`#${eligibleExpensesId}`).closest('div');
+  const columns = [
+    {
+      id: 'type',
+      name: 'Expense Type',
+      width: '35%',
+    },
+    {
+      id: 'description',
+      name: 'Description',
+      width: '50%',
+    },
+    {
+      id: 'amount',
+      name: 'Amount ($CAD)',
+      width: '15%',
+    },
+  ];
+
+  let rows = [
+    {
+      type: '',
+      description: '',
+      amount: '',
+    },
+  ];
+
+  const expenseReportTableElement = doc.createElement('expense-report-table');
+  expenseReportTableElement.setAttribute('primary', 'true');
+  expenseReportTableElement.setAttribute('columns', JSON.stringify(columns));
+  expenseReportTableElement.setAttribute('rows', JSON.stringify(rows));
+
+  $(fieldControlDiv)?.append(expenseReportTableElement);
+
+  // hide dynamics field
+  $(`#${eligibleExpensesId}`).css({ display: 'none' });
+
+  // fetch pre-selected options, if any
+  const existingEligibleExpenses = $(`#${eligibleExpensesId}`).val();
+
+  // @ts-ignore
+  if (existingEligibleExpenses?.length > 0) {
+    // @ts-ignore
+    expenseReportTableElement.setAttribute('rows', existingEligibleExpenses);
+    setFieldValue(
+      'quartech_totalsumofreportedexpenses',
+      // @ts-ignore
+      getTotalExpenseAmount(JSON.parse(existingEligibleExpenses))
+    );
+  }
+
+  expenseReportTableElement.addEventListener(
+    'onChangeExpenseReportData',
+    (e) => {
+      logger.info({
+        fn: customizeClaimInfoStep,
+        message: 'onChangeExpenseReportData event listener triggered',
+        data: {
+          e,
+        },
+      });
+      // @ts-ignore
+      rows = JSON.parse(e.detail.value);
+      expenseReportTableElement.setAttribute('rows', JSON.stringify(rows));
+      setFieldValue(eligibleExpensesId, JSON.stringify(rows));
+      // @ts-ignore
+      setFieldValue('quartech_totalsumofreportedexpenses', e.detail.total);
+    }
+  );
 }

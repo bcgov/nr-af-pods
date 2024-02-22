@@ -1,6 +1,6 @@
 {
   "tags": ["Claim", "KTTP", "KTTP-SMEA", "KTTP-StreamTwo", "KTTP-Stream3"],
-  "version": "1.0.3",
+  "version": "1.0.5",
   "description": "Claim form field config used for all KTTP streams",
   "hiddenSteps": "",
   "sections": [
@@ -8,17 +8,45 @@
       "name": "ApplicantInfoStep",
       "fields": [
         {
+          "name": "quartech_legalbusinessororganizationname",
+          "label": "Legal Business or Organization Name"
+        },
+        {
+          "name": "quartech_businessaddress",
+          "label": "Business Address"
+        },
+        {
+          "name": "quartech_businessphonenumber",
+          "format": "phoneNumber",
+          "label": "Tel",
+          "validation": {
+            "type": "length",
+            "value": 14,
+            "comparison": "equalTo",
+            "postfix": "digits",
+            "overrideDisplayValue": 10
+          }
+        },
+        {
+          "name": "quartech_businessemailaddress",
+          "format": "email",
+          "label": "Email"
+        },
+        {
           "name": "quartech_applicantinformationconfirmation",
+          "label": "I / We confirm the above information is correct",
           "required": true,
           "elementType": "DropdownSelect"
         },
         {
           "name": "quartech_applicantinformationcorrections",
+          "label": "Please provide further detail",
           "required": true,
           "maxLength": 10000
         },
         {
           "name": "quartech_filenumber",
+          "label": "File number (from authorization letter)",
           "readOnly": true
         }
       ]
@@ -27,12 +55,17 @@
       "name": "ProjectResultsStep",
       "fields": [
         {
-          "name": "quartech_adoptedprojectresults",
-          "required": true,
-          "elementType": "DropdownSelect"
+          "name": "quartech_projectenddate",
+          "label": "Project End Date"
         },
         {
-          "name": "quartech_adoptednumber",
+          "name": "quartech_trainingcategoryfundedbyproject",
+          "label": "Select the category that most closely describes the training funded by this project:",
+          "required": true
+        },
+        {
+          "name": "quartech_businessmanagementtrainingparticipants",
+          "label": "How many people participated in the training funded by this project, including the applicant?",
           "required": true,
           "format": "number",
           "validation": {
@@ -42,18 +75,13 @@
           }
         },
         {
-          "name": "quartech_environmentallybeneficialadoptedresults",
-          "required": true,
-          "elementType": "DropdownSelect"
-        },
-        {
-          "name": "quartech_environmentallybeneficialadoptednumber",
-          "required": true,
+          "name": "quartech_numberofproducersprocessorparticipants",
+          "label": "If applicable, please provide the estimated number of participants who were producers/processors:",
           "format": "number",
           "validation": {
             "type": "numeric",
             "value": "0",
-            "comparison": "greaterThan"
+            "comparison": "greaterThanOrEqualTo"
           }
         }
       ]
@@ -73,30 +101,13 @@
         },
         {
           "name": "quartech_authorizedclaimedamount",
-          "label": "Approved Amount as per Authorization Letter (Consultant Fee, GST, Total)",
+          "label": "Approved Funding as per Authorization Letter (in total):",
           "readOnly": true
         },
         {
-          "name": "quartech_interimorfinalpayment",
-          "label": "Are you requesting an interim claim or a final claim?",
-          "required": true,
-          "elementType": "DropdownSelect"
-        },
-        {
-          "name": "quartech_totalprojectcost",
-          "label": "Total Project Cost",
-          "format": "currency",
-          "required": true,
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThan"
-          },
-          "emptyInitialValue": true
-        },
-        {
           "name": "quartech_totalfees",
-          "label": "Your requested amount in this current claim",
+          "label": "Your requested amount in this claim ($CAD)",
+          "tooltipText": "Enter the amount you are requesting reimbursement for in this claim",
           "format": "currency",
           "required": true,
           "validation": {
@@ -105,11 +116,6 @@
             "comparison": "greaterThan"
           },
           "emptyInitialValue": true
-        },
-        {
-          "name": "quartech_claimcoapplicants",
-          "label": "Please provide the names of the co-applicants for the claims and the cost and a brief description of the services they are claiming",
-          "required": true
         }
       ]
     },
