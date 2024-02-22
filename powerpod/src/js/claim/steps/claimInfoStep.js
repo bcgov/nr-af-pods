@@ -21,6 +21,9 @@ import '../../components/DropdownSearch.ts';
 import '../../components/TextField.ts';
 import 'fa-icons';
 import { getTotalExpenseAmount } from '../../common/expenseTypes.ts';
+import { Logger } from '../../common/logger.js';
+
+const logger = new Logger('claim/steps/claimInfoStep');
 
 export function customizeClaimInfoStep() {
   setStepRequiredFields();
@@ -117,7 +120,13 @@ export function customizeClaimInfoStep() {
     expenseReportTableElement.addEventListener(
       'onChangeExpenseReportData',
       (e) => {
-        console.log(e);
+        logger.info({
+          fn: customizeClaimInfoStep,
+          message: 'onChangeExpenseReportData event listener triggered',
+          data: {
+            e,
+          },
+        });
         // @ts-ignore
         rows = JSON.parse(e.detail.value);
         expenseReportTableElement.setAttribute('rows', JSON.stringify(rows));
