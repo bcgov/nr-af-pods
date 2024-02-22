@@ -162,6 +162,8 @@ if (window.jQuery) {
       const programAbbreviation = getProgramAbbreviation();
 
       if (programAbbreviation === "NEFBA") {
+        addSatisfactionSurveyChefsIframe();
+
         observeIframeChanges(
           customizeBusinessPlanDocumentsQuestions,
           null,
@@ -182,9 +184,7 @@ if (window.jQuery) {
           $('fieldset[aria-label="Supporting Documents"] > legend').after(
             supportingDocumentationNoteHtmlContent
           );
-        }
 
-        if (!document.querySelector("#beforeContinuingNote")) {
           const beforeContinuingNoteHtmlContent = `
             <div id="beforeContinuingNote" style="padding-bottom: 20px;">
               Please ensure you have the correct files before clicking “Next”. If you move to the next stage of the Claim for Payment form you can no longer delete uploaded files. However, you can always add new files.<br />
@@ -193,7 +193,7 @@ if (window.jQuery) {
             </div>
           `;
 
-          $("#EntityFormView").after(beforeContinuingNoteHtmlContent);
+          $('fieldset[aria-label="Supporting Documents"]').after(beforeContinuingNoteHtmlContent);
         }
       }
     }
@@ -545,6 +545,98 @@ if (window.jQuery) {
 
       addNewAppSystemNotice();
     });
+    
+    function addSatisfactionSurveyChefsIframe() {
+      debugger
+      $('#quartech_satisfactionsurveychefssubmissionid')?.closest('tr')?.css({ display: 'none' });
+      
+      setFieldReadOnly('quartech_satisfactionsurveyid');
+
+      const chefsSubmissionId = $('#quartech_satisfactionsurveychefssubmissionid')?.val();
+      let chefsUrl = '';
+
+      if (chefsSubmissionId) {
+        chefsUrl = `https://submit.digital.gov.bc.ca/app/form/success?s=${chefsSubmissionId}`;
+      } else {
+        const chefsSatisfactionSurveyFormId =
+          getConfigDataJson()?.ChefsSatisfactionSurveyFormId;
+
+        if (!chefsSatisfactionSurveyFormId) {
+          alert(
+            'Bad config: Applicant Portal Config should contain the ChefsSatisfactionSurveyFormId element'
+          );
+        }
+        chefsUrl = `https://submit.digital.gov.bc.ca/app/form/submit?f=${chefsSatisfactionSurveyFormId}`;
+
+        window.addEventListener('message', function (event) {
+          if (event.origin != 'https://submit.digital.gov.bc.ca') {
+            return;
+          }
+          const containSubmissionId = event.data.indexOf('submissionId') > -1;
+
+          if (!containSubmissionId) return;
+
+          const submissionPayload = JSON.parse(event.data);
+
+          console.log(
+            'received submissionId: ' + submissionPayload.submissionId
+          );
+
+          $('#quartech_satisfactionsurveychefssubmissionid').val(submissionPayload.submissionId);
+debugger
+          triggerChangeEvent($('#quartech_satisfactionsurveychefssubmissionid')[0]);
+
+          const confirmationId = submissionPayload.submissionId
+            .substring(0, 8)
+            .toUpperCase();
+
+          setFieldValue('quartech_satisfactionsurveyid', confirmationId);
+        });
+      }
+
+      let div = document.createElement('div');
+      div.innerHTML = `<iframe id='chefsSatisfactionSurveyIframe' src="${chefsUrl}" height="800" width="100%" title="Satisfaction Survey in CHEFS">
+          </iframe><br/>`;
+
+      const fieldLabelDivContainer = $(`#quartech_satisfactionsurveyid_label`)
+        .parent()
+        .parent();
+
+      fieldLabelDivContainer.prepend(div);
+    }
+
+    function triggerChangeEvent(htmlElem) {
+      let clickEvent = new Event("change", {
+        bubbles: true,
+        cancelable: true
+      });
+      htmlElem.dispatchEvent(clickEvent)
+    }
+    
+    /**
+     * Programmatically set a field value and trigger change event.
+     * Ensures validation checks pick up on change event.
+     * @function
+     * @param {string} name - The name of the associated field id.
+     * @param {string} value - The value to set the field to.
+     */
+    function setFieldValue(name, value) {
+      const element = document.querySelector(`#${name}`);
+      if (!element) return;
+      element.value = value;
+      const e = new Event('change');
+      element.dispatchEvent(e);
+    }
+
+    function setFieldReadOnly(fieldName) {
+      $(`#${fieldName}`).attr('readonly', true);
+      $(`#${fieldName}`).on('mousedown', function (e) {
+        e.preventDefault();
+        this.blur();
+        window.focus();
+      });
+      $(`#${fieldName}`).attr('style', 'background-color: #eee !important');
+    }
 
     function showLoadingElement() {
       // if loading element exists already, just display it
@@ -1403,7 +1495,7 @@ if (window.jQuery) {
           });
           break;
         default: // HtmlElementTypeEnum.Input
-          $(`#${fieldName}`).on("keyup", function (event) {
+          $(`#${fieldName}`).on("change keyup", function (event) {
             validateRequiredFields();
           });
           break;
