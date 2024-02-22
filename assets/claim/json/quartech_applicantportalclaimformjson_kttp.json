@@ -1,6 +1,6 @@
 {
   "tags": ["Claim", "KTTP", "KTTP-SMEA", "KTTP-StreamTwo", "KTTP-Stream3"],
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Claim form field config used for all KTTP streams",
   "hiddenSteps": "",
   "sections": [
@@ -67,7 +67,9 @@
         },
         {
           "name": "quartech_totalsumofreportedexpenses",
-          "label": "Total Sum of Reported Expenses ($CAD)"
+          "label": "Total Sum of Reported Expenses ($CAD)",
+          "readOnly": true,
+          "format": "currency"
         },
         {
           "name": "quartech_authorizedclaimedamount",
