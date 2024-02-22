@@ -1,0 +1,115 @@
+.loader{
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  position: relative;
+  margin: 150px auto;
+}
+
+#loader-1:before, #loader-1:after{
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+  border: 10px solid transparent;
+  border-top-color: #3498db;
+}
+
+#loader-1:before{
+  z-index: 100;
+  animation: spin 1s infinite;
+}
+
+#loader-1:after{
+  border: 10px solid #ccc;
+}
+
+@keyframes spin{
+  0%{
+    -webkit-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  100%{
+    -webkit-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+#quartech_businessaddress:focus {
+  border: 0px;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+#quartech_businessphonenumber:focus {
+  border: 0px;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+#quartech_businessemailaddress:focus {
+  border: 0px;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.columnBlockLayout {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}
+
+.tab-title {
+  display: none;
+}
+
+#AttachFile {
+  display: none;
+}
+
+.note-actions {
+  display: none;
+}
+
+.control .text-muted {
+  display: none;
+}
+
+fieldset:has(>table[data-name='claimInfoTab_CodingSection']), fieldset:has(>table[data-name='documentTab_CodingSection']), fieldset:has(>table[data-name='projectIndicatorsTab_CodingSection']), fieldset:has(>table[data-name='documentsTab_CodingSection']), fieldset:has(>table[data-name='consentTab_CodingSection']) {
+  display: none !important;
+}
+
+.crmEntityFormView {
+  border: none !important;
+
+  .cell {
+	  padding-left: 0px !important;
+  }
+}
+
+/*  Claim Info step */
+table[data-name='applicationInfoSection'], table[data-name='claimInfoSection'], table[data-name='indicatorsSection']
+{
+  .info {
+	  float: left;
+    padding-right: 8px;
+	  width: 50%;
+  }
+  .control {
+	  display: inline-block;
+	  width: 50%;
+  }
+}
+#quartech_businessaddress {
+  max-height: 80px;
+}
+/*  Project Indicators step */
