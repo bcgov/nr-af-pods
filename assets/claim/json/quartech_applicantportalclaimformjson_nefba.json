@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "name": "New Entrant Farm Business Accelerator",
   "abbreviation": "NEFBA",
+  "ChefsSatisfactionSurveyFormId": "0ae14c50-b3ae-4683-a34d-4e9802c3ce2f",
   "hiddenSteps": "",
   "sections": [
     {
@@ -143,6 +144,12 @@
           "label": "Growth Strategy",
           "required": true,
           "elementType": "FileInput"
+        },
+        {
+          "name": "quartech_satisfactionsurveyid",
+          "required": true,
+          "tooltipText": "This number is automatically generated when the survey has been submitted",
+          "label": "Satisfaction Survey ID number"
         }
       ]
     }
