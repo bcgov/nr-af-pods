@@ -1,4 +1,5 @@
 {
+  "ChefsSatisfactionSurveyFormId": "534c5389-7645-40b2-a9bf-2598a3b7bd2d",
   "TypeOfBusiness_ToolTips": {
     "255550001": {
       "Option": "Primary Producer",
@@ -228,6 +229,17 @@
                     "label": "Growth Strategy",
                     "required": true,
                     "elementType": "FileInput"
+                  }
+                ]
+              },
+              {
+                "name": "Satisfaction Survey",
+                "fields": [
+                  {
+                    "name": "quartech_satisfactionsurveyid",
+                    "required": true,
+                    "tooltipText": "This number is automatically generated when the survey has been submitted",
+                    "label": "Satisfaction Survey ID number"
                   }
                 ]
               }
