@@ -10,17 +10,18 @@ class DropdownSearch extends LitElement {
 
   static styles = css`
     .dropdown-search {
-      min-width: 350px;
       position: relative;
     }
 
     select {
+      line-height: 1.42857;
+      font-size: 15px;
       appearance: none;
       /*  safari  */
       -webkit-appearance: none;
       /*  other styles for aesthetics */
       width: 100%;
-      padding: 0.675em 6em 0.675em 1em;
+      padding: 6px 20px 6px 12px;
       background-color: #fff;
       border: 1px solid #caced1;
       border-radius: 0.25rem;

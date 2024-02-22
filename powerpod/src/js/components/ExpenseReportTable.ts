@@ -1,11 +1,11 @@
-import { LitElement, css, html } from 'lit';
+import bootstrap from '../../assets/css/bootstrap.css';
+import { LitElement, css, html, unsafeCSS } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import './CurrencyInput';
 import './DropdownSearch';
 import './TextField';
-import { processExpenseTypesData } from '../common/expenseTypes';
+import { getTotalExpenseAmount, processExpenseTypesData } from '../common/expenseTypes';
 import { getExpenseTypeData } from '../common/fetch';
-import 'fa-icons';
 
 type RowItem = {
   [key: string]: string;
@@ -43,6 +43,7 @@ class ExpenseReportTable extends LitElement {
     }
     .styled-table th {
       padding: 12px 15px;
+      font-size: 15px;
     }
     .styled-table td {
       padding: 12px 15px 24px;
@@ -75,44 +76,13 @@ class ExpenseReportTable extends LitElement {
     }
     .add-another-btn {
       line-height: 1.5;
+      font-size: 13px;
     }
     .add-another-btn span {
       padding-bottom: 2px;
-    }
+    },
+    ${unsafeCSS(bootstrap)}
   `;
-
-  // constructor() {
-  //   super();
-  //   this.columns = [
-  //     {
-  //       id: 'type',
-  //       name: 'Expense Type',
-  //       width: '20%',
-  //     },
-  //     {
-  //       id: 'description',
-  //       name: 'Description',
-  //       width: '70%',
-  //     },
-  //     {
-  //       id: 'amount',
-  //       name: 'Amount ($CAD)',
-  //       width: '10%',
-  //     },
-  //   ];
-  //   this.rows = [
-  //     {
-  //       type: 'Facility, equipment, technology rental',
-  //       description: 'This is for our contractor',
-  //       amount: '50.00',
-  //     },
-  //     {
-  //       type: 'Administration Costs',
-  //       description: 'Agriculture fees for facilitating resources',
-  //       amount: '65.00',
-  //     },
-  //   ];
-  // }
 
   // make fetch call as soon as component is mounted
   connectedCallback(): void {
@@ -127,7 +97,7 @@ class ExpenseReportTable extends LitElement {
         id: this.id,
         message: 'Expense report data has changed',
         value: JSON.stringify(rowData),
-        total: this.getTotalExpenseAmount(),
+        total: getTotalExpenseAmount(rowData),
       },
       bubbles: true,
       composed: true,
@@ -141,20 +111,6 @@ class ExpenseReportTable extends LitElement {
       throw new Error('Expense types task failed');
     }
     this.expenseTypes = processExpenseTypesData(data);
-  }
-
-  private getTotalExpenseAmount() {
-    let floatValue = this.rows.reduce((acc: number, row: RowItem) => {
-      const amount = row['amount'];
-      const numericValue = amount.replace(/[^\d.-]/g, '');
-      if (!!numericValue) return acc + parseFloat(numericValue);
-      return acc;
-    }, 0.0);
-    const formattedValue = floatValue.toLocaleString('en-US', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-    return formattedValue;
   }
 
   private handleUpdateCell(
@@ -181,6 +137,16 @@ class ExpenseReportTable extends LitElement {
 
   private handleDeleteRow(rowIndex: number) {
     const rowData = this.rows;
+    if (rowData.length === 1) {
+      this.rows = [
+        {
+          type: '',
+          description: '',
+          amount: '',
+        },
+      ];
+      return;
+    }
     rowData.splice(rowIndex, 1);
     this.rows = rowData;
     this.emitEvent();
@@ -188,11 +154,6 @@ class ExpenseReportTable extends LitElement {
 
   render() {
     return html`
-      <style>
-        text-field {
-          width: 100%;
-        }
-      </style>
       <table class="styled-table">
         <thead>
           <tr>
@@ -228,7 +189,7 @@ class ExpenseReportTable extends LitElement {
                       } else if (col.id === 'description') {
                         return html` <td>
                           <text-field
-                            customStyle="width: 100%"
+                            customStyle="width: 95%"
                             .inputValue=${cellValue}
                             @onChangeTextField=${(e: CustomEvent) => {
                               this.handleUpdateCell(
@@ -262,11 +223,12 @@ class ExpenseReportTable extends LitElement {
                         type="button"
                         @click=${() => this.handleDeleteRow(rowIndex)}
                       >
-                        <fa-icon
-                          style="padding-top: 1px"
-                          class="fa fa-trash"
-                          size="1em"
-                        ></fa-icon>
+                        <span
+                          style="padding-top: 4px; font-weight: bold; font-size: 15px"
+                          class="glyphicon glyphicon-trash"
+                          role="img"
+                          aria-label="Delete"
+                        ></span>
                       </button>
                     </td>
                   </tr>
@@ -280,12 +242,11 @@ class ExpenseReportTable extends LitElement {
                 class="add-another-btn"
                 @click=${this.handleAddRow}
               >
-                <fa-icon
+                <span
                   style="padding: 1px 1px 0px 0px"
-                  class="fa fa-plus"
-                  size="1em"
-                ></fa-icon>
-                <span>Add Another</span>
+                  class="glyphicon glyphicon-plus"
+                ></span>
+                <span style="font-weight: bold">Add Another</span>
               </button>
             </td>
           </tr>

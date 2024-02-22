@@ -2,6 +2,9 @@ import { terser } from 'rollup-plugin-terser';
 import resolve from '@rollup/plugin-node-resolve';
 import babel from '@rollup/plugin-babel';
 import typescript from '@rollup/plugin-typescript';
+import css from 'rollup-plugin-import-css';
+import alias from 'rollup-plugin-alias';
+import path from 'path';
 
 const licenseContent = `/*!
 * powerpod 0.6.7
@@ -88,6 +91,7 @@ module.exports = [
       typescript({
         tsconfig: 'src/tsconfig.json',
       }),
+      css(),
       babel({
         presets: [
           [

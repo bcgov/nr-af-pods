@@ -12,6 +12,10 @@ type ExpenseTypeBlob = {
   quartech_expensetypeid: string;
 };
 
+type RowItem = {
+  [key: string]: string;
+};
+
 export type ExpenseType = string;
 
 export async function getExpenseTypes() {
@@ -56,4 +60,18 @@ export function processExpenseTypesData(json: ExpenseTypesDataBlob) {
   );
 
   return res;
+}
+
+export function getTotalExpenseAmount(rowData: RowItem[]) {
+  let floatValue = rowData.reduce((acc: number, row: RowItem) => {
+    const amount = row['amount'];
+    const numericValue = amount.replace(/[^\d.-]/g, '');
+    if (!!numericValue) return acc + parseFloat(numericValue);
+    return acc;
+  }, 0.0);
+  const formattedValue = floatValue.toLocaleString('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+  return formattedValue;
 }

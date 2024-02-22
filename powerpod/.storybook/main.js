@@ -24,6 +24,10 @@ const config = {
             __dirname,
             '../__mocks__/common/fetch.js'
           ),
+          '../../assets/css/bootstrap.css': path.resolve(
+            __dirname,
+            '../src/assets/css/bootstrap.css?inline'
+          ),
         },
       },
     }),

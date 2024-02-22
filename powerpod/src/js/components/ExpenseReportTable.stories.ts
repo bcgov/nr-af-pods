@@ -18,17 +18,17 @@ export const Primary: Story = {
       {
         id: 'type',
         name: 'Expense Type',
-        width: '20%',
+        width: '35%',
       },
       {
         id: 'description',
         name: 'Description',
-        width: '70%',
+        width: '50%',
       },
       {
         id: 'amount',
         name: 'Amount ($CAD)',
-        width: '10%'
+        width: '15%',
       },
     ],
     rows: [
@@ -47,8 +47,8 @@ export const Primary: Story = {
   render: function Render(args) {
     const [{ rows, headings, columns }, updateArgs] = useArgs();
     return html`<expense-report-table
-      .columns=${columns}
-      .rows=${rows}
+      columns=${JSON.stringify(columns)}
+      rows=${JSON.stringify(rows)}
       @onChangeExpenseReportData=${(e: CustomEvent) => {
         action('onChangeExpenseReportData')(e);
         updateArgs({ rows: JSON.parse(e.detail.value) });
