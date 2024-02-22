@@ -1,10 +1,14 @@
 import { getClaimConfigData, getGlobalConfigData } from '../common/config.js';
-import { FormStep } from '../common/constants.js';
+import { FormStep, doc } from '../common/constants.js';
 import { getClaimFormData } from '../common/fetch.js';
-import { hideFieldsAndSections } from '../common/html.js';
+import { hideFieldsAndSections, onDocumentReadyState } from '../common/html.js';
 import { hideLoadingAnimation } from '../common/loading.js';
 import { Logger } from '../common/logger.js';
-import { getCurrentStep, getProgramData, getProgramId } from '../common/program.ts';
+import {
+  getCurrentStep,
+  getProgramData,
+  getProgramId,
+} from '../common/program.ts';
 import { addNewAppSystemNotice } from '../common/system.js';
 import { validateRequiredFields } from '../common/validation.js';
 import { customizeApplicantInfoStep } from './steps/applicantInfo.js';
@@ -17,14 +21,12 @@ const logger = Logger('claim/claim');
 
 export function initClaim() {
   hideFieldsAndSections();
-
   updatePageForSelectedProgram();
-
   addNewAppSystemNotice();
 }
 
-function updatePageForSelectedProgram(programid = undefined) {
-  if (!programid) programid = getProgramId();
+function updatePageForSelectedProgram() {
+  const programid = getProgramId();
 
   logger.info({
     fn: updatePageForSelectedProgram,

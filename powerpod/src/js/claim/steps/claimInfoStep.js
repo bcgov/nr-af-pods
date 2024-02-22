@@ -1,14 +1,29 @@
-import { GROUP_APPLICATION_VALUE, NO_VALUE } from '../../common/constants.js';
+import { html } from 'lit';
+import {
+  GROUP_APPLICATION_VALUE,
+  NO_VALUE,
+  doc,
+} from '../../common/constants.js';
 import { initOnChange_DependentRequiredField } from '../../common/fieldLogic.js';
 import {
   hideQuestion,
   observeChanges,
   observeIframeChanges,
+  setFieldValue,
 } from '../../common/html.js';
 import { getProgramAbbreviation } from '../../common/program.ts';
 import { setStepRequiredFields } from '../../common/setRequired.js';
 import { setFieldReadOnly } from '../../common/validation.js';
 import { customizeSingleOrGroupApplicantQuestions } from '../fieldLogic.js';
+import '../../components/ExpenseReportTable.ts';
+import '../../components/CurrencyInput.ts';
+import '../../components/DropdownSearch.ts';
+import '../../components/TextField.ts';
+import 'fa-icons';
+import { getTotalExpenseAmount } from '../../common/expenseTypes.ts';
+import { Logger } from '../../common/logger.js';
+
+const logger = new Logger('claim/steps/claimInfoStep');
 
 export function customizeClaimInfoStep() {
   setStepRequiredFields();
@@ -47,6 +62,80 @@ export function customizeClaimInfoStep() {
     }
   }
   // END step specific functions
+
+  if (programAbbreviation.includes('KTTP')) {
+    const eligibleExpensesId = 'quartech_eligibleexpenses';
+    if (!$(`#${eligibleExpensesId}`)) return;
+    const fieldControlDiv = $(`#${eligibleExpensesId}`).closest('div');
+    const columns = [
+      {
+        id: 'type',
+        name: 'Expense Type',
+        width: '35%',
+      },
+      {
+        id: 'description',
+        name: 'Description',
+        width: '50%',
+      },
+      {
+        id: 'amount',
+        name: 'Amount ($CAD)',
+        width: '15%',
+      },
+    ];
+
+    let rows = [
+      {
+        type: '',
+        description: '',
+        amount: '',
+      },
+    ];
+
+    const expenseReportTableElement = doc.createElement('expense-report-table');
+    expenseReportTableElement.setAttribute('primary', 'true');
+    expenseReportTableElement.setAttribute('columns', JSON.stringify(columns));
+    expenseReportTableElement.setAttribute('rows', JSON.stringify(rows));
+
+    $(fieldControlDiv)?.append(expenseReportTableElement);
+
+    // hide dynamics field
+    $(`#${eligibleExpensesId}`).css({ display: 'none' });
+
+    // fetch pre-selected options, if any
+    const existingEligibleExpenses = $(`#${eligibleExpensesId}`).val();
+
+    // @ts-ignore
+    if (existingEligibleExpenses?.length > 0) {
+      // @ts-ignore
+      expenseReportTableElement.setAttribute('rows', existingEligibleExpenses);
+      setFieldValue(
+        'quartech_totalsumofreportedexpenses',
+        // @ts-ignore
+        getTotalExpenseAmount(JSON.parse(existingEligibleExpenses))
+      );
+    }
+
+    expenseReportTableElement.addEventListener(
+      'onChangeExpenseReportData',
+      (e) => {
+        logger.info({
+          fn: customizeClaimInfoStep,
+          message: 'onChangeExpenseReportData event listener triggered',
+          data: {
+            e,
+          },
+        });
+        // @ts-ignore
+        rows = JSON.parse(e.detail.value);
+        expenseReportTableElement.setAttribute('rows', JSON.stringify(rows));
+        setFieldValue(eligibleExpensesId, JSON.stringify(rows));
+        // @ts-ignore
+        setFieldValue('quartech_totalsumofreportedexpenses', e.detail.total);
+      }
+    );
+  }
 
   if (programAbbreviation === 'NEFBA') {
     addRequestedClaimAmountNote();
@@ -180,4 +269,3 @@ function customizeInterimPaymentAmountField() {
     hideQuestion('quartech_requestedinterimpaymentamount');
   }
 }
-

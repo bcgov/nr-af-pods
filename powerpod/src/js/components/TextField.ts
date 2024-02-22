@@ -7,6 +7,18 @@ class TextField extends LitElement {
   @property({ type: String }) inputValue: string = '';
   @property() customStyle = '';
 
+  static styles = css`
+    input {
+      line-height: 1.42857;
+      padding: 6px 12px;
+      background-color: #fff;
+      border: 1px solid #caced1;
+      border-radius: 0.25rem;
+      color: #000;
+      font-size: 15px;
+    }
+  `;
+
   emitEvent() {
     let event = new CustomEvent('onChangeTextField', {
       detail: {
@@ -24,6 +36,7 @@ class TextField extends LitElement {
   render() {
     return html`
       <input
+        class="text-field"
         style=${unsafeCSS(this.customStyle)}
         id="inputElement"
         type="text"

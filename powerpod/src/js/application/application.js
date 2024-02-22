@@ -17,7 +17,7 @@ import { customizeDeclarationConsentStep } from './steps/declarationConsent.js';
 import { customizeDeliverablesBudgetStep } from './steps/deliverablesBudget.js';
 import { customizeDemographicInfoStep } from './steps/demographicInfo.js';
 import { customizeDocumentsStep } from './steps/documents.js';
-import { hideFields, hideFieldsAndSections } from '../common/html.js';
+import { hideFieldsAndSections, onDocumentReadyState } from '../common/html.js';
 import { addNewAppSystemNotice } from '../common/system.js';
 import { getGlobalConfigData } from '../common/config.js';
 
@@ -25,29 +25,28 @@ const logger = Logger('application/application');
 
 export function initApplication() {
   hideFieldsAndSections();
-
-  const currentStep = getCurrentStep();
-  const isDemographicInfoStep = currentStep === FormStep.DemographicInfo;
-
-  if (isDemographicInfoStep) {
-    var demographicInfoStepIframe = document.getElementById(
-      'ApplicationDemographicInfoStepQuickViewForm'
-    );
-    demographicInfoStepIframe.addEventListener('load', function () {
-      var programid = document
-        .querySelector('#ApplicationDemographicInfoStepQuickViewForm')
-        // @ts-ignore
-        ?.contentWindow?.document?.querySelector('#quartech_program')?.value;
-
-      updatePageForSelectedProgram(programid);
-    });
+  if (getCurrentStep() === FormStep.DemographicInfo) {
+    updatePageForDemographicStep();
   } else {
     updatePageForSelectedProgram();
   }
-
   addNewAppSystemNotice();
 
   customizePageForFirefox();
+}
+
+function updatePageForDemographicStep() {
+  var demographicInfoStepIframe = document.getElementById(
+    'ApplicationDemographicInfoStepQuickViewForm'
+  );
+  demographicInfoStepIframe.addEventListener('load', function () {
+    var programid = document
+      .querySelector('#ApplicationDemographicInfoStepQuickViewForm')
+      // @ts-ignore
+      ?.contentWindow?.document?.querySelector('#quartech_program')?.value;
+
+    updatePageForSelectedProgram(programid);
+  });
 }
 
 function customizePageForFirefox() {

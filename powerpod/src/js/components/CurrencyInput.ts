@@ -17,11 +17,11 @@ class CurrencyInput extends LitElement {
       width: 25px;
       text-align: center;
       font-style: normal;
+      font-size: 15px;
     }
 
     .input-icon > input {
       padding-left: 25px;
-      padding-right: 0;
     }
 
     .input-icon-right > i {
@@ -32,6 +32,16 @@ class CurrencyInput extends LitElement {
       padding-left: 0;
       padding-right: 25px;
       text-align: right;
+    }
+
+    .form-control {
+      line-height: 1.42857;
+      padding: 6px 12px;
+      background-color: #fff;
+      border: 1px solid #caced1;
+      border-radius: 0.25rem;
+      color: #000;
+      font-size: 15px;
     }
   `;
 
