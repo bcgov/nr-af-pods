@@ -33,6 +33,13 @@ class TextField extends LitElement {
     this.dispatchEvent(event);
   }
 
+  handleEmitEvent(event: Event) {
+    console.log
+    const { target } = event;
+    if (target) this.inputValue = (target as HTMLSelectElement).value ?? '';
+    this.emitEvent();
+  }
+
   render() {
     return html`
       <input
@@ -41,12 +48,7 @@ class TextField extends LitElement {
         id="inputElement"
         type="text"
         .value=${this.inputValue || ''}
-        @change=${(event: Event) => {
-          const { target } = event;
-          if (target)
-            this.inputValue = (target as HTMLSelectElement).value ?? '';
-          this.emitEvent();
-        }}
+        @change=${this.handleEmitEvent}
       />
     `;
   }

@@ -81,3 +81,20 @@ export function sortArrayByProperty(array, propertyName) {
 export function hasUpperCase(str) {
   return str && str !== str.toLowerCase();
 }
+
+export function filterEmptyRows(rowData) {
+  return rowData.filter((obj) => {
+    return Object.values(obj).some((value) => value.trim() !== '');
+  });
+}
+
+export function isLastObjectEmpty(array) {
+  if (array.length === 0) {
+    return false; // If the array is empty, return false
+  }
+
+  const lastObject = array[array.length - 1]; // Get the last object in the array
+
+  // Check if all values of the last object are empty strings
+  return Object.values(lastObject).every((value) => value.trim() === '');
+}

@@ -22,6 +22,7 @@ import '../../components/TextField.ts';
 import 'fa-icons';
 import { getTotalExpenseAmount } from '../../common/expenseTypes.ts';
 import { Logger } from '../../common/logger.js';
+import { filterEmptyRows } from '../../common/utils.js';
 
 const logger = new Logger('claim/steps/claimInfoStep');
 
@@ -319,7 +320,7 @@ function addExpenseReportGrid() {
   expenseReportTableElement.setAttribute('columns', JSON.stringify(columns));
   expenseReportTableElement.setAttribute('rows', JSON.stringify(rows));
 
-  $(fieldControlDiv)?.append(expenseReportTableElement);
+  $(fieldControlDiv)?.before(expenseReportTableElement);
 
   // hide dynamics field
   $(`#${eligibleExpensesId}`).css({ display: 'none' });
@@ -352,7 +353,7 @@ function addExpenseReportGrid() {
       // @ts-ignore
       rows = JSON.parse(e.detail.value);
       expenseReportTableElement.setAttribute('rows', JSON.stringify(rows));
-      setFieldValue(eligibleExpensesId, JSON.stringify(rows));
+      setFieldValue(eligibleExpensesId, JSON.stringify(filterEmptyRows(rows)));
       // @ts-ignore
       setFieldValue('quartech_totalsumofreportedexpenses', e.detail.total);
       verifyTotalSumEqualsRequestedAmount();
