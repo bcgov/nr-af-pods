@@ -4,8 +4,15 @@ import { customElement, property } from 'lit/decorators.js';
 import './CurrencyInput';
 import './DropdownSearch';
 import './TextField';
-import { getTotalExpenseAmount, processExpenseTypesData } from '../common/expenseTypes';
+import {
+  getTotalExpenseAmount,
+  processExpenseTypesData,
+} from '../common/expenseTypes';
 import { getExpenseTypeData } from '../common/fetch';
+import { Logger } from '../common/logger';
+import { isLastObjectEmpty } from '../common/utils';
+
+const logger = new Logger('components/ExpenseReportTable');
 
 type RowItem = {
   [key: string]: string;
@@ -119,18 +126,22 @@ class ExpenseReportTable extends LitElement {
     newValue: string
   ) {
     const rowData = this.rows;
-    rowData[rowIndex][columnKey] = newValue;
+    rowData[rowIndex][columnKey] = newValue ?? '';
     this.rows = rowData;
     this.emitEvent();
   }
 
   private handleAddRow() {
     const rowData = this.rows;
-    rowData.push({
-      type: '',
-      description: '',
-      amount: '',
-    });
+    if (isLastObjectEmpty(rowData)) {
+      return;
+    }
+    if (rowData)
+      rowData.push({
+        type: '',
+        description: '',
+        amount: '',
+      });
     this.rows = rowData;
     this.emitEvent();
   }
