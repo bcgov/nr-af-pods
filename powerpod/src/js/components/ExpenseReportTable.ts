@@ -4,8 +4,15 @@ import { customElement, property } from 'lit/decorators.js';
 import './CurrencyInput';
 import './DropdownSearch';
 import './TextField';
-import { getTotalExpenseAmount, processExpenseTypesData } from '../common/expenseTypes';
+import {
+  getTotalExpenseAmount,
+  processExpenseTypesData,
+} from '../common/expenseTypes';
 import { getExpenseTypeData } from '../common/fetch';
+import { Logger } from '../common/logger';
+import { isLastObjectEmpty } from '../common/utils';
+
+const logger = new Logger('components/ExpenseReportTable');
 
 type RowItem = {
   [key: string]: string;
@@ -90,8 +97,7 @@ class ExpenseReportTable extends LitElement {
     this.getExpenseTypes();
   }
 
-  emitEvent() {
-    const rowData = this.rows;
+  emitEvent(rowData: RowItem[]) {
     const customEvent = new CustomEvent('onChangeExpenseReportData', {
       detail: {
         id: this.id,
@@ -119,20 +125,24 @@ class ExpenseReportTable extends LitElement {
     newValue: string
   ) {
     const rowData = this.rows;
-    rowData[rowIndex][columnKey] = newValue;
+    rowData[rowIndex][columnKey] = newValue ?? '';
     this.rows = rowData;
-    this.emitEvent();
+    this.emitEvent(rowData);
   }
 
   private handleAddRow() {
     const rowData = this.rows;
-    rowData.push({
-      type: '',
-      description: '',
-      amount: '',
-    });
+    if (isLastObjectEmpty(rowData)) {
+      return;
+    }
+    if (rowData)
+      rowData.push({
+        type: '',
+        description: '',
+        amount: '',
+      });
     this.rows = rowData;
-    this.emitEvent();
+    this.emitEvent(rowData);
   }
 
   private handleDeleteRow(rowIndex: number) {
@@ -149,7 +159,7 @@ class ExpenseReportTable extends LitElement {
     }
     rowData.splice(rowIndex, 1);
     this.rows = rowData;
-    this.emitEvent();
+    this.emitEvent(rowData);
   }
 
   render() {

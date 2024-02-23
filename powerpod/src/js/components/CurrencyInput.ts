@@ -109,6 +109,15 @@ class CurrencyInput extends LitElement {
   }
 
   handleInputChange(event: InputEvent) {
+    if (
+      event.inputType === 'deleteContentBackward' &&
+      this.inputElement?.value === ''
+    ) {
+      this.previousInputValue = '';
+      this.inputValue = '';
+      this.emitEvent();
+      return;
+    }
     if (event.inputType !== 'insertText') {
       return;
     }
@@ -172,8 +181,8 @@ class CurrencyInput extends LitElement {
       );
       this.inputElement.value = formattedValue;
       this.inputValue = formattedValue;
-      this.emitEvent();
     }
+    this.emitEvent();
   }
 
   emitEvent() {
