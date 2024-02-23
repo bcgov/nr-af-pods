@@ -97,7 +97,8 @@ class ExpenseReportTable extends LitElement {
     this.getExpenseTypes();
   }
 
-  emitEvent(rowData: RowItem[]) {
+  emitEvent() {
+    const rowData = this.rows;
     const customEvent = new CustomEvent('onChangeExpenseReportData', {
       detail: {
         id: this.id,
@@ -127,7 +128,7 @@ class ExpenseReportTable extends LitElement {
     const rowData = this.rows;
     rowData[rowIndex][columnKey] = newValue ?? '';
     this.rows = rowData;
-    this.emitEvent(rowData);
+    this.emitEvent();
   }
 
   private handleAddRow() {
@@ -142,7 +143,7 @@ class ExpenseReportTable extends LitElement {
         amount: '',
       });
     this.rows = rowData;
-    this.emitEvent(rowData);
+    this.emitEvent();
   }
 
   private handleDeleteRow(rowIndex: number) {
@@ -159,7 +160,7 @@ class ExpenseReportTable extends LitElement {
     }
     rowData.splice(rowIndex, 1);
     this.rows = rowData;
-    this.emitEvent(rowData);
+    this.emitEvent();
   }
 
   render() {
