@@ -2,7 +2,7 @@
   -------------------
   FILE INFO
   -------------------
-  version: 1.0.0
+  version: 1.0.1
   name: Claim CSS
   type: CSS
   description: This is the CSS used on the Claim web page
@@ -67,6 +67,8 @@ fieldset:has(> table[data-name='consentTab_CodingSection']) {
 }
 
 /*  Claim Info step */
+table[data-name='section_ExpenseReport'],
+table[data-name='FundingInformationSection'],
 table[data-name='applicationInfoSection'],
 table[data-name='claimInfoSection'],
 table[data-name='indicatorsSection'] {

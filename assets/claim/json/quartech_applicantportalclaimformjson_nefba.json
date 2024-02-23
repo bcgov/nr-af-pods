@@ -1,6 +1,6 @@
 {
   "tags": ["Claim", "NEFBA"],
-  "version": "1.0.0",
+  "version": "1.0.1",
   "name": "New Entrant Farm Business Accelerator",
   "abbreviation": "NEFBA",
   "hiddenSteps": "",
@@ -49,35 +49,6 @@
           "name": "quartech_filenumber",
           "label": "File number (from authorization letter)",
           "readOnly": true
-        },
-        {
-          "name": "quartech_authorizedclaimedamount",
-          "label": "Approved Amount as per Authorization Letter (Consultant Fee, GST, Total)",
-          "readOnly": true
-        },
-        {
-          "name": "quartech_totalprojectcost",
-          "label": "Total Project Cost",
-          "format": "currency",
-          "required": true,
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThan"
-          },
-          "emptyInitialValue": true
-        },
-        {
-          "name": "quartech_totalfees",
-          "label": "Your requested amount in this current claim",
-          "format": "currency",
-          "required": true,
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThan"
-          },
-          "emptyInitialValue": true
         }
       ]
     },
@@ -118,19 +89,55 @@
       ]
     },
     {
+      "name": "ClaimInfoStep",
+      "fields": [
+        {
+          "name": "quartech_authorizedclaimedamount",
+          "label": "Approved Amount as per Authorization Letter (Consultant Fee, GST, Total)",
+          "readOnly": true
+        },
+        {
+          "name": "quartech_totalprojectcost",
+          "label": "Total Project Cost",
+          "format": "currency",
+          "required": true,
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThan"
+          },
+          "emptyInitialValue": true
+        },
+        {
+          "name": "quartech_totalfees",
+          "label": "Your requested amount in this current claim",
+          "format": "currency",
+          "required": true,
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThan"
+          },
+          "emptyInitialValue": true
+        }
+      ]
+    },
+    {
       "name": "DocumentsStep",
       "fields": [
         {
           "name": "quartech_invoices",
           "label": "Invoices from Consultant",
           "required": true,
-          "elementType": "FileInput"
+          "elementType": "FileInput",
+          "hidden": true
         },
         {
           "name": "quartech_proofofpayment",
           "label": "Proof of payment",
           "required": true,
-          "elementType": "FileInput"
+          "elementType": "FileInput",
+          "hidden": true
         },
         {
           "name": "quartech_businessplan",
