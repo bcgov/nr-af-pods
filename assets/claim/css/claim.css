@@ -58,6 +58,11 @@ fieldset:has(> table[data-name='consentTab_CodingSection']) {
   display: none !important;
 }
 
+h4 {
+  font-weight: 200 !important;
+  font-size: 18px !important;
+}
+
 .crmEntityFormView {
   border: none !important;
 
@@ -69,7 +74,9 @@ fieldset:has(> table[data-name='consentTab_CodingSection']) {
 /*  Claim Info step */
 table[data-name='applicationInfoSection'],
 table[data-name='claimInfoSection'],
-table[data-name='indicatorsSection'] {
+table[data-name='indicatorsSection'],
+table[data-name='documentsTab_SatisfactionSurveySection']
+ {
   .info {
     float: left;
     padding-right: 8px;

@@ -1,9 +1,13 @@
 import { hideQuestion, observeIframeChanges } from '../../common/html.js';
+import { getEnvVars } from '../../common/env.js';
 import {
-  getCurrentStep,
   getProgramAbbreviation,
 } from '../../common/program.ts';
 import { setStepRequiredFields } from '../../common/setRequired.js';
+import {
+  setFieldValue,
+} from '../../common/html.js';
+import { setFieldReadOnly } from '../../common/validation.js';
 
 export function customizeDocumentsStep() {
   setStepRequiredFields();
@@ -11,6 +15,8 @@ export function customizeDocumentsStep() {
   const programAbbreviation = getProgramAbbreviation();
 
   if (programAbbreviation === 'NEFBA') {
+    addSatisfactionSurveyChefsIframe();
+
     observeIframeChanges(
       customizeBusinessPlanDocumentsQuestions,
       null,
@@ -32,9 +38,7 @@ export function customizeDocumentsStep() {
       $('fieldset[aria-label="Supporting Documents"] > legend').after(
         supportingDocumentationNoteHtmlContent
       );
-    }
 
-    if (!document.querySelector('#beforeContinuingNote')) {
       const beforeContinuingNoteHtmlContent = `
         <div id="beforeContinuingNote" style="padding-bottom: 20px;">
           Please ensure you have the correct files before clicking “Next”. If you move to the next stage of the Claim for Payment form you can no longer delete uploaded files. However, you can always add new files.<br />
@@ -43,8 +47,54 @@ export function customizeDocumentsStep() {
         </div>
       `;
 
-      $('#EntityFormView').after(beforeContinuingNoteHtmlContent);
+      $('fieldset[aria-label="Supporting Documents"]').after(beforeContinuingNoteHtmlContent);
     }
+  }
+}
+
+async function addSatisfactionSurveyChefsIframe() {
+  $('#quartech_satisfactionsurveychefssubmissionid')?.closest('tr')?.css({ display: 'none' });
+  
+  setFieldReadOnly('quartech_satisfactionsurveyid');
+
+  const chefsSubmissionId = $('#quartech_satisfactionsurveychefssubmissionid')?.val();
+  let chefsUrl = '';
+
+  if (chefsSubmissionId) {
+    chefsUrl = `https://submit.digital.gov.bc.ca/app/form/success?s=${chefsSubmissionId}`;
+  } else {
+    const { quartech_ChefsNefbaSatisfactionSurveyFormId: chefsNefbaSatisfactionSurveyFormId } =
+      await getEnvVars();
+
+    if (!chefsNefbaSatisfactionSurveyFormId) {
+      alert(
+        'Bad config: Applicant Portal Config should contain the quartech_ChefsNefbaSatisfactionSurveyFormId element'
+      );
+    }
+    chefsUrl = `https://submit.digital.gov.bc.ca/app/form/submit?f=${chefsNefbaSatisfactionSurveyFormId}`;
+
+    window.addEventListener('message', function (event) {
+      if (event.origin != 'https://submit.digital.gov.bc.ca') {
+        return;
+      }
+      const containSubmissionId = event.data.indexOf('submissionId') > -1;
+
+      if (!containSubmissionId) return;
+
+      const submissionPayload = JSON.parse(event.data);
+
+      console.log(
+        'received submissionId: ' + submissionPayload.submissionId
+      );
+
+      $('#quartech_satisfactionsurveychefssubmissionid').val(submissionPayload.submissionId);
+
+      const confirmationId = submissionPayload.submissionId
+        .substring(0, 8)
+        .toUpperCase();
+
+      setFieldValue('quartech_satisfactionsurveyid', confirmationId);
+    });
   }
 }
 
