@@ -34,17 +34,6 @@ export function customizeApplicantInfoStep() {
       dependentOnElementTag: 'quartech_applicantinformationconfirmation',
       requiredFieldTag: 'quartech_applicantinformationcorrections',
     });
-
-    logger.info({
-      fn: customizeApplicantInfoStep,
-      message: 'Observing changes on quartech_completingcategory...',
-    });
-
-    observeIframeChanges(
-      customizeBusinessPlanDependentQuestions,
-      null,
-      'quartech_completingcategory'
-    );
   }
 
   if (programAbbreviation.includes('ABPP')) {
