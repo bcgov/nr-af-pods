@@ -320,7 +320,7 @@ function addExpenseReportGrid() {
   expenseReportTableElement.setAttribute('columns', JSON.stringify(columns));
   expenseReportTableElement.setAttribute('rows', JSON.stringify(rows));
 
-  $(fieldControlDiv)?.append(expenseReportTableElement);
+  $(fieldControlDiv)?.before(expenseReportTableElement);
 
   // hide dynamics field
   $(`#${eligibleExpensesId}`).css({ display: 'none' });
