@@ -150,6 +150,12 @@
           "label": "Growth Strategy",
           "required": true,
           "elementType": "FileInput"
+        },
+        {
+          "name": "quartech_satisfactionsurveyid",
+          "required": true,
+          "tooltipText": "This number is automatically generated when the survey has been submitted",
+          "label": "Satisfaction Survey ID number"
         }
       ]
     }
