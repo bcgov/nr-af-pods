@@ -9,7 +9,7 @@ import {
 } from '../../common/html.js';
 import { setFieldReadOnly } from '../../common/validation.js';
 
-export function customizeDocumentsStep() {
+export async function customizeDocumentsStep() {
   setStepRequiredFields();
 
   const programAbbreviation = getProgramAbbreviation();
@@ -95,6 +95,16 @@ async function addSatisfactionSurveyChefsIframe() {
 
       setFieldValue('quartech_satisfactionsurveyid', confirmationId);
     });
+
+    let div = document.createElement('div');
+    div.innerHTML = `<iframe id='chefsSatisfactionSurveyIframe' src="${chefsUrl}" height="800" width="100%" title="Satisfaction Survey in CHEFS">
+        </iframe><br/>`;
+
+    const fieldLabelDivContainer = $(`#quartech_satisfactionsurveyid_label`)
+      .parent()
+      .parent();
+
+    fieldLabelDivContainer.prepend(div);
   }
 }
 
