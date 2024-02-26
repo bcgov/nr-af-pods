@@ -1,6 +1,6 @@
 {
   "tags": ["Claim", "ABBP1"],
-  "version": "1.0.1",
+  "version": "1.0.2",
   "name": "ABPP - Agri-Business and Leadership Development",
   "abbreviation": "ABPP1",
   "hiddenSteps": "",
@@ -19,14 +19,7 @@
         {
           "name": "quartech_businessphonenumber",
           "format": "phoneNumber",
-          "label": "Tel",
-          "validation": {
-            "type": "length",
-            "value": 14,
-            "comparison": "equalTo",
-            "postfix": "digits",
-            "overrideDisplayValue": 10
-          }
+          "label": "Tel"
         },
         {
           "name": "quartech_businessemailaddress",

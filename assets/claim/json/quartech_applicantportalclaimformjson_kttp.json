@@ -1,6 +1,6 @@
 {
   "tags": ["Claim", "KTTP", "KTTP-SMEA", "KTTP-StreamTwo", "KTTP-Stream3"],
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Claim form field config used for all KTTP streams",
   "hiddenSteps": "",
   "sections": [
@@ -18,14 +18,7 @@
         {
           "name": "quartech_businessphonenumber",
           "format": "phoneNumber",
-          "label": "Tel",
-          "validation": {
-            "type": "length",
-            "value": 14,
-            "comparison": "equalTo",
-            "postfix": "digits",
-            "overrideDisplayValue": 10
-          }
+          "label": "Tel"
         },
         {
           "name": "quartech_businessemailaddress",
