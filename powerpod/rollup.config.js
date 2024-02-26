@@ -5,7 +5,7 @@ import typescript from '@rollup/plugin-typescript';
 import css from 'rollup-plugin-import-css';
 
 const licenseContent = `/*!
-* powerpod 0.7.4
+* powerpod 0.7.3
 * https://github.com/bcgov/nr-af-pods/powerpod
 *
 * @license GPLv3 for open source use only
