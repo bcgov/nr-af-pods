@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "KTTP-Stream3", "KTTP3"],
-  "version": "1.0.0",
+  "version": "1.0.1",
   "name": "KTTP - Regenerative Agriculture Activities",
   "abbreviation": "KTTP-Stream3",
   "hiddenSteps": "tab_eligibility",
@@ -175,8 +175,7 @@
         {
           "name": "quartech_subjectmatterexpertsmename",
           "required": true,
-          "label": "Facilitator Name:",
-          "format": "email"
+          "label": "Facilitator Name:"
         },
         {
           "name": "quartech_smephonenumber",
