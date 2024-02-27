@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "KTTP-SMEA", "KTTP1"],
-  "version": "1.0.0",
+  "version": "1.0.1",
   "name": "KTTP - Subject Matter Expert Activities",
   "abbreviation": "KTTP-SMEA",
   "hiddenSteps": "tab_eligibility",
@@ -155,8 +155,7 @@
         {
           "name": "quartech_subjectmatterexpertsmename",
           "required": true,
-          "label": "Subject Matter Expert (SME) Name:",
-          "format": "email"
+          "label": "Subject Matter Expert (SME) Name:"
         },
         {
           "name": "quartech_smephonenumber",
