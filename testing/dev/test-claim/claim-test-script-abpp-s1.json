@@ -1,0 +1,27 @@
+{
+    "name": "Claim - ABPP S1 - Test Script",
+    "testSteps" : [
+        { "action" : "open-new-tab", "url": "https://af-pods-test.powerappsportals.com/claim/?id=f5af32c8-94c7-ee11-9078-000d3af4d2dd" }
+        , { "action" : "Test Case: ABPP S1 Claim - Applicant Info step" }
+        , { "action" : "Expect", "field" : { "label": "I / We confirm the above information is correct", "visible" : true, "required" : true } }
+        , { "action" : "Expect", "field" : { "label": "Please provide further detail", "visible" : false, "required" : false } }
+        , { "action" : "Select", "field" : { "label": "I / We confirm the above information is correct", "value": "Yes"} }
+        , { "action" : "Expect", "field" : { "label": "Please provide further detail", "visible" : false, "required" : false } }
+        , { "action" : "Expect", "field" : { "label": "Project End Date", "visible" : true, "required" : true } }
+        , { "action" : "Enter", "field" : { "label": "Project End Date", "value": "10/12/2028"} }
+        , { "action" : "Expect", "field" : { "label": "Your requested amount in this current claim", "visible" : true, "required" : true } }
+        , { "action" : "Enter", "field" : { "label": "Your requested amount in this current claim", "value": "101.50"} }
+        , { "action" : "Click on the Next button." }
+        , { "action" : "Test Case: Project Results" }
+        , { "action" : "Expect", "field" : { "label": "Did you adopt any technologies, equipment, practices or processes as a result of this project?", "visible" : true, "required" : true } }
+        , { "action" : "Select", "field" : { "label": "Did you adopt any technologies, equipment, practices or processes as a result of this project?", "value": "No"} }
+        , { "action" : "Expect", "field" : { "label": "How many people participated in the training funded by this project, including the applicant?", "visible" : true, "required" : true } }
+        , { "action" : "Enter", "field" : { "label": "How many people participated in the training funded by this project, including the applicant?", "value": "5"} }
+        , { "action" : "Expect", "field" : { "label": "Did you adopt any technologies, processes or equipment that are environmentally beneficial as a result of this project?", "visible" : true, "required" : true } }
+        , { "action" : "Select", "field" : { "label": "Did you adopt any technologies, processes or equipment that are environmentally beneficial as a result of this project?", "value": "No"} }
+        , { "action" : "Click on the Next button." }
+        , { "action" : "Test Case: Documents step" }
+        , { "action" : "Expect", "field" : { "label": "Invoice(s) from Learning Provider(s) (as per approved learning action plan)", "visible" : true, "required" : true } }
+        , { "action" : "Enter", "field" : { "label": "Invoice(s) from Learning Provider(s) (as per approved learning action plan)", "value": "auto-test-script-doc-1.pdf"} }
+    ]
+}
