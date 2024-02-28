@@ -86,7 +86,7 @@ export function customizeDeliverablesBudgetStep() {
 }
 
 function setOnKeypressBudgetInput(elementId) {
-  $(document).on('keypress', `#${elementId}`, function () {
+  $(`#${elementId}`).on('change keyup blur', function () {
     calculateEstimatedActivityBudget();
   });
 }
