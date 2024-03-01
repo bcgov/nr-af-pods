@@ -27,7 +27,21 @@ export function initClaim() {
 
 function updatePageForSelectedProgram() {
   const programid = getProgramId();
+  const currentStep = getCurrentStep();
 
+  if (!programid || currentStep === 'UnknownStep') {
+    hideLoadingAnimation();
+    logger.warn({
+      fn: updatePageForSelectedProgram,
+      message: 'Missing programid, or unknown current step',
+      data: {
+        programid,
+        currentStep,
+      },
+    });
+    return;
+  }
+  
   logger.info({
     fn: updatePageForSelectedProgram,
     message: `Retrieving Program data for the selected programid querystring: ${programid}`,

@@ -6,8 +6,6 @@ var PODS = window.PODS || {};
     }
 	
     this.initDocumentsTabClickedHandler = async function (formContext) {
-        debugger
-        
         const projectLookupCtrAtt = formContext.getControl('quartech_project').getAttribute();
         if (!projectLookupCtrAtt) return;
 
