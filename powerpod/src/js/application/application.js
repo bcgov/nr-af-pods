@@ -90,6 +90,20 @@ function customizePageForFirefox() {
 
 function updatePageForSelectedProgram(programid = undefined) {
   if (!programid) programid = getProgramId();
+  const currentStep = getCurrentStep();
+
+  if (!programid || currentStep === 'UnknownStep') {
+    hideLoadingAnimation();
+    logger.warn({
+      fn: updatePageForSelectedProgram,
+      message: 'Missing programid, or unknown current step',
+      data: {
+        programid,
+        currentStep,
+      },
+    });
+    return;
+  }
 
   logger.info({
     fn: updatePageForSelectedProgram,
