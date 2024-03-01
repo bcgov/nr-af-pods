@@ -157,8 +157,6 @@ var PODS = window.PODS || {};
         if (!isNewForm) return;
 
         const leadAppData = await PODS.getApplicationData(leadApplicationGuid);
-        
-        debugger;
 
         if (!leadAppData) return;
 
