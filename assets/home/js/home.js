@@ -3,7 +3,7 @@ if (window.jQuery) {
     $(document).ready(function () {
       updateBceidLoginUrls();
 
-      displayWarningForOldBrowser();
+      // displayWarningForOldBrowser();
     });
 
     this.displayWarningForOldBrowser = function () {
