@@ -17,9 +17,10 @@ import { customizeDeclarationConsentStep } from './steps/declarationConsent.js';
 import { customizeDeliverablesBudgetStep } from './steps/deliverablesBudget.js';
 import { customizeDemographicInfoStep } from './steps/demographicInfo.js';
 import { customizeDocumentsStep } from './steps/documents.js';
-import { hideFieldsAndSections, onDocumentReadyState } from '../common/html.js';
+import { hideFieldsAndSections } from '../common/html.js';
 import { addNewAppSystemNotice } from '../common/system.js';
 import { getGlobalConfigData } from '../common/config.js';
+import { addFormDataOnClickHandler } from '../common/form.js';
 
 const logger = Logger('application/application');
 
@@ -136,6 +137,8 @@ function updatePageForSelectedProgram(programid = undefined) {
         updateFormStepForSelectedProgram(programData);
         hideLoadingAnimation();
         validateRequiredFields();
+
+        addFormDataOnClickHandler(); // for form data json generation
       }
     },
   });

@@ -1,8 +1,96 @@
-import { doc } from './constants.js';
+import { HtmlElementType, doc } from './constants.js';
 import { Logger } from './logger.js';
 import { validateRequiredFields } from './validation.js';
 
 const logger = new Logger('common/html');
+
+export function getControlType(tr) {
+  const control = tr.querySelector('.control .form-control');
+
+  if (!control) {
+    logger.error({
+      fn: getControlType,
+      message: 'Could not find form control element',
+      data: {
+        tr,
+        control,
+      },
+    });
+    return;
+  }
+
+  const tag = control.tagName.toLowerCase();
+  const classes = control.getAttribute('class');
+
+  if (tag === 'input' && classes.includes('text')) {
+    return HtmlElementType.Input;
+  } else if (tag === 'input' && classes.includes('datetime')) {
+    return HtmlElementType.DatePicker;
+  } else if (tag === 'textarea' && classes.includes('textarea')) {
+    return HtmlElementType.TextArea;
+  } else if (tag === 'select' && classes.includes('picklist')) {
+    return HtmlElementType.DropdownSelect;
+  }
+  logger.error({
+    fn: getControlType,
+    message: 'Could not determine control type',
+    data: {
+      tr,
+      control,
+      tag,
+      classes,
+    },
+  });
+  return HtmlElementType.Unknown;
+}
+
+export function isEmptyRow(tr) {
+  if (tr.querySelector('td')?.getAttribute('class').includes('zero-cell')) {
+    return true;
+  }
+  return false;
+}
+
+export function isHiddenRow(tr) {
+  const displayStyle = tr?.style?.display;
+  if (displayStyle === 'none') {
+    return true;
+  }
+  return false;
+}
+
+export function getInfoValue(tr) {
+  const questionDiv = tr.querySelector('.info');
+  const questionText = questionDiv?.querySelector('label')?.textContent;
+  return questionText;
+}
+
+export function getControlValue(tr) {
+  const type = getControlType(tr);
+
+  logger.info({
+    fn: getControlValue,
+    message: `Attempting to get control value for type: ${type}`,
+  });
+
+  const answerDiv = tr.querySelector('.control');
+
+  if (type === HtmlElementType.Input) {
+    return answerDiv?.querySelector('input')?.value;
+  } else if (type === HtmlElementType.DatePicker) {
+    return answerDiv?.querySelector('div > .datetimepicker > input')?.value;
+  } else if (type === HtmlElementType.TextArea) {
+    return answerDiv?.querySelector('textarea').value?.replace(/\n/g, ' ');
+  } else if (type === HtmlElementType.DropdownSelect) {
+    const selectElement = answerDiv?.querySelector('select');
+    const selectedIndex = selectElement?.selectedIndex;
+    const selectedOption = selectElement.options[selectedIndex];
+    const selectedOptionText =
+      selectedOption.textContent || selectedOption.innerText;
+    return selectedOptionText;
+  }
+  return null;
+}
 
 export function onDocumentReadyState(fn) {
   logger.info({

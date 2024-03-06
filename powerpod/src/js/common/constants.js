@@ -22,11 +22,13 @@ export const Form = {
 
 export const HtmlElementType = {
   Input: 'Input',
+  TextArea: 'TextArea',
   FileInput: 'FileInput',
   SingleOptionSet: 'SingleOptionSet',
   MultiOptionSet: 'MultiOptionSet',
   DropdownSelect: 'DropdownSelect',
   DatePicker: 'DatePicker',
+  Unknown: 'Unknown',
 };
 
 export const FormStep = {
