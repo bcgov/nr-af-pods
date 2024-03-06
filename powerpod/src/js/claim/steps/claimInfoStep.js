@@ -329,7 +329,10 @@ function addExpenseReportGrid() {
   const existingEligibleExpenses = $(`#${eligibleExpensesId}`).val();
 
   // @ts-ignore
-  if (existingEligibleExpenses?.length > 0) {
+  if (
+    existingEligibleExpenses?.length > 0 &&
+    existingEligibleExpenses !== '[]'
+  ) {
     // @ts-ignore
     expenseReportTableElement.setAttribute('rows', existingEligibleExpenses);
     setFieldValue(

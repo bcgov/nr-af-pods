@@ -10,6 +10,7 @@ import './common/scripts.js';
 import './common/fetch.js';
 import './common/env.ts';
 import './common/program.ts';
+import './common/form.js';
 import { Logger } from './common/logger.js';
 import { initApplication } from './application/application.js';
 import { initClaim } from './claim/claim.js';
@@ -67,7 +68,7 @@ function setAPI() {
     };
   };
   // @ts-ignore
-  POWERPOD.version = '0.7.5';
+  POWERPOD.version = '0.7.6';
   // @ts-ignore
   win.powerpod = POWERPOD;
 }

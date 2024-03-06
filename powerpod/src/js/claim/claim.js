@@ -1,7 +1,7 @@
-import { getClaimConfigData, getGlobalConfigData } from '../common/config.js';
 import { FormStep, doc } from '../common/constants.js';
 import { getClaimFormData } from '../common/fetch.js';
-import { hideFieldsAndSections, onDocumentReadyState } from '../common/html.js';
+import { addFormDataOnClickHandler } from '../common/form.js';
+import { hideFieldsAndSections } from '../common/html.js';
 import { hideLoadingAnimation } from '../common/loading.js';
 import { Logger } from '../common/logger.js';
 import {
@@ -41,7 +41,7 @@ function updatePageForSelectedProgram() {
     });
     return;
   }
-  
+
   logger.info({
     fn: updatePageForSelectedProgram,
     message: `Retrieving Program data for the selected programid querystring: ${programid}`,
@@ -73,6 +73,7 @@ function updatePageForSelectedProgram() {
         populateContentForSelectedProgramStream();
         hideLoadingAnimation();
         validateRequiredFields();
+        addFormDataOnClickHandler(); // for form data json generation
       }
     },
   });
