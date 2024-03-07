@@ -1,10 +1,11 @@
 import { POWERPOD, FormStep, TabNames, doc } from './constants.js';
-import { htmlDecode } from './html.js';
+import { htmlDecode, onDocumentReadyState } from './html.js';
 import { Logger } from './logger.js';
 
 const logger = new Logger('common/program');
 
 POWERPOD.program = {
+  programId: null,
   getProgramId,
   getProgramAbbreviation,
   getCurrentStep,
@@ -15,36 +16,95 @@ POWERPOD.program = {
  * @function
  */
 export function getProgramId() {
-  // Try to pull programId from hidden field
-  logger.info({
-    fn: getProgramId,
-    message: 'attempting to get program id',
-    data: {
-      readyState: doc.readyState,
-    }
-  })
-  const programId = $('#quartech_program')?.val();
-
-  if (programId) {
+  if (POWERPOD.programId?.programId) {
+    const programId = POWERPOD.programId?.programId;
+    logger.info({
+      fn: getProgramId,
+      message: `Cached programId found, returning ${programId}`,
+    });
     return programId;
   }
-
   // Try and get it from URL path
+  logger.info({
+    fn: getProgramId,
+    message: 'attempting to get program id from URL path',
+    data: {
+      readyState: doc.readyState,
+    },
+  });
+
   const params = new URLSearchParams(doc.location.search);
   const programIdParam = params.get('programid');
 
   if (programIdParam) {
-    return programIdParam;
+    logger.info({
+      fn: getProgramId,
+      message: `Success! Found program id in URL path ${programIdParam}`,
+      data: {
+        readyState: doc.readyState,
+        programIdParam,
+      },
+    });
   }
 
-  if (programId && programIdParam && programId != programIdParam) {
-    // @ts-ignore
-    let newUrl = doc.location.href.replace(programIdParam, programId);
-    location.replace(newUrl);
-    return programId;
+  const hiddenProgramElement = $('#quartech_program');
+  const programIdHiddenValue = hiddenProgramElement?.val();
+
+  if (programIdHiddenValue) {
+    logger.info({
+      fn: getProgramId,
+      message: `Success! Found program id in hidden #quartech_program element ${programIdHiddenValue}`,
+      data: {
+        readyState: doc.readyState,
+        hiddenProgramElement,
+        programId: programIdHiddenValue,
+      },
+    });
   } else {
-    return programIdParam;
+    logger.warn({
+      fn: getProgramId,
+      message: `Could not find program id in hidden #quartech_program element ${programIdHiddenValue}`,
+      data: {
+        readyState: doc.readyState,
+        hiddenProgramElement,
+        programId: programIdHiddenValue,
+      },
+    });
   }
+
+  if (
+    programIdHiddenValue &&
+    programIdParam &&
+    programIdHiddenValue != programIdParam
+  ) {
+    logger.warn({
+      fn: getProgramId,
+      message: `Program id in URL path differs from program id found in element, fixing url path`,
+      data: {
+        readyState: doc.readyState,
+        programIdParam,
+        programIdHiddenValue,
+      },
+    });
+    let newUrl = doc.location.href.replace(
+      programIdParam,
+      // @ts-ignore
+      programIdHiddenValue
+    );
+    location.replace(newUrl);
+  }
+  const programId = programIdHiddenValue || programIdParam;
+  if (!programId) {
+    logger.error({
+      fn: getProgramId,
+      message:
+        'Could not find program id in either coding section or url params. ' +
+        'Check that HTML content is present in Portal Management.',
+    });
+  }
+  // @ts-ignore
+  POWERPOD.program.programId = programId;
+  return programId;
 }
 
 export function getProgramAbbreviation() {

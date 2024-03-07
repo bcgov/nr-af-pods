@@ -1,7 +1,7 @@
 import { FormStep, doc } from '../common/constants.js';
 import { getClaimFormData } from '../common/fetch.js';
 import { addFormDataOnClickHandler } from '../common/form.js';
-import { hideFieldsAndSections } from '../common/html.js';
+import { hideFieldsAndSections, onDocumentReadyState } from '../common/html.js';
 import { hideLoadingAnimation } from '../common/loading.js';
 import { Logger } from '../common/logger.js';
 import {
@@ -27,11 +27,26 @@ export function initClaim() {
 
 function updatePageForSelectedProgram() {
   const programid = getProgramId();
+
+  if (!programid && doc.readyState !== 'complete') {
+    logger.info({
+      fn: updatePageForSelectedProgram,
+      message: 'Could not find programid, retry when DOM readyState is comlete',
+      data: {
+        readyState: doc.readyState,
+      },
+    });
+    onDocumentReadyState(() => {
+      updatePageForSelectedProgram();
+    });
+    return;
+  }
+
   const currentStep = getCurrentStep();
 
   if (!programid || currentStep === 'UnknownStep') {
     hideLoadingAnimation();
-    logger.warn({
+    logger.error({
       fn: updatePageForSelectedProgram,
       message: 'Missing programid, or unknown current step',
       data: {

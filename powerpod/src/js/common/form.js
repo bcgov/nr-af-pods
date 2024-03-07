@@ -72,6 +72,22 @@ export function generateFormJson() {
 
   const tabDataName = tabDivElement.getAttribute('data-name'); // e.g. "applicantInfoTab"
 
+  if (!tabDataName) {
+    logger.error({
+      fn: generateFormJson,
+      message: 'Failed to get tab data-name',
+      data: {
+        tabDivElement
+      }
+    })
+    return false;
+  }
+
+  logger.info({
+    fn: generateFormJson,
+    message: `Processing fieldSet array for tabDataName: ${tabDataName}`
+  });
+
   const formJsonObj = {};
 
   fieldsetArr.forEach((fieldset) => {
@@ -111,9 +127,16 @@ export function generateFormJson() {
       });
     }
 
+    logger.info({
+      fn: generateFormJson,
+      message: `Processing tr array for sectionId: ${sectionId}, displayName: ${displayName}`
+    })
+
+    const questionAnswerListKey = `${sectionId}QuestionAnswerList`
+
     formJsonObj[sectionId] = {
       displayName: displayName,
-      applicationInfoQuestionAnswerList: [],
+      [questionAnswerListKey]: [],
     };
 
     trArray.forEach((tr) => {
@@ -162,9 +185,12 @@ export function generateFormJson() {
         return; // skip this forEach loop
       }
 
-      formJsonObj[sectionId].applicationInfoQuestionAnswerList.push({
-        applicationInfoQuestion: questionText,
-        applicationInfoAnswer: answerText,
+      const questionKey = `${sectionId}Question`;
+      const answerKey = `${sectionId}Answer`;
+
+      formJsonObj[sectionId][questionAnswerListKey].push({
+        [questionKey]: questionText,
+        [answerKey]: answerText,
       });
     });
   });
