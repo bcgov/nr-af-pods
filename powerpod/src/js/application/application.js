@@ -1,4 +1,4 @@
-import { FormStep } from '../common/constants.js';
+import { FormStep, doc } from '../common/constants.js';
 import { getApplicationFormData } from '../common/fetch.js';
 import { hideLoadingAnimation } from '../common/loading.js';
 import { Logger } from '../common/logger.js';
@@ -17,7 +17,7 @@ import { customizeDeclarationConsentStep } from './steps/declarationConsent.js';
 import { customizeDeliverablesBudgetStep } from './steps/deliverablesBudget.js';
 import { customizeDemographicInfoStep } from './steps/demographicInfo.js';
 import { customizeDocumentsStep } from './steps/documents.js';
-import { hideFieldsAndSections } from '../common/html.js';
+import { hideFieldsAndSections, onDocumentReadyState } from '../common/html.js';
 import { addNewAppSystemNotice } from '../common/system.js';
 import { getGlobalConfigData } from '../common/config.js';
 import { addFormDataOnClickHandler } from '../common/form.js';
@@ -91,11 +91,26 @@ function customizePageForFirefox() {
 
 function updatePageForSelectedProgram(programid = undefined) {
   if (!programid) programid = getProgramId();
+
+  if (!programid && doc.readyState !== 'complete') {
+    logger.info({
+      fn: updatePageForSelectedProgram,
+      message: 'Could not find programid, retry when DOM readyState is comlete',
+      data: {
+        readyState: doc.readyState,
+      },
+    });
+    onDocumentReadyState(() => {
+      updatePageForSelectedProgram();
+    });
+    return;
+  }
+
   const currentStep = getCurrentStep();
 
   if (!programid || currentStep === 'UnknownStep') {
     hideLoadingAnimation();
-    logger.warn({
+    logger.error({
       fn: updatePageForSelectedProgram,
       message: 'Missing programid, or unknown current step',
       data: {

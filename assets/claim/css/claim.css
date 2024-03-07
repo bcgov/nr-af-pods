@@ -2,7 +2,7 @@
   -------------------
   FILE INFO
   -------------------
-  version: 1.0.1
+  version: 1.0.2
   name: Claim CSS
   type: CSS
   description: This is the CSS used on the Claim web page
@@ -72,12 +72,12 @@ h4 {
 }
 
 /*  Claim Info step */
-table[data-name='section_ExpenseReport'],
-table[data-name='FundingInformationSection'],
+table[data-name='expenseReportSection'],
+table[data-name='fundingInformationSection'],
 table[data-name='applicationInfoSection'],
 table[data-name='claimInfoSection'],
-table[data-name='indicatorsSection'],
-table[data-name='documentsTab_SatisfactionSurveySection']
+table[data-name='projectResultsSection'],
+table[data-name='satisfactionSurveySection']
  {
   .info {
     float: left;
