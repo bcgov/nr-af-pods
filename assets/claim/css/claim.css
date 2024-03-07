@@ -2,7 +2,7 @@
   -------------------
   FILE INFO
   -------------------
-  version: 1.0.2
+  version: 1.0.3
   name: Claim CSS
   type: CSS
   description: This is the CSS used on the Claim web page
@@ -73,7 +73,7 @@ h4 {
 
 /*  Claim Info step */
 table[data-name='expenseReportSection'],
-table[data-name='fundingInformationSection'],
+table[data-name='fundingInfoSection'],
 table[data-name='applicationInfoSection'],
 table[data-name='claimInfoSection'],
 table[data-name='projectResultsSection'],
