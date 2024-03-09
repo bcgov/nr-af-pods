@@ -1,0 +1,158 @@
+{
+  "tags": ["ApplicationInformationForm", "StaffPortal", "VPSWPP"],
+  "version": "1.0.0",
+  "name": "Veterinary Professional Student Work Placement Program",
+  "abbreviation": "VPSWPP",
+  "tabs": [
+    {
+      "name": "generalInfoTab",
+      "sections": [
+        {
+          "name": "generalSection",
+          "fields": [
+            {
+              "name": "quartech_iaflabel",
+              "visible": false
+            },
+            {
+              "name": "quartech_naicsindustry",
+              "autoFillValue": "0536ddd2-37d3-ed11-a7c7-000d3ae8acde",
+              "autoFillLabel": "541940 Veterinary services",
+              "autoFillValueTechComment": "Auto populate the 'NAISC - Industry' with the '541940 Veterinary services' lookup record, aka. guid = 0536ddd2-37d3-ed11-a7c7-000d3ae8acde",
+              "disabled": true
+            }
+          ]
+        },
+        {
+          "name": "businessSummarySection",
+          "fields": [
+            {
+              "name": "quartech_recipienttype",
+              "autoFillValue": 255550006,
+              "autoFillValueTechComment": "Auto populate the 'Type of Business / Organization' with the 'Service Provider' option, aka. value = 255550006",
+              "disabled": true
+            },
+            {
+              "name": "quartech_designatedregistrantname",
+              "label": "Designated Registrant Name"
+            },
+            {
+              "name": "quartech_designatedregistrantphonenumber",
+              "label": "Designated Registrant Phone Number"
+            },
+            {
+              "name": "quartech_numberoffulltimeveterinarians",
+              "label": "Number of Full time (equivalent) veterinarians"
+            },
+            {
+              "name": "quartech_numberofregisteredvettechnologists",
+              "label": "Number of Full time (equivalent) registered veterinary technologists (RVTs)"
+            },
+            {
+              "name": "quartech_numberofvetclientpatientrelationships",
+              "label": "Number of Veterinary-client-patient relationships (VCPR)* -food animals"
+            }
+          ]
+        },
+        {
+          "name": "vpswppAnimalSpeciesTypeServedSection",
+          "visible": true
+        }
+      ]
+    },
+    {
+      "name": "applicationReviewTab",
+      "sections": [
+        {
+          "name": "documentSubmissionSection",
+          "fields": [
+            {
+              "name": "quartech_documentssubmitted",
+              "autoFillValue": true,
+              "autoFillValueTechComment": "Auto populate the 'Documents Submitted' with 'Yes', aka. value = 1",
+              "visible": true,
+              "disabled": true
+            }
+          ]
+        },
+        {
+          "name": "eligibilitySection",
+          "fields": [
+            {
+              "name": "quartech_vetpracticeaccreditedbycvbc",
+              "label": "Veterinary practice accredited by the College of Veterinarians of BC (CVBC) to provide food animal services"
+            }
+          ]
+        },
+        {
+          "name": "evaluationSection",
+          "fields": [
+            {
+              "name": "quartech_review1outcome",
+              "visible": true
+            },
+            {
+              "name": "quartech_numberofstudentsapproved",
+              "visible": true
+            },
+            {
+              "name": "quartech_reviewer1score",
+              "visible": false
+            },
+            {
+              "name": "quartech_tr2_completedon",
+              "visible": false
+            },
+            {
+              "name": "quartech_reviewer2score",
+              "visible": false
+            },
+            {
+              "name": "quartech_tr3_completedon",
+              "visible": false
+            },
+            {
+              "name": "quartech_reviewer3score",
+              "visible": false
+            },
+            {
+              "name": "quartech_finalscore",
+              "visible": false
+            },
+            {
+              "name": "quartech_approvaldiscussioncompletedon",
+              "visible": false
+            },
+            {
+              "name": "quartech_reviewcommitteediscussioncompletedon",
+              "visible": false
+            },
+            {
+              "name": "quartech_followupquestions",
+              "visible": false
+            }
+          ]
+        },
+        {
+          "name": "vpswppStudent1Section",
+          "visible": true,
+          "fields": []
+        },
+        {
+          "name": "vpswppStudent2Section",
+          "visible": true,
+          "fields": []
+        },
+        {
+          "name": "vpswppStudent3Section",
+          "visible": true,
+          "fields": []
+        }
+      ]
+    },
+    {
+      "name": "documentsTab",
+      "fields": []
+    }
+  ]
+}
