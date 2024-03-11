@@ -344,12 +344,14 @@ export function hideFields(hidden = true) {
   const fieldRows = document.querySelectorAll(selector);
 
   fieldRows.forEach((row) => {
+    // @ts-ignore
+    if (!row.style) return;
     if (hidden) {
       // @ts-ignore
-      row.style?.display = 'none';
+      row.style.display = 'none';
     } else {
       // @ts-ignore
-      row.style?.display = '';
+      row.style.display = '';
     }
   });
 }
@@ -360,12 +362,14 @@ export function hideFieldSets(hidden = true) {
   );
 
   fieldsetsWithAriaLabel.forEach((fieldset) => {
+    // @ts-ignore
+    if (!fieldset.style) return;
     if (hidden) {
       // @ts-ignore
-      fieldset.style?.display = 'none';
+      fieldset.style.display = 'none';
     } else {
       // @ts-ignore
-      fieldset.style?.display = '';
+      fieldset.style.display = '';
     }
   });
 }
