@@ -115,14 +115,14 @@ export function onDocumentReadyState(fn) {
 
 export function setTabName(name, displayName) {
   if (!name || !displayName) {
-    logger.error({
+    logger.warn({
       fn: setTabName,
       message: 'Missing required params of name or displayName',
     });
   }
 
   if (!Object.values(FormStep).includes(name)) {
-    logger.error({
+    logger.warn({
       fn: setTabName,
       message: `Invalid section name passed, name: ${name}, displayName: ${displayName}`,
     });
@@ -132,7 +132,7 @@ export function setTabName(name, displayName) {
   const originalTabName = TabNames[name];
 
   if (!originalTabName) {
-    logger.error({
+    logger.warn({
       fn: setTabName,
       message: 'Could not find original tab name',
     });
@@ -142,7 +142,7 @@ export function setTabName(name, displayName) {
   const tabElement = $(`li:contains("${originalTabName}")`);
 
   if (!tabElement || !tabElement.length) {
-    logger.error({
+    logger.warn({
       fn: setTabName,
       message: 'Could not find tab element to rename',
       data: {
@@ -153,12 +153,35 @@ export function setTabName(name, displayName) {
     });
   }
 
-  tabElement[0].innerHTML = displayName;
+  if (tabElement) {
+    tabElement[0].innerHTML = displayName;
+    logger.info({
+      fn: setTabName,
+      message: `Successfully updated tab name from ${name} to ${displayName}`,
+    });
+  }
 
-  logger.info({
-    fn: setTabName,
-    message: `Successfully updated tab name from ${name} to ${displayName}`,
-  });
+  const headerElement = $(`h3:contains("${originalTabName}")`);
+
+  if (!headerElement || !headerElement.length) {
+    logger.warn({
+      fn: setTabName,
+      message: 'Could not find header element to rename',
+      data: {
+        name,
+        displayName,
+        originalTabName,
+      },
+    });
+  }
+
+  if (headerElement) {
+    headerElement[0].innerHTML = displayName;
+    logger.info({
+      fn: setTabName,
+      message: `Successfully updated header from ${name} to ${displayName}`,
+    });
+  }
 }
 
 export function showFieldsetElement(fieldsetName) {
