@@ -203,17 +203,17 @@ function setProjectStepRequiredFields() {
       ?.querySelector('li[aria-label="Other for Priority Topic(s)"]');
     // initial load:
     if (containsOtherPriorityTopicOption) {
-      // @ts-ignore
       initOnChange_DependentRequiredField({
         dependentOnElementTag: 'quartech_prioritytopics_i',
         requiredFieldTag: 'quartech_otherprioritytopic',
+        // @ts-ignore
         overrideTruthyClause: true,
       });
     } else {
-      // @ts-ignore
       initOnChange_DependentRequiredField({
         dependentOnElementTag: 'quartech_prioritytopics_i',
         requiredFieldTag: 'quartech_otherprioritytopic',
+        // @ts-ignore
         overrideTruthyClause: false,
       });
     }
