@@ -246,11 +246,16 @@ function setProjectStepRequiredFields() {
       }
     });
 
-    observer.observe(priorityTopicElements, {
-      attributes: true,
-      childList: true,
-      characterData: true,
-    });
+    if (
+      priorityTopicElements &&
+      priorityTopicElements.nodeType === Node.ELEMENT_NODE
+    ) {
+      observer.observe(priorityTopicElements, {
+        attributes: true,
+        childList: true,
+        characterData: true,
+      });
+    }
 
     // @ts-ignore
     initOnChange_DependentRequiredField({
@@ -590,7 +595,9 @@ function setProjectStepDependentRequiredFields() {
   );
   const containsOtherCommunicationOption = document
     .querySelector('#quartech_inordertocontinuouslyimprovecommunications_i')
-    ?.querySelector('li[aria-label="Other for In order to continuously improve communications"]');
+    ?.querySelector(
+      'li[aria-label="Other for In order to continuously improve communications"]'
+    );
   // initial load:
   if (containsOtherCommunicationOption) {
     // @ts-ignore
@@ -615,7 +622,9 @@ function setProjectStepDependentRequiredFields() {
     if (
       document
         .querySelector('#quartech_inordertocontinuouslyimprovecommunications_i')
-        ?.querySelector('li[aria-label="Other for In order to continuously improve communications"]')
+        ?.querySelector(
+          'li[aria-label="Other for In order to continuously improve communications"]'
+        )
     ) {
       // Only need to show the field when it's not visible, otherwise do nothing
       let isVisible = $(`#quartech_ifotherpleasedescribe_label`).is(':visible');
@@ -641,11 +650,16 @@ function setProjectStepDependentRequiredFields() {
     }
   });
 
-  observer.observe(communicationsOptions, {
-    attributes: true,
-    childList: true,
-    characterData: true,
-  });
+  if (
+    communicationsOptions &&
+    communicationsOptions.nodeType === Node.ELEMENT_NODE
+  ) {
+    observer.observe(communicationsOptions, {
+      attributes: true,
+      childList: true,
+      characterData: true,
+    });
+  }
 }
 
 function setSingleOrGroupApplicant() {
@@ -776,10 +790,12 @@ function setupChosen() {
       $('.chosen-select').trigger('chosen:updated');
     }
   });
-  observer.observe(target, {
-    attributes: true,
-    attributeFilter: ['style'],
-  });
+  if (target && target.nodeType === Node.ELEMENT_NODE) {
+    observer.observe(target, {
+      attributes: true,
+      attributeFilter: ['style'],
+    });
+  }
 
   // update dynamics field value on change of chosen field
   $('.chosen-select').on('change', function () {

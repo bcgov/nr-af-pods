@@ -180,11 +180,13 @@ export function observeChanges(element, customFunc) {
       validateRequiredFields();
     }
   });
-  observer.observe(element, {
-    attributes: true,
-    childList: true,
-    characterData: true,
-  });
+  if (element && element.nodeType === Node.ELEMENT_NODE) {
+    observer.observe(element, {
+      attributes: true,
+      childList: true,
+      characterData: true,
+    });
+  }
 }
 
 export function observeIframeChanges(
