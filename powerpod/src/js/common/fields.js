@@ -55,7 +55,7 @@ export function getFieldsBySectionNew(stepName, forceRefresh = false) {
   let fields = [];
 
   if (!applicationSection && !globalSection) {
-    logger.error({
+    logger.warn({
       fn: getFieldsBySectionNew,
       message: `no configuration section found by sectionName: ${stepName}`,
       data: {

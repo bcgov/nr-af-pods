@@ -344,10 +344,10 @@ export function hideFields(hidden = true) {
   fieldRows.forEach((row) => {
     if (hidden) {
       // @ts-ignore
-      row.style.display = 'none';
+      row.style?.display = 'none';
     } else {
       // @ts-ignore
-      row.style.display = '';
+      row.style?.display = '';
     }
   });
 }
@@ -360,10 +360,10 @@ export function hideFieldSets(hidden = true) {
   fieldsetsWithAriaLabel.forEach((fieldset) => {
     if (hidden) {
       // @ts-ignore
-      fieldset.style.display = 'none';
+      fieldset.style?.display = 'none';
     } else {
       // @ts-ignore
-      fieldset.style.display = '';
+      fieldset.style?.display = '';
     }
   });
 }
