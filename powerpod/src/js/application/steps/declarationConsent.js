@@ -28,5 +28,5 @@ function addConsent(programName) {
   let div = document.createElement('div');
   div.innerHTML = htmlConsent;
 
-  $("[data-name='tab_ApplicationDeclarationandConsent']").parent().prepend(div);
+  $("[data-name='declarationAndConsentSection']").parent().prepend(div);
 }

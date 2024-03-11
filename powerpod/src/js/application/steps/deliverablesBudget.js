@@ -109,7 +109,7 @@ function addEstimatedActivityBudgetDescription() {
 
 function initialDeliverablesBudgetSingleRowSetup() {
   const tableElement = $(
-    'table[data-name="tab_DeliverablesBudget_section_General"]'
+    'table[data-name="deliverablesBudgetSection"]'
   );
 
   // find and delete colgroup config
