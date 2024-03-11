@@ -1,5 +1,6 @@
-import { HtmlElementType, doc } from './constants.js';
+import { FormStep, HtmlElementType, TabNames, doc } from './constants.js';
 import { Logger } from './logger.js';
+import { getCurrentStep } from './program.js';
 import { validateRequiredFields } from './validation.js';
 
 const logger = new Logger('common/html');
@@ -110,6 +111,54 @@ export function onDocumentReadyState(fn) {
       }
     });
   }
+}
+
+export function setTabName(name, displayName) {
+  if (!name || !displayName) {
+    logger.error({
+      fn: setTabName,
+      message: 'Missing required params of name or displayName',
+    });
+  }
+
+  if (!Object.values(FormStep).includes(name)) {
+    logger.error({
+      fn: setTabName,
+      message: `Invalid section name passed, name: ${name}, displayName: ${displayName}`,
+    });
+    return;
+  }
+
+  const originalTabName = TabNames[name];
+
+  if (!originalTabName) {
+    logger.error({
+      fn: setTabName,
+      message: 'Could not find original tab name',
+    });
+    return;
+  }
+
+  const tabElement = $(`li:contains("${originalTabName}")`);
+
+  if (!tabElement || !tabElement.length) {
+    logger.error({
+      fn: setTabName,
+      message: 'Could not find tab element to rename',
+      data: {
+        name,
+        displayName,
+        originalTabName,
+      },
+    });
+  }
+
+  tabElement[0].innerHTML = displayName;
+
+  logger.info({
+    fn: setTabName,
+    message: `Successfully updated tab name from ${name} to ${displayName}`,
+  });
 }
 
 export function showFieldsetElement(fieldsetName) {

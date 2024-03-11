@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { showFieldRow } from './html.js';
 
 /**
@@ -41,12 +42,22 @@ export function deepExtend(out) {
   return out;
 }
 
+// function to merge 2 similar objects, note: obj2 props will take priority
+export function mergeObjects(a, b) {
+  for (let key in b) {
+    if (b.hasOwnProperty(key)) {
+      a[key] = b[key];
+    }
+  }
+  return a;
+}
+
 // Merges two arrays of objects joining on a given prop, e.g. "name"
-export function mergeFieldArrays(ArrayA, ArrayB, prop) {
+export function mergeFieldArrays(a, b, prop) {
   const mergedObj = {};
 
   // Merge objects from ArrayB and ArrayA into the object
-  for (const obj of [...ArrayB, ...ArrayA]) {
+  for (const obj of [...b, ...a]) {
     const key = obj[prop];
 
     if (key in mergedObj) {

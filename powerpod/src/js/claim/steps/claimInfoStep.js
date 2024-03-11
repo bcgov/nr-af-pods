@@ -12,7 +12,7 @@ import {
   setFieldValue,
 } from '../../common/html.js';
 import { getProgramAbbreviation } from '../../common/program.ts';
-import { setStepRequiredFields } from '../../common/setRequired.js';
+import { configureFields } from '../../common/fieldConfiguration.js';
 import { setFieldReadOnly } from '../../common/validation.js';
 import { customizeSingleOrGroupApplicantQuestions } from '../fieldLogic.js';
 import '../../components/ExpenseReportTable.ts';
@@ -27,7 +27,7 @@ import { filterEmptyRows } from '../../common/utils.js';
 const logger = new Logger('claim/steps/claimInfoStep');
 
 export function customizeClaimInfoStep() {
-  setStepRequiredFields();
+  configureFields();
 
   const programAbbreviation = getProgramAbbreviation();
 
