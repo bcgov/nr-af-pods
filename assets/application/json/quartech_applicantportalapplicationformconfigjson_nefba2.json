@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "NEFBA2", "NEFBA Phase 2"],
-  "version": "1.0.2",
+  "version": "1.0.3",
   "name": "New Entrant Farm Business Accelerator Phase 2",
   "abbreviation": "NEFBA2",
   "hiddenSteps": "tab_Project",
@@ -32,7 +32,7 @@
           }
         },
 		{
-          "name": "quartech_comittmenttoefp",
+          "name": "quartech_commitmenttoefp",
           "elementType": "DropdownSelect",
 		  "visibleIf": {
                   "fieldName": "quartech_statementofcompletionfromefpp",
