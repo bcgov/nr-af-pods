@@ -7,14 +7,14 @@ import {
 } from '../../common/html.js';
 import { Logger } from '../../common/logger.js';
 import { getProgramAbbreviation } from '../../common/program.ts';
-import { setStepRequiredFields } from '../../common/setRequired.js';
+import { configureFields } from '../../common/fieldConfiguration.js';
 import { setFieldReadOnly } from '../../common/validation.js';
 import { customizeSingleOrGroupApplicantQuestions } from '../fieldLogic.js';
 
 const logger = new Logger('claim/steps/applicantInfo');
 
 export function customizeApplicantInfoStep() {
-  setStepRequiredFields();
+  configureFields();
 
   const programAbbreviation = getProgramAbbreviation();
 

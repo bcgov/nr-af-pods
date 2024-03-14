@@ -2,12 +2,12 @@ import { YES_VALUE } from '../../common/constants.js';
 import { initOnChange_DependentRequiredField } from '../../common/fieldLogic.js';
 import { observeIframeChanges } from '../../common/html.js';
 import { getProgramAbbreviation } from '../../common/program.ts';
-import { setStepRequiredFields } from '../../common/setRequired.js';
+import { configureFields } from '../../common/fieldConfiguration.js';
 import { customizeSingleOrGroupApplicantQuestions } from '../fieldLogic.js';
 
 export function customizeProjectResultsStep() {
   // initInputMasking();
-  setStepRequiredFields();
+  configureFields();
 
   const programAbbreviation = getProgramAbbreviation();
 

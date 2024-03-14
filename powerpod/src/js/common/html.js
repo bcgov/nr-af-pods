@@ -1,5 +1,6 @@
-import { HtmlElementType, doc } from './constants.js';
+import { FormStep, HtmlElementType, TabNames, doc } from './constants.js';
 import { Logger } from './logger.js';
+import { getCurrentStep } from './program.js';
 import { validateRequiredFields } from './validation.js';
 
 const logger = new Logger('common/html');
@@ -108,6 +109,77 @@ export function onDocumentReadyState(fn) {
         });
         fn();
       }
+    });
+  }
+}
+
+export function setTabName(name, displayName) {
+  if (!name || !displayName) {
+    logger.warn({
+      fn: setTabName,
+      message: 'Missing required params of name or displayName',
+    });
+  }
+
+  if (!Object.values(FormStep).includes(name)) {
+    logger.warn({
+      fn: setTabName,
+      message: `Invalid section name passed, name: ${name}, displayName: ${displayName}`,
+    });
+    return;
+  }
+
+  const originalTabName = TabNames[name];
+
+  if (!originalTabName) {
+    logger.warn({
+      fn: setTabName,
+      message: 'Could not find original tab name',
+    });
+    return;
+  }
+
+  const tabElement = $(`li:contains("${originalTabName}")`);
+
+  if (!tabElement || !tabElement.length) {
+    logger.warn({
+      fn: setTabName,
+      message: 'Could not find tab element to rename',
+      data: {
+        name,
+        displayName,
+        originalTabName,
+      },
+    });
+  }
+
+  if (tabElement) {
+    tabElement[0].innerHTML = displayName;
+    logger.info({
+      fn: setTabName,
+      message: `Successfully updated tab name from ${name} to ${displayName}`,
+    });
+  }
+
+  const headerElement = $(`h3:contains("${originalTabName}")`);
+
+  if (!headerElement || !headerElement.length) {
+    logger.warn({
+      fn: setTabName,
+      message: 'Could not find header element to rename',
+      data: {
+        name,
+        displayName,
+        originalTabName,
+      },
+    });
+  }
+
+  if (headerElement) {
+    headerElement[0].innerHTML = displayName;
+    logger.info({
+      fn: setTabName,
+      message: `Successfully updated header from ${name} to ${displayName}`,
     });
   }
 }

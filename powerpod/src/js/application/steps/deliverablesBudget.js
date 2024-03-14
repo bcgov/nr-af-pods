@@ -1,12 +1,12 @@
 import { CURRENCY_FORMAT } from '../../common/currency.js';
 import { addTextAboveField, combineElementsIntoOneRow, showOrHideAndReturnValue } from '../../common/html.js';
 import { getProgramAbbreviation } from '../../common/program.ts';
-import { setStepRequiredFields } from '../../common/setRequired.js';
+import { configureFields } from '../../common/fieldConfiguration.js';
 
 export function customizeDeliverablesBudgetStep() {
   const programAbbreviation = getProgramAbbreviation();
 
-  setStepRequiredFields('DeliverablesBudgetStep');
+  configureFields('DeliverablesBudgetStep');
 
   // START ALL PROGRAMS/STREAMS CUSTOMIZATION
   const deliverablesBudgetTabTitleElement = document.querySelector(
@@ -82,7 +82,7 @@ export function customizeDeliverablesBudgetStep() {
   }
   // END KTTP PROGRAMS/STREAMS CUSTOMIZATION
 
-  setStepRequiredFields('DeliverablesBudgetStep');
+  configureFields('DeliverablesBudgetStep');
 }
 
 function setOnKeypressBudgetInput(elementId) {

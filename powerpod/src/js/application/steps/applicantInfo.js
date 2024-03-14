@@ -13,7 +13,7 @@ import {
   getProgramData,
 } from '../../common/program.ts';
 import { useScript } from '../../common/scripts.js';
-import { setStepRequiredFields } from '../../common/setRequired.js';
+import { configureFields } from '../../common/fieldConfiguration.js';
 import {
   validateEmailAddressField,
   validateStepFields,
@@ -412,7 +412,7 @@ function updateBusinessNumberField(topic, credentials) {
 }
 
 function setupApplicantInfoStepFields() {
-  setStepRequiredFields('ApplicantInfoStep');
+  configureFields('ApplicantInfoStep');
 
   const programAbbreviation = getProgramAbbreviation();
 

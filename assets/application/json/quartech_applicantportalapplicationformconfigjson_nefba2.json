@@ -1,9 +1,8 @@
 {
-  "tags": ["Application", "StaffPortal", "NEFBA", "NEFBA Phase 1"],
+  "tags": ["Application", "StaffPortal", "NEFBA2", "NEFBA Phase 2"],
   "version": "1.0.1",
   "name": "New Entrant Farm Business Accelerator",
   "abbreviation": "NEFBA",
-  "hiddenSteps": "tab_Deliverables_Budget",
   "sections": [
     {
       "name": "ApplicantInfoStep",
@@ -220,7 +219,167 @@
     },
     {
       "name": "DeliverablesBudgetStep",
-      "fields": []
+      "displayName": "Budget",
+      "fields": [
+        {
+          "name": "quartech_smefee",
+          "format": "currency",
+          "maxDigits": 13,
+          "emptyInitialValue": true,
+          "label": "Facilitator Fee",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          }
+        },
+        {
+          "name": "quartech_smetravelairfareparkingetc",
+          "format": "currency",
+          "maxDigits": 13,
+          "emptyInitialValue": true,
+          "label": "Facilitator Travel (airfare, parking, etc)",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          }
+        },
+        {
+          "name": "quartech_pleasedescribemodeoftravelifapplicable",
+          "label": "Please describe mode of travel"
+        },
+        {
+          "name": "quartech_smeaccommodation",
+          "format": "currency",
+          "maxDigits": 13,
+          "emptyInitialValue": true,
+          "label": "Facilitator Accommodation",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          }
+        },
+        {
+          "name": "quartech_pleasedescribeaccommodationwherewillthesme",
+          "label": "Please describe accommodation, where will the Facilitator be staying?"
+        },
+        {
+          "name": "quartech_facilityequipmenttechnologyrental",
+          "format": "currency",
+          "maxDigits": 13,
+          "emptyInitialValue": true,
+          "label": "Facility, Equipment, Technology Rental",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          }
+        },
+        {
+          "name": "quartech_pleasedescribeequipmentrequiredifapplicable",
+          "label": "Please describe equipment required"
+        },
+        {
+          "name": "quartech_advertisingcommunications",
+          "format": "currency",
+          "maxDigits": 13,
+          "emptyInitialValue": true,
+          "label": "Advertising/Communications",
+          "tooltipText": "All promotional material must be reviewed by the Province. Please plan to submit your promotional material at least two weeks in advance of promoting your event.",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          }
+        },
+        {
+          "name": "quartech_pleasedescribewhatformsofadvertisingcommunic",
+          "maxLength": 10000,
+          "label": "Please describe what forms of advertising/communications are planned"
+        },
+        {
+          "name": "quartech_administrationcosts",
+          "format": "currency",
+          "maxDigits": 13,
+          "emptyInitialValue": true,
+          "label": "Administration Costs",
+          "tooltipText": "Administrative costs must not exceed 10% of the Total Funding Required from KTTP (not Total Project Cost)",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          }
+        },
+        {
+          "name": "quartech_pleasedescribetheadministrativecoststobeinc",
+          "maxLength": 10000,
+          "label": "Please describe the administrative costs to be incurred"
+        },
+        {
+          "name": "quartech_othercost",
+          "format": "currency",
+          "maxDigits": 13,
+          "emptyInitialValue": true,
+          "label": "Other Cost",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          }
+        },
+        {
+          "name": "quartech_pleaseexplainotherifapplicable",
+          "label": "Please explain Other"
+        },
+        {
+          "name": "quartech_estimatedbudgettotalactivitycost",
+          "format": "currency",
+          "maxDigits": 11,
+          "required": true,
+          "label": "Total proposed budget",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          }
+        },
+        {
+          "name": "quartech_deliverables",
+          "required": true,
+          "maxLength": 10000,
+          "label": "Deliverables"
+        },
+        {
+          "name": "quartech_costsharecontributioncashorinkinddonation",
+          "format": "currency",
+          "maxDigits": 11,
+          "required": true,
+          "label": "Cost-Share Contribution (cash or in-kind donation)",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          }
+        },
+        {
+          "name": "quartech_pleaseexplainwhotheotherpartnersareandwha",
+          "label": "Please explain who the other partners are, and what portion they are contributing (both cash and in-kind)"
+        },
+        {
+          "name": "quartech_totalfundingrequiredfromtheprogram",
+          "format": "currency",
+          "maxDigits": 11,
+          "required": true,
+          "label": "Total Funding Required From The Program",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          }
+        }
+      ]
     }
   ]
 }

@@ -2,7 +2,7 @@ import { YES_VALUE } from "../../common/constants.js";
 import { initOnChange_DependentRequiredField } from "../../common/fieldLogic.js";
 import { addTextAboveField } from "../../common/html.js";
 import { getProgramAbbreviation } from "../../common/program.ts";
-import { setStepRequiredFields } from "../../common/setRequired.js";
+import { configureFields } from "../../common/fieldConfiguration.js";
 import { validateStepFields } from "../../common/validation.js";
 
 export function customizeEligibilityStep(programData) {
@@ -10,7 +10,7 @@ export function customizeEligibilityStep(programData) {
 }
 
 function setupEligibilityStepFields() {
-  setStepRequiredFields('EligibilityStep');
+  configureFields('EligibilityStep');
 
   const programAbbreviation = getProgramAbbreviation();
 
