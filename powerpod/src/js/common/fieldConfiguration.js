@@ -1,8 +1,9 @@
+// @ts-nocheck
 import { Form, HtmlElementType } from './constants.js';
 import { customizeCurrencyInput } from './currency.js';
 import {
   getFieldsBySectionClaim,
-  getFieldsBySectionApplication
+  getFieldsBySectionApplication,
 } from './fields.js';
 import { hideFieldByFieldName, observeChanges } from './html.js';
 import { Logger } from './logger.js';
@@ -144,6 +145,13 @@ export function configureFields() {
       });
     } else if (format === 'number') {
       $(`#${name}`).attr('type', 'number');
+      if (!allowNegatives) {
+        $(`#${name}`).attr('min', '0');
+        $(`#${name}`).attr(
+          'oninput',
+          'this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null'
+        );
+      }
     } else if (format === 'cra') {
       maskInput(name, FieldMaskType.CRA);
     } else if (format === 'phoneNumber') {
