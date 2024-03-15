@@ -1,8 +1,9 @@
 {
   "tags": ["Application", "StaffPortal", "NEFBA2", "NEFBA Phase 2"],
-  "version": "1.0.1",
-  "name": "New Entrant Farm Business Accelerator",
-  "abbreviation": "NEFBA",
+  "version": "1.0.3",
+  "name": "New Entrant Farm Business Accelerator Phase 2",
+  "abbreviation": "NEFBA2",
+  "hiddenSteps": "tab_Project",
   "sections": [
     {
       "name": "ApplicantInfoStep",
@@ -11,107 +12,6 @@
           "name": "quartech_indigenousapplicant",
           "required": true,
           "elementType": "DropdownSelect"
-        },
-        {
-          "name": "quartech_ownorleaseland",
-          "required": true
-        },
-        {
-          "name": "quartech_landsizeusedforoperation",
-          "required": true
-        },
-        {
-          "name": "quartech_fillingfarmingincomeontaxreturn",
-          "required": true,
-          "elementType": "DropdownSelect"
-        },
-        {
-          "name": "quartech_firstyearclaimedfarmingincome",
-          "visibleIf": {
-            "fieldName": "quartech_fillingfarmingincomeontaxreturn",
-            "selectedValue": 255550001
-          },
-          "validation": {
-            "type": "numeric",
-            "value": "1900",
-            "comparison": "greaterThan"
-          }
-        },
-        {
-          "name": "quartech_firstyearfarmoperationgeneratingrevenue",
-          "visibleIf": {
-            "fieldName": "quartech_fillingfarmingincomeontaxreturn",
-            "selectedValue": 255550000
-          },
-          "validation": {
-            "type": "numeric",
-            "value": "1900",
-            "comparison": "greaterThan"
-          }
-        },
-        {
-          "name": "quartech_numberoffulltimeemployees",
-          "required": true,
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThanOrEqualTo"
-          }
-        },
-        {
-          "name": "quartech_numberofparttimeemployees",
-          "required": true,
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThanOrEqualTo"
-          }
-        },
-        {
-          "name": "quartech_previousyeargrossincome",
-          "required": true,
-          "format": "currency",
-          "maxDigits": 13,
-          "emptyInitialValue": true,
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThanOrEqualTo"
-          }
-        },
-        {
-          "name": "quartech_previousyearnetincome",
-          "required": true,
-          "format": "currency",
-          "maxDigits": 13,
-          "emptyInitialValue": true,
-          "allowNegatives": true
-        },
-        {
-          "name": "quartech_recipienttype",
-          "required": true,
-          "elementType": "DropdownSelect",
-          "label": "Type of Business / Organization. If your operation does both processing and primary production, please select the one that will primarily benefit from this program."
-        },
-        {
-          "name": "quartech_commodity",
-          "required": true,
-          "elementType": "DropdownSelect"
-        },
-        {
-          "name": "quartech_operationdoesprocessingandprimaryproducti",
-          "required": true,
-          "elementType": "DropdownSelect"
-        },
-        {
-          "name": "quartech_livestockprimarytypeandnumber",
-          "required": true,
-          "elementType": "DropdownSelect"
-        },
-        {
-          "name": "Business Overview",
-          "type": "SectionTitle",
-          "hidden": true
         }
       ]
     },
@@ -119,267 +19,193 @@
       "name": "EligibilityStep",
       "fields": [
         {
-          "name": "quartech_isaprimaryproducergrowingsellingproducts",
+          "name": "quartech_statementofcompletionfromefpp",
           "elementType": "DropdownSelect",
           "required": true
         },
-        {
-          "name": "quartech_bcregisteredbusinessentity",
+		{
+          "name": "quartech_efppcertificationnumber",
+		  "visibleIf": {
+                  "fieldName": "quartech_statementofcompletionfromefpp",
+                  "selectedValue": 255550000,
+                  "techComment": "Yes value"
+          }
+        },
+		{
+          "name": "quartech_commitmenttoefp",
+          "elementType": "DropdownSelect",
+		  "visibleIf": {
+                  "fieldName": "quartech_statementofcompletionfromefpp",
+                  "selectedValue": 255550001,
+                  "techComment": "No value"
+          }
+        },
+		{
+          "name": "quartech_costsharefundingfrombmpporoffsp",
           "elementType": "DropdownSelect",
           "required": true
         },
-        {
-          "name": "quartech_committedbizregistrationbeforecompletion",
-          "visibleIf": {
-            "fieldName": "quartech_bcregisteredbusinessentity",
-            "selectedValue": 255550001
-          },
+		{
+          "name": "quartech_awaitingcostsharedecision",
           "elementType": "DropdownSelect",
           "required": true
         },
-        {
-          "name": "quartech_farmbusinessistaxableentity",
-          "elementType": "DropdownSelect",
-          "required": true
-        },
-        {
-          "name": "quartech_allproprietersarebcresidents",
-          "elementType": "DropdownSelect",
-          "required": true
-        },
-        {
-          "name": "quartech_reportedfarmincomemorethan5yrs",
-          "elementType": "DropdownSelect",
-          "required": true
-        },
-        {
-          "name": "quartech_appliedforcostsharefundingfrombmporoffs",
-          "elementType": "DropdownSelect",
-          "required": true
-        },
-        {
-          "name": "quartech_receivedfundingforthesameactivityfromifs",
+		{
+          "name": "quartech_applyingtobmpporoffsp",
           "elementType": "DropdownSelect",
           "required": true
         }
       ]
     },
-    {
-      "name": "ProjectStep",
-      "fields": [
         {
-          "name": "quartech_completingcategory",
-          "elementType": "DropdownSelect",
-          "required": true
-        },
-        {
-          "name": "quartech_projectlocation",
-          "elementType": "DropdownSelect",
-          "required": true,
-          "label": "Project Location (Community)"
-        },
-        {
-          "name": "quartech_businessgoals",
-          "required": true
-        },
-        {
-          "name": "quartech_stepstocompletethebusinessplan",
-          "visibleIf": {
-            "fieldName": "quartech_completingcategory",
-            "selectedValue": 255550000
-          }
-        },
-        {
-          "name": "quartech_businessconsultantinformation",
-          "visibleIf": {
-            "fieldName": "quartech_completingcategory",
-            "selectedValue": 255550001
-          }
-        },
-        {
-          "name": "quartech_bciaregisteredconsultant",
-          "visibleIf": {
-            "fieldName": "quartech_completingcategory",
-            "selectedValue": 255550001
-          }
-        },
-        {
-          "name": "quartech_cpaconsultant",
-          "visibleIf": {
-            "fieldName": "quartech_completingcategory",
-            "selectedValue": 255550001
-          }
-        },
-        {
-          "name": "Consultant Information",
-          "type": "SectionTitle",
-          "hidden": true
-        }
-      ]
-    },
-    {
       "name": "DeliverablesBudgetStep",
-      "displayName": "Budget",
       "fields": [
-        {
-          "name": "quartech_smefee",
-          "format": "currency",
-          "maxDigits": 13,
-          "emptyInitialValue": true,
-          "label": "Facilitator Fee",
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThanOrEqualTo"
-          }
-        },
-        {
-          "name": "quartech_smetravelairfareparkingetc",
-          "format": "currency",
-          "maxDigits": 13,
-          "emptyInitialValue": true,
-          "label": "Facilitator Travel (airfare, parking, etc)",
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThanOrEqualTo"
-          }
-        },
-        {
-          "name": "quartech_pleasedescribemodeoftravelifapplicable",
-          "label": "Please describe mode of travel"
-        },
-        {
-          "name": "quartech_smeaccommodation",
-          "format": "currency",
-          "maxDigits": 13,
-          "emptyInitialValue": true,
-          "label": "Facilitator Accommodation",
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThanOrEqualTo"
-          }
-        },
-        {
-          "name": "quartech_pleasedescribeaccommodationwherewillthesme",
-          "label": "Please describe accommodation, where will the Facilitator be staying?"
-        },
-        {
-          "name": "quartech_facilityequipmenttechnologyrental",
-          "format": "currency",
-          "maxDigits": 13,
-          "emptyInitialValue": true,
-          "label": "Facility, Equipment, Technology Rental",
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThanOrEqualTo"
-          }
-        },
-        {
-          "name": "quartech_pleasedescribeequipmentrequiredifapplicable",
-          "label": "Please describe equipment required"
-        },
-        {
-          "name": "quartech_advertisingcommunications",
-          "format": "currency",
-          "maxDigits": 13,
-          "emptyInitialValue": true,
-          "label": "Advertising/Communications",
-          "tooltipText": "All promotional material must be reviewed by the Province. Please plan to submit your promotional material at least two weeks in advance of promoting your event.",
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThanOrEqualTo"
-          }
-        },
-        {
-          "name": "quartech_pleasedescribewhatformsofadvertisingcommunic",
-          "maxLength": 10000,
-          "label": "Please describe what forms of advertising/communications are planned"
-        },
-        {
-          "name": "quartech_administrationcosts",
-          "format": "currency",
-          "maxDigits": 13,
-          "emptyInitialValue": true,
-          "label": "Administration Costs",
-          "tooltipText": "Administrative costs must not exceed 10% of the Total Funding Required from KTTP (not Total Project Cost)",
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThanOrEqualTo"
-          }
-        },
-        {
-          "name": "quartech_pleasedescribetheadministrativecoststobeinc",
-          "maxLength": 10000,
-          "label": "Please describe the administrative costs to be incurred"
-        },
-        {
-          "name": "quartech_othercost",
-          "format": "currency",
-          "maxDigits": 13,
-          "emptyInitialValue": true,
-          "label": "Other Cost",
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThanOrEqualTo"
-          }
-        },
-        {
-          "name": "quartech_pleaseexplainotherifapplicable",
-          "label": "Please explain Other"
-        },
-        {
-          "name": "quartech_estimatedbudgettotalactivitycost",
-          "format": "currency",
-          "maxDigits": 11,
-          "required": true,
-          "label": "Total proposed budget",
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThanOrEqualTo"
-          }
-        },
-        {
-          "name": "quartech_deliverables",
-          "required": true,
-          "maxLength": 10000,
-          "label": "Deliverables"
-        },
-        {
-          "name": "quartech_costsharecontributioncashorinkinddonation",
-          "format": "currency",
-          "maxDigits": 11,
-          "required": true,
-          "label": "Cost-Share Contribution (cash or in-kind donation)",
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThanOrEqualTo"
-          }
-        },
-        {
-          "name": "quartech_pleaseexplainwhotheotherpartnersareandwha",
-          "label": "Please explain who the other partners are, and what portion they are contributing (both cash and in-kind)"
-        },
         {
           "name": "quartech_totalfundingrequiredfromtheprogram",
+		  "required": true,
           "format": "currency",
-          "maxDigits": 11,
-          "required": true,
-          "label": "Total Funding Required From The Program",
+          "maxDigits": 13,
+          "emptyInitialValue": true,
+          "label": "Total requested from program:",
           "validation": {
             "type": "numeric",
             "value": "0",
             "comparison": "greaterThanOrEqualTo"
-          }
+		  }
+        },
+		{
+          "name": "quartech_inkindcontribution",
+		  "required": true,
+          "format": "currency",
+          "maxDigits": 13,
+          "emptyInitialValue": true,
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+		  }
+        },
+		{
+          "name": "quartech_cashcontribution",
+		  "required": true,
+          "format": "currency",
+          "maxDigits": 13,
+          "emptyInitialValue": true,
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+		  }
+        },
+		{
+          "name": "quartech_totalgstfromquotes",
+		  "required": true,
+          "format": "currency",
+          "maxDigits": 13,
+          "emptyInitialValue": true,
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+		  }
+        },
+		{
+          "name": "quartech_totalprojectcost",
+		  "required": true,
+          "format": "currency",
+          "maxDigits": 13,
+          "emptyInitialValue": true,
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+		  }
+        },
+	  	{
+          "name": "quartech_totaladdedincome",
+		  "required": true,
+          "format": "currency",
+          "maxDigits": 13,
+          "emptyInitialValue": true,
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+		  }
+        },
+		{
+          "name": "quartech_totalreducedcost",
+		  "required": true,
+          "format": "currency",
+          "maxDigits": 13,
+          "emptyInitialValue": true,
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+		  }
+        },
+		{
+          "name": "quartech_totaladdedincomeandreducedcosts",
+		  "required": true,
+          "format": "currency",
+          "maxDigits": 13,
+          "emptyInitialValue": true,
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+		  }
+        },
+		{
+          "name": "quartech_totaladdedcost",
+		  "required": true,
+          "format": "currency",
+          "maxDigits": 13,
+          "emptyInitialValue": true,
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+		  }
+        },
+		{
+          "name": "quartech_totalreducedincome",
+		  "required": true,
+          "format": "currency",
+          "maxDigits": 13,
+          "emptyInitialValue": true,
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+		  }
+        },
+		{
+          "name": "quartech_totaladdedcostsandreducedincome",
+		  "required": true,
+          "format": "currency",
+          "maxDigits": 13,
+          "emptyInitialValue": true,
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+		  }
+        },
+		{
+          "name": "quartech_netchangeinprofit",
+		  "required": true,
+          "format": "currency",
+          "maxDigits": 13,
+          "emptyInitialValue": true,
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+		  }
         }
-      ]
+	  ]
     }
   ]
 }
