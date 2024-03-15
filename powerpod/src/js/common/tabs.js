@@ -76,7 +76,7 @@ function getTabElement({ displayName, name }) {
   }
 
   const tabElement = $('ol.progress li').filter(function () {
-    return $(this).text() === displayName;
+    return $(this).text().includes(displayName);
   });
 
   if (!tabElement || !tabElement.length) {
@@ -140,26 +140,62 @@ export function setTabName(name, displayName) {
       message: `Successfully updated tab name from ${name} to ${displayName}`,
     });
   }
+}
 
-  const headerElement = $(`h3:contains("${initialTabDisplayName}")`);
+export function setHeadings(sectionName, headings) {
+  if (!sectionName || !headings || !headings?.length) {
+    logger.error({
+      fn: setHeadings,
+      message: 'Missing required sectionName or headings',
+      data: { sectionName, headings },
+    });
+    return;
+  }
 
-  if (!headerElement || !headerElement.length) {
+  headings.forEach((heading) => {
+    const { name, displayName } = heading;
+    if (!name || !displayName) {
+      logger.error({
+        fn: setHeadings,
+        message: 'Failed to set heading, missing params',
+        data: { name, displayName },
+      });
+      return;
+    }
+
+    setHeadingName(name, displayName);
+  });
+}
+
+function setHeadingName(name, displayName) {
+  const headerElements = $('fieldset legend h3').filter(function () {
+    return $(this).text().includes(name);
+  });
+  if (!headerElements || !headerElements.length) {
     logger.warn({
       fn: setTabName,
       message: 'Could not find header element to rename',
       data: {
         name,
         displayName,
-        originalTabName: initialTabDisplayName,
       },
     });
   }
-
-  if (headerElement) {
-    headerElement[0].innerHTML = displayName;
-    logger.info({
-      fn: setTabName,
-      message: `Successfully updated header from ${name} to ${displayName}`,
+  if (headerElements.length > 1) {
+    logger.error({
+      fn: setHeadingName,
+      message: 'Matched more than one heading, could not update header',
+      data: {
+        name,
+        displayName,
+        headerElements,
+      },
     });
+    return;
   }
+  headerElements[0].innerHTML = displayName;
+  logger.info({
+    fn: setTabName,
+    message: `Successfully updated header from ${name} to ${displayName}`,
+  });
 }

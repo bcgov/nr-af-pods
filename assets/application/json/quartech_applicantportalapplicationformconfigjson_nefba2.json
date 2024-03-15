@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "NEFBA2", "NEFBA Phase 2"],
-  "version": "1.0.3",
+  "version": "1.0.8",
   "name": "New Entrant Farm Business Accelerator Phase 2",
   "abbreviation": "NEFBA2",
   "hiddenSteps": "tab_Project",
@@ -59,6 +59,13 @@
     },
     {
       "name": "DeliverablesBudgetStep",
+      "displayName": "Budget",
+      "headings": [
+        {
+          "name": "Deliverables & Budget",
+          "displayName": "Project Breakdown"
+        }
+      ],
       "fields": [
         {
           "name": "quartech_totalfundingrequiredfromtheprogram",
@@ -112,9 +119,9 @@
         {
           "name": "quartech_totalprojectcost",
           "required": true,
+          "readOnly": true,
           "format": "currency",
           "maxDigits": 13,
-          "emptyInitialValue": true,
           "validation": {
             "type": "numeric",
             "value": "0",
@@ -148,9 +155,9 @@
         {
           "name": "quartech_totaladdedincomeandreducedcosts",
           "required": true,
+          "readOnly": true,
           "format": "currency",
           "maxDigits": 13,
-          "emptyInitialValue": true,
           "validation": {
             "type": "numeric",
             "value": "0",
@@ -184,9 +191,9 @@
         {
           "name": "quartech_totaladdedcostsandreducedincome",
           "required": true,
+          "readOnly": true,
           "format": "currency",
           "maxDigits": 13,
-          "emptyInitialValue": true,
           "validation": {
             "type": "numeric",
             "value": "0",
@@ -196,9 +203,9 @@
         {
           "name": "quartech_netchangeinprofit",
           "required": true,
+          "readOnly": true,
           "format": "currency",
           "maxDigits": 13,
-          "emptyInitialValue": true,
           "validation": {
             "type": "numeric",
             "value": "0",

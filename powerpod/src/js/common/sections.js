@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { Logger } from './logger.js';
-import { setTabName } from './tabs.js';
+import { setTabName, setHeadings } from './tabs.js';
 
 const logger = new Logger('common/sections');
 
@@ -12,7 +12,7 @@ export function configureSections(sections) {
     });
   }
   sections.forEach((section) => {
-    const { name, displayName } = section;
+    const { name, displayName, headings } = section;
 
     if (!name) {
       logger.error({
@@ -24,6 +24,10 @@ export function configureSections(sections) {
 
     if (displayName) {
       setTabName(name, displayName);
+    }
+
+    if (headings && headings.length) {
+      setHeadings(name, headings);
     }
 
     logger.info({
