@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { Logger } from './logger.js';
-import { setTabName } from './html.js';
+import { setTabName } from './tabs.js';
 
 const logger = new Logger('common/sections');
 

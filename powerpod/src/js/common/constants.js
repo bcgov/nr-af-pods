@@ -48,7 +48,7 @@ export const FormStep = {
   Unknown: 'UnknownStep',
 };
 
-export const TabNames = {
+export const TabDisplayNames = {
   // Shared Steps:
   [FormStep.Documents]: 'Documents',
   [FormStep.DeclarationAndConsent]: [
@@ -65,6 +65,21 @@ export const TabNames = {
   [FormStep.ClaimInfo]: 'Claim Information',
   [FormStep.ProjectResults]: 'Project Results',
 };
+
+export const TabNames = {
+  // Shared Steps:
+  [FormStep.Documents]: 'tab_Supporting_Documentation',
+  [FormStep.DeclarationAndConsent]: ['tab_Declaration_Consent', 'consentTab'],
+  // Application Steps:
+  [FormStep.ApplicantInfo]: ['tab_ApplicantInfo', 'applicantInfoTab'],
+  [FormStep.Eligibility]: 'tab_eligibility',
+  [FormStep.Project]: 'tab_Project',
+  [FormStep.DeliverablesBudget]: 'tab_Deliverables_Budget',
+  // [FormStep.DemographicInfo]: '', // no tab name declared
+  // Claim Steps:
+  [FormStep.ClaimInfo]: 'claimInfoTab',
+  [FormStep.ProjectResults]: 'projectResultsTab',
+}
 
 export const YES_VALUE = '255550000';
 export const NO_VALUE = '255550001';

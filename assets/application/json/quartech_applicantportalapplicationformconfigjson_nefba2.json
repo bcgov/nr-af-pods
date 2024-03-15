@@ -23,46 +23,46 @@
           "elementType": "DropdownSelect",
           "required": true
         },
-		{
+        {
           "name": "quartech_efppcertificationnumber",
-		  "visibleIf": {
-                  "fieldName": "quartech_statementofcompletionfromefpp",
-                  "selectedValue": 255550000,
-                  "techComment": "Yes value"
+          "visibleIf": {
+            "fieldName": "quartech_statementofcompletionfromefpp",
+            "selectedValue": 255550000,
+            "techComment": "Yes value"
           }
         },
-		{
+        {
           "name": "quartech_commitmenttoefp",
           "elementType": "DropdownSelect",
-		  "visibleIf": {
-                  "fieldName": "quartech_statementofcompletionfromefpp",
-                  "selectedValue": 255550001,
-                  "techComment": "No value"
+          "visibleIf": {
+            "fieldName": "quartech_statementofcompletionfromefpp",
+            "selectedValue": 255550001,
+            "techComment": "No value"
           }
         },
-		{
+        {
           "name": "quartech_costsharefundingfrombmpporoffsp",
           "elementType": "DropdownSelect",
           "required": true
         },
-		{
+        {
           "name": "quartech_awaitingcostsharedecision",
           "elementType": "DropdownSelect",
           "required": true
         },
-		{
+        {
           "name": "quartech_applyingtobmpporoffsp",
           "elementType": "DropdownSelect",
           "required": true
         }
       ]
     },
-        {
+    {
       "name": "DeliverablesBudgetStep",
       "fields": [
         {
           "name": "quartech_totalfundingrequiredfromtheprogram",
-		  "required": true,
+          "required": true,
           "format": "currency",
           "maxDigits": 13,
           "emptyInitialValue": true,
@@ -71,11 +71,11 @@
             "type": "numeric",
             "value": "0",
             "comparison": "greaterThanOrEqualTo"
-		  }
+          }
         },
-		{
+        {
           "name": "quartech_inkindcontribution",
-		  "required": true,
+          "required": true,
           "format": "currency",
           "maxDigits": 13,
           "emptyInitialValue": true,
@@ -83,11 +83,11 @@
             "type": "numeric",
             "value": "0",
             "comparison": "greaterThanOrEqualTo"
-		  }
+          }
         },
-		{
+        {
           "name": "quartech_cashcontribution",
-		  "required": true,
+          "required": true,
           "format": "currency",
           "maxDigits": 13,
           "emptyInitialValue": true,
@@ -95,11 +95,11 @@
             "type": "numeric",
             "value": "0",
             "comparison": "greaterThanOrEqualTo"
-		  }
+          }
         },
-		{
+        {
           "name": "quartech_totalgstfromquotes",
-		  "required": true,
+          "required": true,
           "format": "currency",
           "maxDigits": 13,
           "emptyInitialValue": true,
@@ -107,11 +107,11 @@
             "type": "numeric",
             "value": "0",
             "comparison": "greaterThanOrEqualTo"
-		  }
+          }
         },
-		{
+        {
           "name": "quartech_totalprojectcost",
-		  "required": true,
+          "required": true,
           "format": "currency",
           "maxDigits": 13,
           "emptyInitialValue": true,
@@ -119,11 +119,11 @@
             "type": "numeric",
             "value": "0",
             "comparison": "greaterThanOrEqualTo"
-		  }
+          }
         },
-	  	{
+        {
           "name": "quartech_totaladdedincome",
-		  "required": true,
+          "required": true,
           "format": "currency",
           "maxDigits": 13,
           "emptyInitialValue": true,
@@ -131,11 +131,11 @@
             "type": "numeric",
             "value": "0",
             "comparison": "greaterThanOrEqualTo"
-		  }
+          }
         },
-		{
+        {
           "name": "quartech_totalreducedcost",
-		  "required": true,
+          "required": true,
           "format": "currency",
           "maxDigits": 13,
           "emptyInitialValue": true,
@@ -143,11 +143,11 @@
             "type": "numeric",
             "value": "0",
             "comparison": "greaterThanOrEqualTo"
-		  }
+          }
         },
-		{
+        {
           "name": "quartech_totaladdedincomeandreducedcosts",
-		  "required": true,
+          "required": true,
           "format": "currency",
           "maxDigits": 13,
           "emptyInitialValue": true,
@@ -155,11 +155,11 @@
             "type": "numeric",
             "value": "0",
             "comparison": "greaterThanOrEqualTo"
-		  }
+          }
         },
-		{
+        {
           "name": "quartech_totaladdedcost",
-		  "required": true,
+          "required": true,
           "format": "currency",
           "maxDigits": 13,
           "emptyInitialValue": true,
@@ -167,11 +167,11 @@
             "type": "numeric",
             "value": "0",
             "comparison": "greaterThanOrEqualTo"
-		  }
+          }
         },
-		{
+        {
           "name": "quartech_totalreducedincome",
-		  "required": true,
+          "required": true,
           "format": "currency",
           "maxDigits": 13,
           "emptyInitialValue": true,
@@ -179,11 +179,11 @@
             "type": "numeric",
             "value": "0",
             "comparison": "greaterThanOrEqualTo"
-		  }
+          }
         },
-		{
+        {
           "name": "quartech_totaladdedcostsandreducedincome",
-		  "required": true,
+          "required": true,
           "format": "currency",
           "maxDigits": 13,
           "emptyInitialValue": true,
@@ -191,11 +191,11 @@
             "type": "numeric",
             "value": "0",
             "comparison": "greaterThanOrEqualTo"
-		  }
+          }
         },
-		{
+        {
           "name": "quartech_netchangeinprofit",
-		  "required": true,
+          "required": true,
           "format": "currency",
           "maxDigits": 13,
           "emptyInitialValue": true,
@@ -203,9 +203,9 @@
             "type": "numeric",
             "value": "0",
             "comparison": "greaterThanOrEqualTo"
-		  }
+          }
         }
-	  ]
+      ]
     }
   ]
 }

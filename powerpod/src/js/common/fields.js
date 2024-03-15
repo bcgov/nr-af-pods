@@ -9,6 +9,7 @@ import { getProgramAbbreviation } from './program.ts';
 import { POWERPOD } from './constants.js';
 import { mergeFieldArrays } from './utils.js';
 import { configureSections } from './sections.js';
+import { hideTabs } from './tabs.js';
 
 POWERPOD.fields = {
   getFieldsBySectionApplication,
@@ -49,6 +50,10 @@ export function getFieldsBySectionApplication(stepName, forceRefresh = false) {
 
   // only supports configuration from application json level
   configureSections(applicationSections);
+
+  // hide tabs if 'hiddenSteps' is passed in JSON config
+  const hiddenSteps = applicationConfigData.hiddenSteps;
+  if (hiddenSteps) hideTabs(hiddenSteps);
 
   const applicationSection = applicationSections?.find(
     (s) => s.name === stepName
