@@ -132,18 +132,19 @@ export function getCurrentStep() {
 
   activeStep =
     Object.keys(TabDisplayNames).find((formStep) => {
+      const tabDisplayName = TabDisplayNames[formStep];
       logger.info({
         fn: getCurrentStep,
         message: `Trying to find formStep for activeTabName: ${activeTabName}`,
         data: {
-          TabNames: TabDisplayNames,
+          TabDisplayNames,
           formStep,
-          stepName: TabDisplayNames[formStep],
+          tabDisplayName,
         },
       });
       return (
-        TabDisplayNames[formStep] === activeTabName ||
-        TabDisplayNames[formStep].includes(activeTabName)
+        tabDisplayName === activeTabName ||
+        tabDisplayName.includes(activeTabName)
       );
     }) ?? activeStep;
 
@@ -152,7 +153,7 @@ export function getCurrentStep() {
     message: `Validating current step ${activeStep}`,
     data: {
       activeTabName,
-      TabNames: TabDisplayNames,
+      TabDisplayNames,
     },
   });
 
@@ -173,7 +174,7 @@ export function getCurrentStep() {
     logger.error({
       fn: getCurrentStep,
       message: 'Unable to determine current step',
-      data: { activeStep, activeTabName, TabNames: TabDisplayNames, FormStep },
+      data: { activeStep, activeTabName, TabDisplayNames, FormStep },
     });
   }
 
