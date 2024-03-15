@@ -1,4 +1,4 @@
-import { POWERPOD, FormStep, TabNames, doc } from './constants.js';
+import { POWERPOD, FormStep, TabDisplayNames, doc } from './constants.js';
 import { htmlDecode, onDocumentReadyState } from './html.js';
 import { Logger } from './logger.js';
 
@@ -131,19 +131,19 @@ export function getCurrentStep() {
   }
 
   activeStep =
-    Object.keys(TabNames).find((formStep) => {
+    Object.keys(TabDisplayNames).find((formStep) => {
       logger.info({
         fn: getCurrentStep,
         message: `Trying to find formStep for activeTabName: ${activeTabName}`,
         data: {
-          TabNames,
+          TabNames: TabDisplayNames,
           formStep,
-          stepName: TabNames[formStep],
+          stepName: TabDisplayNames[formStep],
         },
       });
       return (
-        TabNames[formStep] === activeTabName ||
-        TabNames[formStep].includes(activeTabName)
+        TabDisplayNames[formStep] === activeTabName ||
+        TabDisplayNames[formStep].includes(activeTabName)
       );
     }) ?? activeStep;
 
@@ -152,7 +152,7 @@ export function getCurrentStep() {
     message: `Validating current step ${activeStep}`,
     data: {
       activeTabName,
-      TabNames,
+      TabNames: TabDisplayNames,
     },
   });
 
@@ -173,7 +173,7 @@ export function getCurrentStep() {
     logger.error({
       fn: getCurrentStep,
       message: 'Unable to determine current step',
-      data: { activeStep, activeTabName, TabNames, FormStep },
+      data: { activeStep, activeTabName, TabNames: TabDisplayNames, FormStep },
     });
   }
 
