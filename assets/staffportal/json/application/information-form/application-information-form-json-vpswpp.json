@@ -1,8 +1,8 @@
 {
-  "tags": ["ApplicationInformationForm", "StaffPortal", "VPSWPP"],
+  "tags": ["ApplicationInformationForm", "StaffPortal", "VVTS"],
   "version": "1.0.0",
-  "name": "Veterinary Professional Student Work Placement Program",
-  "abbreviation": "VPSWPP",
+  "name": "Veterinary and veterinary technologist students working in BC food animal practices",
+  "abbreviation": "VVTS",
   "tabs": [
     {
       "name": "generalInfoTab",
@@ -31,6 +31,14 @@
               "autoFillValue": 255550006,
               "autoFillValueTechComment": "Auto populate the 'Type of Business / Organization' with the 'Service Provider' option, aka. value = 255550006",
               "disabled": true
+            },
+            {
+              "name": "quartech_previousyeargrossincome",
+              "visible": false
+            },
+            {
+              "name": "quartech_lengthoftimeinbusinessinmonths",
+              "visible": false
             },
             {
               "name": "quartech_designatedregistrantname",
