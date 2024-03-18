@@ -1,5 +1,5 @@
 import { GROUP_APPLICATION_VALUE, NO_VALUE } from '../../common/constants.js';
-import { initOnChange_DependentRequiredField } from '../../common/fieldLogic.js';
+import { initOnChange_DependentRequiredField } from '../../common/fieldConditionalLogic.js';
 import {
   hideQuestion,
   observeChanges,
@@ -8,7 +8,7 @@ import {
 import { Logger } from '../../common/logger.js';
 import { getProgramAbbreviation } from '../../common/program.ts';
 import { configureFields } from '../../common/fieldConfiguration.js';
-import { setFieldReadOnly } from '../../common/validation.js';
+import { setFieldReadOnly } from '../../common/fieldValidation.js';
 import { customizeSingleOrGroupApplicantQuestions } from '../fieldLogic.js';
 
 const logger = new Logger('claim/steps/applicantInfo');

@@ -19,7 +19,7 @@ import {
   validateEmailAddressField,
   validateRequiredFields,
   validateStepFields,
-} from './validation.js';
+} from './fieldValidation.js';
 
 const logger = Logger('common/fieldConfiguration');
 

@@ -10,7 +10,7 @@ import { getMunicipalData } from '../../common/fetch.js';
 import {
   initOnChange_DependentRequiredField,
   shouldRequireDependentField,
-} from '../../common/fieldLogic.js';
+} from '../../common/fieldConditionalLogic.js';
 import {
   addTextAboveField,
   addTextBelowField,

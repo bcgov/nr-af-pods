@@ -111,6 +111,7 @@ export function setTabName(name, displayName) {
       fn: setTabName,
       message: 'Missing required params of name or displayName',
     });
+    return;
   }
 
   if (!Object.values(FormStep).includes(name)) {
@@ -180,6 +181,7 @@ function setHeadingName(name, displayName) {
         displayName,
       },
     });
+    return;
   }
   if (headerElements.length > 1) {
     logger.error({

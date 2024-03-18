@@ -4,7 +4,7 @@ import {
   getOrgbookAutocompleteData,
   getOrgbookTopicData,
 } from '../../common/fetch.js';
-import { initOnChange_DependentRequiredField } from '../../common/fieldLogic.js';
+import { initOnChange_DependentRequiredField } from '../../common/fieldConditionalLogic.js';
 import { addTextAboveField, addTextBelowField } from '../../common/html.js';
 import { Logger } from '../../common/logger.js';
 import { initInputMasking } from '../../common/masking.js';
@@ -17,7 +17,7 @@ import { configureFields } from '../../common/fieldConfiguration.js';
 import {
   validateEmailAddressField,
   validateStepFields,
-} from '../../common/validation.js';
+} from '../../common/fieldValidation.js';
 
 const logger = Logger('application/steps/applicantInfo');
 

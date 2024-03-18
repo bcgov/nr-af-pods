@@ -7,7 +7,7 @@ import {
   getProgramAbbreviation,
   getProgramId,
 } from '../common/program.ts';
-import { validateRequiredFields } from '../common/validation.js';
+import { validateRequiredFields } from '../common/fieldValidation.js';
 
 // step logic
 import { customizeApplicantInfoStep } from './steps/applicantInfo.js';
