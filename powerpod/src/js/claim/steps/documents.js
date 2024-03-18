@@ -7,7 +7,7 @@ import { configureFields } from '../../common/fieldConfiguration.js';
 import {
   setFieldValue,
 } from '../../common/html.js';
-import { setFieldReadOnly } from '../../common/validation.js';
+import { setFieldReadOnly } from '../../common/fieldValidation.js';
 
 export async function customizeDocumentsStep() {
   configureFields();

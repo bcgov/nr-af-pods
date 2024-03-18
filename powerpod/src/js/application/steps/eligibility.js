@@ -1,9 +1,9 @@
 import { YES_VALUE } from "../../common/constants.js";
-import { initOnChange_DependentRequiredField } from "../../common/fieldLogic.js";
+import { initOnChange_DependentRequiredField } from "../../common/fieldConditionalLogic.js";
 import { addTextAboveField } from "../../common/html.js";
 import { getProgramAbbreviation } from "../../common/program.ts";
 import { configureFields } from "../../common/fieldConfiguration.js";
-import { validateStepFields } from "../../common/validation.js";
+import { validateStepFields } from "../../common/fieldValidation.js";
 
 export function customizeEligibilityStep(programData) {
   setupEligibilityStepFields();

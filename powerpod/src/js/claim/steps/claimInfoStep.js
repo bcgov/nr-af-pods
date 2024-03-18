@@ -4,7 +4,7 @@ import {
   NO_VALUE,
   doc,
 } from '../../common/constants.js';
-import { initOnChange_DependentRequiredField } from '../../common/fieldLogic.js';
+import { initOnChange_DependentRequiredField } from '../../common/fieldConditionalLogic.js';
 import {
   hideQuestion,
   observeChanges,
@@ -13,7 +13,7 @@ import {
 } from '../../common/html.js';
 import { getProgramAbbreviation } from '../../common/program.ts';
 import { configureFields } from '../../common/fieldConfiguration.js';
-import { setFieldReadOnly } from '../../common/validation.js';
+import { setFieldReadOnly } from '../../common/fieldValidation.js';
 import { customizeSingleOrGroupApplicantQuestions } from '../fieldLogic.js';
 import '../../components/ExpenseReportTable.ts';
 import '../../components/CurrencyInput.ts';

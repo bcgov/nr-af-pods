@@ -2,7 +2,7 @@
 import {
   displayValidationErrors,
   validateStepFields,
-} from '../common/validation.js';
+} from '../common/fieldValidation.js';
 
 export function validateIsConsultantEitherBciaOrCpa() {
   const bciaElement = document.querySelector(

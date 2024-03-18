@@ -1,6 +1,6 @@
 import { HtmlElementType, doc } from './constants.js';
 import { Logger } from './logger.js';
-import { validateRequiredFields } from './validation.js';
+import { validateRequiredFields } from './fieldValidation.js';
 
 const logger = new Logger('common/html');
 

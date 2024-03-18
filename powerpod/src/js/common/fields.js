@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   getApplicationConfigData,
   getClaimConfigData,
@@ -192,7 +193,6 @@ export function getFieldsBySectionClaim(stepName, forceRefresh = false) {
 }
 
 export function getGlobalFieldsConfig() {
-  // @ts-ignore
   logger.info({ fn: getGlobalConfigData, data: getGlobalConfigData() });
   return getGlobalConfigData()?.FieldsConfig?.programs?.find(
     (program) => program.name === 'ALL'

@@ -8,7 +8,7 @@ import { configureFields } from '../../common/fieldConfiguration.js';
 import {
   setFieldReadOnly,
   validateStepFields,
-} from '../../common/validation.js';
+} from '../../common/fieldValidation.js';
 import {
   validateDemographicInfoRequiredFields,
   validateDemographicPercentages,
