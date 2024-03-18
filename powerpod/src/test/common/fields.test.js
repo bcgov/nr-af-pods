@@ -3,13 +3,13 @@ import combinedApplicantFieldsKttp1 from '../mock/fields/combined_applicant_fiel
 import * as config from '../../js/common/config.js';
 import * as program from '../../js/common/program.ts';
 import {
-  getFieldsBySectionNew,
+  getFieldsBySectionApplication,
   getGlobalFieldsConfig,
 } from '../../js/common/fields.js';
 import { FormStep } from '../../js/common/constants.js';
 import { sortArrayByProperty } from '../../js/common/utils.js';
 
-describe('fields - getFieldsBySectionNew', () => {
+describe('fields - getFieldsBySectionApplication', () => {
   it('should return fields for ApplicantInfo', () => {
     program.getProgramAbbreviation = jest.fn(() => 'ABPP1');
     config.getGlobalConfigData = jest.fn(() =>
@@ -26,7 +26,7 @@ describe('fields - getFieldsBySectionNew', () => {
     jest.spyOn(Storage.prototype, 'getItem');
     Storage.prototype.getItem = jest.fn();
 
-    const result = getFieldsBySectionNew(FormStep.ApplicantInfo);
+    const result = getFieldsBySectionApplication(FormStep.ApplicantInfo);
     expect(localStorage.getItem).toHaveBeenCalled();
     expect(sortArrayByProperty(result, 'name')).toEqual(
       sortArrayByProperty(combinedApplicantFieldsKttp1, 'name')

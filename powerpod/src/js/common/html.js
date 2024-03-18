@@ -1,6 +1,6 @@
 import { HtmlElementType, doc } from './constants.js';
 import { Logger } from './logger.js';
-import { validateRequiredFields } from './validation.js';
+import { validateRequiredFields } from './fieldValidation.js';
 
 const logger = new Logger('common/html');
 
@@ -180,11 +180,13 @@ export function observeChanges(element, customFunc) {
       validateRequiredFields();
     }
   });
-  observer.observe(element, {
-    attributes: true,
-    childList: true,
-    characterData: true,
-  });
+  if (element && element.nodeType === Node.ELEMENT_NODE) {
+    observer.observe(element, {
+      attributes: true,
+      childList: true,
+      characterData: true,
+    });
+  }
 }
 
 export function observeIframeChanges(
@@ -342,6 +344,8 @@ export function hideFields(hidden = true) {
   const fieldRows = document.querySelectorAll(selector);
 
   fieldRows.forEach((row) => {
+    // @ts-ignore
+    if (!row.style) return;
     if (hidden) {
       // @ts-ignore
       row.style.display = 'none';
@@ -358,6 +362,8 @@ export function hideFieldSets(hidden = true) {
   );
 
   fieldsetsWithAriaLabel.forEach((fieldset) => {
+    // @ts-ignore
+    if (!fieldset.style) return;
     if (hidden) {
       // @ts-ignore
       fieldset.style.display = 'none';

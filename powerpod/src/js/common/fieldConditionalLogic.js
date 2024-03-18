@@ -1,6 +1,6 @@
 import { getCurrentStep } from "./program.ts";
-import { setDynamicallyRequiredFields } from "./setRequired.js";
-import { validateStepFields } from "./validation.js";
+import { setDynamicallyRequiredFields } from "./fieldConfiguration.js";
+import { validateStepFields } from "./fieldValidation.js";
 
 export function initOnChange_DependentRequiredField({
   dependentOnValue,

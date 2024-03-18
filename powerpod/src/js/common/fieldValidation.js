@@ -3,7 +3,7 @@ import {
   validateIsConsultantEitherBciaOrCpa,
 } from '../application/validation.js';
 import { Form, FormStep, HtmlElementType } from './constants.js';
-import { getFieldsBySectionClaim, getFieldsBySectionNew } from './fields.js';
+import { getFieldsBySectionClaim, getFieldsBySectionApplication } from './fields.js';
 import { Logger } from './logger.js';
 import { getOptions } from './options.js';
 import { getCurrentStep, getProgramAbbreviation } from './program.ts';
@@ -29,8 +29,7 @@ export function validateStepFields(stepName, returnString) {
   // TODO: Remove this old func usage
   let fields;
   if (getOptions().form === Form.Application) {
-    // fields = getFieldsBySectionOld(stepName);
-    fields = getFieldsBySectionNew(stepName);
+    fields = getFieldsBySectionApplication(stepName);
   } else {
     fields = getFieldsBySectionClaim(stepName);
   }

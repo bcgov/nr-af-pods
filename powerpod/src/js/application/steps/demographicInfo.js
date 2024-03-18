@@ -4,11 +4,11 @@ import { getEnvVars } from '../../common/env.js';
 import { hideAllStepSections, setFieldValue } from '../../common/html.js';
 import { Logger } from '../../common/logger.js';
 import { getProgramEmailAddress } from '../../common/program.ts';
-import { setStepRequiredFields } from '../../common/setRequired.js';
+import { configureFields } from '../../common/fieldConfiguration.js';
 import {
   setFieldReadOnly,
   validateStepFields,
-} from '../../common/validation.js';
+} from '../../common/fieldValidation.js';
 import {
   validateDemographicInfoRequiredFields,
   validateDemographicPercentages,
@@ -60,7 +60,7 @@ function addDemographicDataDescriptionOldVersionForABPP() {
 }
 
 function setDemographicInfoRequiredFields() {
-  setStepRequiredFields('DemographicInfoStep');
+  configureFields('DemographicInfoStep');
 }
 
 function addViewExampleTo_Q1a() {

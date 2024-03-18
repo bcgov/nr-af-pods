@@ -1,6 +1,16 @@
+/*
+  -------------------
+  FILE INFO
+  -------------------
+  tags: ["Documents", "Claim", "JS"]
+  version: 1.0.0
+  name: Documents
+  type: JS Script
+  description: This is the JS script for the Documents step in CLAIM form.
+*/
 if (window.jQuery) {
   (function ($) {
-    var MAXIMUM_FILE_SIZE_IN_KB = 10240;
+    var MAXIMUM_FILE_SIZE_IN_KB = 25600;
     var allowedMimeTypes = [
       "text/csv",
       "application/msword",

@@ -209,7 +209,7 @@
       const registerTabElement = document
         .querySelector('li > a[aria-label="Register"')
         ?.closest('li');
-      if (registerTabElement) {
+      if (registerTabElement && registerTabElement.style) {
         registerTabElement.style.display = 'none';
       }
     }

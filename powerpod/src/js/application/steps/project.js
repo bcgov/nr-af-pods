@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   GROUP_APPLICATION_VALUE,
   NO_VALUE,
@@ -9,7 +10,7 @@ import { getMunicipalData } from '../../common/fetch.js';
 import {
   initOnChange_DependentRequiredField,
   shouldRequireDependentField,
-} from '../../common/fieldLogic.js';
+} from '../../common/fieldConditionalLogic.js';
 import {
   addTextAboveField,
   addTextBelowField,
@@ -17,10 +18,9 @@ import {
 } from '../../common/html.js';
 import { processLocationData } from '../../common/locations.ts';
 import { Logger } from '../../common/logger.js';
-import { initInputMasking } from '../../common/masking.js';
 import { getProgramAbbreviation } from '../../common/program.ts';
 import { useScript } from '../../common/scripts.js';
-import { setStepRequiredFields } from '../../common/setRequired.js';
+import { configureFields } from '../../common/fieldConfiguration.js';
 import { setupTooltip } from '../../common/tooltip.js';
 
 const logger = Logger('application/steps/project');
@@ -65,9 +65,7 @@ function hideActivityTypes(activityTypesToDisplay) {
   if (!activityTypesToDisplayDictionary) return;
 
   $('#quartech_pleaseselectthemostapplicableactivitytype option').each(
-    // @ts-ignore
     function () {
-      // @ts-ignore
       const activityTypeValue = this.value;
       if (activityTypeValue != '') {
         // Hide/Show option
@@ -119,21 +117,19 @@ function hideShow_WhyActiviyNotOpenToPublic(selectedValue) {
 }
 
 function setProjectStepRequiredFields() {
-  setStepRequiredFields('ProjectStep');
+  configureFields('ProjectStep');
 
   const programAbbreviation = getProgramAbbreviation();
 
   // START KTTP PROJECT STEP CUSTOMIZATION
   if (programAbbreviation && programAbbreviation.includes('KTTP')) {
     // START Organization Information
-    // @ts-ignore
     initOnChange_DependentRequiredField({
       dependentOnValue: YES_VALUE,
       dependentOnElementTag:
         'quartech_hasthisorganizationreceivedkttpfundingin',
       requiredFieldTag: 'quartech_ifyespleaseexplainwhenandforwhichactivity',
     });
-    // @ts-ignore
     initOnChange_DependentRequiredField({
       dependentOnValue: YES_VALUE,
       dependentOnElementTag:
@@ -147,46 +143,39 @@ function setProjectStepRequiredFields() {
       dependentOnValue: YES_VALUE,
       dependentOnElementTag: 'quartech_areyoucollaboratingwithanyotherorg',
       requiredFieldTag: 'quartech_ifyespleaseprovidelegalbusinessorganization',
-      // @ts-ignore
       shouldBeRequired: false,
     });
     initOnChange_DependentRequiredField({
       dependentOnValue: YES_VALUE,
       dependentOnElementTag: 'quartech_areyoucollaboratingwithanyotherorg',
       requiredFieldTag: 'quartech_ifyespleaseprovideacontactname',
-      // @ts-ignore
       shouldBeRequired: false,
     });
     initOnChange_DependentRequiredField({
       dependentOnValue: YES_VALUE,
       dependentOnElementTag: 'quartech_areyoucollaboratingwithanyotherorg',
       requiredFieldTag: 'quartech_ifyespleaseprovideabriefbackgroundoutlinin',
-      // @ts-ignore
       shouldBeRequired: false,
     });
     // END Collaborating Organization Information
 
     // START Activity Information
-    // @ts-ignore
     initOnChange_DependentRequiredField({
       dependentOnValue: YES_VALUE,
       dependentOnElementTag:
         'quartech_areyouapplyingforatraceabilityknowledget',
       requiredFieldTag: 'quartech_ifyespleaseexplainthetraceabilityactivityt',
     });
-    // @ts-ignore
     initOnChange_DependentRequiredField({
       dependentOnValue: YES_VALUE,
       dependentOnElementTag: 'quartech_doestheactivitytakeplaceovermultipleday',
       requiredFieldTag: 'quartech_ifyespleaseprovidetheadditionaldates',
     });
-    // @ts-ignore
     initOnChange_DependentRequiredField({
       dependentOnValue: NO_VALUE,
       dependentOnElementTag: 'quartech_willthisactivitybeopentotheentirepublic',
       requiredFieldTag: 'quartech_allactivitiesmustbeopentothepublicplease',
     });
-    // @ts-ignore
     initOnChange_DependentRequiredField({
       dependentOnValue: OTHER_VALUE,
       dependentOnElementTag:
@@ -203,14 +192,12 @@ function setProjectStepRequiredFields() {
       ?.querySelector('li[aria-label="Other for Priority Topic(s)"]');
     // initial load:
     if (containsOtherPriorityTopicOption) {
-      // @ts-ignore
       initOnChange_DependentRequiredField({
         dependentOnElementTag: 'quartech_prioritytopics_i',
         requiredFieldTag: 'quartech_otherprioritytopic',
         overrideTruthyClause: true,
       });
     } else {
-      // @ts-ignore
       initOnChange_DependentRequiredField({
         dependentOnElementTag: 'quartech_prioritytopics_i',
         requiredFieldTag: 'quartech_otherprioritytopic',
@@ -229,7 +216,6 @@ function setProjectStepRequiredFields() {
         // Here we should dynamically hide/show the comment field & make it required:
         // Do this by using 'overrideTruthyClause' and force it to show & be required
         if (!isVisible) {
-          // @ts-ignore
           initOnChange_DependentRequiredField({
             dependentOnElementTag: 'quartech_prioritytopics_i',
             requiredFieldTag: 'quartech_otherprioritytopic',
@@ -237,7 +223,6 @@ function setProjectStepRequiredFields() {
           });
         }
       } else {
-        // @ts-ignore
         initOnChange_DependentRequiredField({
           dependentOnElementTag: 'quartech_prioritytopics_i',
           requiredFieldTag: 'quartech_otherprioritytopic',
@@ -246,20 +231,23 @@ function setProjectStepRequiredFields() {
       }
     });
 
-    observer.observe(priorityTopicElements, {
-      attributes: true,
-      childList: true,
-      characterData: true,
-    });
+    if (
+      priorityTopicElements &&
+      priorityTopicElements.nodeType === Node.ELEMENT_NODE
+    ) {
+      observer.observe(priorityTopicElements, {
+        attributes: true,
+        childList: true,
+        characterData: true,
+      });
+    }
 
-    // @ts-ignore
     initOnChange_DependentRequiredField({
       dependentOnValue: OTHER_VALUE,
       dependentOnElementTag: 'quartech_activitypurpose',
       requiredFieldTag: 'quartech_ifotherpleasedescribetheactivitypurpose',
     });
 
-    // @ts-ignore
     initOnChange_DependentRequiredField({
       dependentOnValue: YES_VALUE,
       dependentOnElementTag:
@@ -279,14 +267,12 @@ function setProjectStepRequiredFields() {
       );
     }
 
-    // @ts-ignore
     initOnChange_DependentRequiredField({
       dependentOnValue: '255550000',
       dependentOnElementTag: 'quartech_completingcategory',
       requiredFieldTag: 'quartech_stepstocompletethebusinessplan',
     });
 
-    // @ts-ignore
     initOnChange_DependentRequiredField({
       dependentOnValue: '255550001', // Business Plan Coaching from a Business Consultant ($3,000 in funding)
       dependentOnElementTag: 'quartech_completingcategory',
@@ -332,30 +318,23 @@ function setProjectStepRequiredFields() {
     const programCategoryElement = document.querySelector(
       '#quartech_completingcategory'
     );
-    // @ts-ignore
     const programCategoryElementInitialValue = programCategoryElement.value;
 
     const BUSINESS_PLAN_COACHING_VALUE = '255550001';
     if (programCategoryElementInitialValue === BUSINESS_PLAN_COACHING_VALUE) {
-      // @ts-ignore
       shouldRequireDependentField({
         shouldBeRequired: true,
         requiredFieldTag: 'quartech_bciaregisteredconsultant',
-        // setRequiredFieldsFunc: setProjectStepRequiredFields,
       });
       setBciaOnChange();
     } else {
-      // @ts-ignore
       shouldRequireDependentField({
         shouldBeRequired: false,
         requiredFieldTag: 'quartech_bciaregisteredconsultant',
-        // setRequiredFieldsFunc: setProjectStepRequiredFields,
       });
-      // @ts-ignore
       shouldRequireDependentField({
         shouldBeRequired: false,
         requiredFieldTag: 'quartech_cpaconsultant',
-        // setRequiredFieldsFunc: setProjectStepRequiredFields,
       });
       $('#quartech_bciaregisteredconsultant').off('change');
     }
@@ -363,10 +342,8 @@ function setProjectStepRequiredFields() {
     $('#quartech_completingcategory').on('change', function () {
       const programCategoryValue = document.querySelector(
         '#quartech_completingcategory'
-        // @ts-ignore
       ).value;
       if (programCategoryValue === BUSINESS_PLAN_COACHING_VALUE) {
-        // @ts-ignore
         shouldRequireDependentField({
           shouldBeRequired: true,
           requiredFieldTag: 'quartech_bciaregisteredconsultant',
@@ -374,13 +351,11 @@ function setProjectStepRequiredFields() {
         });
         setBciaOnChange();
       } else {
-        // @ts-ignore
         shouldRequireDependentField({
           shouldBeRequired: false,
           requiredFieldTag: 'quartech_bciaregisteredconsultant',
           // setRequiredFieldsFunc: setProjectStepRequiredFields
         });
-        // @ts-ignore
         shouldRequireDependentField({
           shouldBeRequired: false,
           requiredFieldTag: 'quartech_cpaconsultant',
@@ -486,18 +461,15 @@ function setBciaOnChange() {
   $('#quartech_bciaregisteredconsultant').on('change', function () {
     const bciaConsultantValue = document.querySelector(
       '#quartech_bciaregisteredconsultant'
-      // @ts-ignore
     ).value;
     const BCIA_NO_VALUE = '255550002';
     if (bciaConsultantValue === BCIA_NO_VALUE) {
-      // @ts-ignore
       shouldRequireDependentField({
         shouldBeRequired: true,
         requiredFieldTag: 'quartech_cpaconsultant',
         setRequiredFieldsFunc: setProjectStepRequiredFields,
       });
     } else {
-      // @ts-ignore
       shouldRequireDependentField({
         shouldBeRequired: false,
         requiredFieldTag: 'quartech_cpaconsultant',
@@ -513,13 +485,11 @@ function setProjectStepDependentRequiredFields() {
   // START KTTP CUSTOMIZATION
   if (programAbbreviation.includes('KTTP')) {
     // Please explain if you selected Sector-Wide, or if you have additional information to share on the Commodity/Sector:
-    // @ts-ignore
     initOnChange_DependentRequiredField({
       dependentOnValue: SECTOR_WIDE_ID_VALUE,
       dependentOnElementTag: 'quartech_naicsindustry',
       requiredFieldTag: 'quartech_ifotherpleasedescribecommodity',
     });
-    // @ts-ignore
     initOnChange_DependentRequiredField({
       dependentOnValueArray: [
         '255550001', // "In-Person"
@@ -528,7 +498,6 @@ function setProjectStepDependentRequiredFields() {
       dependentOnElementTag: 'quartech_eventtype',
       requiredFieldTag: 'quartech_projectlocation',
     });
-    // @ts-ignore
     initOnChange_DependentRequiredField({
       dependentOnValue: '255550001',
       dependentOnElementTag: 'quartech_projecttakesplaceinotherplaces',
@@ -539,35 +508,30 @@ function setProjectStepDependentRequiredFields() {
 
   // START ABBP STREAM 2 CUSTOMIZATION
   if (programAbbreviation === 'ABPP2') {
-    // @ts-ignore
     initOnChange_DependentRequiredField({
       dependentOnValue: YES_VALUE,
       dependentOnElementTag: 'quartech_useofsupportingconsultant',
       requiredFieldTag: 'quartech_consultantcompletingoverlimit',
     });
 
-    // @ts-ignore
     initOnChange_DependentRequiredField({
       dependentOnValue: YES_VALUE,
       dependentOnElementTag: 'quartech_useofsupportingconsultant',
       requiredFieldTag: 'quartech_supportingconsultantcompanyname',
     });
 
-    // @ts-ignore
     initOnChange_DependentRequiredField({
       dependentOnValue: YES_VALUE,
       dependentOnElementTag: 'quartech_useofsupportingconsultant',
       requiredFieldTag: 'quartech_supportingconsultantfullname',
     });
 
-    // @ts-ignore
     initOnChange_DependentRequiredField({
       dependentOnValue: YES_VALUE,
       dependentOnElementTag: 'quartech_useofsupportingconsultant',
       requiredFieldTag: 'quartech_supportingconsultantpositiontitle',
     });
 
-    // @ts-ignore
     initOnChange_DependentRequiredField({
       dependentOnValue: YES_VALUE,
       dependentOnElementTag: 'quartech_useofsupportingconsultant',
@@ -590,10 +554,11 @@ function setProjectStepDependentRequiredFields() {
   );
   const containsOtherCommunicationOption = document
     .querySelector('#quartech_inordertocontinuouslyimprovecommunications_i')
-    ?.querySelector('li[aria-label="Other for In order to continuously improve communications"]');
+    ?.querySelector(
+      'li[aria-label="Other for In order to continuously improve communications"]'
+    );
   // initial load:
   if (containsOtherCommunicationOption) {
-    // @ts-ignore
     initOnChange_DependentRequiredField({
       dependentOnElementTag:
         'quartech_inordertocontinuouslyimprovecommunications_i',
@@ -601,7 +566,6 @@ function setProjectStepDependentRequiredFields() {
       requiredFieldTag: 'quartech_ifotherpleasedescribe',
     });
   } else {
-    // @ts-ignore
     initOnChange_DependentRequiredField({
       dependentOnElementTag:
         'quartech_inordertocontinuouslyimprovecommunications_i',
@@ -615,14 +579,15 @@ function setProjectStepDependentRequiredFields() {
     if (
       document
         .querySelector('#quartech_inordertocontinuouslyimprovecommunications_i')
-        ?.querySelector('li[aria-label="Other for In order to continuously improve communications"]')
+        ?.querySelector(
+          'li[aria-label="Other for In order to continuously improve communications"]'
+        )
     ) {
       // Only need to show the field when it's not visible, otherwise do nothing
       let isVisible = $(`#quartech_ifotherpleasedescribe_label`).is(':visible');
       // Here we should dynamically hide/show the comment field & make it required:
       // Do this by using 'overrideTruthyClause' and force it to show & be required
       if (!isVisible) {
-        // @ts-ignore
         initOnChange_DependentRequiredField({
           dependentOnElementTag:
             'quartech_inordertocontinuouslyimprovecommunications_i',
@@ -631,7 +596,6 @@ function setProjectStepDependentRequiredFields() {
         });
       }
     } else {
-      // @ts-ignore
       initOnChange_DependentRequiredField({
         dependentOnElementTag:
           'quartech_inordertocontinuouslyimprovecommunications_i',
@@ -641,11 +605,16 @@ function setProjectStepDependentRequiredFields() {
     }
   });
 
-  observer.observe(communicationsOptions, {
-    attributes: true,
-    childList: true,
-    characterData: true,
-  });
+  if (
+    communicationsOptions &&
+    communicationsOptions.nodeType === Node.ELEMENT_NODE
+  ) {
+    observer.observe(communicationsOptions, {
+      attributes: true,
+      childList: true,
+      characterData: true,
+    });
+  }
 }
 
 function setSingleOrGroupApplicant() {
@@ -654,12 +623,10 @@ function setSingleOrGroupApplicant() {
 </div>`;
   const singleOrGroupApplicationValue = document.querySelector(
     '#quartech_singleorgroupapplication'
-    // @ts-ignore
   ).value;
   if (singleOrGroupApplicationValue === GROUP_APPLICATION_VALUE) {
     // Here we should dynamically hide/show the comment field & make it required:
     // Do this by using 'overrideTruthyClause' and force it to show & be required
-    // @ts-ignore
     shouldRequireDependentField({
       shouldBeRequired: true,
       requiredFieldTag: 'quartech_coapplicatntsnames',
@@ -678,7 +645,6 @@ function setSingleOrGroupApplicant() {
       );
     }
   } else {
-    // @ts-ignore
     shouldRequireDependentField({
       shouldBeRequired: false,
       requiredFieldTag: 'quartech_coapplicatntsnames',
@@ -750,9 +716,7 @@ function addLocationMultiSelect(municipalJson) {
 
 function setupChosen() {
   logger.info({ fn: setupChosen, message: 'setting up chosen...' });
-  // @ts-ignore
   $('.chosen-select').chosen();
-  // @ts-ignore
   $('.chosen-select-deselect').chosen({ allow_single_deselect: true });
 
   // fetch pre-selected options, if any
@@ -761,7 +725,6 @@ function setupChosen() {
   ).val();
 
   if (existingAdditionalLocations) {
-    // @ts-ignore
     const existingLocationsArray = existingAdditionalLocations.split(', ');
     $('.chosen-select').val(existingLocationsArray);
     $('.chosen-select').trigger('chosen:updated');
@@ -776,15 +739,16 @@ function setupChosen() {
       $('.chosen-select').trigger('chosen:updated');
     }
   });
-  observer.observe(target, {
-    attributes: true,
-    attributeFilter: ['style'],
-  });
+  if (target && target.nodeType === Node.ELEMENT_NODE) {
+    observer.observe(target, {
+      attributes: true,
+      attributeFilter: ['style'],
+    });
+  }
 
   // update dynamics field value on change of chosen field
   $('.chosen-select').on('change', function () {
     const newSelectedLocations = $('.chosen-select').val();
-    // @ts-ignore
     const stringToPassToFieldInput = newSelectedLocations.join(', ');
     setFieldValue(
       'quartech_venuelocationcitytownetcoronlinesoftwar',

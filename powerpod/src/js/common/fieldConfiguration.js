@@ -1,9 +1,9 @@
+// @ts-nocheck
 import { Form, HtmlElementType } from './constants.js';
 import { customizeCurrencyInput } from './currency.js';
 import {
   getFieldsBySectionClaim,
-  getFieldsBySectionNew,
-  getFieldsBySectionOld,
+  getFieldsBySectionApplication,
 } from './fields.js';
 import { hideFieldByFieldName, observeChanges } from './html.js';
 import { Logger } from './logger.js';
@@ -19,21 +19,19 @@ import {
   validateEmailAddressField,
   validateRequiredFields,
   validateStepFields,
-} from './validation.js';
+} from './fieldValidation.js';
 
-const logger = Logger('common/setRequired');
+const logger = Logger('common/fieldConfiguration');
 
-export function setStepRequiredFields() {
+export function configureFields() {
   const stepName = getCurrentStep();
   logger.info({
-    fn: setStepRequiredFields,
+    fn: configureFields,
     message: `configuring fields for step: ${stepName}...`,
   });
-  // TODO: Remove this old func usage
   let fields;
   if (getOptions().form === Form.Application) {
-    // fields = getFieldsBySectionOld(stepName);
-    fields = getFieldsBySectionNew(stepName);
+    fields = getFieldsBySectionApplication(stepName);
   } else {
     fields = getFieldsBySectionClaim(stepName);
   }
@@ -41,7 +39,7 @@ export function setStepRequiredFields() {
   if (!fields) return;
 
   logger.info({
-    fn: setStepRequiredFields,
+    fn: configureFields,
     message: 'configuring fields...',
     data: {
       stepName,
@@ -73,18 +71,18 @@ export function setStepRequiredFields() {
       fileTypes, // not currently used anywhere
     } = fields[i];
     logger.info({
-      fn: setStepRequiredFields,
+      fn: configureFields,
       message: `setting field definition for field name: ${name}`,
     });
     if (!$(`#${name}`)) {
       logger.error({
-        fn: setStepRequiredFields,
+        fn: configureFields,
         message: `could not find existing element for field name: ${name}`,
       });
     }
     if (hasUpperCase(name)) {
       logger.warn({
-        fn: setStepRequiredFields,
+        fn: configureFields,
         message: `Warning! Field name: ${name} contains an uppercase letter, please confirm if it was intentional or not.`,
       });
     }
@@ -147,6 +145,13 @@ export function setStepRequiredFields() {
       });
     } else if (format === 'number') {
       $(`#${name}`).attr('type', 'number');
+      if (!allowNegatives) {
+        $(`#${name}`).attr('min', '0');
+        $(`#${name}`).attr(
+          'oninput',
+          'this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null'
+        );
+      }
     } else if (format === 'cra') {
       maskInput(name, FieldMaskType.CRA);
     } else if (format === 'phoneNumber') {
@@ -234,13 +239,11 @@ export function setRequiredField(
 
 export function setDynamicallyRequiredFields(stepName) {
   // check which fields we are dynamically being required
-  // TODO: Remove this old func usage
   let fields;
   if (getOptions().form === Form.Application) {
-    // fields = getFieldsBySectionOld(stepName);
-    fields = getFieldsBySectionNew(stepName);
+    fields = getFieldsBySectionApplication(stepName);
   } else {
-    fields = getFieldsBySectionOld(stepName);
+    fields = getFieldsBySectionClaim(stepName);
   }
 
   if (!fields) return;

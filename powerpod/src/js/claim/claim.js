@@ -10,7 +10,7 @@ import {
   getProgramId,
 } from '../common/program.ts';
 import { addNewAppSystemNotice } from '../common/system.js';
-import { validateRequiredFields } from '../common/validation.js';
+import { validateRequiredFields } from '../common/fieldValidation.js';
 import { customizeApplicantInfoStep } from './steps/applicantInfo.js';
 import { customizeClaimInfoStep } from './steps/claimInfoStep.js';
 import { customizeDeclarationConsentStep } from './steps/declarationConsent.js';

@@ -1,6 +1,6 @@
 {
-  "tags": ["Application", "StaffPortal", "NEFBA"],
-  "version": "1.0.0",
+  "tags": ["Application", "StaffPortal", "NEFBA", "NEFBA Phase 1"],
+  "version": "1.0.1",
   "name": "New Entrant Farm Business Accelerator",
   "abbreviation": "NEFBA",
   "hiddenSteps": "tab_Deliverables_Budget",

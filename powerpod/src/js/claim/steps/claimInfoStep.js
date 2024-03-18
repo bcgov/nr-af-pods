@@ -4,7 +4,7 @@ import {
   NO_VALUE,
   doc,
 } from '../../common/constants.js';
-import { initOnChange_DependentRequiredField } from '../../common/fieldLogic.js';
+import { initOnChange_DependentRequiredField } from '../../common/fieldConditionalLogic.js';
 import {
   hideQuestion,
   observeChanges,
@@ -12,8 +12,8 @@ import {
   setFieldValue,
 } from '../../common/html.js';
 import { getProgramAbbreviation } from '../../common/program.ts';
-import { setStepRequiredFields } from '../../common/setRequired.js';
-import { setFieldReadOnly } from '../../common/validation.js';
+import { configureFields } from '../../common/fieldConfiguration.js';
+import { setFieldReadOnly } from '../../common/fieldValidation.js';
 import { customizeSingleOrGroupApplicantQuestions } from '../fieldLogic.js';
 import '../../components/ExpenseReportTable.ts';
 import '../../components/CurrencyInput.ts';
@@ -27,7 +27,7 @@ import { filterEmptyRows } from '../../common/utils.js';
 const logger = new Logger('claim/steps/claimInfoStep');
 
 export function customizeClaimInfoStep() {
-  setStepRequiredFields();
+  configureFields();
 
   const programAbbreviation = getProgramAbbreviation();
 
