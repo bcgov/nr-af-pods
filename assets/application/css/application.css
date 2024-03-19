@@ -31,6 +31,23 @@ fieldset:has(> table[data-name='tab_Declaration_Consent_section_Coding']) {
   display: none !important;
 }
 
+/*  Documents step */
+h4 {
+  font-weight: 200 !important;
+  font-size: 18px !important;
+}
+#AttachFile {
+  display: none;
+}
+
+.note-actions {
+  display: none;
+}
+
+.control .text-muted {
+  display: none;
+}
+
 /*  Demographic Info step */
 table[data-name='Q1a_Section'],
 table[data-name='Q2c_Section'],
