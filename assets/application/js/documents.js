@@ -10,8 +10,8 @@
 */
 if (window.jQuery) {
   (function ($) {
-    var MAXIMUM_FILE_SIZE_IN_KB = 25600;
-    var allowedMimeTypes = [
+    const MAXIMUM_FILE_SIZE_IN_KB = 25600;
+    const allowedMimeTypes = [
       'text/csv',
       'application/msword',
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
@@ -28,14 +28,14 @@ if (window.jQuery) {
     ];
     // not used here, but used in backend Dynamics config
     // keeping here for reference as well:
-    var minifiedMimeTypes = [
+    const minifiedMimeTypes = [
       'text/csv',
       'application/msword',
       'application/vnd*',
       'application/pdf',
       'image/*',
     ];
-    var allowedFileTypes = [
+    const allowedFileTypes = [
       '.csv',
       '.doc',
       '.docx',
@@ -50,10 +50,107 @@ if (window.jQuery) {
       '.png',
       '.svg',
       '.tif',
+    ];    
+    var fieldsForFileUploadControls = [
+      "quartech_partialbudget",
+      "quartech_relatedquotesandplans",
     ];
+    const FILE_UPLOAD_ID_SUFFIX = "_AttachFile";
+
     $(document).ready(function () {
-      initFileUpload();
+      // initFileUpload(); // This version was for ABPP S1 and S2. These 2 programs have been closed
+debugger
+      addFileUploadControls(fieldsForFileUploadControls);
     });
+    
+    this.addFileUploadControls = function (fieldsForFileUploadControls) {
+      fieldsForFileUploadControls.forEach((fieldName) => {
+        addFileUpload(fieldName);
+
+        disableField(fieldName);
+      });
+
+      addTitleToNotesControl();
+    };
+    
+    this.addTitleToNotesControl = function () {
+      $(`#notescontrol`).prepend(
+        "<div><h4>Documents Previously Uploaded</h4></div>"
+      );
+    };
+
+    this.disableField = function (fieldName) {
+      $(`#${fieldName}`).attr("readonly", "readonly");
+    };
+
+    this.addFileUpload = function (toFieldId) {
+      const fieldFileUploadId = toFieldId + FILE_UPLOAD_ID_SUFFIX;
+      const fileUploadHtml = `<input type="file" multiple="multiple" id="${fieldFileUploadId}" accept="${allowedFileTypes.join(
+        ","
+      )}" aria-label="Attach files..." style='height: 50px; background: lightgrey; width: 100%; padding: 10px 0 0 10px;'>`;
+
+      const divControl = $(`#${toFieldId}`).parent();
+
+      divControl.append(fileUploadHtml);
+
+      $("#AttachFile").attr(
+        "accept",
+        allowedFileTypes.join(",") + "," + allowedMimeTypes.join(",")
+      );
+      $(`#${fieldFileUploadId}`).change(function (e) {
+        const targetFieldId = fieldFileUploadId.replace(
+          FILE_UPLOAD_ID_SUFFIX,
+          ""
+        );
+
+        let chosenFiles = "";
+        for (var i = 0; i < e.target.files.length; i++) {
+          const file = e.target.files[i];
+          const isValidFileUpload = validateFileUpload(file);
+
+          if (isValidFileUpload) {
+            chosenFiles += `${file.name} (${formatBytes(file.size)})\n`;
+            $(`#${targetFieldId}`).val(chosenFiles);
+          } else {
+            $(`#${fieldFileUploadId}`).val("");
+            $(`#${targetFieldId}`).val("");
+          }
+        }
+
+        updateOobFileUpload();
+      });
+    };
+
+    this.updateOobFileUpload = function () {
+      let selectedFiles = [];
+
+      fieldsForFileUploadControls.forEach((fieldName) => {
+        let fileUploadId = fieldName + FILE_UPLOAD_ID_SUFFIX;
+
+        const fieldFileUploadCtr = document.getElementById(fileUploadId);
+
+        for (var i = 0; i < fieldFileUploadCtr.files.length; i++) {
+          const file = fieldFileUploadCtr.files[i];
+          selectedFiles.push(file);
+        }
+      });
+
+      const fileList = fileListFrom(selectedFiles);
+
+      const attachFileCtr = document.getElementById("AttachFile");
+      attachFileCtr.onchange = console.log;
+      attachFileCtr.files = fileList;
+
+      console.log(attachFileCtr.files);
+    };
+    
+    /** @params {File[]} files - Array of files to add to the FileList */
+    this.fileListFrom = function (files) {
+      const b = new ClipboardEvent("").clipboardData || new DataTransfer();
+
+      for (const file of files) b.items.add(file);
+      return b.files;
+    };
 
     // binary conversion of bytes
     this.formatBytes = function (
