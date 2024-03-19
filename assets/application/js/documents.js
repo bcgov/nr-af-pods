@@ -50,7 +50,7 @@ if (window.jQuery) {
       '.png',
       '.svg',
       '.tif',
-    ];    
+    ];
     var fieldsForFileUploadControls = [
       "quartech_partialbudget",
       "quartech_relatedquotesandplans",
@@ -58,10 +58,44 @@ if (window.jQuery) {
     const FILE_UPLOAD_ID_SUFFIX = "_AttachFile";
 
     $(document).ready(function () {
-      // initFileUpload(); // This version was for ABPP S1 and S2. These 2 programs have been closed
-debugger
-      addFileUploadControls(fieldsForFileUploadControls);
+      customizeDocumentsControls()
     });
+
+    this.customizeDocumentsControls = function() {
+      displayInstructions()
+
+      addFileUploadControls(fieldsForFileUploadControls)
+      
+      // initFileUpload(); // This version was for ABPP S1 and S2. These 2 programs have been closed
+
+      const attachFileLabel = document.querySelector('#AttachFileLabel')
+      if (attachFileLabel) {
+        attachFileLabel.parentNode.parentNode.parentNode.hidden = true // hide the oob attach file control.
+      }
+    }
+
+    this.displayInstructions = function() {
+      if (!document.querySelector('#supportingDocumentationNote')) {
+        const supportingDocumentationNoteHtmlContent = `
+        <div id="supportingDocumentationNote" style="padding-bottom: 20px;">
+          Please Choose or Drag & Drop files to the grey box below to upload the following documents as attachments (as applicable)
+        </div>`;
+  
+        $('fieldset[aria-label="Supporting Documents"] > legend').after(
+          supportingDocumentationNoteHtmlContent
+        );
+  
+        const beforeContinuingNoteHtmlContent = `
+          <div id="beforeContinuingNote" style="padding-bottom: 20px;">
+            Please ensure you have the correct files before clicking "Next". If you move to the next stage of the form you can no longer delete uploaded files. However, you can always add new files.<br />
+            <br />
+            If you have moved to the next stage and then wish to change an uploaded file, simply return to the document submission and upload the replacement file as an additional file. Give the file a name with an indication that it is a replacement.
+          </div>
+        `;
+  
+        $('fieldset[aria-label="Supporting Documents"]').after(beforeContinuingNoteHtmlContent);
+      }
+    }
     
     this.addFileUploadControls = function (fieldsForFileUploadControls) {
       fieldsForFileUploadControls.forEach((fieldName) => {
