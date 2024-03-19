@@ -14,14 +14,15 @@ var PODS = window.PODS || {};
         PODS.customizeFormByProgram(formContext);
     }
 
-    this.customizeFormByProgram = async function (formContext) {        
+    this.customizeFormByProgram = async function (formContext) {
         PODS.customizeFormByConfiguredProgramBusinessLogics(formContext);
     }
     
     this.customizeFormByConfiguredProgramBusinessLogics = async function (formContext) {
         const programBusinessLogics = await PODS.getSelectedProgramData(formContext);
 
-        PODS.customizeFormUsingJsonConfig(formContext, programBusinessLogics.quartech_staffportalprojectformjsonconfig)
+        PODS.customizeFormByJsonConfig(formContext, programBusinessLogics.quartech_staffportalprojectformjsonconfig)
+        PODS.customizeFormUsingJsonConfigForKTTP(formContext, programBusinessLogics.quartech_staffportalprojectformjsonconfig) // legacy code for KTTP
 
         const isBusinessLogicsNotEnabled = !programBusinessLogics?.quartech_businesslogicsenabled;
         if (isBusinessLogicsNotEnabled) return;
@@ -54,21 +55,23 @@ var PODS = window.PODS || {};
             programBusinessLogics.quartech_paymentchecklistitemstodisplay);
     }
 
-    this.customizeFormUsingJsonConfig = async function (formContext, jsonConfig) {
+    this.customizeFormUsingJsonConfigForKTTP = async function (formContext, jsonConfig) {
         if (!jsonConfig) return
 
         const configData = JSON.parse(jsonConfig)
 
-        configData.tabs.forEach((tabConfig) => {
-            tabConfig.fields.forEach((field) => {
-                if (field.label) {
-                    formContext.getControl(field.name)?.setLabel(field.label)
-                }
+        configData.tabs?.forEach((tabConfig) => {
+            if (tabConfig.fields) { // Previous structure being used for KTTP S1, S2 and S3
+                tabConfig.fields.forEach((field) => {
+                    if (field.label) {
+                        formContext.getControl(field.name)?.setLabel(field.label)
+                    }
 
-                if (!field.hidden) {
-                    formContext.getControl(field.name)?.setVisible(true)
-                }
-            });
+                    if (!field.hidden) {
+                        formContext.getControl(field.name)?.setVisible(true)
+                    }
+                });
+            }
         });
     }
 
@@ -207,7 +210,7 @@ var PODS = window.PODS || {};
     this.initDocumentsTabClickedHandler = async function (formContext) {
         var projectGuid = formContext.data.entity.getId();
 		
-		var documentsTab = formContext.ui.tabs.get("tab_Documents");
+		var documentsTab = formContext.ui.tabs.get("documentsTab");
         documentsTab.addTabStateChange(
             function() {
                 try {

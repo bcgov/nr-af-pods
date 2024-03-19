@@ -10,8 +10,8 @@
 */
 if (window.jQuery) {
   (function ($) {
-    var MAXIMUM_FILE_SIZE_IN_KB = 25600;
-    var allowedMimeTypes = [
+    const MAXIMUM_FILE_SIZE_IN_KB = 25600;
+    const allowedMimeTypes = [
       'text/csv',
       'application/msword',
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
@@ -28,14 +28,14 @@ if (window.jQuery) {
     ];
     // not used here, but used in backend Dynamics config
     // keeping here for reference as well:
-    var minifiedMimeTypes = [
+    const minifiedMimeTypes = [
       'text/csv',
       'application/msword',
       'application/vnd*',
       'application/pdf',
       'image/*',
     ];
-    var allowedFileTypes = [
+    const allowedFileTypes = [
       '.csv',
       '.doc',
       '.docx',
@@ -51,9 +51,140 @@ if (window.jQuery) {
       '.svg',
       '.tif',
     ];
+    var fieldsForFileUploadControls = [
+      "quartech_partialbudget",
+      "quartech_relatedquotesandplans",
+    ];
+    const FILE_UPLOAD_ID_SUFFIX = "_AttachFile";
+
     $(document).ready(function () {
-      initFileUpload();
+      customizeDocumentsControls()
     });
+
+    this.customizeDocumentsControls = function() {
+      displayInstructions()
+
+      addFileUploadControls(fieldsForFileUploadControls)
+      
+      // initFileUpload(); // This version was for ABPP S1 and S2. These 2 programs have been closed
+
+      const attachFileLabel = document.querySelector('#AttachFileLabel')
+      if (attachFileLabel) {
+        attachFileLabel.parentNode.parentNode.parentNode.hidden = true // hide the oob attach file control.
+      }
+    }
+
+    this.displayInstructions = function() {
+      if (!document.querySelector('#supportingDocumentationNote')) {
+        const supportingDocumentationNoteHtmlContent = `
+        <div id="supportingDocumentationNote" style="padding-bottom: 20px;">
+          Please Choose or Drag & Drop files to the grey box below to upload the following documents as attachments (as applicable)
+        </div>`;
+  
+        $('fieldset[aria-label="Supporting Documents"] > legend').after(
+          supportingDocumentationNoteHtmlContent
+        );
+  
+        const beforeContinuingNoteHtmlContent = `
+          <div id="beforeContinuingNote" style="padding-bottom: 20px;">
+            Please ensure you have the correct files before clicking "Next". If you move to the next stage of the form you can no longer delete uploaded files. However, you can always add new files.<br />
+            <br />
+            If you have moved to the next stage and then wish to change an uploaded file, simply return to the document submission and upload the replacement file as an additional file. Give the file a name with an indication that it is a replacement.
+          </div>
+        `;
+  
+        $('fieldset[aria-label="Supporting Documents"]').after(beforeContinuingNoteHtmlContent);
+      }
+    }
+    
+    this.addFileUploadControls = function (fieldsForFileUploadControls) {
+      fieldsForFileUploadControls.forEach((fieldName) => {
+        addFileUpload(fieldName);
+
+        disableField(fieldName);
+      });
+
+      addTitleToNotesControl();
+    };
+    
+    this.addTitleToNotesControl = function () {
+      $(`#notescontrol`).prepend(
+        "<div><h4>Documents Previously Uploaded</h4></div>"
+      );
+    };
+
+    this.disableField = function (fieldName) {
+      $(`#${fieldName}`).attr("readonly", "readonly");
+    };
+
+    this.addFileUpload = function (toFieldId) {
+      const fieldFileUploadId = toFieldId + FILE_UPLOAD_ID_SUFFIX;
+      const fileUploadHtml = `<input type="file" multiple="multiple" id="${fieldFileUploadId}" accept="${allowedFileTypes.join(
+        ","
+      )}" aria-label="Attach files..." style='height: 50px; background: lightgrey; width: 100%; padding: 10px 0 0 10px;'>`;
+
+      const divControl = $(`#${toFieldId}`).parent();
+
+      divControl.append(fileUploadHtml);
+
+      $("#AttachFile").attr(
+        "accept",
+        allowedFileTypes.join(",") + "," + allowedMimeTypes.join(",")
+      );
+      $(`#${fieldFileUploadId}`).change(function (e) {
+        const targetFieldId = fieldFileUploadId.replace(
+          FILE_UPLOAD_ID_SUFFIX,
+          ""
+        );
+
+        let chosenFiles = "";
+        for (var i = 0; i < e.target.files.length; i++) {
+          const file = e.target.files[i];
+          const isValidFileUpload = validateFileUpload(file);
+
+          if (isValidFileUpload) {
+            chosenFiles += `${file.name} (${formatBytes(file.size)})\n`;
+            $(`#${targetFieldId}`).val(chosenFiles);
+          } else {
+            $(`#${fieldFileUploadId}`).val("");
+            $(`#${targetFieldId}`).val("");
+          }
+        }
+
+        updateOobFileUpload();
+      });
+    };
+
+    this.updateOobFileUpload = function () {
+      let selectedFiles = [];
+
+      fieldsForFileUploadControls.forEach((fieldName) => {
+        let fileUploadId = fieldName + FILE_UPLOAD_ID_SUFFIX;
+
+        const fieldFileUploadCtr = document.getElementById(fileUploadId);
+
+        for (var i = 0; i < fieldFileUploadCtr.files.length; i++) {
+          const file = fieldFileUploadCtr.files[i];
+          selectedFiles.push(file);
+        }
+      });
+
+      const fileList = fileListFrom(selectedFiles);
+
+      const attachFileCtr = document.getElementById("AttachFile");
+      attachFileCtr.onchange = console.log;
+      attachFileCtr.files = fileList;
+
+      console.log(attachFileCtr.files);
+    };
+    
+    /** @params {File[]} files - Array of files to add to the FileList */
+    this.fileListFrom = function (files) {
+      const b = new ClipboardEvent("").clipboardData || new DataTransfer();
+
+      for (const file of files) b.items.add(file);
+      return b.files;
+    };
 
     // binary conversion of bytes
     this.formatBytes = function (

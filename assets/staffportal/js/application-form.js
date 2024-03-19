@@ -14,12 +14,32 @@ var PODS = window.PODS || {};
 
     this.formOnLoad = async function (executionContext) {
 		const formContext = executionContext.getFormContext();
-		
+
         PODS.initProgramLookupOnChange(formContext);
 
         PODS.customizeFormByProgram(formContext);
 
 		PODS.initDocumentsTabClickedHandler(formContext);
+    }
+    
+    this.showSections = async function (visibleSections) {
+        let sectionsToShow = [];
+        
+        if(visibleSections) {
+            sectionsToShow = visibleSections.split(',');
+        }
+        
+        sectionsToShow.forEach(sectionName => {
+            if (sectionName != '')
+            {
+                const tabControl = Xrm.Page.ui.tabs.get(sectionName)
+                if (tabControl) {
+                    Xrm.Page.ui.tabs.get("tab_Deliverables_Budget").sections.get("tab_Deliverables_Budget_section_Coding").setVisible(false);
+
+                    tabControl.setVisible(false)
+                }
+            }
+        });
     }
 
     this.initProgramLookupOnChange = async function (formContext) {
@@ -31,14 +51,17 @@ var PODS = window.PODS || {};
         PODS.customizeFormByProgram(formContext);
     }
 
-    this.customizeFormByProgram = async function (formContext) {        
-        PODS.customizeFormByConfiguredProgramBusinessLogics(formContext);
+    this.customizeFormByProgram = async function (formContext) {
+        const programConfigData = await PODS.getProgramStreamConfigData(formContext);
+
+        PODS.customizeFormByConfiguredProgramBusinessLogics(formContext, programConfigData);
 		
 		PODS.customizeTVCprogram(formContext);
+
+        PODS.customizeFormByJsonConfig(formContext, programConfigData.quartech_staffportalapplicationformjsonconfig);
     }
 	
-    this.customizeFormByConfiguredProgramBusinessLogics = async function (formContext) {
-        const programBusinessLogics = await PODS.getSelectedProgramData(formContext);
+    this.customizeFormByConfiguredProgramBusinessLogics = async function (formContext, programBusinessLogics) {
 
         const isBusinessLogicsNotEnabled = !programBusinessLogics?.quartech_businesslogicsenabled;
         if (isBusinessLogicsNotEnabled) return;
@@ -94,10 +117,10 @@ var PODS = window.PODS || {};
         }
     }
 	
-    this.getSelectedProgramData = async function (formContext) {
+    this.getProgramStreamConfigData = async function (formContext) {
         const programGuid = await PODS.getSelectedProgramOrStreamGuid(formContext);
 
-        var programData = await Xrm.WebApi.retrieveRecord("msgov_program", programGuid, `?$select=quartech_businesslogicsenabled, quartech_businesssummarychecklistitemstodisplay, quartech_applicationnaicscodefieldstodisplay, quartech_documentsubmissionchecklistitemstodisplay, quartech_documentsubmissionautocomplete, quartech_programeligibilitychecklistitemstodisplay, quartech_programeligibilityautocompleteeligibility, quartech_programeligibilityautosetmoreinforequired, quartech_evaluationchecklistitemstodisplay, quartech_agreementchecklistitemstodisplay, quartech_agreementautocompleteagreement, quartech_agreementsetagreementtomoreinforequired, quartech_claimsubmissionchecklistitemstodisplay, quartech_claimsubmissionautocompleteclaimreceived, quartech_claimprocessingchecklistitemstodisplay, quartech_paymentchecklistitemstodisplay, quartech_paymentautocompleteprojectcompleted&$expand=quartech_StaffPortalConfig($select=quartech_name,quartech_configdata)`);
+        var programData = await Xrm.WebApi.retrieveRecord(PROGRAM_ENTITY_LOGICAL_NAME, programGuid, `?$select=quartech_staffportalapplicationformjsonconfig,quartech_businesslogicsenabled, quartech_businesssummarychecklistitemstodisplay, quartech_applicationnaicscodefieldstodisplay, quartech_documentsubmissionchecklistitemstodisplay, quartech_documentsubmissionautocomplete, quartech_programeligibilitychecklistitemstodisplay, quartech_programeligibilityautocompleteeligibility, quartech_programeligibilityautosetmoreinforequired, quartech_evaluationchecklistitemstodisplay, quartech_agreementchecklistitemstodisplay, quartech_agreementautocompleteagreement, quartech_agreementsetagreementtomoreinforequired, quartech_claimsubmissionchecklistitemstodisplay, quartech_claimsubmissionautocompleteclaimreceived, quartech_claimprocessingchecklistitemstodisplay, quartech_paymentchecklistitemstodisplay, quartech_paymentautocompleteprojectcompleted&$expand=quartech_StaffPortalConfig($select=quartech_name,quartech_configdata)`);
 
         return programData;
     }
@@ -276,7 +299,7 @@ var PODS = window.PODS || {};
 		var projectLookupValue = projectLookupCtrAtt.getValue();
         var projectGuid = projectLookupValue[0].id;
 		
-		var documentsTab = formContext.ui.tabs.get("tab_Documents");
+		var documentsTab = formContext.ui.tabs.get("documentsTab");
         documentsTab.addTabStateChange(
             function() {
                 try {

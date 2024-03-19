@@ -1,0 +1,68 @@
+{
+  "tags": ["ProjectForm", "StaffPortal", "VPSWPP"],
+  "version": "1.0.0",
+  "name": "Veterinary Professional Student Work Placement Program",
+  "abbreviation": "VPSWPP",
+  "tabs": [
+    {
+      "name": "projectReviewTab",
+      "sections": [
+        {
+          "name": "agreementSignedSection",
+          "fields": [
+            {
+              "name": "quartech_contributionagreement",
+              "visible": false
+            },
+            {
+              "name": "quartech_projectapproval",
+              "label": "Project Approval sent to Applicant"
+            }
+          ]
+        },
+        {
+          "name": "claimProcessingSection",
+          "fields": [
+            {
+              "name": "quartech_vetclinicdatacollectionevalformreceived",
+              "label": "Veterinary clinic - end of program data collection and program evaluation form"
+            },
+            {
+              "name": "quartech_studentfoodanimalcaselogreceived",
+              "label": "Student - food-animal case log"
+            },
+            {
+              "name": "quartech_studentprogramevaluationformreceived",
+              "label": "Student - program evaluation form"
+            },
+            {
+              "name": "quartech_allinvoicesreceiptsreceived",
+              "visible": false
+            },
+            {
+              "name": "quartech_eventreportreceived",
+              "visible": false
+            },
+            {
+              "name": "quartech_itemizedexpenselistreceived",
+              "visible": false
+            },
+            {
+              "name": "quartech_reimbursementverified",
+              "visible": false
+            }
+          ]
+        },
+        {
+          "name": "paymentSection",
+          "fields": [
+            {
+              "name": "quartech_eaapprovalsent",
+              "visible": false
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

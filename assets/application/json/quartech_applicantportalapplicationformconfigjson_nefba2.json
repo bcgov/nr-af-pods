@@ -231,9 +231,9 @@
         {
           "name": "quartech_relatedquotesandplans",
           "label": "Attach any related quotes and plans",
-          "required": true
+          "elementType": "FileInput"
         }
       ]
     }
-  ] 
+  ]
 }
