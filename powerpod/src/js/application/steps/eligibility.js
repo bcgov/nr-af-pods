@@ -55,7 +55,6 @@ function setupEligibilityStepFields() {
       dependentOnValue: '255550001',
       dependentOnElementTag: 'quartech_bcregisteredbusinessentity',
       requiredFieldTag: 'quartech_committedbizregistrationbeforecompletion',
-      validationFunc: validateStepFields,
     });
   }
 }

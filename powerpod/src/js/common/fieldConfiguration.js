@@ -1,11 +1,10 @@
-// @ts-nocheck
 import { Form, HtmlElementType } from './constants.js';
 import { customizeCurrencyInput } from './currency.js';
 import {
   getFieldsBySectionClaim,
   getFieldsBySectionApplication,
 } from './fields.js';
-import { hideFieldByFieldName, observeChanges } from './html.js';
+import { hideFieldByFieldName, observeChanges, showFieldRow } from './html.js';
 import { Logger } from './logger.js';
 import { FieldMaskType, maskInput } from './masking.js';
 import { getOptions } from './options.js';
@@ -20,6 +19,10 @@ import {
   validateRequiredFields,
   validateStepFields,
 } from './fieldValidation.js';
+import {
+  initOnChange_DependentRequiredField,
+  initializeVisibleIf,
+} from './fieldConditionalLogic.js';
 
 const logger = Logger('common/fieldConfiguration');
 
@@ -69,6 +72,7 @@ export function configureFields() {
       readOnly,
       doNotBlank = false,
       fileTypes, // not currently used anywhere
+      visibleIf,
     } = fields[i];
     logger.info({
       fn: configureFields,
@@ -164,6 +168,9 @@ export function configureFields() {
       let defaultFileTypes =
         '.csv,.doc,.docx,.odt,.pdf,.xls,.xlsx,.ods,.gif,.jpeg,.jpg,.png,.svg,.tif';
       $(`#${name}_AttachFile`)?.attr('accept', fileTypes ?? defaultFileTypes);
+    }
+    if (visibleIf) {
+      initializeVisibleIf(name, required, visibleIf);
     }
   }
 
