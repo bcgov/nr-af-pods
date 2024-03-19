@@ -221,12 +221,12 @@
           "name": "quartech_partialbudget",
           "label": "Attach Partial Budget",
           "required": true,
-          "elementType": "FileUpload"
+          "elementType": "FileInput"
         },        
         {
           "name": "quartech_relatedquotesandplans",
           "label": "Attach any related quotes and plans",
-          "elementType": "FileUpload"
+          "elementType": "FileInput"
         }
       ]
     }
