@@ -213,6 +213,22 @@
           }
         }
       ]
+    },
+    {
+      "name": "DocumentsStep",
+      "fields": [
+        {
+          "name": "quartech_partialbudget",
+          "label": "Attach Partial Budget",
+          "required": true,
+          "elementType": "FileInput"
+        },        
+        {
+          "name": "quartech_relatedquotesandplans",
+          "label": "Attach any related quotes and plans",
+          "elementType": "FileInput"
+        }
+      ]
     }
   ]
 }
