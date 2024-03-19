@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "NEFBA2", "NEFBA Phase 2"],
-  "version": "1.0.8",
+  "version": "1.0.9",
   "name": "New Entrant Farm Business Accelerator Phase 2",
   "abbreviation": "NEFBA2",
   "hiddenSteps": "tab_Project",
@@ -42,6 +42,11 @@
         },
         {
           "name": "quartech_costsharefundingfrombmpporoffsp",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+		{
+          "name": "quartech_costsharefundingfromoffsp",
           "elementType": "DropdownSelect",
           "required": true
         },
@@ -213,6 +218,22 @@
           }
         }
       ]
+    },
+    {
+      "name": "DocumentsStep",
+      "fields": [
+        {
+          "name": "quartech_partialbudget",
+          "label": "Attach Partial Budget",
+          "required": true,
+          "elementType": "FileInput"
+        },        
+        {
+          "name": "quartech_relatedquotesandplans",
+          "label": "Attach any related quotes and plans",
+          "required": true
+        }
+      ]
     }
-  ]
+  ] 
 }
