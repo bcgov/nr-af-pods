@@ -412,7 +412,7 @@ function updateBusinessNumberField(topic, credentials) {
 }
 
 function setupApplicantInfoStepFields() {
-  configureFields('ApplicantInfoStep');
+  configureFields();
 
   const programAbbreviation = getProgramAbbreviation();
 
@@ -422,14 +422,12 @@ function setupApplicantInfoStepFields() {
       dependentOnValue: '255550001',
       dependentOnElementTag: 'quartech_fillingfarmingincomeontaxreturn',
       requiredFieldTag: 'quartech_firstyearclaimedfarmingincome',
-      validationFunc: validateStepFields,
     });
     // @ts-ignore
     initOnChange_DependentRequiredField({
       dependentOnValue: '255550000',
       dependentOnElementTag: 'quartech_fillingfarmingincomeontaxreturn',
       requiredFieldTag: 'quartech_firstyearfarmoperationgeneratingrevenue',
-      validationFunc: validateStepFields,
     });
   }
 
@@ -468,7 +466,6 @@ function setupApplicantInfoStepFields() {
       dependentOnValue: '255550001',
       dependentOnElementTag: 'quartech_recipienttype',
       requiredFieldTag: 'quartech_commodity',
-      validationFunc: validateStepFields,
     });
     // @ts-ignore
     initOnChange_DependentRequiredField({
@@ -476,14 +473,12 @@ function setupApplicantInfoStepFields() {
       dependentOnElementTag: 'quartech_recipienttype',
       requiredFieldTag: 'quartech_othercommoditiesproducedharvested',
       disableRequiredProp: true,
-      validationFunc: validateStepFields,
     });
     // @ts-ignore
     initOnChange_DependentRequiredField({
       dependentOnValue: '255550002',
       dependentOnElementTag: 'quartech_recipienttype',
       requiredFieldTag: 'quartech_primarilyprocess',
-      validationFunc: validateStepFields,
     });
     // @ts-ignore
     initOnChange_DependentRequiredField({
@@ -491,7 +486,6 @@ function setupApplicantInfoStepFields() {
       dependentOnElementTag: 'quartech_recipienttype',
       requiredFieldTag: 'quartech_otherproductsprocessed',
       disableRequiredProp: true,
-      validationFunc: validateStepFields,
     });
   }
 

@@ -110,6 +110,13 @@ export function getFieldsBySectionApplication(stepName, forceRefresh = false) {
   }
 
   fields.forEach((s) => {
+    if (s.visibleIf) {
+      logger.warn({
+        fn: getFieldsBySectionClaim,
+        message: `NOT showing field since conditionally defined visibleIf, name: ${s.name}`,
+      });
+      return;
+    }
     logger.info({
       fn: getFieldsBySectionApplication,
       message: `showing field name: ${s.name}`,

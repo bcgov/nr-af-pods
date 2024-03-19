@@ -1,6 +1,58 @@
-import { getCurrentStep } from "./program.ts";
-import { setDynamicallyRequiredFields } from "./fieldConfiguration.js";
-import { validateStepFields } from "./fieldValidation.js";
+import { getCurrentStep } from './program.ts';
+import { setDynamicallyRequiredFields } from './fieldConfiguration.js';
+import { validateStepFields } from './fieldValidation.js';
+import { Logger } from './logger.js';
+import { showFieldRow } from './html.js';
+
+const logger = new Logger('common/fieldConditionalLogic');
+
+export function initializeVisibleIf(name, required, visibleIf) {
+  const {
+    fieldName: dependentFieldName,
+    selectedValue: dependentSelectedValue,
+  } = visibleIf;
+
+  if (!dependentFieldName || !dependentSelectedValue) {
+    logger.error({
+      fn: initializeVisibleIf,
+      message:
+        'Dynamically configured visibleIf field missing fieldName or selectedValue',
+      data: {
+        dependentFieldName,
+        dependentSelectedValue,
+      },
+    });
+    return;
+  }
+
+  logger.info({
+    fn: initializeVisibleIf,
+    message: 'Starting to configure dynamic field using visibleIf',
+    data: {
+      name,
+      dependentSelectedValue,
+      dependentFieldName,
+      disableRequiredProp: !required,
+    },
+  });
+
+  // Make sure field is visible initially
+  showFieldRow(name);
+
+  // @ts-ignore
+  initOnChange_DependentRequiredField({
+    requiredFieldTag: name,
+    dependentOnElementTag: dependentFieldName,
+    dependentOnValue: dependentSelectedValue,
+    disableRequiredProp: !required,
+  });
+
+  logger.info({
+    fn: initializeVisibleIf,
+    message: `Successfully initialized dynamic field with name: ${name}`,
+    data: { dependentSelectedValue, dependentFieldName, required },
+  });
+}
 
 export function initOnChange_DependentRequiredField({
   dependentOnValue,
@@ -16,7 +68,13 @@ export function initOnChange_DependentRequiredField({
   const dependentOnElement = document.querySelector(
     `#${dependentOnElementTag}`
   );
-  if (!dependentOnElement) return;
+  if (!dependentOnElement) {
+    logger.error({
+      fn: initOnChange_DependentRequiredField,
+      message: `Could not find field for dependentOnElementTag: ${dependentOnElementTag}`,
+    });
+    return;
+  }
 
   // INITIAL LOAD/SETUP:
   setupDependentRequiredField({
@@ -44,7 +102,7 @@ export function initOnChange_DependentRequiredField({
       disableRequiredProp,
       customFunc,
     });
-  })
+  });
 }
 
 function setupDependentRequiredField({
@@ -61,10 +119,25 @@ function setupDependentRequiredField({
   const dependentOnElement = document.querySelector(
     `#${dependentOnElementTag}`
   );
-  if (!dependentOnElement) return;
+  if (!dependentOnElement) {
+    logger.error({
+      fn: setupDependentRequiredField,
+      message: `Could not find field for dependentOnElementTag: ${dependentOnElementTag}`,
+    });
+    return;
+  }
   // @ts-ignore
   const input = dependentOnElement.value;
+  logger.info({
+    fn: setupDependentRequiredField,
+    message: `Setting up dependent field dependentOnElementTag: ${dependentOnElementTag} with value: ${input}`,
+  });
   if (overrideTruthyClause != undefined) {
+    logger.info({
+      fn: setupDependentRequiredField,
+      message: `Overriding truthy clause overrideTruthyClause: ${overrideTruthyClause}`,
+      data: { dependentOnElementTag, input },
+    });
     if (overrideTruthyClause === true) {
       shouldRequireDependentField({
         shouldBeRequired: true,
@@ -85,7 +158,22 @@ function setupDependentRequiredField({
       });
     }
   } else {
-    if (input === dependentOnValue || dependentOnValueArray.includes(input)) {
+    if (
+      input === dependentOnValue ||
+      input === `${dependentOnValue}` ||
+      dependentOnValueArray.includes(input)
+    ) {
+      logger.info({
+        fn: setupDependentRequiredField,
+        message: `Value matches visibleIf condition`,
+        data: {
+          dependentOnElementTag,
+          input,
+          dependentOnValue,
+          dependentOnValueArray,
+          requiredFieldTag,
+        },
+      });
       shouldRequireDependentField({
         shouldBeRequired: true,
         requiredFieldTag,
@@ -95,6 +183,17 @@ function setupDependentRequiredField({
         customFunc,
       });
     } else {
+      logger.info({
+        fn: setupDependentRequiredField,
+        message: `Value DOES NOT match visibleIf condition`,
+        data: {
+          dependentOnElementTag,
+          input,
+          dependentOnValue,
+          dependentOnValueArray,
+          requiredFieldTag,
+        },
+      });
       shouldRequireDependentField({
         shouldBeRequired: false,
         requiredFieldTag,
@@ -118,7 +217,7 @@ export function shouldRequireDependentField({
   const requiredFieldLabelElement = document.querySelector(
     `#${requiredFieldTag}_label`
   );
-  const requiredFieldRow = requiredFieldLabelElement.closest('tr');
+  const requiredFieldRow = requiredFieldLabelElement?.closest('tr');
   const requiredFieldInputElement = document.querySelector(
     `#${requiredFieldTag}`
   );
@@ -127,10 +226,25 @@ export function shouldRequireDependentField({
     !requiredFieldLabelElement ||
     !requiredFieldRow ||
     !requiredFieldInputElement
-  )
+  ) {
+    logger.error({
+      fn: shouldRequireDependentField,
+      message: 'Failed to find required elements',
+      data: {
+        requiredFieldTag,
+        requiredFieldLabelElement,
+        requiredFieldRow,
+        requiredFieldInputElement,
+      },
+    });
     return;
+  }
 
   if (shouldBeRequired) {
+    logger.info({
+      fn: shouldRequireDependentField,
+      message: `Setting dynamic field to visible requiredFieldTag: ${requiredFieldTag}`,
+    });
     $(requiredFieldRow).css({ display: '' });
 
     if (!disableRequiredProp) {
@@ -149,6 +263,10 @@ export function shouldRequireDependentField({
       }
     }
   } else {
+    logger.info({
+      fn: shouldRequireDependentField,
+      message: `Setting dynamic field to hidden requiredFieldTag: ${requiredFieldTag}`,
+    });
     $(requiredFieldRow).css({ display: 'none' });
 
     if (!disableRequiredProp) {
