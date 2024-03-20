@@ -3,7 +3,10 @@ import {
   validateIsConsultantEitherBciaOrCpa,
 } from '../application/validation.js';
 import { Form, FormStep, HtmlElementType } from './constants.js';
-import { getFieldsBySectionClaim, getFieldsBySectionApplication } from './fields.js';
+import {
+  getFieldsBySectionClaim,
+  getFieldsBySectionApplication,
+} from './fields.js';
 import { Logger } from './logger.js';
 import { getOptions } from './options.js';
 import { getCurrentStep, getProgramAbbreviation } from './program.ts';
@@ -169,6 +172,10 @@ export function validateRequiredField(
   elemType = HtmlElementType.Input,
   errorMessage = 'IS REQUIRED'
 ) {
+  logger.info({
+    fn: validateRequiredField,
+    message: `Start validating required fieldName: ${fieldName}`,
+  });
   let isVisible = $(`#${fieldName}_label`).is(':visible');
 
   let skipValidationAsNotVisible = !isVisible;
@@ -201,6 +208,10 @@ export function validateRequiredField(
   }
 
   if (isEmptyField) {
+    logger.info({
+      fn: validateRequiredField,
+      message: `Required field fieldName: ${fieldName} is empty! Set validation error message`,
+    });
     const fieldLabelText = $(`#${fieldName}_label`).text();
     validationErrorHtml = `<div><span>"${fieldLabelText}"</span><span style="color:red;"> ${errorMessage}</span></div>`;
     // $(`#${fieldName}`).on("focusout", function () {

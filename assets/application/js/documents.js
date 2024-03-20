@@ -174,6 +174,7 @@ if (window.jQuery) {
       const attachFileCtr = document.getElementById("AttachFile");
       attachFileCtr.onchange = console.log;
       attachFileCtr.files = fileList;
+      
 
       console.log(attachFileCtr.files);
     };

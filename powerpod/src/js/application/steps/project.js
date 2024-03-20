@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   GROUP_APPLICATION_VALUE,
   NO_VALUE,
@@ -117,7 +116,7 @@ function hideShow_WhyActiviyNotOpenToPublic(selectedValue) {
 }
 
 function setProjectStepRequiredFields() {
-  configureFields('ProjectStep');
+  configureFields();
 
   const programAbbreviation = getProgramAbbreviation();
 
