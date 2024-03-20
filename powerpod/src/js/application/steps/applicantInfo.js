@@ -516,11 +516,11 @@ function showOrHideTipNotice() {
   const agriProgramSubscriptionValue = document.querySelector(
     '#quartech_agriprogramsubscriber'
     // @ts-ignore
-  ).value;
+  )?.value;
   const tipReportEnrolledValue = document.querySelector(
     '#quartech_tipreportenrolled'
     // @ts-ignore
-  ).value;
+  )?.value;
   const tipReportNoticeElement = document.querySelector('#tipReportNotice');
   if (!tipReportNoticeElement) return;
   if (

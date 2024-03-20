@@ -1,12 +1,19 @@
 import { CURRENCY_FORMAT } from '../../common/currency.js';
-import { addTextAboveField, combineElementsIntoOneRow, showOrHideAndReturnValue } from '../../common/html.js';
+import {
+  addTextAboveField,
+  combineElementsIntoOneRow,
+  showOrHideAndReturnValue,
+} from '../../common/html.js';
 import { getProgramAbbreviation } from '../../common/program.ts';
 import { configureFields } from '../../common/fieldConfiguration.js';
+import { Logger } from '../../common/logger.js';
+
+const logger = new Logger('application/steps/deliverablesBudget');
 
 export function customizeDeliverablesBudgetStep() {
   const programAbbreviation = getProgramAbbreviation();
 
-  configureFields('DeliverablesBudgetStep');
+  configureFields();
 
   // START ALL PROGRAMS/STREAMS CUSTOMIZATION
   const deliverablesBudgetTabTitleElement = document.querySelector(
@@ -14,13 +21,30 @@ export function customizeDeliverablesBudgetStep() {
   );
   if (
     deliverablesBudgetTabTitleElement &&
-    deliverablesBudgetTabTitleElement.textContent.includes(
+    deliverablesBudgetTabTitleElement.textContent?.includes(
       'Deliverables & Budget'
     )
   ) {
     $(deliverablesBudgetTabTitleElement).css('display', 'none');
   }
   // END ALL PROGRAMS/STREAMS CUSTOMIZATION
+
+  // START NEFBA2 CUSTOMIZATION
+  if (programAbbreviation && programAbbreviation === 'NEFBA2') {
+    setOnKeypressTotalProjectInput(
+      'quartech_totalfundingrequiredfromtheprogram'
+    );
+    setOnKeypressTotalProjectInput('quartech_inkindcontribution');
+    setOnKeypressTotalProjectInput('quartech_cashcontribution');
+    setOnKeypressTotalProjectInput('quartech_totalgstfromquotes');
+
+    setOnKeypressTotalAddedIncomeAndReducedCosts('quartech_totaladdedincome');
+    setOnKeypressTotalAddedIncomeAndReducedCosts('quartech_totalreducedcost');
+
+    setOnKeypressTotalAddedCostsAndReducedIncome('quartech_totaladdedcost');
+    setOnKeypressTotalAddedCostsAndReducedIncome('quartech_totalreducedincome');
+  }
+  // END NEFBA2 CUSTOMIZATION
 
   // START KTTP PROGRAMS/STREAMS CUSTOMIZATION
   if (programAbbreviation && programAbbreviation.includes('KTTP')) {
@@ -82,7 +106,7 @@ export function customizeDeliverablesBudgetStep() {
   }
   // END KTTP PROGRAMS/STREAMS CUSTOMIZATION
 
-  configureFields('DeliverablesBudgetStep');
+  configureFields();
 }
 
 function setOnKeypressBudgetInput(elementId) {
@@ -108,9 +132,7 @@ function addEstimatedActivityBudgetDescription() {
 }
 
 function initialDeliverablesBudgetSingleRowSetup() {
-  const tableElement = $(
-    'table[data-name="deliverablesBudgetSection"]'
-  );
+  const tableElement = $('table[data-name="deliverablesBudgetSection"]');
 
   // find and delete colgroup config
   tableElement.find('colgroup').remove();
@@ -183,6 +205,120 @@ function setupEstimatedActivityBudget() {
   combineElementsIntoOneRow(
     costShareValueElementId,
     costShareDescriptionElementId
+  );
+}
+
+// @ts-ignore
+function getCurrencyFieldValue(valueElementId) {
+  const valueElement = $(`#${valueElementId}`);
+  if (!valueElement) {
+    logger.error({
+      fn: getCurrencyFieldValue,
+      message: `Unable to find element for valueElementId: ${valueElementId}`,
+    });
+    return;
+  }
+  const value = String(valueElement.val());
+  let parsedValue = parseFloat(value.replace(/,/g, ''));
+  if (isNaN(parsedValue)) parsedValue = 0.0;
+  return parsedValue;
+}
+
+function setOnKeypressTotalProjectInput(elementId) {
+  $(`#${elementId}`).on('change keyup blur', function () {
+    calculateTotalProjectCost();
+  });
+}
+
+function calculateTotalProjectCost() {
+  const totalRequestedFromProgramId =
+    'quartech_totalfundingrequiredfromtheprogram';
+  const inKindContributionId = 'quartech_inkindcontribution';
+  const cashContributionId = 'quartech_cashcontribution';
+  const totalGstFromQuotesId = 'quartech_totalgstfromquotes';
+
+  const totalRequestedFromProgram =
+    getCurrencyFieldValue(totalRequestedFromProgramId) ?? 0;
+  const inKindContribution = getCurrencyFieldValue(inKindContributionId) ?? 0;
+  const cashContribution = getCurrencyFieldValue(cashContributionId) ?? 0;
+  const totalGstFromQuotes = getCurrencyFieldValue(totalGstFromQuotesId) ?? 0;
+
+  let totalProjectCost =
+    totalRequestedFromProgram +
+    inKindContribution +
+    cashContribution +
+    totalGstFromQuotes;
+
+  let totalProjectCostWithCurrencyFormat =
+    CURRENCY_FORMAT.format(totalProjectCost);
+  $('#quartech_totalprojectcost').val(
+    totalProjectCostWithCurrencyFormat.replace('CA$', '')
+  );
+}
+
+function setOnKeypressTotalAddedIncomeAndReducedCosts(elementId) {
+  $(`#${elementId}`).on('change keyup blur', function () {
+    calculateTotalAddedIncomeAndReducedCosts();
+  });
+}
+
+function calculateTotalAddedIncomeAndReducedCosts() {
+  const totalAddedIncomeId = 'quartech_totaladdedincome';
+  const totalReducedCostId = 'quartech_totalreducedcost';
+
+  const totalAddedIncome = getCurrencyFieldValue(totalAddedIncomeId) ?? 0;
+  const totalReducedCost = getCurrencyFieldValue(totalReducedCostId) ?? 0;
+
+  let totalAddedIncomeAndReducedCosts = totalAddedIncome + totalReducedCost;
+  let totalAddedIncomeAndReducedCostsWithCurrencyFormat =
+    CURRENCY_FORMAT.format(totalAddedIncomeAndReducedCosts);
+  $('#quartech_totaladdedincomeandreducedcosts').val(
+    totalAddedIncomeAndReducedCostsWithCurrencyFormat.replace('CA$', '')
+  );
+
+  calculateNetChangeInProfit();
+}
+
+function setOnKeypressTotalAddedCostsAndReducedIncome(elementId) {
+  $(`#${elementId}`).on('change keyup blur', function () {
+    calculateTotalAddedCostsAndReducedIncome();
+  });
+}
+
+function calculateTotalAddedCostsAndReducedIncome() {
+  const totalAddedCostId = 'quartech_totaladdedcost';
+  const totalReducedIncomeId = 'quartech_totalreducedincome';
+
+  const totalAddedCost = getCurrencyFieldValue(totalAddedCostId) ?? 0;
+  const totalReducedIncome = getCurrencyFieldValue(totalReducedIncomeId) ?? 0;
+
+  let totalAddedCostsAndReducedIncome = totalAddedCost + totalReducedIncome;
+  let totalAddedCostsAndReducedIncomeWithCurrencyFormat =
+    CURRENCY_FORMAT.format(totalAddedCostsAndReducedIncome);
+  $('#quartech_totaladdedcostsandreducedincome').val(
+    totalAddedCostsAndReducedIncomeWithCurrencyFormat.replace('CA$', '')
+  );
+
+  calculateNetChangeInProfit();
+}
+
+function calculateNetChangeInProfit() {
+  const totalAddedIncomeAndReducedCostsId =
+    'quartech_totaladdedincomeandreducedcosts';
+  const totalAddedCostsAndReducedIncomeId =
+    'quartech_totaladdedcostsandreducedincome';
+
+  const totalAddedIncomeAndReducedCosts =
+    getCurrencyFieldValue(totalAddedIncomeAndReducedCostsId) ?? 0;
+  const totalAddedCostsAndReducedIncome =
+    getCurrencyFieldValue(totalAddedCostsAndReducedIncomeId) ?? 0;
+
+  let netChangeInProfit =
+    totalAddedIncomeAndReducedCosts - totalAddedCostsAndReducedIncome;
+  let netChangeInProfitWithCurrencyFormat =
+    CURRENCY_FORMAT.format(netChangeInProfit);
+  $('#quartech_netchangeinprofit').val(
+    netChangeInProfitWithCurrencyFormat.replace('CA$', '')
   );
 }
 

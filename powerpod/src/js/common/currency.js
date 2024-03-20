@@ -39,10 +39,24 @@ export function customizeCurrencyInput({
 
     let pressedKeyCode = event.which; // pressed key on the keyboard.
 
+    logger.info({
+      fn: customizeCurrencyInput,
+      message: `KEYDOWN ACTION: Detected pressedKeyCode: ${pressedKeyCode}`,
+    });
+
+    if (pressedKeyCode <= 40 && pressedKeyCode >= 37) {
+      logger.info({
+        fn: customizeCurrencyInput,
+        message:
+          'KEYDOWN ACTION: Arrow keys pressed, allowing default event behaviour',
+      });
+      return;
+    }
+
     let currentInputCursor = document.getElementById(
       inputCtr[0].id
       // @ts-ignore
-    ).selectionStart;
+    )?.selectionStart;
 
     // pressed '.'
     // if pressed next to a decimal point, just move cursor over 1 space to right
@@ -53,7 +67,7 @@ export function customizeCurrencyInput({
         document
           .getElementById(inputCtr[0].id)
           // @ts-ignore
-          .setSelectionRange(currentInputCursor + 1, currentInputCursor + 1);
+          ?.setSelectionRange(currentInputCursor + 1, currentInputCursor + 1);
         event.preventDefault();
         return;
       }
@@ -67,7 +81,7 @@ export function customizeCurrencyInput({
         document
           .getElementById(inputCtr[0].id)
           // @ts-ignore
-          .setSelectionRange(currentInputCursor + 1, currentInputCursor + 1);
+          ?.setSelectionRange(currentInputCursor + 1, currentInputCursor + 1);
         event.preventDefault();
         return;
       }
@@ -76,19 +90,29 @@ export function customizeCurrencyInput({
         document
           .getElementById(inputCtr[0].id)
           // @ts-ignore
-          .setSelectionRange(currentInputCursor + 1, currentInputCursor + 1);
+          ?.setSelectionRange(currentInputCursor + 1, currentInputCursor + 1);
         event.preventDefault();
         return;
       }
 
       let isDecimalPlace = false;
       // @ts-ignore
+      logger.info({
+        fn: customizeCurrencyInput,
+        message: 'DELETE ACTION: Attempting to detect if decimal place',
+        data: { currentInputCursor, inputValueLength: inputValue?.length },
+      });
       if (currentInputCursor >= inputValue.length - 2) {
         isDecimalPlace = true;
       }
 
       // @ts-ignore
       if (isDecimalPlace && currentInputCursor !== inputValue.length) {
+        logger.info({
+          fn: customizeCurrencyInput,
+          message: 'DELETE ACTION: Decimal place input detected',
+          data: { inputValue },
+        });
         const newValue =
           // @ts-ignore
           inputValue.substring(0, currentInputCursor) +
@@ -99,8 +123,13 @@ export function customizeCurrencyInput({
         document
           .getElementById(inputCtr[0].id)
           // @ts-ignore
-          .setSelectionRange(currentInputCursor + 1, currentInputCursor + 1);
+          ?.setSelectionRange(currentInputCursor + 1, currentInputCursor + 1);
         event.preventDefault();
+        logger.info({
+          fn: customizeCurrencyInput,
+          message: 'DELETE ACTION: Decimal place value updated',
+          data: { inputValue, newValue },
+        });
         return;
       }
     }
@@ -115,7 +144,7 @@ export function customizeCurrencyInput({
         document
           .getElementById(inputCtr[0].id)
           // @ts-ignore
-          .setSelectionRange(currentInputCursor - 1, currentInputCursor - 1);
+          ?.setSelectionRange(currentInputCursor - 1, currentInputCursor - 1);
         event.preventDefault();
         return;
       }
@@ -134,7 +163,7 @@ export function customizeCurrencyInput({
         document
           .getElementById(inputCtr[0].id)
           // @ts-ignore
-          .setSelectionRange(currentInputCursor - 1, currentInputCursor - 1);
+          ?.setSelectionRange(currentInputCursor - 1, currentInputCursor - 1);
         event.preventDefault();
         return;
       }
@@ -164,7 +193,7 @@ export function customizeCurrencyInput({
       let currentInputCursor = document.getElementById(
         inputCtr[0].id
         // @ts-ignore
-      ).selectionStart;
+      )?.selectionStart;
 
       if (
         pressedKeyCode >= 49 &&
@@ -180,7 +209,7 @@ export function customizeCurrencyInput({
         document
           .getElementById(inputCtr[0].id)
           // @ts-ignore
-          .setSelectionRange(currentInputCursor + 1, currentInputCursor + 1);
+          ?.setSelectionRange(currentInputCursor + 1, currentInputCursor + 1);
         event.preventDefault();
         return;
       }
@@ -240,6 +269,7 @@ export function customizeCurrencyInput({
         relativeCursorPosition -= 1;
         relativeLength -= 1;
       }
+
       if (
         currentInputCursor > 0 &&
         // @ts-ignore
@@ -248,6 +278,11 @@ export function customizeCurrencyInput({
         currentInputCursor >= inputValue.length - 2 // || adding number after decimal place
         /*             inputValue.length <= totalMaxDigits */
       ) {
+        logger.info({
+          fn: customizeCurrencyInput,
+          message: 'KEYDOWN ACTION: Decimal input detected',
+          data: { inputValue },
+        });
         // @ts-ignore
         let newVal = inputValue.split('');
         newVal[currentInputCursor] = String.fromCharCode(pressedKeyCode);
@@ -256,11 +291,17 @@ export function customizeCurrencyInput({
         document
           .getElementById(inputCtr[0].id)
           // @ts-ignore
-          .setSelectionRange(currentInputCursor + 1, currentInputCursor + 1);
+          ?.setSelectionRange(currentInputCursor + 1, currentInputCursor + 1);
         // if (inputValue == "0.00") {
         //   inputCtr.val(""); // Solve issue when entering the 1st number before '0.00'
         // }
         event.preventDefault();
+        event.stopImmediatePropagation();
+        logger.info({
+          fn: customizeCurrencyInput,
+          message: 'KEYDOWN ACTION: Decimal input detected... set new value',
+          data: { newVal },
+        });
         return;
       } // Only allow max 9,999,999.99
 
