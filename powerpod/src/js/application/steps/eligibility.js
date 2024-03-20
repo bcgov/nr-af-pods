@@ -1,18 +1,45 @@
-import { YES_VALUE } from "../../common/constants.js";
-import { initOnChange_DependentRequiredField } from "../../common/fieldConditionalLogic.js";
-import { addTextAboveField } from "../../common/html.js";
-import { getProgramAbbreviation } from "../../common/program.ts";
-import { configureFields } from "../../common/fieldConfiguration.js";
-import { validateStepFields } from "../../common/fieldValidation.js";
+import { YES_VALUE } from '../../common/constants.js';
+import { initOnChange_DependentRequiredField } from '../../common/fieldConditionalLogic.js';
+import { addTextAboveField, addTextBelowField } from '../../common/html.js';
+import { getProgramAbbreviation } from '../../common/program.ts';
+import { configureFields } from '../../common/fieldConfiguration.js';
+import { validateStepFields } from '../../common/fieldValidation.js';
 
-export function customizeEligibilityStep(programData) {
+export function customizeEligibilityStep() {
   setupEligibilityStepFields();
 }
 
 function setupEligibilityStepFields() {
-  configureFields('EligibilityStep');
+  configureFields();
 
   const programAbbreviation = getProgramAbbreviation();
+
+  if (programAbbreviation && programAbbreviation === 'NEFBA2') {
+    if (!document.querySelector('#envFarmPlanNotice')) {
+      let htmlContentEnvFarmPlanNotice = `
+        <div id="envFarmPlanNotice" style="padding-top: 50px;">
+          <h4 style="font-weight: 600 !important;">Environmental Farm Plan Program</h4>
+          <span>
+            Participation in the EFP program is free and confidential. Applicants are encouraged to start the EFP process as soon as possible.
+          </span>
+        </div>
+      `;
+      addTextBelowField(
+        'quartech_commitmenttoefp',
+        htmlContentEnvFarmPlanNotice
+      );
+    }
+
+    // @ts-ignore
+    initOnChange_DependentRequiredField({
+      dependentOnValue: '255550001',
+      dependentOnElementTag: 'quartech_statementofcompletionfromefpp',
+      requiredFieldTag: 'quartech_commitmenttoefp',
+      customFunc: setShowOrHideEnvFarmPlanNotice,
+    });
+
+    setShowOrHideEnvFarmPlanNotice();
+  }
 
   if (
     programAbbreviation &&
@@ -56,5 +83,26 @@ function setupEligibilityStepFields() {
       dependentOnElementTag: 'quartech_bcregisteredbusinessentity',
       requiredFieldTag: 'quartech_committedbizregistrationbeforecompletion',
     });
+  }
+}
+
+function setShowOrHideEnvFarmPlanNotice() {
+  showOrHideEnvFarmPlanNotice();
+  $('#quartech_tipreportenrolled').on('change', function () {
+    showOrHideEnvFarmPlanNotice();
+  });
+}
+
+function showOrHideEnvFarmPlanNotice() {
+  const statementOfCompletionValue = document.querySelector(
+    '#quartech_statementofcompletionfromefpp'
+    // @ts-ignore
+  )?.value;
+  const envFarmPlanNoticeElement = document.querySelector('#envFarmPlanNotice');
+  if (!envFarmPlanNoticeElement) return;
+  if (statementOfCompletionValue === '255550001') {
+    $(envFarmPlanNoticeElement).css({ display: '' });
+  } else {
+    $(envFarmPlanNoticeElement).css({ display: 'none' });
   }
 }
