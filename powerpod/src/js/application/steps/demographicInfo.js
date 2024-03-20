@@ -60,7 +60,7 @@ function addDemographicDataDescriptionOldVersionForABPP() {
 }
 
 function setDemographicInfoRequiredFields() {
-  configureFields('DemographicInfoStep');
+  configureFields();
 }
 
 function addViewExampleTo_Q1a() {

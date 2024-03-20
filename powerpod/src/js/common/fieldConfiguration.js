@@ -182,6 +182,10 @@ export function setRequiredField(
   elemType = HtmlElementType.Input,
   validationErrorMessage = 'Required field'
 ) {
+  logger.info({
+    fn: setRequiredField,
+    message: `Start configuring required fieldName: ${fieldName}, elemType: ${elemType}`,
+  });
   $(`#${fieldName}_label`).parent().addClass('required');
   // @ts-ignore
   $(`#${fieldName}`).attr('required', true);
