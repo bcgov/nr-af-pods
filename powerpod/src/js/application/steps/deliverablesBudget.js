@@ -35,7 +35,7 @@ export function customizeDeliverablesBudgetStep() {
     if (!document.querySelector('#increasesInNetIncome')) {
       let increasesInNetIncomeHtml = `
           <div id="increasesInNetIncome" style="font-weight: bold; padding-bottom: 20px;">
-            Decreases in Net Income
+            Increases in Net Income
           </div>
         `;
       addTextAboveField('quartech_totaladdedincome', increasesInNetIncomeHtml);

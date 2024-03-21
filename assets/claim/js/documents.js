@@ -10,7 +10,7 @@
 */
 if (window.jQuery) {
   (function ($) {
-    var MAXIMUM_FILE_SIZE_IN_KB = 25600;
+    var MAXIMUM_FILE_SIZE_IN_KB = 15360;
     var allowedMimeTypes = [
       "text/csv",
       "application/msword",
