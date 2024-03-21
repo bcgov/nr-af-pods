@@ -31,6 +31,26 @@ export function customizeDeliverablesBudgetStep() {
 
   // START NEFBA2 CUSTOMIZATION
   if (programAbbreviation && programAbbreviation === 'NEFBA2') {
+    // text to add above Total added income ($CAD)::
+    if (!document.querySelector('#increasesInNetIncome')) {
+      let increasesInNetIncomeHtml = `
+          <div id="increasesInNetIncome" style="font-weight: bold; padding-bottom: 20px;">
+            Decreases in Net Income
+          </div>
+        `;
+      addTextAboveField('quartech_totaladdedincome', increasesInNetIncomeHtml);
+    }
+
+    // text to add above Total added cost ($CAD):
+    if (!document.querySelector('#decreasesInNetIncome')) {
+      let decreasesInNetIncomeHtml = `
+          <div id="costShardecreasesInNetIncomeeContributionNote" style="font-weight: bold; padding-bottom: 20px;">
+            Decreases in Net Income
+          </div>
+        `;
+      addTextAboveField('quartech_totaladdedcost', decreasesInNetIncomeHtml);
+    }
+
     setOnKeypressTotalProjectInput(
       'quartech_totalfundingrequiredfromtheprogram'
     );
