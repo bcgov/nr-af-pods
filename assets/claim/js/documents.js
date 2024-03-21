@@ -3,7 +3,7 @@
   FILE INFO
   -------------------
   tags: ["Documents", "Claim", "JS"]
-  version: 1.0.0
+  version: 1.0.1
   name: Documents
   type: JS Script
   description: This is the JS script for the Documents step in CLAIM form.
