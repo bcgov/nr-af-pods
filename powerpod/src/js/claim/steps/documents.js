@@ -1,16 +1,18 @@
 import { hideQuestion, observeIframeChanges } from '../../common/html.js';
 import { getEnvVars } from '../../common/env.js';
-import {
-  getProgramAbbreviation,
-} from '../../common/program.ts';
+import { getProgramAbbreviation } from '../../common/program.ts';
 import { configureFields } from '../../common/fieldConfiguration.js';
-import {
-  setFieldValue,
-} from '../../common/html.js';
+import { setFieldValue } from '../../common/html.js';
 import { setFieldReadOnly } from '../../common/fieldValidation.js';
+import {
+  CLAIM_FILE_UPLOAD_FIELDS,
+  addFileUploadControls,
+} from '../documents.js';
 
 export async function customizeDocumentsStep() {
   configureFields();
+  // TODO: enable this for TASK 3631
+  // addFileUploadControls(CLAIM_FILE_UPLOAD_FIELDS);
 
   const programAbbreviation = getProgramAbbreviation();
 
@@ -47,24 +49,32 @@ export async function customizeDocumentsStep() {
         </div>
       `;
 
-      $('fieldset[aria-label="Supporting Documents"]').after(beforeContinuingNoteHtmlContent);
+      $('fieldset[aria-label="Supporting Documents"]').after(
+        beforeContinuingNoteHtmlContent
+      );
     }
   }
 }
 
 async function addSatisfactionSurveyChefsIframe() {
-  $('#quartech_satisfactionsurveychefssubmissionid')?.closest('tr')?.css({ display: 'none' });
-  
+  $('#quartech_satisfactionsurveychefssubmissionid')
+    ?.closest('tr')
+    ?.css({ display: 'none' });
+
   setFieldReadOnly('quartech_satisfactionsurveyid');
 
-  const chefsSubmissionId = $('#quartech_satisfactionsurveychefssubmissionid')?.val();
+  const chefsSubmissionId = $(
+    '#quartech_satisfactionsurveychefssubmissionid'
+  )?.val();
   let chefsUrl = '';
 
   if (chefsSubmissionId) {
     chefsUrl = `https://submit.digital.gov.bc.ca/app/form/success?s=${chefsSubmissionId}`;
   } else {
-    const { quartech_ChefsNefbaSatisfactionSurveyFormId: chefsNefbaSatisfactionSurveyFormId } =
-      await getEnvVars();
+    const {
+      quartech_ChefsNefbaSatisfactionSurveyFormId:
+        chefsNefbaSatisfactionSurveyFormId,
+    } = await getEnvVars();
 
     if (!chefsNefbaSatisfactionSurveyFormId) {
       alert(
@@ -83,11 +93,11 @@ async function addSatisfactionSurveyChefsIframe() {
 
       const submissionPayload = JSON.parse(event.data);
 
-      console.log(
-        'received submissionId: ' + submissionPayload.submissionId
-      );
+      console.log('received submissionId: ' + submissionPayload.submissionId);
 
-      $('#quartech_satisfactionsurveychefssubmissionid').val(submissionPayload.submissionId);
+      $('#quartech_satisfactionsurveychefssubmissionid').val(
+        submissionPayload.submissionId
+      );
 
       const confirmationId = submissionPayload.submissionId
         .substring(0, 8)

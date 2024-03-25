@@ -21,4 +21,12 @@ export function customizeDocumentsStep() {
     // @ts-ignore
     $(existingDocumentsHtml).replaceWith(documentsHtml);
   }
+
+  // TODO: use this for doc step completion TASK 3631
+  // const entityFormDiv = document.querySelector('#EntityFormView');
+  // let docUrl =
+  //   'https://af-pods-dev.powerappsportals.com/claim-documents/?id=d3c11c55-b8d5-ee11-904d-6045bd61cd59';
+  // let documentsIframeDiv = document.createElement('div');
+  // documentsIframeDiv.innerHTML = `<iframe id='documentsIframeDiv' src="${docUrl}" height="800" width="100%" title="Documents Uploaded">
+  //     </iframe><br/>`;
 }
