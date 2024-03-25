@@ -77,21 +77,21 @@ export function generateFormJson() {
       fn: generateFormJson,
       message: 'Failed to get tab data-name',
       data: {
-        tabDivElement
-      }
-    })
+        tabDivElement,
+      },
+    });
     return false;
   }
 
   logger.info({
     fn: generateFormJson,
-    message: `Processing fieldSet array for tabDataName: ${tabDataName}`
+    message: `Processing fieldSet array for tabDataName: ${tabDataName}`,
   });
 
   const formJsonObj = {};
 
   fieldsetArr.forEach((fieldset) => {
-    const displayName = fieldset.getAttribute('aria-label'); // e.g. "Application Information for Reimbursement"
+    const displayName = fieldset.querySelector('h3')?.textContent; // e.g. "Application Information for Reimbursement"
 
     const tableElement = fieldset.querySelector('table');
     const sectionId = tableElement?.getAttribute('data-name'); // e.g. "applicationInfoSection"
@@ -129,10 +129,10 @@ export function generateFormJson() {
 
     logger.info({
       fn: generateFormJson,
-      message: `Processing tr array for sectionId: ${sectionId}, displayName: ${displayName}`
-    })
+      message: `Processing tr array for sectionId: ${sectionId}, displayName: ${displayName}`,
+    });
 
-    const questionAnswerListKey = `${sectionId}QuestionAnswerList`
+    const questionAnswerListKey = `${sectionId}QuestionAnswerList`;
 
     formJsonObj[sectionId] = {
       displayName: displayName,
@@ -162,6 +162,12 @@ export function generateFormJson() {
       }
 
       const questionText = getInfoValue(tr);
+
+      logger.info({
+        fn: generateFormJson,
+        message: `Found questionText: ${questionText}, try finding answerText next...`,
+      });
+
       const answerText = getControlValue(tr);
 
       logger.info({

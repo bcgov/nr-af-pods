@@ -2,7 +2,8 @@ import {
   validateDemographicInfoRequiredFields,
   validateIsConsultantEitherBciaOrCpa,
 } from '../application/validation.js';
-import { Form, FormStep, HtmlElementType } from './constants.js';
+import { Environment, Form, FormStep, HtmlElementType } from './constants.js';
+import { getEnv } from './env.ts';
 import {
   getFieldsBySectionClaim,
   getFieldsBySectionApplication,
@@ -421,15 +422,20 @@ export function displayValidationErrors(validationErrorHtml) {
 
 export function addValidationCheck(fieldName, validation) {
   if (validation?.intervalBased) {
-    setInterval(() => validateStepFields(), 100);
-  } else {
-    $(`input[id*='${fieldName}']`).on(
-      validation?.event ?? 'onchange',
-      function () {
-        validateStepFields();
-      }
-    );
+    const env = getEnv();
+    // do not enable interval based on dev or test, since we only use it for Canada Post
+    // integration for now, it's only needed in production
+    if (env === Environment.PROD) {
+      setInterval(() => validateStepFields(), 100);
+      return;
+    }
   }
+  $(`input[id*='${fieldName}']`).on(
+    validation?.event ?? 'onchange',
+    function () {
+      validateStepFields();
+    }
+  );
 }
 
 export function setInputMaxLength(fieldName, maxLength) {
