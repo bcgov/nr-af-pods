@@ -129,7 +129,7 @@ function setupDependentRequiredField({
   }
   // @ts-ignore
   const tr = dependentOnElement.closest('tr');
-  const input = getControlValue(tr);
+  const input = getControlValue({ tr, rawValue: true });
   logger.info({
     fn: setupDependentRequiredField,
     message: `Setting up dependent field dependentOnElementTag: ${dependentOnElementTag} with value: ${input}`,
