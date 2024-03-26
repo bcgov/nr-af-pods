@@ -29,27 +29,21 @@ if [ -z "$new_version" ]; then
     minor=$(echo "$old_version" | cut -d '.' -f2)
     patch=$(echo "$old_version" | cut -d '.' -f3)
 
-    # Increment version numbers
-    if [ -z "$patch" ]; then
-        # If no patch version, increment minor version
-        minor=$((minor + 1))
+    # Increment patch version
+    patch=$((patch + 1))
+
+    # If patch version exceeds 9, increment minor version and reset patch to 0
+    if [ "$patch" -gt 9 ]; then
         patch=0
-    else
-        # Increment patch version
-        patch=$((patch + 1))
-    fi
+        minor=$((minor + 1))
 
-    # If minor version exceeds 9, increment major version
-    if [ "$minor" -gt 9 ]; then
-        major=$((major + 1))
-        minor=0
+        # If minor version exceeds 9, increment major version and reset minor to 0
+        if [ "$minor" -gt 9 ]; then
+            minor=0
+            major=$((major + 1))
+        fi
     fi
-
-    # If major version exceeds 9, reset to 0 (unlikely for typical semantic versioning)
-    if [ "$major" -gt 9 ]; then
-        major=0
-    fi
-
+    
     new_version="$major.$minor.$patch"
 fi
 
@@ -63,11 +57,27 @@ files_to_update=(
 
 for file_path in "${files_to_update[@]}"; do
     if [ -f "$file_path" ]; then
-        # Escape special characters in old_version
-        escaped_old_version=$(echo "$old_version" | sed 's/[]\/$*.^|[]/\\&/g')
-
-        # Replace old_version with new_version using sed
-        sed -i '' "s/${escaped_old_version}/${new_version}/g" "${file_path}"
+        case "$file_path" in
+            *"application.js" | *"claim.js")
+                # Update version number in JavaScript files
+                sed -i '' -E "s/powerpod-$old_version\.min\.js/powerpod-$new_version.min.js/g" "$file_path"
+                ;;
+            "powerpod/package.json")
+                # Update version number in package.json
+                sed -i '' -E "s/\"version\": \"$old_version\"/\"version\": \"$new_version\"/g" "$file_path"
+                ;;
+            "powerpod/rollup.config.js")
+                # Update version number in rollup.config.js
+                sed -i '' -E "s/\* powerpod $old_version/\* powerpod $new_version/g" "$file_path"
+                ;;
+            "powerpod/src/js/powerpod.js")
+                # Update version number in powerpod.js
+                sed -i '' -E "s/POWERPOD.version = '$old_version'/POWERPOD.version = '$new_version'/g" "$file_path"
+                ;;
+            *)
+                echo "Unsupported file: $file_path"
+                ;;
+        esac
         echo "Updated $file_path with new version $new_version"
     else
         echo "File $file_path not found!"
