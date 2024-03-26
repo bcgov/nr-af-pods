@@ -168,10 +168,10 @@ export function generateFormJson() {
       logger.info({
         fn: generateFormJson,
         message: `For controlType: ${controlType}; found questionText: ${questionText}, try finding answerText next...`,
-        data: { tr }
+        data: { tr },
       });
 
-      const answerText = getControlValue(tr);
+      const answerText = getControlValue({ tr });
 
       logger.info({
         fn: generateFormJson,

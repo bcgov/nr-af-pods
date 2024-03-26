@@ -77,33 +77,39 @@ export function getInfoValue(tr) {
   return questionText;
 }
 
-export function getControlValue(tr) {
+export function getControlValue({ tr, rawValue = false }) {
   const type = getControlType(tr);
 
   logger.info({
     fn: getControlValue,
-    message: `Attempting to get control value for type: ${type}`,
+    message: `Attempting to get control value for type: ${type}, rawValue: ${rawValue}`,
   });
 
-  const answerDiv = tr.querySelector('.control');
+  const controlDiv = tr.querySelector('.control');
 
   if (type === HtmlElementType.CurrencyInput) {
-    return `$${answerDiv?.querySelector('input')?.value}`;
+    const value = controlDiv?.querySelector('input')?.value;
+    if (rawValue) return value;
+    return `$${value}`;
   } else if (type === HtmlElementType.Input) {
-    return answerDiv?.querySelector('input')?.value;
+    return controlDiv?.querySelector('input')?.value;
   } else if (type === HtmlElementType.DatePicker) {
-    return answerDiv?.querySelector('div > .datetimepicker > input')?.value;
+    return controlDiv?.querySelector('div > .datetimepicker > input')?.value;
   } else if (type === HtmlElementType.TextArea) {
-    return answerDiv?.querySelector('textarea').value?.replace(/\n/g, ' ');
+    return controlDiv?.querySelector('textarea').value?.replace(/\n/g, ' ');
   } else if (type === HtmlElementType.DropdownSelect) {
-    const selectElement = answerDiv?.querySelector('select');
+    const selectElement = controlDiv?.querySelector('select');
+    if (rawValue) return selectElement.value;
     const selectedIndex = selectElement?.selectedIndex;
     const selectedOption = selectElement.options[selectedIndex];
     const selectedOptionText =
       selectedOption.textContent || selectedOption.innerText;
     return selectedOptionText;
   } else if (type === HtmlElementType.Checkbox) {
-    return answerDiv?.querySelector('input')?.checked;
+    const checked = controlDiv?.querySelector('input')?.checked;
+    if (rawValue) return checked;
+    if (checked) return 'Yes';
+    return 'No';
   }
   return null;
 }
