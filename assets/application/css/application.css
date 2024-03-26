@@ -48,7 +48,9 @@ h4 {
   display: none;
 }
 
-/*  Demographic Info step */
+/*  Make labels and inputs on the same line */
+table[data-name='deliverablesBudgetSection'],
+table[data-name='partialBudgetSection'],
 table[data-name='Q1a_Section'],
 table[data-name='Q2c_Section'],
 table[data-name='DemographicInfoChefsSubmissionSection'] {
