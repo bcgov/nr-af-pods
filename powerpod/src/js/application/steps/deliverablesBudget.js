@@ -34,9 +34,9 @@ export function customizeDeliverablesBudgetStep() {
     // text to add above Total added income ($CAD)::
     if (!document.querySelector('#increasesInNetIncome')) {
       let increasesInNetIncomeHtml = `
-          <div id="increasesInNetIncome" style="font-weight: bold; padding-bottom: 20px;">
+          <h4 id="increasesInNetIncome" style="font-weight: bold !important;">
             Increases in Net Income
-          </div>
+          </h4>
         `;
       addTextAboveField('quartech_totaladdedincome', increasesInNetIncomeHtml);
     }
@@ -44,9 +44,9 @@ export function customizeDeliverablesBudgetStep() {
     // text to add above Total added cost ($CAD):
     if (!document.querySelector('#decreasesInNetIncome')) {
       let decreasesInNetIncomeHtml = `
-          <div id="costShardecreasesInNetIncomeeContributionNote" style="font-weight: bold; padding-bottom: 20px;">
+          <h4 id="costShardecreasesInNetIncomeeContributionNote" style="font-weight: bold !important;">
             Decreases in Net Income
-          </div>
+          </h4>
         `;
       addTextAboveField('quartech_totaladdedcost', decreasesInNetIncomeHtml);
     }

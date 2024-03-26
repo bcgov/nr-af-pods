@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "NEFBA2", "NEFBA Phase 2"],
-  "version": "1.1.0",
+  "version": "1.1.4",
   "name": "New Entrant Farm Business Accelerator Phase 2",
   "abbreviation": "NEFBA2",
   "hiddenSteps": "tab_Project",
@@ -8,14 +8,19 @@
     {
       "name": "ApplicantInfoStep",
       "fields": [
-	    {
+        {
           "name": "quartech_nefbaphase1filenumber",
+          "label": "NEFBA Phase 1 File Number (from authorization letter)",
           "required": true
         },
         {
           "name": "quartech_indigenousapplicant",
           "required": true,
           "elementType": "DropdownSelect"
+        },
+        {
+          "name": "quartech_doingbusinessas",
+          "label": "Doing Business As (if different from Legal Business/Organization Name)"
         }
       ]
     },
@@ -83,7 +88,8 @@
           "format": "currency",
           "maxDigits": 13,
           "emptyInitialValue": true,
-          "label": "Total requested from program:",
+          "label": "Total requested from the program ($CAD):",
+          "bold": true,
           "validation": {
             "type": "numeric",
             "value": "0",
@@ -128,6 +134,8 @@
         },
         {
           "name": "quartech_totalprojectcost",
+          "label": "Total Project Cost ($CAD):",
+          "bold": true,
           "required": true,
           "readOnly": true,
           "format": "currency",
@@ -164,6 +172,8 @@
         },
         {
           "name": "quartech_totaladdedincomeandreducedcosts",
+          "label": "Total added income and reduced costs ($CAD):",
+          "bold": true,
           "required": true,
           "readOnly": true,
           "format": "currency",
@@ -200,6 +210,8 @@
         },
         {
           "name": "quartech_totaladdedcostsandreducedincome",
+          "label": "Total added costs and reduced income ($CAD):",
+          "bold": true,
           "required": true,
           "readOnly": true,
           "format": "currency",
@@ -212,6 +224,8 @@
         },
         {
           "name": "quartech_netchangeinprofit",
+          "label": "Net change in profit ($CAD):",
+          "bold": true,
           "required": true,
           "readOnly": true,
           "format": "currency",

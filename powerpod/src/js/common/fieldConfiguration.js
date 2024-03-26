@@ -64,6 +64,7 @@ export function configureFields() {
       emptyInitialValue, // CURRENCY-specific, applies if format === 'currency'
       maxLength, // only works on string inputs
       label,
+      bold, // bolds the label text
       type,
       tooltipText,
       tooltipTargetElementId,
@@ -102,6 +103,10 @@ export function configureFields() {
     if (label) {
       const obj = $(`#${name}_label`)?.text(label);
       obj?.html(obj?.html()?.replace(/\n/g, '<br/>'));
+    }
+    if (bold) {
+      const labelElement = $(`#${name}_label`);
+      labelElement.css('font-weight', 'bold');
     }
     if (hideLabel) {
       $(`#${name}_label`)?.css('display', 'none');

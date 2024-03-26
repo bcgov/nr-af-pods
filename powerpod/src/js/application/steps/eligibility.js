@@ -1,6 +1,10 @@
 import { YES_VALUE } from '../../common/constants.js';
 import { initOnChange_DependentRequiredField } from '../../common/fieldConditionalLogic.js';
-import { addTextAboveField, addTextBelowField } from '../../common/html.js';
+import {
+  addTextAboveField,
+  addTextBelowField,
+  addHtmlToSection,
+} from '../../common/html.js';
 import { getProgramAbbreviation } from '../../common/program.ts';
 import { configureFields } from '../../common/fieldConfiguration.js';
 import { validateStepFields } from '../../common/fieldValidation.js';
@@ -17,16 +21,17 @@ function setupEligibilityStepFields() {
   if (programAbbreviation && programAbbreviation === 'NEFBA2') {
     if (!document.querySelector('#envFarmPlanNotice')) {
       let htmlContentEnvFarmPlanNotice = `
-        <div id="envFarmPlanNotice" style="padding-top: 50px;">
+        <div id="envFarmPlanNotice">
           <h4 style="font-weight: 600 !important;">Environmental Farm Plan Program</h4>
           <span>
             Participation in the EFP program is free and confidential. Applicants are encouraged to start the EFP process as soon as possible.
           </span>
         </div>
       `;
-      addTextBelowField(
-        'quartech_commitmenttoefp',
-        htmlContentEnvFarmPlanNotice
+      addHtmlToSection(
+        'eligibilitySection',
+        htmlContentEnvFarmPlanNotice,
+        'bottom'
       );
     }
 
@@ -43,21 +48,14 @@ function setupEligibilityStepFields() {
 
   if (
     programAbbreviation &&
-    (programAbbreviation.includes('ABPP') || programAbbreviation === 'NEFBA')
+    (programAbbreviation.includes('ABPP') ||
+      programAbbreviation === 'NEFBA' ||
+      programAbbreviation === 'NEFBA2')
   ) {
-    let fieldToAddElgibilityNote = '';
-    if (programAbbreviation === 'ABPP1') {
-      fieldToAddElgibilityNote = 'quartech_primaryproducer100or51percent';
-    } else if (programAbbreviation === 'ABPP2') {
-      fieldToAddElgibilityNote =
-        'quartech_farmbusinesscapacityevaluationriskplan';
-    } else if (programAbbreviation === 'NEFBA') {
-      fieldToAddElgibilityNote =
-        'quartech_isaprimaryproducergrowingsellingproducts';
-    }
-    addTextAboveField(
-      fieldToAddElgibilityNote,
-      '<b>Please answer the following questions to confirm your eligibility for the program.</b><br/> Note that applicants may be audited and must be able to demonstrate the validity of information provided in this application form.<br /><br />'
+    addHtmlToSection(
+      'eligibilitySection',
+      '<b>Please answer the following questions to confirm your eligibility for the program.</b><br/> Note that applicants may be audited and must be able to demonstrate the validity of information provided in this application form.<br /><br />',
+      'top'
     );
   }
 

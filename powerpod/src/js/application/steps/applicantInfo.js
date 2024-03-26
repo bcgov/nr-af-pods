@@ -409,7 +409,9 @@ function setupApplicantInfoStepFields() {
 
   if (
     programAbbreviation &&
-    (programAbbreviation.includes('ABPP') || programAbbreviation === 'NEFBA')
+    (programAbbreviation.includes('ABPP') ||
+      programAbbreviation === 'NEFBA' ||
+      programAbbreviation === 'NEFBA2')
   ) {
     addTextAboveField(
       'quartech_indigenousapplicant',
