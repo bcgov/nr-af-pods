@@ -46,6 +46,8 @@ if [ -z "$new_version" ]; then
     fi
     
     new_version="$major.$minor.$patch"
+
+    echo "Updating version from $old_version to $new_version..."
 fi
 
 files_to_update=(
@@ -71,12 +73,12 @@ for file_path in "${files_to_update[@]}"; do
                 ;;
             "powerpod/package.json")
                 # Update version number in package.json
-                sed -i '' -E "s/\"version\": \"$old_version\"/\"version\": \"$new_version\"/g" "$file_path"
+                sed -i '' -E "s/\"version\": \"[0-9]+\.[0-9]+\.[0-9]+\"/\"version\": \"$new_version\"/g" "$file_path"
                 echo "Updated $file_path with new version $new_version"
                 ;;
             "powerpod/rollup.config.js")
                 # Update version number in rollup.config.js
-                sed -i '' -E "s/\* powerpod $old_version/\* powerpod $new_version/g" "$file_path"
+                sed -i '' -E "s/\* powerpod [0-9]+\.[0-9]+\.[0-9]+/\* powerpod $new_version/g" "$file_path"
                 echo "Updated $file_path with new version $new_version"
                 ;;
             "powerpod/src/js/powerpod.js")
