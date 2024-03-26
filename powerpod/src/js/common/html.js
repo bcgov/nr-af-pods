@@ -5,7 +5,10 @@ import { validateRequiredFields } from './fieldValidation.js';
 const logger = new Logger('common/html');
 
 export function getControlType(tr) {
-  const control = tr.querySelector('.control .form-control');
+  const controlDiv = tr.querySelector('div.control');
+  const control = controlDiv?.querySelector(
+    'input[id*=quartech_], textarea[id*=quartech_], select[id*=quartech_]'
+  );
 
   if (!control) {
     logger.error({
@@ -21,15 +24,20 @@ export function getControlType(tr) {
 
   const tag = control.tagName.toLowerCase();
   const classes = control.getAttribute('class');
+  const typeAttribute = control.getAttribute('type');
 
-  if (tag === 'input' && classes.includes('text')) {
+  if (tag === 'input' && classes?.includes('money')) {
+    return HtmlElementType.CurrencyInput;
+  } else if (tag === 'input' && classes?.includes('text')) {
     return HtmlElementType.Input;
-  } else if (tag === 'input' && classes.includes('datetime')) {
+  } else if (tag === 'input' && classes?.includes('datetime')) {
     return HtmlElementType.DatePicker;
-  } else if (tag === 'textarea' && classes.includes('textarea')) {
+  } else if (tag === 'textarea' && classes?.includes('textarea')) {
     return HtmlElementType.TextArea;
-  } else if (tag === 'select' && classes.includes('picklist')) {
+  } else if (tag === 'select' && classes?.includes('picklist')) {
     return HtmlElementType.DropdownSelect;
+  } else if (tag === 'input' && control.type === 'checkbox') {
+    return HtmlElementType.Checkbox;
   }
   logger.error({
     fn: getControlType,
@@ -45,7 +53,11 @@ export function getControlType(tr) {
 }
 
 export function isEmptyRow(tr) {
-  if (tr.querySelector('td')?.getAttribute('class').includes('zero-cell')) {
+  const firstTd = tr.querySelector('td');
+  if (
+    firstTd?.getAttribute('class').includes('zero-cell') ||
+    firstTd.children?.length === 0
+  ) {
     return true;
   }
   return false;
@@ -75,7 +87,9 @@ export function getControlValue(tr) {
 
   const answerDiv = tr.querySelector('.control');
 
-  if (type === HtmlElementType.Input) {
+  if (type === HtmlElementType.CurrencyInput) {
+    return `$${answerDiv?.querySelector('input')?.value}`;
+  } else if (type === HtmlElementType.Input) {
     return answerDiv?.querySelector('input')?.value;
   } else if (type === HtmlElementType.DatePicker) {
     return answerDiv?.querySelector('div > .datetimepicker > input')?.value;
@@ -88,6 +102,8 @@ export function getControlValue(tr) {
     const selectedOptionText =
       selectedOption.textContent || selectedOption.innerText;
     return selectedOptionText;
+  } else if (type === HtmlElementType.Checkbox) {
+    return answerDiv?.querySelector('input')?.checked;
   }
   return null;
 }

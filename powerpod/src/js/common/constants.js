@@ -22,12 +22,14 @@ export const Form = {
 
 export const HtmlElementType = {
   Input: 'Input',
+  CurrencyInput: 'CurrencyInput',
   TextArea: 'TextArea',
   FileInput: 'FileInput',
   SingleOptionSet: 'SingleOptionSet',
   MultiOptionSet: 'MultiOptionSet',
   DropdownSelect: 'DropdownSelect',
   DatePicker: 'DatePicker',
+  Checkbox: 'Checkbox',
   Unknown: 'Unknown',
 };
 
@@ -79,7 +81,7 @@ export const TabNames = {
   // Claim Steps:
   [FormStep.ClaimInfo]: 'claimInfoTab',
   [FormStep.ProjectResults]: 'projectResultsTab',
-}
+};
 
 export const YES_VALUE = '255550000';
 export const NO_VALUE = '255550001';

@@ -34,8 +34,6 @@ export function customizeApplicantInfoStep() {
 
   initOnChange_AdaptedEventForAdultLearning();
 
-  handleApplicantWithAndWithoutCRA_GST();
-
   initOrgNameAutocomplete();
 
   customizeTypesOfBusinessOrganization();
@@ -261,50 +259,6 @@ function hideShow_for_AdaptedEventForAdultLearning(selectedValue) {
     'display',
     cssDisplay
   );
-}
-
-function handleApplicantWithAndWithoutCRA_GST() {
-  let isApplicantWithoutCraOrGstNumber = $('#quartech_nocragstnumber').prop(
-    'checked'
-  );
-  showHideForApplicantWithAndWithoutCRA_GST(isApplicantWithoutCraOrGstNumber);
-
-  $('#quartech_nocragstnumber').on('change', function () {
-    let isApplicantWithoutCraOrGstNumber = $(this).prop('checked');
-    showHideForApplicantWithAndWithoutCRA_GST(isApplicantWithoutCraOrGstNumber);
-  });
-}
-
-function showHideForApplicantWithAndWithoutCRA_GST(
-  isApplicantWithoutCraOrGstNumber
-) {
-  const craGstNumberInputCtr = $('#quartech_businessregistrationnumber');
-  const craGstNumberInputCtrTrRow = craGstNumberInputCtr
-    .parent()
-    .parent()
-    .parent();
-
-  const reasonWithoutCraOrGstTextAreaCtr = $(
-    '#quartech_reasonwhynocraorgstnumber'
-  );
-  const reasonWithoutCraOrGstTextAreaCtrTrRow = reasonWithoutCraOrGstTextAreaCtr
-    .parent()
-    .parent()
-    .parent();
-
-  if (isApplicantWithoutCraOrGstNumber) {
-    craGstNumberInputCtr.val(''); // clear CRA or GST number field
-    craGstNumberInputCtrTrRow.css('display', 'none');
-
-    reasonWithoutCraOrGstTextAreaCtrTrRow.css('display', 'table-row');
-  } else {
-    reasonWithoutCraOrGstTextAreaCtr.val(''); // clear Reason WHY without CRA or GST number field
-    reasonWithoutCraOrGstTextAreaCtrTrRow.css('display', 'none');
-
-    craGstNumberInputCtrTrRow.css('display', 'table-row');
-  }
-
-  validateStepFields('ApplicantInfoStep');
 }
 
 function initOrgNameAutocomplete() {
