@@ -5,10 +5,8 @@ import {
   getFieldsBySectionApplication,
 } from './fields.js';
 import {
-  combineElementsIntoOneRowNew,
   hideFieldByFieldName,
   observeChanges,
-  showFieldRow,
 } from './html.js';
 import { Logger } from './logger.js';
 import { FieldMaskType, maskInput } from './masking.js';

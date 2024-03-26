@@ -11,7 +11,7 @@ import {
 } from './html.js';
 import { Logger } from './logger.js';
 import { getProgramAbbreviation } from './program.ts';
-import { POWERPOD } from './constants.js';
+import { POWERPOD, FormStep } from './constants.js';
 import { mergeFieldArrays } from './utils.js';
 import { configureSections } from './sections.js';
 import { hideTabs } from './tabs.js';
@@ -114,7 +114,16 @@ export function getFieldsBySectionApplication(stepName, forceRefresh = false) {
   }
 
   fields.forEach((s) => {
-    combineElementsIntoOneRowNew(s.name);
+    if (
+      ![
+        FormStep.Documents,
+        FormStep.DeclarationAndConsent,
+        FormStep.Unknown,
+        FormStep.DemographicInfo,
+      ].includes(stepName)
+    ) {
+      combineElementsIntoOneRowNew(s.name);
+    }
     if (s.visibleIf) {
       logger.warn({
         fn: getFieldsBySectionClaim,
