@@ -17,6 +17,7 @@ get_current_version() {
 # If old_version is not provided, attempt to get current version from package.json
 if [ -z "$old_version" ]; then
     old_version=$(get_current_version)
+    echo "Detected current version to be $old_version"
     if [ -z "$old_version" ]; then
         exit 1
     fi
@@ -59,26 +60,34 @@ for file_path in "${files_to_update[@]}"; do
     if [ -f "$file_path" ]; then
         case "$file_path" in
             *"application.js" | *"claim.js")
-                # Update version number in JavaScript files
-                sed -i '' -E "s/powerpod-$old_version\.min\.js/powerpod-$new_version.min.js/g" "$file_path"
+                # Prompt user before updating JavaScript files
+                read -p "Do you want to update $file_path? [Y/N]: " answer
+                if [[ "$answer" == "Y" || "$answer" == "y" ]]; then
+                    sed -i '' -E "s/powerpod-[0-9]+\.[0-9]+\.[0-9]+\.min\.js/powerpod-$new_version.min.js/g" "$file_path"
+                    echo "Updated $file_path with new version $new_version"
+                else
+                    echo "Skipping $file_path"
+                fi
                 ;;
             "powerpod/package.json")
                 # Update version number in package.json
                 sed -i '' -E "s/\"version\": \"$old_version\"/\"version\": \"$new_version\"/g" "$file_path"
+                echo "Updated $file_path with new version $new_version"
                 ;;
             "powerpod/rollup.config.js")
                 # Update version number in rollup.config.js
                 sed -i '' -E "s/\* powerpod $old_version/\* powerpod $new_version/g" "$file_path"
+                echo "Updated $file_path with new version $new_version"
                 ;;
             "powerpod/src/js/powerpod.js")
                 # Update version number in powerpod.js
                 sed -i '' -E "s/POWERPOD.version = '$old_version'/POWERPOD.version = '$new_version'/g" "$file_path"
+                echo "Updated $file_path with new version $new_version"
                 ;;
             *)
                 echo "Unsupported file: $file_path"
                 ;;
         esac
-        echo "Updated $file_path with new version $new_version"
     else
         echo "File $file_path not found!"
     fi
