@@ -3,7 +3,7 @@
   FILE INFO
   -------------------
   tags: ["Documents", "Claim", "JS"]
-  version: 1.0.1
+  version: 1.0.2
   name: Documents
   type: JS Script
   description: This is the JS script for the Documents step in CLAIM form.
@@ -11,6 +11,7 @@
 if (window.jQuery) {
   (function ($) {
     var MAXIMUM_FILE_SIZE_IN_KB = 15360;
+    const MAXIMUM_FILE_SIZE_TEXT = '15MB';
     var allowedMimeTypes = [
       "text/csv",
       "application/msword",
@@ -133,7 +134,7 @@ if (window.jQuery) {
 
       let alertStr = "";
       if (!isValidFileType && !isValidFileSize) {
-        alertStr = `Selected file(s) do not match the allowed file extensions and exceed file size limit of 10MB. Please upload a valid file size & file type of: ${allowedFileTypes.join(
+        alertStr = `Selected file(s) do not match the allowed file extensions and exceed file size limit of ${MAXIMUM_FILE_SIZE_TEXT}. Please upload a valid file size & file type of: ${allowedFileTypes.join(
           ", "
         )}.`;
       } else if (!isValidFileType) {
@@ -142,7 +143,7 @@ if (window.jQuery) {
         )}.`;
       } else if (!isValidFileSize) {
         alertStr =
-          "Selected file(s) exceeds the allowed file upload limit of 10MB. Please upload a file with a size of 10MB or less.";
+          `Selected file(s) exceeds the allowed file upload limit of ${MAXIMUM_FILE_SIZE_TEXT}. Please upload a file with a size of ${MAXIMUM_FILE_SIZE_TEXT} or less.`;
       }
 
       if (alertStr) {
