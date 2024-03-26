@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "NEFBA2", "NEFBA Phase 2"],
-  "version": "1.1.4",
+  "version": "1.1.5",
   "name": "New Entrant Farm Business Accelerator Phase 2",
   "abbreviation": "NEFBA2",
   "hiddenSteps": "tab_Project",
@@ -89,7 +89,6 @@
           "maxDigits": 13,
           "emptyInitialValue": true,
           "label": "Total requested from the program ($CAD):",
-          "bold": true,
           "validation": {
             "type": "numeric",
             "value": "0",
