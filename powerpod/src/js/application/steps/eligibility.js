@@ -19,6 +19,17 @@ function setupEligibilityStepFields() {
   const programAbbreviation = getProgramAbbreviation();
 
   if (programAbbreviation && programAbbreviation === 'NEFBA2') {
+    addHtmlToSection(
+      'eligibilitySection',
+      `See program guide for the Phase 2 eligibility requirements: <a
+        href="https://www2.gov.bc.ca/gov/content/industry/agriculture-seafood/programs/new-entrant-farm-business-accelerator-program"
+        target="_blank"
+        style="font-size: unset; color: blue"
+        >program guide</a
+      ><br /><br />`,
+      'top'
+    );
+
     if (!document.querySelector('#envFarmPlanNotice')) {
       let htmlContentEnvFarmPlanNotice = `
         <div id="envFarmPlanNotice">
@@ -33,6 +44,7 @@ function setupEligibilityStepFields() {
         htmlContentEnvFarmPlanNotice,
         'bottom'
       );
+
     }
 
     // @ts-ignore
@@ -49,8 +61,7 @@ function setupEligibilityStepFields() {
   if (
     programAbbreviation &&
     (programAbbreviation.includes('ABPP') ||
-      programAbbreviation === 'NEFBA' ||
-      programAbbreviation === 'NEFBA2')
+      programAbbreviation === 'NEFBA')
   ) {
     addHtmlToSection(
       'eligibilitySection',
