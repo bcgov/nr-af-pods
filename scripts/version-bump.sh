@@ -83,7 +83,7 @@ for file_path in "${files_to_update[@]}"; do
                 ;;
             "powerpod/src/js/powerpod.js")
                 # Update version number in powerpod.js
-                sed -i '' -E "s/POWERPOD.version = '$old_version'/POWERPOD.version = '$new_version'/g" "$file_path"
+                sed -i '' -E "s/POWERPOD\.version = '[0-9]+\.[0-9]+\.[0-9]+'/POWERPOD.version = '$new_version'/g" "$file_path"
                 echo "Updated $file_path with new version $new_version"
                 ;;
             *)
