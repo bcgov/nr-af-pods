@@ -4,7 +4,11 @@ import {
   getClaimConfigData,
   getGlobalConfigData,
 } from './config.js';
-import { showFieldRow, showFieldsetElement } from './html.js';
+import {
+  combineElementsIntoOneRowNew,
+  showFieldRow,
+  showFieldsetElement,
+} from './html.js';
 import { Logger } from './logger.js';
 import { getProgramAbbreviation } from './program.ts';
 import { POWERPOD } from './constants.js';
@@ -110,6 +114,7 @@ export function getFieldsBySectionApplication(stepName, forceRefresh = false) {
   }
 
   fields.forEach((s) => {
+    combineElementsIntoOneRowNew(s.name);
     if (s.visibleIf) {
       logger.warn({
         fn: getFieldsBySectionClaim,

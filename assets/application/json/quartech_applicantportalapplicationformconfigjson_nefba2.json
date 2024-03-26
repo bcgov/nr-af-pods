@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "NEFBA2", "NEFBA Phase 2"],
-  "version": "1.1.5",
+  "version": "1.1.9",
   "name": "New Entrant Farm Business Accelerator Phase 2",
   "abbreviation": "NEFBA2",
   "hiddenSteps": "tab_Project",
@@ -135,15 +135,11 @@
           "name": "quartech_totalprojectcost",
           "label": "Total Project Cost ($CAD):",
           "bold": true,
+          "allowNegatives": true,
           "required": true,
           "readOnly": true,
           "format": "currency",
-          "maxDigits": 13,
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThanOrEqualTo"
-          }
+          "maxDigits": 13
         },
         {
           "name": "quartech_totaladdedincome",
@@ -173,15 +169,11 @@
           "name": "quartech_totaladdedincomeandreducedcosts",
           "label": "Total added income and reduced costs ($CAD):",
           "bold": true,
+          "allowNegatives": true,
           "required": true,
           "readOnly": true,
           "format": "currency",
-          "maxDigits": 13,
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThanOrEqualTo"
-          }
+          "maxDigits": 13
         },
         {
           "name": "quartech_totaladdedcost",
@@ -211,29 +203,21 @@
           "name": "quartech_totaladdedcostsandreducedincome",
           "label": "Total added costs and reduced income ($CAD):",
           "bold": true,
+          "allowNegatives": true,
           "required": true,
           "readOnly": true,
           "format": "currency",
-          "maxDigits": 13,
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThanOrEqualTo"
-          }
+          "maxDigits": 13
         },
         {
           "name": "quartech_netchangeinprofit",
           "label": "Net change in profit ($CAD):",
           "bold": true,
+          "allowNegatives": true,
           "required": true,
           "readOnly": true,
           "format": "currency",
-          "maxDigits": 13,
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThanOrEqualTo"
-          }
+          "maxDigits": 13
         }
       ]
     },

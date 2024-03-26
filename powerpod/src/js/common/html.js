@@ -55,6 +55,8 @@ export function getControlType(tr) {
 export function isEmptyRow(tr) {
   const firstTd = tr.querySelector('td');
   if (
+    !firstTd ||
+    firstTd?.getAttribute('quartechHtml') === 'true' ||
     firstTd?.getAttribute('class').includes('zero-cell') ||
     firstTd.children?.length === 0
   ) {
@@ -160,7 +162,9 @@ export function addHtmlToSection(
   htmlContentToAdd,
   topOrBottom = 'top'
 ) {
-  const sectionTable = doc.querySelector(`table[data-name='${tableDataName}'`);
+  const sectionTable = doc.querySelector(
+    `table[data-name='${tableDataName}'] > tbody`
+  );
   if (!sectionTable) {
     logger.error({
       fn: addHtmlToSection,
@@ -168,27 +172,60 @@ export function addHtmlToSection(
     });
     return;
   }
-  const divElement = doc.createElement('div');
-  divElement.innerHTML = htmlContentToAdd;
+  const trElement = doc.createElement('tr');
+
+  const tdElement = document.createElement('td');
+  tdElement.setAttribute('colspan', '2');
+  tdElement.setAttribute('quartechHtml', 'true');
+  tdElement.innerHTML = htmlContentToAdd;
+
+  trElement.appendChild(tdElement);
+
   if (topOrBottom === 'top') {
-    sectionTable.prepend(divElement);
+    sectionTable.prepend(trElement);
   } else if (topOrBottom === 'bottom') {
-    sectionTable.append(divElement);
+    sectionTable.append(trElement);
   }
 }
 
 export function addTextAboveField(fieldName, htmlContentToAdd) {
-  const fieldLabelDivContainer = $(`#${fieldName}_label`).parent();
-  if (!fieldLabelDivContainer) return;
-
-  fieldLabelDivContainer.prepend(htmlContentToAdd);
+  addHtmlToField(fieldName, htmlContentToAdd, 'top');
 }
 
 export function addTextBelowField(fieldName, htmlContentToAdd) {
-  const fieldLabelDivContainer = $(`#${fieldName}_label`).parent().parent();
-  if (!fieldLabelDivContainer) return;
+  addHtmlToField(fieldName, htmlContentToAdd, 'bottom');
+}
 
-  fieldLabelDivContainer.append(htmlContentToAdd);
+export function addHtmlToField(
+  fieldName,
+  htmlContentToAdd,
+  topOrBottom = 'top'
+) {
+  const tr = $(`#${fieldName}`).closest('tr');
+  if (!tr) return;
+
+  const uuid = crypto.randomUUID();
+
+  if (topOrBottom === 'top') {
+    $(`<tr data-uuid='${uuid}'></tr>`).insertBefore(tr);
+  } else if (topOrBottom === 'bottom') {
+    $(`<tr data-uuid='${uuid}'></tr>`).insertAfter(tr);
+  }
+  const newTrElement = $(`tr[data-uuid="${uuid}"]`);
+
+  if (!newTrElement || !newTrElement?.length) {
+    logger.error({
+      fn: addHtmlToField,
+      message: 'Failed to create new row',
+    });
+  }
+
+  const tdElement = document.createElement('td');
+  tdElement.setAttribute('colspan', '2');
+  tdElement.setAttribute('quartechHtml', 'true');
+  tdElement.innerHTML = htmlContentToAdd;
+
+  newTrElement.append(tdElement);
 }
 
 export function observeChanges(element, customFunc) {
@@ -357,6 +394,41 @@ export function setFieldValue(name, value) {
   element.value = value;
   const e = new Event('change');
   element.dispatchEvent(e);
+}
+
+export function combineElementsIntoOneRowNew(name) {
+  const inputElement = $(`#${name}`);
+  const labelElement = $(`#${name}_label`);
+
+  const inputTd = inputElement.closest('td');
+  const labelTd = labelElement.closest('td');
+
+  if (!inputTd.is(labelTd)) {
+    logger.warn({
+      fn: combineElementsIntoOneRowNew,
+      message: `Skipping... elements must've already been combined, since label and input are in different cells`,
+      data: { name, inputElement, labelElement, inputTd, labelTd },
+    });
+    return;
+  }
+
+  const tableElement = inputElement.closest('table.section');
+
+  // find and delete colgroup config, if it exists
+  tableElement.find('colgroup')?.remove();
+
+  const controlDiv = inputElement.closest('div.control');
+
+  const tr = inputElement.closest('tr');
+
+  const clonedTd = inputTd.clone();
+  clonedTd.attr('colspan', '1');
+  tr.append(clonedTd);
+
+  controlDiv.remove();
+
+  const newInfoDiv = clonedTd.find('div.info');
+  newInfoDiv.remove();
 }
 
 export function combineElementsIntoOneRow(
