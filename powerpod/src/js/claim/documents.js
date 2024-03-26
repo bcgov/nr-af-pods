@@ -3,6 +3,7 @@ import { Logger } from '../common/logger.js';
 const logger = new Logger('claim/documents');
 
 const MAXIMUM_FILE_SIZE_IN_KB = 15360;
+const MAXIMUM_FILE_SIZE_TEXT = '15MB';
 const ALLOWED_MIME_TYPES = [
   'text/csv',
   'application/msword',
@@ -128,7 +129,7 @@ function validateFileUpload(file) {
 
   let alertStr = '';
   if (!isValidFileType && !isValidFileSize) {
-    alertStr = `Selected file(s) do not match the allowed file extensions and exceed file size limit of 10MB. Please upload a valid file size & file type of: ${ALLOWED_FILE_TYPES.join(
+    alertStr = `Selected file(s) do not match the allowed file extensions and exceed file size limit of ${MAXIMUM_FILE_SIZE_TEXT}. Please upload a valid file size & file type of: ${ALLOWED_FILE_TYPES.join(
       ', '
     )}.`;
   } else if (!isValidFileType) {
@@ -137,7 +138,7 @@ function validateFileUpload(file) {
     )}.`;
   } else if (!isValidFileSize) {
     alertStr =
-      'Selected file(s) exceeds the allowed file upload limit of 10MB. Please upload a file with a size of 10MB or less.';
+      `Selected file(s) exceeds the allowed file upload limit of ${MAXIMUM_FILE_SIZE_TEXT}. Please upload a file with a size of ${MAXIMUM_FILE_SIZE_TEXT} or less.`;
   }
 
   if (alertStr) {
