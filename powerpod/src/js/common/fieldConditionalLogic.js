@@ -2,7 +2,7 @@ import { getCurrentStep } from './program.ts';
 import { setDynamicallyRequiredFields } from './fieldConfiguration.js';
 import { validateStepFields } from './fieldValidation.js';
 import { Logger } from './logger.js';
-import { showFieldRow } from './html.js';
+import { getControlValue, showFieldRow } from './html.js';
 
 const logger = new Logger('common/fieldConditionalLogic');
 
@@ -12,12 +12,13 @@ export function initializeVisibleIf(name, required, visibleIf) {
     selectedValue: dependentSelectedValue,
   } = visibleIf;
 
-  if (!dependentFieldName || !dependentSelectedValue) {
+  if (!dependentFieldName || dependentSelectedValue === undefined) {
     logger.error({
       fn: initializeVisibleIf,
       message:
         'Dynamically configured visibleIf field missing fieldName or selectedValue',
       data: {
+        name,
         dependentFieldName,
         dependentSelectedValue,
       },
@@ -127,7 +128,8 @@ function setupDependentRequiredField({
     return;
   }
   // @ts-ignore
-  const input = dependentOnElement.value;
+  const tr = dependentOnElement.closest('tr');
+  const input = getControlValue(tr);
   logger.info({
     fn: setupDependentRequiredField,
     message: `Setting up dependent field dependentOnElementTag: ${dependentOnElementTag} with value: ${input}`,

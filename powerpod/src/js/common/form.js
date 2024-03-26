@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { POWERPOD } from './constants.js';
 import {
+  getControlType,
   getControlValue,
   getInfoValue,
   isEmptyRow,
@@ -161,11 +162,13 @@ export function generateFormJson() {
         return;
       }
 
+      const controlType = getControlType(tr);
       const questionText = getInfoValue(tr);
 
       logger.info({
         fn: generateFormJson,
-        message: `Found questionText: ${questionText}, try finding answerText next...`,
+        message: `For controlType: ${controlType}; found questionText: ${questionText}, try finding answerText next...`,
+        data: { tr }
       });
 
       const answerText = getControlValue(tr);
