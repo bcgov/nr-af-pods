@@ -8,6 +8,10 @@
     {
       "name": "ApplicantInfoStep",
       "fields": [
+	    {
+          "name": "quartech_nefbaphase1filenumber",
+          "required": true
+        },
         {
           "name": "quartech_indigenousapplicant",
           "required": true,
@@ -124,6 +128,7 @@
         },
         {
           "name": "quartech_totalprojectcost",
+          "required": true,
           "readOnly": true,
           "format": "currency",
           "maxDigits": 13,
