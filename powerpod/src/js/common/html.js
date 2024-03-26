@@ -155,6 +155,28 @@ export function showFieldRow(fieldName) {
   $(nearestFieldSet)?.css({ display: '' });
 }
 
+export function addHtmlToSection(
+  tableDataName,
+  htmlContentToAdd,
+  topOrBottom = 'top'
+) {
+  const sectionTable = doc.querySelector(`table[data-name='${tableDataName}'`);
+  if (!sectionTable) {
+    logger.error({
+      fn: addHtmlToSection,
+      message: `Unable to add to section of tableDataName: ${tableDataName}, could not find section`,
+    });
+    return;
+  }
+  const divElement = doc.createElement('div');
+  divElement.innerHTML = htmlContentToAdd;
+  if (topOrBottom === 'top') {
+    sectionTable.prepend(divElement);
+  } else if (topOrBottom === 'bottom') {
+    sectionTable.append(divElement);
+  }
+}
+
 export function addTextAboveField(fieldName, htmlContentToAdd) {
   const fieldLabelDivContainer = $(`#${fieldName}_label`).parent();
   if (!fieldLabelDivContainer) return;
