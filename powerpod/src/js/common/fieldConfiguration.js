@@ -4,7 +4,12 @@ import {
   getFieldsBySectionClaim,
   getFieldsBySectionApplication,
 } from './fields.js';
-import { hideFieldByFieldName, observeChanges, showFieldRow } from './html.js';
+import {
+  combineElementsIntoOneRowNew,
+  hideFieldByFieldName,
+  observeChanges,
+  showFieldRow,
+} from './html.js';
 import { Logger } from './logger.js';
 import { FieldMaskType, maskInput } from './masking.js';
 import { getOptions } from './options.js';
@@ -74,6 +79,7 @@ export function configureFields() {
       doNotBlank = false,
       fileTypes, // not currently used anywhere
       visibleIf,
+      oneLine,
     } = fields[i];
     logger.info({
       fn: configureFields,
