@@ -1,241 +1,258 @@
 {
-  "tags": ["Application", "StaffPortal", "NEFBA2", "NEFBA Phase 2"],
-  "version": "1.1.9",
-  "name": "New Entrant Farm Business Accelerator Phase 2",
-  "abbreviation": "NEFBA2",
-  "hiddenSteps": "tab_Project",
-  "sections": [
-    {
-      "name": "ApplicantInfoStep",
-      "fields": [
+    "tags": [
+        "Application",
+        "StaffPortal",
+        "NEFBA2",
+        "NEFBA Phase 2"
+    ],
+    "version": "1.2.0",
+    "name": "New Entrant Farm Business Accelerator Phase 2",
+    "abbreviation": "NEFBA2",
+    "hiddenSteps": "tab_Project",
+    "sections": [
         {
-          "name": "quartech_nefbaphase1filenumber",
-          "label": "NEFBA Phase 1 File Number (from authorization letter)",
-          "required": true
+            "name": "ApplicantInfoStep",
+            "fields": [
+                {
+                    "name": "quartech_nefbaphase1filenumber",
+                    "label": "NEFBA Phase 1 File Number (from authorization letter)",
+                    "required": true
+                },
+                {
+                    "name": "quartech_indigenousapplicant",
+                    "required": true,
+                    "elementType": "DropdownSelect"
+                },
+                {
+                    "name": "quartech_doingbusinessas",
+                    "label": "Doing Business As (if different from Legal Business/Organization Name)"
+                }
+            ]
         },
         {
-          "name": "quartech_indigenousapplicant",
-          "required": true,
-          "elementType": "DropdownSelect"
+            "name": "EligibilityStep",
+            "fields": [
+                {
+                    "name": "quartech_statementofcompletionfromefpp",
+                    "elementType": "DropdownSelect",
+                    "required": true
+                },
+                {
+                    "name": "quartech_efppcertificationnumber",
+                    "required": true,
+                    "visibleIf": {
+                        "fieldName": "quartech_statementofcompletionfromefpp",
+                        "selectedValue": 255550000,
+                        "techComment": "Yes value"
+                    }
+                },
+                {
+                    "name": "quartech_commitmenttoefp",
+                    "elementType": "DropdownSelect",
+                    "visibleIf": {
+                        "fieldName": "quartech_statementofcompletionfromefpp",
+                        "selectedValue": 255550001,
+                        "techComment": "No value"
+                    }
+                },
+                {
+                    "name": "quartech_costsharefundingfrombmpporoffsp",
+                    "elementType": "DropdownSelect",
+                    "required": true
+                },
+                {
+                    "name": "quartech_costsharefundingfromoffsp",
+                    "elementType": "DropdownSelect",
+                    "required": true
+                },
+                {
+                    "name": "quartech_awaitingcostsharedecision",
+                    "elementType": "DropdownSelect",
+                    "required": true
+                },
+                {
+                    "name": "quartech_applyingtobmpporoffsp",
+                    "elementType": "DropdownSelect",
+                    "required": true
+                }
+            ]
         },
         {
-          "name": "quartech_doingbusinessas",
-          "label": "Doing Business As (if different from Legal Business/Organization Name)"
+            "name": "DeliverablesBudgetStep",
+            "displayName": "Budget",
+            "headings": [
+                {
+                    "name": "Deliverables & Budget",
+                    "displayName": "Project Breakdown"
+                }
+            ],
+            "fields": [
+                {
+                    "name": "quartech_totalfundingrequiredfromtheprogram",
+                    "required": true,
+                    "format": "currency",
+                    "maxDigits": 13,
+                    "emptyInitialValue": true,
+                    "label": "Total requested from the program ($CAD):",
+                    "validation": {
+                        "type": "numeric",
+                        "value": "0",
+                        "comparison": "greaterThanOrEqualTo"
+                    }
+                },
+                {
+                    "name": "quartech_inkindcontribution",
+                    "required": true,
+                    "format": "currency",
+                    "maxDigits": 13,
+                    "emptyInitialValue": true,
+                    "validation": {
+                        "type": "numeric",
+                        "value": "0",
+                        "comparison": "greaterThanOrEqualTo"
+                    }
+                },
+                {
+                    "name": "quartech_cashcontribution",
+                    "required": true,
+                    "format": "currency",
+                    "maxDigits": 13,
+                    "emptyInitialValue": true,
+                    "validation": {
+                        "type": "numeric",
+                        "value": "0",
+                        "comparison": "greaterThanOrEqualTo"
+                    }
+                },
+                {
+                    "name": "quartech_totalgstfromquotes",
+                    "required": true,
+                    "format": "currency",
+                    "maxDigits": 13,
+                    "emptyInitialValue": true,
+                    "validation": {
+                        "type": "numeric",
+                        "value": "0",
+                        "comparison": "greaterThanOrEqualTo"
+                    }
+                },
+                {
+                    "name": "quartech_totalprojectcost",
+                    "label": "Total Project Cost ($CAD):",
+                    "bold": true,
+                    "required": true,
+                    "readOnly": true,
+                    "format": "currency",
+                    "maxDigits": 13,
+                    "validation": {
+                        "type": "numeric",
+                        "value": "0",
+                        "comparison": "greaterThanOrEqualTo"
+                    }
+                },
+                {
+                    "name": "quartech_totaladdedincome",
+                    "required": true,
+                    "format": "currency",
+                    "maxDigits": 13,
+                    "emptyInitialValue": true,
+                    "validation": {
+                        "type": "numeric",
+                        "value": "0",
+                        "comparison": "greaterThanOrEqualTo"
+                    }
+                },
+                {
+                    "name": "quartech_totalreducedcost",
+                    "required": true,
+                    "format": "currency",
+                    "maxDigits": 13,
+                    "emptyInitialValue": true,
+                    "validation": {
+                        "type": "numeric",
+                        "value": "0",
+                        "comparison": "greaterThanOrEqualTo"
+                    }
+                },
+                {
+                    "name": "quartech_totaladdedincomeandreducedcosts",
+                    "label": "Total added income and reduced costs ($CAD):",
+                    "bold": true,
+                    "required": true,
+                    "readOnly": true,
+                    "format": "currency",
+                    "maxDigits": 13,
+                    "validation": {
+                        "type": "numeric",
+                        "value": "0",
+                        "comparison": "greaterThanOrEqualTo"
+                    }
+                },
+                {
+                    "name": "quartech_totaladdedcost",
+                    "required": true,
+                    "format": "currency",
+                    "maxDigits": 13,
+                    "emptyInitialValue": true,
+                    "validation": {
+                        "type": "numeric",
+                        "value": "0",
+                        "comparison": "greaterThanOrEqualTo"
+                    }
+                },
+                {
+                    "name": "quartech_totalreducedincome",
+                    "required": true,
+                    "format": "currency",
+                    "maxDigits": 13,
+                    "emptyInitialValue": true,
+                    "validation": {
+                        "type": "numeric",
+                        "value": "0",
+                        "comparison": "greaterThanOrEqualTo"
+                    }
+                },
+                {
+                    "name": "quartech_totaladdedcostsandreducedincome",
+                    "label": "Total added costs and reduced income ($CAD):",
+                    "bold": true,
+                    "required": true,
+                    "readOnly": true,
+                    "format": "currency",
+                    "maxDigits": 13,
+                    "validation": {
+                        "type": "numeric",
+                        "value": "0",
+                        "comparison": "greaterThanOrEqualTo"
+                    }
+                },
+                {
+                    "name": "quartech_netchangeinprofit",
+                    "label": "Net change in profit ($CAD):",
+                    "bold": true,
+                    "allowNegatives": true,
+                    "required": true,
+                    "readOnly": true,
+                    "format": "currency",
+                    "maxDigits": 13
+                }
+            ]
+        },
+        {
+            "name": "DocumentsStep",
+            "fields": [
+                {
+                    "name": "quartech_partialbudget",
+                    "label": "Attach Partial Budget",
+                    "required": true,
+                    "elementType": "FileInput"
+                },
+                {
+                    "name": "quartech_relatedquotesandplans",
+                    "label": "Attach any related quotes and plans",
+                    "elementType": "FileInput"
+                }
+            ]
         }
-      ]
-    },
-    {
-      "name": "EligibilityStep",
-      "fields": [
-        {
-          "name": "quartech_statementofcompletionfromefpp",
-          "elementType": "DropdownSelect",
-          "required": true
-        },
-        {
-          "name": "quartech_efppcertificationnumber",
-          "required": true,
-          "visibleIf": {
-            "fieldName": "quartech_statementofcompletionfromefpp",
-            "selectedValue": 255550000,
-            "techComment": "Yes value"
-          }
-        },
-        {
-          "name": "quartech_commitmenttoefp",
-          "elementType": "DropdownSelect",
-          "visibleIf": {
-            "fieldName": "quartech_statementofcompletionfromefpp",
-            "selectedValue": 255550001,
-            "techComment": "No value"
-          }
-        },
-        {
-          "name": "quartech_costsharefundingfrombmpporoffsp",
-          "elementType": "DropdownSelect",
-          "required": true
-        },
-        {
-          "name": "quartech_costsharefundingfromoffsp",
-          "elementType": "DropdownSelect",
-          "required": true
-        },
-        {
-          "name": "quartech_awaitingcostsharedecision",
-          "elementType": "DropdownSelect",
-          "required": true
-        },
-        {
-          "name": "quartech_applyingtobmpporoffsp",
-          "elementType": "DropdownSelect",
-          "required": true
-        }
-      ]
-    },
-    {
-      "name": "DeliverablesBudgetStep",
-      "displayName": "Budget",
-      "headings": [
-        {
-          "name": "Deliverables & Budget",
-          "displayName": "Project Breakdown"
-        }
-      ],
-      "fields": [
-        {
-          "name": "quartech_totalfundingrequiredfromtheprogram",
-          "required": true,
-          "format": "currency",
-          "maxDigits": 13,
-          "emptyInitialValue": true,
-          "label": "Total requested from the program ($CAD):",
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThanOrEqualTo"
-          }
-        },
-        {
-          "name": "quartech_inkindcontribution",
-          "required": true,
-          "format": "currency",
-          "maxDigits": 13,
-          "emptyInitialValue": true,
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThanOrEqualTo"
-          }
-        },
-        {
-          "name": "quartech_cashcontribution",
-          "required": true,
-          "format": "currency",
-          "maxDigits": 13,
-          "emptyInitialValue": true,
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThanOrEqualTo"
-          }
-        },
-        {
-          "name": "quartech_totalgstfromquotes",
-          "required": true,
-          "format": "currency",
-          "maxDigits": 13,
-          "emptyInitialValue": true,
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThanOrEqualTo"
-          }
-        },
-        {
-          "name": "quartech_totalprojectcost",
-          "label": "Total Project Cost ($CAD):",
-          "bold": true,
-          "allowNegatives": true,
-          "required": true,
-          "readOnly": true,
-          "format": "currency",
-          "maxDigits": 13
-        },
-        {
-          "name": "quartech_totaladdedincome",
-          "required": true,
-          "format": "currency",
-          "maxDigits": 13,
-          "emptyInitialValue": true,
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThanOrEqualTo"
-          }
-        },
-        {
-          "name": "quartech_totalreducedcost",
-          "required": true,
-          "format": "currency",
-          "maxDigits": 13,
-          "emptyInitialValue": true,
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThanOrEqualTo"
-          }
-        },
-        {
-          "name": "quartech_totaladdedincomeandreducedcosts",
-          "label": "Total added income and reduced costs ($CAD):",
-          "bold": true,
-          "allowNegatives": true,
-          "required": true,
-          "readOnly": true,
-          "format": "currency",
-          "maxDigits": 13
-        },
-        {
-          "name": "quartech_totaladdedcost",
-          "required": true,
-          "format": "currency",
-          "maxDigits": 13,
-          "emptyInitialValue": true,
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThanOrEqualTo"
-          }
-        },
-        {
-          "name": "quartech_totalreducedincome",
-          "required": true,
-          "format": "currency",
-          "maxDigits": 13,
-          "emptyInitialValue": true,
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThanOrEqualTo"
-          }
-        },
-        {
-          "name": "quartech_totaladdedcostsandreducedincome",
-          "label": "Total added costs and reduced income ($CAD):",
-          "bold": true,
-          "allowNegatives": true,
-          "required": true,
-          "readOnly": true,
-          "format": "currency",
-          "maxDigits": 13
-        },
-        {
-          "name": "quartech_netchangeinprofit",
-          "label": "Net change in profit ($CAD):",
-          "bold": true,
-          "allowNegatives": true,
-          "required": true,
-          "readOnly": true,
-          "format": "currency",
-          "maxDigits": 13
-        }
-      ]
-    },
-    {
-      "name": "DocumentsStep",
-      "fields": [
-        {
-          "name": "quartech_partialbudget",
-          "label": "Attach Partial Budget",
-          "required": true,
-          "elementType": "FileInput"
-        },
-        {
-          "name": "quartech_relatedquotesandplans",
-          "label": "Attach any related quotes and plans",
-          "elementType": "FileInput"
-        }
-      ]
-    }
-  ]
+    ]
 }
