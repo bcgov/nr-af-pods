@@ -79,7 +79,7 @@ if (window.jQuery) {
       if (!document.querySelector('#supportingDocumentationNote')) {
         const supportingDocumentationNoteHtmlContent = `
         <div id="supportingDocumentationNote" style="padding-bottom: 20px;">
-          Please Choose or Drag & Drop files to the grey box below to upload the following documents as attachments (as applicable)
+          Please Choose or Drag & Drop files to the grey box below to upload the following documents as attachments (as applicable). To upload multiple files into the same section, you must select all files at the same time. An easy way to do this is to first save the files in the same location on your device, and then select all files and drag and drop them into the grey field.
         </div>`;
   
         $('fieldset[aria-label="Supporting Documents"] > legend').after(
