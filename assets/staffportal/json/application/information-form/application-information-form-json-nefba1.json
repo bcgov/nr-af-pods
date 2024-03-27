@@ -1,0 +1,127 @@
+{
+    "tags": [
+        "ApplicationInformationForm",
+        "StaffPortal",
+        "NEFBA",
+        "NEFBA Phase 1"
+    ],
+    "version": "1.0.0",
+    "name": "New Entrant Farm Business Accelerator",
+    "abbreviation": "NEFBA",
+    "tabs": [
+        {
+            "name": "generalInfoTab",
+            "sections": [
+                {
+                    "name": "generalSection",
+                    "fields": [
+                        {
+                            "name": "quartech_iaflabel",
+                            "visible": false
+                        },
+                        {
+                            "name": "quartech_naicsindustry",
+                            "visible": false
+                        }
+                    ]
+                },
+                {
+                    "name": "businessSummarySection",
+                    "fields": [
+                        {
+                            "name": "quartech_lengthoftimeinbusinessinmonths",
+                            "visible": false
+                        }
+                    ]
+                },
+                {
+                    "name": "vpswppAnimalSpeciesTypeServedSection",
+                    "visible": false
+                }
+            ]
+        },
+        {
+            "name": "applicationReviewTab",
+            "sections": [
+                {
+                    "name": "documentSubmissionSection",
+                    "visible": false
+                },
+                {
+                    "name": "eligibilitySection",
+                    "fields": [
+                        {
+                            "name": "quartech_vetpracticeaccreditedbycvbc",
+                            "visible": false
+                        }
+                    ]
+                },
+                {
+                    "name": "evaluationSection",
+                    "fields": [
+                        {
+                            "name": "quartech_review1outcome",
+                            "visible": true
+                        },
+                        {
+                            "name": "quartech_numberofstudentsapproved",
+                            "visible": false
+                        },
+                        {
+                            "name": "quartech_reviewer1score",
+                            "visible": false
+                        },
+                        {
+                            "name": "quartech_tr2_completedon",
+                            "visible": false
+                        },
+                        {
+                            "name": "quartech_reviewer2score",
+                            "visible": false
+                        },
+                        {
+                            "name": "quartech_tr3_completedon",
+                            "visible": false
+                        },
+                        {
+                            "name": "quartech_reviewer3score",
+                            "visible": false
+                        },
+                        {
+                            "name": "quartech_finalscore",
+                            "visible": false
+                        },
+                        {
+                            "name": "quartech_approvaldiscussioncompletedon",
+                            "visible": false
+                        },
+                        {
+                            "name": "quartech_reviewcommitteediscussioncompletedon",
+                            "visible": false
+                        },
+                        {
+                            "name": "quartech_followupquestions",
+                            "visible": false
+                        }
+                    ]
+                },
+                {
+                    "name": "vpswppStudent1Section",
+                    "visible": false
+                },
+                {
+                    "name": "vpswppStudent2Section",
+                    "visible": false
+                },
+                {
+                    "name": "vpswppStudent3Section",
+                    "visible": false
+                }
+            ]
+        },
+        {
+            "name": "documentsTab",
+            "fields": []
+        }
+    ]
+}
