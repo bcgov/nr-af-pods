@@ -6,13 +6,13 @@ import { setFieldValue } from '../../common/html.js';
 import { setFieldReadOnly } from '../../common/fieldValidation.js';
 import {
   CLAIM_FILE_UPLOAD_FIELDS,
-  addFileUploadControls,
+  customizeDocumentsControls,
 } from '../documents.js';
 
 export async function customizeDocumentsStep() {
   configureFields();
   // TODO: enable this for TASK 3631
-  // addFileUploadControls(CLAIM_FILE_UPLOAD_FIELDS);
+  customizeDocumentsControls(CLAIM_FILE_UPLOAD_FIELDS);
 
   const programAbbreviation = getProgramAbbreviation();
 
@@ -29,7 +29,7 @@ export async function customizeDocumentsStep() {
   if (
     programAbbreviation.includes('ABPP') ||
     programAbbreviation === 'NEFBA' ||
-    programAbbreviation.includes('KTTP')
+    programAbbreviation.includes('KTTP')  
   ) {
     if (!document.querySelector('#supportingDocumentationNote')) {
       const supportingDocumentationNoteHtmlContent = `

@@ -459,6 +459,7 @@ function addDocumentUploadConfirmationIframe() {
       messageLabel.innerHTML === 'Submission completed successfully.'
     ) {
       alert('Files uploaded successfully! Reload iframe...');
+      // @ts-ignore
       iframe.src = iframeSrc;
     } else {
       // @ts-ignore
