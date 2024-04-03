@@ -4,10 +4,7 @@ import {
   getFieldsBySectionClaim,
   getFieldsBySectionApplication,
 } from './fields.js';
-import {
-  hideFieldByFieldName,
-  observeChanges,
-} from './html.js';
+import { hideFieldByFieldName, observeChanges } from './html.js';
 import { Logger } from './logger.js';
 import { FieldMaskType, maskInput } from './masking.js';
 import { getOptions } from './options.js';
@@ -221,12 +218,16 @@ export function setRequiredField(
       });
       break;
     case HtmlElementType.DatePicker:
+      logger.info({
+        fn: setRequiredField,
+        message: `Configuring required datepicker element for fieldName: ${fieldName}`,
+      });
       const datePickerElement = $(
         `input[id=${fieldName}_datepicker_description]`
       ).parent()[0];
       logger.info({
         fn: setRequiredField,
-        message: 'observe changes on date picker element',
+        message: 'observe changes on datepicker element',
         data: { datePickerElement },
       });
       observeChanges(datePickerElement);

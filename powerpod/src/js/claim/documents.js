@@ -1,5 +1,13 @@
+import { doc } from '../common/constants.js';
+import { getFormId } from '../common/form.js';
+import {
+  addHtmlToSection,
+  addHtmlToTabDiv,
+  observeIframeChanges,
+} from '../common/html.js';
 import { Logger } from '../common/logger.js';
 
+// @ts-ignore
 const logger = new Logger('claim/documents');
 
 const MAXIMUM_FILE_SIZE_IN_KB = 15360;
@@ -51,29 +59,61 @@ export const CLAIM_FILE_UPLOAD_FIELDS = [
   'quartech_proofofpayment',
   'quartech_businessplan',
   'quartech_growthstrategy',
+  'quartech_activityreport',
+];
+export const APPLICATION_FILE_UPLOAD_FILES = [
+  'quartech_partialbudget',
+  'quartech_relatedquotesandplans',
 ];
 const FILE_UPLOAD_ID_SUFFIX = '_AttachFile';
 
-// TODO: move to document step setup
-// $(document).ready(function () {
-//   addFileUploadControls(CLAIM_FILE_UPLOAD_FIELDS);
-// });
+export function customizeDocumentsControls(
+  fieldsForFileUploadControls,
+  context = null
+) {
+  addFileUploadControls(fieldsForFileUploadControls, context);
 
-export function addFileUploadControls(fieldsForFileUploadControls) {
+  const attachFileLabel = context
+    ? // @ts-ignore
+      context.querySelector('#AttachFileLabel')
+    : document.querySelector('#AttachFileLabel');
+  if (attachFileLabel) {
+    logger.info({
+      fn: addFileUploadControls,
+      message: 'Hiding OOB upload control...',
+      data: {
+        fieldsForFileUploadControls,
+        attachFileLabel,
+      },
+    });
+    // @ts-ignore
+    attachFileLabel.parentNode.parentNode.parentNode.hidden = true; // hide the oob attach file control.
+  }
+}
+
+export function addFileUploadControls(
+  fieldsForFileUploadControls,
+  context = null
+) {
   logger.info({
     fn: addFileUploadControls,
     message: 'Start initializing file upload controls',
     data: {
       fieldsForFileUploadControls,
+      context,
     },
   });
   fieldsForFileUploadControls.forEach((fieldName) => {
-    addFileUpload(fieldName);
+    addFileUpload(fieldName, context);
 
-    disableField(fieldName);
+    disableField(fieldName, context);
   });
 
-  addTitleToNotesControl();
+  // only execute this if no context is passed
+  if (!context) {
+    addTitleToNotesControl();
+    addDocumentUploadConfirmationIframe();
+  }
 }
 
 function addTitleToNotesControl() {
@@ -338,8 +378,7 @@ function validateFileUpload(file) {
       ', '
     )}.`;
   } else if (!isValidFileSize) {
-    alertStr =
-      `Selected file(s) exceeds the allowed file upload limit of ${MAXIMUM_FILE_SIZE_TEXT}. Please upload a file with a size of ${MAXIMUM_FILE_SIZE_TEXT} or less.`;
+    alertStr = `Selected file(s) exceeds the allowed file upload limit of ${MAXIMUM_FILE_SIZE_TEXT}. Please upload a file with a size of ${MAXIMUM_FILE_SIZE_TEXT} or less.`;
   }
 
   if (alertStr) {
@@ -350,30 +389,31 @@ function validateFileUpload(file) {
   return false;
 }
 
-function addFileUpload(toFieldId) {
-  const fieldFileUploadId = toFieldId + FILE_UPLOAD_ID_SUFFIX;
+function addDocumentUploadConfirmationIframe() {
   logger.info({
-    fn: addFileUpload,
-    message: `Start addFileUpload toFieldId: ${toFieldId}`,
-    data: {
-      toFieldId,
-      fieldFileUploadId,
-    },
+    fn: addDocumentUploadConfirmationIframe,
+    message: 'Start adding document upload confirmation iframe...',
   });
-  const fileUploadHtml = `<input type="file" multiple="multiple" id="${fieldFileUploadId}" accept="${ALLOWED_FILE_TYPES.join(
-    ','
-  )}" aria-label="Attach files..." style='height: 50px; background: lightgrey; width: 100%; padding: 10px 0 0 10px;'>`;
+  const formId = getFormId();
 
-  const divControl = $(`#${toFieldId}`).parent();
+  if (!formId) {
+    logger.error({
+      fn: addDocumentUploadConfirmationIframe,
+      message:
+        'Unable to get form id needed to build documents confirmation iframe',
+    });
+    return;
+  }
 
-  divControl.append(fileUploadHtml);
+  const iframeSrc = `/claim-documents/?id=${formId}`;
+  const htmlContentToAdd = `
+    <iframe id="documentsConfirmation" src="${iframeSrc}" height="800" width="100%" title="Document Upload Confirmation">
+    </iframe>
+  `;
+  addHtmlToTabDiv('documentsTab', htmlContentToAdd, 'bottom');
 
-  $('#AttachFile').attr(
-    'accept',
-    ALLOWED_FILE_TYPES.join(',') + ',' + ALLOWED_MIME_TYPES.join(',')
-  );
-  $(`#${fieldFileUploadId}`).change(function (e) {
-    const targetFieldId = fieldFileUploadId.replace(FILE_UPLOAD_ID_SUFFIX, '');
+  // @ts-ignore
+  const iframe = doc.getElementById('documentsConfirmation');
 
   // @ts-ignore
   iframe.onload = function () {
@@ -412,41 +452,17 @@ function addFileUpload(toFieldId) {
       return;
     }
 
-    updateOobFileUpload();
-  });
-}
+    const messageLabel = context.getElementById('MessageLabel');
 
-function updateOobFileUpload() {
-  let selectedFiles = [];
-
-  CLAIM_FILE_UPLOAD_FIELDS.forEach((fieldName) => {
-    let fileUploadId = fieldName + FILE_UPLOAD_ID_SUFFIX;
-
-    const fieldFileUploadCtr = document.getElementById(fileUploadId);
-
-    for (const i = 0; i < fieldFileUploadCtr.files.length; i++) {
-      const file = fieldFileUploadCtr.files[i];
-      selectedFiles.push(file);
+    if (
+      messageLabel &&
+      messageLabel.innerHTML === 'Submission completed successfully.'
+    ) {
+      alert('Files uploaded successfully! Reload iframe...');
+      iframe.src = iframeSrc;
+    } else {
+      // @ts-ignore
+      customizeDocumentsControls(CLAIM_FILE_UPLOAD_FIELDS, context);
     }
-  });
-
-  const fileList = fileListFrom(selectedFiles);
-
-  const attachFileCtr = document.getElementById('AttachFile');
-  attachFileCtr.onchange = console.log;
-  attachFileCtr.files = fileList;
-
-  logger.info({
-    fn: updateOobFileUpload,
-    message: 'Set attach file control files attribute, attachFileCtr.files',
-    data: { fileList },
-  });
-}
-
-/** @params {File[]} files - Array of files to add to the FileList */
-function fileListFrom(files) {
-  const b = new ClipboardEvent('').clipboardData || new DataTransfer();
-
-  for (const file of files) b.items.add(file);
-  return b.files;
+  };
 }

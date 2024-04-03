@@ -156,12 +156,6 @@
             "name": "DemographicInfoStep",
             "fields": [
               {
-                "name": "quartech_chefsconfirmationid",
-                "required": true,
-                "tooltipText": "This number is automatically generated when the survey has been submitted",
-                "label": "Demographic Data Collection Survey ID number"
-              },
-              {
                 "name": "quartech_question1reownerproprietorshiporparnership",
                 "required": true,
                 "elementType": "DropdownSelect"

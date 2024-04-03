@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { POWERPOD } from './constants.js';
+import { POWERPOD, doc } from './constants.js';
 import {
   getControlType,
   getControlValue,
@@ -13,7 +13,81 @@ const logger = new Logger('common/form');
 
 POWERPOD.form = {
   generateFormJson,
+  getFormId,
+  id: null,
 };
+
+export function getFormId() {
+  if (POWERPOD.form?.id) {
+    const formId = POWERPOD.form?.id;
+    logger.info({
+      fn: getFormId,
+      message: `Cached form submission id found, returning ${formId}`,
+    });
+    return formId;
+  }
+
+  const params = new URLSearchParams(doc.location.search);
+  let formId = params.get('id');
+  let formElement;
+
+  if (!formId) {
+    logger.info({
+      fn: getFormId,
+      message:
+        'Could not find current form submission id from url params, try finding liquid form element...',
+    });
+    // Select the form element based on the tag 'form' and the id 'liquid_form'
+    formElement = document.querySelector('form#liquid_form');
+
+    if (!formElement) {
+      logger.error({
+        fn: getFormId,
+        message:
+          'Unable to find liquid form element, unable to retrieve app/claim submission id!',
+      });
+      return;
+    }
+
+    const actionAttribute = formElement.getAttribute('action');
+
+    if (!actionAttribute) {
+      logger.error({
+        fn: getCurrentSubmissionId,
+        message: 'Unable to retrieve action attribute from liquid form element',
+        data: { formElement },
+      });
+      return;
+    }
+
+    // Define a regular expression pattern to match the id in the action attribute
+    const regex = /id=([a-f\d-]+)/i;
+
+    // Use the regular expression to extract the id from the action attribute
+    const match = regex.exec(actionAttribute);
+
+    // Retrieve the id from the matched groups
+    formId = match ? match[1] : null;
+  }
+
+  if (!formId) {
+    logger.error({
+      fn: getFormId,
+      message:
+        'Unable to retrieve form submission id from either url or form element',
+      data: { params, formElement },
+    });
+    return;
+  }
+
+  logger.info({
+    fn: getFormId,
+    message: `Successfully retrieved form submission id from url params: ${formId}`,
+  });
+
+  POWERPOD.form.id = formId;
+  return formId;
+}
 
 export function addFormDataOnClickHandler() {
   const nextButton = document.getElementById('NextButton');

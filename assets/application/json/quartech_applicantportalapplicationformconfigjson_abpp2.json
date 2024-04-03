@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "ABPP2"],
-  "version": "1.0.3",
+  "version": "1.0.6",
   "name": "ABPP - Business Planning, Preparedness, and Disaster Recovery",
   "abbreviation": "ABPP2",
   "hiddenSteps": "",
@@ -369,6 +369,8 @@
       "fields": [
         {
           "name": "quartech_relatedquotesandplans",
+          "label": "Attach all of the following:",
+          "required": true,
           "elementType": "FileInput"
         }
       ]

@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "ABPP1"],
-  "version": "1.0.1",
+  "version": "1.0.4",
   "name": "ABPP - Agri-Business and Leadership Development",
   "abbreviation": "ABPP1",
   "hiddenSteps": "",
@@ -244,6 +244,8 @@
       "fields": [
         {
           "name": "quartech_relatedquotesandplans",
+          "label": "Attach all of the following:",
+          "required": true,
           "elementType": "FileInput"
         }
       ]

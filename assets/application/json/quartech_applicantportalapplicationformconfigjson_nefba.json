@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "NEFBA", "NEFBA Phase 1"],
-  "version": "1.0.1",
+  "version": "1.0.2",
   "name": "New Entrant Farm Business Accelerator",
   "abbreviation": "NEFBA",
   "hiddenSteps": "tab_Deliverables_Budget",
@@ -215,6 +215,17 @@
           "name": "Consultant Information",
           "type": "SectionTitle",
           "hidden": true
+        }
+      ]
+    },
+    {
+      "name": "DemographicInfoStep",
+      "fields": [
+        {
+          "name": "quartech_chefsconfirmationid",
+          "required": true,
+          "tooltipText": "This number is automatically generated when the survey has been submitted",
+          "label": "Demographic Data Collection Survey ID number"
         }
       ]
     },

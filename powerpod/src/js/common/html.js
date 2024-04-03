@@ -157,6 +157,38 @@ export function showFieldRow(fieldName) {
   $(nearestFieldSet)?.css({ display: '' });
 }
 
+export function addHtmlToTabDiv(
+  tabDataName,
+  htmlContentToAdd,
+  topOrBottom = 'top'
+) {
+  const tabDiv = doc.querySelector(`div[data-name='${tabDataName}']`);
+  if (!tabDiv) {
+    logger.error({
+      fn: addHtmlToTabDiv,
+      message: `Unable to add to tab div of tabDataName: ${tabDataName}, could not find tab div`,
+    });
+    return;
+  }
+
+  const divElement = doc.createElement('div');
+
+  divElement.setAttribute('quartechHtml', 'true');
+  divElement.innerHTML = htmlContentToAdd;
+
+  if (topOrBottom === 'top') {
+    tabDiv.prepend(divElement);
+  } else {
+    tabDiv.append(divElement);
+  }
+}
+
+export function hideSection(tableDataname) {
+  $(`fieldset > table[data-name=${tableDataname}]`)
+    .parent()
+    .css('display', 'none');
+}
+
 export function addHtmlToSection(
   tableDataName,
   htmlContentToAdd,

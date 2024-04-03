@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "KTTP-StreamTwo", "KTTP2"],
-  "version": "1.0.1",
+  "version": "1.0.2",
   "name": "KTTP - Hands On Learning For Skill and Knowledge Development Activities",
   "abbreviation": "KTTP-StreamTwo",
   "hiddenSteps": "tab_eligibility",
@@ -460,6 +460,17 @@
             "value": "0",
             "comparison": "greaterThanOrEqualTo"
           }
+        }
+      ]
+    },
+    {
+      "name": "DemographicInfoStep",
+      "fields": [
+        {
+          "name": "quartech_chefsconfirmationid",
+          "required": true,
+          "tooltipText": "This number is automatically generated when the survey has been submitted",
+          "label": "Demographic Data Collection Survey ID number"
         }
       ]
     }
