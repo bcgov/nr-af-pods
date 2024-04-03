@@ -186,6 +186,10 @@ function populateContentForSelectedProgramStream(programData) {
 }
 
 function updateFormStepForSelectedProgram(programData) {
+  logger.info({
+    fn: updateFormStepForSelectedProgram,
+    message: 'Begin updating form step for program',
+  });
   populateContentForSelectedProgramStream(programData);
 
   const programAbbreviation = getProgramAbbreviation();

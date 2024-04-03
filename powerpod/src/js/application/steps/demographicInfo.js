@@ -21,11 +21,8 @@ export function customizeDemographicInfoStep(programData) {
     fn: customizeDemographicInfoStep,
     message: `Start customizing demographic info step, quartech_disabledchefsdemographicinfo: ${programData?.quartech_disabledchefsdemographicinfo}`,
   });
+  configureFields();
   if (programData?.quartech_disabledchefsdemographicinfo) {
-    hideChefsIntegration();
-
-    setDemographicInfoRequiredFields();
-
     addViewExampleTo_Q1a();
 
     initOnChange_Question1_SoleProprietorshipOrGeneralPartnership();
@@ -38,14 +35,9 @@ export function customizeDemographicInfoStep(programData) {
 
     addDemographicInfoPercentageColumnTitle();
   } else {
-    setDemographicInfoRequiredFields();
     // Enable Demographic Info integration with CHEFS
     showChefsIntegration();
   }
-}
-
-function hideChefsIntegration() {
-  hideSection('DemographicInfoChefsSubmissionSection');
 }
 
 function setDemographicInfoRequiredFields() {
