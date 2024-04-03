@@ -77,13 +77,214 @@ export function addFileUploadControls(fieldsForFileUploadControls) {
 }
 
 function addTitleToNotesControl() {
-  $(`#notescontrol`).prepend(
-    '<div><h4>Documents Previously Uploaded</h4></div>'
-  );
+  $(`#notescontrol`).prepend(`
+    <div>
+      <h4>New Files to Upload</h4>
+      <style>
+        sl-button.huge::part(base) {
+          --sl-input-height-medium: 48px;
+          font-size: 1.5rem;
+        }
+      </style>
+      <sl-button id="quartechUploadBtn" class="huge" variant="primary" style="width: 100%;" loading disabled>
+        Upload new files
+      </sl-button>
+      <h4>Documents Previously Uploaded</h4>
+    </div>
+  `);
 }
 
-function disableField(fieldName) {
-  $(`#${fieldName}`).attr('readonly', 'readonly');
+function disableField(fieldName, context = null) {
+  if (context) {
+    $(context).find(`#${fieldName}`).attr('readonly', 'readonly');
+  } else {
+    $(`#${fieldName}`).attr('readonly', 'readonly');
+  }
+}
+
+function addFileUpload(toFieldId, context = null) {
+  const fieldFileUploadId = toFieldId + FILE_UPLOAD_ID_SUFFIX;
+  logger.info({
+    fn: addFileUpload,
+    message: `Start addFileUpload toFieldId: ${toFieldId}...`,
+    data: {
+      toFieldId,
+      fieldFileUploadId,
+    },
+  });
+  const fileUploadHtml = `<input type="file" multiple="multiple" id="${fieldFileUploadId}" accept="${ALLOWED_FILE_TYPES.join(
+    ','
+  )}" aria-label="Attach files..." style='height: 50px; background: lightgrey; width: 100%; padding: 10px 0 0 10px;'>`;
+
+  const divControl = context
+    ? $(context).find(`#${toFieldId}`).parent()
+    : $(`#${toFieldId}`).parent();
+
+  divControl.append(fileUploadHtml);
+
+  if (context) {
+    $(context)
+      .find('#AttachFile')
+      .attr(
+        'accept',
+        ALLOWED_FILE_TYPES.join(',') + ',' + ALLOWED_MIME_TYPES.join(',')
+      );
+  } else {
+    $('#AttachFile').attr(
+      'accept',
+      ALLOWED_FILE_TYPES.join(',') + ',' + ALLOWED_MIME_TYPES.join(',')
+    );
+  }
+
+  // don't need the rest for the iframe config
+  if (context) return;
+
+  const fieldFileUpload = $(`#${fieldFileUploadId}`);
+  // if this is top-level, re-direct click event to iframe
+  // if (!context) {
+  //   fieldFileUpload.on('click', function (event) {
+  //     const iframe = doc.getElementById('documentsConfirmation');
+  //     // @ts-ignore
+  //     const iframeDoc = iframe?.contentWindow?.document;
+  //     const iframeFieldFileUpload = iframeDoc.getElementById(fieldFileUploadId);
+
+  //     if (iframeFieldFileUpload) {
+  //       logger.info({
+  //         fn: addFileUpload,
+  //         message: `iframe file upload field detected, triggering click event in iframe instead`,
+  //       });
+  //       // event.stopImmediatePropagation();
+  //       // event.stopPropagation();
+  //       // @ts-ignore
+  //       iframeFieldFileUpload.click();
+  //     }
+  //   });
+  //   // don't need to set on change for top-level, so
+  //   return;
+  // }
+
+  fieldFileUpload.on('change', function (e) {
+    logger.info({
+      fn: addFileUpload,
+      message: `fieldFileUpload on change called for fieldFileUploadId: ${fieldFileUploadId}`,
+      // @ts-ignore
+      data: { files: e.target.files, context },
+    });
+    const targetFieldId = fieldFileUploadId.replace(FILE_UPLOAD_ID_SUFFIX, '');
+    const targetField = $(`#${targetFieldId}`);
+
+    const iframe = doc.getElementById('documentsConfirmation');
+    // @ts-ignore
+    const iframeDoc = iframe?.contentWindow?.document;
+    const iframeFieldFileUpload = iframeDoc?.getElementById(fieldFileUploadId);
+    const iframeTargetField = $(iframeDoc)?.find(`#${targetFieldId}`);
+
+    if (iframeFieldFileUpload || iframeTargetField) {
+      logger.info({
+        fn: addFileUpload,
+        message: `Found iframe file upload fields for fieldFileUploadId: ${fieldFileUploadId}`,
+      });
+    } else {
+      logger.info({
+        fn: addFileUpload,
+        message: `No iframe file upload fields found, so skipping set files data...`,
+      });
+    }
+
+    let chosenFiles = '';
+    for (let i = 0; i < e.target.files.length; i++) {
+      const file = e.target.files[i];
+      const isValidFileUpload = validateFileUpload(file);
+
+      if (isValidFileUpload) {
+        chosenFiles += `${file.name} (${formatBytes(file.size)})\n`;
+        logger.info({
+          fn: addFileUpload,
+          message: `Valid file selected for upload, setting targetFieldId: ${targetFieldId} chosen files value...`,
+          data: { chosenFiles },
+        });
+        targetField.val(chosenFiles);
+        iframeTargetField?.val(chosenFiles);
+      } else {
+        logger.warn({
+          fn: addFileUpload,
+          message: `Invalid files selected for fieldFileUploadId: ${fieldFileUploadId}, and targetFieldId: ${targetFieldId}`,
+          data: { chosenFiles },
+        });
+        fieldFileUpload.val('');
+        iframeFieldFileUpload?.val('');
+        targetField.val('');
+        iframeTargetField?.val('');
+      }
+    }
+
+    updateOobFileUpload(iframeDoc);
+  });
+}
+
+function updateOobFileUpload(context = null) {
+  logger.info({
+    fn: updateOobFileUpload,
+    message: 'Updating OOB file upload field',
+    data: { context },
+  });
+  let selectedFiles = [];
+
+  CLAIM_FILE_UPLOAD_FIELDS.forEach((fieldName) => {
+    let fileUploadId = fieldName + FILE_UPLOAD_ID_SUFFIX;
+
+    const fieldFileUploadCtr = document.getElementById(fileUploadId);
+
+    for (let i = 0; i < fieldFileUploadCtr.files.length; i++) {
+      const file = fieldFileUploadCtr.files[i];
+      selectedFiles.push(file);
+    }
+  });
+
+  const fileList = fileListFrom(selectedFiles);
+
+  const attachFileCtr = document.getElementById('AttachFile');
+  // @ts-ignore
+  const iframeAttachFileCtr = context?.getElementById('AttachFile');
+  attachFileCtr.onchange = console.log;
+  attachFileCtr.files = fileList;
+
+  if (iframeAttachFileCtr) {
+    logger.info({
+      fn: updateOobFileUpload,
+      message: `Successfully set iframe attach files control`,
+      data: { fileList },
+    });
+    iframeAttachFileCtr.files = fileList;
+    // @ts-ignore
+    const iframeSubmitBtn = context?.getElementById('UpdateButton');
+    if (iframeSubmitBtn) {
+      logger.info({
+        fn: updateOobFileUpload,
+        message: 'Submitting newly selected files...',
+      });
+      iframeSubmitBtn.click();
+    } else {
+      logger.warn({
+        fn: updateOobFileUpload,
+        message: 'Failed to find iframe submit btn',
+      });
+    }
+  }
+
+  logger.info({
+    fn: updateOobFileUpload,
+    message: 'Set attach file control files attribute, attachFileCtr.files',
+    data: { fileList, context, iframeAttachFileCtr },
+  });
+}
+
+/** @params {File[]} files - Array of files to add to the FileList */
+function fileListFrom(files) {
+  const b = new ClipboardEvent('').clipboardData || new DataTransfer();
+
+  for (const file of files) b.items.add(file);
+  return b.files;
 }
 
 // binary conversion of bytes
@@ -174,18 +375,41 @@ function addFileUpload(toFieldId) {
   $(`#${fieldFileUploadId}`).change(function (e) {
     const targetFieldId = fieldFileUploadId.replace(FILE_UPLOAD_ID_SUFFIX, '');
 
-    let chosenFiles = '';
-    for (const i = 0; i < e.target.files.length; i++) {
-      const file = e.target.files[i];
-      const isValidFileUpload = validateFileUpload(file);
+  // @ts-ignore
+  iframe.onload = function () {
+    logger.info({
+      fn: addDocumentUploadConfirmationIframe,
+      message: 'Documents confirmation iframe finished loading.',
+    });
 
-      if (isValidFileUpload) {
-        chosenFiles += `${file.name} (${formatBytes(file.size)})\n`;
-        $(`#${targetFieldId}`).val(chosenFiles);
-      } else {
-        $(`#${fieldFileUploadId}`).val('');
-        $(`#${targetFieldId}`).val('');
-      }
+    const uploadBtn = $('sl-button[id="quartechUploadBtn"]');
+    const isDisabled = uploadBtn.attr('disabled') !== undefined;
+    const isLoading = uploadBtn.attr('loading') !== undefined;
+
+    if (uploadBtn && (isDisabled || isLoading)) {
+      logger.info({
+        fn: addDocumentUploadConfirmationIframe,
+        message:
+          'Uploading document upload button to loading/disabled state = false',
+      });
+      uploadBtn.removeAttr('loading');
+      uploadBtn.removeAttr('disabled');
+    } else {
+      logger.warn({
+        fn: addDocumentUploadConfirmationIframe,
+        message: 'Upload button not found or not in loading state',
+        data: { uploadBtn, isDisabled, isLoading },
+      });
+    }
+
+    // @ts-ignore
+    const context = iframe.contentWindow?.document;
+    if (!context) {
+      logger.error({
+        fn: addDocumentUploadConfirmationIframe,
+        message: 'Unable to get iframe document context',
+      });
+      return;
     }
 
     updateOobFileUpload();

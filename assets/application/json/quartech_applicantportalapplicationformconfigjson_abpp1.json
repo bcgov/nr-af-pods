@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "ABPP1"],
-  "version": "1.0.0",
+  "version": "1.0.1",
   "name": "ABPP - Agri-Business and Leadership Development",
   "abbreviation": "ABPP1",
   "hiddenSteps": "",
@@ -236,6 +236,15 @@
           "required": true,
           "maxLength": 10000,
           "label": "Please describe the expected learnings or takeaways you have of the experience and how this will improve your business."
+        }
+      ]
+    },
+    {
+      "name": "DocumentsStep",
+      "fields": [
+        {
+          "name": "quartech_relatedquotesandplans",
+          "elementType": "FileInput"
         }
       ]
     }
