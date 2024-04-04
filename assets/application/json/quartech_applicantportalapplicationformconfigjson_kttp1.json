@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "KTTP-SMEA", "KTTP1"],
-  "version": "1.0.2",
+  "version": "1.0.3",
   "name": "KTTP - Subject Matter Expert Activities",
   "abbreviation": "KTTP-SMEA",
   "hiddenSteps": "tab_eligibility",
@@ -455,17 +455,6 @@
             "value": "0",
             "comparison": "greaterThanOrEqualTo"
           }
-        }
-      ]
-    },
-    {
-      "name": "DemographicInfoStep",
-      "fields": [
-        {
-          "name": "quartech_chefsconfirmationid",
-          "required": true,
-          "tooltipText": "This number is automatically generated when the survey has been submitted",
-          "label": "Demographic Data Collection Survey ID number"
         }
       ]
     }
