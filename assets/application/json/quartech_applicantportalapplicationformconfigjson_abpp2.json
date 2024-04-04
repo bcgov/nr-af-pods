@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "ABPP2"],
-  "version": "1.0.2",
+  "version": "1.0.6",
   "name": "ABPP - Business Planning, Preparedness, and Disaster Recovery",
   "abbreviation": "ABPP2",
   "hiddenSteps": "",
@@ -361,6 +361,17 @@
           "required": true,
           "maxLength": 10000,
           "label": "Please describe the expected learnings or takeaways you have of the experience and how this will improve your business."
+        }
+      ]
+    },
+    {
+      "name": "DocumentsStep",
+      "fields": [
+        {
+          "name": "quartech_relatedquotesandplans",
+          "label": "Attach all of the following:",
+          "required": true,
+          "elementType": "FileInput"
         }
       ]
     }

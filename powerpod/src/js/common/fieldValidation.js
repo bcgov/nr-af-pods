@@ -175,12 +175,18 @@ export function validateRequiredField(
 ) {
   logger.info({
     fn: validateRequiredField,
-    message: `Start validating required fieldName: ${fieldName}`,
+    message: `Start validating required fieldName: ${fieldName} of elemType: ${elemType}`,
   });
   let isVisible = $(`#${fieldName}_label`).is(':visible');
 
   let skipValidationAsNotVisible = !isVisible;
-  if (skipValidationAsNotVisible) return '';
+  if (skipValidationAsNotVisible) {
+    logger.warn({
+      fn: validateRequiredField,
+      message: `Validate called on not visible fieldName: ${fieldName} of elemType: ${elemType}`,
+    });
+    return '';
+  }
 
   let validationErrorHtml = '';
 
@@ -207,6 +213,11 @@ export function validateRequiredField(
       isEmptyField = $(`#${fieldName}`).val() == '';
       break;
   }
+
+  logger.info({
+    fn: validateRequiredField,
+    message: `Required field fieldName: ${fieldName}, isEmptyField: ${isEmptyField}`,
+  });
 
   if (isEmptyField) {
     logger.info({
