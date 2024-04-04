@@ -7,12 +7,9 @@ import {
 } from '../../common/html.js';
 import { Logger } from '../../common/logger.js';
 import { configureFields } from '../../common/fieldConfiguration.js';
-import {
-  setFieldReadOnly,
-} from '../../common/fieldValidation.js';
-import {
-  validateDemographicInfoRequiredFields,
-} from '../validation.js';
+import { setFieldReadOnly } from '../../common/fieldValidation.js';
+import { validateDemographicInfoRequiredFields } from '../validation.js';
+import { getProgramEmailAddress } from '../../common/program.js';
 
 const logger = Logger('application/steps/demographicInfo');
 
@@ -23,6 +20,8 @@ export function customizeDemographicInfoStep(programData) {
   });
   configureFields();
   if (programData?.quartech_disabledchefsdemographicinfo) {
+    addDemographicDataDescriptionOldVersionForABPP();
+
     addViewExampleTo_Q1a();
 
     initOnChange_Question1_SoleProprietorshipOrGeneralPartnership();
@@ -40,8 +39,15 @@ export function customizeDemographicInfoStep(programData) {
   }
 }
 
-function setDemographicInfoRequiredFields() {
-  configureFields();
+function addDemographicDataDescriptionOldVersionForABPP() {
+  let div = document.createElement('div');
+  const programEmailAddress = getProgramEmailAddress();
+  div.innerHTML =
+    '<p>The Province of British Columbia supports inclusive and increased representation of underrepresented groups. By providing the information below, you are helping to improve the delivery of programming. At this time, the questions focus on three identity groups, and do not cover all potential groups who are underrepresented in the agriculture sector. We plan to expand the focus to other underrepresented groups in future.</p>' +
+    `<p>Your personal information is collected under section 26(c) and 26(e) of the Freedom of Information and Protection of Privacy Act for the purposes of evaluating applications and for the planning and evaluating of the S-CAP Ministry Program. The demographic information you provide is voluntary and will not be used to assess your eligibility for this program. Each individual understands the purposes of the collection, use, and disclosure of their demographic personal information. The information you provide will be shared with the federal government to fulfill the provincial obligations under the Sustainable Canadian Agricultural Partnership (S-CAP) bilateral agreement. It may be combined with other survey or administrative data sources and used for statistical, research and evaluation purposes. If any information is published, your responses will be combined with the responses of others so that you cannot be identified. If you have any questions about the collection of your information, please contact the program manager at <a href = "mailto: ${programEmailAddress}">${programEmailAddress}</a>.</p>` +
+    '<p><span>Required Field </span><span style="color:red">*</span></p>';
+
+  $("[data-name='DemographicData_Tab1']").parent().prepend(div);
 }
 
 function addViewExampleTo_Q1a() {
