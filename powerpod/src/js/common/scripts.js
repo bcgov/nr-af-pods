@@ -7,6 +7,10 @@ POWERPOD.useScript = useScript;
 
 export const Scripts = {
   jquerymask: 'jquerymask',
+  canadapost: 'canadapost',
+  chosen: 'chosen',
+  jquery: 'jquery',
+  jqueryui: 'jqueryui',
 };
 
 const script = {
@@ -18,6 +22,8 @@ const script = {
       'https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.jquery.js',
     jquerymask:
       'https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js',
+    canadapost:
+      'https://ws1.postescanada-canadapost.ca/js/addresscomplete-2.30.min.js',
   },
   callstack: {}, // used to handle stacked function calls while loading a script
 };

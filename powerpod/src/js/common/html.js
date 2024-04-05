@@ -261,10 +261,12 @@ export function addHtmlToField(
 }
 
 export function observeChanges(element, customFunc) {
+  const id = element?.id || '';
   logger.info({
     fn: observeChanges,
     message: 'observing changes...',
     data: {
+      id,
       element,
     },
   });
@@ -273,6 +275,7 @@ export function observeChanges(element, customFunc) {
       fn: observeChanges,
       message: 'failed to observe changes, null element',
       data: {
+        id,
         element,
       },
     });
@@ -287,8 +290,13 @@ export function observeChanges(element, customFunc) {
 
   // watch for changes
   var observer = new MutationObserver(function (mutations, observer) {
+    logger.info({
+      fn: observeChanges,
+      message: 'Change observed',
+      data: { id, element },
+    });
     if (customFunc) {
-      customFunc();
+      customFunc(mutations);
     } else {
       validateRequiredFields();
     }

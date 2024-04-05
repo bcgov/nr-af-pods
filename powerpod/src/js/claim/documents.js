@@ -3,7 +3,9 @@ import { getFormId } from '../common/form.js';
 import {
   addHtmlToSection,
   addHtmlToTabDiv,
+  observeChanges,
   observeIframeChanges,
+  onDocumentReadyState,
 } from '../common/html.js';
 import { Logger } from '../common/logger.js';
 
@@ -65,7 +67,7 @@ export const APPLICATION_FILE_UPLOAD_FILES = [
   'quartech_partialbudget',
   'quartech_relatedquotesandplans',
 ];
-const FILE_UPLOAD_ID_SUFFIX = '_AttachFile';
+const ATTACH_FILE_SUFFIX = '_AttachFile';
 
 export function customizeDocumentsControls(
   fieldsForFileUploadControls,
@@ -142,23 +144,77 @@ function disableField(fieldName, context = null) {
   }
 }
 
-function addFileUpload(toFieldId, context = null) {
-  const fieldFileUploadId = toFieldId + FILE_UPLOAD_ID_SUFFIX;
+function calculateScrollHeightForText(text) {
+  // Count the number of line breaks in the text
+  var lineBreaks = (text.match(/\n/g) || []).length;
+
+  // Calculate the scroll height based on the number of line breaks
+  var scrollHeight = 55 + lineBreaks * 21;
+
+  // Return the calculated scroll height
+  return scrollHeight;
+}
+
+function updateUploadTextAreaFieldHeight(fieldId) {
+  logger.info({
+    fn: updateUploadTextAreaFieldHeight,
+    message: `Update upload text area height of fieldId: ${fieldId}, document in state: ${doc.readyState}`,
+  });
+  const targetField = $(`#${fieldId}`);
+  if (!targetField) {
+    logger.error({
+      fn: updateOobFileUpload,
+      message: `Could not find target field`,
+    });
+    return;
+  }
+  const textAreaValue = targetField.val();
+  const rawScrollHeight = targetField.prop('scrollHeight');
+
+  if (textAreaValue?.length && rawScrollHeight) {
+    const newHeight = targetField.prop('scrollHeight') + 'px';
+    targetField.css('height', 'auto').css('height', newHeight);
+    logger.info({
+      fn: updateUploadTextAreaFieldHeight,
+      message: `Successfully set textarea fieldId: ${fieldId} to newHeight: ${newHeight}`,
+      data: { textAreaValue, rawScrollHeight },
+    });
+  } else if (textAreaValue?.length && rawScrollHeight === 0) {
+    // there is text but the DOM hasn't updated the scrollHeight value, try to calculate one
+    const calculatedHeight = calculateScrollHeightForText(textAreaValue);
+    const newHeight = calculatedHeight + 'px';
+    targetField.css('height', 'auto').css('height', newHeight);
+    logger.info({
+      fn: updateUploadTextAreaFieldHeight,
+      message: `Calculated and set new scroll height`,
+      data: { textAreaValue, rawScrollHeight, newHeight },
+    });
+  } else {
+    logger.info({
+      fn: updateUploadTextAreaFieldHeight,
+      message: `Textarea is empty, no need to set height`,
+      data: { textAreaValue, rawScrollHeight },
+    });
+  }
+}
+
+function addFileUpload(fieldName, context = null) {
+  const attachFileFieldId = fieldName + ATTACH_FILE_SUFFIX;
   logger.info({
     fn: addFileUpload,
-    message: `Start addFileUpload toFieldId: ${toFieldId}...`,
+    message: `Start addFileUpload toFieldId: ${fieldName}...`,
     data: {
-      toFieldId,
-      fieldFileUploadId,
+      toFieldId: fieldName,
+      fieldFileUploadId: attachFileFieldId,
     },
   });
-  const fileUploadHtml = `<input type="file" multiple="multiple" id="${fieldFileUploadId}" accept="${ALLOWED_FILE_TYPES.join(
+  const fileUploadHtml = `<input type="file" multiple="multiple" id="${attachFileFieldId}" accept="${ALLOWED_FILE_TYPES.join(
     ','
   )}" aria-label="Attach files..." style='height: 50px; background: lightgrey; width: 100%; padding: 10px 0 0 10px;'>`;
 
   const divControl = context
-    ? $(context).find(`#${toFieldId}`).parent()
-    : $(`#${toFieldId}`).parent();
+    ? $(context).find(`#${fieldName}`).parent()
+    : $(`#${fieldName}`).parent();
 
   divControl.append(fileUploadHtml);
 
@@ -176,53 +232,34 @@ function addFileUpload(toFieldId, context = null) {
     );
   }
 
-  // don't need the rest for the iframe config
+  // don't need the rest of the logic to execute for the iframe config
   if (context) return;
 
-  const fieldFileUpload = $(`#${fieldFileUploadId}`);
-  // if this is top-level, re-direct click event to iframe
-  // if (!context) {
-  //   fieldFileUpload.on('click', function (event) {
-  //     const iframe = doc.getElementById('documentsConfirmation');
-  //     // @ts-ignore
-  //     const iframeDoc = iframe?.contentWindow?.document;
-  //     const iframeFieldFileUpload = iframeDoc.getElementById(fieldFileUploadId);
+  const attachFileField = $(`#${attachFileFieldId}`);
 
-  //     if (iframeFieldFileUpload) {
-  //       logger.info({
-  //         fn: addFileUpload,
-  //         message: `iframe file upload field detected, triggering click event in iframe instead`,
-  //       });
-  //       // event.stopImmediatePropagation();
-  //       // event.stopPropagation();
-  //       // @ts-ignore
-  //       iframeFieldFileUpload.click();
-  //     }
-  //   });
-  //   // don't need to set on change for top-level, so
-  //   return;
-  // }
+  // update height of text area for initial value
+  updateUploadTextAreaFieldHeight(fieldName);
 
-  fieldFileUpload.on('change', function (e) {
+  attachFileField.on('change', function (e) {
     logger.info({
       fn: addFileUpload,
-      message: `fieldFileUpload on change called for fieldFileUploadId: ${fieldFileUploadId}`,
+      message: `fieldFileUpload on change called for fieldFileUploadId: ${attachFileFieldId}`,
       // @ts-ignore
       data: { files: e.target.files, context },
     });
-    const targetFieldId = fieldFileUploadId.replace(FILE_UPLOAD_ID_SUFFIX, '');
-    const targetField = $(`#${targetFieldId}`);
+
+    const textareaFileField = $(`#${fieldName}`);
 
     const iframe = doc.getElementById('documentsConfirmation');
     // @ts-ignore
     const iframeDoc = iframe?.contentWindow?.document;
-    const iframeFieldFileUpload = iframeDoc?.getElementById(fieldFileUploadId);
-    const iframeTargetField = $(iframeDoc)?.find(`#${targetFieldId}`);
+    const iframeAttachFileField = $(iframeDoc)?.find(`#${attachFileFieldId}`);
+    const iframeTextareaField = $(iframeDoc)?.find(`#${fieldName}`);
 
-    if (iframeFieldFileUpload || iframeTargetField) {
+    if (iframeAttachFileField || iframeTextareaField) {
       logger.info({
         fn: addFileUpload,
-        message: `Found iframe file upload fields for fieldFileUploadId: ${fieldFileUploadId}`,
+        message: `Found iframe file upload fields for fieldFileUploadId: ${attachFileFieldId}`,
       });
     } else {
       logger.info({
@@ -230,6 +267,9 @@ function addFileUpload(toFieldId, context = null) {
         message: `No iframe file upload fields found, so skipping set files data...`,
       });
     }
+
+    const uploadBtn = $('sl-button[id="quartechUploadBtn"]');
+    const isUploadBtnDisabled = uploadBtn.attr('disabled') !== undefined;
 
     let chosenFiles = '';
     for (let i = 0; i < e.target.files.length; i++) {
@@ -240,25 +280,44 @@ function addFileUpload(toFieldId, context = null) {
         chosenFiles += `${file.name} (${formatBytes(file.size)})\n`;
         logger.info({
           fn: addFileUpload,
-          message: `Valid file selected for upload, setting targetFieldId: ${targetFieldId} chosen files value...`,
-          data: { chosenFiles },
+          message: `Valid file selected for upload, setting toFieldId: ${fieldName} chosen files value...`,
+          data: { chosenFiles, uploadBtn, isUploadBtnDisabled },
         });
-        targetField.val(chosenFiles);
-        iframeTargetField?.val(chosenFiles);
+
+        // set textarea new text value for files
+        textareaFileField.val(chosenFiles);
+
+        // set textarea field new height
+        updateUploadTextAreaFieldHeight(fieldName);
+
+        // set iframe file field for background uploading
+        iframeTextareaField?.val(chosenFiles);
+
+        // if upload btn hasn't been enabled yet, enable it so user can upload.
+        if (isUploadBtnDisabled) {
+          uploadBtn.removeAttr('disabled');
+        }
+
+        updateOobFileUpload(iframeDoc);
       } else {
-        logger.warn({
+        logger.error({
           fn: addFileUpload,
-          message: `Invalid files selected for fieldFileUploadId: ${fieldFileUploadId}, and targetFieldId: ${targetFieldId}`,
+          message: `Invalid files selected for fieldFileUploadId: ${attachFileFieldId}, and toFieldId: ${fieldName}`,
           data: { chosenFiles },
         });
-        fieldFileUpload.val('');
-        iframeFieldFileUpload?.val('');
-        targetField.val('');
-        iframeTargetField?.val('');
+        attachFileField.val('');
+        iframeAttachFileField?.val('');
+        textareaFileField.val('');
+        iframeTextareaField?.val('');
+
+        // disable upload btn since invalid files selected
+        uploadBtn.attr('disabled', 'disabled');
+
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        e.stopPropagation();
       }
     }
-
-    updateOobFileUpload(iframeDoc);
   });
 }
 
@@ -271,7 +330,7 @@ function updateOobFileUpload(context = null) {
   let selectedFiles = [];
 
   CLAIM_FILE_UPLOAD_FIELDS.forEach((fieldName) => {
-    let fileUploadId = fieldName + FILE_UPLOAD_ID_SUFFIX;
+    let fileUploadId = fieldName + ATTACH_FILE_SUFFIX;
 
     const fieldFileUploadCtr = document.getElementById(fileUploadId);
 
@@ -296,20 +355,6 @@ function updateOobFileUpload(context = null) {
       data: { fileList },
     });
     iframeAttachFileCtr.files = fileList;
-    // @ts-ignore
-    const iframeSubmitBtn = context?.getElementById('UpdateButton');
-    if (iframeSubmitBtn) {
-      logger.info({
-        fn: updateOobFileUpload,
-        message: 'Submitting newly selected files...',
-      });
-      iframeSubmitBtn.click();
-    } else {
-      logger.warn({
-        fn: updateOobFileUpload,
-        message: 'Failed to find iframe submit btn',
-      });
-    }
   }
 
   logger.info({
@@ -422,26 +467,6 @@ function addDocumentUploadConfirmationIframe() {
       message: 'Documents confirmation iframe finished loading.',
     });
 
-    const uploadBtn = $('sl-button[id="quartechUploadBtn"]');
-    const isDisabled = uploadBtn.attr('disabled') !== undefined;
-    const isLoading = uploadBtn.attr('loading') !== undefined;
-
-    if (uploadBtn && (isDisabled || isLoading)) {
-      logger.info({
-        fn: addDocumentUploadConfirmationIframe,
-        message:
-          'Uploading document upload button to loading/disabled state = false',
-      });
-      uploadBtn.removeAttr('loading');
-      uploadBtn.removeAttr('disabled');
-    } else {
-      logger.warn({
-        fn: addDocumentUploadConfirmationIframe,
-        message: 'Upload button not found or not in loading state',
-        data: { uploadBtn, isDisabled, isLoading },
-      });
-    }
-
     // @ts-ignore
     const context = iframe.contentWindow?.document;
     if (!context) {
@@ -450,6 +475,40 @@ function addDocumentUploadConfirmationIframe() {
         message: 'Unable to get iframe document context',
       });
       return;
+    }
+
+    const uploadBtn = $('sl-button[id="quartechUploadBtn"]');
+    const isLoading = uploadBtn.attr('loading') !== undefined;
+
+    if (uploadBtn && isLoading) {
+      logger.info({
+        fn: addDocumentUploadConfirmationIframe,
+        message:
+          'Uploading document upload button to loading/disabled state = false',
+      });
+      uploadBtn.removeAttr('loading');
+      uploadBtn.on('click', function () {
+        // @ts-ignore
+        const iframeSubmitBtn = context?.getElementById('UpdateButton');
+        if (iframeSubmitBtn) {
+          logger.info({
+            fn: updateOobFileUpload,
+            message: 'Submitting newly selected files...',
+          });
+          iframeSubmitBtn.click();
+        } else {
+          logger.warn({
+            fn: updateOobFileUpload,
+            message: 'Failed to find iframe submit btn',
+          });
+        }
+      });
+    } else {
+      logger.warn({
+        fn: addDocumentUploadConfirmationIframe,
+        message: 'Upload button not found or not in loading state',
+        data: { uploadBtn, isLoading },
+      });
     }
 
     const messageLabel = context.getElementById('MessageLabel');

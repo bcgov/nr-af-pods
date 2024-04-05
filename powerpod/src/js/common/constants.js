@@ -96,4 +96,8 @@ export const POWERPOD = {
   application: {},
   test: {},
   shared: {},
+  validation: {
+    enableIntervalBased: true,
+    errorHtml: '',
+  },
 };

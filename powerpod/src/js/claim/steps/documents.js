@@ -10,9 +10,8 @@ import {
 } from '../documents.js';
 
 export async function customizeDocumentsStep() {
-  configureFields();
-  // TODO: enable this for TASK 3631
   customizeDocumentsControls(CLAIM_FILE_UPLOAD_FIELDS);
+  configureFields();
 
   const programAbbreviation = getProgramAbbreviation();
 
