@@ -311,10 +311,10 @@ export function setRequiredField(
         data: { attachFileField, textareaField, fieldName },
       });
       observeChanges(attachFileField);
-      attachFileField.on('blur input', () => {
+      attachFileField?.on('blur input', () => {
         validateRequiredFields();
       });
-      textareaField.on('change', function () {
+      textareaField?.on('change', function () {
         validateRequiredFields();
       });
       break;

@@ -100,6 +100,7 @@ export const POWERPOD = {
     enableIntervalBased: true,
     errorHtml: '',
   },
+  fieldValidation: {},
   documents: {
     initialIframeLoad: true,
     isSubmitting: false,

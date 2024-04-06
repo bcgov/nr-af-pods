@@ -20,6 +20,10 @@ import { getCurrentStep, getProgramAbbreviation } from './program.ts';
 
 const logger = Logger('common/validation');
 
+POWERPOD.fieldValidation = {
+  validateRequiredFields,
+}
+
 export function validateRequiredFields() {
   const currentStep = getCurrentStep();
   if (currentStep === FormStep.DemographicInfo) {
@@ -195,7 +199,7 @@ export function validateRequiredField(
     fn: validateRequiredField,
     message: `Start validating required fieldName: ${fieldName} of elemType: ${elemType}`,
   });
-  let isVisible = $(`#${fieldName}_label`).is(':visible');
+  let isVisible = $(`#${fieldName}_label`)?.is(':visible');
 
   let skipValidationAsNotVisible = !isVisible;
   if (skipValidationAsNotVisible) {
@@ -218,7 +222,7 @@ export function validateRequiredField(
         $(`#${fieldName}`)?.val()?.length === 0;
       break;
     case HtmlElementType.MultiOptionSet:
-      isEmptyField = $(`li[id*='${fieldName}-selected-item-']`).length == 0;
+      isEmptyField = $(`li[id*='${fieldName}-selected-item-']`)?.length == 0;
       break;
     case HtmlElementType.DropdownSelect:
       isEmptyField =
@@ -228,7 +232,7 @@ export function validateRequiredField(
     case HtmlElementType.SingleOptionSet:
     case HtmlElementType.DatePicker:
     default: // HtmlElementTypeEnum.Input
-      isEmptyField = $(`#${fieldName}`).val() == '';
+      isEmptyField = $(`#${fieldName}`)?.val() == '';
       break;
   }
 

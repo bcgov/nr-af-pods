@@ -1,4 +1,5 @@
 import { doc, POWERPOD } from '../common/constants.js';
+import { validateRequiredFields } from '../common/fieldValidation.js';
 import { getFormId } from '../common/form.js';
 import {
   addHtmlToSection,
@@ -860,7 +861,14 @@ function addDocumentUploadConfirmationIframe() {
 
   const iframeSrc = `/claim-documents/?id=${formId}`;
   const htmlContentToAdd = `
-    <iframe id="documentsConfirmation" src="${iframeSrc}" height="800" width="100%" title="Document Upload Confirmation">
+    <iframe 
+      id="documentsConfirmation" 
+      src="${iframeSrc}" 
+      title="Document Upload Confirmation" 
+      aria-hidden="true" 
+      tabindex="-1" 
+      style="position: absolute; width:0; height:0; border:0;"
+    >
     </iframe>
   `;
   addHtmlToTabDiv('documentsTab', htmlContentToAdd, 'bottom');
@@ -898,6 +906,7 @@ function addDocumentUploadConfirmationIframe() {
       });
       hideLoadingSpinner();
       POWERPOD.documents.initialIframeLoad = false;
+      validateRequiredFields();
     }
 
     // @ts-ignore
