@@ -427,6 +427,7 @@ function addFileUpload(fieldName, context = null) {
       $(`sl-alert[id="docStatusAlert"]`)?.remove();
       filesToUploadDiv.append(NOT_YET_UPLOADED_HTML);
     }
+    validateRequiredFields();
   });
 }
 
