@@ -17,6 +17,7 @@ import { configureSections } from './sections.js';
 import { hideTabs } from './tabs.js';
 
 POWERPOD.fields = {
+  loading: true,
   getFieldsBySectionApplication,
   getFieldsBySectionClaim,
 };
@@ -151,6 +152,8 @@ export function getFieldsBySectionApplication(stepName, forceRefresh = false) {
     message: 'fieldsData:',
     data: fields,
   });
+
+  POWERPOD.fields.loading = false;
 
   return fields;
 }

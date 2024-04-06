@@ -6,26 +6,11 @@ import { setFieldValue } from '../../common/html.js';
 import { setFieldReadOnly } from '../../common/fieldValidation.js';
 import {
   CLAIM_FILE_UPLOAD_FIELDS,
-  addFileUploadControls,
+  customizeDocumentsControls,
 } from '../documents.js';
 
 export async function customizeDocumentsStep() {
-  configureFields();
-  // TODO: enable this for TASK 3631
-  // addFileUploadControls(CLAIM_FILE_UPLOAD_FIELDS);
-
   const programAbbreviation = getProgramAbbreviation();
-
-  if (programAbbreviation === 'NEFBA') {
-    addSatisfactionSurveyChefsIframe();
-
-    observeIframeChanges(
-      customizeBusinessPlanDocumentsQuestions,
-      null,
-      'quartech_completingcategory'
-    );
-  }
-
   if (
     programAbbreviation.includes('ABPP') ||
     programAbbreviation === 'NEFBA' ||
@@ -53,6 +38,19 @@ export async function customizeDocumentsStep() {
         beforeContinuingNoteHtmlContent
       );
     }
+  }
+
+  customizeDocumentsControls(CLAIM_FILE_UPLOAD_FIELDS);
+  configureFields();
+
+  if (programAbbreviation === 'NEFBA') {
+    addSatisfactionSurveyChefsIframe();
+
+    observeIframeChanges(
+      customizeBusinessPlanDocumentsQuestions,
+      null,
+      'quartech_completingcategory'
+    );
   }
 }
 

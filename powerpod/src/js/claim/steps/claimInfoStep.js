@@ -190,7 +190,7 @@ export function customizeClaimInfoStep() {
 
     observeChanges(
       $('#quartech_requestedinterimpaymentamount')[0],
-      customizeInterimPaymentAmountField()
+      () => customizeInterimPaymentAmountField()
     );
 
     observeIframeChanges(

@@ -2,7 +2,13 @@ import {
   validateDemographicInfoRequiredFields,
   validateIsConsultantEitherBciaOrCpa,
 } from '../application/validation.js';
-import { Environment, Form, FormStep, HtmlElementType } from './constants.js';
+import {
+  Environment,
+  Form,
+  FormStep,
+  HtmlElementType,
+  POWERPOD,
+} from './constants.js';
 import { getEnv } from './env.ts';
 import {
   getFieldsBySectionClaim,
@@ -13,6 +19,10 @@ import { getOptions } from './options.js';
 import { getCurrentStep, getProgramAbbreviation } from './program.ts';
 
 const logger = Logger('common/validation');
+
+POWERPOD.fieldValidation = {
+  validateRequiredFields,
+}
 
 export function validateRequiredFields() {
   const currentStep = getCurrentStep();
@@ -165,6 +175,18 @@ export function validateStepFields(stepName, returnString) {
     message: 'Done! Displaying validation error html',
     data: { validationErrorHtml },
   });
+
+  if (POWERPOD.validation.errorHtml === validationErrorHtml) {
+    logger.info({
+      fn: validateStepFields,
+      message: 'No need to display new error, same as old one.',
+      data: {
+        storedErrorHtml: POWERPOD.validation.errorHtml,
+        validationErrorHtml,
+      },
+    });
+    return;
+  }
   displayValidationErrors(validationErrorHtml);
 }
 
@@ -177,7 +199,7 @@ export function validateRequiredField(
     fn: validateRequiredField,
     message: `Start validating required fieldName: ${fieldName} of elemType: ${elemType}`,
   });
-  let isVisible = $(`#${fieldName}_label`).is(':visible');
+  let isVisible = $(`#${fieldName}_label`)?.is(':visible');
 
   let skipValidationAsNotVisible = !isVisible;
   if (skipValidationAsNotVisible) {
@@ -195,22 +217,22 @@ export function validateRequiredField(
     case HtmlElementType.FileInput:
       isEmptyField =
         // @ts-ignore
-        $(`#${fieldName}_AttachFile`)?.val().length === 0 &&
+        $(`#${fieldName}_AttachFile`)?.val()?.length === 0 &&
         // @ts-ignore
-        $(`#${fieldName}`)?.val().length === 0;
+        $(`#${fieldName}`)?.val()?.length === 0;
       break;
     case HtmlElementType.MultiOptionSet:
-      isEmptyField = $(`li[id*='${fieldName}-selected-item-']`).length == 0;
+      isEmptyField = $(`li[id*='${fieldName}-selected-item-']`)?.length == 0;
       break;
     case HtmlElementType.DropdownSelect:
       isEmptyField =
         // @ts-ignore
-        document.querySelector(`#${fieldName}`).value.length == 0;
+        document.querySelector(`#${fieldName}`)?.value?.length == 0;
       break;
     case HtmlElementType.SingleOptionSet:
     case HtmlElementType.DatePicker:
     default: // HtmlElementTypeEnum.Input
-      isEmptyField = $(`#${fieldName}`).val() == '';
+      isEmptyField = $(`#${fieldName}`)?.val() == '';
       break;
   }
 
@@ -429,6 +451,8 @@ export function displayValidationErrors(validationErrorHtml) {
     validationErrorsDiv.style = 'display:block;';
     $('#NextButton').prop('disabled', true);
   }
+
+  POWERPOD.validation.errorHtml = validationErrorHtml;
 }
 
 export function addValidationCheck(fieldName, validation) {
@@ -437,7 +461,9 @@ export function addValidationCheck(fieldName, validation) {
     // do not enable interval based on dev or test, since we only use it for Canada Post
     // integration for now, it's only needed in production
     if (env === Environment.PROD) {
-      setInterval(() => validateStepFields(), 100);
+      setInterval(() => {
+        if (POWERPOD.validation.enableIntervalBased) validateStepFields();
+      }, 1000);
       return;
     }
   }

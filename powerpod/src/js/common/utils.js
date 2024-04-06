@@ -109,3 +109,15 @@ export function isLastObjectEmpty(array) {
   // Check if all values of the last object are empty strings
   return Object.values(lastObject).every((value) => value.trim() === '');
 }
+
+export function sha256(str) {
+  // Convert the string to a Uint8Array
+  const buffer = new TextEncoder().encode(str);
+  // Hash the buffer using SHA-256
+  return crypto.subtle.digest('SHA-256', buffer).then((hash) => {
+    // Convert the hash to a hexadecimal string
+    return Array.from(new Uint8Array(hash))
+      .map((b) => b.toString(16).padStart(2, '0'))
+      .join('');
+  });
+}

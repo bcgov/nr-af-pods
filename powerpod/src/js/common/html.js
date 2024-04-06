@@ -189,6 +189,18 @@ export function hideSection(tableDataname) {
     .css('display', 'none');
 }
 
+export function showSection(tableDataname) {
+  $(`fieldset > table[data-name=${tableDataname}]`).parent().css('display', '');
+}
+
+export function hideTable(tableDataname) {
+  $(`table[data-name=${tableDataname}]`).css('display', 'none');
+}
+
+export function showTable(tableDataname) {
+  $(`table[data-name=${tableDataname}]`).css('display', '');
+}
+
 export function addHtmlToSection(
   tableDataName,
   htmlContentToAdd,
@@ -261,10 +273,12 @@ export function addHtmlToField(
 }
 
 export function observeChanges(element, customFunc) {
+  const id = element?.id || '';
   logger.info({
     fn: observeChanges,
     message: 'observing changes...',
     data: {
+      id,
       element,
     },
   });
@@ -273,6 +287,7 @@ export function observeChanges(element, customFunc) {
       fn: observeChanges,
       message: 'failed to observe changes, null element',
       data: {
+        id,
         element,
       },
     });
@@ -287,8 +302,13 @@ export function observeChanges(element, customFunc) {
 
   // watch for changes
   var observer = new MutationObserver(function (mutations, observer) {
+    logger.info({
+      fn: observeChanges,
+      message: 'Change observed',
+      data: { id, element },
+    });
     if (customFunc) {
-      customFunc();
+      customFunc(mutations);
     } else {
       validateRequiredFields();
     }

@@ -16,8 +16,8 @@ POWERPOD.program = {
  * @function
  */
 export function getProgramId() {
-  if (POWERPOD.programId?.programId) {
-    const programId = POWERPOD.programId?.programId;
+  if (POWERPOD.program?.programId) {
+    const programId = POWERPOD.program?.programId;
     logger.info({
       fn: getProgramId,
       message: `Cached programId found, returning ${programId}`,

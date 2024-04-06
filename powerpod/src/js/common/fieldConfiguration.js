@@ -1,4 +1,4 @@
-import { Form, HtmlElementType } from './constants.js';
+import { Form, HtmlElementType, doc } from './constants.js';
 import { customizeCurrencyInput } from './currency.js';
 import {
   getFieldsBySectionClaim,
@@ -23,6 +23,7 @@ import {
   initOnChange_DependentRequiredField,
   initializeVisibleIf,
 } from './fieldConditionalLogic.js';
+import { useScript } from './scripts.js';
 
 const logger = Logger('common/fieldConfiguration');
 
@@ -180,7 +181,103 @@ export function configureFields() {
     }
   }
 
+  setupCanadaPostAddressComplete(fields);
+
   setDynamicallyRequiredFields(stepName);
+}
+
+function setupCanadaPostAddressComplete(fields) {
+  const options = {
+    key: 'kb98-fz49-gp47-dk74',
+  };
+  const cpFieldNames = [
+    'quartech_businesssuitenumberoptional',
+    'quartech_businessstreetnumber',
+    'quartech_businessstreet',
+    'quartech_businesscity',
+    'quartech_businessprovinceterritory',
+    'quartech_businesspostalcode',
+  ];
+
+  const allCpFieldsPresent = cpFieldNames.every((cpFieldName) => {
+    return fields.some(
+      // @ts-ignore
+      (field) => field.name === cpFieldName
+    );
+  });
+
+  logger.info({
+    fn: setupCanadaPostAddressComplete,
+    message: `Checked if all addresscomplete fields exist in fields data: allCpFieldsPresent: ${allCpFieldsPresent}`,
+    data: { cpFieldNames, fields, allCpFieldsPresent },
+  });
+
+  if (allCpFieldsPresent) {
+    useScript('canadapost', () => {
+      // @ts-ignore
+      const pca = window.pca;
+
+      logger.info({
+        fn: setupCanadaPostAddressComplete,
+        message: 'Starting to setup canadapost addresscomplete',
+        data: { pca, options },
+      });
+
+      const fieldConfig = [
+        {
+          element: 'quartech_businesssuitenumberoptional',
+          field: 'SubBuilding',
+          mode: pca.fieldMode.DEFAULT,
+        },
+        {
+          element: 'quartech_businessstreetnumber',
+          field: 'BuildingNumber',
+          mode: pca.fieldMode.DEFAULT,
+        },
+        {
+          element: 'quartech_businessstreet',
+          field: 'Street',
+          mode: pca.fieldMode.POPULATE,
+        },
+        {
+          element: 'quartech_businesscity',
+          field: 'City',
+          mode: pca.fieldMode.POPULATE,
+        },
+        {
+          element: 'quartech_businessprovinceterritory',
+          field: 'ProvinceName',
+          mode: pca.fieldMode.POPULATE,
+        },
+        {
+          element: 'quartech_businesspostalcode',
+          field: 'PostalCode',
+          mode: pca.fieldMode.POPULATE,
+        },
+      ];
+
+      const scriptEl = doc.createElement('script');
+      scriptEl.setAttribute('type', 'text/javascript');
+      scriptEl.innerHTML = `
+          var fields = ${JSON.stringify(fieldConfig)},
+          options = ${JSON.stringify(options)},
+          control = new pca.Address(fields, options);
+        `;
+      doc.head.appendChild(scriptEl);
+
+      logger.info({
+        fn: setupCanadaPostAddressComplete,
+        message: 'Successfully configured canadapost addresscomplete',
+      });
+    });
+    return;
+  }
+
+  logger.info({
+    fn: setupCanadaPostAddressComplete,
+    message:
+      'Canadapost addresscomplete fields not found, no need to load script',
+  });
 }
 
 export function setRequiredField(
@@ -206,14 +303,18 @@ export function setRequiredField(
 
   switch (elemType) {
     case HtmlElementType.FileInput:
-      const fileInputElement = $(`input[id=${fieldName}_AttachFile]`)[0];
+      const textareaField = $(`#${fieldName}`);
+      const attachFileField = $(`input[id=${fieldName}_AttachFile]`);
       logger.info({
         fn: setRequiredField,
         message: 'observe changes on file input element',
-        data: { fileInputElement },
+        data: { attachFileField, textareaField, fieldName },
       });
-      observeChanges(fileInputElement);
-      $(`#${fieldName}_AttachFile`).on('blur input', () => {
+      observeChanges(attachFileField);
+      attachFileField?.on('blur input', () => {
+        validateRequiredFields();
+      });
+      textareaField?.on('change', function () {
         validateRequiredFields();
       });
       break;

@@ -3,7 +3,7 @@
   FILE INFO
   -------------------
   ENV: PROD (has CP/AddressComplete integration)
-  version: 1.0.1
+  version: 1.0.5
   name: Head/Bottom
   type: Content Snippet/HTML
   description: This is added to Global Content Snippets configuration in Portal Management, 
@@ -149,62 +149,29 @@
 </style>
 <!-- END: CUSTOM MULTISELECT & ADDITIONAL LOCATIONS FIELD -->
 
+<!-- START: SHOELACE INTEGRATION -->
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/themes/light.css"
+/>
+<script
+  type="module"
+  src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/shoelace-autoloader.js"
+></script>
+<!-- END: SHOELACE INTEGRATION -->
+
 <!-- START: CANADA POST / ADDRESS COMPLETE INTEGRATION -->
 <link
   rel="stylesheet"
   type="text/css"
   href="https://ws1.postescanada-canadapost.ca/css/addresscomplete-2.30.min.css"
 />
-<script
-  type="text/javascript"
-  src="https://ws1.postescanada-canadapost.ca/js/addresscomplete-2.30.min.js"
-></script>
-<!-- TODO: MOVE THIS SETUP TO JS SCRIPT -->
-<script type="text/javascript">
-  var fields = [
-      {
-        element: 'quartech_businesssuitenumberoptional',
-        field: 'SubBuilding',
-        mode: pca.fieldMode.DEFAULT,
-      },
-      {
-        element: 'quartech_businessstreetnumber',
-        field: 'BuildingNumber',
-        mode: pca.fieldMode.DEFAULT,
-      },
-      {
-        element: 'quartech_businessstreet',
-        field: 'Street',
-        mode: pca.fieldMode.POPULATE,
-      },
-      {
-        element: 'quartech_businesscity',
-        field: 'City',
-        mode: pca.fieldMode.POPULATE,
-      },
-      {
-        element: 'quartech_businessprovinceterritory',
-        field: 'ProvinceName',
-        mode: pca.fieldMode.POPULATE,
-      },
-      {
-        element: 'quartech_businesspostalcode',
-        field: 'PostalCode',
-        mode: pca.fieldMode.POPULATE,
-      },
-    ],
-    options = {
-      key: 'kb98-fz49-gp47-dk74',
-    },
-    control = new pca.Address(fields, options);
-</script>
-<!-- END: CANADA POST / ADDRESS COMPLETE INTEGRATION -->
+<!-- START: CANADA POST / ADDRESS COMPLETE INTEGRATION -->
 
 <!-- START: SIGN-IN PAGE CUSTOMIZATION -->
 <script type="text/javascript">
-  const { pathname: path } = window.location;
   // Only execute this on SignIn page
-  if (path === '/SignIn') {
+  if (window.location.pathname.includes('/SignIn')) {
     function hideRegisterTab() {
       const registerTabElement = document
         .querySelector('li > a[aria-label="Register"')
