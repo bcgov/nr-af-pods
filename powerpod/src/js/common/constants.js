@@ -100,4 +100,11 @@ export const POWERPOD = {
     enableIntervalBased: true,
     errorHtml: '',
   },
+  documents: {
+    initialIframeLoad: true,
+    isSubmitting: false,
+    iframeLoading: true,
+    filesToUpload: [],
+    confirmedFilesUploaded: [],
+  },
 };

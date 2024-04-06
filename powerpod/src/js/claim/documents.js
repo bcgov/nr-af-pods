@@ -1,13 +1,18 @@
-import { doc } from '../common/constants.js';
+import { doc, POWERPOD } from '../common/constants.js';
 import { getFormId } from '../common/form.js';
 import {
   addHtmlToSection,
   addHtmlToTabDiv,
+  hideSection,
+  hideTable,
   observeChanges,
   observeIframeChanges,
   onDocumentReadyState,
+  showSection,
+  showTable,
 } from '../common/html.js';
 import { Logger } from '../common/logger.js';
+import { sha256 } from '../common/utils.js';
 
 // @ts-ignore
 const logger = new Logger('claim/documents');
@@ -113,21 +118,75 @@ export function addFileUploadControls(
 
   // only execute this if no context is passed
   if (!context) {
-    addTitleToNotesControl();
+    // addTitleToNotesControl();
+    addLoadingSpinner();
     addDocumentUploadConfirmationIframe();
   }
 }
 
+function addLoadingSpinner() {
+  hideTable('supportingDocumentsSection');
+
+  $('#supportingDocumentationNote').css({
+    display: 'flex',
+    flexDirection: 'column',
+  });
+
+  $('#supportingDocumentationNote').append(
+    '<br/><sl-spinner id="quartechDocumentsSpinner" style="font-size: 50px; --track-width: 10px; margin: 20px auto;"></sl-spinner>'
+  );
+}
+
+function hideLoadingSpinner() {
+  showTable('supportingDocumentsSection');
+
+  $('sl-spinner[id="quartechDocumentsSpinner"]').remove();
+
+  addTitleToNotesControl();
+}
+
+const NO_NEW_FILES_HTML = `
+  <sl-alert id="docStatusAlert" variant="primary" open>
+    <sl-icon slot="icon" name="info-circle"></sl-icon>
+    <strong>No new files have been selected for upload</strong><br />
+    Please click "Choose Files" or Drag & Drop files into the grey box.
+  </sl-alert>
+`;
+
+const NOT_YET_UPLOADED_HTML = `
+  <sl-alert id="docStatusAlert" variant="warning" open>
+    <sl-icon slot="icon" name="exclamation-triangle"></sl-icon>
+    <strong>Please make sure to click "Upload new files"</strong><br />
+    This will ensure that your files are uploaded successfully before continuing.
+  </sl-alert>
+`;
+
 function addTitleToNotesControl() {
   $(`#notescontrol`).prepend(`
     <div>
-      <h4>New Files to Upload</h4>
       <style>
         sl-button.huge::part(base) {
           --sl-input-height-medium: 48px;
           font-size: 1.5rem;
         }
+        sl-tooltip::part(body) {
+          font-size: 1.2rem;
+        }
+        sl-alert::part(base) {
+          font-size: 1.5rem;
+        }
+        sl-alert::part(icon) {
+          font-size: 2rem;
+        }
+        .card-basic {
+          max-width: 300px;
+          margin: 5px;
+        }
       </style>
+      <h4>New Files to Upload</h4>
+      <div id="filesToUpload" style="padding:10px;">
+        ${NO_NEW_FILES_HTML}
+      </div>
       <sl-button id="quartechUploadBtn" class="huge" variant="primary" style="width: 100%;" loading disabled>
         Upload new files
       </sl-button>
@@ -240,7 +299,7 @@ function addFileUpload(fieldName, context = null) {
   // update height of text area for initial value
   updateUploadTextAreaFieldHeight(fieldName);
 
-  attachFileField.on('change', function (e) {
+  attachFileField.on('change', async function (e) {
     logger.info({
       fn: addFileUpload,
       message: `fieldFileUpload on change called for fieldFileUploadId: ${attachFileFieldId}`,
@@ -268,21 +327,60 @@ function addFileUpload(fieldName, context = null) {
       });
     }
 
+    const state = getCurrentState();
+
     const uploadBtn = $('sl-button[id="quartechUploadBtn"]');
     const isUploadBtnDisabled = uploadBtn.attr('disabled') !== undefined;
 
+    POWERPOD.documents.filesToUpload = [];
+
+    // add file to 'filesToUpload' div section
+    const filesToUploadDiv = $('#filesToUpload');
+    if (!filesToUploadDiv) {
+      logger.error({
+        fn: addFileUpload,
+        message: 'Could not find filesToUpload div',
+        data: { filesToUploadDiv },
+      });
+    }
+
+    filesToUploadDiv.html('');
+
     let chosenFiles = '';
-    for (let i = 0; i < e.target.files.length; i++) {
+    let invalidFilesPresent = false;
+    let validFilePresent = false;
+    for (let i = 0; i < e.target.files.length && !invalidFilesPresent; i++) {
       const file = e.target.files[i];
       const isValidFileUpload = validateFileUpload(file);
 
       if (isValidFileUpload) {
-        chosenFiles += `${file.name} (${formatBytes(file.size)})\n`;
+        validFilePresent = true;
+        const fileInfoString = `${file.name} (${formatBytes(file.size)})`;
+        chosenFiles += fileInfoString + '\n';
         logger.info({
           fn: addFileUpload,
           message: `Valid file selected for upload, setting toFieldId: ${fieldName} chosen files value...`,
-          data: { chosenFiles, uploadBtn, isUploadBtnDisabled },
+          data: {
+            state,
+            chosenFiles,
+            uploadBtn,
+            isUploadBtnDisabled,
+            fileInfoString,
+          },
         });
+
+        const filenameHash = await sha256(file.name);
+        filesToUploadDiv?.append(`
+          <sl-card class="card-basic">
+            ${fileInfoString}
+            <sl-tooltip id="${filenameHash}-tooltip" content='Press "Upload new files" to confirm' style="--max-width: 300px;">
+              <sl-icon id="${filenameHash}-icon" name="exclamation-circle" style="color: red;"></sl-icon>
+            </sl-tooltip>
+          </sl-card>
+        `);
+
+        // @ts-ignore
+        POWERPOD.documents.filesToUpload.push(file.name);
 
         // set textarea new text value for files
         textareaFileField.val(chosenFiles);
@@ -293,13 +391,14 @@ function addFileUpload(fieldName, context = null) {
         // set iframe file field for background uploading
         iframeTextareaField?.val(chosenFiles);
 
-        // if upload btn hasn't been enabled yet, enable it so user can upload.
-        if (isUploadBtnDisabled) {
-          uploadBtn.removeAttr('disabled');
-        }
+        // if upload btn hasn't been enabled yet, enable it so user can upload, only if iframe finished loading first
+        setUploadButtonState();
 
         updateOobFileUpload(iframeDoc);
       } else {
+        // breaks for loop
+        invalidFilesPresent = true;
+
         logger.error({
           fn: addFileUpload,
           message: `Invalid files selected for fieldFileUploadId: ${attachFileFieldId}, and toFieldId: ${fieldName}`,
@@ -310,13 +409,22 @@ function addFileUpload(fieldName, context = null) {
         textareaFileField.val('');
         iframeTextareaField?.val('');
 
+        const filesToUploadDiv = $('#filesToUpload');
+        filesToUploadDiv.html(NO_NEW_FILES_HTML);
+
+        POWERPOD.documents.filesToUpload = [];
+
         // disable upload btn since invalid files selected
-        uploadBtn.attr('disabled', 'disabled');
+        setUploadButtonState();
 
         e.preventDefault();
         e.stopImmediatePropagation();
         e.stopPropagation();
       }
+    }
+    if (validFilePresent) {
+      $(`sl-alert[id="docStatusAlert"]`)?.remove();
+      filesToUploadDiv.append(NOT_YET_UPLOADED_HTML);
     }
   });
 }
@@ -434,6 +542,306 @@ function validateFileUpload(file) {
   return false;
 }
 
+function getCurrentState() {
+  let state = '';
+  const iframeLoading = POWERPOD.documents.iframeLoading;
+  const initialIframeLoad = POWERPOD.documents.initialIframeLoad;
+  const isSubmitting = POWERPOD.documents.isSubmitting;
+  const userHasFilesSelectedToUpload =
+    POWERPOD.documents.filesToUpload.length > 0;
+
+  logger.info({
+    fn: getCurrentState,
+    message: 'Try to determine current state',
+    data: {
+      iframeLoading,
+      initialIframeLoad,
+      isSubmitting,
+      userHasFilesSelectedToUpload,
+    },
+  });
+
+  if (iframeLoading && initialIframeLoad) {
+    state = 'initial';
+  } else if (!iframeLoading && !userHasFilesSelectedToUpload) {
+    state = 'ready';
+  } else if (!iframeLoading && userHasFilesSelectedToUpload) {
+    state = 'set';
+  } else if (isSubmitting && iframeLoading && !initialIframeLoad) {
+    state = 'go';
+  }
+
+  if (!state) {
+    logger.error({
+      fn: getCurrentState,
+      message: 'Could not determine current state',
+      data: {
+        iframeLoading,
+        initialIframeLoad,
+        isSubmitting,
+        userHasFilesSelectedToUpload,
+      },
+    });
+  }
+
+  logger.info({
+    fn: getCurrentState,
+    message: `Current state determined to be: ${state}`,
+  });
+
+  return state;
+}
+
+// upload button has these states:
+// State 1 (initial): Initial load state, disabled and loading
+// State 2 (ready): Disabled state, no files selected, ready to accept files
+// State 3 (set): Enabled state, files selected
+// State 4 (go): Submitting state, disabled and loading
+function setUploadButtonState(state = '') {
+  const uploadBtn = $('sl-button[id="quartechUploadBtn"]');
+
+  if (!uploadBtn) {
+    logger.error({
+      fn: setUploadButtonState,
+      message: 'Could not find update button',
+    });
+    return;
+  }
+
+  if (!state) {
+    state = getCurrentState();
+  }
+
+  logger.info({
+    fn: setUploadButtonState,
+    message: `Setting state: ${state}`,
+  });
+
+  if (state === 'initial' || state === 'go') {
+    uploadBtn.attr('loading', 'loading');
+    uploadBtn.attr('disabled', 'disabled');
+  } else if (state === 'ready') {
+    uploadBtn.removeAttr('loading');
+    uploadBtn.attr('disabled', 'disabled');
+  } else if (state === 'set') {
+    uploadBtn.removeAttr('loading');
+    uploadBtn.removeAttr('disabled');
+  }
+}
+
+function setUploadBtnOnClick(context) {
+  const uploadBtn = $('sl-button[id="quartechUploadBtn"]');
+
+  if (!uploadBtn) {
+    logger.error({
+      fn: setUploadBtnOnClick,
+      message: 'Could not find update button',
+    });
+    return;
+  }
+  // remove any previous onclick handlers (no longer referencing the right iframe btn)
+  uploadBtn.off('click');
+
+  // add on-click handler for upload referencing newly loaded iframe submit btn
+  uploadBtn.on('click', function () {
+    // @ts-ignore
+    const iframeSubmitBtn = context?.getElementById('UpdateButton');
+
+    if (!iframeSubmitBtn) {
+      logger.error({
+        fn: updateOobFileUpload,
+        message: 'Failed to find iframe submit btn',
+      });
+      return;
+    }
+
+    logger.info({
+      fn: updateOobFileUpload,
+      message: 'Submitting newly selected files...',
+    });
+
+    POWERPOD.documents.iframeLoading = true;
+    POWERPOD.documents.isSubmitting = true;
+
+    setUploadButtonState();
+
+    iframeSubmitBtn.click();
+  });
+}
+
+async function checkUploadedFiles(context) {
+  const userHasFilesSelectedToUpload =
+    POWERPOD.documents.filesToUpload.length > 0;
+
+  logger.info({
+    fn: checkUploadedFiles,
+    message: 'Checking if any selected files have been uploaded',
+    data: { documents: POWERPOD.documents },
+  });
+
+  if (userHasFilesSelectedToUpload) {
+    const notes = context?.getElementById('notescontrol');
+
+    if (!notes) {
+      logger.error({
+        fn: checkUploadedFiles,
+        message: 'Could not find notes control in iframe',
+        data: { documents: POWERPOD.documents },
+      });
+      return;
+    }
+
+    const parentNotes = doc.getElementById('notescontrol');
+    const parentEntityNotes = parentNotes?.querySelector('.entity-notes');
+
+    const entityNotes = notes.querySelector('.entity-notes');
+
+    if (entityNotes && parentEntityNotes) {
+      parentEntityNotes.parentNode?.replaceChild(
+        entityNotes.cloneNode(true),
+        parentEntityNotes
+      );
+      logger.info({
+        fn: checkUploadedFiles,
+        message: 'Successfully replaced parent notes with iframe notes',
+        data: { documents: POWERPOD.documents },
+      });
+    } else {
+      logger.warn({
+        fn: checkUploadedFiles,
+        message: 'Could not find parentNotes or notes',
+        data: { parentEntityNotes, entityNotes, documents: POWERPOD.documents },
+      });
+    }
+
+    const failedToUpload = [];
+    // @ts-ignore
+    const uploadedSuccessfully = [];
+
+    // @ts-ignore
+    const filenameArray = POWERPOD.documents.filesToUpload;
+    // @ts-ignore
+    POWERPOD.documents.confirmedFilesUploaded = uploadedSuccessfully;
+
+    const promises = filenameArray.map(async (filename) => {
+      const filenameHash = await sha256(filename);
+      if (notes.textContent.includes(filename)) {
+        logger.info({
+          fn: checkUploadedFiles,
+          message: `Found that selected file has been uploaded already, filename: ${filename}`,
+          data: {
+            documents: POWERPOD.documents,
+            userHasFilesSelectedToUpload,
+            notes,
+            filenameArray,
+            filename,
+            filenameHash,
+          },
+        });
+
+        const fileIcon = $(`sl-icon[id="${filenameHash}-icon"]`);
+        if (!fileIcon) {
+          logger.error({
+            fn: checkUploadedFiles,
+            message: 'Could not find file icon for uploaded file',
+            data: { documents: POWERPOD.documents, filename, filenameHash },
+          });
+        }
+        fileIcon.attr('name', 'check-circle');
+        fileIcon.attr('style', 'color: green;');
+
+        const fileTooltip = $(`sl-tooltip[id="${filenameHash}-tooltip"]`);
+        if (!fileTooltip) {
+          logger.error({
+            fn: checkUploadedFiles,
+            message: 'Could not find file icon for uploaded file',
+            data: { documents: POWERPOD.documents, filename, filenameHash },
+          });
+        }
+        fileTooltip.attr('content', 'File successfuly uploaded!');
+
+        logger.info({
+          fn: checkUploadedFiles,
+          message: `Successfully updated state for filename: ${filename}`,
+          data: { documents: POWERPOD.documents, filename, filenameHash },
+        });
+
+        uploadedSuccessfully.push(filename);
+      } else {
+        logger.warn({
+          fn: checkUploadedFiles,
+          message: `Did not successfully upload filename: ${filename}`,
+          data: { documents: POWERPOD.documents, filename, filenameHash },
+        });
+        failedToUpload.push(filename);
+      }
+    });
+
+    await Promise.all(promises);
+
+    // add success/error to 'filesToUpload' div section
+    const filesToUploadDiv = $('#filesToUpload');
+    if (!filesToUploadDiv) {
+      logger.error({
+        fn: addFileUpload,
+        message: 'Could not find filesToUpload div',
+        data: { filesToUploadDiv },
+      });
+    }
+
+    if (
+      failedToUpload.length > 0 ||
+      filenameArray.length !== uploadedSuccessfully.length
+    ) {
+      logger.warn({
+        fn: checkUploadedFiles,
+        message: 'Some files not uploaded',
+        data: {
+          failedToUpload,
+          filenameArray,
+          uploadedSuccessfully,
+          documents: POWERPOD.documents,
+        },
+      });
+      $(`sl-alert[id="docStatusAlert"]`)?.remove();
+      filesToUploadDiv.append(`
+        <sl-alert id="docStatusAlert" variant="danger" open>
+          <sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
+          <strong>Some files may not have uploaded correctly</strong><br />
+          Please click "Choose Files" or drag & drop your files, and try uploading them again.
+        </sl-alert>
+      `);
+    } else if (
+      failedToUpload.length === 0 &&
+      filenameArray.length === uploadedSuccessfully.length
+    ) {
+      logger.info({
+        fn: checkUploadedFiles,
+        message: 'Success, updating info',
+        data: {
+          failedToUpload,
+          filenameArray,
+          uploadedSuccessfully,
+          documents: POWERPOD.documents,
+        },
+      });
+      $(`sl-alert[id="docStatusAlert"]`)?.remove();
+      filesToUploadDiv.append(`
+        <sl-alert id="docStatusAlert" variant="success" open>
+          <sl-icon slot="icon" name="check2-circle"></sl-icon>
+          <strong>Your documents have been uploaded successfully</strong><br />
+          You can safely continue now. If you have more documents to upload, feel free to upload more.
+        </sl-alert>
+      `);
+    }
+    // @ts-ignore
+    POWERPOD.documents.confirmedFilesUploaded = uploadedSuccessfully;
+    POWERPOD.documents.filesToUpload = [];
+
+    setUploadButtonState();
+  }
+}
+
 function addDocumentUploadConfirmationIframe() {
   logger.info({
     fn: addDocumentUploadConfirmationIframe,
@@ -462,10 +870,35 @@ function addDocumentUploadConfirmationIframe() {
 
   // @ts-ignore
   iframe.onload = function () {
+    const prevIframeLoading = POWERPOD.documents.iframeLoading;
+    const iframeLoading = (POWERPOD.documents.iframeLoading = false);
+
+    const initialIframeLoad = POWERPOD.documents.initialIframeLoad;
+    const isSubmitting = POWERPOD.documents.isSubmitting;
+
+    const state = getCurrentState();
+
     logger.info({
       fn: addDocumentUploadConfirmationIframe,
       message: 'Documents confirmation iframe finished loading.',
+      data: {
+        state,
+        prevIframeLoading,
+        iframeLoading,
+        initialIframeLoad,
+        isSubmitting,
+      },
     });
+
+    // this logic only runs once on initial iframe load
+    if (initialIframeLoad) {
+      logger.info({
+        fn: addDocumentUploadConfirmationIframe,
+        message: 'Initial load for iframe, hide loading spinner',
+      });
+      hideLoadingSpinner();
+      POWERPOD.documents.initialIframeLoad = false;
+    }
 
     // @ts-ignore
     const context = iframe.contentWindow?.document;
@@ -477,52 +910,38 @@ function addDocumentUploadConfirmationIframe() {
       return;
     }
 
-    const uploadBtn = $('sl-button[id="quartechUploadBtn"]');
-    const isLoading = uploadBtn.attr('loading') !== undefined;
+    // if we're not in the process of submitting, then that means iframe contains upload
+    // page and we need to do all the setup required to do "ghost" uploading in the background
+    if (!isSubmitting) {
+      // setup the iframe to match the user's UI dialogs (custom upload fields)
+      customizeDocumentsControls(CLAIM_FILE_UPLOAD_FIELDS, context);
 
-    if (uploadBtn && isLoading) {
-      logger.info({
-        fn: addDocumentUploadConfirmationIframe,
-        message:
-          'Uploading document upload button to loading/disabled state = false',
-      });
-      uploadBtn.removeAttr('loading');
-      uploadBtn.on('click', function () {
-        // @ts-ignore
-        const iframeSubmitBtn = context?.getElementById('UpdateButton');
-        if (iframeSubmitBtn) {
-          logger.info({
-            fn: updateOobFileUpload,
-            message: 'Submitting newly selected files...',
-          });
-          iframeSubmitBtn.click();
-        } else {
-          logger.warn({
-            fn: updateOobFileUpload,
-            message: 'Failed to find iframe submit btn',
-          });
-        }
-      });
-    } else {
-      logger.warn({
-        fn: addDocumentUploadConfirmationIframe,
-        message: 'Upload button not found or not in loading state',
-        data: { uploadBtn, isLoading },
-      });
+      setUploadButtonState();
+
+      setUploadBtnOnClick(context);
+
+      checkUploadedFiles(context);
     }
 
-    const messageLabel = context.getElementById('MessageLabel');
+    if (isSubmitting) {
+      const messageLabel = context.getElementById('MessageLabel');
 
-    if (
-      messageLabel &&
-      messageLabel.innerHTML === 'Submission completed successfully.'
-    ) {
-      alert('Files uploaded successfully! Reload iframe...');
-      // @ts-ignore
-      iframe.src = iframeSrc;
-    } else {
-      // @ts-ignore
-      customizeDocumentsControls(CLAIM_FILE_UPLOAD_FIELDS, context);
+      // Handle when iframe is submitted (submitted correctly page)
+      // In this case, we just refresh to reload the documents page and get
+      // previously uploaded documents
+      if (
+        messageLabel &&
+        messageLabel.innerHTML === 'Submission completed successfully.'
+      ) {
+        logger.info({
+          fn: addDocumentUploadConfirmationIframe,
+          message: 'Files uploaded successfully! Reload iframe...',
+        });
+        // @ts-ignore
+        iframe.src = iframeSrc;
+        POWERPOD.documents.iframeLoading = true;
+        POWERPOD.documents.isSubmitting = false;
+      }
     }
   };
 }

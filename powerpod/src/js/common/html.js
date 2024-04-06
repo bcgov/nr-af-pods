@@ -189,6 +189,18 @@ export function hideSection(tableDataname) {
     .css('display', 'none');
 }
 
+export function showSection(tableDataname) {
+  $(`fieldset > table[data-name=${tableDataname}]`).parent().css('display', '');
+}
+
+export function hideTable(tableDataname) {
+  $(`table[data-name=${tableDataname}]`).css('display', 'none');
+}
+
+export function showTable(tableDataname) {
+  $(`table[data-name=${tableDataname}]`).css('display', '');
+}
+
 export function addHtmlToSection(
   tableDataName,
   htmlContentToAdd,

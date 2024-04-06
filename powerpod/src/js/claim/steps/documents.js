@@ -10,25 +10,11 @@ import {
 } from '../documents.js';
 
 export async function customizeDocumentsStep() {
-  customizeDocumentsControls(CLAIM_FILE_UPLOAD_FIELDS);
-  configureFields();
-
   const programAbbreviation = getProgramAbbreviation();
-
-  if (programAbbreviation === 'NEFBA') {
-    addSatisfactionSurveyChefsIframe();
-
-    observeIframeChanges(
-      customizeBusinessPlanDocumentsQuestions,
-      null,
-      'quartech_completingcategory'
-    );
-  }
-
   if (
     programAbbreviation.includes('ABPP') ||
     programAbbreviation === 'NEFBA' ||
-    programAbbreviation.includes('KTTP')  
+    programAbbreviation.includes('KTTP')
   ) {
     if (!document.querySelector('#supportingDocumentationNote')) {
       const supportingDocumentationNoteHtmlContent = `
@@ -52,6 +38,19 @@ export async function customizeDocumentsStep() {
         beforeContinuingNoteHtmlContent
       );
     }
+  }
+
+  customizeDocumentsControls(CLAIM_FILE_UPLOAD_FIELDS);
+  configureFields();
+
+  if (programAbbreviation === 'NEFBA') {
+    addSatisfactionSurveyChefsIframe();
+
+    observeIframeChanges(
+      customizeBusinessPlanDocumentsQuestions,
+      null,
+      'quartech_completingcategory'
+    );
   }
 }
 
