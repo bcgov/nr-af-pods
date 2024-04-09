@@ -107,5 +107,6 @@ export const POWERPOD = {
     iframeLoading: true,
     filesToUpload: [],
     confirmedFilesUploaded: [],
+    observerSet: false, // used to wait for iframe notes to finish loading
   },
 };
