@@ -706,7 +706,7 @@ function isNotesStillLoading(context) {
   );
 
   if (
-    loadingElement?.style?.display === '' ||
+    loadingElement?.style?.display === '' &&
     loadingMoreElement?.style?.display === ''
   ) {
     return true;
