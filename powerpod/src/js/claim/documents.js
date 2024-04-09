@@ -18,6 +18,7 @@ import { sha256 } from '../common/utils.js';
 // @ts-ignore
 const logger = new Logger('claim/documents');
 
+const DEVELOPMENT_MODE_ENABLED = false;
 const MAXIMUM_FILE_SIZE_IN_KB = 15360;
 const MAXIMUM_FILE_SIZE_TEXT = '15MB';
 const ALLOWED_MIME_TYPES = [
@@ -374,7 +375,7 @@ function addFileUpload(fieldName, context = null) {
         filesToUploadDiv?.append(`
           <sl-card class="card-basic">
             ${fileInfoString}
-            <sl-tooltip id="${filenameHash}-tooltip" content='Press "Upload new files" to confirm' style="--max-width: 300px;">
+            <sl-tooltip id="${filenameHash}-tooltip" content='Press "Upload new files" to confirm' style="--max-width: 200px;">
               <sl-icon id="${filenameHash}-icon" name="exclamation-circle" style="color: red;"></sl-icon>
             </sl-tooltip>
           </sl-card>
@@ -470,7 +471,7 @@ function updateOobFileUpload(context = null) {
   logger.info({
     fn: updateOobFileUpload,
     message: 'Set attach file control files attribute, attachFileCtr.files',
-    data: { fileList, context, iframeAttachFileCtr },
+    data: { files: fileList, context, iframeAttachFileCtr },
   });
 }
 
@@ -671,9 +672,52 @@ function setUploadBtnOnClick(context) {
   });
 }
 
+function cloneNotesContent(notes) {
+  const parentNotes = doc.getElementById('notescontrol');
+  const parentEntityNotes = parentNotes?.querySelector('.entity-notes');
+
+  const entityNotes = notes.querySelector('.entity-notes');
+
+  if (entityNotes && parentEntityNotes) {
+    parentEntityNotes.parentNode?.replaceChild(
+      entityNotes.cloneNode(true),
+      parentEntityNotes
+    );
+    logger.info({
+      fn: cloneNotesContent,
+      message: 'Successfully replaced parent notes with iframe notes',
+      data: { documents: POWERPOD.documents },
+    });
+  } else {
+    logger.warn({
+      fn: cloneNotesContent,
+      message: 'Could not find parentNotes or notes',
+      data: { parentEntityNotes, entityNotes, documents: POWERPOD.documents },
+    });
+  }
+}
+
+function isNotesStillLoading(context) {
+  const loadingElement = context.querySelector(
+    '#notescontrol > div > div.notes-loading.message.text-center'
+  );
+  const loadingMoreElement = context.querySelector(
+    '#notescontrol > div > div.notes-loading-more.message.text-center'
+  );
+
+  if (
+    loadingElement?.style?.display === '' ||
+    loadingMoreElement?.style?.display === ''
+  ) {
+    return true;
+  }
+  return false;
+}
+
 async function checkUploadedFiles(context) {
   const userHasFilesSelectedToUpload =
     POWERPOD.documents.filesToUpload.length > 0;
+  const observerAlreadySet = POWERPOD.documents.observerSet;
 
   logger.info({
     fn: checkUploadedFiles,
@@ -684,37 +728,42 @@ async function checkUploadedFiles(context) {
   if (userHasFilesSelectedToUpload) {
     const notes = context?.getElementById('notescontrol');
 
-    if (!notes) {
+    if (!notes || !notes.textContent) {
       logger.error({
         fn: checkUploadedFiles,
-        message: 'Could not find notes control in iframe',
+        message: 'Could not find notes or notes.textContent in iframe',
         data: { documents: POWERPOD.documents },
       });
       return;
     }
 
-    const parentNotes = doc.getElementById('notescontrol');
-    const parentEntityNotes = parentNotes?.querySelector('.entity-notes');
+    logger.info({
+      fn: checkUploadedFiles,
+      message: 'Found notes and notes.textContent',
+      data: { notesTextContent: notes.textContent },
+    });
 
-    const entityNotes = notes.querySelector('.entity-notes');
-
-    if (entityNotes && parentEntityNotes) {
-      parentEntityNotes.parentNode?.replaceChild(
-        entityNotes.cloneNode(true),
-        parentEntityNotes
-      );
+    if (isNotesStillLoading(context)) {
+      logger.warn({
+        fn: cloneNotesContent,
+        message:
+          'Notes still loading, defer operation until loading is complete',
+        data: { notesTextContent: notes.textContent, observerAlreadySet },
+      });
+      if (!observerAlreadySet) {
+        POWERPOD.documents.observerSet = true;
+        observeChanges(notes.parentNode, () => checkUploadedFiles(context));
+      }
+      return;
+    } else {
       logger.info({
         fn: checkUploadedFiles,
-        message: 'Successfully replaced parent notes with iframe notes',
-        data: { documents: POWERPOD.documents },
-      });
-    } else {
-      logger.warn({
-        fn: checkUploadedFiles,
-        message: 'Could not find parentNotes or notes',
-        data: { parentEntityNotes, entityNotes, documents: POWERPOD.documents },
+        message: 'Notes content finished loading',
+        data: { notesTextContent: notes.textContent },
       });
     }
+
+    cloneNotesContent(notes);
 
     const failedToUpload = [];
     // @ts-ignore
@@ -727,6 +776,26 @@ async function checkUploadedFiles(context) {
 
     const promises = filenameArray.map(async (filename) => {
       const filenameHash = await sha256(filename);
+      const fileIcon = $(`sl-icon[id="${filenameHash}-icon"]`);
+      if (!fileIcon) {
+        logger.error({
+          fn: checkUploadedFiles,
+          message: 'Could not find file icon for uploaded file',
+          data: { documents: POWERPOD.documents, filename, filenameHash },
+        });
+      }
+
+      const fileTooltip = $(`sl-tooltip[id="${filenameHash}-tooltip"]`);
+      if (!fileTooltip) {
+        logger.error({
+          fn: checkUploadedFiles,
+          message: 'Failed to find file icon for uploaded file',
+          data: { documents: POWERPOD.documents, filename, filenameHash },
+        });
+      }
+
+      // If the Notes timeline  contains the filename, we can be sure the
+      // upload was successful, and the file is confirmed uploaded.
       if (notes.textContent.includes(filename)) {
         logger.info({
           fn: checkUploadedFiles,
@@ -741,25 +810,8 @@ async function checkUploadedFiles(context) {
           },
         });
 
-        const fileIcon = $(`sl-icon[id="${filenameHash}-icon"]`);
-        if (!fileIcon) {
-          logger.error({
-            fn: checkUploadedFiles,
-            message: 'Could not find file icon for uploaded file',
-            data: { documents: POWERPOD.documents, filename, filenameHash },
-          });
-        }
         fileIcon.attr('name', 'check-circle');
         fileIcon.attr('style', 'color: green;');
-
-        const fileTooltip = $(`sl-tooltip[id="${filenameHash}-tooltip"]`);
-        if (!fileTooltip) {
-          logger.error({
-            fn: checkUploadedFiles,
-            message: 'Could not find file icon for uploaded file',
-            data: { documents: POWERPOD.documents, filename, filenameHash },
-          });
-        }
         fileTooltip.attr('content', 'File successfuly uploaded!');
 
         logger.info({
@@ -772,10 +824,18 @@ async function checkUploadedFiles(context) {
       } else {
         logger.warn({
           fn: checkUploadedFiles,
-          message: `Did not successfully upload filename: ${filename}`,
+          message: `Failed to successfully upload filename: ${filename}`,
           data: { documents: POWERPOD.documents, filename, filenameHash },
         });
+
         failedToUpload.push(filename);
+
+        fileIcon.attr('name', 'exclamation-circle');
+        fileIcon.attr('style', 'color: red;');
+        fileTooltip.attr(
+          'content',
+          'File failed to upload, please try uploading this file again.'
+        );
       }
     });
 
@@ -868,7 +928,11 @@ function addDocumentUploadConfirmationIframe() {
       title="Document Upload Confirmation" 
       aria-hidden="true" 
       tabindex="-1" 
-      style="position: absolute; width:0; height:0; border:0;"
+      ${
+        DEVELOPMENT_MODE_ENABLED
+          ? 'style="width:100%; height:1000px; border:0;"'
+          : `style="position: absolute; width:0; height:0; border:0;"`
+      }
     >
     </iframe>
   `;
@@ -876,6 +940,13 @@ function addDocumentUploadConfirmationIframe() {
 
   // @ts-ignore
   const iframe = doc.getElementById('documentsConfirmation');
+
+  if (!iframe) {
+    logger.error({
+      fn: addDocumentUploadConfirmationIframe,
+      message: 'Could not find documentsConfirmation iframe',
+    });
+  }
 
   // @ts-ignore
   iframe.onload = function () {
@@ -911,7 +982,7 @@ function addDocumentUploadConfirmationIframe() {
     }
 
     // @ts-ignore
-    const context = iframe.contentWindow?.document;
+    const context = iframe?.contentWindow?.document;
     if (!context) {
       logger.error({
         fn: addDocumentUploadConfirmationIframe,
@@ -923,6 +994,10 @@ function addDocumentUploadConfirmationIframe() {
     // if we're not in the process of submitting, then that means iframe contains upload
     // page and we need to do all the setup required to do "ghost" uploading in the background
     if (!isSubmitting) {
+      const notesControlDiv = context?.querySelector('#notescontrol > div');
+
+      notesControlDiv.setAttribute('data-pagesize', '50');
+
       // setup the iframe to match the user's UI dialogs (custom upload fields)
       customizeDocumentsControls(CLAIM_FILE_UPLOAD_FIELDS, context);
 
