@@ -38,9 +38,9 @@ export function customizeClaimInfoStep() {
         <div id="claimInfoInstructionsNote" style="padding-bottom: 20px;">
           <b>Instructions:</b>
           <ul style="font-size: inherit;">
-            <li>List all eligible expenses for which you seek reimbursement in this claim</li>
-            <li>Please see the program guide for eligible expenses</li>
-            <li>Do not include expenses that are excluded from reimbursement</li>
+            <li>List all eligible expenses for which you seek reimbursement in this claim​</li>
+            <li>Please see the program guide for more details on eligible and ineligible expenses</li>
+            <li>Do not include expenses that are excluded from reimbursement​</li>
             <li>As a condition of reimbursement, you will be required to maintain books of account, invoices, receipts, and vouchers for all expenses incurred in relation to the event until March 31, 2031</li>
           </ul>
         </div>
