@@ -567,6 +567,17 @@ export function isNode(o) {
         typeof o.nodeName === 'string';
 }
 
+export function getFieldNameLabel(fieldName) {
+  const label = doc.getElementById(`${fieldName}_label`)?.textContent;
+  if (!label) {
+    logger.error({
+      fn: getFieldNameLabel,
+      message: `Could not find label text for fieldName: ${fieldName}`,
+    });
+  }
+  return label;
+}
+
 export function htmlDecode(input) {
   var doc = new DOMParser().parseFromString(input, 'text/html');
   return doc.documentElement.textContent?.replace(/[^\x00-\x7F]/g, '');

@@ -4,6 +4,7 @@ import { getFormId } from '../common/form.js';
 import {
   addHtmlToSection,
   addHtmlToTabDiv,
+  getFieldNameLabel,
   hideSection,
   hideTable,
   observeChanges,
@@ -14,6 +15,15 @@ import {
 } from '../common/html.js';
 import { Logger } from '../common/logger.js';
 import { sha256 } from '../common/utils.js';
+
+POWERPOD.documents = {
+  initialIframeLoad: true,
+  isSubmitting: false,
+  iframeLoading: true,
+  filesToUpload: {},
+  confirmedFilesUploaded: {},
+  observerSet: false, // used to wait for iframe notes to finish loading
+};
 
 // @ts-ignore
 const logger = new Logger('claim/documents');
@@ -184,6 +194,22 @@ function addTitleToNotesControl() {
           max-width: 300px;
           margin: 5px;
         }
+        .card-header [slot='header'] {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          font-weight: bold;
+        }
+        .card-header {
+          --border-color: black;
+          --border-width: 1px;
+        }
+        .card-header h3 {
+          margin: 0;
+        }
+        sl-card {
+          margin-bottom: 20px;
+        }
       </style>
       <h4>New Files to Upload</h4>
       <div id="filesToUpload" style="padding:10px;">
@@ -195,6 +221,13 @@ function addTitleToNotesControl() {
       <h4>Documents Previously Uploaded</h4>
     </div>
   `);
+
+  const emptyNotesMsgDiv = doc.querySelector(
+    '#notescontrol > div.col-md-8.entity-notes > div.notes-empty.message > div'
+  );
+
+  if (emptyNotesMsgDiv)
+    emptyNotesMsgDiv.textContent = 'There are no documents to display.';
 }
 
 function disableField(fieldName, context = null) {
@@ -225,7 +258,7 @@ function updateUploadTextAreaFieldHeight(fieldId) {
   if (!targetField) {
     logger.error({
       fn: updateOobFileUpload,
-      message: `Could not find target field`,
+      message: `Could not find target fieldId: ${fieldId}`,
     });
     return;
   }
@@ -334,8 +367,6 @@ function addFileUpload(fieldName, context = null) {
     const uploadBtn = $('sl-button[id="quartechUploadBtn"]');
     const isUploadBtnDisabled = uploadBtn.attr('disabled') !== undefined;
 
-    POWERPOD.documents.filesToUpload = [];
-
     // add file to 'filesToUpload' div section
     const filesToUploadDiv = $('#filesToUpload');
     if (!filesToUploadDiv) {
@@ -346,11 +377,71 @@ function addFileUpload(fieldName, context = null) {
       });
     }
 
-    filesToUploadDiv.html('');
+    const fieldCardId = `filesToUpload-${fieldName}-card`;
+    const fieldDivId = `filesToUpload-${fieldName}`;
+
+    if (!doc.getElementById(fieldDivId)) {
+      filesToUploadDiv.append(`
+        <sl-card id='${fieldCardId}' class="card-header">
+          <div slot="header">
+            ${getFieldNameLabel(fieldName)}
+          </div>
+          <div id="${fieldDivId}"></div>
+        </sl-card>
+      `);
+    }
+
+    const fieldCard = $(`#${fieldCardId}`);
+    const fieldDiv = $(`#${fieldDivId}`);
+
+    if (!fieldDiv || !fieldCard) {
+      logger.error({
+        fn: addFileUpload,
+        message: `Unable to get field filesToUpload div/card for fieldName: ${fieldName}`,
+        data: {
+          fieldDivId,
+          fieldDiv,
+          filesToUploadDiv,
+          fieldCardId,
+          fieldCard,
+        },
+      });
+      return;
+    }
+
+    fieldDiv.html('');
 
     let chosenFiles = '';
     let invalidFilesPresent = false;
     let validFilePresent = false;
+
+    logger.info({
+      fn: addFileUpload,
+      message: 'Start for loop for upload files',
+      data: { eventTargetFiles: e.target.files },
+    });
+
+    if (e.target.files.length === 0) {
+      const newFilesToUploadState = POWERPOD.documents.filesToUpload;
+      delete newFilesToUploadState[fieldName];
+      POWERPOD.documents.filesToUpload = newFilesToUploadState;
+      fieldDiv.remove();
+      fieldCard.remove();
+      logger.warn({
+        fn: addFileUpload,
+        message: 'No files selected, updating POWERPOD.documents state',
+        data: {
+          fieldName,
+          filesToUpload: POWERPOD.documents.filesToUpload,
+        },
+      });
+      attachFileField.val('');
+      iframeAttachFileField?.val('');
+      textareaFileField.val('');
+      iframeTextareaField?.val('');
+      validateRequiredFields();
+    }
+
     for (let i = 0; i < e.target.files.length && !invalidFilesPresent; i++) {
       const file = e.target.files[i];
       const isValidFileUpload = validateFileUpload(file);
@@ -372,7 +463,7 @@ function addFileUpload(fieldName, context = null) {
         });
 
         const filenameHash = await sha256(file.name);
-        filesToUploadDiv?.append(`
+        fieldDiv?.append(`
           <sl-card class="card-basic">
             ${fileInfoString}
             <sl-tooltip id="${filenameHash}-tooltip" content='Press "Upload new files" to confirm' style="--max-width: 200px;">
@@ -381,8 +472,15 @@ function addFileUpload(fieldName, context = null) {
           </sl-card>
         `);
 
-        // @ts-ignore
-        POWERPOD.documents.filesToUpload.push(file.name);
+        const fieldFilesToUploadArr =
+          // @ts-ignore
+          POWERPOD.documents.filesToUpload[fieldName] || [];
+        fieldFilesToUploadArr.push(file.name);
+
+        POWERPOD.documents.filesToUpload = {
+          [fieldName]: fieldFilesToUploadArr,
+          ...POWERPOD.documents.filesToUpload,
+        };
 
         // set textarea new text value for files
         textareaFileField.val(chosenFiles);
@@ -411,10 +509,26 @@ function addFileUpload(fieldName, context = null) {
         textareaFileField.val('');
         iframeTextareaField?.val('');
 
-        const filesToUploadDiv = $('#filesToUpload');
-        filesToUploadDiv.html(NO_NEW_FILES_HTML);
+        fieldDiv.remove();
+        fieldCard.remove();
 
-        POWERPOD.documents.filesToUpload = [];
+        const hasSelectedAnyNewFilesToUpload =
+          hasUserSelectedAnyNewFilesToUpload();
+
+        logger.info({
+          fn: addFileUpload,
+          message: 'Removing field div, checking filesToUploadDiv for status',
+          data: {
+            filesToUploadDiv,
+            html: filesToUploadDiv.html(),
+            hasSelectedAnyNewFilesToUpload,
+          },
+        });
+
+        POWERPOD.documents.filesToUpload = {
+          [fieldName]: [],
+          ...POWERPOD.documents.filesToUpload,
+        };
 
         // disable upload btn since invalid files selected
         setUploadButtonState();
@@ -424,10 +538,32 @@ function addFileUpload(fieldName, context = null) {
         e.stopPropagation();
       }
     }
-    if (validFilePresent) {
+
+    logger.info({
+      fn: addFileUpload,
+      message: 'Determining what notice to show for file upload',
+      data: {
+        hasUserSelectedAnyNewFilesToUpload:
+          hasUserSelectedAnyNewFilesToUpload(),
+      },
+    });
+
+    if (!hasUserSelectedAnyNewFilesToUpload()) {
+      $(`sl-alert[id="docStatusAlert"]`)?.remove();
+      filesToUploadDiv.append(NO_NEW_FILES_HTML);
+    } else if (validFilePresent) {
       $(`sl-alert[id="docStatusAlert"]`)?.remove();
       filesToUploadDiv.append(NOT_YET_UPLOADED_HTML);
     }
+
+    setUploadButtonState();
+
+    logger.info({
+      fn: addFileUpload,
+      message: 'Finished running on attach file handler',
+      data: { filesToUpload: POWERPOD.documents.filesToUpload },
+    });
+
     validateRequiredFields();
   });
 }
@@ -449,6 +585,12 @@ function updateOobFileUpload(context = null) {
       const file = fieldFileUploadCtr.files[i];
       selectedFiles.push(file);
     }
+
+    logger.info({
+      fn: updateOobFileUpload,
+      message: `Updated filesList for files from fieldName: ${fieldName}`,
+      data: { fieldFileUploadCtrFiles: fieldFileUploadCtr.files },
+    });
   });
 
   const fileList = fileListFrom(selectedFiles);
@@ -509,6 +651,11 @@ function formatBytes(bytes, decimals = 2, forceFormat, returnFloat = false) {
 }
 
 function validateFileUpload(file) {
+  logger.info({
+    fn: validateFileUpload,
+    message: 'Validing file upload file',
+    data: { file },
+  });
   const re = /(?:\.([^.]+))?$/; // regex to pull file extension string
   const ext = re.exec(file.name)[1];
 
@@ -545,13 +692,28 @@ function validateFileUpload(file) {
   return false;
 }
 
+function hasUserSelectedAnyNewFilesToUpload() {
+  const combinedFilesToUploadArr =
+    Object.values(POWERPOD.documents.filesToUpload).flat(1) || [];
+  const res = combinedFilesToUploadArr.length > 0;
+  logger.info({
+    fn: hasUserSelectedAnyNewFilesToUpload,
+    message: 'Determining if user has selected any new files to upload...',
+    data: {
+      filesToUpload: POWERPOD.documents.filesToUpload,
+      combinedFilesToUploadArr,
+      hasUserSelectedAnyNewFilesToUpload: res,
+    },
+  });
+  return res;
+}
+
 function getCurrentState() {
   let state = '';
   const iframeLoading = POWERPOD.documents.iframeLoading;
   const initialIframeLoad = POWERPOD.documents.initialIframeLoad;
   const isSubmitting = POWERPOD.documents.isSubmitting;
-  const userHasFilesSelectedToUpload =
-    POWERPOD.documents.filesToUpload.length > 0;
+  const userHasFilesSelectedToUpload = hasUserSelectedAnyNewFilesToUpload();
 
   logger.info({
     fn: getCurrentState,
@@ -683,6 +845,17 @@ function cloneNotesContent(notes) {
       entityNotes.cloneNode(true),
       parentEntityNotes
     );
+
+    // remove any dropdown selectors
+    doc.getElementsByClassName('toolbar dropdown')?.forEach((e) => e.remove());
+
+    const emptyNotesMsgDiv = doc.querySelector(
+      '#notescontrol > div.col-md-8.entity-notes > div.notes-empty.message > div'
+    );
+
+    if (emptyNotesMsgDiv)
+      emptyNotesMsgDiv.textContent = 'There are no documents to display.';
+
     logger.info({
       fn: cloneNotesContent,
       message: 'Successfully replaced parent notes with iframe notes',
@@ -715,8 +888,7 @@ function isNotesStillLoading(context) {
 }
 
 async function checkUploadedFiles(context) {
-  const userHasFilesSelectedToUpload =
-    POWERPOD.documents.filesToUpload.length > 0;
+  const userHasFilesSelectedToUpload = hasUserSelectedAnyNewFilesToUpload();
   const observerAlreadySet = POWERPOD.documents.observerSet;
 
   logger.info({
@@ -770,7 +942,9 @@ async function checkUploadedFiles(context) {
     const uploadedSuccessfully = [];
 
     // @ts-ignore
-    const filenameArray = POWERPOD.documents.filesToUpload;
+    const filenameArray = Object.values(POWERPOD.documents.filesToUpload).flat(
+      1
+    );
     // @ts-ignore
     POWERPOD.documents.confirmedFilesUploaded = uploadedSuccessfully;
 
@@ -898,7 +1072,7 @@ async function checkUploadedFiles(context) {
     }
     // @ts-ignore
     POWERPOD.documents.confirmedFilesUploaded = uploadedSuccessfully;
-    POWERPOD.documents.filesToUpload = [];
+    POWERPOD.documents.filesToUpload = {};
 
     setUploadButtonState();
   }
