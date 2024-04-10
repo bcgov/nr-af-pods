@@ -25,6 +25,8 @@ export const ENDPOINT_URL = {
     '/_api/quartech_municipals?$select=quartech_name,quartech_municipalid&$expand=quartech_RegionalDistrict($select=quartech_name,quartech_regionaldistrictid,_quartech_censusofagricultureregion_value)',
   get_expense_type_data:
     '/_api/quartech_expensetypes?$select=quartech_expensetypeid,quartech_expensetype',
+  get_documents: (id) =>
+    `/_api/annotations?$filter=_objectid_value%20eq%20${id}&$select=filename,filesize,modifiedon,subject,isdocument,objecttypecode`,
   get_orgbook_autocomplete_data:
     'https://orgbook.gov.bc.ca/api/v3/search/autocomplete',
   get_orgbook_topic_data: 'https://orgbook.gov.bc.ca/api/v4/search/topic',
@@ -245,6 +247,13 @@ export async function getOrgbookTopicData({ topicSourceId, ...options }) {
 export async function getOrgbookCredentialsData({ topicId, ...options }) {
   return fetch({
     url: ENDPOINT_URL.get_orgbook_credentials_data(topicId),
+    ...options,
+  });
+}
+
+export async function getDocuments({ id, ...options }) {
+  return fetch({
+    url: ENDPOINT_URL.get_documents(id),
     ...options,
   });
 }
