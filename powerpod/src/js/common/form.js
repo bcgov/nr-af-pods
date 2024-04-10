@@ -268,6 +268,19 @@ export function generateFormJson() {
         return; // skip this forEach loop
       }
 
+      if (questionText.toLowerCase().includes('eligible expenses')) {
+        logger.info({
+          fn: generateFormJson,
+          message: 'Skipping Eligible Expenses question/answer',
+          data: {
+            questionText,
+            answerText,
+            tr,
+          },
+        });
+        return; // skip this forEach loop
+      }
+
       const questionKey = `${sectionId}Question`;
       const answerKey = `${sectionId}Answer`;
 

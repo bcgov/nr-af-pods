@@ -894,7 +894,7 @@ async function checkUploadedFiles(context) {
   logger.info({
     fn: checkUploadedFiles,
     message: 'Checking if any selected files have been uploaded',
-    data: { documents: POWERPOD.documents },
+    data: { documents: POWERPOD.documents, observerAlreadySet },
   });
 
   if (userHasFilesSelectedToUpload) {
@@ -915,24 +915,14 @@ async function checkUploadedFiles(context) {
       data: { notesTextContent: notes.textContent },
     });
 
-    if (isNotesStillLoading(context)) {
-      logger.warn({
-        fn: cloneNotesContent,
-        message:
-          'Notes still loading, defer operation until loading is complete',
-        data: { notesTextContent: notes.textContent, observerAlreadySet },
-      });
-      if (!observerAlreadySet) {
-        POWERPOD.documents.observerSet = true;
-        observeChanges(notes.parentNode, () => checkUploadedFiles(context));
-      }
-      return;
-    } else {
+    if (!observerAlreadySet) {
       logger.info({
         fn: checkUploadedFiles,
-        message: 'Notes content finished loading',
-        data: { notesTextContent: notes.textContent },
+        message: 'Observer not set yet, observe iframe notes for changes',
+        data: { observerAlreadySet },
       });
+      POWERPOD.documents.observerSet = true;
+      observeChanges(notes.parentNode, () => checkUploadedFiles(context));
     }
 
     cloneNotesContent(notes);
