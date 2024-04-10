@@ -101,12 +101,5 @@ export const POWERPOD = {
     errorHtml: '',
   },
   fieldValidation: {},
-  documents: {
-    initialIframeLoad: true,
-    isSubmitting: false,
-    iframeLoading: true,
-    filesToUpload: [],
-    confirmedFilesUploaded: [],
-    observerSet: false, // used to wait for iframe notes to finish loading
-  },
+  documents: {},
 };
