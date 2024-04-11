@@ -12,6 +12,7 @@ POWERPOD.fetch = {
   getOrgbookAutocompleteData,
   getOrgbookTopicData,
   getOrgbookCredentialsData,
+  getDocuments,
 };
 
 export const ENDPOINT_URL = {

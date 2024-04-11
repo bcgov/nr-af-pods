@@ -1,23 +1,15 @@
 import { getGlobalConfigData } from '../../common/config.js';
 import { YES_VALUE } from '../../common/constants.js';
-import {
-  getOrgbookAutocompleteData,
-  getOrgbookTopicData,
-} from '../../common/fetch.js';
+import { getOrgbookAutocompleteData } from '../../common/fetch.js';
 import { initOnChange_DependentRequiredField } from '../../common/fieldConditionalLogic.js';
 import { addTextAboveField, addTextBelowField } from '../../common/html.js';
 import { Logger } from '../../common/logger.js';
-import { initInputMasking } from '../../common/masking.js';
 import {
   getProgramAbbreviation,
   getProgramData,
 } from '../../common/program.ts';
 import { useScript } from '../../common/scripts.js';
 import { configureFields } from '../../common/fieldConfiguration.js';
-import {
-  validateEmailAddressField,
-  validateStepFields,
-} from '../../common/fieldValidation.js';
 
 const logger = Logger('application/steps/applicantInfo');
 
