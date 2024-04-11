@@ -1,4 +1,5 @@
 import { doc, POWERPOD } from '../common/constants.js';
+import { getDocuments } from '../common/fetch.js';
 import { validateRequiredFields } from '../common/fieldValidation.js';
 import { getFormId } from '../common/form.js';
 import {
@@ -22,6 +23,7 @@ POWERPOD.documents = {
   iframeLoading: true,
   filesToUpload: {},
   confirmedFilesUploaded: {},
+  uploadedDocsString: '',
   observerSet: false, // used to wait for iframe notes to finish loading
 };
 
@@ -595,12 +597,13 @@ function updateOobFileUpload(context = null) {
 
   const fileList = fileListFrom(selectedFiles);
 
-  const attachFileCtr = document.getElementById('AttachFile');
+  // Disabling otherwise upload happens twice
+  // const attachFileCtr = document.getElementById('AttachFile');
+  // attachFileCtr.onchange = console.log;
+  // attachFileCtr.files = fileList;
+  
   // @ts-ignore
   const iframeAttachFileCtr = context?.getElementById('AttachFile');
-  attachFileCtr.onchange = console.log;
-  attachFileCtr.files = fileList;
-
   if (iframeAttachFileCtr) {
     logger.info({
       fn: updateOobFileUpload,
@@ -887,45 +890,60 @@ function isNotesStillLoading(context) {
   return false;
 }
 
-async function checkUploadedFiles(context) {
+async function checkForFilesToUpload(context, uploadedFilesString = '') {
   const userHasFilesSelectedToUpload = hasUserSelectedAnyNewFilesToUpload();
   const observerAlreadySet = POWERPOD.documents.observerSet;
 
   logger.info({
-    fn: checkUploadedFiles,
+    fn: checkForFilesToUpload,
     message: 'Checking if any selected files have been uploaded',
-    data: { documents: POWERPOD.documents, observerAlreadySet },
+    data: {
+      userHasFilesSelectedToUpload,
+      documents: POWERPOD.documents,
+      observerAlreadySet,
+    },
   });
 
   if (userHasFilesSelectedToUpload) {
-    const notes = context?.getElementById('notescontrol');
+    let notes = null;
+    if (uploadedFilesString.length === 0) {
+      notes = context?.getElementById('notescontrol');
 
-    if (!notes || !notes.textContent) {
-      logger.error({
-        fn: checkUploadedFiles,
-        message: 'Could not find notes or notes.textContent in iframe',
-        data: { documents: POWERPOD.documents },
-      });
-      return;
-    }
+      if (!notes || !notes.textContent) {
+        logger.error({
+          fn: checkForFilesToUpload,
+          message: 'Could not find notes or notes.textContent in iframe',
+          data: { documents: POWERPOD.documents },
+        });
+        return;
+      }
 
-    logger.info({
-      fn: checkUploadedFiles,
-      message: 'Found notes and notes.textContent',
-      data: { notesTextContent: notes.textContent },
-    });
-
-    if (!observerAlreadySet) {
       logger.info({
-        fn: checkUploadedFiles,
-        message: 'Observer not set yet, observe iframe notes for changes',
-        data: { observerAlreadySet },
+        fn: checkForFilesToUpload,
+        message: 'Found notes and notes.textContent',
+        data: { notesTextContent: notes.textContent },
       });
-      POWERPOD.documents.observerSet = true;
-      observeChanges(notes.parentNode, () => checkUploadedFiles(context));
-    }
 
-    cloneNotesContent(notes);
+      if (!observerAlreadySet) {
+        logger.info({
+          fn: checkForFilesToUpload,
+          message: 'Observer not set yet, observe iframe notes for changes',
+          data: { observerAlreadySet },
+        });
+        POWERPOD.documents.observerSet = true;
+        observeChanges(notes.parentNode, () => checkForFilesToUpload(context));
+      }
+
+      if (isNotesStillLoading(context)) {
+        logger.warn({
+          fn: checkForFilesToUpload,
+          message: 'Notes still loading... defering till load is detected',
+        });
+        return;
+      }
+
+      cloneNotesContent(notes);
+    }
 
     const failedToUpload = [];
     // @ts-ignore
@@ -943,7 +961,7 @@ async function checkUploadedFiles(context) {
       const fileIcon = $(`sl-icon[id="${filenameHash}-icon"]`);
       if (!fileIcon) {
         logger.error({
-          fn: checkUploadedFiles,
+          fn: checkForFilesToUpload,
           message: 'Could not find file icon for uploaded file',
           data: { documents: POWERPOD.documents, filename, filenameHash },
         });
@@ -952,7 +970,7 @@ async function checkUploadedFiles(context) {
       const fileTooltip = $(`sl-tooltip[id="${filenameHash}-tooltip"]`);
       if (!fileTooltip) {
         logger.error({
-          fn: checkUploadedFiles,
+          fn: checkForFilesToUpload,
           message: 'Failed to find file icon for uploaded file',
           data: { documents: POWERPOD.documents, filename, filenameHash },
         });
@@ -960,14 +978,18 @@ async function checkUploadedFiles(context) {
 
       // If the Notes timeline  contains the filename, we can be sure the
       // upload was successful, and the file is confirmed uploaded.
-      if (notes.textContent.includes(filename)) {
+      if (
+        (uploadedFilesString && uploadedFilesString.length > 0) ||
+        (notes && notes.textContent.includes(filename))
+      ) {
         logger.info({
-          fn: checkUploadedFiles,
+          fn: checkForFilesToUpload,
           message: `Found that selected file has been uploaded already, filename: ${filename}`,
           data: {
             documents: POWERPOD.documents,
             userHasFilesSelectedToUpload,
             notes,
+            uploadedFilesString,
             filenameArray,
             filename,
             filenameHash,
@@ -979,7 +1001,7 @@ async function checkUploadedFiles(context) {
         fileTooltip.attr('content', 'File successfuly uploaded!');
 
         logger.info({
-          fn: checkUploadedFiles,
+          fn: checkForFilesToUpload,
           message: `Successfully updated state for filename: ${filename}`,
           data: { documents: POWERPOD.documents, filename, filenameHash },
         });
@@ -987,7 +1009,7 @@ async function checkUploadedFiles(context) {
         uploadedSuccessfully.push(filename);
       } else {
         logger.warn({
-          fn: checkUploadedFiles,
+          fn: checkForFilesToUpload,
           message: `Failed to successfully upload filename: ${filename}`,
           data: { documents: POWERPOD.documents, filename, filenameHash },
         });
@@ -1020,7 +1042,7 @@ async function checkUploadedFiles(context) {
       filenameArray.length !== uploadedSuccessfully.length
     ) {
       logger.warn({
-        fn: checkUploadedFiles,
+        fn: checkForFilesToUpload,
         message: 'Some files not uploaded',
         data: {
           failedToUpload,
@@ -1042,7 +1064,7 @@ async function checkUploadedFiles(context) {
       filenameArray.length === uploadedSuccessfully.length
     ) {
       logger.info({
-        fn: checkUploadedFiles,
+        fn: checkForFilesToUpload,
         message: 'Success, updating info',
         data: {
           failedToUpload,
@@ -1117,6 +1139,10 @@ function addDocumentUploadConfirmationIframe() {
     const prevIframeLoading = POWERPOD.documents.iframeLoading;
     const iframeLoading = (POWERPOD.documents.iframeLoading = false);
 
+    const prevObserverSet = POWERPOD.documents.observerSet;
+    // every time iframe reloads we lose the observer
+    const observerSet = (POWERPOD.documents.observerSet = false);
+
     const initialIframeLoad = POWERPOD.documents.initialIframeLoad;
     const isSubmitting = POWERPOD.documents.isSubmitting;
 
@@ -1131,6 +1157,8 @@ function addDocumentUploadConfirmationIframe() {
         iframeLoading,
         initialIframeLoad,
         isSubmitting,
+        prevObserverSet,
+        observerSet,
       },
     });
 
@@ -1169,7 +1197,7 @@ function addDocumentUploadConfirmationIframe() {
 
       setUploadBtnOnClick(context);
 
-      checkUploadedFiles(context);
+      // checkForFilesToUpload(context);
     }
 
     if (isSubmitting) {
@@ -1184,12 +1212,32 @@ function addDocumentUploadConfirmationIframe() {
       ) {
         logger.info({
           fn: addDocumentUploadConfirmationIframe,
-          message: 'Files uploaded successfully! Reload iframe...',
+          message:
+            'Files uploaded successfully! Reload iframe OR fetching uploading documents...',
         });
         // @ts-ignore
         iframe.src = iframeSrc;
-        POWERPOD.documents.iframeLoading = true;
+        // POWERPOD.documents.iframeLoading = true;
         POWERPOD.documents.isSubmitting = false;
+
+        const formId = getFormId();
+        getDocuments({
+          id: formId,
+          onSuccess: (data) => {
+            logger.info({
+              fn: addDocumentUploadConfirmationIframe,
+              message: 'Successfully fetched data for uploaded documents',
+              data: { data },
+            });
+            const { value } = data;
+            const filenames = value.map((item) => item.filename);
+            const filenamesString = filenames.join('\n');
+
+            // overriding iframe loading, since we no longer need to load iframe a 2nd time
+            POWERPOD.documents.iframeLoading = false;
+            checkForFilesToUpload(context, filenamesString);
+          },
+        });
       }
     }
   };
