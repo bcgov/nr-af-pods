@@ -170,7 +170,7 @@ export function customizeClaimInfoStep() {
         <br />
         Reimbursement Amount Requested includes registration fees (such as training, courses, registration, tuition) GST and total.</div>`;
 
-      $('fieldset[aria-label="Claim Information"] > legend').after(
+      $('fieldset[aria-label="Funding Information"] > legend').after(
         claimInformationNoteHtmlContent
       );
     }
@@ -183,7 +183,7 @@ export function customizeClaimInfoStep() {
         <br />
         Reimbursement Amount Requested includes Consultant Fee, GST, and total.</div>`;
 
-      $('fieldset[aria-label="Claim Information"] > legend').after(
+      $('fieldset[aria-label="Funding Information"] > legend').after(
         claimInformationNoteHtmlContent
       );
     }
@@ -221,7 +221,7 @@ function customizeBusinessPlanDependentQuestions() {
         const claimInformationNoteHtmlContent = `<div id="claimInformationNote" style="padding-bottom: 20px;">
         The Reimbursement Amount Requested should be the same as your approved Authorization Letter.</div>`;
 
-        $('fieldset[aria-label="Claim Information"] > legend').after(
+        $('fieldset[aria-label="Funding Information"] > legend').after(
           claimInformationNoteHtmlContent
         );
       }
@@ -232,7 +232,7 @@ function customizeBusinessPlanDependentQuestions() {
         <br />
         The Program requires paid invoice(s) from the Consultant and proof of payment such as a cancelled cheque(s) or credit card transaction receipt(s).</div>`;
 
-        $('fieldset[aria-label="Claim Information"] > legend').after(
+        $('fieldset[aria-label="Funding Information"] > legend').after(
           claimInformationNoteHtmlContent
         );
       }
