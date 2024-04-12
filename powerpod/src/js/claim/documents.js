@@ -146,9 +146,13 @@ function addLoadingSpinner() {
     flexDirection: 'column',
   });
 
-  $('#supportingDocumentationNote').append(
-    '<br/><sl-spinner id="quartechDocumentsSpinner" style="font-size: 50px; --track-width: 10px; margin: 20px auto;"></sl-spinner>'
-  );
+  $('#supportingDocumentationNote').append(`
+    <br/>
+    <sl-spinner 
+      id="quartechDocumentsSpinner" 
+      style="font-size: 50px; --track-width: 10px; margin: 20px auto;">
+    </sl-spinner>
+  `);
 }
 
 function hideLoadingSpinner() {
@@ -157,6 +161,34 @@ function hideLoadingSpinner() {
   $('sl-spinner[id="quartechDocumentsSpinner"]').remove();
 
   addTitleToNotesControl();
+}
+
+function addNotesSpinner() {
+  const notes = doc.getElementById('notescontrol');
+  const entityNotes = notes?.querySelector('.entity-notes');
+
+  if (entityNotes && entityNotes.style) {
+    entityNotes.style.display = 'none';
+  }
+
+  $('#notescontrol').append(`
+    <br/>
+    <sl-spinner 
+      id="quartechNotesSpinner" 
+      style="font-size: 50px; --track-width: 10px; margin: 20px auto;">
+    </sl-spinner>
+  `);
+}
+
+function hideNotesSpinner() {
+  const notes = doc.getElementById('notescontrol');
+  const entityNotes = notes?.querySelector('.entity-notes');
+
+  if (entityNotes && entityNotes.style) {
+    entityNotes.style.display = '';
+  }
+
+  $('sl-spinner[id="quartechNotesSpinner"]').remove();
 }
 
 const NO_NEW_FILES_HTML = `
@@ -601,7 +633,7 @@ function updateOobFileUpload(context = null) {
   // const attachFileCtr = document.getElementById('AttachFile');
   // attachFileCtr.onchange = console.log;
   // attachFileCtr.files = fileList;
-  
+
   // @ts-ignore
   const iframeAttachFileCtr = context?.getElementById('AttachFile');
   if (iframeAttachFileCtr) {
@@ -798,6 +830,10 @@ function setUploadButtonState(state = '') {
 }
 
 function setUploadBtnOnClick(context) {
+  logger.info({
+    fn: setUploadBtnOnClick,
+    message: 'Setting upload button on click handler for new iframe',
+  });
   const uploadBtn = $('sl-button[id="quartechUploadBtn"]');
 
   if (!uploadBtn) {
@@ -871,6 +907,7 @@ function cloneNotesContent(notes) {
       data: { parentEntityNotes, entityNotes, documents: POWERPOD.documents },
     });
   }
+  hideNotesSpinner();
 }
 
 function isNotesStillLoading(context) {
@@ -1186,9 +1223,8 @@ function addDocumentUploadConfirmationIframe() {
     // if we're not in the process of submitting, then that means iframe contains upload
     // page and we need to do all the setup required to do "ghost" uploading in the background
     if (!isSubmitting) {
-      const notesControlDiv = context?.querySelector('#notescontrol > div');
-
-      notesControlDiv.setAttribute('data-pagesize', '50');
+      // Update Documents Previously Uploaded
+      cloneNotesContent(context);
 
       // setup the iframe to match the user's UI dialogs (custom upload fields)
       customizeDocumentsControls(CLAIM_FILE_UPLOAD_FIELDS, context);
@@ -1196,8 +1232,6 @@ function addDocumentUploadConfirmationIframe() {
       setUploadButtonState();
 
       setUploadBtnOnClick(context);
-
-      // checkForFilesToUpload(context);
     }
 
     if (isSubmitting) {
@@ -1215,6 +1249,7 @@ function addDocumentUploadConfirmationIframe() {
           message:
             'Files uploaded successfully! Reload iframe OR fetching uploading documents...',
         });
+        addNotesSpinner();
         // @ts-ignore
         iframe.src = iframeSrc;
         // POWERPOD.documents.iframeLoading = true;
