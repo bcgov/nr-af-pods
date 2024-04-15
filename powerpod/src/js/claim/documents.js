@@ -940,10 +940,27 @@ function isNotesStillLoading(context) {
     '#notescontrol > div > div.notes-loading-more.message.text-center'
   );
 
-  if (
-    loadingElement?.style?.display === '' &&
-    loadingMoreElement?.style?.display === ''
-  ) {
+  const loadingElDisplayStyle = loadingElement?.style?.display;
+  const loadingMoreElDisplayStyle = loadingMoreElement?.style?.display;
+
+  logger.info({
+    fn: isNotesStillLoading,
+    message: 'Checking if notes is still loading or not...',
+    data: {
+      context,
+      loadingElement,
+      loadingMoreElement,
+      loadingElDisplayStyle,
+      loadingMoreElDisplayStyle,
+    },
+  });
+
+  if (loadingElDisplayStyle === '' || loadingMoreElDisplayStyle === '') {
+    logger.warn({
+      fn: isNotesStillLoading,
+      message: 'Notes is still loading',
+      data: { context, loadingElement, loadingMoreElement },
+    });
     return true;
   }
   return false;
