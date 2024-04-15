@@ -873,7 +873,29 @@ function setUploadBtnOnClick(context) {
   });
 }
 
-function cloneNotesContent(notes) {
+function cloneNotesContent(context) {
+  const notes = context?.getElementById('notescontrol');
+  const observerAlreadySet = POWERPOD.documents.observerSet;
+
+  if (!observerAlreadySet) {
+    logger.info({
+      fn: checkForFilesToUpload,
+      message: 'Observer not set yet, observe iframe notes for changes',
+      data: { observerAlreadySet },
+    });
+    POWERPOD.documents.observerSet = true;
+    observeChanges(notes.parentNode, () => cloneNotesContent(context));
+    return;
+  }
+
+  if (isNotesStillLoading(context)) {
+    logger.warn({
+      fn: checkForFilesToUpload,
+      message: 'Notes still loading... defering till load is detected',
+    });
+    return;
+  }
+
   const parentNotes = doc.getElementById('notescontrol');
   const parentEntityNotes = parentNotes?.querySelector('.entity-notes');
 
@@ -929,7 +951,6 @@ function isNotesStillLoading(context) {
 
 async function checkForFilesToUpload(context, uploadedFilesString = '') {
   const userHasFilesSelectedToUpload = hasUserSelectedAnyNewFilesToUpload();
-  const observerAlreadySet = POWERPOD.documents.observerSet;
 
   logger.info({
     fn: checkForFilesToUpload,
@@ -937,7 +958,6 @@ async function checkForFilesToUpload(context, uploadedFilesString = '') {
     data: {
       userHasFilesSelectedToUpload,
       documents: POWERPOD.documents,
-      observerAlreadySet,
     },
   });
 
@@ -960,26 +980,6 @@ async function checkForFilesToUpload(context, uploadedFilesString = '') {
         message: 'Found notes and notes.textContent',
         data: { notesTextContent: notes.textContent },
       });
-
-      if (!observerAlreadySet) {
-        logger.info({
-          fn: checkForFilesToUpload,
-          message: 'Observer not set yet, observe iframe notes for changes',
-          data: { observerAlreadySet },
-        });
-        POWERPOD.documents.observerSet = true;
-        observeChanges(notes.parentNode, () => checkForFilesToUpload(context));
-      }
-
-      if (isNotesStillLoading(context)) {
-        logger.warn({
-          fn: checkForFilesToUpload,
-          message: 'Notes still loading... defering till load is detected',
-        });
-        return;
-      }
-
-      cloneNotesContent(notes);
     }
 
     const failedToUpload = [];
