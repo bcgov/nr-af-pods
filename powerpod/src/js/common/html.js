@@ -1,8 +1,13 @@
 import { HtmlElementType, doc } from './constants.js';
 import { Logger } from './logger.js';
 import { validateRequiredFields } from './fieldValidation.js';
+import { POWERPOD } from './constants.js';
 
 const logger = new Logger('common/html');
+
+POWERPOD.html = {
+  observeChanges,
+};
 
 export function getControlType(tr) {
   const controlDiv = tr.querySelector('div.control');
@@ -114,6 +119,26 @@ export function getControlValue({ tr, rawValue = false }) {
     return 'No';
   }
   return null;
+}
+
+export function listenForIframeReadyStateChanges(iframe, fn) {
+  if (
+    fn &&
+    (iframe.contentDocument.readyState === 'interactive' ||
+      iframe.contentDocument.readyState === 'complete')
+  ) {
+    logger.info({
+      fn: listenForIframeReadyStateChanges,
+      message: 'iframe is now interactive or complete readyState',
+    });
+    fn();
+  }
+  iframe.contentDocument.addEventListener('readystatechange', () => {
+    logger.info({
+      fn: listenForIframeReadyStateChanges,
+      message: `iframe onReadyState changed: ${iframe.contentDocument?.readyState}`,
+    });
+  });
 }
 
 export function onDocumentReadyState(fn) {
@@ -272,7 +297,11 @@ export function addHtmlToField(
   newTrElement.append(tdElement);
 }
 
-export function observeChanges(element, customFunc) {
+export function observeChanges(
+  element,
+  customFunc,
+  disableInitialCall = false
+) {
   const id = element?.id || '';
   logger.info({
     fn: observeChanges,
@@ -280,6 +309,7 @@ export function observeChanges(element, customFunc) {
     data: {
       id,
       element,
+      disableInitialCall,
     },
   });
   if (!element) {
@@ -289,15 +319,10 @@ export function observeChanges(element, customFunc) {
       data: {
         id,
         element,
+        disableInitialCall,
       },
     });
     return;
-  }
-  // initial load:
-  if (customFunc) {
-    customFunc();
-  } else {
-    validateRequiredFields();
   }
 
   // watch for changes
@@ -305,7 +330,7 @@ export function observeChanges(element, customFunc) {
     logger.info({
       fn: observeChanges,
       message: 'Change observed',
-      data: { id, element },
+      data: { id, element, disableInitialCall },
     });
     if (customFunc) {
       customFunc(mutations);
@@ -318,8 +343,39 @@ export function observeChanges(element, customFunc) {
       attributes: true,
       childList: true,
       characterData: true,
+      subtree: true,
     });
+    logger.info({
+      fn: observeChanges,
+      message: 'Successfully assigned observer to element',
+      data: {
+        element,
+        elementNodeType: element.nodeType,
+        customFunc,
+        disableInitialCall,
+      },
+    });
+    if (!disableInitialCall) {
+      // initial load:
+      if (customFunc) {
+        customFunc();
+      } else {
+        validateRequiredFields();
+      }
+    }
+    return true;
   }
+  logger.warn({
+    fn: observeChanges,
+    message: 'Unable to assign observer for some reason',
+    data: {
+      element,
+      elementNodeType: element.nodeType,
+      customFunc,
+      disableInitialCall,
+    },
+  });
+  return false;
 }
 
 export function observeIframeChanges(

@@ -8,6 +8,7 @@ import {
   getFieldNameLabel,
   hideSection,
   hideTable,
+  listenForIframeReadyStateChanges,
   observeChanges,
   observeIframeChanges,
   onDocumentReadyState,
@@ -25,6 +26,7 @@ POWERPOD.documents = {
   confirmedFilesUploaded: {},
   uploadedDocsString: '',
   observerSet: false, // used to wait for iframe notes to finish loading
+  getDocumentsConfirmationIframe,
 };
 
 // @ts-ignore
@@ -873,29 +875,19 @@ function setUploadBtnOnClick(context) {
   });
 }
 
-function cloneNotesContent(context) {
+function cloneNotesContent() {
+  const iframe = getDocumentsConfirmationIframe();
+  // @ts-ignore
+  const context = iframe?.contentWindow?.document;
   const notes = context?.getElementById('notescontrol');
-  const observerAlreadySet = POWERPOD.documents.observerSet;
 
-  if (!observerAlreadySet) {
-    logger.info({
-      fn: checkForFilesToUpload,
-      message: 'Observer not set yet, observe iframe notes for changes',
-      data: { observerAlreadySet },
-    });
-    POWERPOD.documents.observerSet = true;
-    observeChanges(notes.parentNode, () => cloneNotesContent(context));
-    return;
-  }
-
-  if (isNotesStillLoading(context)) {
+  if (!iframe || !context || !notes) {
     logger.warn({
-      fn: checkForFilesToUpload,
-      message: 'Notes still loading... defering till load is detected',
+      fn: cloneNotesContent,
+      message: 'Prereq: Unable to get iframe or context or notes',
     });
     return;
   }
-
   const parentNotes = doc.getElementById('notescontrol');
   const parentEntityNotes = parentNotes?.querySelector('.entity-notes');
 
@@ -908,6 +900,7 @@ function cloneNotesContent(context) {
     );
 
     // remove any dropdown selectors
+    // @ts-ignore
     doc.getElementsByClassName('toolbar dropdown')?.forEach((e) => e.remove());
 
     const emptyNotesMsgDiv = doc.querySelector(
@@ -919,17 +912,101 @@ function cloneNotesContent(context) {
 
     logger.info({
       fn: cloneNotesContent,
-      message: 'Successfully replaced parent notes with iframe notes',
+      message:
+        'Final step: Successfully replaced parent notes with iframe notes',
       data: { documents: POWERPOD.documents },
     });
   } else {
     logger.warn({
       fn: cloneNotesContent,
-      message: 'Could not find parentNotes or notes',
+      message: 'Final step: Could not find parentNotes or notes',
       data: { parentEntityNotes, entityNotes, documents: POWERPOD.documents },
     });
   }
-  hideNotesSpinner();
+}
+
+function setupNotesContentObserver() {
+  const observerAlreadySet = POWERPOD.documents.observerSet;
+
+  // if observer is already, nothing to do
+  if (observerAlreadySet) {
+    if (DEVELOPMENT_MODE_ENABLED) {
+      logger.info({
+        fn: setupNotesContentObserver,
+        message: 'No need to setup notes content observer, already set',
+        data: { observerAlreadySet },
+      });
+    }
+    return;
+  }
+
+  const iframe = getDocumentsConfirmationIframe();
+  // @ts-ignore
+  const context = iframe?.contentWindow?.document;
+  const body = context?.body;
+  const notes = context?.getElementById('notescontrol');
+
+  if (!iframe || !context || !notes || !body) {
+    logger.warn({
+      fn: setupNotesContentObserver,
+      message: 'Prereq: Unable to get iframe or context or notes or body',
+    });
+    return;
+  }
+
+  logger.info({
+    fn: setupNotesContentObserver,
+    message: 'Step 1: Check if observer set',
+    data: {
+      observerAlreadySet,
+      notes,
+      context,
+      body,
+    },
+  });
+
+  if (!observerAlreadySet) {
+    logger.info({
+      fn: setupNotesContentObserver,
+      message:
+        'Step 2: Observer not set yet, try to observe iframe notes for changes',
+      data: {
+        observerAlreadySet,
+        notes,
+        context,
+        body,
+      },
+    });
+    const success = observeChanges(body, () => {
+      logger.info({
+        fn: setupNotesContentObserver,
+        message:
+          'Observer: Changes in doc iframe noted, calling cloneNotesContent(context)',
+        data: {
+          observerAlreadySet,
+          notes,
+          context,
+          body,
+        },
+      });
+      cloneNotesContent();
+    });
+    if (success) {
+      logger.info({
+        fn: setupNotesContentObserver,
+        message:
+          'Finally: Successfully assigned observer to iframe notescontrol',
+        data: {
+          observerAlreadySet,
+          notes,
+          context,
+          body,
+        },
+      });
+      POWERPOD.documents.observerSet = true;
+    }
+    return;
+  }
 }
 
 function isNotesStillLoading(context) {
@@ -955,11 +1032,24 @@ function isNotesStillLoading(context) {
     },
   });
 
-  if (loadingElDisplayStyle === '' || loadingMoreElDisplayStyle === '') {
+  if (
+    !loadingElement ||
+    !loadingMoreElement ||
+    !loadingElDisplayStyle ||
+    !loadingMoreElDisplayStyle ||
+    loadingElDisplayStyle === '' ||
+    loadingMoreElDisplayStyle === ''
+  ) {
     logger.warn({
       fn: isNotesStillLoading,
       message: 'Notes is still loading',
-      data: { context, loadingElement, loadingMoreElement },
+      data: {
+        context,
+        loadingElement,
+        loadingMoreElement,
+        loadingElDisplayStyle,
+        loadingMoreElDisplayStyle,
+      },
     });
     return true;
   }
@@ -1144,6 +1234,30 @@ async function checkForFilesToUpload(context, uploadedFilesString = '') {
   }
 }
 
+function getDocumentsConfirmationIframe() {
+  // @ts-ignore
+  const iframe = doc.getElementById('documentsConfirmation');
+
+  // @ts-ignore
+  if (!iframe || !iframe?.contentWindow) {
+    logger.error({
+      fn: getDocumentsConfirmationIframe,
+      message:
+        'Could not find documentsConfirmation iframe or iframe content window',
+      // @ts-ignore
+      data: { iframe, contentWindow: iframe?.contentWindow || null },
+    });
+    return;
+  }
+  logger.info({
+    fn: getDocumentsConfirmationIframe,
+    message: 'Successfully found documents confirmation iframe',
+    // @ts-ignore
+    data: { iframe, contentWindow: iframe?.contentWindow || null },
+  });
+  return iframe;
+}
+
 function addDocumentUploadConfirmationIframe() {
   logger.info({
     fn: addDocumentUploadConfirmationIframe,
@@ -1179,23 +1293,22 @@ function addDocumentUploadConfirmationIframe() {
   addHtmlToTabDiv('documentsTab', htmlContentToAdd, 'bottom');
 
   // @ts-ignore
-  const iframe = doc.getElementById('documentsConfirmation');
+  const iframe = getDocumentsConfirmationIframe();
 
-  if (!iframe) {
+  // @ts-ignore
+  if (!iframe || !iframe?.contentWindow) {
     logger.error({
       fn: addDocumentUploadConfirmationIframe,
       message: 'Could not find documentsConfirmation iframe',
     });
+    return;
   }
 
   // @ts-ignore
   iframe.onload = function () {
+    // POWERPOD.documents.observerSet = false;
     const prevIframeLoading = POWERPOD.documents.iframeLoading;
     const iframeLoading = (POWERPOD.documents.iframeLoading = false);
-
-    const prevObserverSet = POWERPOD.documents.observerSet;
-    // every time iframe reloads we lose the observer
-    const observerSet = (POWERPOD.documents.observerSet = false);
 
     const initialIframeLoad = POWERPOD.documents.initialIframeLoad;
     const isSubmitting = POWERPOD.documents.isSubmitting;
@@ -1211,8 +1324,6 @@ function addDocumentUploadConfirmationIframe() {
         iframeLoading,
         initialIframeLoad,
         isSubmitting,
-        prevObserverSet,
-        observerSet,
       },
     });
 
@@ -1240,9 +1351,6 @@ function addDocumentUploadConfirmationIframe() {
     // if we're not in the process of submitting, then that means iframe contains upload
     // page and we need to do all the setup required to do "ghost" uploading in the background
     if (!isSubmitting) {
-      // Update Documents Previously Uploaded
-      cloneNotesContent(context);
-
       // setup the iframe to match the user's UI dialogs (custom upload fields)
       customizeDocumentsControls(CLAIM_FILE_UPLOAD_FIELDS, context);
 
@@ -1266,11 +1374,12 @@ function addDocumentUploadConfirmationIframe() {
           message:
             'Files uploaded successfully! Reload iframe OR fetching uploading documents...',
         });
-        addNotesSpinner();
         // @ts-ignore
         iframe.src = iframeSrc;
         // POWERPOD.documents.iframeLoading = true;
         POWERPOD.documents.isSubmitting = false;
+        POWERPOD.documents.observerSet = false;
+        setInterval(() => setupNotesContentObserver(), 1000);
 
         const formId = getFormId();
         getDocuments({

@@ -5,7 +5,7 @@ import typescript from '@rollup/plugin-typescript';
 import css from 'rollup-plugin-import-css';
 
 const licenseContent = `/*!
-* powerpod 1.2.3
+* powerpod 1.2.4
 * https://github.com/bcgov/nr-af-pods/powerpod
 *
 * @license GPLv3 for open source use only
@@ -22,36 +22,9 @@ const terserOptions = {
   keep_fnames: true,
   mangle: {
     properties: false,
-    // properties: {
-    //   // regex: /_$/,
-    //   keep_quoted: true,
-    //   reserved: [
-    //     'powerpod',
-    //     'jQuery',
-    //     '$',
-    //     'fn',
-
-    //     'observer',
-
-    //     // Public API
-    //     'version',
-    //     'test',
-    //     'shared',
-    //     'powerpod',
-    //     'useScript',
-    //     'fetch',
-    //     'getProgramData',
-    //     'getMunicipalData',
-    //     'getOrgbookAutocomplete',
-    //     'getOrgbookTopic',
-    //     'getOrgbookCredentials',
-    //   ],
-    // },
   },
 };
 
-// ([a-zA-Z0-9]+\.)+(\w+)
-// https://jsfiddle.net/kut3oh5j/
 module.exports = [
   {
     input: 'src/js/app.js',
