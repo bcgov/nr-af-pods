@@ -2,7 +2,7 @@
   -------------------
   FILE INFO
   -------------------
-  version: 1.0.3
+  version: 1.0.4
   name: Claim CSS
   type: CSS
   description: This is the CSS used on the Claim web page
@@ -45,6 +45,10 @@
 }
 
 .control .text-muted {
+  display: none;
+}
+
+div.toolbar.dropdown.pull-right {
   display: none;
 }
 
