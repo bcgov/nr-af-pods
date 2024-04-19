@@ -1,0 +1,156 @@
+{
+  "tags": ["Claim", "NEFBA2", "NEFBA Phase 2"],
+  "version": "1.0.0",
+  "name": "New Entrant Farm Business Accelerator Phase 2",
+  "abbreviation": "NEFB2",
+  "hiddenSteps": "",
+  "sections": [
+    {
+      "name": "ApplicantInfoStep",
+      "fields": [
+        {
+          "name": "quartech_legalbusinessororganizationname",
+          "label": "Legal Business or Organization Name"
+        },
+        {
+          "name": "quartech_businessaddress",
+          "label": "Business Address"
+        },
+        {
+          "name": "quartech_businessphonenumber",
+          "format": "phoneNumber",
+          "label": "Tel"
+        },
+        {
+          "name": "quartech_businessemailaddress",
+          "format": "email",
+          "label": "Email"
+        },
+        {
+          "name": "quartech_applicantinformationconfirmation",
+          "label": "I / We confirm the above information is correct",
+          "required": true,
+          "elementType": "DropdownSelect"
+        },
+        {
+          "name": "quartech_applicantinformationcorrections",
+          "label": "Please provide further detail",
+          "required": true,
+          "maxLength": 10000
+        },
+        {
+          "name": "quartech_filenumber",
+          "label": "File number (from authorization letter)",
+          "readOnly": true
+        }
+      ]
+    },
+    {
+      "name": "ProjectResultsStep",
+      "fields": [
+        {
+          "name": "quartech_businessmanagementtrainingparticipants",
+          "label": "How many people participated in the training funded by this project, including the applicant?",
+          "required": true,
+          "format": "number",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThan"
+          }
+        },
+        {
+          "name": "quartech_adoptednumber",
+          "required": true,
+          "format": "number",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThan"
+          }
+        },
+        {
+          "name": "quartech_environmentallybeneficialadoptednumber",
+          "required": true,
+          "format": "number",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThan"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ClaimInfoStep",
+      "fields": [
+        {
+          "name": "quartech_authorizedclaimedamount",
+          "label": "Approved Amount as per Authorization Letter (Consultant Fee, GST, Total)",
+          "readOnly": true
+        },
+        {
+          "name": "quartech_totalprojectcost",
+          "label": "Total Project Cost",
+          "format": "currency",
+          "required": true,
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThan"
+          },
+          "emptyInitialValue": true
+        },
+        {
+          "name": "quartech_totalfees",
+          "label": "Your requested amount in this current claim",
+          "format": "currency",
+          "required": true,
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThan"
+          },
+          "emptyInitialValue": true
+        }
+      ]
+    },
+    {
+      "name": "DocumentsStep",
+      "fields": [
+        {
+          "name": "quartech_invoices",
+          "label": "Invoices from Consultant",
+          "required": true,
+          "elementType": "FileInput",
+          "hidden": true
+        },
+        {
+          "name": "quartech_proofofpayment",
+          "label": "Proof of payment",
+          "required": true,
+          "elementType": "FileInput",
+          "hidden": true
+        },
+        {
+          "name": "quartech_businessplan",
+          "label": "Business Plan",
+          "required": true,
+          "elementType": "FileInput"
+        },
+        {
+          "name": "quartech_growthstrategy",
+          "label": "Growth Strategy",
+          "required": true,
+          "elementType": "FileInput"
+        },
+        {
+          "name": "quartech_satisfactionsurveyid",
+          "required": true,
+          "tooltipText": "This number is automatically generated when the survey has been submitted",
+          "label": "Satisfaction Survey ID number"
+        }
+      ]
+    }
+  ]
+}
