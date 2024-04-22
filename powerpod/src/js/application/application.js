@@ -31,7 +31,7 @@ export function initApplication() {
   } else {
     updatePageForSelectedProgram();
   }
-  addNewAppSystemNotice();
+  // addNewAppSystemNotice();
 
   customizePageForFirefox();
 }

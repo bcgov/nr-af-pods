@@ -22,7 +22,7 @@ const logger = Logger('claim/claim');
 export function initClaim() {
   hideFieldsAndSections();
   updatePageForSelectedProgram();
-  addNewAppSystemNotice();
+  // addNewAppSystemNotice();
 }
 
 function updatePageForSelectedProgram() {
