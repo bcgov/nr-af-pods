@@ -14,6 +14,7 @@ export async function customizeDocumentsStep() {
   if (
     programAbbreviation.includes('ABPP') ||
     programAbbreviation === 'NEFBA' ||
+    programAbbreviation === 'NEFBA2' ||
     programAbbreviation.includes('KTTP')
   ) {
     if (!document.querySelector('#supportingDocumentationNote')) {
@@ -51,6 +52,10 @@ export async function customizeDocumentsStep() {
       null,
       'quartech_completingcategory'
     );
+  }
+
+  if (programAbbreviation === 'NEFBA2') {
+    addSatisfactionSurveyChefsIframe();
   }
 }
 
