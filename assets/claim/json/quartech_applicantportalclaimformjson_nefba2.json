@@ -1,8 +1,8 @@
 {
   "tags": ["Claim", "NEFBA2", "NEFBA Phase 2"],
-  "version": "1.0.0",
+  "version": "1.0.2",
   "name": "New Entrant Farm Business Accelerator Phase 2",
-  "abbreviation": "NEFB2",
+  "abbreviation": "NEFBA2",
   "hiddenSteps": "",
   "sections": [
     {
@@ -33,12 +33,6 @@
           "elementType": "DropdownSelect"
         },
         {
-          "name": "quartech_applicantinformationcorrections",
-          "label": "Please provide further detail",
-          "required": true,
-          "maxLength": 10000
-        },
-        {
           "name": "quartech_filenumber",
           "label": "File number (from authorization letter)",
           "readOnly": true
@@ -49,15 +43,10 @@
       "name": "ProjectResultsStep",
       "fields": [
         {
-          "name": "quartech_businessmanagementtrainingparticipants",
-          "label": "How many people participated in the training funded by this project, including the applicant?",
+          "name": "quartech_adoptedprojectresults",
+          "label": "Did you adopt any technologies, equipment, practices, or processes as a result of this project?",
           "required": true,
-          "format": "number",
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThan"
-          }
+          "elementType": "DropdownSelect"
         },
         {
           "name": "quartech_adoptednumber",
@@ -68,6 +57,12 @@
             "value": "0",
             "comparison": "greaterThan"
           }
+        },
+        {
+          "name": "quartech_environmentallybeneficialadoptedresults",
+          "label": "Did you adopt any technologies, processes or equipment that are environmentally beneficial as a result of this project?",
+          "required": true,
+          "elementType": "DropdownSelect"
         },
         {
           "name": "quartech_environmentallybeneficialadoptednumber",

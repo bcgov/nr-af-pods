@@ -8,8 +8,6 @@ import {
 import { Logger } from '../../common/logger.js';
 import { getProgramAbbreviation } from '../../common/program.ts';
 import { configureFields } from '../../common/fieldConfiguration.js';
-import { setFieldReadOnly } from '../../common/fieldValidation.js';
-import { customizeSingleOrGroupApplicantQuestions } from '../fieldLogic.js';
 
 const logger = new Logger('claim/steps/applicantInfo');
 
@@ -27,7 +25,7 @@ export function customizeApplicantInfoStep() {
     });
   }
 
-  if (programAbbreviation === 'NEFBA') {
+  if (programAbbreviation === 'NEFBA' || programAbbreviation === 'NEFBA2') {
     // @ts-ignore
     initOnChange_DependentRequiredField({
       dependentOnValue: NO_VALUE,
