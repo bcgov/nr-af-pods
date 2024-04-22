@@ -3,6 +3,7 @@ import {
   displayValidationErrors,
   validateStepFields,
 } from '../common/fieldValidation.js';
+import store from '../store/index.js';
 
 export function validateIsConsultantEitherBciaOrCpa() {
   const bciaElement = document.querySelector(
@@ -44,7 +45,8 @@ export function validateDemographicInfoRequiredFields() {
     demographicPercentageValidationError
   );
 
-  displayValidationErrors(validationErrorHtml);
+  // displayValidationErrors(validationErrorHtml);
+  store.dispatch('setValidationError', validationErrorHtml);
 }
 
 export function validateDemographicPercentages() {

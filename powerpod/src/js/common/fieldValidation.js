@@ -2,6 +2,7 @@ import {
   validateDemographicInfoRequiredFields,
   validateIsConsultantEitherBciaOrCpa,
 } from '../application/validation.js';
+import store from '../store/index.js';
 import {
   Environment,
   Form,
@@ -22,7 +23,7 @@ const logger = Logger('common/validation');
 
 POWERPOD.fieldValidation = {
   validateRequiredFields,
-}
+};
 
 export function validateRequiredFields() {
   const currentStep = getCurrentStep();
@@ -187,7 +188,9 @@ export function validateStepFields(stepName, returnString) {
     });
     return;
   }
-  displayValidationErrors(validationErrorHtml);
+
+  // displayValidationErrors(validationErrorHtml);
+  store.dispatch('setValidationError', validationErrorHtml);
 }
 
 export function validateRequiredField(
@@ -220,6 +223,8 @@ export function validateRequiredField(
         $(`#${fieldName}_AttachFile`)?.val()?.length === 0 &&
         // @ts-ignore
         $(`#${fieldName}`)?.val()?.length === 0;
+      errorMessage =
+        'IS REQUIRED. Please ensure at least one file per required upload field is confirmed & uploaded successfully.';
       break;
     case HtmlElementType.MultiOptionSet:
       isEmptyField = $(`li[id*='${fieldName}-selected-item-']`)?.length == 0;

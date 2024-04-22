@@ -1,6 +1,7 @@
 import { doc, POWERPOD } from '../common/constants.js';
 import { getDocuments } from '../common/fetch.js';
 import { validateRequiredFields } from '../common/fieldValidation.js';
+import { getFieldsBySectionClaim } from '../common/fields.js';
 import { getFormId } from '../common/form.js';
 import {
   addHtmlToSection,
@@ -16,14 +17,17 @@ import {
   showTable,
 } from '../common/html.js';
 import { Logger } from '../common/logger.js';
+import { getCurrentStep } from '../common/program.js';
 import { sha256 } from '../common/utils.js';
+import store from '../store/index.js';
 
 POWERPOD.documents = {
   initialIframeLoad: true,
   isSubmitting: false,
   iframeLoading: true,
   filesToUpload: {},
-  confirmedFilesUploaded: {},
+  filesLastUploaded: {},
+  confirmedFilesUploaded: [],
   uploadedDocsString: '',
   observerSet: false, // used to wait for iframe notes to finish loading
   getDocumentsConfirmationIframe,
@@ -479,6 +483,8 @@ function addFileUpload(fieldName, context = null) {
       validateRequiredFields();
     }
 
+    POWERPOD.documents.filesToUpload = [];
+
     for (let i = 0; i < e.target.files.length && !invalidFilesPresent; i++) {
       const file = e.target.files[i];
       const isValidFileUpload = validateFileUpload(file);
@@ -530,6 +536,7 @@ function addFileUpload(fieldName, context = null) {
 
         // if upload btn hasn't been enabled yet, enable it so user can upload, only if iframe finished loading first
         setUploadButtonState();
+        validateFileUploads();
 
         updateOobFileUpload(iframeDoc);
       } else {
@@ -569,6 +576,7 @@ function addFileUpload(fieldName, context = null) {
 
         // disable upload btn since invalid files selected
         setUploadButtonState();
+        validateFileUploads();
 
         e.preventDefault();
         e.stopImmediatePropagation();
@@ -1099,7 +1107,7 @@ async function checkForFilesToUpload(context, uploadedFilesString = '') {
       1
     );
     // @ts-ignore
-    POWERPOD.documents.confirmedFilesUploaded = uploadedSuccessfully;
+    POWERPOD.documents.confirmedFilesUploaded = [];
 
     const promises = filenameArray.map(async (filename) => {
       const filenameHash = await sha256(filename);
@@ -1229,10 +1237,145 @@ async function checkForFilesToUpload(context, uploadedFilesString = '') {
     }
     // @ts-ignore
     POWERPOD.documents.confirmedFilesUploaded = uploadedSuccessfully;
+    POWERPOD.documents.filesLastUploaded = POWERPOD.documents.filesToUpload;
     POWERPOD.documents.filesToUpload = {};
+
+    validateFileUploads();
 
     setUploadButtonState();
   }
+}
+
+function validateFileUploads() {
+  const filesLastUploaded = POWERPOD.documents.filesLastUploaded;
+  const filesToUpload = POWERPOD.documents.filesToUpload;
+  const confirmedFilesUploaded = POWERPOD.documents.confirmedFilesUploaded;
+
+  const fieldNames =
+    (filesLastUploaded?.length && Object.keys(filesLastUploaded)) ??
+    Object.keys(filesToUpload);
+
+  if (!fieldNames || !fieldNames.length || fieldNames.length === 0) {
+    logger.warn({
+      fn: validateFileUploads,
+      message: 'No file fields to validate',
+      data: {
+        filesLastUploaded,
+        filesToUpload,
+        confirmedFilesUploaded,
+        fieldNames,
+      },
+    });
+    return;
+  }
+
+  const stepName = getCurrentStep();
+  const fieldsConfig = getFieldsBySectionClaim(stepName);
+
+  let missingRequiredFields = [];
+  let validatedFields = [];
+
+  fieldNames.forEach((fieldName) => {
+    const fieldConfig = fieldsConfig.find((f) => f.name === fieldName);
+    if (!fieldConfig) {
+      logger.error({
+        fn: validateFileUploads,
+        message: `Could not find field config for ${fieldName}`,
+      });
+      return;
+    }
+    if (fieldConfig && !fieldConfig.required) {
+      logger.warn({
+        fn: validateFileUploads,
+        message: `File upload field not required for fieldName: ${fieldName}`,
+      });
+      validatedFields.push(fieldName);
+      return;
+    }
+    const filesForFieldName =
+      filesLastUploaded[fieldName] || filesToUpload[fieldName];
+    logger.info({
+      fn: validateFileUploads,
+      message: `Checking if fieldName: ${fieldName} already has fields uploaded`,
+      data: {
+        filesLastUploaded,
+        filesToUpload,
+        confirmedFilesUploaded,
+        fieldNames,
+        filesForFieldName,
+      },
+    });
+    const doesFieldNameHaveUploadedFilesAlready = filesForFieldName.some(
+      (file) => confirmedFilesUploaded.includes(file)
+    );
+    if (doesFieldNameHaveUploadedFilesAlready) {
+      logger.info({
+        fn: validateFileUploads,
+        message: `Files uploaded successfully for required fieldName: ${fieldName}`,
+      });
+      validatedFields.push(fieldName);
+      return;
+    }
+    if (!filesForFieldName) {
+      logger.info({
+        fn: validateFileUploads,
+        message: `No files selected for required fieldName: ${fieldName}`,
+        data: {
+          filesLastUploaded,
+          confirmedFilesUploaded,
+          fieldNames,
+          fieldConfig,
+        },
+      });
+      if (missingRequiredFields.includes(fieldName)) {
+        logger.info({
+          fn: validateFileUploads,
+          message: `Missing required fields already contains fieldName: ${fieldName}`,
+        });
+        return;
+      }
+    }
+    missingRequiredFields.push(fieldName);
+  });
+
+  if (!missingRequiredFields) {
+    logger.info({
+      fn: validateFileUploads,
+      message: `Nothing to do, all required file uploads provided`,
+      data: {
+        filesLastUploaded,
+        confirmedFilesUploaded,
+        fieldNames,
+      },
+    });
+  }
+
+  let errorText =
+    'IS REQUIRED. Please ensure at least one file per required upload field is confirmed & uploaded successfully.';
+  let errorMessage = '';
+
+  const fieldErrorMessage = (fieldName) =>
+    `<div><span>"${fieldName}"</span><span style="color:red;"> ${errorText}</span></div>`;
+  missingRequiredFields.forEach((fieldName) => {
+    store.dispatch('addValidationError', fieldErrorMessage(fieldName));
+    errorMessage = errorMessage.concat(fieldErrorMessage(fieldName));
+  });
+
+  validatedFields.forEach((fieldName) => {
+    store.dispatch('removeValidationError', fieldErrorMessage(fieldName));
+  });
+
+  logger.info({
+    fn: validateFileUploads,
+    message: 'Finished validating fields',
+    data: {
+      filesLastUploaded,
+      confirmedFilesUploaded,
+      fieldNames,
+      missingRequiredFields,
+      validatedFields,
+    },
+  });
 }
 
 function getDocumentsConfirmationIframe() {

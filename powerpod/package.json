@@ -8,7 +8,8 @@
     "build": "gulp getDistFiles && gulp update-version && gulp css && rollup -c",
     "extensions": "rollup --config rollup.ext.config.js && gulp update-version &&  gulp css && gulp moveExtensions & wait",
     "dev": "rimraf dist && rollup -c --watch",
-    "test": "jest --config=./jest.config.cjs --verbose",
+    "test": "jest --config=./jest.config.cjs",
+    "test-verbose": "jest --config=./jest.config.cjs --verbose",
     "devtest": "jest --config=./jest.config.dev.cjs  --verbose --watchAll",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
