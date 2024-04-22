@@ -11,7 +11,11 @@ export function customizeProjectResultsStep() {
 
   const programAbbreviation = getProgramAbbreviation();
 
-  if (programAbbreviation.includes('ABPP') || programAbbreviation === 'NEFBA') {
+  if (
+    programAbbreviation.includes('ABPP') ||
+    programAbbreviation === 'NEFBA' ||
+    programAbbreviation === 'NEFBA2'
+  ) {
     // @ts-ignore
     initOnChange_DependentRequiredField({
       dependentOnValue: YES_VALUE,
