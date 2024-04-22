@@ -1,6 +1,6 @@
 {
   "tags": ["Claim", "NEFBA2", "NEFBA Phase 2"],
-  "version": "1.0.1",
+  "version": "1.0.8",
   "name": "New Entrant Farm Business Accelerator Phase 2",
   "abbreviation": "NEFBA2",
   "hiddenSteps": "",
@@ -86,25 +86,25 @@
       "name": "ClaimInfoStep",
       "fields": [
         {
-          "name": "quartech_authorizedclaimedamount",
-          "label": "Approved Amount as per Authorization Letter (Consultant Fee, GST, Total)",
-          "readOnly": true
+          "name": "quartech_eligibleexpenses",
+          "label": "Eligible Expenses"
         },
         {
-          "name": "quartech_totalprojectcost",
-          "label": "Total Project Cost",
-          "format": "currency",
-          "required": true,
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThan"
-          },
-          "emptyInitialValue": true
+          "name": "quartech_totalsumofreportedexpenses",
+          "label": "Total Sum of Reported Expenses ($CAD)",
+          "readOnly": true,
+          "format": "currency"
+        },
+        {
+          "name": "quartech_authorizedclaimedamount",
+          "label": "Approved Funding as per Authorization Letter (in total):",
+          "readOnly": true,
+          "format": "currency"
         },
         {
           "name": "quartech_totalfees",
-          "label": "Your requested amount in this current claim",
+          "label": "Your requested amount in this claim ($CAD)",
+          "tooltipText": "Enter the amount you are requesting reimbursement for in this claim",
           "format": "currency",
           "required": true,
           "validation": {

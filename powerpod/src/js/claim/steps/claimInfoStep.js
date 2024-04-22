@@ -83,7 +83,7 @@ export function customizeClaimInfoStep() {
     }
   }
 
-  function addKttpFundingInformationNote() {
+  function addFundingInformationNote() {
     if (!document.querySelector('#claimInformationNote')) {
       const fundingInformationNoteHtmlContent = `
         <div id="claimInformationNote" style="padding-bottom: 20px;">
@@ -113,8 +113,21 @@ export function customizeClaimInfoStep() {
   if (programAbbreviation.includes('KTTP')) {
     addInstructions();
     addExpenseReportGrid();
-    addKttpFundingInformationNote();
+    addFundingInformationNote();
     addKttpRequestedClaimAmountNote();
+
+    verifyTotalSumEqualsRequestedAmount();
+
+    $('#quartech_totalfees').on('change keyup blur', () => {
+      verifyTotalSumEqualsRequestedAmount();
+    });
+  }
+
+  if (programAbbreviation === 'NEFBA2') {
+    addInstructions();
+    addExpenseReportGrid();
+    addFundingInformationNote();
+    addRequestedClaimAmountNote();
 
     verifyTotalSumEqualsRequestedAmount();
 
@@ -188,9 +201,8 @@ export function customizeClaimInfoStep() {
       );
     }
 
-    observeChanges(
-      $('#quartech_requestedinterimpaymentamount')[0],
-      () => customizeInterimPaymentAmountField()
+    observeChanges($('#quartech_requestedinterimpaymentamount')[0], () =>
+      customizeInterimPaymentAmountField()
     );
 
     observeIframeChanges(
@@ -286,8 +298,19 @@ function verifyTotalSumEqualsRequestedAmount() {
 }
 
 function addExpenseReportGrid() {
+  logger.info({
+    fn: addExpenseReportGrid,
+    message: 'Start adding expense report grid',
+  });
   const eligibleExpensesId = 'quartech_eligibleexpenses';
-  if (!$(`#${eligibleExpensesId}`)) return;
+  if (!$(`#${eligibleExpensesId}`)) {
+    logger.error({
+      fn: addExpenseReportGrid,
+      message:
+        'Failed to add expense report grid, could not find quartech_eligibleexpenses',
+    });
+    return;
+  }
   const fieldControlDiv = $(`#${eligibleExpensesId}`).closest('div');
   const columns = [
     {
@@ -362,4 +385,9 @@ function addExpenseReportGrid() {
       verifyTotalSumEqualsRequestedAmount();
     }
   );
+
+  logger.info({
+    fn: addExpenseReportGrid,
+    message: 'Successfully added expense report grid',
+  });
 }
