@@ -1,6 +1,6 @@
 {
   "tags": ["Claim", "NEFBA2", "NEFBA Phase 2"],
-  "version": "1.0.2",
+  "version": "1.0.1",
   "name": "New Entrant Farm Business Accelerator Phase 2",
   "abbreviation": "NEFBA2",
   "hiddenSteps": "",
@@ -31,6 +31,12 @@
           "label": "I / We confirm the above information is correct",
           "required": true,
           "elementType": "DropdownSelect"
+        },
+        {
+          "name": "quartech_applicantinformationcorrections",
+          "label": "Please provide further detail",
+          "required": true,
+          "maxLength": 10000
         },
         {
           "name": "quartech_filenumber",
