@@ -80,6 +80,7 @@ export const CLAIM_FILE_UPLOAD_FIELDS = [
   'quartech_copyofconsultantfinalreportorbusinessplan',
   'quartech_invoices',
   'quartech_proofofpayment',
+  'quartech_photosordocsofpurchase',
   'quartech_businessplan',
   'quartech_growthstrategy',
   'quartech_activityreport',
