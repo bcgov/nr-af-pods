@@ -9,7 +9,7 @@ import { Logger } from '../../common/logger.js';
 import { configureFields } from '../../common/fieldConfiguration.js';
 import { setFieldReadOnly } from '../../common/fieldValidation.js';
 import { validateDemographicInfoRequiredFields } from '../validation.js';
-import { getProgramEmailAddress } from '../../common/program.js';
+import { getProgramEmailAddress } from '../../common/program.ts';
 
 const logger = Logger('application/steps/demographicInfo');
 

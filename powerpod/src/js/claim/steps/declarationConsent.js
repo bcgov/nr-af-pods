@@ -1,5 +1,5 @@
 import { hideFieldsAndSections } from '../../common/html.js';
-import { getProgramData } from '../../common/program.js';
+import { getProgramData } from '../../common/program.ts';
 
 export function customizeDeclarationConsentStep() {
   hideFieldsAndSections(false);

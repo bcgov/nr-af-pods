@@ -102,4 +102,6 @@ export const POWERPOD = {
   },
   fieldValidation: {},
   documents: {},
+  docUtils: {},
+  fetch: {},
 };
