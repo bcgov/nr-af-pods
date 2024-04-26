@@ -2,6 +2,9 @@ import {
   validateDemographicInfoRequiredFields,
   validateIsConsultantEitherBciaOrCpa,
 } from '../application/validation.js';
+import { validateFilesUploadedForField } from '../claim/documents.js';
+import store from '../store/index.js';
+import { getFormType } from './application.js';
 import {
   Environment,
   Form,
@@ -22,7 +25,7 @@ const logger = Logger('common/validation');
 
 POWERPOD.fieldValidation = {
   validateRequiredFields,
-}
+};
 
 export function validateRequiredFields() {
   const currentStep = getCurrentStep();
@@ -61,9 +64,12 @@ export function validateStepFields(stepName, returnString) {
     if (required) {
       let errorMsg = '';
       if (elementType) {
-        errorMsg = validateRequiredField(name, elementType);
+        errorMsg = validateRequiredField({
+          fieldName: name,
+          elemType: elementType,
+        });
       } else {
-        errorMsg = validateRequiredField(name);
+        errorMsg = validateRequiredField({ fieldName: name });
       }
       if (errorMsg && errorMsg.length) {
         validationErrorHtml = validationErrorHtml.concat(errorMsg);
@@ -145,9 +151,12 @@ export function validateStepFields(stepName, returnString) {
 
       let errorMsg = '';
       if (fieldDefinition && fieldDefinition.elementType) {
-        errorMsg = validateRequiredField(fieldId, fieldDefinition.elementType);
+        errorMsg = validateRequiredField({
+          fieldName: fieldId,
+          elemType: fieldDefinition.elementType,
+        });
       } else {
-        errorMsg = validateRequiredField(fieldId);
+        errorMsg = validateRequiredField({ fieldName: fieldId });
       }
       validationErrorHtml = validationErrorHtml.concat(errorMsg);
     });
@@ -187,14 +196,16 @@ export function validateStepFields(stepName, returnString) {
     });
     return;
   }
-  displayValidationErrors(validationErrorHtml);
+
+  // displayValidationErrors(validationErrorHtml);
+  store.dispatch('setValidationError', validationErrorHtml);
 }
 
-export function validateRequiredField(
+export function validateRequiredField({
   fieldName,
   elemType = HtmlElementType.Input,
-  errorMessage = 'IS REQUIRED'
-) {
+  errorMessage = 'IS REQUIRED',
+}) {
   logger.info({
     fn: validateRequiredField,
     message: `Start validating required fieldName: ${fieldName} of elemType: ${elemType}`,
@@ -220,6 +231,16 @@ export function validateRequiredField(
         $(`#${fieldName}_AttachFile`)?.val()?.length === 0 &&
         // @ts-ignore
         $(`#${fieldName}`)?.val()?.length === 0;
+      errorMessage =
+        'IS REQUIRED. Please ensure at least one file per required upload field is confirmed & uploaded successfully.';
+
+      const formType = getFormType();
+      if (formType === Form.Claim) {
+        isEmptyField = !validateFilesUploadedForField(
+          fieldName,
+          POWERPOD.documents.docData
+        );
+      }
       break;
     case HtmlElementType.MultiOptionSet:
       isEmptyField = $(`li[id*='${fieldName}-selected-item-']`)?.length == 0;

@@ -1,14 +1,15 @@
 {
   "name": "powerpod",
   "type": "module",
-  "version": "1.2.9",
+  "version": "1.3.0",
   "description": "Powerpod is a jQuery plugin that enhances functionality of Power Pages components.",
   "main": "dist/powerpod",
   "scripts": {
     "build": "gulp getDistFiles && gulp update-version && gulp css && rollup -c",
     "extensions": "rollup --config rollup.ext.config.js && gulp update-version &&  gulp css && gulp moveExtensions & wait",
     "dev": "rimraf dist && rollup -c --watch",
-    "test": "jest --config=./jest.config.cjs --verbose",
+    "test": "jest --config=./jest.config.cjs",
+    "test-verbose": "jest --config=./jest.config.cjs --verbose",
     "devtest": "jest --config=./jest.config.dev.cjs  --verbose --watchAll",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"

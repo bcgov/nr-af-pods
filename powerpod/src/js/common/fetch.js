@@ -13,6 +13,7 @@ POWERPOD.fetch = {
   getOrgbookTopicData,
   getOrgbookCredentialsData,
   getDocuments,
+  CACHED_RESULTS: {},
 };
 
 export const ENDPOINT_URL = {
@@ -50,8 +51,6 @@ const setODataHeaders = (XMLHttpRequest) => {
   XMLHttpRequest.setRequestHeader('Prefer', 'odata.include-annotations="*"');
 };
 
-const CACHED_RESULTS = {};
-
 // Note: Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
 // async: false with jqXHR ($.Deferred) is deprecated; you must use the success/error/complete
 // callback options instead of the corresponding methods of the jqXHR object such as jqXHR.done().
@@ -74,9 +73,16 @@ export async function fetch(params) {
     returnData = false, // return the data directly, skips having to pass onSuccess handler
   } = params;
   // check cache if used
-  const reqHash = JSON.stringify(params);
-  if (!skipCache && CACHED_RESULTS[reqHash]) {
-    const { data, textStatus, xhr } = CACHED_RESULTS[reqHash];
+  const paramsToHash = params;
+  delete paramsToHash.skipCache;
+  const reqHash = JSON.stringify(paramsToHash);
+  logger.info({
+    fn: fetch,
+    message: 'Starting fetch request...',
+    data: { ...params, fetch: POWERPOD.fetch },
+  });
+  if (!skipCache && POWERPOD.fetch.CACHED_RESULTS[reqHash]) {
+    const { data, textStatus, xhr } = POWERPOD.fetch.CACHED_RESULTS[reqHash];
     logger.info({
       fn: fetch,
       message: `returning cached data for url: ${url}`,
@@ -101,7 +107,17 @@ export async function fetch(params) {
       if (beforeSend && typeof beforeSend === 'function') beforeSend();
     },
     success: function (data, textStatus, xhr) {
-      if (!skipCache) CACHED_RESULTS[reqHash] = { data, textStatus, xhr };
+      logger.info({
+        fn: fetch,
+        message: 'success handler called',
+        data: {
+          data,
+          params,
+        },
+      });
+      // always cache data
+      POWERPOD.fetch.CACHED_RESULTS[reqHash] = { data, textStatus, xhr };
+
       if (returnData) {
         logger.info({
           fn: fetch,

@@ -363,7 +363,7 @@ export function observeChanges(
         validateRequiredFields();
       }
     }
-    return true;
+    return observer;
   }
   logger.warn({
     fn: observeChanges,

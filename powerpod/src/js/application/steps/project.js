@@ -35,8 +35,6 @@ export function customizeProjectStep(programData) {
 
   initOnChange_ActiviyOpenToPublic();
 
-  // initInputMasking();
-
   initAdditionalLocationsMultiSelect();
 }
 

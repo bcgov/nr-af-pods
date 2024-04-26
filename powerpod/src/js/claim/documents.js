@@ -1,6 +1,11 @@
 import { doc, POWERPOD } from '../common/constants.js';
+import {
+  compareDocDataToUploadFieldData,
+  getFilenamesFromDocData,
+} from '../common/docUtils.js';
 import { getDocuments } from '../common/fetch.js';
 import { validateRequiredFields } from '../common/fieldValidation.js';
+import { getFieldsBySectionClaim } from '../common/fields.js';
 import { getFormId } from '../common/form.js';
 import {
   addHtmlToSection,
@@ -16,17 +21,23 @@ import {
   showTable,
 } from '../common/html.js';
 import { Logger } from '../common/logger.js';
+import { getCurrentStep } from '../common/program.ts';
 import { sha256 } from '../common/utils.js';
+import store from '../store/index.js';
 
 POWERPOD.documents = {
   initialIframeLoad: true,
   isSubmitting: false,
   iframeLoading: true,
   filesToUpload: {},
-  confirmedFilesUploaded: {},
+  filesLastUploaded: {},
+  confirmedFilesUploaded: [],
   uploadedDocsString: '',
+  observer: null,
   observerSet: false, // used to wait for iframe notes to finish loading
   getDocumentsConfirmationIframe,
+  validateFilesUploadedForField,
+  docData: null,
 };
 
 // @ts-ignore
@@ -476,8 +487,18 @@ function addFileUpload(fieldName, context = null) {
       iframeAttachFileField?.val('');
       textareaFileField.val('');
       iframeTextareaField?.val('');
-      validateRequiredFields();
+      getDocuments({
+        id: getFormId(),
+        onSuccess: (data) => {
+          POWERPOD.documents.docData = data;
+          validateRequiredFields();
+        },
+      });
     }
+
+    const newFilesToUploadState = POWERPOD.documents.filesToUpload;
+    delete newFilesToUploadState[fieldName];
+    POWERPOD.documents.filesToUpload = newFilesToUploadState;
 
     for (let i = 0; i < e.target.files.length && !invalidFilesPresent; i++) {
       const file = e.target.files[i];
@@ -530,6 +551,13 @@ function addFileUpload(fieldName, context = null) {
 
         // if upload btn hasn't been enabled yet, enable it so user can upload, only if iframe finished loading first
         setUploadButtonState();
+        getDocuments({
+          id: getFormId(),
+          onSuccess: (data) => {
+            POWERPOD.documents.docData = data;
+            validateRequiredFields();
+          },
+        });
 
         updateOobFileUpload(iframeDoc);
       } else {
@@ -569,6 +597,13 @@ function addFileUpload(fieldName, context = null) {
 
         // disable upload btn since invalid files selected
         setUploadButtonState();
+        getDocuments({
+          id: getFormId(),
+          onSuccess: (data) => {
+            POWERPOD.documents.docData = data;
+            validateRequiredFields();
+          },
+        });
 
         e.preventDefault();
         e.stopImmediatePropagation();
@@ -601,7 +636,13 @@ function addFileUpload(fieldName, context = null) {
       data: { filesToUpload: POWERPOD.documents.filesToUpload },
     });
 
-    validateRequiredFields();
+    getDocuments({
+      id: getFormId(),
+      onSuccess: (data) => {
+        POWERPOD.documents.docData = data;
+        validateRequiredFields();
+      },
+    });
   });
 }
 
@@ -614,6 +655,10 @@ function updateOobFileUpload(context = null) {
   let selectedFiles = [];
 
   CLAIM_FILE_UPLOAD_FIELDS.forEach((fieldName) => {
+    logger.info({
+      fn: updateOobFileUpload,
+      message: `Updating OOB file upload field for fieldName: ${fieldName}`,
+    });
     let fileUploadId = fieldName + ATTACH_FILE_SUFFIX;
 
     const fieldFileUploadCtr = document.getElementById(fileUploadId);
@@ -766,6 +811,8 @@ function getCurrentState() {
 
   if (iframeLoading && initialIframeLoad) {
     state = 'initial';
+  } else if (iframeLoading && !isSubmitting && !initialIframeLoad) {
+    state = 'loading';
   } else if (!iframeLoading && !userHasFilesSelectedToUpload) {
     state = 'ready';
   } else if (!iframeLoading && userHasFilesSelectedToUpload) {
@@ -820,7 +867,7 @@ function setUploadButtonState(state = '') {
     message: `Setting state: ${state}`,
   });
 
-  if (state === 'initial' || state === 'go') {
+  if (state === 'initial' || state === 'go' || state === 'loading') {
     uploadBtn.attr('loading', 'loading');
     uploadBtn.attr('disabled', 'disabled');
   } else if (state === 'ready') {
@@ -851,12 +898,22 @@ function setUploadBtnOnClick(context) {
 
   // add on-click handler for upload referencing newly loaded iframe submit btn
   uploadBtn.on('click', function () {
+    const observer = POWERPOD.documents.observer;
+    if (observer && observer.disconnect) {
+      logger.info({
+        fn: setUploadBtnOnClick,
+        message: 'Disconnecting observer from documents iframe...',
+      });
+      observer.disconnect();
+      POWERPOD.documents.observer = null;
+      POWERPOD.documents.observerSet = false;
+    }
     // @ts-ignore
     const iframeSubmitBtn = context?.getElementById('UpdateButton');
 
     if (!iframeSubmitBtn) {
       logger.error({
-        fn: updateOobFileUpload,
+        fn: setUploadBtnOnClick,
         message: 'Failed to find iframe submit btn',
       });
       return;
@@ -872,6 +929,11 @@ function setUploadBtnOnClick(context) {
 
     setUploadButtonState();
 
+    logger.info({
+      fn: setUploadBtnOnClick,
+      message: 'Clicking iframe submit btn...',
+      data: { iframeSubmitBtn },
+    });
     iframeSubmitBtn.click();
   });
 }
@@ -928,6 +990,18 @@ function cloneNotesContent() {
 
 function setupNotesContentObserver() {
   const observerAlreadySet = POWERPOD.documents.observerSet;
+  const isSubmitting = POWERPOD.documents.isSubmitting;
+
+  if (isSubmitting) {
+    if (DEVELOPMENT_MODE_ENABLED) {
+      logger.info({
+        fn: setupNotesContentObserver,
+        message: 'Do not setup content observers while submitting...',
+        data: { observerAlreadySet, isSubmitting },
+      });
+    }
+    return;
+  }
 
   // if observer is already, nothing to do
   if (observerAlreadySet) {
@@ -978,7 +1052,7 @@ function setupNotesContentObserver() {
         body,
       },
     });
-    const success = observeChanges(body, () => {
+    const observer = observeChanges(body, () => {
       logger.info({
         fn: setupNotesContentObserver,
         message:
@@ -992,7 +1066,7 @@ function setupNotesContentObserver() {
       });
       cloneNotesContent();
     });
-    if (success) {
+    if (observer) {
       logger.info({
         fn: setupNotesContentObserver,
         message:
@@ -1005,6 +1079,7 @@ function setupNotesContentObserver() {
         },
       });
       POWERPOD.documents.observerSet = true;
+      POWERPOD.documents.observer = observer;
     }
     return;
   }
@@ -1057,7 +1132,7 @@ function isNotesStillLoading(context) {
   return false;
 }
 
-async function checkForFilesToUpload(context, uploadedFilesString = '') {
+async function checkForFilesToUpload(context, uploadedFilesString = []) {
   const userHasFilesSelectedToUpload = hasUserSelectedAnyNewFilesToUpload();
 
   logger.info({
@@ -1099,7 +1174,7 @@ async function checkForFilesToUpload(context, uploadedFilesString = '') {
       1
     );
     // @ts-ignore
-    POWERPOD.documents.confirmedFilesUploaded = uploadedSuccessfully;
+    POWERPOD.documents.confirmedFilesUploaded = [];
 
     const promises = filenameArray.map(async (filename) => {
       const filenameHash = await sha256(filename);
@@ -1229,10 +1304,227 @@ async function checkForFilesToUpload(context, uploadedFilesString = '') {
     }
     // @ts-ignore
     POWERPOD.documents.confirmedFilesUploaded = uploadedSuccessfully;
+    POWERPOD.documents.filesLastUploaded = POWERPOD.documents.filesToUpload;
     POWERPOD.documents.filesToUpload = {};
+
+    getDocuments({
+      id: getFormId(),
+      onSuccess: (data) => {
+        POWERPOD.documents.docData = data;
+        validateRequiredFields();
+      },
+    });
 
     setUploadButtonState();
   }
+}
+
+export function validateFilesUploadedForField(fieldName, data) {
+  const filesLastUploaded = POWERPOD.documents.filesLastUploaded;
+  const filesToUpload = POWERPOD.documents.filesToUpload;
+  const confirmedFilesUploaded = POWERPOD.documents.confirmedFilesUploaded;
+
+  const [verifiedUploadedDocs, unverifiedDocs] =
+    compareDocDataToUploadFieldData(fieldName, data);
+
+  const logData = {
+    filesLastUploaded,
+    filesToUpload,
+    confirmedFilesUploaded,
+    verifiedUploadedDocs,
+    unverifiedDocs,
+  };
+
+  if (!verifiedUploadedDocs || verifiedUploadedDocs?.length === 0) {
+    logger.info({
+      fn: validateFilesUploadedForField,
+      message: `No docs verified uploaded for fieldName: ${fieldName}`,
+      data: logData,
+    });
+  } else {
+    logger.info({
+      fn: validateFilesUploadedForField,
+      message: `Found successfully uploaded & verified docs for fieldName: ${fieldName}`,
+      data: logData,
+    });
+    return true;
+  }
+
+  logger.info({
+    fn: validateFilesUploadedForField,
+    message: `Starting to validate single file upload for fieldName: ${fieldName}`,
+    data: logData,
+  });
+
+  const filesForFieldName =
+    filesLastUploaded[fieldName] || filesToUpload[fieldName];
+
+  if (!filesForFieldName) {
+    logger.info({
+      fn: validateFilesUploadedForField,
+      message: `No files selected for required fieldName: ${fieldName}`,
+      data: logData,
+    });
+    return false;
+  }
+
+  logger.info({
+    fn: validateFilesUploadedForField,
+    message: `Checking if fieldName: ${fieldName} already has fields uploaded`,
+    data: logData,
+  });
+
+  const doesFieldNameHaveUploadedFilesAlready = filesForFieldName.some((file) =>
+    confirmedFilesUploaded.includes(file)
+  );
+
+  if (doesFieldNameHaveUploadedFilesAlready) {
+    logger.info({
+      fn: validateFilesUploadedForField,
+      message: `Files uploaded successfully for required fieldName: ${fieldName}`,
+      data: logData,
+    });
+    return true;
+  } else {
+    logger.info({
+      fn: validateFilesUploadedForField,
+      message: `File not uploaded yet for fieldName: ${fieldName}`,
+      data: logData,
+    });
+    return false;
+  }
+}
+
+function validateFileUploads() {
+  const filesLastUploaded = POWERPOD.documents.filesLastUploaded;
+  const filesToUpload = POWERPOD.documents.filesToUpload;
+  const confirmedFilesUploaded = POWERPOD.documents.confirmedFilesUploaded;
+
+  const fieldNames =
+    (filesLastUploaded?.length && Object.keys(filesLastUploaded)) ??
+    Object.keys(filesToUpload);
+
+  if (!fieldNames || !fieldNames.length || fieldNames.length === 0) {
+    logger.warn({
+      fn: validateFileUploads,
+      message: 'No file fields to validate',
+      data: {
+        filesLastUploaded,
+        filesToUpload,
+        confirmedFilesUploaded,
+        fieldNames,
+      },
+    });
+    return;
+  }
+
+  const stepName = getCurrentStep();
+  const fieldsConfig = getFieldsBySectionClaim(stepName);
+
+  let missingRequiredFields = [];
+  let validatedFields = [];
+
+  fieldNames.forEach((fieldName) => {
+    const fieldConfig = fieldsConfig.find((f) => f.name === fieldName);
+    if (!fieldConfig) {
+      logger.error({
+        fn: validateFileUploads,
+        message: `Could not find field config for ${fieldName}`,
+      });
+      return;
+    }
+    if (fieldConfig && !fieldConfig.required) {
+      logger.warn({
+        fn: validateFileUploads,
+        message: `File upload field not required for fieldName: ${fieldName}`,
+      });
+      validatedFields.push(fieldName);
+      return;
+    }
+    const filesForFieldName =
+      filesLastUploaded[fieldName] || filesToUpload[fieldName];
+    logger.info({
+      fn: validateFileUploads,
+      message: `Checking if fieldName: ${fieldName} already has fields uploaded`,
+      data: {
+        filesLastUploaded,
+        filesToUpload,
+        confirmedFilesUploaded,
+        fieldNames,
+        filesForFieldName,
+      },
+    });
+    const doesFieldNameHaveUploadedFilesAlready = filesForFieldName.some(
+      (file) => confirmedFilesUploaded.includes(file)
+    );
+    if (doesFieldNameHaveUploadedFilesAlready) {
+      logger.info({
+        fn: validateFileUploads,
+        message: `Files uploaded successfully for required fieldName: ${fieldName}`,
+      });
+      validatedFields.push(fieldName);
+      return;
+    }
+    if (!filesForFieldName) {
+      logger.info({
+        fn: validateFileUploads,
+        message: `No files selected for required fieldName: ${fieldName}`,
+        data: {
+          filesLastUploaded,
+          confirmedFilesUploaded,
+          fieldNames,
+          fieldConfig,
+        },
+      });
+      if (missingRequiredFields.includes(fieldName)) {
+        logger.info({
+          fn: validateFileUploads,
+          message: `Missing required fields already contains fieldName: ${fieldName}`,
+        });
+        return;
+      }
+    }
+    missingRequiredFields.push(fieldName);
+  });
+
+  if (!missingRequiredFields) {
+    logger.info({
+      fn: validateFileUploads,
+      message: `Nothing to do, all required file uploads provided`,
+      data: {
+        filesLastUploaded,
+        confirmedFilesUploaded,
+        fieldNames,
+      },
+    });
+  }
+
+  let errorText =
+    'IS REQUIRED. Please ensure at least one file per required upload field is confirmed & uploaded successfully.';
+  let errorMessage = '';
+
+  const fieldErrorMessage = (fieldName) =>
+    `<div><span>"${fieldName}"</span><span style="color:red;"> ${errorText}</span></div>`;
+  missingRequiredFields.forEach((fieldName) => {
+    // store.dispatch('addValidationError', fieldErrorMessage(fieldName));
+    errorMessage = errorMessage.concat(fieldErrorMessage(fieldName));
+  });
+
+  // validatedFields.forEach((fieldName) => {
+  //   store.dispatch('removeValidationError', fieldErrorMessage(fieldName));
+  // });
+
+  logger.info({
+    fn: validateFileUploads,
+    message: 'Finished validating fields',
+    data: {
+      filesLastUploaded,
+      confirmedFilesUploaded,
+      fieldNames,
+      missingRequiredFields,
+      validatedFields,
+    },
+  });
 }
 
 function getDocumentsConfirmationIframe() {
@@ -1336,7 +1628,14 @@ function addDocumentUploadConfirmationIframe() {
       });
       hideLoadingSpinner();
       POWERPOD.documents.initialIframeLoad = false;
-      validateRequiredFields();
+
+      getDocuments({
+        id: getFormId(),
+        onSuccess: (data) => {
+          POWERPOD.documents.docData = data;
+          validateRequiredFields();
+        },
+      });
     }
 
     // @ts-ignore
@@ -1377,9 +1676,10 @@ function addDocumentUploadConfirmationIframe() {
         });
         // @ts-ignore
         iframe.src = iframeSrc;
-        // POWERPOD.documents.iframeLoading = true;
+        POWERPOD.documents.iframeLoading = true;
         POWERPOD.documents.isSubmitting = false;
         POWERPOD.documents.observerSet = false;
+        POWERPOD.documents.observer = null;
         setInterval(() => setupNotesContentObserver(), 1000);
 
         const formId = getFormId();
@@ -1391,14 +1691,17 @@ function addDocumentUploadConfirmationIframe() {
               message: 'Successfully fetched data for uploaded documents',
               data: { data },
             });
-            const { value } = data;
-            const filenames = value.map((item) => item.filename);
-            const filenamesString = filenames.join('\n');
+
+            POWERPOD.documents.docData = data;
+            validateRequiredFields();
+
+            const filenamesString = getFilenamesFromDocData(data);
 
             // overriding iframe loading, since we no longer need to load iframe a 2nd time
-            POWERPOD.documents.iframeLoading = false;
+            // POWERPOD.documents.iframeLoading = false;
             checkForFilesToUpload(context, filenamesString);
           },
+          skipCache: true,
         });
       }
     }
