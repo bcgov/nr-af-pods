@@ -12,7 +12,7 @@ import { getExpenseTypeData } from '../common/fetch';
 import { Logger } from '../common/logger';
 import { isLastObjectEmpty } from '../common/utils';
 
-const logger = new Logger('components/ExpenseReportTable');
+const logger = Logger('components/ExpenseReportTable');
 
 type RowItem = {
   [key: string]: string;
@@ -113,7 +113,7 @@ class ExpenseReportTable extends LitElement {
   }
 
   async getExpenseTypes() {
-    const data = await getExpenseTypeData();
+    const { data } = await getExpenseTypeData();
     if (!data) {
       throw new Error('Expense types task failed');
     }

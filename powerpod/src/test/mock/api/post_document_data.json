@@ -1,0 +1,9 @@
+{
+  "textStatus": "nocontent",
+  "jqXHR": {
+      "readyState": 4,
+      "responseText": "",
+      "status": 204,
+      "statusText": "No Content"
+  }
+}

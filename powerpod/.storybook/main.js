@@ -28,6 +28,10 @@ const config = {
             __dirname,
             '../src/assets/css/bootstrap.css?inline'
           ),
+          '../../assets/css/shoelace.css': path.resolve(
+            __dirname,
+            '../src/assets/css/shoelace.css?inline'
+          ),
         },
       },
     }),

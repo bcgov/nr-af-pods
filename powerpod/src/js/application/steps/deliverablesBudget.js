@@ -8,7 +8,7 @@ import { getProgramAbbreviation } from '../../common/program.ts';
 import { configureFields } from '../../common/fieldConfiguration.js';
 import { Logger } from '../../common/logger.js';
 
-const logger = new Logger('application/steps/deliverablesBudget');
+const logger = Logger('application/steps/deliverablesBudget');
 
 export function customizeDeliverablesBudgetStep() {
   const programAbbreviation = getProgramAbbreviation();

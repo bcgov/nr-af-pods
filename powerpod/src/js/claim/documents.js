@@ -1,9 +1,16 @@
 import { doc, POWERPOD } from '../common/constants.js';
 import {
+  ALLOWED_FILE_TYPES,
+  ALLOWED_MIME_TYPES,
+  CLAIM_FILE_UPLOAD_FIELDS,
+  MAXIMUM_FILE_SIZE_IN_KB,
+  MAXIMUM_FILE_SIZE_TEXT,
   compareDocDataToUploadFieldData,
+  formatBytes,
   getFilenamesFromDocData,
-} from '../common/docUtils.js';
-import { getDocuments } from '../common/fetch.js';
+  validateFileUpload,
+} from '../common/documents.ts';
+import { getDocumentsData } from '../common/fetch.js';
 import { validateRequiredFields } from '../common/fieldValidation.js';
 import { getFieldsBySectionClaim } from '../common/fields.js';
 import { getFormId } from '../common/form.js';
@@ -41,65 +48,10 @@ POWERPOD.documents = {
 };
 
 // @ts-ignore
-const logger = new Logger('claim/documents');
+const logger = Logger('claim/documents');
 
 const DEVELOPMENT_MODE_ENABLED = false;
-const MAXIMUM_FILE_SIZE_IN_KB = 15360;
-const MAXIMUM_FILE_SIZE_TEXT = '15MB';
-const ALLOWED_MIME_TYPES = [
-  'text/csv',
-  'application/msword',
-  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-  'application/vnd.oasis.opendocument.text',
-  'application/pdf',
-  'application/vnd.ms-excel',
-  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-  'application/vnd.oasis.opendocument.spreadsheet',
-  'image/gif',
-  'image/jpeg',
-  'image/png',
-  'image/svg+xml',
-  'image/tiff',
-];
-// not used here, but used in backend Dynamics config
-// keeping here for reference as well:
-const MINIFIED_MIME_TYPES = [
-  'text/csv',
-  'application/msword',
-  'application/vnd*',
-  'application/pdf',
-  'image/*',
-];
-const ALLOWED_FILE_TYPES = [
-  '.csv',
-  '.doc',
-  '.docx',
-  '.odt',
-  '.pdf',
-  '.xls',
-  '.xlsx',
-  '.ods',
-  '.gif',
-  '.jpeg',
-  '.jpg',
-  '.png',
-  '.svg',
-  '.tif',
-];
-export const CLAIM_FILE_UPLOAD_FIELDS = [
-  'quartech_completedmeetingandserviceprovisionlog',
-  'quartech_copyofconsultantfinalreportorbusinessplan',
-  'quartech_invoices',
-  'quartech_proofofpayment',
-  'quartech_photosordocsofpurchase',
-  'quartech_businessplan',
-  'quartech_growthstrategy',
-  'quartech_activityreport',
-];
-export const APPLICATION_FILE_UPLOAD_FILES = [
-  'quartech_partialbudget',
-  'quartech_relatedquotesandplans',
-];
+
 const ATTACH_FILE_SUFFIX = '_AttachFile';
 
 export function customizeDocumentsControls(
@@ -487,7 +439,7 @@ function addFileUpload(fieldName, context = null) {
       iframeAttachFileField?.val('');
       textareaFileField.val('');
       iframeTextareaField?.val('');
-      getDocuments({
+      getDocumentsData({
         id: getFormId(),
         onSuccess: (data) => {
           POWERPOD.documents.docData = data;
@@ -499,6 +451,14 @@ function addFileUpload(fieldName, context = null) {
     const newFilesToUploadState = POWERPOD.documents.filesToUpload;
     delete newFilesToUploadState[fieldName];
     POWERPOD.documents.filesToUpload = newFilesToUploadState;
+
+    if (e.target.files & e.target.files.length) {
+      logger.info({
+        fn: addFileUpload,
+        message: 'Logging e.target.files data:',
+        data: { files: e.target?.files },
+      });
+    }
 
     for (let i = 0; i < e.target.files.length && !invalidFilesPresent; i++) {
       const file = e.target.files[i];
@@ -551,7 +511,7 @@ function addFileUpload(fieldName, context = null) {
 
         // if upload btn hasn't been enabled yet, enable it so user can upload, only if iframe finished loading first
         setUploadButtonState();
-        getDocuments({
+        getDocumentsData({
           id: getFormId(),
           onSuccess: (data) => {
             POWERPOD.documents.docData = data;
@@ -597,7 +557,7 @@ function addFileUpload(fieldName, context = null) {
 
         // disable upload btn since invalid files selected
         setUploadButtonState();
-        getDocuments({
+        getDocumentsData({
           id: getFormId(),
           onSuccess: (data) => {
             POWERPOD.documents.docData = data;
@@ -636,7 +596,7 @@ function addFileUpload(fieldName, context = null) {
       data: { filesToUpload: POWERPOD.documents.filesToUpload },
     });
 
-    getDocuments({
+    getDocumentsData({
       id: getFormId(),
       onSuccess: (data) => {
         POWERPOD.documents.docData = data;
@@ -688,7 +648,7 @@ function updateOobFileUpload(context = null) {
     logger.info({
       fn: updateOobFileUpload,
       message: `Successfully set iframe attach files control`,
-      data: { fileList },
+      data: { selectedFiles, fileList },
     });
     iframeAttachFileCtr.files = fileList;
   }
@@ -696,7 +656,7 @@ function updateOobFileUpload(context = null) {
   logger.info({
     fn: updateOobFileUpload,
     message: 'Set attach file control files attribute, attachFileCtr.files',
-    data: { files: fileList, context, iframeAttachFileCtr },
+    data: { files: fileList, selectedFiles, context, iframeAttachFileCtr },
   });
 }
 
@@ -705,74 +665,12 @@ function fileListFrom(files) {
   const b = new ClipboardEvent('').clipboardData || new DataTransfer();
 
   for (const file of files) b.items.add(file);
-  return b.files;
-}
-
-// binary conversion of bytes
-function formatBytes(bytes, decimals = 2, forceFormat, returnFloat = false) {
-  if (!+bytes) return '0 Bytes';
-
-  const k = 1024;
-  const dm = decimals < 0 ? 0 : decimals;
-  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-
-  let i;
-
-  if (forceFormat && sizes.includes(forceFormat)) {
-    i = sizes.indexOf(forceFormat);
-  } else {
-    i = Math.floor(Math.log(bytes) / Math.log(k));
-  }
-
-  const number = parseFloat((bytes / Math.pow(k, i)).toFixed(dm));
-
-  if (returnFloat) {
-    return number;
-  }
-
-  return `${number} ${sizes[i]}`;
-}
-
-function validateFileUpload(file) {
   logger.info({
-    fn: validateFileUpload,
-    message: 'Validing file upload file',
-    data: { file },
+    fn: fileListFrom,
+    message: 'Successfully generated file list from files',
+    data: { files, fileList: b.files },
   });
-  const re = /(?:\.([^.]+))?$/; // regex to pull file extension string
-  const ext = re.exec(file.name)[1];
-
-  // note: microsoft seems to use binary system for byte conversion
-  const fileSizeInKB = formatBytes(file.size, 2, 'KB', true);
-
-  const isValidFileSize = fileSizeInKB <= MAXIMUM_FILE_SIZE_IN_KB; // 10 MB size limit
-  const isValidFileType = ALLOWED_FILE_TYPES.includes(`.${ext}`);
-
-  const isValidUpload = isValidFileSize && isValidFileType;
-
-  if (isValidUpload) {
-    return true;
-  }
-
-  let alertStr = '';
-  if (!isValidFileType && !isValidFileSize) {
-    alertStr = `Selected file(s) do not match the allowed file extensions and exceed file size limit of ${MAXIMUM_FILE_SIZE_TEXT}. Please upload a valid file size & file type of: ${ALLOWED_FILE_TYPES.join(
-      ', '
-    )}.`;
-  } else if (!isValidFileType) {
-    alertStr = `Selected file(s) do not match the allowed file extensions. Please upload a file type of: ${ALLOWED_FILE_TYPES.join(
-      ', '
-    )}.`;
-  } else if (!isValidFileSize) {
-    alertStr = `Selected file(s) exceeds the allowed file upload limit of ${MAXIMUM_FILE_SIZE_TEXT}. Please upload a file with a size of ${MAXIMUM_FILE_SIZE_TEXT} or less.`;
-  }
-
-  if (alertStr) {
-    alert(alertStr);
-    return false;
-  }
-
-  return false;
+  return b.files;
 }
 
 function hasUserSelectedAnyNewFilesToUpload() {
@@ -1307,7 +1205,7 @@ async function checkForFilesToUpload(context, uploadedFilesString = []) {
     POWERPOD.documents.filesLastUploaded = POWERPOD.documents.filesToUpload;
     POWERPOD.documents.filesToUpload = {};
 
-    getDocuments({
+    getDocumentsData({
       id: getFormId(),
       onSuccess: (data) => {
         POWERPOD.documents.docData = data;
@@ -1629,7 +1527,7 @@ function addDocumentUploadConfirmationIframe() {
       hideLoadingSpinner();
       POWERPOD.documents.initialIframeLoad = false;
 
-      getDocuments({
+      getDocumentsData({
         id: getFormId(),
         onSuccess: (data) => {
           POWERPOD.documents.docData = data;
@@ -1683,7 +1581,7 @@ function addDocumentUploadConfirmationIframe() {
         setInterval(() => setupNotesContentObserver(), 1000);
 
         const formId = getFormId();
-        getDocuments({
+        getDocumentsData({
           id: formId,
           onSuccess: (data) => {
             logger.info({

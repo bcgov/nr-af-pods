@@ -5,9 +5,9 @@ import { configureFields } from '../../common/fieldConfiguration.js';
 import { setFieldValue } from '../../common/html.js';
 import { setFieldReadOnly } from '../../common/fieldValidation.js';
 import {
-  CLAIM_FILE_UPLOAD_FIELDS,
   customizeDocumentsControls,
 } from '../documents.js';
+import { CLAIM_FILE_UPLOAD_FIELDS } from '../../common/documents.ts';
 
 export async function customizeDocumentsStep() {
   const programAbbreviation = getProgramAbbreviation();
@@ -41,7 +41,7 @@ export async function customizeDocumentsStep() {
     }
   }
 
-  customizeDocumentsControls(CLAIM_FILE_UPLOAD_FIELDS);
+  // customizeDocumentsControls(CLAIM_FILE_UPLOAD_FIELDS);
   configureFields();
 
   if (programAbbreviation === 'NEFBA') {

@@ -4,7 +4,7 @@ import {
   getFieldsBySectionClaim,
   getFieldsBySectionApplication,
 } from './fields.js';
-import { hideFieldByFieldName, observeChanges } from './html.js';
+import { hideFieldByFieldName, observeChanges, setFieldValue } from './html.js';
 import { Logger } from './logger.js';
 import { FieldMaskType, maskInput } from './masking.js';
 import { getOptions } from './options.js';
@@ -24,6 +24,8 @@ import {
   initializeVisibleIf,
 } from './fieldConditionalLogic.js';
 import { useScript } from './scripts.js';
+import { renderCustomComponent } from './components.js';
+import '../components/FileUpload.js';
 
 const logger = Logger('common/fieldConfiguration');
 
@@ -175,6 +177,41 @@ export function configureFields() {
       let defaultFileTypes =
         '.csv,.doc,.docx,.odt,.pdf,.xls,.xlsx,.ods,.gif,.jpeg,.jpg,.png,.svg,.tif';
       $(`#${name}_AttachFile`)?.attr('accept', fileTypes ?? defaultFileTypes);
+
+      logger.info({
+        fn: configureFields,
+        message: 'Start configuring custom component',
+      });
+      renderCustomComponent({
+        fieldId: name,
+        customElementTag: 'file-upload',
+        attributes: {
+          fieldName: name,
+        },
+        customEvent: 'onChangeFileUpload',
+        customEventHandler: (event, customElement) => {
+          logger.info({
+            fn: configureFields,
+            message: 'onChangeFileUpload event listener triggered',
+            data: { event, customElement },
+          });
+          const docs = JSON.parse(event.detail.value);
+          const fileInputStr = event.detail.fileInputStr;
+          customElement.setAttribute('fileInputStr', fileInputStr);
+          customElement.setAttribute('docs', JSON.stringify(docs));
+          setFieldValue(name, fileInputStr);
+          validateRequiredFields();
+        },
+        mappedValueKey: 'fileInputStr',
+        customSetupFn: () => {
+          const notes = doc.getElementById('notescontrol');
+          const entityNotes = notes?.querySelector('.entity-notes');
+          if (entityNotes) {
+            // @ts-ignore
+            entityNotes.style.display = 'none';
+          }
+        },
+      });
     }
     if (visibleIf) {
       initializeVisibleIf(name, required, visibleIf);

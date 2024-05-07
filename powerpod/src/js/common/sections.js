@@ -2,7 +2,7 @@
 import { Logger } from './logger.js';
 import { setTabName, setHeadings } from './tabs.js';
 
-const logger = new Logger('common/sections');
+const logger = Logger('common/sections');
 
 export function configureSections(sections) {
   if (!sections || !sections.length) {

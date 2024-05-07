@@ -1,7 +1,7 @@
 import { displayValidationErrors } from '../common/fieldValidation.js';
 import { Logger } from '../common/logger.js';
 
-const logger = new Logger('store/mutations');
+const logger = Logger('store/mutations');
 
 export default {
   setValidationError(state, payload) {

@@ -9,7 +9,7 @@ import {
 } from './html.js';
 import { Logger } from './logger.js';
 
-const logger = new Logger('common/form');
+const logger = Logger('common/form');
 
 POWERPOD.form = {
   generateFormJson,
@@ -18,6 +18,9 @@ POWERPOD.form = {
 };
 
 export function getFormId() {
+  if (window.location.hostname === 'localhost') {
+    return '1af24e49-05fd-ee11-9f8a-6045bd5f4613';
+  }
   if (POWERPOD.form?.id) {
     const formId = POWERPOD.form?.id;
     logger.info({

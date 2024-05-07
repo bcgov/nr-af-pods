@@ -3,7 +3,7 @@ import { Logger } from './logger.js';
 import { validateRequiredFields } from './fieldValidation.js';
 import { POWERPOD } from './constants.js';
 
-const logger = new Logger('common/html');
+const logger = Logger('common/html');
 
 POWERPOD.html = {
   observeChanges,
@@ -149,6 +149,7 @@ export function onDocumentReadyState(fn) {
   if (doc.readyState === 'complete') {
     fn();
   } else {
+
     doc.addEventListener('readystatechange', () => {
       if (doc.readyState === 'complete') {
         logger.info({
@@ -166,6 +167,11 @@ export function showFieldsetElement(fieldsetName) {
   if (sectionElement) {
     sectionElement.css({ display: '' });
   }
+}
+
+export function getFieldLabel(fieldName) {
+  const label = $(`#${fieldName}_label`).text();
+  return label;
 }
 
 export function showFieldRow(fieldName) {
