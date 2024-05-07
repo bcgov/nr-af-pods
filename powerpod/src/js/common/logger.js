@@ -39,7 +39,7 @@ function log({ namespace, fn, type, message, data }) {
   prefix += namespace ? ` (${namespace})` : '';
   prefix += fn && typeof fn === 'function' && fn.name ? ` ${fn.name}` : '';
 
-  logFn(`[POWERPOD/${logLevel}/${envLogLevel}]` + prefix + ': ' + message);
+  logFn('[POWERPOD]' + prefix + ': ' + message);
   if (data && typeof data === 'object') logFn(data);
 }
 
