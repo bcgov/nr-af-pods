@@ -5,7 +5,7 @@ import '@shoelace-style/shoelace/dist/components/icon/icon.js';
 import '@shoelace-style/shoelace/dist/components/tooltip/tooltip.js';
 import '@shoelace-style/shoelace/dist/components/alert/alert.js';
 import { LitElement, PropertyValueMap, css, html, unsafeCSS } from 'lit';
-import { customElement, property, query } from 'lit/decorators.js';
+import { customElement, property, query, state } from 'lit/decorators.js';
 import { useScript } from '../common/scripts';
 import {
   ALLOWED_FILE_TYPES,
@@ -33,6 +33,7 @@ const logger = Logger('components/fileUpload');
 
 @customElement('file-upload')
 class FileUpload extends LitElement {
+  @state() private _isDeleting = false;
   @query('#fileUploadElement') fileUploadElement: HTMLDivElement | undefined;
   @query('#inputElement') inputElement: HTMLInputElement | undefined;
   @query('#dropElement') dropElement: HTMLDivElement | undefined;
@@ -369,7 +370,7 @@ class FileUpload extends LitElement {
     }
     const elapsedTime = Date.now() - startTime;
     const docIndex = this.docs.findIndex(
-      (doc) => doc.subject.includes(fileId)
+      (doc) => doc.subject.includes(fileId) || doc.annotationid === annotationId
     );
     if (docIndex === -1) {
       // only splice array when item is found
@@ -378,6 +379,7 @@ class FileUpload extends LitElement {
         message: `Could not find deleted doc in docs array`,
         data: { response, doc, annotationId },
       });
+      this._isDeleting = false;
       return;
     }
     this.docs.splice(docIndex, 1); // 2nd parameter means remove one item only
@@ -387,6 +389,7 @@ class FileUpload extends LitElement {
       message: `Successfully deleted document for annotationId: ${annotationId}, took ${elapsedTime} ms`,
       data: { response, doc, annotationId },
     });
+    this._isDeleting = false;
   }
 
   emitEvent() {
@@ -506,17 +509,24 @@ class FileUpload extends LitElement {
                   content="Remove file"
                   style="--max-width: 200px;"
                 >
-                  <sl-button
-                    class="huge"
-                    variant="default"
-                    circle
-                    @click="${() => this.deleteDocument(doc)}"
-                  >
-                    <sl-icon
-                      name="x"
-                      style="vertical-align: -4px; font-size: 20px; color: var(--sl-color-danger-400);"
-                    ></sl-icon>
-                  </sl-button>
+                  ${this._isDeleting
+                    ? html` <sl-spinner
+                        style="--indicator-color: var(--sl-color-danger-600); --track-color: var(--sl-color-danger-400); font-size: 24px; --track-width: 5px; vertical-align: -8px"
+                      ></sl-spinner>`
+                    : html`<sl-button
+                        class="huge"
+                        variant="default"
+                        circle
+                        @click="${() => {
+                          this._isDeleting = true;
+                          this.deleteDocument(doc);
+                        }}"
+                      >
+                        <sl-icon
+                          name="x"
+                          style="vertical-align: -4px; font-size: 20px; color: var(--sl-color-danger-400);"
+                        ></sl-icon>
+                      </sl-button>`}
                 </sl-tooltip>
               </sl-card>
             `;

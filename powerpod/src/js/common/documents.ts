@@ -178,7 +178,7 @@ export function compareDocDataToUploadFieldData(fieldName, data) {
 export function formatBytes(
   bytes,
   decimals = 2,
-  forceFormat,
+  forceFormat = null,
   returnFloat = false
 ) {
   if (!+bytes) return '0 Bytes';
@@ -265,7 +265,7 @@ export function readFileInputStr(
 
   logger.info({
     fn: readFileInputStr,
-    message: 'Found matching docs',
+    message: `Found ${matchingDocs?.length ?? 0} matching docs`,
     data: { fileInputStr, docs, matchingDocs },
   });
 
@@ -340,7 +340,9 @@ export async function generateDocumentSubject(
   const formattedTimeUTC = getCurrentTimeUTC();
   const fileId = crypto.randomUUID();
 
-  let subject = `File "${name}" [file:${fileId}] uploaded on ${formattedTimeUTC} by ${fullname} [contact:${contactId}]`;
+  let subject = `${name} (${formatBytes(
+    size
+  )}) [fileId:${fileId}] uploaded on ${formattedTimeUTC} by ${fullname} [contactId:${contactId}]`;
 
   if (fieldName && fieldName.length) {
     const label = getFieldLabel(fieldName);
