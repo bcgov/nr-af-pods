@@ -1,4 +1,5 @@
 import { POWERPOD } from './constants.js';
+import { getRequestVerificationToken } from './dynamics.js';
 import { Logger } from './logger.js';
 
 const logger = Logger('common/fetch');
@@ -46,7 +47,6 @@ POWERPOD.fetch = {
   postDocumentData,
   deleteDocumentData,
   getContactData,
-  getRequestVerificationToken,
 };
 
 const CONTENT_TYPE = {
@@ -104,6 +104,7 @@ export async function fetch(params) {
     skipCache = false,
     returnData = false, // return the data directly, skips having to pass onSuccess handler
     addRequestVerificationToken = false, // needed for post reqs
+    timeout = 60 * 1000, // default to 60 second timeout
   } = params;
   // check cache if used
   const paramsToHash = params;
@@ -133,12 +134,13 @@ export async function fetch(params) {
         params,
       },
     });
-    if (returnData)
+    if (returnData) {
       return Promise.resolve({
         data,
         textStatus,
         jqXHR,
       });
+    }
     return Promise.resolve(onSuccess(data, textStatus, jqXHR));
   }
   // @ts-ignore
@@ -150,6 +152,7 @@ export async function fetch(params) {
     data,
     processData,
     async,
+    timeout,
     beforeSend: function (XMLHttpRequest) {
       if (addRequestVerificationToken) {
         setReqVerificationHeaderToken(XMLHttpRequest);
@@ -187,7 +190,7 @@ export async function fetch(params) {
     error: function (jqXHR, textStatus, errorThrown) {
       logger.error({
         fn: fetch,
-        message: jqXHR?.responseText,
+        message: `Error handler called for url: ${url}`,
         data: { jqXHR, textStatus, errorThrown },
       });
       if (onError && typeof onError === 'function') {
@@ -209,24 +212,6 @@ export async function fetch(params) {
       return Promise.resolve({ data, textStatus, jqXHR });
     }
   });
-}
-
-function getRequestVerificationToken() {
-  const requestVerificationToken = $(
-    'input[name=__RequestVerificationToken]'
-  ).val();
-  if (!requestVerificationToken) {
-    logger.warn({
-      fn: getRequestVerificationToken,
-      message: 'Could not find input[name=__RequestVerificationToken]',
-    });
-    return;
-  }
-  logger.info({
-    fn: getRequestVerificationToken,
-    message: `Successfully found __RequestVerificationToken=${requestVerificationToken}`,
-  });
-  return requestVerificationToken;
 }
 
 export async function getEnvVarsData({ ...options } = {}) {

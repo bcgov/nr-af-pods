@@ -26,15 +26,15 @@ POWERPOD.docUtils = {
 
 // once a document is uploaded, it will come with the relevant data below:
 export type UploadedDoc = {
-  subject: string; // "Note created on mm/dd/yyyy hh:mm:ss am UTC by John Doe [contact:${contactId}]"
   filename: string;
   filesize: number; // size in bytes
-  modifiedon: string; // formatted date time "5/1/2024 6:08 PM"
-  documentbody: string | null;
-  annotationid: string; // unique uuid for doc
   mimetype: string; // "image/png"
-  status: string; // 'pending', 'failed', 'uploaded'
-  fileId: string; // unique identifier assigned by us upon selecting a file
+  status: string; // 'pending', 'failed', 'uploaded', 'deleting'
+  subject: string | null; // "Note created on mm/dd/yyyy hh:mm:ss am UTC by John Doe [contact:${contactId}]"
+  modifiedon: string | null; // formatted date time "5/1/2024 6:08 PM"
+  documentbody: string | null;
+  annotationid: string | null; // unique uuid for doc
+  fileId: string | null; // unique identifier assigned by us upon selecting a file
 };
 
 export type UploadedDocBlob = {
@@ -311,7 +311,7 @@ export function generateFileInputStr(docs: UploadedDoc[]): string {
 export async function generateDocumentSubject(
   file: RawFile,
   fieldName: string = ''
-) {
+): Promise<{ subject: string; fileId: string; }> {
   const { name, size, type } = file;
 
   const { contactId } = getCurrentUser();

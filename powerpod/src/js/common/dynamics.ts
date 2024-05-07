@@ -5,6 +5,7 @@ const logger = Logger('common/dynamics');
 
 POWERPOD.dynamics = {
   getCurrentUser,
+  getRequestVerificationToken,
 };
 
 type User = {
@@ -36,4 +37,22 @@ export function getCurrentUser(): User {
     data: { currentUser: User },
   });
   return User;
+}
+
+export function getRequestVerificationToken() {
+  const requestVerificationToken = $(
+    'input[name=__RequestVerificationToken]'
+  ).val();
+  if (!requestVerificationToken) {
+    logger.warn({
+      fn: getRequestVerificationToken,
+      message: 'Could not find input[name=__RequestVerificationToken]',
+    });
+    return;
+  }
+  logger.info({
+    fn: getRequestVerificationToken,
+    message: `Successfully found __RequestVerificationToken=${requestVerificationToken}`,
+  });
+  return requestVerificationToken;
 }
