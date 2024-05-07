@@ -223,8 +223,14 @@ class FileUpload extends LitElement {
   }
 
   handleFileSelect(e) {
+    logger.info({
+      fn: 'handleFileSelect',
+      message: 'Start handling file select',
+      data: { e },
+    });
     var files = e.target.files;
     this.handleFiles(files);
+    this.inputElement.value = null;
   }
 
   handleFiles(files) {
