@@ -5,7 +5,7 @@ import '@shoelace-style/shoelace/dist/components/icon/icon.js';
 import '@shoelace-style/shoelace/dist/components/tooltip/tooltip.js';
 import '@shoelace-style/shoelace/dist/components/alert/alert.js';
 import { LitElement, PropertyValueMap, css, html, unsafeCSS } from 'lit';
-import { customElement, property, query } from 'lit/decorators.js';
+import { customElement, property, query, state } from 'lit/decorators.js';
 import { useScript } from '../common/scripts';
 import {
   ALLOWED_FILE_TYPES,
@@ -178,21 +178,29 @@ class FileUpload extends LitElement {
       message: 'Calling getDocument task',
       data: { fileId },
     });
-    const { data } = await getDocumentsData({ formId: getFormId() });
-    if (!data) {
-      throw new Error('Get docs task failed');
-    }
-    const allDocs = processDocumentsData(data);
-    const doc = allDocs.find((doc) => doc.subject.includes(fileId));
+    try {
+      const { data } = await getDocumentsData({ formId: getFormId() });
+      if (!data) {
+        throw new Error('Get docs task failed');
+      }
+      const allDocs = processDocumentsData(data);
+      const doc = allDocs.find((doc) => doc.subject.includes(fileId));
 
-    if (!doc) {
+      if (!doc) {
+        logger.error({
+          fn: 'getDocument',
+          message: `Could not find doc to delete by fileId: ${fileId}`,
+        });
+        return;
+      }
+      return doc;
+    } catch (e) {
       logger.error({
         fn: 'getDocument',
-        message: `Could not find doc to delete by fileId: ${fileId}`,
+        message: 'getDocument task failed',
+        data: { e, fileId },
       });
-      return;
     }
-    return doc;
   }
 
   preventDefaults(e) {
@@ -222,8 +230,14 @@ class FileUpload extends LitElement {
   }
 
   handleFileSelect(e) {
+    logger.info({
+      fn: 'handleFileSelect',
+      message: 'Start handling file select',
+      data: { e },
+    });
     var files = e.target.files;
     this.handleFiles(files);
+    this.inputElement.value = null;
   }
 
   handleFiles(files) {
@@ -242,62 +256,78 @@ class FileUpload extends LitElement {
       data: { file, fieldName },
     });
     const { name, type, size } = file;
-    const documentbody = await readFileAsBase64(file);
 
-    const { subject, fileId } = await generateDocumentSubject(
-      file,
-      this.fieldName
-    );
+    const docIndex =
+      this.docs.push({
+        filename: name,
+        filesize: size,
+        mimetype: type,
+        status: 'pending',
+        subject: null,
+        modifiedon: null,
+        documentbody: null,
+        annotationid: null,
+        fileId: null,
+      }) - 1;
 
-    const formId = getFormId();
-
-    if (!documentbody?.length || !subject?.length || !formId?.length) {
-      logger.error({
-        fn: 'uploadFile',
-        message: `Failed to postDocument for fieldName: ${fieldName}`,
-        data: {
-          file,
-          fieldName,
-          documentbody,
-          subject,
-          formId,
-        },
-      });
-      return;
-    }
-
-    const payload = {
-      formId,
-      subject,
-      filename: name,
-      documentbody,
-      mimetype: type,
-    };
-
-    logger.info({
-      fn: this.uploadFile,
-      message: `Posting document for fieldName: ${fieldName}`,
-      data: { payload, file, fieldName },
-    });
-
-    this.docs.push({
-      fileId,
-      filesize: size,
-      modifiedon: getCurrentTimeUTC(),
-      status: 'pending',
-      annotationid: '',
-      ...payload,
-    });
-    const docIndex = this.docs.findIndex((doc) => doc.fileId === fileId);
     this.emitEvent();
 
+    logger.info({
+      fn: 'uploadFile',
+      message: `Added pending file to docs array for fieldName: ${fieldName}`,
+      data: { file, fieldName, docs: this.docs, docIndex },
+    });
+
     try {
-      const response = await Promise.race([
-        postDocumentData(payload),
-        new Promise((_, reject) =>
-          setTimeout(() => reject(new Error('Timeout')), 60 * 1000)
-        ),
-      ]);
+      const documentbody = await readFileAsBase64(file);
+      const { subject, fileId } = await generateDocumentSubject(
+        file,
+        this.fieldName
+      );
+      const formId = getFormId();
+
+      if (!documentbody?.length || !subject?.length || !formId?.length) {
+        logger.error({
+          fn: 'uploadFile',
+          message: `Failed to postDocument for fieldName: ${fieldName}`,
+          data: {
+            file,
+            fieldName,
+            documentbody,
+            subject,
+            formId,
+          },
+        });
+        return;
+      }
+
+      const payload = {
+        formId,
+        subject,
+        filename: name,
+        documentbody,
+        mimetype: type,
+      };
+
+      logger.info({
+        fn: this.uploadFile,
+        message: `Posting document for fieldName: ${fieldName}`,
+        data: { payload, file, fieldName },
+      });
+
+      this.docs[docIndex] = {
+        fileId,
+        filesize: size,
+        modifiedon: getCurrentTimeUTC(),
+        status: 'pending',
+        annotationid: '',
+        ...payload,
+      };
+
+      const response = await postDocumentData({
+        ...payload,
+        timeout: 120 * 1000, // for file uploads allow 120 seconds
+      });
 
       if (!response || response.jqXHR?.status !== 204) {
         logger.error({
@@ -327,66 +357,76 @@ class FileUpload extends LitElement {
     } catch (e) {
       logger.error({
         fn: 'uploadFile',
-        message: 'File upload timed out',
+        message: 'File upload encountered an error',
+        data: { e },
       });
       this.docs[docIndex].status = 'failed';
       this.emitEvent();
     }
   }
 
-  async deleteDocument(doc: UploadedDoc) {
+  async deleteDocument(doc: UploadedDoc, docIndex: number) {
     logger.info({
       fn: 'deleteDocument',
       message: `Start deleting document...`,
-      data: { doc },
+      data: { doc, docIndex },
     });
+    this.docs[docIndex].status = 'deleting';
+    this.emitEvent();
+
     const { fileId } = doc;
     let annotationId = doc.annotationid;
     const startTime = Date.now();
+    try {
+      if (!annotationId && fileId) {
+        const documentToDelete = await this.getDocument(fileId);
+        annotationId = documentToDelete?.annotationid;
+      }
 
-    if (!annotationId) {
-      const documentToDelete = await this.getDocument(fileId);
-      annotationId = documentToDelete.annotationid;
-    }
+      if (!annotationId) {
+        let errorMsg =
+          'Could not find annotationid, likely file does not exist in dynamics';
+        logger.error({
+          fn: 'deleteDocument',
+          message: errorMsg,
+          data: { doc, docIndex, fileId },
+        });
+        throw new Error(errorMsg);
+      }
 
-    logger.info({
-      fn: 'deleteDocument',
-      message: `Start deleting document for for annotationId: ${annotationId}`,
-      data: { doc },
-    });
-
-    const response = await deleteDocumentData({
-      annotationId,
-      returnData: true,
-    });
-    // purposely do not "return" on fail, remove file from list of user's file, even if hard delete fails
-    if (!response || response.jqXHR?.status !== 204) {
-      logger.error({
+      logger.info({
         fn: 'deleteDocument',
-        message: `Failed to delete document for annotationId: ${annotationId}`,
+        message: `Start deleting document for for annotationId: ${annotationId}`,
+        data: { doc },
+      });
+      const response = await deleteDocumentData({
+        annotationId,
+        returnData: true,
+      });
+      // purposely do not "return" on fail, remove file from list of user's file, even if hard delete fails
+      if (!response || response.jqXHR?.status !== 204) {
+        logger.error({
+          fn: 'deleteDocument',
+          message: `Failed to delete document for annotationId: ${annotationId}`,
+          data: { response, doc, annotationId },
+        });
+      }
+      const elapsedTime = Date.now() - startTime;
+      logger.info({
+        fn: 'deleteDocument',
+        message: `Done deleting document for annotationId: ${annotationId}, took ${elapsedTime} ms`,
         data: { response, doc, annotationId },
       });
-    }
-    const elapsedTime = Date.now() - startTime;
-    const docIndex = this.docs.findIndex(
-      (doc) => doc.subject.includes(fileId)
-    );
-    if (docIndex === -1) {
-      // only splice array when item is found
+    } catch (e) {
       logger.error({
         fn: 'deleteDocument',
-        message: `Could not find deleted doc in docs array`,
-        data: { response, doc, annotationId },
+        message: 'File delete encountered an error, remove document anyway',
+        data: { e },
       });
-      return;
+    } finally {
+      this.docs.splice(docIndex, 1); // 2nd parameter means remove one item only
+      this.emitEvent();
     }
-    this.docs.splice(docIndex, 1); // 2nd parameter means remove one item only
-    this.emitEvent();
-    logger.info({
-      fn: 'deleteDocument',
-      message: `Successfully deleted document for annotationId: ${annotationId}, took ${elapsedTime} ms`,
-      data: { response, doc, annotationId },
-    });
   }
 
   emitEvent() {
@@ -462,7 +502,7 @@ class FileUpload extends LitElement {
                 </sl-alert>
               `
             : html``}
-          ${this.docs?.map((doc) => {
+          ${this.docs?.map((doc, docIndex) => {
             const { filename, fileId, status, filesize } = doc;
             let statusText = '',
               statusIcon = '',
@@ -471,7 +511,7 @@ class FileUpload extends LitElement {
               statusText = 'Upload in progress...';
               statusIcon = 'exclamation-triangle';
               statusColor = 'orange';
-            } else if (status === 'uploaded') {
+            } else if (status === 'uploaded' || status === 'deleting') {
               statusText = 'Successfully uploaded!';
               statusIcon = 'check2-circle';
               statusColor = 'green';
@@ -506,17 +546,23 @@ class FileUpload extends LitElement {
                   content="Remove file"
                   style="--max-width: 200px;"
                 >
-                  <sl-button
-                    class="huge"
-                    variant="default"
-                    circle
-                    @click="${() => this.deleteDocument(doc)}"
-                  >
-                    <sl-icon
-                      name="x"
-                      style="vertical-align: -4px; font-size: 20px; color: var(--sl-color-danger-400);"
-                    ></sl-icon>
-                  </sl-button>
+                  ${status === 'deleting'
+                    ? html` <sl-spinner
+                        style="--indicator-color: var(--sl-color-danger-600); --track-color: var(--sl-color-danger-400); font-size: 24px; --track-width: 5px; vertical-align: -8px"
+                      ></sl-spinner>`
+                    : html`<sl-button
+                        class="huge"
+                        variant="default"
+                        circle
+                        @click="${() => {
+                          this.deleteDocument(doc, docIndex);
+                        }}"
+                      >
+                        <sl-icon
+                          name="x"
+                          style="vertical-align: -5px; font-size: 20px; color: var(--sl-color-danger-400);"
+                        ></sl-icon>
+                      </sl-button>`}
                 </sl-tooltip>
               </sl-card>
             `;

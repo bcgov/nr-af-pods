@@ -4,10 +4,10 @@ export function getCurrentTimeUTC() {
   const day = now.getUTCDate();
   const year = now.getUTCFullYear();
   const hours = now.getUTCHours();
-  const minutes = now.getUTCMinutes();
-  const seconds = now.getUTCSeconds();
+  const minutes = String(now.getUTCMinutes()).padStart(2, '0');
+  const seconds = String(now.getUTCSeconds()).padStart(2, '0');
   const meridiem = hours < 12 ? 'AM' : 'PM';
   const formattedHours = hours % 12 || 12; // Convert to 12-hour format
 
-  return `${month}/${day}/${year} ${formattedHours}:${minutes}:${seconds} ${meridiem} UTC`;
+  return `${day}/${month}/${year} ${formattedHours}:${minutes}:${seconds} ${meridiem} UTC`;
 }
