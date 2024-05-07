@@ -59,7 +59,8 @@ export function renderCustomComponent(params) {
 
   logger.info({
     fn: renderCustomComponent,
-    message: 'Successfully added expense report grid',
+    message: `Successfully added custom component: ${customElementTag}`,
+    data: { params },
   });
 
   const existingValue = $(`#${fieldId}`).val();
@@ -68,6 +69,7 @@ export function renderCustomComponent(params) {
     logger.info({
       fn: renderCustomComponent,
       message: `Setting existing value for mappedValueKey: ${mappedValueKey} to existingValue: ${existingValue}`,
+      data: { params },
     });
     customElement.setAttribute(`${mappedValueKey}`, existingValue);
     if (initValuesFn) {

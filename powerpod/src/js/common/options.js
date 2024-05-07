@@ -1,5 +1,12 @@
-import { Environment, Form, Hosts } from './constants.js';
+import { Environment, Form, Hosts, POWERPOD } from './constants.js';
 import * as utils from './utils.js';
+
+POWERPOD.options = {
+  getOptions,
+  setOptions,
+  setOption,
+  getOriginals,
+};
 
 // TODO: Update for production
 const ALLOWED_ENVS = [Environment.DEV, Environment.TEST, Environment.PROD];
@@ -21,10 +28,10 @@ export const ENV_LOG_LEVEL = {
 };
 const defaultOptions = {
   autoinit: true,
-  env: Environment.DEV,
+  env: Environment.PROD,
   logging: true,
   // TODO: implement log level filtering
-  logLevel: ENV_LOG_LEVEL[Environment.DEV],
+  logLevel: ENV_LOG_LEVEL[Environment.PROD],
   form: null, // if null, will try to auto-detect the form
   allowedHosts: [...ALLOWED_HOSTS],
   allowedPaths: [...ALLOWED_PATHS],
