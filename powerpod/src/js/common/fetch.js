@@ -3,19 +3,6 @@ import { Logger } from './logger.js';
 
 const logger = Logger('common/fetch');
 
-POWERPOD.fetch = {
-  getEnvVarsData,
-  getApplicationFormData,
-  getClaimFormData,
-  getMunicipalData,
-  getExpenseTypeData,
-  getOrgbookAutocompleteData,
-  getOrgbookTopicData,
-  getOrgbookCredentialsData,
-  getDocuments,
-  CACHED_RESULTS: {},
-};
-
 export const ENDPOINT_URL = {
   get_env_vars_data:
     "/_api/environmentvariabledefinitions?$filter=contains(schemaname,'quartech_')&$select=schemaname,environmentvariabledefinitionid&$expand=environmentvariabledefinition_environmentvariablevalue($select=value)",
@@ -27,13 +14,39 @@ export const ENDPOINT_URL = {
     '/_api/quartech_municipals?$select=quartech_name,quartech_municipalid&$expand=quartech_RegionalDistrict($select=quartech_name,quartech_regionaldistrictid,_quartech_censusofagricultureregion_value)',
   get_expense_type_data:
     '/_api/quartech_expensetypes?$select=quartech_expensetypeid,quartech_expensetype',
-  get_documents: (id) =>
-    `/_api/annotations?$filter=_objectid_value%20eq%20${id}&$select=filename,filesize,modifiedon,subject,isdocument,objecttypecode`,
+  get_documents: (formId) =>
+    `/_api/annotations?$filter=_objectid_value%20eq%20${formId}&$select=filename,filesize,modifiedon,subject,isdocument,objecttypecode,annotationid,mimetype`,
+  get_document: (annotationId) =>
+    `/_api/annotations?$filter=annotationid%20eq%20${annotationId}&$select=filename,filesize,modifiedon,subject,isdocument,objecttypecode,documentbody,annotationid`,
+  post_document: `/_api/annotations`,
+  delete_document: (annotationId) => `/_api/annotations(${annotationId})`,
+  get_contact: (contactId) =>
+    `/_api/contacts?$filter=contactid%20eq%20${contactId}&$select=fullname`,
   get_orgbook_autocomplete_data:
     'https://orgbook.gov.bc.ca/api/v3/search/autocomplete',
   get_orgbook_topic_data: 'https://orgbook.gov.bc.ca/api/v4/search/topic',
   get_orgbook_credentials_data: (topicId) =>
     `https://orgbook.gov.bc.ca/api/v4/topic/${topicId}/credential-set`,
+};
+
+POWERPOD.fetch = {
+  fetch,
+  CACHED_RESULTS: {},
+  ENDPOINT_URL,
+  getEnvVarsData,
+  getApplicationFormData,
+  getClaimFormData,
+  getMunicipalData,
+  getExpenseTypeData,
+  getOrgbookAutocompleteData,
+  getOrgbookTopicData,
+  getOrgbookCredentialsData,
+  getDocumentsData,
+  getDocumentData,
+  postDocumentData,
+  deleteDocumentData,
+  getContactData,
+  getRequestVerificationToken,
 };
 
 const CONTENT_TYPE = {
@@ -51,6 +64,24 @@ const setODataHeaders = (XMLHttpRequest) => {
   XMLHttpRequest.setRequestHeader('Prefer', 'odata.include-annotations="*"');
 };
 
+const setReqVerificationHeaderToken = (XMLHttpRequest) => {
+  const requestVerificationToken = getRequestVerificationToken();
+  if (!requestVerificationToken) {
+    logger.warn({
+      fn: setReqVerificationHeaderToken,
+      message: 'Failed to set request verification token header',
+    });
+  }
+  XMLHttpRequest.setRequestHeader(
+    '__RequestVerificationToken',
+    requestVerificationToken
+  );
+  logger.info({
+    fn: setReqVerificationHeaderToken,
+    message: `Successfully set header __RequestVerificationToken=${requestVerificationToken}`,
+  });
+};
+
 // Note: Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
 // async: false with jqXHR ($.Deferred) is deprecated; you must use the success/error/complete
 // callback options instead of the corresponding methods of the jqXHR object such as jqXHR.done().
@@ -60,29 +91,40 @@ const setODataHeaders = (XMLHttpRequest) => {
 export async function fetch(params) {
   const {
     method = 'GET',
-    url,
+    url: endpointUrl,
     beforeSend,
     onSuccess,
     onError,
     async = true,
     data = {},
+    processData = true, // whether to automatically convert data obj to application/x-www-form-urlencoded
     datatype, // request data type
     contentType, // expected response content type
     includeODataHeaders = false,
     skipCache = false,
     returnData = false, // return the data directly, skips having to pass onSuccess handler
+    addRequestVerificationToken = false, // needed for post reqs
   } = params;
   // check cache if used
   const paramsToHash = params;
   delete paramsToHash.skipCache;
   const reqHash = JSON.stringify(paramsToHash);
+  let url = endpointUrl;
+  if (window.location.hostname === 'localhost') {
+    url = 'https://af-pods-dev.powerappsportals.com' + endpointUrl;
+  }
   logger.info({
     fn: fetch,
     message: 'Starting fetch request...',
-    data: { ...params, fetch: POWERPOD.fetch },
+    data: { ...params, fetch: POWERPOD.fetch, url },
   });
-  if (!skipCache && POWERPOD.fetch.CACHED_RESULTS[reqHash]) {
-    const { data, textStatus, xhr } = POWERPOD.fetch.CACHED_RESULTS[reqHash];
+  // caching is only supported for GET requests
+  if (
+    method === 'GET' &&
+    !skipCache &&
+    POWERPOD.fetch.CACHED_RESULTS[reqHash]
+  ) {
+    const { data, textStatus, jqXHR } = POWERPOD.fetch.CACHED_RESULTS[reqHash];
     logger.info({
       fn: fetch,
       message: `returning cached data for url: ${url}`,
@@ -91,8 +133,13 @@ export async function fetch(params) {
         params,
       },
     });
-    if (returnData) return Promise.resolve(data);
-    return Promise.resolve(onSuccess(data, textStatus, xhr));
+    if (returnData)
+      return Promise.resolve({
+        data,
+        textStatus,
+        jqXHR,
+      });
+    return Promise.resolve(onSuccess(data, textStatus, jqXHR));
   }
   // @ts-ignore
   return $.ajax({
@@ -101,12 +148,16 @@ export async function fetch(params) {
     contentType,
     datatype,
     data,
+    processData,
     async,
     beforeSend: function (XMLHttpRequest) {
+      if (addRequestVerificationToken) {
+        setReqVerificationHeaderToken(XMLHttpRequest);
+      }
       if (includeODataHeaders) setODataHeaders(XMLHttpRequest);
       if (beforeSend && typeof beforeSend === 'function') beforeSend();
     },
-    success: function (data, textStatus, xhr) {
+    success: function (data, textStatus, jqXHR) {
       logger.info({
         fn: fetch,
         message: 'success handler called',
@@ -116,7 +167,7 @@ export async function fetch(params) {
         },
       });
       // always cache data
-      POWERPOD.fetch.CACHED_RESULTS[reqHash] = { data, textStatus, xhr };
+      POWERPOD.fetch.CACHED_RESULTS[reqHash] = { data, textStatus, jqXHR };
 
       if (returnData) {
         logger.info({
@@ -130,32 +181,52 @@ export async function fetch(params) {
         return;
       }
       if (onSuccess && typeof onSuccess === 'function') {
-        onSuccess(data, textStatus, xhr);
+        onSuccess(data, textStatus, jqXHR);
       }
     },
-    error: function (xhr, textStatus, errorThrown) {
+    error: function (jqXHR, textStatus, errorThrown) {
       logger.error({
         fn: fetch,
-        message: xhr?.responseText,
-        data: { xhr, textStatus, errorThrown },
+        message: jqXHR?.responseText,
+        data: { jqXHR, textStatus, errorThrown },
       });
       if (onError && typeof onError === 'function') {
-        onError(xhr, textStatus, errorThrown);
+        onError(jqXHR, textStatus, errorThrown);
       }
     },
-  }).then((data) => {
-    if (returnData && data) {
+  }).then((data, textStatus, jqXHR) => {
+    if (returnData) {
       logger.info({
         fn: fetch,
         message: `returning data for url: ${url}`,
         data: {
           data,
+          textStatus,
+          jqXHR,
           params,
         },
       });
-      return Promise.resolve(data);
+      return Promise.resolve({ data, textStatus, jqXHR });
     }
   });
+}
+
+function getRequestVerificationToken() {
+  const requestVerificationToken = $(
+    'input[name=__RequestVerificationToken]'
+  ).val();
+  if (!requestVerificationToken) {
+    logger.warn({
+      fn: getRequestVerificationToken,
+      message: 'Could not find input[name=__RequestVerificationToken]',
+    });
+    return;
+  }
+  logger.info({
+    fn: getRequestVerificationToken,
+    message: `Successfully found __RequestVerificationToken=${requestVerificationToken}`,
+  });
+  return requestVerificationToken;
 }
 
 export async function getEnvVarsData({ ...options } = {}) {
@@ -268,9 +339,65 @@ export async function getOrgbookCredentialsData({ topicId, ...options }) {
   });
 }
 
-export async function getDocuments({ id, ...options }) {
+export async function getDocumentsData({ formId, ...options }) {
   return fetch({
-    url: ENDPOINT_URL.get_documents(id),
+    url: ENDPOINT_URL.get_documents(formId),
+    returnData: true,
+    skipCache: true,
+    ...options,
+  });
+}
+
+export async function getDocumentData({ annotationId, ...options }) {
+  return fetch({
+    url: ENDPOINT_URL.get_document(annotationId),
+    returnData: true,
+    ...options,
+  });
+}
+
+export async function postDocumentData({
+  formId,
+  subject,
+  filename,
+  documentbody,
+  mimetype,
+  ...options
+}) {
+  return fetch({
+    method: 'POST',
+    url: ENDPOINT_URL.post_document,
+    datatype: DATATYPE.json,
+    includeODataHeaders: true,
+    addRequestVerificationToken: true,
+    processData: false,
+    returnData: true,
+    data: JSON.stringify({
+      subject,
+      filename,
+      objecttypecode: 'quartech_claim',
+      'objectid_quartech_claim@odata.bind': `/quartech_claims(${formId})`,
+      documentbody,
+      mimetype,
+    }),
+    ...options,
+  });
+}
+
+export async function deleteDocumentData({ annotationId, ...options }) {
+  return fetch({
+    method: 'DELETE',
+    url: ENDPOINT_URL.delete_document(annotationId),
+    addRequestVerificationToken: true,
+    returnData: true,
+    ...options,
+  });
+}
+
+export async function getContactData({ contactId, ...options }) {
+  return fetch({
+    url: ENDPOINT_URL.get_contact(contactId),
+    returnData: true,
     ...options,
   });
 }

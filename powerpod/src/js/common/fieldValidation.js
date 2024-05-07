@@ -228,19 +228,9 @@ export function validateRequiredField({
     case HtmlElementType.FileInput:
       isEmptyField =
         // @ts-ignore
-        $(`#${fieldName}_AttachFile`)?.val()?.length === 0 &&
-        // @ts-ignore
         $(`#${fieldName}`)?.val()?.length === 0;
       errorMessage =
         'IS REQUIRED. Please ensure at least one file per required upload field is confirmed & uploaded successfully.';
-
-      const formType = getFormType();
-      if (formType === Form.Claim) {
-        isEmptyField = !validateFilesUploadedForField(
-          fieldName,
-          POWERPOD.documents.docData
-        );
-      }
       break;
     case HtmlElementType.MultiOptionSet:
       isEmptyField = $(`li[id*='${fieldName}-selected-item-']`)?.length == 0;

@@ -34,7 +34,6 @@ class TextField extends LitElement {
   }
 
   handleEmitEvent(event: Event) {
-    console.log
     const { target } = event;
     if (target) this.inputValue = (target as HTMLSelectElement).value ?? '';
     this.emitEvent();

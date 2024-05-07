@@ -1,0 +1,35 @@
+{
+  "data": {
+    "@odata.context": "https://af-pods-dev.powerappsportals.com/_api/$metadata#contacts(fullname)",
+    "@Microsoft.Dynamics.CRM.totalrecordcount": -1,
+    "@Microsoft.Dynamics.CRM.totalrecordcountlimitexceeded": false,
+    "@Microsoft.Dynamics.CRM.globalmetadataversion": "26023779",
+    "value": [
+      {
+        "@odata.etag": "W/\"22531089\"",
+        "fullname": "MihaiNRM Listov",
+        "contactid": "e3e89cb2-1f4c-ee11-be6f-002248ae080f"
+      }
+    ]
+  },
+  "textStatus": "success",
+  "jqXHR": {
+    "readyState": 4,
+    "responseText": "{\r\n  \"@odata.context\": \"https://af-pods-dev.powerappsportals.com/_api/$metadata#contacts(fullname)\",\r\n  \"@Microsoft.Dynamics.CRM.totalrecordcount\": -1,\r\n  \"@Microsoft.Dynamics.CRM.totalrecordcountlimitexceeded\": false,\r\n  \"@Microsoft.Dynamics.CRM.globalmetadataversion\": \"26023779\",\r\n  \"value\": [\r\n    {\r\n      \"@odata.etag\": \"W/\\\"22531089\\\"\",\r\n      \"fullname\": \"MihaiNRM Listov\",\r\n      \"contactid\": \"e3e89cb2-1f4c-ee11-be6f-002248ae080f\"\r\n    }\r\n  ]\r\n}",
+    "responseJSON": {
+      "@odata.context": "https://af-pods-dev.powerappsportals.com/_api/$metadata#contacts(fullname)",
+      "@Microsoft.Dynamics.CRM.totalrecordcount": -1,
+      "@Microsoft.Dynamics.CRM.totalrecordcountlimitexceeded": false,
+      "@Microsoft.Dynamics.CRM.globalmetadataversion": "26023779",
+      "value": [
+        {
+          "@odata.etag": "W/\"22531089\"",
+          "fullname": "MihaiNRM Listov",
+          "contactid": "e3e89cb2-1f4c-ee11-be6f-002248ae080f"
+        }
+      ]
+    },
+    "status": 200,
+    "statusText": "OK"
+  }
+}

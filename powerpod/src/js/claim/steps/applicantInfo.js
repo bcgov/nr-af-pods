@@ -9,7 +9,7 @@ import { Logger } from '../../common/logger.js';
 import { getProgramAbbreviation } from '../../common/program.ts';
 import { configureFields } from '../../common/fieldConfiguration.js';
 
-const logger = new Logger('claim/steps/applicantInfo');
+const logger = Logger('claim/steps/applicantInfo');
 
 export function customizeApplicantInfoStep() {
   configureFields();

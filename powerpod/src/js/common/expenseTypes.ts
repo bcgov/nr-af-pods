@@ -1,7 +1,7 @@
 import { getExpenseTypeData } from './fetch';
 import { Logger } from './logger';
 
-const logger = new Logger('common/expenseTypes');
+const logger = Logger('common/expenseTypes');
 
 type ExpenseTypesDataBlob = {
   value: Array<ExpenseTypeBlob>;
@@ -19,7 +19,7 @@ type RowItem = {
 export type ExpenseType = string;
 
 export async function getExpenseTypes() {
-  const data = await getExpenseTypeData();
+  const { data } = await getExpenseTypeData();
 
   if (data) {
     logger.info({

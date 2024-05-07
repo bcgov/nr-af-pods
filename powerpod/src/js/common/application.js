@@ -1,7 +1,7 @@
 import { ApplicationPaths, ClaimPaths, Form, win } from './constants.js';
 import { Logger } from './logger.js';
 
-const logger = new Logger('common/application');
+const logger = Logger('common/application');
 
 export function getFormType() {
   const { pathname: path } = win.location;

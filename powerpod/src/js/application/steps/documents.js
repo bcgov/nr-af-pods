@@ -2,7 +2,7 @@ import { configureFields } from '../../common/fieldConfiguration.js';
 import { Logger } from '../../common/logger.js';
 import { getProgramAbbreviation } from '../../common/program.ts';
 
-const logger = new Logger('steps/documents');
+const logger = Logger('steps/documents');
 
 export function customizeDocumentsStep() {
   logger.info({

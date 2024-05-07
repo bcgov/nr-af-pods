@@ -2,7 +2,7 @@ import { POWERPOD, FormStep, TabDisplayNames, doc } from './constants.js';
 import { htmlDecode, onDocumentReadyState } from './html.js';
 import { Logger } from './logger.js';
 
-const logger = new Logger('common/program');
+const logger = Logger('common/program');
 
 POWERPOD.program = {
   programId: null,

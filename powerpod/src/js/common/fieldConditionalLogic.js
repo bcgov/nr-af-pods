@@ -4,7 +4,7 @@ import { validateStepFields } from './fieldValidation.js';
 import { Logger } from './logger.js';
 import { getControlValue, showFieldRow } from './html.js';
 
-const logger = new Logger('common/fieldConditionalLogic');
+const logger = Logger('common/fieldConditionalLogic');
 
 export function initializeVisibleIf(name, required, visibleIf) {
   const {

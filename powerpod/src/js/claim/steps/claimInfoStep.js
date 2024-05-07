@@ -23,8 +23,9 @@ import 'fa-icons';
 import { getTotalExpenseAmount } from '../../common/expenseTypes.ts';
 import { Logger } from '../../common/logger.js';
 import { filterEmptyRows } from '../../common/utils.js';
+import { renderCustomComponent } from '../../common/components.ts';
 
-const logger = new Logger('claim/steps/claimInfoStep');
+const logger = Logger('claim/steps/claimInfoStep');
 
 export function customizeClaimInfoStep() {
   configureFields();
@@ -298,20 +299,6 @@ function verifyTotalSumEqualsRequestedAmount() {
 }
 
 function addExpenseReportGrid() {
-  logger.info({
-    fn: addExpenseReportGrid,
-    message: 'Start adding expense report grid',
-  });
-  const eligibleExpensesId = 'quartech_eligibleexpenses';
-  if (!$(`#${eligibleExpensesId}`)) {
-    logger.error({
-      fn: addExpenseReportGrid,
-      message:
-        'Failed to add expense report grid, could not find quartech_eligibleexpenses',
-    });
-    return;
-  }
-  const fieldControlDiv = $(`#${eligibleExpensesId}`).closest('div');
   const columns = [
     {
       id: 'type',
@@ -338,53 +325,42 @@ function addExpenseReportGrid() {
     },
   ];
 
-  const expenseReportTableElement = doc.createElement('expense-report-table');
-  expenseReportTableElement.setAttribute('primary', 'true');
-  expenseReportTableElement.setAttribute('columns', JSON.stringify(columns));
-  expenseReportTableElement.setAttribute('rows', JSON.stringify(rows));
-
-  $(fieldControlDiv)?.before(expenseReportTableElement);
-
-  // hide dynamics field
-  $(`#${eligibleExpensesId}`).css({ display: 'none' });
-
-  // fetch pre-selected options, if any
-  const existingEligibleExpenses = $(`#${eligibleExpensesId}`).val();
-
-  // @ts-ignore
-  if (
-    existingEligibleExpenses?.length > 0 &&
-    existingEligibleExpenses !== '[]'
-  ) {
-    // @ts-ignore
-    expenseReportTableElement.setAttribute('rows', existingEligibleExpenses);
-    setFieldValue(
-      'quartech_totalsumofreportedexpenses',
-      // @ts-ignore
-      getTotalExpenseAmount(JSON.parse(existingEligibleExpenses))
-    );
-    verifyTotalSumEqualsRequestedAmount();
-  }
-
-  expenseReportTableElement.addEventListener(
-    'onChangeExpenseReportData',
-    (e) => {
+  const expenseReportTableElement = renderCustomComponent({
+    fieldId: 'quartech_eligibleexpenses',
+    customElementTag: 'expense-report-table',
+    attributes: {
+      primary: true,
+      columns: JSON.stringify(columns),
+      rows: JSON.stringify(rows),
+    },
+    customEvent: 'onChangeExpenseReportData',
+    customEventHandler: (event, customElement) => {
       logger.info({
         fn: customizeClaimInfoStep,
         message: 'onChangeExpenseReportData event listener triggered',
-        data: {
-          e,
-        },
+        data: { event, customElement },
       });
       // @ts-ignore
-      rows = JSON.parse(e.detail.value);
-      expenseReportTableElement.setAttribute('rows', JSON.stringify(rows));
-      setFieldValue(eligibleExpensesId, JSON.stringify(filterEmptyRows(rows)));
+      rows = JSON.parse(event.detail.value);
+      customElement.setAttribute('rows', JSON.stringify(rows));
+      setFieldValue(
+        'quartech_eligibleexpenses',
+        JSON.stringify(filterEmptyRows(rows))
+      );
       // @ts-ignore
-      setFieldValue('quartech_totalsumofreportedexpenses', e.detail.total);
+      setFieldValue('quartech_totalsumofreportedexpenses', event.detail.total);
       verifyTotalSumEqualsRequestedAmount();
-    }
-  );
+    },
+    mappedValueKey: 'rows',
+    initFn: (existingEligibleExpenses) => {
+      setFieldValue(
+        'quartech_totalsumofreportedexpenses',
+        // @ts-ignore
+        getTotalExpenseAmount(JSON.parse(existingEligibleExpenses))
+      );
+      verifyTotalSumEqualsRequestedAmount();
+    },
+  });
 
   logger.info({
     fn: addExpenseReportGrid,

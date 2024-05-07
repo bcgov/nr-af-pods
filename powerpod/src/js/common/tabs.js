@@ -2,7 +2,7 @@
 import { Logger } from './logger.js';
 import { FormStep, TabDisplayNames, TabNames } from './constants.js';
 
-const logger = new Logger('common/tabs');
+const logger = Logger('common/tabs');
 
 export function hideTabs(hiddenTabsNames) {
   if (!hiddenTabsNames || !hiddenTabsNames.length) {

@@ -32,8 +32,8 @@ export function getEnv() {
 }
 
 export async function getEnvVars() {
-  const data = await getEnvVarsData();
-  
+  const { data } = await getEnvVarsData();
+
   if (data) {
     const res = processEnvVarsData(data);
     logger.info({
