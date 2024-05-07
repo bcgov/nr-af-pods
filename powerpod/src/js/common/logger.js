@@ -1,46 +1,55 @@
-import { Environment, win } from './constants.js';
+import { Environment, win, POWERPOD } from './constants.js';
 import { getOptions } from './options.js';
 
-const LogType = {
+POWERPOD.logger = {
+  Logger,
+  log,
+};
+
+const Type = {
   INFO: 'info',
   WARN: 'warn',
   ERROR: 'error',
 };
 
-const LogLevel = {
-  [LogType.INFO]: 10,
-  [LogType.WARN]: 20,
-  [LogType.ERROR]: 90,
+const Level = {
+  [Type.INFO]: 10,
+  [Type.WARN]: 20,
+  [Type.ERROR]: 90,
 };
 
-function log({ namespace, fn, level, message, data }) {
+function log({ namespace, fn, type, message, data }) {
+  const logLevel = Level[type];
   const { logging: enableLogging, logLevel: envLogLevel } = getOptions();
 
+  // if logging is disabled entirely, exit early
+  if (!enableLogging) return;
+
   // if level of requested log is less than log level of env, do not log
-  if (level < envLogLevel) return;
+  if (logLevel < envLogLevel) return;
 
-  if (!win.console || !win.console[level])
+  if (!win.console || !win.console[type]) {
     win.console.error('[POWERPOD]: issue using logger');
+    return;
+  }
 
-  const logFn = win.console[level]; // default log
+  const logFn = win.console[type]; // default log
 
   let prefix = '';
   prefix += namespace ? ` (${namespace})` : '';
   prefix += fn && typeof fn === 'function' && fn.name ? ` ${fn.name}` : '';
 
-  if (enableLogging) {
-    logFn('[POWERPOD]' + prefix + ': ' + message);
-    if (data && typeof data === 'object') logFn(data);
-  }
+  logFn('[POWERPOD]' + prefix + ': ' + message);
+  if (data && typeof data === 'object') logFn(data);
 }
 
 export function Logger(namespace = null) {
   return {
     info: ({ fn = null, message, data = null }) =>
-      log({ namespace, fn, level: LogType.INFO, message, data }),
+      log({ namespace, fn, type: Type.INFO, message, data }),
     error: ({ fn = null, message, data = null }) =>
-      log({ namespace, fn, level: LogType.ERROR, message, data }),
+      log({ namespace, fn, type: Type.ERROR, message, data }),
     warn: ({ fn = null, message, data = null }) =>
-      log({ namespace, fn, level: LogType.WARN, message, data }),
+      log({ namespace, fn, type: Type.WARN, message, data }),
   };
 }

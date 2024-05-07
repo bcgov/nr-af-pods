@@ -105,4 +105,6 @@ export const POWERPOD = {
   docUtils: {},
   fetch: {},
   dynamics: {},
+  options: {},
+  logger: {},
 };

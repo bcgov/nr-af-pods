@@ -124,7 +124,6 @@ class FileUpload extends LitElement {
 
   firstUpdated(props: Map<string, string>): void {
     if (this.dropElement) {
-      console.log('adding drag & drop handlers');
       // Prevent default drag behaviors
       ['dragenter', 'dragover', 'dragleave', 'drop'].forEach((eventName) => {
         this.dropElement?.addEventListener(
