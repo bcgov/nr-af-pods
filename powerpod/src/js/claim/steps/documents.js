@@ -4,9 +4,7 @@ import { getProgramAbbreviation } from '../../common/program.ts';
 import { configureFields } from '../../common/fieldConfiguration.js';
 import { setFieldValue } from '../../common/html.js';
 import { setFieldReadOnly } from '../../common/fieldValidation.js';
-import {
-  customizeDocumentsControls,
-} from '../documents.js';
+import { customizeDocumentsControls } from '../documents.js';
 import { CLAIM_FILE_UPLOAD_FIELDS } from '../../common/documents.ts';
 
 export async function customizeDocumentsStep() {
@@ -19,8 +17,45 @@ export async function customizeDocumentsStep() {
   ) {
     if (!document.querySelector('#supportingDocumentationNote')) {
       const supportingDocumentationNoteHtmlContent = `
+      <style>
+        sl-tooltip::part(body) {
+          font-size: 1.2rem;
+        }
+      </style>
       <div id="supportingDocumentationNote" style="padding-bottom: 20px;">
-        Please Choose or Drag & Drop files to the grey box below to upload the following documents as attachments (as applicable). To upload multiple files into the same section, you must select all files at the same time. An easy way to do this is to first save the files in the same location on your device, and then select all files and drag and drop them into the grey field.
+        Please choose or drag & drop files to the box below to upload the following documents as attachments (as applicable).
+        <br /><br />
+        You can upload a file up to 15MB each in the 
+        <sl-tooltip>
+          <div slot="content">
+            Text/Document Files
+            <ul>
+              <li>CSV (Comma Separated Values)</li>
+              <li>DOC (Microsoft Word Document)</li>
+              <li>DOCX (Microsoft Word Open XML Document)</li>
+              <li>ODT (Open Document Text File)</li>
+              <li>PDF (Portable Document Format File)</li>
+            </ul>
+
+            Spreadsheet Files
+            <ul>
+              <li>XLS (Excel Spreadsheet)</li>
+              <li>XLSX (Microsoft Excel Open XML Spreadsheet)</li>
+              <li>ODS (Open Document Spreadsheet File)</li>
+            </ul>
+
+            Image Files
+            <ul>
+              <li>GIF (Graphical Interchange Format File)</li>
+              <li>JPEG (JPEG Image File)</li>
+              <li>JPG (JPEG Image File)</li>
+              <li>PNG (Portable Network Graphic)</li>
+              <li>SVG (Scalable Vector Graphics File)</li>
+              <li>TIF (Tagged Image File)</li>
+            </ul>
+          </div>
+          <a href="" style="font-size: 15px">supported file formats</a>.
+        </sl-tooltip>
       </div>`;
 
       $('fieldset[aria-label="Supporting Documents"] > legend').after(
