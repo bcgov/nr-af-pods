@@ -1,9 +1,8 @@
 {
-  "tags": ["Claim", "ABBP1"],
-  "version": "1.0.2",
-  "name": "ABPP - Agri-Business and Leadership Development",
-  "abbreviation": "ABPP1",
-  "hiddenSteps": "",
+  "tags": ["Claim", "ABPP2"],
+  "version": "1.0.4",
+  "name": "ABPP - Business Planning, Preparedness, and Disaster Recovery",
+  "abbreviation": "ABPP2",
   "sections": [
     {
       "name": "ApplicantInfoStep",
@@ -49,15 +48,11 @@
       "name": "ProjectResultsStep",
       "fields": [
         {
-          "name": "quartech_businessmanagementtrainingparticipants",
-          "label": "How many people participated in the training funded by this project, including the applicant?",
-          "required": true,
-          "format": "number",
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThan"
-          }
+          "name": "quartech_projectenddate",
+          "label": "Project End Date",
+          "elementType": "DatePicker",
+          "tooltipText": "If the project is not yet completed, please provide an estimated project end date",
+          "required": true
         },
         {
           "name": "quartech_adoptedprojectresults",
@@ -92,6 +87,12 @@
             "value": "0",
             "comparison": "greaterThan"
           }
+        },
+        {
+          "name": "quartech_groupprojectsupportingsectorcapacitybuilding",
+          "label": "Is your project a group project that supports sector capacity building?",
+          "required": true,
+          "elementType": "DropdownSelect"
         }
       ]
     },
@@ -144,14 +145,26 @@
       "name": "DocumentsStep",
       "fields": [
         {
+          "name": "quartech_completedmeetingandserviceprovisionlog",
+          "label": "Completed meeting and service provision log",
+          "required": true,
+          "elementType": "FileInput"
+        },
+        {
+          "name": "quartech_copyofconsultantfinalreportorbusinessplan",
+          "label": "Copy of Consultant Final Report or Business plan",
+          "required": true,
+          "elementType": "FileInput"
+        },
+        {
           "name": "quartech_invoices",
-          "label": "Invoice(s) from Learning Provider(s) (as per approved learning action plan)",
+          "label": "Copy of the Consultant's invoice (and travel receipt if applicable)",
           "required": true,
           "elementType": "FileInput"
         },
         {
           "name": "quartech_proofofpayment",
-          "label": "Proof of payment",
+          "label": "Proof of payment of the Consultant's invoice",
           "required": true,
           "elementType": "FileInput"
         }
