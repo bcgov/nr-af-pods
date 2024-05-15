@@ -1,8 +1,33 @@
+import { HtmlElementType } from './constants.js';
+import { Logger } from './logger.js';
+
+const logger = Logger('common/tooltip');
+
 export function setupTooltip(field) {
-  const { name, tooltipText, tooltipTargetElementId } = field;
+  const { name, tooltipText, tooltipTargetElementId, elementType } = field;
 
   if (tooltipText) {
-    const tooltipTargetElement = $(`#${tooltipTargetElementId ?? name}`);
+    let tooltipTargetElement = $(`#${tooltipTargetElementId ?? name}`);
+
+    if (!tooltipTargetElement) {
+      logger.error({
+        fn: setupTooltip,
+        message: 'Could not find tooltipTargetElement',
+        data: { field },
+      });
+    }
+
+    // DatePicker Tooltip doesn't work unless we target parentNode (control div)
+    if (elementType === HtmlElementType.DatePicker) {
+      tooltipTargetElement = tooltipTargetElement.parent();
+    }
+
+    logger.info({
+      fn: setupTooltip,
+      message: `Start configuring tooltip for fieldName: ${name}`,
+      data: { field, tooltipTargetElement },
+    });
+
     tooltipTargetElement.attr('data-content', tooltipText);
     tooltipTargetElement.attr('data-placement', 'bottom');
     tooltipTargetElement.attr('data-html', 'true');

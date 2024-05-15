@@ -1,6 +1,6 @@
 {
   "tags": ["Claim", "KTTP", "KTTP-SMEA", "KTTP-StreamTwo", "KTTP-Stream3"],
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Claim form field config used for all KTTP streams",
   "hiddenSteps": "",
   "sections": [
@@ -49,7 +49,10 @@
       "fields": [
         {
           "name": "quartech_projectenddate",
-          "label": "Project End Date"
+          "label": "Project End Date",
+          "elementType": "DatePicker",
+          "tooltipText": "If the project is not yet completed, please provide an estimated project end date",
+          "required": true
         },
         {
           "name": "quartech_trainingcategoryfundedbyproject",

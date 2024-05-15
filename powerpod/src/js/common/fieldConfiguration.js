@@ -78,6 +78,7 @@ export function configureFields() {
       fileTypes, // not currently used anywhere
       visibleIf,
       oneLine,
+      initialValue,
     } = fields[i];
     logger.info({
       fn: configureFields,
@@ -103,7 +104,9 @@ export function configureFields() {
       // continuing for type SectionTitle because nothing else is supported for this field type
       continue;
     }
-    setupTooltip({ name, tooltipText, tooltipTargetElementId });
+    if (tooltipText) {
+      setupTooltip({ name, tooltipText, tooltipTargetElementId, elementType });
+    }
     if (label) {
       const obj = $(`#${name}_label`)?.text(label);
       obj?.html(obj?.html()?.replace(/\n/g, '<br/>'));
@@ -127,6 +130,9 @@ export function configureFields() {
     }
     if (hidden) {
       hideFieldByFieldName(name, validateStepFields(stepName), doNotBlank);
+    }
+    if (initialValue) {
+      setFieldValue(name, initialValue);
     }
     // max characters
     if (maxLength) {
