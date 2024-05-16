@@ -1,6 +1,6 @@
 {
   "tags": ["Global", "ALL", "Application", "StaffPortal"],
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Global JSON config used in Applications",
   "FieldsConfig": {
     "programs": [
@@ -230,6 +230,7 @@
       }
     ]
   },
+  "AllowedDocumentsTooltipText": "Text/Document Files<br><ul><li>CSV (Comma Separated Values)</li><li>DOC (Microsoft Word Document)</li><li>DOCX (Microsoft Word Open XML Document)</li><li>ODT (Open Document Text File)</li><li>PDF (Portable Document Format File)</li></ul><br>Spreadsheet Files<ul><li>XLS (Excel Spreadsheet)</li><li>XLSX (Microsoft Excel Open XML Spreadsheet)</li><li>ODS (Open Document Spreadsheet File)</li></ul><br>Image Files<br><ul><li>GIF (Graphical Interchange Format File)</li><li>JPEG (JPEG Image File)</li><li>JPG (JPEG Image File)</li><li>PNG (Portable Network Graphic)</li><li>SVG (Scalable Vector Graphics File)</li><li>TIF (Tagged Image File)</li></ul>",
   "TypeOfBusiness_ToolTips": {
     "255550001": {
       "Option": "Primary Producer",
