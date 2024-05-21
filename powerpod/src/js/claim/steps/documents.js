@@ -74,18 +74,6 @@ function addDocumentsStepText() {
     $('fieldset[aria-label="Supporting Documents"] > legend').after(
       supportingDocumentationNoteHtmlContent
     );
-
-    const beforeContinuingNoteHtmlContent = `
-    <div id="beforeContinuingNote" style="padding-bottom: 20px;">
-      Please ensure you have the correct files before clicking “Next”. If you move to the next stage of the Claim for Payment form you can no longer delete uploaded files. However, you can always add new files.<br />
-      <br />
-      If you have moved to the next stage and then wish to change an uploaded file, simply return to the document submission and upload the replacement file as an additional file. Give the file a name with an indication that it is a replacement (e.g. "Budget NEW.xls").
-    </div>
-  `;
-
-    $('fieldset[aria-label="Supporting Documents"]').after(
-      beforeContinuingNoteHtmlContent
-    );
   }
 }
 
