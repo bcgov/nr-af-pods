@@ -1,3 +1,4 @@
+import { POWERPOD } from '../common/constants.js';
 import PubSub from '../common/pubsub.js';
 
 export default class Store {
@@ -34,7 +35,11 @@ export default class Store {
         state[key] = value;
 
         // Trace out to the console. This will be grouped by the related action
-        console.log(`stateChange: ${key}: ${value}`);
+        if (typeof value === 'object') {
+          console.log(`stateChange: ${key}: ${JSON.stringify(value)}`);
+        } else {
+          console.log(`stateChange: ${key}: ${value}`);
+        }
 
         // Publish the change event for the components that are listening
         self.events.publish('stateChange', self.state);
@@ -50,6 +55,8 @@ export default class Store {
         return true;
       },
     });
+
+    POWERPOD.state = self.state;
   }
 
   /**

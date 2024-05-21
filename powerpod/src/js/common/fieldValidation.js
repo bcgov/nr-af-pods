@@ -2,7 +2,6 @@ import {
   validateDemographicInfoRequiredFields,
   validateIsConsultantEitherBciaOrCpa,
 } from '../application/validation.js';
-import { validateFilesUploadedForField } from '../claim/documents.js';
 import store from '../store/index.js';
 import { getFormType } from './application.js';
 import {
@@ -61,8 +60,8 @@ export function validateStepFields(stepName, returnString) {
 
   for (let i = 0; i < fields.length; i++) {
     const { name, required, elementType, validation } = fields[i];
+    let errorMsg = '';
     if (required) {
-      let errorMsg = '';
       if (elementType) {
         errorMsg = validateRequiredField({
           fieldName: name,
@@ -77,7 +76,7 @@ export function validateStepFields(stepName, returnString) {
     }
     if (validation?.type === 'numeric') {
       const { value, comparison } = validation;
-      const errorMsg = validateNumericFieldValue(name, value, comparison);
+      errorMsg = validateNumericFieldValue(name, value, comparison) ?? '';
       if (errorMsg && errorMsg.length) {
         validationErrorHtml = validationErrorHtml.concat(errorMsg);
       }
@@ -90,7 +89,7 @@ export function validateStepFields(stepName, returnString) {
         postfix,
         overrideDisplayValue,
       } = validation;
-      const errorMsg = validateFieldLength(
+      errorMsg = validateFieldLength(
         name,
         value,
         comparison,
@@ -130,6 +129,17 @@ export function validateStepFields(stepName, returnString) {
         $(`#${name}_error_message`).css({ display: 'none' });
         $(`#${name}`).css({ border: '' });
       }
+    }
+    if (errorMsg && errorMsg.length > 0) {
+      store.dispatch('addFieldData', {
+        name,
+        error: `${errorMsg}`,
+      });
+    } else {
+      store.dispatch('addFieldData', {
+        name,
+        error: '',
+      });
     }
   }
 

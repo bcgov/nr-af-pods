@@ -9,17 +9,19 @@ import {
   getProgramData,
   getProgramId,
 } from '../common/program.ts';
-import { addNewAppSystemNotice } from '../common/system.js';
 import { validateRequiredFields } from '../common/fieldValidation.js';
 import { customizeApplicantInfoStep } from './steps/applicantInfo.js';
 import { customizeClaimInfoStep } from './steps/claimInfoStep.js';
 import { customizeDeclarationConsentStep } from './steps/declarationConsent.js';
 import { customizeDocumentsStep } from './steps/documents.js';
 import { customizeProjectResultsStep } from './steps/projectResults.js';
+import { preloadRequestVerificationToken } from '../common/dynamics.ts';
+import { addSaveButton } from '../common/saveButton.js';
 
 const logger = Logger('claim/claim');
 
 export function initClaim() {
+  preloadRequestVerificationToken();
   hideFieldsAndSections();
   updatePageForSelectedProgram();
   // addNewAppSystemNotice();
@@ -43,6 +45,8 @@ function updatePageForSelectedProgram() {
   }
 
   const currentStep = getCurrentStep();
+
+  addSaveButton();
 
   if (!programid || currentStep === 'UnknownStep') {
     hideLoadingAnimation();
