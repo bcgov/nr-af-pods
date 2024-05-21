@@ -4,17 +4,14 @@ import {
   getClaimConfigData,
   getGlobalConfigData,
 } from './config.js';
-import {
-  combineElementsIntoOneRowNew,
-  showFieldRow,
-  showFieldsetElement,
-} from './html.js';
+import { combineElementsIntoOneRowNew, showFieldRow } from './html.js';
 import { Logger } from './logger.js';
 import { getProgramAbbreviation } from './program.ts';
 import { POWERPOD, FormStep } from './constants.js';
 import { mergeFieldArrays } from './utils.js';
 import { configureSections } from './sections.js';
 import { hideTabs } from './tabs.js';
+import store from '../store/index.js';
 
 POWERPOD.fields = {
   loading: true,
@@ -130,7 +127,7 @@ export function getFieldsBySectionApplication(stepName, forceRefresh = false) {
     }
     if (s.visibleIf) {
       logger.warn({
-        fn: getFieldsBySectionClaim,
+        fn: getFieldsBySectionApplication,
         message: `NOT showing field since conditionally defined visibleIf, name: ${s.name}`,
       });
       return;
@@ -141,7 +138,6 @@ export function getFieldsBySectionApplication(stepName, forceRefresh = false) {
     });
     showFieldRow(s.name);
   });
-
   localStorage.setItem(
     `fieldsData-${programName}-${stepName}`,
     JSON.stringify(fields)
@@ -203,6 +199,7 @@ export function getFieldsBySectionClaim(stepName, forceRefresh = false) {
       message: `showing field name: ${s.name}`,
     });
     showFieldRow(s.name);
+    store.dispatch('addFieldData', s);
   });
 
   localStorage.setItem(

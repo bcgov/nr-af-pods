@@ -125,3 +125,11 @@ export function sha256(str) {
 export const delay = (delayInms) => {
   return new Promise((resolve) => setTimeout(resolve, delayInms));
 };
+
+export const isObjectEmpty = (objectName) => {
+  return (
+    objectName &&
+    Object.keys(objectName).length === 0 &&
+    objectName.constructor === Object
+  );
+};

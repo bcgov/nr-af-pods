@@ -15,19 +15,20 @@ export const ENDPOINT_URL = {
     '/_api/quartech_municipals?$select=quartech_name,quartech_municipalid&$expand=quartech_RegionalDistrict($select=quartech_name,quartech_regionaldistrictid,_quartech_censusofagricultureregion_value)',
   get_expense_type_data:
     '/_api/quartech_expensetypes?$select=quartech_expensetypeid,quartech_expensetype',
-  get_documents: (formId) =>
+  get_documents_data: (formId) =>
     `/_api/annotations?$filter=_objectid_value%20eq%20${formId}&$select=filename,filesize,modifiedon,subject,isdocument,objecttypecode,annotationid,mimetype`,
-  get_document: (annotationId) =>
+  get_document_data: (annotationId) =>
     `/_api/annotations?$filter=annotationid%20eq%20${annotationId}&$select=filename,filesize,modifiedon,subject,isdocument,objecttypecode,documentbody,annotationid`,
-  post_document: `/_api/annotations`,
-  delete_document: (annotationId) => `/_api/annotations(${annotationId})`,
-  get_contact: (contactId) =>
+  post_document_data: `/_api/annotations`,
+  delete_document_data: (annotationId) => `/_api/annotations(${annotationId})`,
+  get_contact_data: (contactId) =>
     `/_api/contacts?$filter=contactid%20eq%20${contactId}&$select=fullname`,
   get_orgbook_autocomplete_data:
     'https://orgbook.gov.bc.ca/api/v3/search/autocomplete',
   get_orgbook_topic_data: 'https://orgbook.gov.bc.ca/api/v4/search/topic',
   get_orgbook_credentials_data: (topicId) =>
     `https://orgbook.gov.bc.ca/api/v4/topic/${topicId}/credential-set`,
+  patch_quartech_claim_data: (id) => `/_api/quartech_claims(${id})`,
 };
 
 POWERPOD.fetch = {
@@ -47,6 +48,7 @@ POWERPOD.fetch = {
   postDocumentData,
   deleteDocumentData,
   getContactData,
+  patchClaimData,
 };
 
 const CONTENT_TYPE = {
@@ -326,7 +328,7 @@ export async function getOrgbookCredentialsData({ topicId, ...options }) {
 
 export async function getDocumentsData({ formId, ...options }) {
   return fetch({
-    url: ENDPOINT_URL.get_documents(formId),
+    url: ENDPOINT_URL.get_documents_data(formId),
     returnData: true,
     skipCache: true,
     ...options,
@@ -335,7 +337,7 @@ export async function getDocumentsData({ formId, ...options }) {
 
 export async function getDocumentData({ annotationId, ...options }) {
   return fetch({
-    url: ENDPOINT_URL.get_document(annotationId),
+    url: ENDPOINT_URL.get_document_data(annotationId),
     returnData: true,
     ...options,
   });
@@ -351,7 +353,7 @@ export async function postDocumentData({
 }) {
   return fetch({
     method: 'POST',
-    url: ENDPOINT_URL.post_document,
+    url: ENDPOINT_URL.post_document_data,
     datatype: DATATYPE.json,
     includeODataHeaders: true,
     addRequestVerificationToken: true,
@@ -372,7 +374,7 @@ export async function postDocumentData({
 export async function deleteDocumentData({ annotationId, ...options }) {
   return fetch({
     method: 'DELETE',
-    url: ENDPOINT_URL.delete_document(annotationId),
+    url: ENDPOINT_URL.delete_document_data(annotationId),
     addRequestVerificationToken: true,
     returnData: true,
     ...options,
@@ -381,8 +383,24 @@ export async function deleteDocumentData({ annotationId, ...options }) {
 
 export async function getContactData({ contactId, ...options }) {
   return fetch({
-    url: ENDPOINT_URL.get_contact(contactId),
+    url: ENDPOINT_URL.get_contact_data(contactId),
     returnData: true,
+    ...options,
+  });
+}
+
+export async function patchClaimData({ id, fieldData, ...options }) {
+  return fetch({
+    method: 'PATCH',
+    url: ENDPOINT_URL.patch_quartech_claim_data(id),
+    datatype: DATATYPE.json,
+    includeODataHeaders: true,
+    addRequestVerificationToken: true,
+    processData: false,
+    returnData: true,
+    data: JSON.stringify({
+      ...fieldData,
+    }),
     ...options,
   });
 }

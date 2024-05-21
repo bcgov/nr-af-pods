@@ -4,6 +4,34 @@ import { Logger } from '../common/logger.js';
 const logger = Logger('store/mutations');
 
 export default {
+  setFieldData(state, payload) {
+    logger.info({
+      fn: this.setFieldData,
+      message: 'Updated field config in state',
+      data: { state, payload },
+    });
+    state.fields = payload.fields;
+    return state;
+  },
+  addFieldData(state, payload) {
+    logger.info({
+      fn: this.addFieldData,
+      message: 'Add field data to state',
+      data: { state, payload },
+    });
+    let fieldData;
+    if (state.fields[payload.name]) {
+      fieldData = state.fields[payload.name];
+    }
+
+    fieldData = {
+      ...fieldData,
+      ...payload,
+    };
+
+    state.fields[payload.name] = fieldData;
+    return state;
+  },
   setValidationError(state, payload) {
     if (state.validationError === payload) {
       logger.warn({

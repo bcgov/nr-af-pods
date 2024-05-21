@@ -1,3 +1,4 @@
 export default {
-  validationError: ''
+  validationError: '',
+  fields: {},
 };

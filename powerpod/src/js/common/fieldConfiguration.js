@@ -19,13 +19,11 @@ import {
   validateRequiredFields,
   validateStepFields,
 } from './fieldValidation.js';
-import {
-  initOnChange_DependentRequiredField,
-  initializeVisibleIf,
-} from './fieldConditionalLogic.js';
+import { initializeVisibleIf } from './fieldConditionalLogic.js';
 import { useScript } from './scripts.js';
 import { renderCustomComponent } from './components.js';
 import '../components/FileUpload.js';
+import store from '../store/index.js';
 
 const logger = Logger('common/fieldConfiguration');
 
@@ -90,6 +88,7 @@ export function configureFields() {
         message: `could not find existing element for field name: ${name}`,
       });
     }
+    setFieldObserver(name, elementType, format);
     if (hasUpperCase(name)) {
       logger.warn({
         fn: configureFields,
@@ -321,6 +320,111 @@ function setupCanadaPostAddressComplete(fields) {
     message:
       'Canadapost addresscomplete fields not found, no need to load script',
   });
+}
+
+export function updateFieldValue(name, elementType, format) {
+  let value = '';
+  switch (elementType) {
+    case HtmlElementType.FileInput:
+      value = $(`#${name}`)?.val();
+      break;
+    case HtmlElementType.MultiOptionSet:
+      logger.error({
+        fn: updateFieldValue,
+        message: 'updateFieldValue not setup for multi options sets yet',
+      });
+      break;
+    case HtmlElementType.DropdownSelect:
+      // @ts-ignore
+      value = document.querySelector(`#${name}`)?.value;
+      break;
+    case HtmlElementType.SingleOptionSet:
+    case HtmlElementType.DatePicker:
+    default: // HtmlElementTypeEnum.Input
+      value = $(`#${name}`)?.val();
+      break;
+  }
+  if (!value || !value.length) {
+    logger.warn({
+      fn: updateFieldValue,
+      message: `nothing to save for name: ${name}, value: ${value}, format: ${format}`,
+      data: { name, value, format },
+    });
+    store.dispatch('addFieldData', { name, value: null });
+    return;
+  }
+  if (format === 'currency') {
+    let noCommas = value.replace(/,/g, '');
+    let floatNumber = parseFloat(noCommas);
+    // @ts-ignore
+    value = floatNumber;
+  } else if (format === 'number') {
+    let integerNumber = parseInt(value, 10);
+    // @ts-ignore
+    value = integerNumber;
+  }
+  logger.info({
+    fn: updateFieldValue,
+    message: `Saving field data for name: ${name} and value: ${value}, format: ${format}`,
+    data: { name, value, format },
+  });
+  store.dispatch('addFieldData', { name, value });
+}
+
+// this is used to update store/state values of fields
+export function setFieldObserver(
+  fieldName,
+  elementType = HtmlElementType.Input,
+  format = ''
+) {
+  // set appropriate observer/on change listener depending on field type
+  logger.info({
+    fn: setFieldObserver,
+    message: `Watching for value changes on name: ${fieldName}, elementType: ${elementType}`,
+    data: { fieldName, elementType, format },
+  });
+  switch (elementType) {
+    case HtmlElementType.FileInput:
+      const textareaField = $(`#${fieldName}`);
+      const attachFileField = $(`input[id=${fieldName}_AttachFile]`);
+      observeChanges(attachFileField, () => {
+        updateFieldValue(fieldName, elementType, format);
+      });
+      attachFileField?.on('blur input', () => {
+        updateFieldValue(fieldName, elementType, format);
+      });
+      textareaField?.on('change', function () {
+        updateFieldValue(fieldName, elementType, format);
+      });
+      break;
+    case HtmlElementType.DatePicker:
+      const datePickerElement = $(
+        `input[id=${fieldName}_datepicker_description]`
+      ).parent()[0];
+      observeChanges(datePickerElement, () =>
+        updateFieldValue(fieldName, elementType)
+      );
+      $(`#${fieldName}_datepicker_description`).on('blur input', () => {
+        updateFieldValue(fieldName, elementType, format);
+      });
+      break;
+    case HtmlElementType.SingleOptionSet:
+    case HtmlElementType.MultiOptionSet:
+      $(`input[id*='${fieldName}']`).on('change', function () {
+        updateFieldValue(fieldName, elementType, format);
+      });
+      break;
+    case HtmlElementType.DropdownSelect:
+      $(`select[id*='${fieldName}']`).on('change', function () {
+        updateFieldValue(fieldName, elementType, format);
+      });
+      break;
+    default: // HtmlElementTypeEnum.Input
+      $(`#${fieldName}`).on('change keyup', function (event) {
+        updateFieldValue(fieldName, elementType, format);
+      });
+      break;
+  }
 }
 
 export function setRequiredField(

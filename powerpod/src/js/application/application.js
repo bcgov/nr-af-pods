@@ -18,9 +18,9 @@ import { customizeDeliverablesBudgetStep } from './steps/deliverablesBudget.js';
 import { customizeDemographicInfoStep } from './steps/demographicInfo.js';
 import { customizeDocumentsStep } from './steps/documents.js';
 import { hideFieldsAndSections, onDocumentReadyState } from '../common/html.js';
-import { addNewAppSystemNotice } from '../common/system.js';
 import { getGlobalConfigData } from '../common/config.js';
 import { addFormDataOnClickHandler } from '../common/form.js';
+import { preloadRequestVerificationToken } from '../common/dynamics.ts';
 
 const logger = Logger('application/application');
 
