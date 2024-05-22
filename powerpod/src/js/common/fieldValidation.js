@@ -41,6 +41,7 @@ export function validateStepFields(stepName, returnString) {
   }
 
   let validationErrorHtml = '';
+  let fieldErrorMsgs = {};
 
   // TODO: Remove this old func usage
   let fields;
@@ -60,6 +61,7 @@ export function validateStepFields(stepName, returnString) {
 
   for (let i = 0; i < fields.length; i++) {
     const { name, required, elementType, validation } = fields[i];
+    let fieldErrorHtml = '';
     let errorMsg = '';
     if (required) {
       if (elementType) {
@@ -72,6 +74,7 @@ export function validateStepFields(stepName, returnString) {
       }
       if (errorMsg && errorMsg.length) {
         validationErrorHtml = validationErrorHtml.concat(errorMsg);
+        fieldErrorHtml = fieldErrorHtml.concat(errorMsg);
       }
     }
     if (validation?.type === 'numeric') {
@@ -79,6 +82,7 @@ export function validateStepFields(stepName, returnString) {
       errorMsg = validateNumericFieldValue(name, value, comparison) ?? '';
       if (errorMsg && errorMsg.length) {
         validationErrorHtml = validationErrorHtml.concat(errorMsg);
+        fieldErrorHtml = fieldErrorHtml.concat(errorMsg);
       }
     }
     if (validation?.type === 'length') {
@@ -114,6 +118,9 @@ export function validateStepFields(stepName, returnString) {
         validationErrorHtml = validationErrorHtml.concat(
           `<div>${errorMsgPrefix}${errorMsg}</div>`
         );
+        fieldErrorHtml = fieldErrorHtml.concat(
+          `<div>${errorMsgPrefix}${errorMsg}</div>`
+        );
         logger.info({
           fn: validateStepFields,
           message: 'Done generating length validation error html...',
@@ -130,10 +137,14 @@ export function validateStepFields(stepName, returnString) {
         $(`#${name}`).css({ border: '' });
       }
     }
-    if (errorMsg && errorMsg.length > 0) {
+    logger.info({
+      fn: validateStepFields,
+      message: `Found error message for field: ${name}, errorMsg: ${fieldErrorHtml}`,
+    });
+    if (fieldErrorHtml && fieldErrorHtml.length > 0) {
       store.dispatch('addFieldData', {
         name,
-        error: `${errorMsg}`,
+        error: `${fieldErrorHtml}`,
       });
     } else {
       store.dispatch('addFieldData', {
@@ -153,6 +164,7 @@ export function validateStepFields(stepName, returnString) {
   Object.keys(localStorage)
     .filter((x) => x.startsWith('shouldRequire_'))
     .forEach((x) => {
+      let fieldErrorHtml = '';
       const fieldId = x.replace('shouldRequire_', '');
       const fieldDefinition = fields.find((field) => field.name === fieldId);
 
@@ -169,6 +181,23 @@ export function validateStepFields(stepName, returnString) {
         errorMsg = validateRequiredField({ fieldName: fieldId });
       }
       validationErrorHtml = validationErrorHtml.concat(errorMsg);
+      fieldErrorHtml = fieldErrorHtml.concat(errorMsg);
+
+      logger.info({
+        fn: validateStepFields,
+        message: `Found error for field: ${fieldId}, errorMsg: ${fieldErrorHtml}`,
+      });
+      if (fieldErrorHtml && fieldErrorHtml.length > 0) {
+        store.dispatch('addFieldData', {
+          name: fieldId,
+          error: `${fieldErrorHtml}`,
+        });
+      } else {
+        store.dispatch('addFieldData', {
+          name: fieldId,
+          error: '',
+        });
+      }
     });
 
   if (stepName === 'ProjectStep') {

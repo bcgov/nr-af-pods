@@ -156,10 +156,10 @@ class ExpenseReportTable extends LitElement {
           amount: '',
         },
       ];
-      return;
+    } else {
+      rowData.splice(rowIndex, 1);
+      this.rows = rowData;
     }
-    rowData.splice(rowIndex, 1);
-    this.rows = rowData;
     this.emitEvent();
   }
 
