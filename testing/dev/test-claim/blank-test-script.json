@@ -1,0 +1,14 @@
+{
+	"name": "Claim - NEFBA P2 - Test Script",
+	"testSteps" : [
+		{   "action" : "open-new-tab", "url": "https://af-pods-dev.powerappsportals.com/my-claims" }
+		, {   "action" : "find-list-item",
+				"techNotes" : "labels the fields element below indicate the headers of the list/table",
+				"fields" : [ 
+					{ "label" : "Program", "value" : "New Entrant Farm Business Accelerator Phase 2", "visible" : true}, 
+					{ "label" : "Claim Status", "value" : "Draft", "visible" : true}, 
+					{ "label" : "Actions", "type" : "action menu", "value" : "Edit / Submit Claim", "action" : "Click the link"} 
+				],
+				"description" : "My Claims list should display a DRAFT NEFBA P2 Claim with a link to EDIT it." }
+	]
+}
