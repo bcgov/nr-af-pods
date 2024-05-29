@@ -14,5 +14,24 @@
 		, { "action" : "Select", "field" : { "label": "I / We confirm the above information is correct", "value": "No"} }
 		, { "action" : "Expect", "field" : { "label": "Please provide further detail", "visible" : true, "required" : true } }
 		, { "action" : "Select", "field" : { "label": "I / We confirm the above information is correct", "value": "Yes"} }
+		, { "action" : "Click on the Next button.", "description" : "Go to the Project Results step by clicking Next button." }
+		, { "action" : "Select", "field" : { "label": "Did you adopt any technologies, equipment, practices, or processes as a result of this project?", "value": "Yes"} }
+		, { "action" : "Expect", "field" : { "label": "How many?", "visible" : true, "required" : true } }
+		, { "action" : "Select", "field" : { "label": "Did you adopt any technologies, equipment, practices, or processes as a result of this project?", "value": "No"} }
+		, { "action" : "Expect", "field" : { "label": "How many?", "visible" : false, "required" : false } }
+		, { "action" : "Select", "field" : { "label": "Did you adopt any technologies, processes or equipment that are environmentally beneficial as a result of this project?", "value": "No"} }
+		, { "action" : "Expect", "field" : { "label": "How many?", "displayOrder" : 2, "visible" : false, "required" : false } }
+		, { "action" : "Select", "field" : { "label": "Did you adopt any technologies, processes or equipment that are environmentally beneficial as a result of this project?", "value": "Yes"} }
+		, { "action" : "Expect", "field" : { "label": "How many?", "displayOrder" : 2, "visible" : true, "required" : true } }
+		, { "action" : "Enter", "field" : { "label": "How many?", "displayOrder" : 2, "value": 6} }
+		, { "action" : "Click on the Next button.", "description" : "Go to the Claim Information step by clicking Next button." }
+		, { "action" : "Expect", "field" : { "label": "Your requested amount in this claim ($CAD)", "visible" : true, "required" : true } }
+		, { "action" : "Enter", "field" : { "label": "Your requested amount in this claim ($CAD)", "value": 999.50} }
+		, { "action" : "Click on the Next button.", "description" : "Go to the Documents step by clicking Next button." }
+		, { "action" : "Enable the Next button.", "description" : "Enable Next button. Skip the docs upload and NEFBA satisfaction survey test." }
+		, { "action" : "Click on the Next button.", "description" : "Go to the Declaration and Consent step by clicking Next button." }
+		, { "action" : "Expect", "field" : { "label": "I / We agree to the above statement.", "visible" : true, "required" : true } }
+		, { "action" : "Enter", "field" : { "label": "I / We agree to the above statement.", "value" : "checked" } }
+		, { "action" : "Click on the Submit button.", "description" : "Submit the Claim." }
 	]
 }
