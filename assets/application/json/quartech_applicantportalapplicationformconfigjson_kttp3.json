@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "KTTP-Stream3", "KTTP3"],
-  "version": "1.0.3",
+  "version": "1.0.4",
   "name": "KTTP - Regenerative Agriculture Activities",
   "abbreviation": "KTTP-Stream3",
   "hiddenSteps": "tab_eligibility",
@@ -118,6 +118,14 @@
           "required": true,
           "elementType": "DropdownSelect",
           "label": "Has this organization received funding from other Government of British Columbia (the Province) programs in the last year?"
+        },
+		    {
+          "name": "quartech_ifyespleaseexplainwhenandfromwhichprogram",
+          "visibleIf": {
+            "fieldName": "quartech_hasthisorganizationreceivedfundingfrmother",
+            "selectedValue": 255550000,
+            "techComment": "Yes value"
+          }
         },
         {
           "name": "quartech_ifyespleaseexplainwhenandforwhichactivity",
