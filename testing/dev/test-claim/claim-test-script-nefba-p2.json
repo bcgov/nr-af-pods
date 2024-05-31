@@ -32,6 +32,5 @@
 		, { "action" : "Click on the Next button.", "description" : "Go to the Declaration and Consent step by clicking Next button." }
 		, { "action" : "Expect", "field" : { "label": "I / We agree to the above statement.", "visible" : true, "required" : true } }
 		, { "action" : "Enter", "field" : { "label": "I / We agree to the above statement.", "value" : "checked" } }
-		, { "action" : "Click on the Submit button.", "description" : "Submit the Claim." }
 	]
 }
