@@ -44,79 +44,89 @@ export function addSaveButton() {
     return;
   }
 
-  saveButton.onclick = async () => {
+  saveButton.onclick = () => saveFormData();
+}
+
+export async function saveFormData() {
+  const saveButton = document.getElementById('quartechSaveBtn');
+  if (!saveButton) {
+    logger.error({
+      fn: saveFormData,
+      message: 'Could not get saveButton after adding it to the DOM',
+    });
+    return;
+  }
+  logger.info({
+    fn: saveFormData,
+    message: 'Start saving form data...',
+    data: { fields: store?.state?.fields ?? null },
+  });
+
+  if (isObjectEmpty(store?.state?.fields || {})) {
+    logger.warn({
+      fn: saveFormData,
+      message: 'No field data to save',
+    });
+    return;
+  }
+
+  const { fields: fieldsStore } = store.state;
+
+  let payload = {};
+  const fields = Object.keys(fieldsStore);
+
+  fields.forEach((field) => {
     logger.info({
-      fn: addSaveButton,
-      message: 'Start saving form data...',
-      data: { fields: store?.state?.fields ?? null },
+      fn: saveFormData,
+      message: `processing stored data for field: ${field}`,
     });
 
-    if (isObjectEmpty(store?.state?.fields || {})) {
+    const fieldData = fieldsStore[field];
+    const { value, error } = fieldData;
+
+    if (error && error.length) {
       logger.warn({
-        fn: addSaveButton,
-        message: 'No field data to save',
+        fn: saveFormData,
+        message: `skipping saving data for field name: ${field}`,
       });
       return;
     }
 
-    const { fields: fieldsStore } = store.state;
+    payload = {
+      [field]: value,
+      ...payload,
+    };
+  });
 
-    let payload = {};
-    const fields = Object.keys(fieldsStore);
-
-    fields.forEach((field) => {
-      logger.info({
-        fn: addSaveButton,
-        message: `processing stored data for field: ${field}`,
-      });
-
-      const fieldData = fieldsStore[field];
-      const { value, error } = fieldData;
-
-      if (error && error.length) {
-        logger.warn({
-          fn: addSaveButton,
-          message: `skipping saving data for field name: ${field}`,
-        });
-        return;
-      }
-
-      payload = {
-        [field]: value,
-        ...payload,
-      };
+  if (isObjectEmpty(payload)) {
+    logger.warn({
+      fn: saveFormData,
+      message: 'no payload data to save',
     });
+    return;
+  }
 
-    if (isObjectEmpty(payload)) {
-      logger.warn({
-        fn: addSaveButton,
-        message: 'no payload data to save',
-      });
-      return;
-    }
+  const formId = getFormId();
 
-    const formId = getFormId();
+  // @ts-ignore
+  saveButton.value = 'Saving...';
 
+  try {
+    const res = await patchClaimData({ id: formId, fieldData: payload });
+
+    logger.info({
+      fn: saveFormData,
+      message: 'successfully patched claim data with payload',
+      data: { payload },
+    });
+  } catch (e) {
+    logger.error({
+      fn: saveFormData,
+      message: 'failed to patch claim data',
+      data: { e },
+    });
+  } finally {
     // @ts-ignore
-    saveButton.value = 'Saving...';
-
-    try {
-      const res = await patchClaimData({ id: formId, fieldData: payload });
-
-      logger.info({
-        fn: addSaveButton,
-        message: 'successfully patched claim data with payload',
-        data: { payload },
-      });
-    } catch (e) {
-      logger.error({
-        fn: addSaveButton,
-        message: 'failed to patch claim data',
-        data: { e },
-      });
-    } finally {
-      // @ts-ignore
-      saveButton.value = 'Save';
-    }
-  };
+    saveButton.value = 'Save';
+  }
 }
