@@ -71,7 +71,6 @@ export function getProgramId() {
       },
     });
   }
-
   if (
     programIdHiddenValue &&
     programIdParam &&
@@ -79,20 +78,47 @@ export function getProgramId() {
   ) {
     logger.warn({
       fn: getProgramId,
-      message: `Program id in URL path differs from program id found in element, fixing url path`,
+      message: `Program id in URL path differs from program id found in element, fixing hidden coding element`,
       data: {
         readyState: doc.readyState,
         programIdParam,
         programIdHiddenValue,
       },
     });
-    let newUrl = doc.location.href.replace(
-      programIdParam,
-      // @ts-ignore
-      programIdHiddenValue
-    );
-    location.replace(newUrl);
+    hiddenProgramElement.val(programIdParam);
+    logger.info({
+      fn: getProgramId,
+      message: `Success! Found program id in URL path, returning: ${programIdParam}`,
+      data: {
+        readyState: doc.readyState,
+        programIdParam,
+        programIdHiddenValue,
+      },
+    });
+    return programIdParam;
   }
+
+  // if (
+  //   programIdHiddenValue &&
+  //   programIdParam &&
+  //   programIdHiddenValue != programIdParam
+  // ) {
+  //   logger.warn({
+  //     fn: getProgramId,
+  //     message: `Program id in URL path differs from program id found in element, fixing url path`,
+  //     data: {
+  //       readyState: doc.readyState,
+  //       programIdParam,
+  //       programIdHiddenValue,
+  //     },
+  //   });
+  //   let newUrl = doc.location.href.replace(
+  //     programIdParam,
+  //     // @ts-ignore
+  //     programIdHiddenValue
+  //   );
+  //   location.replace(newUrl);
+  // }
   const programId = programIdHiddenValue || programIdParam;
   if (!programId) {
     logger.error({
