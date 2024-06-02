@@ -95,6 +95,14 @@ class ExpenseReportTable extends LitElement {
   connectedCallback(): void {
     super.connectedCallback();
     this.getExpenseTypes();
+
+    if (!Array.isArray(this.rows)) {
+      this.rows = [];
+    }
+
+    if (this.rows?.length === 0) {
+      this.handleAddRow();
+    }
   }
 
   emitEvent() {
@@ -136,13 +144,14 @@ class ExpenseReportTable extends LitElement {
     if (isLastObjectEmpty(rowData)) {
       return;
     }
-    if (rowData)
+    if (rowData) {
       rowData.push({
         type: '',
         description: '',
         amount: '',
       });
-    this.rows = rowData;
+      this.rows = rowData;
+    }
     this.emitEvent();
   }
 

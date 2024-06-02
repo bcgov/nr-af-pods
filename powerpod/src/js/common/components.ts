@@ -73,7 +73,7 @@ export function renderCustomComponent(params) {
     });
     customElement.setAttribute(`${mappedValueKey}`, existingValue);
     if (initValuesFn) {
-      initValuesFn(existingValue);
+      initValuesFn(mappedValueKey, existingValue, customElement);
     }
   }
 

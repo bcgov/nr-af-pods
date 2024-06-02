@@ -360,6 +360,14 @@ function addExpenseReportGrid() {
       );
       verifyTotalSumEqualsRequestedAmount();
     },
+    initValuesFn: (mappedValueKey, existingValue, customElement) => {
+      if (mappedValueKey === 'rows') {
+        const arr = JSON.parse(existingValue);
+        if (!Array.isArray(arr)) {
+          customElement.setAttribute(`${mappedValueKey}`, JSON.stringify(rows));
+        }
+      }
+    },
   });
 
   logger.info({

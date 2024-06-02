@@ -6,6 +6,7 @@ import { setFieldValue } from '../../common/html.js';
 import { setFieldReadOnly } from '../../common/fieldValidation.js';
 import { getGlobalConfigData } from '../../common/config.js';
 import { Logger } from '../../common/logger.js';
+import { saveFormData } from '../../common/saveButton.js';
 
 const logger = Logger('claim/steps/documents');
 
@@ -84,9 +85,7 @@ async function addSatisfactionSurveyChefsIframe() {
 
   setFieldReadOnly('quartech_satisfactionsurveyid');
 
-  const chefsSubmissionId = $(
-    '#quartech_satisfactionsurveychefssubmissionid'
-  )?.val();
+  const chefsSubmissionId = $('#quartech_satisfactionsurveyid')?.val();
   let chefsUrl = '';
 
   if (chefsSubmissionId) {
@@ -125,6 +124,8 @@ async function addSatisfactionSurveyChefsIframe() {
         .toUpperCase();
 
       setFieldValue('quartech_satisfactionsurveyid', confirmationId);
+
+      saveFormData();
     });
 
     let div = document.createElement('div');
