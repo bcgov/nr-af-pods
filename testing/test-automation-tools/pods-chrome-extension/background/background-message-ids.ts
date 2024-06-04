@@ -1,0 +1,1 @@
+export const BACKGROUND_MESSAGE_MANAGER_ID = 'message-manager'

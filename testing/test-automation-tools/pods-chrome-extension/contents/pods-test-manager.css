@@ -1,0 +1,16 @@
+#plasmo-overlay-0 {
+    width: 100% !important;
+}
+
+.MuiDataGrid-virtualScroller {
+    min-height: 180px !important;
+}
+
+.MuiStack-root {
+    background-color: blueviolet !important;
+}
+
+.MuiDataGrid-cell {
+    max-height: 140px !important;
+    text-wrap: balance;
+}
