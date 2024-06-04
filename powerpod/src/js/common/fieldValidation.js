@@ -3,7 +3,6 @@ import {
   validateIsConsultantEitherBciaOrCpa,
 } from '../application/validation.js';
 import store from '../store/index.js';
-import { getFormType } from './application.js';
 import {
   Environment,
   Form,

@@ -29,6 +29,11 @@ export const ENDPOINT_URL = {
   get_orgbook_credentials_data: (topicId) =>
     `https://orgbook.gov.bc.ca/api/v4/topic/${topicId}/credential-set`,
   patch_quartech_claim_data: (id) => `/_api/quartech_claims(${id})`,
+  get_application_data: (id) =>
+    `/_api/msgov_businessgrantapplications?$filter=msgov_businessgrantapplicationid%20eq%20${id}`,
+  get_draft_applications_for_programid_data: (programid) =>
+    `/_api/msgov_businessgrantapplications?$filter=_quartech_program_value%20eq%20${programid}%20and%20quartech_applicationstatus%20eq%20255550002&$select=msgov_businessgrantapplicationid,_quartech_program_value,quartech_applicationstatus`,
+  post_application_data: '/_api/msgov_businessgrantapplications',
 };
 
 POWERPOD.fetch = {
@@ -49,6 +54,9 @@ POWERPOD.fetch = {
   deleteDocumentData,
   getContactData,
   patchClaimData,
+  getApplicationData,
+  getDraftApplicationsForProgramIdData,
+  postApplicationData,
 };
 
 const CONTENT_TYPE = {
@@ -400,6 +408,49 @@ export async function patchClaimData({ id, fieldData, ...options }) {
     returnData: true,
     data: JSON.stringify({
       ...fieldData,
+    }),
+    ...options,
+  });
+}
+
+export async function getApplicationData({ id, ...options }) {
+  return fetch({
+    url: ENDPOINT_URL.get_application_data(id),
+    returnData: true,
+    ...options,
+  });
+}
+
+export async function getDraftApplicationsForProgramIdData({
+  programid,
+  ...options
+}) {
+  return fetch({
+    url: ENDPOINT_URL.get_draft_applications_for_programid_data(programid),
+    returnData: true,
+    ...options,
+  });
+}
+
+export async function postApplicationData({
+  id,
+  programid,
+  contactid,
+  ...options
+}) {
+  return fetch({
+    method: 'POST',
+    url: ENDPOINT_URL.post_application_data,
+    datatype: DATATYPE.json,
+    includeODataHeaders: true,
+    addRequestVerificationToken: true,
+    processData: false,
+    returnData: true,
+    data: JSON.stringify({
+      msgov_businessgrantapplicationid: `${id}`,
+      'quartech_Program@odata.bind': `/msgov_programs(${programid})`,
+      'quartech_Applicant@odata.bind': `/contacts(${contactid})`,
+      quartech_originalsource: 255550002, // always set to "Portal" for Draft status
     }),
     ...options,
   });

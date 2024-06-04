@@ -25,6 +25,7 @@ import { preloadRequestVerificationToken } from '../common/dynamics.ts';
 const logger = Logger('application/application');
 
 export function initApplication() {
+  preloadRequestVerificationToken();
   hideFieldsAndSections();
   if (getCurrentStep() === FormStep.DemographicInfo) {
     updatePageForDemographicStep();
