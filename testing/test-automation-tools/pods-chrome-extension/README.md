@@ -1,33 +1,22 @@
-This is a [Plasmo extension](https://docs.plasmo.com/) project bootstrapped with [`plasmo init`](https://www.npmjs.com/package/plasmo).
+This is the PODS Test Automation chrome extension tool.
 
-## Getting Started
-
-First, run the development server:
-
-```bash
-pnpm dev
-# or
-npm run dev
-```
-
-Open your browser and load the appropriate development build. For example, if you are developing for the chrome browser, using manifest v3, use: `build/chrome-mv3-dev`.
-
-You can start editing the popup by modifying `popup.tsx`. It should auto-update as you make changes. To add an options page, simply add a `options.tsx` file to the root of the project, with a react component default exported. Likewise to add a content page, add a `content.ts` file to the root of the project, importing some module and do some logic, then reload the extension on your browser.
-
-For further guidance, [visit our Documentation](https://docs.plasmo.com/)
-
-## Making production build
-
-Run the following:
-
-```bash
-pnpm build
-# or
-npm run build
-```
-
-This should create a production bundle for your extension, ready to be zipped and published to the stores.
-
-## Submit to the webstores
-
-The easiest way to deploy your Plasmo extension is to use the built-in [bpp](https://bpp.browser.market) GitHub action. Prior to using this action however, make sure to build your extension and upload the first version to the store to establish the basic credentials. Then, simply follow [this setup instruction](https://docs.plasmo.com/framework/workflows/submit) and you should be on your way for automated submission!
+# Getting Started
+* Pull the source code from the PODS GitHub repo <https://github.com/bcgov/nr-af-pods>
+* Install System Requirements for Plasmo <https://docs.plasmo.com/framework>
+  * Node.js 16.14.x or later.
+  * Install pnpm
+* Install node_modules including Plasmo framework that are required for the PODS extension.
+  * Open a cmd terminal in your VS
+  * Switch to the pods-chrome-extension folder
+  * Run the npm install command
+    * This will download all the required node_modules specified in the package.json
+* Build and Add PODS chrome extension
+  * Run the pnpm build command.
+     * Chrome-mv3-dev and chrome-mv3-prod folders will be generated in the build folder.
+  * Add the PODS Testing chrome extension.
+   * Open Chrome extensions using chrome://extensions/
+     * Enable Developer mode
+     * Load unpacked to load the PODS chrome extension by pointing it to the  Chrome-mv3-dev folder.
+ * Run pnpm dev for developing the extension so that your changes to the code will be reflected in real-time.
+ * Open https://sites.google.com/view/pods-testing?testScript=https://raw.githubusercontent.com/bcgov/nr-af-pods/dev/testing/test-scripts/dev/claim/blank-test-script.json 
+   * You can change the testScript parameter above.
