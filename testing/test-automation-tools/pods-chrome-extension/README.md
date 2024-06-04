@@ -3,8 +3,8 @@ This is the PODS Test Automation chrome extension tool.
 # Getting Started
 * Pull the source code from the PODS GitHub repo <https://github.com/bcgov/nr-af-pods>
 * Install System Requirements for Plasmo <https://docs.plasmo.com/framework>
- * Node.js 16.14.x or later.
- * Install pnpm
+  * Node.js 16.14.x or later.
+  * Install pnpm
 * Install node_modules including Plasmo framework that are required for the PODS extension.
  * Open a cmd terminal in your VS
  * Switch to the pods-chrome-extension folder
