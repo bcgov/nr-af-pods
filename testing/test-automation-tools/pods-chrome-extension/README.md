@@ -6,13 +6,13 @@ This is the PODS Test Automation chrome extension tool.
   * Node.js 16.14.x or later.
   * Install pnpm
 * Install node_modules including Plasmo framework that are required for the PODS extension.
- * Open a cmd terminal in your VS
- * Switch to the pods-chrome-extension folder
- * Run the npm install command
-  * This will download all the required node_modules specified in the package.json
- * Build and Add PODS chrome extension
+  * Open a cmd terminal in your VS
+  * Switch to the pods-chrome-extension folder
+  * Run the npm install command
+    * This will download all the required node_modules specified in the package.json
+* Build and Add PODS chrome extension
   * Run the pnpm build command.
-    * Chrome-mv3-dev and chrome-mv3-prod folders will be generated in the build folder.
+     * Chrome-mv3-dev and chrome-mv3-prod folders will be generated in the build folder.
   * Add the PODS Testing chrome extension.
    * Open Chrome extensions using chrome://extensions/
      * Enable Developer mode
