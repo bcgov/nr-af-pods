@@ -1,0 +1,7 @@
+.MuiDataGrid-virtualScroller {
+    min-height: 180px !important;
+}
+
+.MuiStack-root {
+    background-color: blueviolet !important;
+}

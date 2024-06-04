@@ -1,0 +1,5 @@
+export const OPEN_NEW_TAB = 'open-new-tab'
+export const GET_GITHUB_JSON_FILE_CONTENT = 'get-file-content'
+export const TEST_RESULT = 'test-result'
+export const TEST_AGENT_READY_FOR_TEST_STEPS = 'TEST_AGENT_READY_FOR_TEST_STEPS'
+export const EXEC_TEST_STEPS = 'EXEC_TEST_STEPS'
