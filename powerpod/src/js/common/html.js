@@ -9,6 +9,20 @@ POWERPOD.html = {
   observeChanges,
 };
 
+export function redirectToFormId(id) {
+  let currentUrl = new URL(window.location.href);
+
+  // Append the new parameter to the URL
+  currentUrl.searchParams.append('id', id);
+
+  logger.info({
+    fn: redirectToFormId,
+    message: `Redirecting to form with id: ${id}`,
+  });
+
+  window.location.href = currentUrl.toString();
+}
+
 export function getControlType(tr) {
   const controlDiv = tr.querySelector('div.control');
   const control = controlDiv?.querySelector(
@@ -149,7 +163,6 @@ export function onDocumentReadyState(fn) {
   if (doc.readyState === 'complete') {
     fn();
   } else {
-
     doc.addEventListener('readystatechange', () => {
       if (doc.readyState === 'complete') {
         logger.info({

@@ -1,4 +1,4 @@
-import { FormStep, doc } from '../common/constants.js';
+import { FormStep, POWERPOD, doc } from '../common/constants.js';
 import { getApplicationFormData } from '../common/fetch.js';
 import { hideLoadingAnimation } from '../common/loading.js';
 import { Logger } from '../common/logger.js';
@@ -17,10 +17,15 @@ import { customizeDeclarationConsentStep } from './steps/declarationConsent.js';
 import { customizeDeliverablesBudgetStep } from './steps/deliverablesBudget.js';
 import { customizeDemographicInfoStep } from './steps/demographicInfo.js';
 import { customizeDocumentsStep } from './steps/documents.js';
-import { hideFieldsAndSections, onDocumentReadyState } from '../common/html.js';
+import {
+  hideFieldsAndSections,
+  onDocumentReadyState,
+  redirectToFormId,
+} from '../common/html.js';
 import { getGlobalConfigData } from '../common/config.js';
 import { addFormDataOnClickHandler } from '../common/form.js';
 import { preloadRequestVerificationToken } from '../common/dynamics.ts';
+import { getExistingDraftApplicationId } from '../common/applicationUtils.js';
 
 const logger = Logger('application/application');
 
@@ -90,10 +95,20 @@ function customizePageForFirefox() {
   }
 }
 
-function updatePageForSelectedProgram(programid = undefined) {
-  if (!programid) programid = getProgramId();
+async function updatePageForSelectedProgram(programId = undefined) {
+  let formId;
+  if (!programId) {
+    const { programId: fetchedProgramId, formId: fetchedFormId } =
+      await getProgramId();
+    programId = fetchedProgramId;
+    formId = fetchedFormId;
+  }
 
-  if (!programid && doc.readyState !== 'complete') {
+  if (POWERPOD.redirectToNewId && formId) {
+    redirectToFormId(formId);
+  }
+
+  if (!programId && doc.readyState !== 'complete') {
     logger.info({
       fn: updatePageForSelectedProgram,
       message: 'Could not find programid, retry when DOM readyState is comlete',
@@ -109,13 +124,13 @@ function updatePageForSelectedProgram(programid = undefined) {
 
   const currentStep = getCurrentStep();
 
-  if (!programid || currentStep === 'UnknownStep') {
+  if (!programId || currentStep === 'UnknownStep') {
     hideLoadingAnimation();
     logger.error({
       fn: updatePageForSelectedProgram,
       message: 'Missing programid, or unknown current step',
       data: {
-        programid,
+        programid: programId,
         currentStep,
       },
     });
@@ -124,11 +139,11 @@ function updatePageForSelectedProgram(programid = undefined) {
 
   logger.info({
     fn: updatePageForSelectedProgram,
-    message: `Retrieving Program data for the selected programid querystring: ${programid}`,
+    message: `Retrieving Program data for the selected programid querystring: ${programId}`,
   });
 
   getApplicationFormData({
-    programId: programid,
+    programId: programId,
     beforeSend: () => {
       logger.info({
         fn: updatePageForSelectedProgram,

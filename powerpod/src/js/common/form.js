@@ -17,6 +17,19 @@ POWERPOD.form = {
   id: null,
 };
 
+export function getFormIdFromURLParams() {
+  const params = new URLSearchParams(doc.location.search);
+  let formId = params.get('id');
+  if (!formId) {
+    logger.info({
+      fn: getFormIdFromURLParams,
+      message: 'Form id not found in URL params',
+    });
+    return;
+  }
+  return formId;
+}
+
 export function getFormId() {
   if (window.location.hostname === 'localhost') {
     return '1af24e49-05fd-ee11-9f8a-6045bd5f4613';
@@ -34,62 +47,92 @@ export function getFormId() {
   let formId = params.get('id');
   let formElement;
 
-  if (!formId) {
+  if (formId) {
     logger.info({
       fn: getFormId,
-      message:
-        'Could not find current form submission id from url params, try finding liquid form element...',
+      message: `Successfully retrieved form submission id from url params: ${formId}`,
     });
-    // Select the form element based on the tag 'form' and the id 'liquid_form'
-    formElement = document.querySelector('form#liquid_form');
 
-    if (!formElement) {
-      logger.error({
-        fn: getFormId,
-        message:
-          'Unable to find liquid form element, unable to retrieve app/claim submission id!',
-      });
-      return;
-    }
-
-    const actionAttribute = formElement.getAttribute('action');
-
-    if (!actionAttribute) {
-      logger.error({
-        fn: getCurrentSubmissionId,
-        message: 'Unable to retrieve action attribute from liquid form element',
-        data: { formElement },
-      });
-      return;
-    }
-
-    // Define a regular expression pattern to match the id in the action attribute
-    const regex = /id=([a-f\d-]+)/i;
-
-    // Use the regular expression to extract the id from the action attribute
-    const match = regex.exec(actionAttribute);
-
-    // Retrieve the id from the matched groups
-    formId = match ? match[1] : null;
-  }
-
-  if (!formId) {
-    logger.error({
-      fn: getFormId,
-      message:
-        'Unable to retrieve form submission id from either url or form element',
-      data: { params, formElement },
-    });
-    return;
+    POWERPOD.form.id = formId;
+    return formId;
   }
 
   logger.info({
     fn: getFormId,
-    message: `Successfully retrieved form submission id from url params: ${formId}`,
+    message:
+      'Could not find current form submission id from url params, try DOM element containing the value...',
   });
+  // Get the element by ID
+  formElement = document.getElementById('EntityFormView_EntityID');
 
-  POWERPOD.form.id = formId;
-  return formId;
+  if (!formElement) {
+    logger.error({
+      fn: getFormId,
+      message:
+        'Unable to find "EntityFormView_EntityID" element, unable to retrieve app/claim submission id!',
+    });
+    return;
+  }
+
+  // Get the value of the 'value' attribute
+  formId = formElement.value;
+
+  if (formId) {
+    logger.info({
+      fn: getFormId,
+      message: `Successfully retrieved form submission id from "EntityFormView_EntityID" element: ${formId}`,
+    });
+    POWERPOD.form.id = formId;
+    return formId;
+  }
+
+  // This code incorrectly would return the programid
+  // if (!formId) {
+  //   logger.info({
+  //     fn: getFormId,
+  //     message:
+  //       'Could not find current form submission id from url params, try finding liquid form element...',
+  //   });
+  //   // Select the form element based on the tag 'form' and the id 'liquid_form'
+  //   formElement = document.querySelector('form#liquid_form');
+
+  //   if (!formElement) {
+  //     logger.error({
+  //       fn: getFormId,
+  //       message:
+  //         'Unable to find liquid form element, unable to retrieve app/claim submission id!',
+  //     });
+  //     return;
+  //   }
+
+  //   const actionAttribute = formElement.getAttribute('action');
+
+  //   if (!actionAttribute) {
+  //     logger.error({
+  //       fn: getCurrentSubmissionId,
+  //       message: 'Unable to retrieve action attribute from liquid form element',
+  //       data: { formElement },
+  //     });
+  //     return;
+  //   }
+
+  //   // Define a regular expression pattern to match the id in the action attribute
+  //   const regex = /id=([a-f\d-]+)/i;
+
+  //   // Use the regular expression to extract the id from the action attribute
+  //   const match = regex.exec(actionAttribute);
+
+  //   // Retrieve the id from the matched groups
+  //   formId = match ? match[1] : null;
+  // }
+
+  logger.error({
+    fn: getFormId,
+    message:
+      'Unable to retrieve form submission id from either url or form element',
+    data: { params, formElement },
+  });
+  return;
 }
 
 export function addFormDataOnClickHandler() {

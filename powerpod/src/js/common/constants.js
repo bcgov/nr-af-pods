@@ -109,4 +109,6 @@ export const POWERPOD = {
   options: {},
   logger: {},
   saveButton: {},
+  doNotUnhideLoader: false,
+  redirectToNewId: false,
 };
