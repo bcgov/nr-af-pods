@@ -94,7 +94,7 @@ export const SECTOR_WIDE_ID_VALUE = '6ce2584f-4740-ee11-be6e-000d3af3ac95';
 export const POWERPOD = {
   state: {},
   program: {},
-  application: {},
+  applicationUtils: {},
   test: {},
   shared: {},
   validation: {
@@ -109,4 +109,6 @@ export const POWERPOD = {
   options: {},
   logger: {},
   saveButton: {},
+  doNotUnhideLoader: false,
+  redirectToNewId: false,
 };

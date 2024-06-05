@@ -7,6 +7,7 @@ const logger = Logger('common/dynamics');
 POWERPOD.dynamics = {
   getCurrentUser,
   getRequestVerificationToken,
+  preloadRequestVerificationToken,
 };
 
 type User = {

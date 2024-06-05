@@ -1,4 +1,4 @@
-import { doc } from './constants.js';
+import { POWERPOD, doc } from './constants.js';
 import { Logger } from './logger.js';
 
 const logger = Logger('common/loading');
@@ -15,6 +15,15 @@ export function hideLoadingAnimation() {
     fn: hideLoadingAnimation,
     message: 'attempting to hide loading animation...',
   });
+
+  if (POWERPOD.doNotUnhideLoader) {
+    logger.info({
+      fn: hideLoadingAnimation,
+      message:
+        'abort unhiding due to POWERPOD.doNotUnhideLoader flag set to true',
+    });
+    return;
+  }
 
   const loader = doc.getElementById('loader');
   if (loader) {

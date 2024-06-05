@@ -27,10 +27,10 @@ export function initClaim() {
   // addNewAppSystemNotice();
 }
 
-function updatePageForSelectedProgram() {
-  const programid = getProgramId();
+async function updatePageForSelectedProgram() {
+  const { programId } = await getProgramId();
 
-  if (!programid && doc.readyState !== 'complete') {
+  if (!programId && doc.readyState !== 'complete') {
     logger.info({
       fn: updatePageForSelectedProgram,
       message: 'Could not find programid, retry when DOM readyState is comlete',
@@ -48,13 +48,13 @@ function updatePageForSelectedProgram() {
 
   addSaveButton();
 
-  if (!programid || currentStep === 'UnknownStep') {
+  if (!programId || currentStep === 'UnknownStep') {
     hideLoadingAnimation();
     logger.error({
       fn: updatePageForSelectedProgram,
       message: 'Missing programid, or unknown current step',
       data: {
-        programid,
+        programid: programId,
         currentStep,
       },
     });
@@ -63,11 +63,11 @@ function updatePageForSelectedProgram() {
 
   logger.info({
     fn: updatePageForSelectedProgram,
-    message: `Retrieving Program data for the selected programid querystring: ${programid}`,
+    message: `Retrieving Program data for the selected programid querystring: ${programId}`,
   });
 
   getClaimFormData({
-    programId: programid,
+    programId: programId,
     beforeSend: () => {
       logger.info({
         fn: updatePageForSelectedProgram,

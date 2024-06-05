@@ -1,5 +1,10 @@
+import {
+  getExistingDraftApplicationId,
+  getExistingDraftApplicationId,
+} from './applicationUtils.js';
 import { POWERPOD, FormStep, TabDisplayNames, doc } from './constants.js';
-import { htmlDecode, onDocumentReadyState } from './html.js';
+import { getDraftApplicationsForProgramIdData } from './fetch.js';
+import { htmlDecode, onDocumentReadyState, redirectToFormId } from './html.js';
 import { Logger } from './logger.js';
 
 const logger = Logger('common/program');
@@ -11,18 +16,42 @@ POWERPOD.program = {
   getCurrentStep,
 };
 
+export function getProgramIdFromUrlParams() {
+  const params = new URLSearchParams(doc.location.search);
+  const programIdParam = params.get('programid');
+
+  if (!programIdParam) {
+    logger.info({
+      fn: getProgramIdFromUrlParams,
+      message: 'No programId found in URL params',
+    });
+    return;
+  }
+
+  logger.info({
+    fn: getProgramIdFromUrlParams,
+    message: `Success! Found program id in URL path ${programIdParam}`,
+    data: {
+      readyState: doc.readyState,
+      programIdParam,
+    },
+  });
+  return programIdParam;
+}
+
 /**
  * Gets the ID of the currently active program.
  * @function
  */
-export function getProgramId() {
+export async function getProgramId() {
   if (POWERPOD.program?.programId) {
     const programId = POWERPOD.program?.programId;
+    const formId = POWERPOD.form?.id ?? null;
     logger.info({
       fn: getProgramId,
       message: `Cached programId found, returning ${programId}`,
     });
-    return programId;
+    return { programId, formId };
   }
   // Try and get it from URL path
   logger.info({
@@ -71,7 +100,6 @@ export function getProgramId() {
       },
     });
   }
-
   if (
     programIdHiddenValue &&
     programIdParam &&
@@ -79,20 +107,68 @@ export function getProgramId() {
   ) {
     logger.warn({
       fn: getProgramId,
-      message: `Program id in URL path differs from program id found in element, fixing url path`,
+      message: `Program id in URL path differs from program id found in element, checking for existing draft applications with programid: ${programIdParam}`,
       data: {
         readyState: doc.readyState,
         programIdParam,
         programIdHiddenValue,
       },
     });
-    let newUrl = doc.location.href.replace(
-      programIdParam,
-      // @ts-ignore
-      programIdHiddenValue
-    );
-    location.replace(newUrl);
+    const existingDraftApplicationId = await getExistingDraftApplicationId();
+
+    if (existingDraftApplicationId && existingDraftApplicationId.length > 0) {
+      logger.info({
+        fn: getProgramId,
+        message: `Appending existing app id to URL, existingDraftApplicationId: ${existingDraftApplicationId}, for programid: ${programIdParam}`,
+      });
+
+      redirectToFormId(existingDraftApplicationId);
+      POWERPOD.doNotUnhideLoader = true;
+      POWERPOD.redirectToNewId = true;
+    }
+    // hiddenProgramElement.val(programIdParam);
+    // logger.info({
+    //   fn: getProgramId,
+    //   message: `Success! Found program id in URL path, returning: ${programIdParam}`,
+    //   data: {
+    //     readyState: doc.readyState,
+    //     programIdParam,
+    //     programIdHiddenValue,
+    //   },
+    // });
+    return { programId: programIdParam, formId: existingDraftApplicationId };
   }
+
+  // This logic has been commented out since Multi Draft Applications were introduced.
+  // Instead of correcting URL path, now we should do the following
+  // 1. Query for existing draft applications with the given programid in the URL params.
+  // 2. If one exists, redirect to &id={applicationId}, if it does NOT exist, then create
+  //    a new draft application record, and redirect user to it.
+  // if (
+  //   programIdHiddenValue &&
+  //   programIdParam &&
+  //   programIdHiddenValue != programIdParam
+  // ) {
+  //   logger.warn({
+  //     fn: getProgramId,
+  //     message: `Program id in URL path differs from program id found in element, fixing url path`,
+  //     data: {
+  //       readyState: doc.readyState,
+  //       programIdParam,
+  //       programIdHiddenValue,
+  //     },
+  //   });
+  //   let newUrl = doc.location.href.replace(
+  //     programIdParam,
+  //     // @ts-ignore
+  //     programIdHiddenValue
+  //   );
+  //   location.replace(newUrl);
+  // }
+
+  // New logic:
+  // const existingDraftApplicationId =
+
   const programId = programIdHiddenValue || programIdParam;
   if (!programId) {
     logger.error({
@@ -104,7 +180,7 @@ export function getProgramId() {
   }
   // @ts-ignore
   POWERPOD.program.programId = programId;
-  return programId;
+  return { programId };
 }
 
 export function getProgramAbbreviation() {
