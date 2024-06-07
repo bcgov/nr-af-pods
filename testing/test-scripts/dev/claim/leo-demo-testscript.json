@@ -37,10 +37,25 @@
             }
         },
         {
+            "action": "Expect",
+            "field": {
+                "label": "Please provide further detail",
+                "visible": false
+            }
+        },
+        {
             "action": "Select",
             "field": {
                 "label": "I / We confirm the above information is correct",
                 "value": "No"
+            }
+        },
+        {
+            "action": "Expect",
+            "field": {
+                "label": "Please provide further detail",
+                "visible": true,
+                "required": true
             }
         }
     ]
