@@ -1,1 +1,6 @@
-
+{
+  "name": "Leo Demo Claim - NEFBA P2 - Test Script"
+  , "testSteps" : [
+    {   "action" : "open-new-tab", "url": "https://af-pods-dev.powerappsportals.com/my-claims" }
+  ]
+}
