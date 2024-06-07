@@ -20,6 +20,11 @@
                     "visible": true
                 },
                 {
+                    "label": "Type of Claim",
+                    "value": "Interim",
+                    "visible": true
+                },
+                {
                     "label": "Actions",
                     "type": "action menu",
                     "value": "Edit / Submit Claim",
