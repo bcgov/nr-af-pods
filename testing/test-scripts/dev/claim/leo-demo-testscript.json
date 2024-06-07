@@ -31,9 +31,16 @@
         {
             "action": "Expect",
             "field": {
-                "label": "We confirm the above information is correct",
+                "label": "I / We confirm the above information is correct",
                 "visible": true,
                 "required": true
+            }
+        },
+        {
+            "action": "Select",
+            "field": {
+                "label": "I / We confirm the above information is correct",
+                "value": "No"
             }
         }
     ]
