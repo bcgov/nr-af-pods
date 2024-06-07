@@ -20,11 +20,6 @@
                     "visible": true
                 },
                 {
-                    "label": "Type of Claim",
-                    "value": "Interim111",
-                    "visible": true
-                },
-                {
                     "label": "Actions",
                     "type": "action menu",
                     "value": "Edit / Submit Claim",
@@ -32,6 +27,14 @@
                 }
             ],
             "description": "My Claims list should display a DRAFT NEFBA P2 Claim with a link to EDIT it."
+        },
+        {
+            "action": "Expect",
+            "field": {
+                "label": "We confirm the above information is correct",
+                "visible": true,
+                "required": true
+            }
         }
     ]
 }
