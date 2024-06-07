@@ -40,8 +40,7 @@
             "action": "Expect",
             "field": {
                 "label": "Please provide further detail",
-                "visible": true,
-                "required": true
+                "visible": false
             }
         },
         {
@@ -58,6 +57,14 @@
                 "visible": true,
                 "required": true
             }
+        },
+        {
+            "action": "Select",
+            "field": {
+                "label": "I / We confirm the above information is correct",
+                "value": "Yes"
+            }
         }
+        , { "action" : "Click on the Next button.", "description" : "Go to the Project Results step by clicking Next button." }
     ]
 }
