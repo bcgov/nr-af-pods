@@ -40,7 +40,8 @@
             "action": "Expect",
             "field": {
                 "label": "Please provide further detail",
-                "visible": false
+                "visible": true,
+                "required": true
             }
         },
         {
