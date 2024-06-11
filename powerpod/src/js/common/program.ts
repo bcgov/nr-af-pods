@@ -101,9 +101,10 @@ export async function getProgramId() {
     });
   }
   if (
-    programIdHiddenValue &&
-    programIdParam &&
-    programIdHiddenValue != programIdParam
+    (programIdHiddenValue &&
+      programIdParam &&
+      programIdHiddenValue != programIdParam) ||
+    (programIdHiddenValue == undefined && programIdParam)
   ) {
     logger.warn({
       fn: getProgramId,
@@ -178,6 +179,12 @@ export async function getProgramId() {
         'Check that HTML content is present in Portal Management.',
     });
   }
+
+  logger.info({
+    fn: getProgramId,
+    message: `No mismatch or drafts to look up, succesfully found programid: ${programId}`,
+  });
+
   // @ts-ignore
   POWERPOD.program.programId = programId;
   return { programId };

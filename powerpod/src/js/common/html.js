@@ -13,7 +13,8 @@ export function redirectToFormId(id) {
   let currentUrl = new URL(window.location.href);
 
   // Append the new parameter to the URL
-  currentUrl.searchParams.append('id', id);
+  currentUrl.search = '';
+  currentUrl.searchParams.set('id', id);
 
   logger.info({
     fn: redirectToFormId,
