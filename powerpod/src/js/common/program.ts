@@ -123,7 +123,7 @@ export async function getProgramId() {
         message: `Appending existing app id to URL, existingDraftApplicationId: ${existingDraftApplicationId}, for programid: ${programIdParam}`,
       });
 
-      redirectToFormId(existingDraftApplicationId);
+      // redirectToFormId(existingDraftApplicationId);
       POWERPOD.doNotUnhideLoader = true;
       POWERPOD.redirectToNewId = true;
     }
@@ -137,7 +137,11 @@ export async function getProgramId() {
     //     programIdHiddenValue,
     //   },
     // });
-    return { programId: programIdParam, formId: existingDraftApplicationId };
+    return {
+      programId: programIdParam,
+      formId: existingDraftApplicationId,
+      redirect: true,
+    };
   }
 
   // This logic has been commented out since Multi Draft Applications were introduced.
