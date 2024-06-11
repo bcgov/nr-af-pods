@@ -105,7 +105,13 @@ async function updatePageForSelectedProgram(programId = undefined) {
   }
 
   if (POWERPOD.redirectToNewId && formId) {
+    logger.info({
+      fn: updatePageForSelectedProgram,
+      message: `Stop updating page,redirect to new formId: ${formId}`,
+      data: { redirectToNewId: POWERPOD.redirectToNewId, formId },
+    });
     redirectToFormId(formId);
+    return;
   }
 
   if (!programId && doc.readyState !== 'complete') {
