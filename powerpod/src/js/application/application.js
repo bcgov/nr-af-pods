@@ -96,15 +96,19 @@ function customizePageForFirefox() {
 }
 
 async function updatePageForSelectedProgram(programId = undefined) {
-  let formId;
+  let formId, redirect;
   if (!programId) {
-    const { programId: fetchedProgramId, formId: fetchedFormId } =
-      await getProgramId();
+    const {
+      programId: fetchedProgramId,
+      formId: fetchedFormId,
+      redirect: fetchedRedirect,
+    } = await getProgramId();
     programId = fetchedProgramId;
     formId = fetchedFormId;
+    redirect = fetchedRedirect || false;
   }
 
-  if (POWERPOD.redirectToNewId && formId) {
+  if ((POWERPOD.redirectToNewId || redirect) && formId) {
     logger.info({
       fn: updatePageForSelectedProgram,
       message: `Stop updating page,redirect to new formId: ${formId}`,
