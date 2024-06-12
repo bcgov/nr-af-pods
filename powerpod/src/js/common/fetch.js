@@ -32,7 +32,7 @@ export const ENDPOINT_URL = {
   get_application_data: (id) =>
     `/_api/msgov_businessgrantapplications?$filter=msgov_businessgrantapplicationid%20eq%20${id}`,
   get_draft_applications_for_programid_data: (programid) =>
-    `/_api/msgov_businessgrantapplications?$filter=_quartech_program_value%20eq%20${programid}%20and%20quartech_applicationstatus%20eq%20255550002&$select=msgov_businessgrantapplicationid,_quartech_program_value,quartech_applicationstatus`,
+    `/_api/msgov_businessgrantapplications?$filter=_quartech_program_value%20eq%20${programid}%20and%20quartech_applicationstatus%20eq%20255550002%20and%20statuscode%20eq%201&$select=msgov_businessgrantapplicationid,_quartech_program_value,quartech_applicationstatus,statuscode`,
   post_application_data: '/_api/msgov_businessgrantapplications',
 };
 
