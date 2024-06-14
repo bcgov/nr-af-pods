@@ -177,7 +177,7 @@ async function execTestSteps(testSteps : TestStep[]): Promise<void> {
 
             const foundQuestionRequired = foundQuestion.parentNode?.classList?.contains('required')
             const fieldExpectedToBeRequired = testStep.field.required === true
-
+            
             if (foundQuestionRequired !== fieldExpectedToBeRequired) {
               testStep.results += `'${questionLabel}' field: Expected to be ${fieldExpectedToBeRequired ? 'REQUIRED' : 'OPTIONAL'}, but actually is ${foundQuestionRequired ? 'REQUIRED' : 'OPTIONAL'} `
             }
@@ -187,6 +187,32 @@ async function execTestSteps(testSteps : TestStep[]): Promise<void> {
             if (foundQuestionVisible !== testStep.field.visible) {
               testStep.results += `'${questionLabel}' field: Expected to be ${testStep.field.visible ? 'VISIBLE' : 'HIDDEN'}, but actually is ${foundQuestionVisible ? 'VISIBLE' : 'HIDDEN'} `
             }
+
+            //Checks if there is an expected value for the field
+            if (Object.keys(testStep.field).indexOf('value') > -1) {
+              const fieldExpectedValue = testStep.field.value
+              let foundQuestionValue = null
+
+              const fieldId = foundQuestion.id.replace('_label', '')
+              let fieldInputCtr = document.getElementById(fieldId) as HTMLInputElement;
+              
+              let dataType = fieldInputCtr.getAttribute('data-type')
+              if (!dataType) dataType = fieldInputCtr.getAttribute('type')
+    
+              switch (dataType) 
+              {
+                case 'checkbox':
+                  foundQuestionValue = fieldInputCtr.checked
+                  break
+                default: // normal input control or date control
+                  foundQuestionValue = fieldInputCtr.value                
+                  break
+              } 
+
+              if (fieldExpectedValue !== foundQuestionValue) {
+                testStep.results += `'${questionLabel}' field: Expected to to have the value ${fieldExpectedValue}, but it actually has ${foundQuestionValue} `
+              }
+            }            
           }
           break
         case 'enter':
