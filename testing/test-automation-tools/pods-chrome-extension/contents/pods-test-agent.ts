@@ -167,6 +167,31 @@ async function execTestSteps(testSteps : TestStep[]): Promise<void> {
           }
           break
         case 'expect':
+
+          //Checks the expected properties of the button
+          if (testStep.button) {
+            console.log(`buttonLabel: ${testStep.button.label}`)
+            
+            //Get all buttons
+            const buttons = document.getElementsByTagName("input") as HTMLCollectionOf<HTMLInputElement>;
+            
+            for(let i = 0; i < buttons.length; i++) {
+              const btnElem = buttons[i]
+
+              //Checks for the first occurrence of the desired label (displayOrder is not relevant in this version)
+              if (btnElem.value.toLowerCase() === testStep.button.label.toLowerCase()) { 
+                //After found, compares the expected value with the actual value and includes an error message, exiting the search
+                if (btnElem.disabled !== testStep.button.disabled) {
+                  testStep.results += `'${testStep.button.label}' button: Expected to be ${testStep.button.disabled ? 'DISABLED' : 'ENABLED'}, but actually is ${btnElem.disabled ? 'DISABLED' : 'ENABLED'} `
+                }                
+
+                break
+              }
+            }
+
+            break
+          }
+
           const foundQuestion = questionLabelsMap[questionLabel]
 
 
