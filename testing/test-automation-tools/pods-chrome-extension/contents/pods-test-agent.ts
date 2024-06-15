@@ -175,21 +175,27 @@ async function execTestSteps(testSteps : TestStep[]): Promise<void> {
           }
           else {
 
-            const foundQuestionRequired = foundQuestion.parentNode?.classList?.contains('required')
-            const fieldExpectedToBeRequired = testStep.field.required === true
-            
-            if (foundQuestionRequired !== fieldExpectedToBeRequired) {
-              testStep.results += `'${questionLabel}' field: Expected to be ${fieldExpectedToBeRequired ? 'REQUIRED' : 'OPTIONAL'}, but actually is ${foundQuestionRequired ? 'REQUIRED' : 'OPTIONAL'} `
+            //Checks if there is a filed required validation
+            if (Object.keys(testStep.field).includes('required')) {
+              const foundQuestionRequired = foundQuestion.parentNode?.classList?.contains('required')
+              const fieldExpectedToBeRequired = testStep.field.required === true
+              
+              if (foundQuestionRequired !== fieldExpectedToBeRequired) {
+                testStep.results += `'${questionLabel}' field: Expected to be ${fieldExpectedToBeRequired ? 'REQUIRED' : 'OPTIONAL'}, but actually is ${foundQuestionRequired ? 'REQUIRED' : 'OPTIONAL'} `
+              }
             }
 
-            const foundQuestionVisible = window.getComputedStyle(foundQuestion.parentNode.parentNode.parentNode).display !== 'none'
+            //Checks if there is a visibility validation for the field
+            if (Object.keys(testStep.field).includes('visible')) {
+              const foundQuestionVisible = window.getComputedStyle(foundQuestion.parentNode.parentNode.parentNode).display !== 'none'
 
-            if (foundQuestionVisible !== testStep.field.visible) {
-              testStep.results += `'${questionLabel}' field: Expected to be ${testStep.field.visible ? 'VISIBLE' : 'HIDDEN'}, but actually is ${foundQuestionVisible ? 'VISIBLE' : 'HIDDEN'} `
+              if (foundQuestionVisible !== testStep.field.visible) {
+                testStep.results += `'${questionLabel}' field: Expected to be ${testStep.field.visible ? 'VISIBLE' : 'HIDDEN'}, but actually is ${foundQuestionVisible ? 'VISIBLE' : 'HIDDEN'} `
+              }
             }
 
             //Checks if there is an expected value for the field
-            if (Object.keys(testStep.field).indexOf('value') > -1) {
+            if (Object.keys(testStep.field).includes('value')) {
               const fieldExpectedValue = testStep.field.value
               let foundQuestionValue = null
 
@@ -209,7 +215,8 @@ async function execTestSteps(testSteps : TestStep[]): Promise<void> {
                   break
               } 
 
-              if (fieldExpectedValue !== foundQuestionValue) {
+              //Allows data type conversion when validating the expected and actual value
+              if (fieldExpectedValue != foundQuestionValue) {
                 testStep.results += `'${questionLabel}' field: Expected to to have the value ${fieldExpectedValue}, but it actually has ${foundQuestionValue} `
               }
             }            
