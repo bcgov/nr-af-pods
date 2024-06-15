@@ -15,8 +15,6 @@
         "./*"
       ]
     },
-    "baseUrl": ".",
-    "target": "ES6",
-    "lib": ["es2020", "dom"]
+    "baseUrl": "."
   }
 }

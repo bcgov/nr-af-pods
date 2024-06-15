@@ -170,7 +170,10 @@ async function execTestSteps(testSteps : TestStep[]): Promise<void> {
 
           //Checks the expected properties of the button
           if (testStep.button) {
-            console.log(`buttonLabel: ${testStep.button.label}`)
+            questionLabel = testStep.button.label
+            console.log(`buttonLabel: ${questionLabel}`)
+
+            const buttonExpectedToBeDisabled = testStep.button.disabled
             
             //Get all buttons
             const buttons = document.getElementsByTagName("input") as HTMLCollectionOf<HTMLInputElement>;
@@ -179,16 +182,20 @@ async function execTestSteps(testSteps : TestStep[]): Promise<void> {
               const btnElem = buttons[i]
 
               //Checks for the first occurrence of the desired label (displayOrder is not relevant in this version)
-              if (btnElem.value.toLowerCase() === testStep.button.label.toLowerCase()) { 
+              if (btnElem.value.toLowerCase() === questionLabel.toLowerCase()) { 
+                const foundButtonDisabled = btnElem.disabled
+
                 //After found, compares the expected value with the actual value and includes an error message, exiting the search
-                if (btnElem.disabled !== testStep.button.disabled) {
-                  testStep.results += `'${testStep.button.label}' button: Expected to be ${testStep.button.disabled ? 'DISABLED' : 'ENABLED'}, but actually is ${btnElem.disabled ? 'DISABLED' : 'ENABLED'} `
+                if (foundButtonDisabled !== buttonExpectedToBeDisabled) {
+                  testStep.results += `'${questionLabel}' button: Expected to be ${buttonExpectedToBeDisabled ? 'DISABLED' : 'ENABLED'}, but it is actually ${foundButtonDisabled ? 'DISABLED' : 'ENABLED'} `
                 }                
 
+                //Stop iterating through the button list
                 break
               }
             }
-
+            
+            //Exit the Expect action block as it is not aiming for a field
             break
           }
 
@@ -344,7 +351,7 @@ async function execTestSteps(testSteps : TestStep[]): Promise<void> {
         testStep.failed = true
       }
       else {
-        testStep.results = `✅ STEP ${ testStep.id }: ${ testStep.action } ${ testStep.description ? testStep.description : testStep.field ? `${JSON.stringify(testStep.field)}` : '' }`
+        testStep.results = `✅ STEP ${ testStep.id }: ${ testStep.action } ${ testStep.description ? testStep.description : testStep.field ? `${JSON.stringify(testStep.field)}` : `${JSON.stringify(testStep.button)}` }`
         testStep.failed = false
       }
     }
