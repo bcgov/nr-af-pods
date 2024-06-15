@@ -187,7 +187,10 @@ async function execTestSteps(testSteps : TestStep[]): Promise<void> {
 
                 //After found, compares the expected value with the actual value and includes an error message, exiting the search
                 if (foundButtonDisabled !== buttonExpectedToBeDisabled) {
-                  testStep.results += `'${questionLabel}' button: Expected to be ${buttonExpectedToBeDisabled ? 'DISABLED' : 'ENABLED'}, but it is actually ${foundButtonDisabled ? 'DISABLED' : 'ENABLED'} `
+                  //If the button is not ready to be clicked according to the desired conditions, the test needs to be aborted
+                skipTheLoop = true
+                
+                testStep.results += `'${questionLabel}' button: Expected to be ${buttonExpectedToBeDisabled ? 'DISABLED' : 'ENABLED'}, but it is actually ${foundButtonDisabled ? 'DISABLED' : 'ENABLED'} `
                 }                
 
                 //Stop iterating through the button list
