@@ -1,0 +1,11 @@
+{
+	"name": "Application - NEFBA P2 - Application Declaration and Consent Step - Test Script",
+	"testSteps" : [
+		{   "action" : "open-new-tab", "url": "https://af-pods-dev.powerappsportals.com/application/?programid=62eb3bc6-dadb-ee11-904d-0022483bd58e" }
+
+		
+		, { "action" : "Expect", "field" : { "label": "I / We agree to the above statement.", "visible" : true, "required" : true } }
+		, { "action" : "Enter", "field" : { "label": "I / We agree to the above statement.", "value" : "checked" } }
+		, { "action" : "Expect", "button" : { "label": "Submit", "disabled" : false } }
+	]
+}

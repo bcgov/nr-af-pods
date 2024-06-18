@@ -1,0 +1,10 @@
+{
+	"name": "Application - NEFBA P2 - Documents Step - Test Script",
+	"testSteps" : [
+		{   "action" : "open-new-tab", "url": "https://af-pods-dev.powerappsportals.com/application/?programid=62eb3bc6-dadb-ee11-904d-0022483bd58e" }
+
+		
+		, { "action" : "Enable the Next button.", "description" : "Enable Next button. Skip the docs upload." }
+		, { "action" : "Click on the Next button.", "description" : "Go to the Demographic Info step by clicking Next button." }
+	]
+}

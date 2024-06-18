@@ -1,0 +1,31 @@
+{
+	"name": "Application - NEFBA P2 - Eligibility Step - Test Script",
+	"testSteps" : [
+		{   "action" : "open-new-tab", "url": "https://af-pods-dev.powerappsportals.com/application/?programid=62eb3bc6-dadb-ee11-904d-0022483bd58e" }
+
+		, { "action" : "Expect", "field" : { "label": "Has your business received a Statement of Completion from the Environmental Farm Plan Program?", "visible" : true, "required" : true } }
+		, { "action" : "Select", "field" : { "label": "Has your business received a Statement of Completion from the Environmental Farm Plan Program?", "value": "Yes"} }
+		, { "action" : "Expect", "field" : { "label": "Provide Certification Number:", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Does your business commit to apply for and, to the extent possible, complete an Environmental Farm Plan (EFP) prior to March 1, 2025?", "visible" : false } }
+
+		, { "action" : "Select", "field" : { "label": "Has your business received a Statement of Completion from the Environmental Farm Plan Program?", "value": "No"} }
+		, { "action" : "Expect", "field" : { "label": "Provide Certification Number:", "visible" : false } }
+		, { "action" : "Expect", "field" : { "label": "Does your business commit to apply for and, to the extent possible, complete an Environmental Farm Plan (EFP) prior to March 1, 2025?", "visible" : true, "required" : true } }
+
+
+		, { "action" : "Expect", "field" : { "label": "Has your business received cost-share funding from the Beneficial Management Practices Program (often referred to as the Environmental Farm Plan) in the past 18 months?", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Has your business received cost-share funding from the On-Farm Food Safety Program in the past 18 months?", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Is your business currently awaiting a decision on cost-share funding from either of these programs?", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Is your business planning on applying to either of these programs within the next 12 months?", "visible" : true, "required" : true } }
+
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : true } }
+		
+		, { "action" : "Select", "field" : { "label": "Does your business commit to apply for and, to the extent possible, complete an Environmental Farm Plan (EFP) prior to March 1, 2025?", "value": "Yes" } }
+		, { "action" : "Select", "field" : { "label": "Has your business received cost-share funding from the Beneficial Management Practices Program (often referred to as the Environmental Farm Plan) in the past 18 months?", "value": "Yes" } }
+		, { "action" : "Select", "field" : { "label": "Has your business received cost-share funding from the On-Farm Food Safety Program in the past 18 months?", "value": "Yes" } }
+		, { "action" : "Select", "field" : { "label": "Is your business currently awaiting a decision on cost-share funding from either of these programs?", "value": "Yes" } }
+		, { "action" : "Select", "field" : { "label": "Is your business planning on applying to either of these programs within the next 12 months?", "value": "Yes" } }
+
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : false } }
+	]
+}

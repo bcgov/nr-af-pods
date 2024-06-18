@@ -1,0 +1,41 @@
+{
+	"name": "Application - NEFBA P2 - Budget Step - Test Script",
+	"testSteps" : [
+		{   "action" : "open-new-tab", "url": "https://af-pods-dev.powerappsportals.com/application/?programid=62eb3bc6-dadb-ee11-904d-0022483bd58e" }
+
+		
+		, { "action" : "Expect", "field" : { "label": "Total requested from the program ($CAD):", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "In-kind Contribution ($CAD):", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Cash Contribution ($CAD):", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Total GST from Quotes ($CAD):", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Total Project Cost ($CAD):", "visible" : true, "required" : true } }
+		
+		, { "action" : "Expect", "field" : { "label": "Total added income ($CAD):", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Total reduced cost ($CAD):", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Total added income and reduced costs ($CAD):", "visible" : true, "required" : true } }
+		
+		, { "action" : "Expect", "field" : { "label": "Total added cost ($CAD):", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Total reduced income ($CAD):", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Total added costs and reduced income ($CAD):", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Net change in profit ($CAD):", "visible" : true, "required" : true } }
+		
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : true } }
+		
+		, { "action" : "Enter", "field" : { "label": "Total requested from the program ($CAD):", "value": 1 } }
+		, { "action" : "Enter", "field" : { "label": "In-kind Contribution ($CAD):", "value": 2 } }
+		, { "action" : "Enter", "field" : { "label": "Cash Contribution ($CAD):", "value": 3 } }
+		, { "action" : "Enter", "field" : { "label": "Total GST from Quotes ($CAD):", "value": 4 } }
+		, { "action" : "Expect", "field" : { "label": "Total Project Cost ($CAD):", "value" : 10 } }
+		
+		, { "action" : "Enter", "field" : { "label": "Total added income ($CAD):", "value": 5 } }
+		, { "action" : "Enter", "field" : { "label": "Total reduced cost ($CAD):", "value": 6 } }
+		, { "action" : "Expect", "field" : { "label": "Total added income and reduced costs ($CAD):", "value" : 11 } }
+		
+		, { "action" : "Enter", "field" : { "label": "Total added cost ($CAD):", "value": 7 } }
+		, { "action" : "Enter", "field" : { "label": "Total reduced income ($CAD):", "value": 8 } }
+		, { "action" : "Expect", "field" : { "label": "Total added costs and reduced income ($CAD):", "value" : 15 } }
+		, { "action" : "Expect", "field" : { "label": "Net change in profit ($CAD):", "value" : -4 } }
+
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : false } }
+	]
+}
