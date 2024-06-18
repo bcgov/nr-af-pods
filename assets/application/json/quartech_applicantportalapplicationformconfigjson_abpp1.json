@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "ABPP1"],
-  "version": "1.0.4",
+  "version": "1.0.5",
   "name": "ABPP - Agri-Business and Leadership Development",
   "abbreviation": "ABPP1",
   "hiddenSteps": "",
@@ -171,6 +171,14 @@
           "name": "quartech_supportreceivedduringscap",
           "elementType": "DropdownSelect",
           "required": true
+        },
+        {
+          "name": "quartech_supportduringscapdetails",
+          "visibleIf": {
+            "fieldName": "quartech_supportreceivedduringscap",
+            "selectedValue": 255550000,
+            "techComment": "Yes value"
+          }
         }
       ]
     },
