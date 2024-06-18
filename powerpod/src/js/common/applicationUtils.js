@@ -24,7 +24,7 @@ POWERPOD.applicationUtils = {
 };
 
 export function getFormType() {
-  const { pathname: path } = win.location;
+  const { pathname: path } = window.location;
   if (ClaimPaths.some((claimPath) => path.includes(claimPath))) {
     logger.info({
       fn: getFormType,
@@ -38,7 +38,7 @@ export function getFormType() {
     });
     return Form.Application;
   } else {
-    logger.error({
+    logger.warn({
       fn: getFormType,
       message: `Unable to autodetect form type, path: ${path}`,
     });

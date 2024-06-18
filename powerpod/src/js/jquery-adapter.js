@@ -16,7 +16,7 @@ export async function initJQueryAdapter() {
   });
   // @ts-ignore
   let successMsg;
-  if (win.jQuery) {
+  if (window.jQuery) {
     (function ($, powerpod) {
       'use strict';
 
@@ -55,7 +55,7 @@ export async function initJQueryAdapter() {
       });
       return;
       // @ts-ignore
-    })(win.jQuery, powerpod);
+    })(window.jQuery, powerpod);
   } else {
     const errorMsg = 'jQuery is required to use the jQuery powerpod!';
     logger.error({

@@ -11,9 +11,9 @@ POWERPOD.options = {
 // TODO: Update for production
 const ALLOWED_ENVS = [Environment.DEV, Environment.TEST, Environment.PROD];
 const ALLOWED_HOSTS = [
-  Hosts[Environment.DEV],
-  Hosts[Environment.TEST],
-  Hosts[Environment.PROD],
+  ...Hosts[Environment.DEV],
+  ...Hosts[Environment.TEST],
+  ...Hosts[Environment.PROD],
 ];
 const ALLOWED_PATHS = [
   '/claim/',
