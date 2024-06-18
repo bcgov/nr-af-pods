@@ -5,6 +5,7 @@ export interface TestStep {
     action: string,
     description: string,
     field: TestField,
+    button: TestField,
     fields: TestField[],
     url: string,
     executed: boolean,

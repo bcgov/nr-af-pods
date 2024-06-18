@@ -57,6 +57,15 @@ Parameters:
   * required: boolean, true/false, validate if the field is required on the form.
   * value: string, the text value expected to be found on the input field. This validation allows data tpes conversion when comparing to avoid formatting issues in the front-end.
 
+#### Expect a button
+Used to validate the properties of a button.
+
+Parameters:
+* action: Expect
+* button:
+  * label: string, the expected label of the button.
+  * disabled: boolean, true/false, validate if the button is disabled due to the form's conditions at that time.
+
 ### Select
 Select the desired option of a dropdown list.
 

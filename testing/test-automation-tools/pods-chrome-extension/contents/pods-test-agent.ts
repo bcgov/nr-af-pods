@@ -167,6 +167,41 @@ async function execTestSteps(testSteps : TestStep[]): Promise<void> {
           }
           break
         case 'expect':
+
+          //Checks the expected properties of the button
+          if (testStep.button) {
+            questionLabel = testStep.button.label
+            console.log(`buttonLabel: ${questionLabel}`)
+
+            const buttonExpectedToBeDisabled = testStep.button.disabled
+            
+            //Get all buttons
+            const buttons = document.getElementsByTagName("input") as HTMLCollectionOf<HTMLInputElement>;
+            
+            for(let i = 0; i < buttons.length; i++) {
+              const btnElem = buttons[i]
+
+              //Checks for the first occurrence of the desired label (displayOrder is not relevant in this version)
+              if (btnElem.value.toLowerCase() === questionLabel.toLowerCase()) { 
+                const foundButtonDisabled = btnElem.disabled
+
+                //After found, compares the expected value with the actual value and includes an error message, exiting the search
+                if (foundButtonDisabled !== buttonExpectedToBeDisabled) {
+                  //If the button is not ready to be clicked according to the desired conditions, the test needs to be aborted
+                skipTheLoop = true
+                
+                testStep.results += `'${questionLabel}' button: Expected to be ${buttonExpectedToBeDisabled ? 'DISABLED' : 'ENABLED'}, but it is actually ${foundButtonDisabled ? 'DISABLED' : 'ENABLED'} `
+                }                
+
+                //Stop iterating through the button list
+                break
+              }
+            }
+            
+            //Exit the Expect action block as it is not aiming for a field
+            break
+          }
+
           const foundQuestion = questionLabelsMap[questionLabel]
 
 
@@ -352,7 +387,7 @@ async function execTestSteps(testSteps : TestStep[]): Promise<void> {
         testStep.failed = true
       }
       else {
-        testStep.results = `✅ STEP ${ testStep.id }: ${ testStep.action } ${ testStep.description ? testStep.description : testStep.field ? `${JSON.stringify(testStep.field)}` : '' }`
+        testStep.results = `✅ STEP ${ testStep.id }: ${ testStep.action } ${ testStep.description ? testStep.description : testStep.field ? `${JSON.stringify(testStep.field)}` : `${JSON.stringify(testStep.button)}` }`
         testStep.failed = false
       }
     }
