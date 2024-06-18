@@ -10,9 +10,9 @@ const logger = Logger('app');
 function autoinit() {
   logger.info({
     fn: autoinit,
-    message: `starting autoinit, href: ${win.location.href}`,
+    message: `starting autoinit, href: ${window.location.href}`,
   });
-  const { host, pathname: path } = win.location;
+  const { host, pathname: path } = window.location;
 
   // TODO: auto-detect environment based on host URL
   // for now manually configure these options:
@@ -40,12 +40,15 @@ function autoinit() {
 
   // ensure current path is in the list of allowed paths from options
   if (
-    !getOptions().allowedPaths.some((allowedPath) => path.includes(allowedPath))
+    !getOptions().allowedPaths.some((allowedPath) =>
+      path.includes(allowedPath)
+    ) &&
+    !host.includes('crm')
   ) {
     logger.error({
       fn: autoinit,
       message: `current path is not in list of allowed paths, path: ${path}, allowedPaths:`,
-      data: getOptions().allowedPaths,
+      data: { allowedPaths: getOptions().allowedPaths, host },
     });
     return;
   }
@@ -96,7 +99,7 @@ async function start() {
 (function () {
   logger.info({ message: 'checking for jQuery...' });
   // @ts-ignore
-  if (win.jQuery) {
+  if (window.jQuery) {
     logger.info({ message: 'jQuery found, running start...' });
     start();
   } else if (doc.readyState === 'complete') {
@@ -146,7 +149,7 @@ async function start() {
       message:
         'jQuery not found AND doc.addEventListener not found, adding listener for window loaded state...',
     });
-    win.addEventListener('load', () => {
+    window.addEventListener('load', () => {
       start();
     });
   } else {

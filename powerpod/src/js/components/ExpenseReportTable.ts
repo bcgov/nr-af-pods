@@ -32,69 +32,15 @@ class ExpenseReportTable extends LitElement {
   @property({ type: Object }) columns: Column[] = [];
   @property({ type: Array }) rows: RowItem[] = [];
   @property({ type: Array }) expenseTypes: string[] = [];
-
-  static styles = css`
-    .styled-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 25px 0;
-      font-size: 0.9em;
-      font-family: sans-serif;
-      min-width: 400px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-    }
-    .styled-table thead tr {
-      background-color: #2f5fee;
-      color: #ffffff;
-      text-align: left;
-    }
-    .styled-table th {
-      padding: 12px 15px;
-      font-size: 15px;
-    }
-    .styled-table td {
-      padding: 12px 15px 24px;
-    }
-    .styled-table tbody tr {
-      border-bottom: 1px solid #dddddd;
-    }
-
-    .styled-table tbody tr:nth-of-type(even) {
-      background-color: #f3f3f3;
-    }
-
-    .styled-table tbody tr:last-of-type {
-      border-bottom: 2px solid #2f5fee;
-    }
-    .styled-table tbody tr.active-row {
-      font-weight: bold;
-      color: #009879;
-    }
-    ::sloted(input) {
-      width: 100%;
-    }
-    .add-another-row {
-      background-color: #fff !important;
-      line-height: 20px;
-    }
-    .add-another-row td {
-      line-height: 20px;
-      padding: 10px 15px 10px;
-    }
-    .add-another-btn {
-      line-height: 1.5;
-      font-size: 13px;
-    }
-    .add-another-btn span {
-      padding-bottom: 2px;
-    },
-    ${unsafeCSS(bootstrap)}
-  `;
+  @property({ type: Boolean }) readOnly = false;
 
   // make fetch call as soon as component is mounted
   connectedCallback(): void {
     super.connectedCallback();
-    this.getExpenseTypes();
+
+    if (!this.readOnly) {
+      this.getExpenseTypes();
+    }
 
     if (!Array.isArray(this.rows)) {
       this.rows = [];
@@ -174,102 +120,209 @@ class ExpenseReportTable extends LitElement {
 
   render() {
     return html`
+      <style>
+        .styled-table {
+          width: 100%;
+          border-collapse: collapse;
+          margin: 25px 0;
+          ${
+            !this.readOnly
+              ? css`
+                  font-size: 0.9em;
+                `
+              : css``
+          }
+          font-family: sans-serif;
+          min-width: 400px;
+          box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+        }
+        .styled-table thead tr {
+          background-color: #2f5fee;
+          color: #ffffff;
+          text-align: left;
+        }
+        .styled-table th {
+          padding: 12px 15px;
+          ${
+            !this.readOnly
+              ? css`
+                  font-size: 15px;
+                `
+              : css``
+          }
+        }
+        .styled-table td {
+          padding: 12px 15px 24px;
+        }
+        .styled-table tbody tr {
+          border-bottom: 1px solid #dddddd;
+        }
+
+        .styled-table tbody tr:nth-of-type(even) {
+          background-color: #f3f3f3;
+        }
+
+        .styled-table tbody tr:last-of-type {
+          border-bottom: 2px solid #2f5fee;
+        }
+        .styled-table tbody tr.active-row {
+          font-weight: bold;
+          color: #009879;
+        }
+        ::sloted(input) {
+          width: 100%;
+        }
+        .add-another-row {
+          background-color: #fff !important;
+          line-height: 20px;
+        }
+        .add-another-row td {
+          line-height: 20px;
+          padding: 10px 15px 10px;
+        }
+        .add-another-btn {
+          line-height: 1.5;
+          ${
+            !this.readOnly
+              ? css`
+                  font-size: 13px;
+                `
+              : css``
+          }
+        }
+        .add-another-btn span {
+          padding-bottom: 2px;
+        },
+        ${bootstrap}
+      </style>
       <table class="styled-table">
         <thead>
           <tr>
-            ${this.columns &&
-            this.columns.map((col) => {
-              return html`<th style="width: ${col.width};">${col.name}</th>`;
-            })}
-            <th />
+            ${
+              this.columns &&
+              this.columns.map((col) => {
+                return html`<th style="width: ${col.width};">${col.name}</th>`;
+              })
+            }
+            ${!this.readOnly ? html`<th />` : html``}
           </tr>
         </thead>
         <tbody>
-          ${this.rows?.length > 0
-            ? this.rows.map(
-                (row: RowItem, rowIndex: number) => html`
-                  <tr>
-                    ${this.columns.map((col) => {
-                      const cellValue = row[col.id];
-                      if (col.id === 'type' && this.expenseTypes?.length) {
-                        return html` <td>
-                          <dropdown-search
-                            .options=${this.expenseTypes}
-                            .selectedValue=${cellValue}
-                            @onChangeDropdownValue=${(e: CustomEvent) => {
-                              this.handleUpdateCell(
-                                rowIndex,
-                                col.id,
-                                e.detail.value
-                              );
-                              e.stopImmediatePropagation();
-                            }}
-                          ></dropdown-search>
-                        </td>`;
-                      } else if (col.id === 'description') {
-                        return html` <td>
-                          <text-field
-                            customStyle="width: 95%"
-                            .inputValue=${cellValue}
-                            @onChangeTextField=${(e: CustomEvent) => {
-                              this.handleUpdateCell(
-                                rowIndex,
-                                col.id,
-                                e.detail.value
-                              );
-                              e.stopImmediatePropagation();
-                            }}
-                          ></text-field>
-                        </td>`;
-                      } else if (col.id === 'amount') {
-                        return html`<td>
-                          <currency-input
-                            .inputValue=${cellValue}
-                            @onChangeCurrencyInput=${(e: CustomEvent) => {
-                              this.handleUpdateCell(
-                                rowIndex,
-                                col.id,
-                                e.detail.value
-                              );
-                              e.stopImmediatePropagation();
-                            }}
-                          ></currency-input>
-                        </td>`;
-                      }
-                      return html`<td>${cellValue}</td>`;
-                    })}
+          ${
+            this.rows?.length > 0
+              ? this.rows.map(
+                  (row: RowItem, rowIndex: number) => html`
+                    <tr>
+                      ${this.columns.map((col) => {
+                        const cellValue = row[col.id];
+                        if (
+                          !this.readOnly &&
+                          col.id === 'type' &&
+                          this.expenseTypes?.length
+                        ) {
+                          return html` <td>
+                            <dropdown-search
+                              .options=${this.expenseTypes}
+                              .selectedValue=${cellValue}
+                              @onChangeDropdownValue=${(e: CustomEvent) => {
+                                this.handleUpdateCell(
+                                  rowIndex,
+                                  col.id,
+                                  e.detail.value
+                                );
+                                e.stopImmediatePropagation();
+                              }}
+                            ></dropdown-search>
+                          </td>`;
+                        } else if (this.readOnly && col.id === 'type') {
+                          return html` <td>
+                            <text-field
+                              customStyle="width: 95%"
+                              .inputValue=${cellValue}
+                              .readOnly=${this.readOnly}
+                            ></text-field>
+                          </td>`;
+                        } else if (col.id === 'description') {
+                          return html` <td>
+                            <text-field
+                              customStyle="width: 95%"
+                              .inputValue=${cellValue}
+                              .readOnly=${this.readOnly}
+                              @onChangeTextField=${(e: CustomEvent) => {
+                                this.handleUpdateCell(
+                                  rowIndex,
+                                  col.id,
+                                  e.detail.value
+                                );
+                                e.stopImmediatePropagation();
+                              }}
+                            ></text-field>
+                          </td>`;
+                        } else if (col.id === 'amount') {
+                          return html`<td>
+                            <currency-input
+                              .inputValue=${cellValue}
+                              .readOnly=${this.readOnly}
+                              @onChangeCurrencyInput=${(e: CustomEvent) => {
+                                this.handleUpdateCell(
+                                  rowIndex,
+                                  col.id,
+                                  e.detail.value
+                                );
+                                e.stopImmediatePropagation();
+                              }}
+                            ></currency-input>
+                          </td>`;
+                        }
+                        return html`<td>${cellValue}</td>`;
+                      })}
+                      ${!this.readOnly
+                        ? html`
+                            <td>
+                              <button
+                                type="button"
+                                @click=${() => this.handleDeleteRow(rowIndex)}
+                              >
+                                <span
+                                  style="padding-top: 4px; font-weight: bold; ${!this
+                                    .readOnly
+                                    ? 'font-size: 15px'
+                                    : ''}"
+                                  class="glyphicon glyphicon-trash"
+                                  role="img"
+                                  aria-label="Delete"
+                                ></span>
+                              </button>
+                            </td>
+                          `
+                        : html``}
+                    </tr>
+                  `
+                )
+              : ''
+          }
+          ${
+            !this.readOnly
+              ? html`
+                  <tr class="add-another-row">
                     <td>
                       <button
                         type="button"
-                        @click=${() => this.handleDeleteRow(rowIndex)}
+                        class="add-another-btn"
+                        @click=${this.handleAddRow}
                       >
                         <span
-                          style="padding-top: 4px; font-weight: bold; font-size: 15px"
-                          class="glyphicon glyphicon-trash"
-                          role="img"
-                          aria-label="Delete"
+                          style="padding: 1px 1px 0px 0px"
+                          class="glyphicon glyphicon-plus"
                         ></span>
+                        <span style="font-weight: bold">Add Another</span>
                       </button>
                     </td>
                   </tr>
                 `
-              )
-            : ''}
-          <tr class="add-another-row">
-            <td>
-              <button
-                type="button"
-                class="add-another-btn"
-                @click=${this.handleAddRow}
-              >
-                <span
-                  style="padding: 1px 1px 0px 0px"
-                  class="glyphicon glyphicon-plus"
-                ></span>
-                <span style="font-weight: bold">Add Another</span>
-              </button>
-            </td>
-          </tr>
+              : html``
+          }
+          </tbody>
         </tbody>
       </table>
     `;

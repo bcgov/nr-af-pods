@@ -28,12 +28,12 @@ function log({ namespace, fn, type, message, data }) {
   // if level of requested log is less than log level of env, do not log
   if (logLevel < envLogLevel) return;
 
-  if (!win.console || !win.console[type]) {
-    win.console.error('[POWERPOD]: issue using logger');
+  if (!window.console || !window.console[type]) {
+    window.console.error('[POWERPOD]: issue using logger');
     return;
   }
 
-  const logFn = win.console[type]; // default log
+  const logFn = window.console[type]; // default log
 
   let prefix = '';
   prefix += namespace ? ` (${namespace})` : '';

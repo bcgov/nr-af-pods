@@ -6,18 +6,7 @@ class TextField extends LitElement {
   @query('#inputElement') inputElement: HTMLInputElement | undefined;
   @property({ type: String }) inputValue: string = '';
   @property() customStyle = '';
-
-  static styles = css`
-    input {
-      line-height: 1.42857;
-      padding: 6px 12px;
-      background-color: #fff;
-      border: 1px solid #caced1;
-      border-radius: 0.25rem;
-      color: #000;
-      font-size: 15px;
-    }
-  `;
+  @property({ type: Boolean }) readOnly = false;
 
   emitEvent() {
     let event = new CustomEvent('onChangeTextField', {
@@ -41,6 +30,21 @@ class TextField extends LitElement {
 
   render() {
     return html`
+      <style>
+        input {
+          line-height: 1.42857;
+          padding: 6px 12px;
+          background-color: #fff;
+          border: 1px solid #caced1;
+          border-radius: 0.25rem;
+          color: #000;
+          ${!this.readOnly
+          ? css`
+              font-size: 15px;
+            `
+          : css``}
+        }
+      </style>
       <input
         class="text-field"
         style=${unsafeCSS(this.customStyle)}
@@ -48,6 +52,7 @@ class TextField extends LitElement {
         type="text"
         .value=${this.inputValue || ''}
         @change=${this.handleEmitEvent}
+        disabled=${this.readOnly ? true : false}
       />
     `;
   }
