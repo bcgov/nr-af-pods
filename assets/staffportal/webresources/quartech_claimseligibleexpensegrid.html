@@ -2,7 +2,7 @@
   -------------------
   FILE INFO
   -------------------
-  version: 1.0.0
+  version: 1.0.1
   name: Claims Eligible Expense Grid
   type: Web Resource (HTML Content)
   description: This is the HTML content used to render the elgible expense grid on Staff Portal.
@@ -23,7 +23,7 @@
 
     <script type="text/javascript">
       function onLoad() {
-        console.log('WebResource version: 1.0.0');
+        console.log('WebResource version: 1.0.1');
         loadjQuery(() => {
           loadPowerpod(() => {
             let rows = JSON.stringify([
@@ -33,9 +33,6 @@
                 amount: '',
               },
             ]);
-
-            rows =
-              '[{&quot;type&quot;:&quot;Advertising/communications&quot;,&quot;description&quot;:&quot;The quick brown fox jumped over the lazy dog.&quot;,&quot;amount&quot;:&quot;6.00&quot;},{&quot;type&quot;:&quot;Equipment/machinery (purchase)&quot;,&quot;description&quot;:&quot;This is a test&quot;,&quot;amount&quot;:&quot;12,341,231.12&quot;},{&quot;type&quot;:&quot;In-kind contribution (describe)&quot;,&quot;description&quot;:&quot;123fetchedRowValues&quot;,&quot;amount&quot;:&quot;123,123,123.00&quot;},{&quot;type&quot;:&quot;In-kind contribution (describe)&quot;,&quot;description&quot;:&quot;123123&quot;,&quot;amount&quot;:&quot;12,312.00&quot;}]';
 
             if (
               parent?.Xrm?.Page &&
@@ -60,8 +57,7 @@
             const customElement = document.getElementsByTagName(
               'expense-report-table'
             )?.[0];
-            console.log(customElement);
-            console.log(customElements.get('expense-report-table'));
+
             const columns = JSON.stringify([
               {
                 id: 'type',
