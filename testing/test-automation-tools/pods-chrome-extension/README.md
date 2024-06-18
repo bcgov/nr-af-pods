@@ -55,6 +55,7 @@ Parameters:
   * displayOrder: integer, the order the desired field is presented on the page, considering all the fields with the same label.
   * visible: boolean, true/false, validate if the field is visible on the page at that time.
   * required: boolean, true/false, validate if the field is required on the form.
+  * value: string, the text value expected to be found on the input field. This validation allows data tpes conversion when comparing to avoid formatting issues in the front-end.
 
 #### Expect a button
 Used to validate the properties of a button.

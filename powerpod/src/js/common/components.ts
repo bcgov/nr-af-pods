@@ -1,7 +1,11 @@
-import { doc } from './constants';
+import { doc, POWERPOD } from './constants';
 import { Logger } from './logger';
 
 const logger = Logger('common/components');
+
+POWERPOD.components = {
+  renderCustomComponent,
+};
 
 // this accepts an id of an existing dynamics field
 // and re-renders a custom component in its place

@@ -8,9 +8,12 @@ export const Environment = {
 };
 
 export const Hosts = {
-  [Environment.DEV]: 'af-pods-dev.powerappsportals.com',
-  [Environment.TEST]: 'af-pods-test.powerappsportals.com',
-  [Environment.PROD]: 'af-pods.powerappsportals.com',
+  [Environment.DEV]: [
+    'af-pods-dev.powerappsportals.com',
+    'af-pods-dev.crm3.dynamics.com',
+  ],
+  [Environment.TEST]: ['af-pods-test.powerappsportals.com'],
+  [Environment.PROD]: ['af-pods.powerappsportals.com'],
 };
 export const ClaimPaths = ['/claim/', '/claim-dev/'];
 export const ApplicationPaths = ['/application/', '/application-dev/'];
@@ -18,6 +21,7 @@ export const ApplicationPaths = ['/application/', '/application-dev/'];
 export const Form = {
   Application: 'Application',
   Claim: 'Claim',
+  StaffPortalClaim: 'StaffPortalClaim',
 };
 
 export const HtmlElementType = {
@@ -111,4 +115,5 @@ export const POWERPOD = {
   saveButton: {},
   doNotUnhideLoader: false,
   redirectToNewId: false,
+  components: {},
 };

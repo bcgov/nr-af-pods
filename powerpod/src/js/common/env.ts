@@ -10,9 +10,11 @@ POWERPOD.env = {
 };
 
 export function getEnv() {
-  const { host } = win.location;
+  const { host } = window.location;
 
-  const env = Object.keys(Hosts).find((key) => Hosts[key] === host);
+  const env = Object.keys(Hosts).find(
+    (key) => Hosts[key].includes(host)
+  );
 
   if (!env) {
     logger.error({

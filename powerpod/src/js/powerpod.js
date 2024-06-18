@@ -14,13 +14,14 @@ import './common/form.js';
 import { Logger } from './common/logger.js';
 import { initApplication } from './application/application.js';
 import { initClaim } from './claim/claim.js';
+import './components/ExpenseReportTable.ts';
 
 const logger = Logger('powerpod');
 
 export default function powerpod(options) {
   // try to autodetect the form type if not passed
   if (!options?.form) {
-    const { pathname: path } = win.location;
+    const { pathname: path } = window.location;
     if (ClaimPaths.some((claimPath) => path.includes(claimPath))) {
       logger.info({ message: `auto-detected ${Form.Claim} form` });
       setOption('form', Form.Claim);
@@ -28,7 +29,7 @@ export default function powerpod(options) {
       logger.info({ message: `auto-detected ${Form.Application} form` });
       setOption('form', Form.Application);
     } else {
-      logger.error({
+      logger.warn({
         message: `Unable to autodetect form type, path: ${path}`,
       });
     }
@@ -50,14 +51,14 @@ export default function powerpod(options) {
       initClaim();
       break;
     default:
-      logger.error({
-        message: 'unable to init, no form type defined in options',
+      logger.warn({
+        message: 'init with no form type defined in options',
       });
       break;
   }
 
   // @ts-ignore
-  return win.powerpod;
+  return window.powerpod;
 }
 
 function setAPI() {
@@ -68,7 +69,7 @@ function setAPI() {
     };
   };
   // @ts-ignore
-  POWERPOD.version = '1.5.0';
+  POWERPOD.version = '1.5.1';
   // @ts-ignore
-  win.powerpod = POWERPOD;
+  window.powerpod = POWERPOD;
 }

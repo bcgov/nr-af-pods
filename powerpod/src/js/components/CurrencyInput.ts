@@ -3,52 +3,11 @@ import { customElement, property, query } from 'lit/decorators.js';
 
 @customElement('currency-input')
 class CurrencyInput extends LitElement {
-  static styles = css`
-    .input-icon {
-      position: relative;
-    }
-
-    .input-icon > i {
-      position: absolute;
-      display: block;
-      transform: translate(0, -50%);
-      top: 50%;
-      pointer-events: none;
-      width: 25px;
-      text-align: center;
-      font-style: normal;
-      font-size: 15px;
-    }
-
-    .input-icon > input {
-      padding-left: 25px;
-    }
-
-    .input-icon-right > i {
-      right: 0;
-    }
-
-    .input-icon-right > input {
-      padding-left: 0;
-      padding-right: 25px;
-      text-align: right;
-    }
-
-    .form-control {
-      line-height: 1.42857;
-      padding: 6px 12px;
-      background-color: #fff;
-      border: 1px solid #caced1;
-      border-radius: 0.25rem;
-      color: #000;
-      font-size: 15px;
-    }
-  `;
-
   @query('#inputElement') inputElement: HTMLInputElement | undefined;
   @property({ type: String }) inputValue: string = '0.00';
   @property({ type: Boolean }) allowNegatives: boolean = true;
   @property({ type: Number }) maxValue: number | null = null;
+  @property({ type: Boolean }) readOnly = false;
   private cursorPosition: number = 0;
   private previousInputValue: string = '';
 
@@ -257,6 +216,55 @@ class CurrencyInput extends LitElement {
 
   render() {
     return html`
+      <style>
+        .input-icon {
+          position: relative;
+        }
+
+        .input-icon > i {
+          position: absolute;
+          display: block;
+          transform: translate(0, -50%);
+          top: 50%;
+          pointer-events: none;
+          width: 25px;
+          text-align: center;
+          font-style: normal;
+          ${!this.readOnly
+          ? css`
+              font-size: 15px;
+            `
+          : css``}
+        }
+
+        .input-icon > input {
+          padding-left: 25px;
+        }
+
+        .input-icon-right > i {
+          right: 0;
+        }
+
+        .input-icon-right > input {
+          padding-left: 0;
+          padding-right: 25px;
+          text-align: right;
+        }
+
+        .form-control {
+          line-height: 1.42857;
+          padding: 6px 12px;
+          background-color: #fff;
+          border: 1px solid #caced1;
+          border-radius: 0.25rem;
+          color: #000;
+          ${!this.readOnly
+          ? css`
+              font-size: 15px;
+            `
+          : css``}
+        }
+      </style>
       <div class="input-icon">
         <input
           id="inputElement"
@@ -267,6 +275,7 @@ class CurrencyInput extends LitElement {
           @focus=${this.handleInputFocus}
           @blur=${this.handleInputBlur}
           @beforeinput=${this.handleBeforeInput}
+          disabled=${this.readOnly ? true : false}
         />
         <i>$</i>
       </div>
