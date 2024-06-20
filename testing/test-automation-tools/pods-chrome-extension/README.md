@@ -19,7 +19,7 @@ This is the PODS Test Automation Chrome extension tool.
    * Open Chrome extensions using `chrome://extensions/`
      * Enable Developer mode
      * Load unpacked to load the PODS Chrome extension by pointing it to the chrome-mv3-dev folder.
- * Run `pnpm dev` for developing the extension so that your changes to the code will be reflected in real time.
+ * Run `pnpm dev` for developing the extension so that your changes to the code will be reflected in real-time.
  * Open https://sites.google.com/view/pods-testing?testScript=https://raw.githubusercontent.com/bcgov/nr-af-pods/dev/testing/test-scripts/dev/claim/blank-test-script.json 
    * You can change the `testScript` parameter above.
 
@@ -55,7 +55,7 @@ Parameters:
   * displayOrder: integer, the order the desired field is presented on the page, considering all the fields with the same label.
   * visible: boolean, true/false, validate if the field is visible on the page at that time.
   * required: boolean, true/false, validate if the field is required on the form.
-  * value: string, the text value expected to be found on the input field. This validation allows data tpes conversion when comparing to avoid formatting issues in the front-end.
+  * value: string, the text value expected to be found on the input field. This validation allows data type conversion when compared to avoid formatting issues in the front end.
 
 #### Expect a button
 Used to validate the properties of a button.
@@ -70,7 +70,7 @@ Parameters:
 Select the desired option of a dropdown list.
 
 Parameters:
-* action: Expect
+* action: Select
 * field:
   * label: string, the label of the dropdown list.
   * value: string, the text value of the option to be selected.
