@@ -85,59 +85,84 @@ async function addSatisfactionSurveyChefsIframe() {
 
   setFieldReadOnly('quartech_satisfactionsurveyid');
 
+  // Full length GUID for viewing results
+  const chefsSubmissionGuid = $(
+    '#quartech_satisfactionsurveychefssubmissionid'
+  )?.val();
+
+  // Shorthand ID result for Staff
   const chefsSubmissionId = $('#quartech_satisfactionsurveyid')?.val();
-  let chefsUrl = '';
 
-  if (chefsSubmissionId) {
-    chefsUrl = `https://submit.digital.gov.bc.ca/app/form/success?s=${chefsSubmissionId}`;
-  } else {
-    const {
-      quartech_ChefsNefbaSatisfactionSurveyFormId:
-        chefsNefbaSatisfactionSurveyFormId,
-    } = await getEnvVars();
+  if (chefsSubmissionGuid || chefsSubmissionId) {
+    // Logic has since changed, if there's an ID present, we don't need to do anything.
+    // chefsUrl = `https://submit.digital.gov.bc.ca/app/form/success?s=${chefsSubmissionGuid}`;
 
-    if (!chefsNefbaSatisfactionSurveyFormId) {
-      alert(
-        'Bad config: Applicant Portal Config should contain the quartech_ChefsNefbaSatisfactionSurveyFormId element'
-      );
-    }
-    chefsUrl = `https://submit.digital.gov.bc.ca/app/form/submit?f=${chefsNefbaSatisfactionSurveyFormId}`;
-
-    window.addEventListener('message', function (event) {
-      if (event.origin != 'https://submit.digital.gov.bc.ca') {
-        return;
-      }
-      const containSubmissionId = event.data.indexOf('submissionId') > -1;
-
-      if (!containSubmissionId) return;
-
-      const submissionPayload = JSON.parse(event.data);
-
-      console.log('received submissionId: ' + submissionPayload.submissionId);
-
-      $('#quartech_satisfactionsurveychefssubmissionid').val(
-        submissionPayload.submissionId
-      );
-
-      const confirmationId = submissionPayload.submissionId
-        .substring(0, 8)
-        .toUpperCase();
-
-      setFieldValue('quartech_satisfactionsurveyid', confirmationId);
-
-      saveFormData();
+    logger.info({
+      fn: addSatisfactionSurveyChefsIframe,
+      message: `Satisfaction survey has already been completed, chefsSubmissionGuid: ${chefsSubmissionGuid}, chefsSubmissionId: ${chefsSubmissionId}`,
     });
+    return;
+  }
 
-    let div = document.createElement('div');
-    div.innerHTML = `<iframe id='chefsSatisfactionSurveyIframe' src="${chefsUrl}" height="800" width="100%" title="Satisfaction Survey in CHEFS">
+  const {
+    quartech_ChefsNefbaSatisfactionSurveyFormId:
+      chefsNefbaSatisfactionSurveyFormId,
+  } = await getEnvVars();
+
+  if (!chefsNefbaSatisfactionSurveyFormId) {
+    logger.error({
+      fn: addSatisfactionSurveyChefsIframe,
+      message:
+        'Bad config: Applicant Portal Config should contain the quartech_ChefsNefbaSatisfactionSurveyFormId element',
+      data: { chefsNefbaSatisfactionSurveyFormId },
+    });
+  }
+
+  const chefsUrl = `https://submit.digital.gov.bc.ca/app/form/submit?f=${chefsNefbaSatisfactionSurveyFormId}`;
+
+  window.addEventListener('message', function (event) {
+    if (event.origin != 'https://submit.digital.gov.bc.ca') {
+      return;
+    }
+    const containSubmissionId = event.data.indexOf('submissionId') > -1;
+
+    if (!containSubmissionId) return;
+
+    const submissionPayload = JSON.parse(event.data);
+
+    const chefsSubmissionGuidResult = submissionPayload.submissionId;
+
+    console.log(
+      'received chefsSubmissionGuidResult: ' + chefsSubmissionGuidResult
+    );
+
+    setFieldValue(
+      'quartech_satisfactionsurveychefssubmissionid',
+      chefsSubmissionGuidResult
+    );
+
+    const chefsSubmissionId = chefsSubmissionGuidResult
+      .substring(0, 8)
+      .toUpperCase();
+
+    setFieldValue('quartech_satisfactionsurveyid', chefsSubmissionId);
+
+    saveFormData({
+      customPayload: {
+        quartech_satisfactionsurveychefssubmissionid: chefsSubmissionGuidResult,
+      },
+    });
+  });
+
+  let div = document.createElement('div');
+  div.innerHTML = `<iframe id='chefsSatisfactionSurveyIframe' src="${chefsUrl}" height="800" width="100%" title="Satisfaction Survey in CHEFS">
         </iframe><br/>`;
 
-    const fieldLabelDivContainer = $(`#quartech_satisfactionsurveyid_label`)
-      .parent()
-      .parent();
+  const fieldLabelDivContainer = $(`#quartech_satisfactionsurveyid_label`)
+    .parent()
+    .parent();
 
-    fieldLabelDivContainer.prepend(div);
-  }
+  fieldLabelDivContainer.prepend(div);
 }
 
 function customizeBusinessPlanDocumentsQuestions() {
