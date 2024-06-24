@@ -47,7 +47,7 @@ export function addSaveButton() {
   saveButton.onclick = () => saveFormData();
 }
 
-export async function saveFormData() {
+export async function saveFormData({ customPayload = {} }) {
   const saveButton = document.getElementById('quartechSaveBtn');
   if (!saveButton) {
     logger.error({
@@ -95,7 +95,18 @@ export async function saveFormData() {
     payload = {
       [field]: value,
       ...payload,
+      ...customPayload,
     };
+
+    if (customPayload && Object.keys(customPayload).length > 0) {
+      logger.info({
+        fn: saveFormData,
+        message: `Adding custom payload to form save data payload: ${JSON.stringify(
+          customPayload
+        )}`,
+        data: { payload, customPayload },
+      });
+    }
   });
 
   if (isObjectEmpty(payload)) {
