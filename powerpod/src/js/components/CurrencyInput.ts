@@ -262,7 +262,9 @@ class CurrencyInput extends LitElement {
           ? css`
               font-size: 15px;
             `
-          : css``}
+          : css`
+              pointer-events: none;
+            `}
         }
       </style>
       <div class="input-icon">
@@ -275,7 +277,6 @@ class CurrencyInput extends LitElement {
           @focus=${this.handleInputFocus}
           @blur=${this.handleInputBlur}
           @beforeinput=${this.handleBeforeInput}
-          disabled=${this.readOnly ? true : false}
         />
         <i>$</i>
       </div>
