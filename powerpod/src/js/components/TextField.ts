@@ -42,7 +42,9 @@ class TextField extends LitElement {
           ? css`
               font-size: 15px;
             `
-          : css``}
+          : css`
+              pointer-events: none;
+            `}
         }
       </style>
       <input
@@ -52,7 +54,6 @@ class TextField extends LitElement {
         type="text"
         .value=${this.inputValue || ''}
         @change=${this.handleEmitEvent}
-        disabled=${this.readOnly ? true : false}
       />
     `;
   }
