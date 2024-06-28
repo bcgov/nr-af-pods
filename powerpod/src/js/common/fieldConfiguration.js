@@ -24,6 +24,7 @@ import { useScript } from './scripts.js';
 import { renderCustomComponent } from './components.js';
 import '../components/FileUpload.js';
 import store from '../store/index.js';
+import { getFormType } from './applicationUtils.js';
 
 const logger = Logger('common/fieldConfiguration');
 
@@ -204,6 +205,7 @@ export function configureFields() {
           const fileInputStr = event.detail.fileInputStr;
           customElement.setAttribute('fileInputStr', fileInputStr);
           customElement.setAttribute('docs', JSON.stringify(docs));
+          customElement.setAttribute('formType', getFormType());
           setFieldValue(name, fileInputStr);
           validateRequiredFields();
         },
