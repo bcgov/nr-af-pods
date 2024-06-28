@@ -11,6 +11,8 @@ import { getContactName } from './contacts.js';
 import { getFieldLabel } from './html.js';
 import { readFileAsBase64 } from './file.js';
 import { getFormId } from './form.js';
+import { getFormType } from './applicationUtils.js';
+import { getGlobalConfigData } from './config.js';
 
 const logger = Logger('common/documents');
 
@@ -311,7 +313,7 @@ export function generateFileInputStr(docs: UploadedDoc[]): string {
 export async function generateDocumentSubject(
   file: RawFile,
   fieldName: string = ''
-): Promise<{ subject: string; fileId: string; }> {
+): Promise<{ subject: string; fileId: string }> {
   const { name, size, type } = file;
 
   const { contactId } = getCurrentUser();
@@ -374,18 +376,21 @@ export async function postDocument(file: RawFile, fieldName: string) {
     return;
   }
 
+  const formType = getFormType();
+
   const payload = {
-    claimFormId: formId,
+    formId,
     subject,
     filename: name,
     documentbody,
     mimetype: type,
+    formType,
   };
 
   logger.info({
     fn: postDocument,
     message: `Posting document for fieldName: ${fieldName}`,
-    data: { payload, file, fieldName },
+    data: { payload, file, fieldName, formType },
   });
 
   const response = await postDocumentData(payload);
@@ -521,4 +526,43 @@ export function validateFileUpload(file) {
   }
 
   return false;
+}
+
+export function addDocumentsStepText() {
+  const allowedDocumentsTooltipText =
+    getGlobalConfigData()?.AllowedDocumentsTooltipText;
+
+  if (!allowedDocumentsTooltipText) {
+    logger.error({
+      fn: addDocumentsStepText,
+      message: 'Failed to fetch AllowedDocumentsTooltipText',
+    });
+  }
+  if (!document.querySelector('#supportingDocumentationNote')) {
+    const supportingDocumentationNoteHtmlContent = `
+  <style>
+    sl-tooltip::part(body) {
+      font-size: 1.2rem;
+    }
+  </style>
+  <div id="supportingDocumentationNote" style="padding-bottom: 20px;">
+    Please choose or drag & drop files to the box below to upload the following documents as attachments (as applicable).
+    <br /><br />
+    You can upload a file up to 15MB each in the 
+    ${
+      allowedDocumentsTooltipText
+        ? `<sl-tooltip>
+        <div slot="content">
+          ${allowedDocumentsTooltipText}
+        </div>
+        <a href="" style="font-size: 15px">supported file formats</a>.
+      </sl-tooltip>`
+        : 'supported file formats.'
+    }
+  </div>`;
+
+    $('fieldset[aria-label="Supporting Documents"] > legend').after(
+      supportingDocumentationNoteHtmlContent
+    );
+  }
 }
