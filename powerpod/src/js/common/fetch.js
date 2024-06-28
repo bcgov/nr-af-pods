@@ -1,4 +1,4 @@
-import { POWERPOD } from './constants.js';
+import { Form, POWERPOD } from './constants.js';
 import { getRequestVerificationToken } from './dynamics.ts';
 import { Logger } from './logger.js';
 
@@ -357,8 +357,51 @@ export async function postDocumentData({
   filename,
   documentbody,
   mimetype,
+  formType,
   ...options
 }) {
+  logger.info({
+    fn: postDocumentData,
+    message: `postDocumentData called with payload:`,
+    data: {
+      formId,
+      subject,
+      filename,
+      mimetype,
+      formType,
+      ...options,
+    },
+  });
+  let objecttypecode,
+    objecttypecode_databind = {};
+  switch (formType) {
+    case Form.Claim:
+      objecttypecode = 'quartech_claim';
+      objecttypecode_databind = {
+        'objectid_quartech_claim@odata.bind': `/quartech_claims(${formId})`,
+      };
+      break;
+    case Form.Application:
+      objecttypecode = 'msgov_businessgrantapplication';
+      objecttypecode_databind = {
+        'objectid_msgov_businessgrantapplication@odata.bind': `/msgov_businessgrantapplications(${formId})`,
+      };
+      break;
+  }
+  logger.info({
+    fn: postDocumentData,
+    message: `postDocumentData called with objecttypecode: ${objecttypecode}, objecttypecode_databind: ${JSON.stringify(
+      objecttypecode_databind
+    )}`,
+    data: {
+      formId,
+      subject,
+      filename,
+      mimetype,
+      formType,
+      ...options,
+    },
+  });
   return fetch({
     method: 'POST',
     url: ENDPOINT_URL.post_document_data,
@@ -370,8 +413,8 @@ export async function postDocumentData({
     data: JSON.stringify({
       subject,
       filename,
-      objecttypecode: 'quartech_claim',
-      'objectid_quartech_claim@odata.bind': `/quartech_claims(${formId})`,
+      objecttypecode,
+      ...objecttypecode_databind,
       documentbody,
       mimetype,
     }),

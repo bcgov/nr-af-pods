@@ -4,9 +4,9 @@ import { getProgramAbbreviation } from '../../common/program.ts';
 import { configureFields } from '../../common/fieldConfiguration.js';
 import { setFieldValue } from '../../common/html.js';
 import { setFieldReadOnly } from '../../common/fieldValidation.js';
-import { getGlobalConfigData } from '../../common/config.js';
 import { Logger } from '../../common/logger.js';
 import { saveFormData } from '../../common/saveButton.js';
+import { addDocumentsStepText } from '../../common/documents.ts';
 
 const logger = Logger('claim/steps/documents');
 
@@ -21,7 +21,6 @@ export async function customizeDocumentsStep() {
     addDocumentsStepText();
   }
 
-  // customizeDocumentsControls(CLAIM_FILE_UPLOAD_FIELDS);
   configureFields();
 
   if (programAbbreviation === 'NEFBA') {
@@ -36,45 +35,6 @@ export async function customizeDocumentsStep() {
 
   if (programAbbreviation === 'NEFBA2') {
     addSatisfactionSurveyChefsIframe();
-  }
-}
-
-function addDocumentsStepText() {
-  const allowedDocumentsTooltipText =
-    getGlobalConfigData()?.AllowedDocumentsTooltipText;
-
-  if (!allowedDocumentsTooltipText) {
-    logger.error({
-      fn: customizeDocumentsStep,
-      message: 'Failed to fetch AllowedDocumentsTooltipText',
-    });
-  }
-  if (!document.querySelector('#supportingDocumentationNote')) {
-    const supportingDocumentationNoteHtmlContent = `
-  <style>
-    sl-tooltip::part(body) {
-      font-size: 1.2rem;
-    }
-  </style>
-  <div id="supportingDocumentationNote" style="padding-bottom: 20px;">
-    Please choose or drag & drop files to the box below to upload the following documents as attachments (as applicable).
-    <br /><br />
-    You can upload a file up to 15MB each in the 
-    ${
-      allowedDocumentsTooltipText
-        ? `<sl-tooltip>
-        <div slot="content">
-          ${allowedDocumentsTooltipText}
-        </div>
-        <a href="" style="font-size: 15px">supported file formats</a>.
-      </sl-tooltip>`
-        : 'supported file formats.'
-    }
-  </div>`;
-
-    $('fieldset[aria-label="Supporting Documents"] > legend').after(
-      supportingDocumentationNoteHtmlContent
-    );
   }
 }
 

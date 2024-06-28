@@ -1,3 +1,4 @@
+import { addDocumentsStepText } from '../../common/documents.ts';
 import { configureFields } from '../../common/fieldConfiguration.js';
 import { Logger } from '../../common/logger.js';
 import { getProgramAbbreviation } from '../../common/program.ts';
@@ -5,13 +6,18 @@ import { getProgramAbbreviation } from '../../common/program.ts';
 const logger = Logger('steps/documents');
 
 export function customizeDocumentsStep() {
+  const programAbbreviation = getProgramAbbreviation();
   logger.info({
     fn: customizeDocumentsStep,
     message: `Start customizing documents step`,
   });
+  if (
+    programAbbreviation.includes('ABPP') ||
+    programAbbreviation === 'NEFBA2'
+  ) {
+    addDocumentsStepText();
+  }
   configureFields();
-
-  const programAbbreviation = getProgramAbbreviation();
 
   logger.info({
     fn: customizeDocumentsStep,

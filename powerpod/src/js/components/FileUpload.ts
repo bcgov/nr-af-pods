@@ -28,6 +28,7 @@ import { readFileAsBase64 } from '../common/file';
 import { getFormId } from '../common/form';
 import { getCurrentTimeUTC } from '../common/date';
 import { delay } from '../common/utils';
+import { getFormType } from '../common/applicationUtils';
 
 const logger = Logger('components/fileUpload');
 
@@ -37,6 +38,7 @@ class FileUpload extends LitElement {
   @query('#inputElement') inputElement: HTMLInputElement | undefined;
   @query('#dropElement') dropElement: HTMLDivElement | undefined;
   @property({ type: String }) fileInputStr: string = '';
+  @property({ type: String }) formType: string = '';
   @property() fieldName = '';
   @property() customStyle = '';
   @property({ type: Array }) docs: UploadedDoc[] = [];
@@ -267,6 +269,7 @@ class FileUpload extends LitElement {
         documentbody: null,
         annotationid: null,
         fileId: null,
+        formType: this.formType,
       }) - 1;
 
     this.emitEvent();
@@ -300,6 +303,8 @@ class FileUpload extends LitElement {
         return;
       }
 
+      const formType = getFormType();
+
       const payload = {
         formId,
         subject,
@@ -311,7 +316,7 @@ class FileUpload extends LitElement {
       logger.info({
         fn: this.uploadFile,
         message: `Posting document for fieldName: ${fieldName}`,
-        data: { payload, file, fieldName },
+        data: { payload, file, fieldName, formType },
       });
 
       this.docs[docIndex] = {
@@ -325,6 +330,7 @@ class FileUpload extends LitElement {
 
       const response = await postDocumentData({
         ...payload,
+        formType,
         timeout: 120 * 1000, // for file uploads allow 120 seconds
       });
 
