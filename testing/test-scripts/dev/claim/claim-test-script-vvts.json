@@ -1,0 +1,32 @@
+{
+	"name": "Claim - Test Script - VVTS - Step 1",
+	"testSteps" : [
+		{   "action" : "open-new-tab", "url": "https://af-pods-dev.powerappsportals.com/my-claims" }
+		, {   "action" : "find-list-item",
+				"techNotes" : "labels the fields element below indicate the headers of the list/table",
+				"fields" : [ 
+					{ "label" : "Program", "value" : "Veterinary and Veterinary Technologist Students Working in BC Food Animal Practices", "visible" : true}, 
+					{ "label" : "Claim Status", "value" : "Draft", "visible" : true}, 
+					{ "label" : "Actions", "type" : "action menu", "value" : "Edit / Submit Claim", "action" : "Click the link"} 
+				],
+				"description" : "My Claims list should display a DRAFT VVTS Claim with a link to EDIT it." }
+		
+		, { "action" : "Expect", "field" : { "label": "Legal Business or Organization Name", "visible" : true } }
+		, { "action" : "Expect", "field" : { "label": "Business Address", "visible" : true } }
+		, { "action" : "Expect", "field" : { "label": "Business Phone Number", "visible" : true } }
+		, { "action" : "Expect", "field" : { "label": "Business Email Address", "visible" : true } }
+		
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : true } }
+		
+		, { "action" : "Expect", "field" : { "label": "I / We confirm the above information is correct", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Please provide further detail", "visible" : false } }
+		, { "action" : "Select", "field" : { "label": "I / We confirm the above information is correct", "value" : "No" } }
+		, { "action" : "Expect", "field" : { "label": "Please provide further detail", "visible" : true, "required" : true } }
+		, { "action" : "Select", "field" : { "label": "I / We confirm the above information is correct", "value" : "Yes" } }
+		, { "action" : "Expect", "field" : { "label": "Please provide further detail", "visible" : false } }
+				
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : false } }
+
+		, { "action" : "Expect", "field" : { "label": "File Number (from authorization letter)", "visible" : true } }		
+	]
+}
