@@ -49,6 +49,21 @@
           "readOnly": true
         }
       ]
+    },
+    {
+      "name": "ProjectResultsStep",
+      "fields": [
+        {
+          "name": "quartech_studentexposedtofoodanimalpracticework",
+          "required": true,
+          "elementType": "DropdownSelect"
+        },
+        {
+          "name": "quartech_clinicstudentsuccessfulrelationship",
+          "required": true,
+          "elementType": "DropdownSelect"
+        }
+      ]
     }
- ]
+  ]
 }
