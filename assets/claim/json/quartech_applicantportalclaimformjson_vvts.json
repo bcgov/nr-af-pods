@@ -99,6 +99,76 @@
           "emptyInitialValue": true
         }
       ]
+    },
+    {
+      "name": "DocumentsStep",
+      "fields": [
+        {
+          "name": "quartech_vvts_programevaluationid",
+          "required": true,
+          "tooltipText": "This number is automatically generated when the End of program data collection and program evaluation has been submitted"
+        },
+        {
+          "name": "quartech_vvts_s1_foodanimalcaselog",
+          "required": true,
+          "elementType": "FileInput",
+          "visibleIf": {
+            "fieldName": "quartech_numberofstudentscompletedconsecutivework",
+            "selectedValueIn": [255550001, 255550002, 255550003],
+            "techComment": "1, 2, or 3 students"
+          }
+        },
+        {
+          "name": "quartech_vvts_s1_programevaluationsurveyid",
+          "required": true,
+          "tooltipText": "This number is automatically generated when the End of program data collection and program evaluation has been submitted",
+          "visibleIf": {
+            "fieldName": "quartech_numberofstudentscompletedconsecutivework",
+            "selectedValueIn": [255550001, 255550002, 255550003],
+            "techComment": "1, 2, or 3 students"
+          }
+        },
+        {
+          "name": "quartech_vvts_s2_foodanimalcaselog",
+          "required": true,
+          "elementType": "FileInput",
+          "visibleIf": {
+            "fieldName": "quartech_numberofstudentscompletedconsecutivework",
+            "selectedValueIn": [255550002, 255550003],
+            "techComment": "2 or 3 students"
+          }
+        },
+        {
+          "name": "quartech_vvts_s2_programevaluationsurveyid",
+          "required": true,
+          "tooltipText": "This number is automatically generated when the End of program data collection and program evaluation has been submitted",
+          "visibleIf": {
+            "fieldName": "quartech_numberofstudentscompletedconsecutivework",
+            "selectedValueIn": [255550002, 255550003],
+            "techComment": "2 or 3 students"
+          }
+        },
+        {
+          "name": "quartech_vvts_s3_foodanimalcaselog",
+          "required": true,
+          "elementType": "FileInput",
+          "visibleIf": {
+            "fieldName": "quartech_numberofstudentscompletedconsecutivework",
+            "selectedValue": 255550003,
+            "techComment": "3 students"
+          }
+        },
+        {
+          "name": "quartech_vvts_s3_programevaluationsurveyid",
+          "required": true,
+          "tooltipText": "This number is automatically generated when the End of program data collection and program evaluation has been submitted",
+          "visibleIf": {
+            "fieldName": "quartech_numberofstudentscompletedconsecutivework",
+            "selectedValue": 255550003,
+            "techComment": "3 students"
+          }
+        }        
+      ]
     }
   ]
 }
