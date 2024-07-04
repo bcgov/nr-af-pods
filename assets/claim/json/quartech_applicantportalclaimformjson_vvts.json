@@ -64,6 +64,41 @@
           "elementType": "DropdownSelect"
         }
       ]
+    },
+    {
+      "name": "ClaimInfoStep",
+      "fields": [
+        {
+          "name": "quartech_totalsumofreportedexpenses",
+          "label": "Student wages / travel / housing",
+          "required": true,
+          "format": "currency",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThan"
+          },
+          "emptyInitialValue": true
+        },
+        {
+          "name": "quartech_numberofstudentscompletedconsecutivework",
+          "required": true,
+          "elementType": "DropdownSelect"
+        },
+        {
+          "name": "quartech_totalfees",
+          "label": "Your requested amount in this claim ($CAD)",
+          "tooltipText": "Enter the amount you are requesting reimbursement for in this claim",
+          "format": "currency",
+          "required": true,
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThan"
+          },
+          "emptyInitialValue": true
+        }
+      ]
     }
   ]
 }
