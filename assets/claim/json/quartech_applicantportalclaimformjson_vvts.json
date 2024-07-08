@@ -45,7 +45,7 @@
         },
         {
           "name": "quartech_filenumber",
-          "label": "File number (from authorization letter)",
+          "label": "File Number (from authorization letter)",
           "readOnly": true
         }
       ]
