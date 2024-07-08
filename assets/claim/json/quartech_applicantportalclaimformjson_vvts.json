@@ -122,6 +122,7 @@
           "name": "quartech_vvts_s1_programevaluationsurveyid",
           "required": true,
           "tooltipText": "This number is automatically generated when the End of program data collection and program evaluation has been submitted",
+          "label": "Student 1 has been requested to fill out a program evaluation form. Please, enter the survey ID as a confirmation:",
           "visibleIf": {
             "fieldName": "quartech_numberofstudentscompletedconsecutivework",
             "selectedValueIn": [255550001, 255550002, 255550003],
@@ -142,6 +143,7 @@
           "name": "quartech_vvts_s2_programevaluationsurveyid",
           "required": true,
           "tooltipText": "This number is automatically generated when the End of program data collection and program evaluation has been submitted",
+          "label": "Student 2 has been requested to fill out a program evaluation form. Please, enter the survey ID as a confirmation:",
           "visibleIf": {
             "fieldName": "quartech_numberofstudentscompletedconsecutivework",
             "selectedValueIn": [255550002, 255550003],
@@ -162,6 +164,7 @@
           "name": "quartech_vvts_s3_programevaluationsurveyid",
           "required": true,
           "tooltipText": "This number is automatically generated when the End of program data collection and program evaluation has been submitted",
+          "label": "Student 3 has been requested to fill out a program evaluation form. Please, enter the survey ID as a confirmation:",
           "visibleIf": {
             "fieldName": "quartech_numberofstudentscompletedconsecutivework",
             "selectedValue": 255550003,
