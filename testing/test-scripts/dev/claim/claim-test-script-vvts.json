@@ -28,5 +28,19 @@
 		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : false } }
 
 		, { "action" : "Expect", "field" : { "label": "File Number (from authorization letter)", "visible" : true } }		
+
+		, { "action" : "Click on the Next button.", "description" : "Go to the Project Results step by clicking on the Next button." }
+
+		, { "action" : "Expect", "field" : { "label": "Was the student enrolled at your clinic exposed to a range of food animal practice related work?", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Did your clinic build a successful relationship with your student?", "visible" : true, "required" : true } }
+		
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : true } }
+		
+		, { "action" : "Select", "field" : { "label": "Was the student enrolled at your clinic exposed to a range of food animal practice related work?", "value" : "Yes" } }
+		, { "action" : "Select", "field" : { "label": "Did your clinic build a successful relationship with your student?", "value" : "Yes" } }
+				
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : false } }
+
+		, { "action" : "Click on the Next button.", "description" : "Go to the Claim Information step by clicking on the Next button." }
 	]
 }
