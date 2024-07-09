@@ -10,9 +10,15 @@ export function initializeVisibleIf(name, required, visibleIf) {
   const {
     fieldName: dependentFieldName,
     selectedValue: dependentSelectedValue,
+    selectedValueIn: dependentSelectedValueIn,
   } = visibleIf;
 
-  if (!dependentFieldName || dependentSelectedValue === undefined) {
+  if (
+    !dependentFieldName ||
+    (dependentSelectedValue === undefined &&
+      (dependentSelectedValueIn === undefined ||
+        dependentSelectedValueIn?.length === 0))
+  ) {
     logger.error({
       fn: initializeVisibleIf,
       message:
@@ -21,6 +27,7 @@ export function initializeVisibleIf(name, required, visibleIf) {
         name,
         dependentFieldName,
         dependentSelectedValue,
+        dependentSelectedValueIn,
       },
     });
     return;
@@ -45,6 +52,7 @@ export function initializeVisibleIf(name, required, visibleIf) {
     requiredFieldTag: name,
     dependentOnElementTag: dependentFieldName,
     dependentOnValue: dependentSelectedValue,
+    dependentOnValueArray: dependentSelectedValueIn,
     disableRequiredProp: !required,
   });
 
