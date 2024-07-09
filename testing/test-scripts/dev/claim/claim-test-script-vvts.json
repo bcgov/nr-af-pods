@@ -1,5 +1,5 @@
 {
-	"name": "Claim - Test Script - VVTS - Step 1",
+	"name": "Claim - Test Script - VVTS",
 	"testSteps" : [
 		{   "action" : "open-new-tab", "url": "https://af-pods-dev.powerappsportals.com/my-claims" }
 		, {   "action" : "find-list-item",
@@ -93,5 +93,12 @@
 		, { "action" : "Enable the Next button.", "description" : "Enable the Next button. Skip the docs upload and the VVTS End of program data collection and program evaluation survey tests." }
 		, { "action" : "Click on the Next button.", "description" : "Go to the Declaration and Consent step by clicking on the Next button." }
 
+		, { "action" : "Expect", "field" : { "label": "I / We agree to the above statement.", "visible" : true, "required" : true } }
+
+		, { "action" : "Expect", "button" : { "label": "Submit", "disabled" : true } }
+		
+		, { "action" : "Enter", "field" : { "label": "I / We agree to the above statement.", "value" : "checked" } }
+
+		, { "action" : "Expect", "button" : { "label": "Submit", "disabled" : false } }	
 	]
 }
