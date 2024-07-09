@@ -39,6 +39,7 @@ export function initializeVisibleIf(name, required, visibleIf) {
     data: {
       name,
       dependentSelectedValue,
+      dependentSelectedValueIn,
       dependentFieldName,
       disableRequiredProp: !required,
     },
@@ -59,7 +60,12 @@ export function initializeVisibleIf(name, required, visibleIf) {
   logger.info({
     fn: initializeVisibleIf,
     message: `Successfully initialized dynamic field with name: ${name}`,
-    data: { dependentSelectedValue, dependentFieldName, required },
+    data: {
+      dependentSelectedValue,
+      dependentFieldName,
+      dependentSelectedValueIn,
+      required,
+    },
   });
 }
 
@@ -171,7 +177,8 @@ function setupDependentRequiredField({
     if (
       input === dependentOnValue ||
       input === `${dependentOnValue}` ||
-      dependentOnValueArray.includes(input)
+      dependentOnValueArray.includes(input) ||
+      (Number(input) && dependentOnValueArray.includes(Number(input)))
     ) {
       logger.info({
         fn: setupDependentRequiredField,
