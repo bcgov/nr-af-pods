@@ -1,0 +1,177 @@
+{
+  "tags": ["Claim", "VVTS"],
+  "version": "1.0.0",
+  "name": "Veterinary and Veterinary Technologist Students Working in BC Food Animal Practices",
+  "abbreviation": "VVTS",
+  "hiddenSteps": "",
+  "sections": [
+    {
+      "name": "ApplicantInfoStep",
+      "fields": [
+        {
+          "name": "quartech_legalbusinessororganizationname",
+          "label": "Legal Business or Organization Name"
+        },
+        {
+          "name": "quartech_businessaddress",
+          "label": "Business Address"
+        },
+        {
+          "name": "quartech_businessphonenumber",
+          "format": "phoneNumber",
+          "label": "Tel"
+        },
+        {
+          "name": "quartech_businessemailaddress",
+          "format": "email",
+          "label": "Email"
+        },
+        {
+          "name": "quartech_applicantinformationconfirmation",
+          "label": "I / We confirm the above information is correct",
+          "required": true,
+          "elementType": "DropdownSelect"
+        },
+        {
+          "name": "quartech_applicantinformationcorrections",
+          "label": "Please provide further detail",
+          "required": true,
+          "maxLength": 10000,
+          "visibleIf": {
+            "fieldName": "quartech_applicantinformationconfirmation",
+            "selectedValue": 255550001,
+            "techComment": "No value"
+          }
+        },
+        {
+          "name": "quartech_filenumber",
+          "label": "File Number (from authorization letter)",
+          "readOnly": true
+        }
+      ]
+    },
+    {
+      "name": "ProjectResultsStep",
+      "fields": [
+        {
+          "name": "quartech_studentexposedtofoodanimalpracticework",
+          "required": true,
+          "elementType": "DropdownSelect"
+        },
+        {
+          "name": "quartech_clinicstudentsuccessfulrelationship",
+          "required": true,
+          "elementType": "DropdownSelect"
+        }
+      ]
+    },
+    {
+      "name": "ClaimInfoStep",
+      "fields": [
+        {
+          "name": "quartech_totalsumofreportedexpenses",
+          "label": "Student wages / travel / housing",
+          "required": true,
+          "format": "currency",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThan"
+          },
+          "emptyInitialValue": true
+        },
+        {
+          "name": "quartech_numberofstudentscompletedconsecutivework",
+          "required": true,
+          "elementType": "DropdownSelect"
+        },
+        {
+          "name": "quartech_totalfees",
+          "label": "Your requested amount in this claim ($CAD)",
+          "tooltipText": "Enter the amount you are requesting reimbursement for in this claim",
+          "format": "currency",
+          "required": true,
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThan"
+          },
+          "emptyInitialValue": true
+        }
+      ]
+    },
+    {
+      "name": "DocumentsStep",
+      "fields": [
+        {
+          "name": "quartech_vvts_programevaluationid",
+          "required": true,
+          "tooltipText": "This number is automatically generated when the End of program data collection and program evaluation has been submitted"
+        },
+        {
+          "name": "quartech_vvts_s1_foodanimalcaselog",
+          "required": true,
+          "elementType": "FileInput",
+          "visibleIf": {
+            "fieldName": "quartech_numberofstudentscompletedconsecutivework",
+            "selectedValueIn": [255550001, 255550002, 255550003],
+            "techComment": "1, 2, or 3 students"
+          }
+        },
+        {
+          "name": "quartech_vvts_s1_programevaluationsurveyid",
+          "required": true,
+          "tooltipText": "This number is automatically generated when the End of program data collection and program evaluation has been submitted",
+          "label": "Student 1 has been requested to fill out a program evaluation form. Please, enter the survey ID as a confirmation:",
+          "visibleIf": {
+            "fieldName": "quartech_numberofstudentscompletedconsecutivework",
+            "selectedValueIn": [255550001, 255550002, 255550003],
+            "techComment": "1, 2, or 3 students"
+          }
+        },
+        {
+          "name": "quartech_vvts_s2_foodanimalcaselog",
+          "required": true,
+          "elementType": "FileInput",
+          "visibleIf": {
+            "fieldName": "quartech_numberofstudentscompletedconsecutivework",
+            "selectedValueIn": [255550002, 255550003],
+            "techComment": "2 or 3 students"
+          }
+        },
+        {
+          "name": "quartech_vvts_s2_programevaluationsurveyid",
+          "required": true,
+          "tooltipText": "This number is automatically generated when the End of program data collection and program evaluation has been submitted",
+          "label": "Student 2 has been requested to fill out a program evaluation form. Please, enter the survey ID as a confirmation:",
+          "visibleIf": {
+            "fieldName": "quartech_numberofstudentscompletedconsecutivework",
+            "selectedValueIn": [255550002, 255550003],
+            "techComment": "2 or 3 students"
+          }
+        },
+        {
+          "name": "quartech_vvts_s3_foodanimalcaselog",
+          "required": true,
+          "elementType": "FileInput",
+          "visibleIf": {
+            "fieldName": "quartech_numberofstudentscompletedconsecutivework",
+            "selectedValue": 255550003,
+            "techComment": "3 students"
+          }
+        },
+        {
+          "name": "quartech_vvts_s3_programevaluationsurveyid",
+          "required": true,
+          "tooltipText": "This number is automatically generated when the End of program data collection and program evaluation has been submitted",
+          "label": "Student 3 has been requested to fill out a program evaluation form. Please, enter the survey ID as a confirmation:",
+          "visibleIf": {
+            "fieldName": "quartech_numberofstudentscompletedconsecutivework",
+            "selectedValue": 255550003,
+            "techComment": "3 students"
+          }
+        }        
+      ]
+    }
+  ]
+}
