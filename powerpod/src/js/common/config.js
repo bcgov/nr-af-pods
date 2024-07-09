@@ -14,6 +14,15 @@ export function getGlobalConfigData() {
   const configDataJSON =
     JSON.parse(programData)?.quartech_ApplicantPortalConfig
       ?.quartech_configdata;
+
+  if (!configDataJSON) {
+    logger.error({
+      fn: getGlobalConfigData,
+      message: 'Could not find config data json, check global JSON config data',
+      data: { programData, configDataJSON },
+    });
+    return;
+  }
   const podsConfigData = JSON.parse(configDataJSON);
 
   logger.info({
