@@ -1,0 +1,48 @@
+{
+	"name": "Claim - Test Script - VVTS - Step 4",
+	"testSteps" : [
+		{   "action" : "open-new-tab", "url": "https://af-pods-dev.powerappsportals.com/my-claims" }
+		, {   "action" : "find-list-item",
+				"techNotes" : "labels the fields element below indicate the headers of the list/table",
+				"fields" : [ 
+					{ "label" : "Program", "value" : "Veterinary and Veterinary Technologist Students Working in BC Food Animal Practices", "visible" : true}, 
+					{ "label" : "Claim Status", "value" : "Draft", "visible" : true}, 
+					{ "label" : "Actions", "type" : "action menu", "value" : "Edit / Submit Claim", "action" : "Click the link"} 
+				],
+				"description" : "My Claims list should display a DRAFT VVTS Claim with a link to EDIT it." }
+		
+		, { "action" : "Expect", "field" : { "label": "End of program data collection and program evaluation ID number", "visible" : true, "required" : true } }
+
+		, { "action" : "Expect", "field" : { "label": "Student 1 - Food-animal case log", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Student 1 has been requested to fill out a program evaluation form. Please, enter the survey ID as a confirmation:", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Student 2 - Food-animal case log", "visible" : false } }
+		, { "action" : "Expect", "field" : { "label": "Student 2 has been requested to fill out a program evaluation form. Please, enter the survey ID as a confirmation:", "visible" : false } }
+		, { "action" : "Expect", "field" : { "label": "Student 3 - Food-animal case log", "visible" : false } }
+		, { "action" : "Expect", "field" : { "label": "Student 3 has been requested to fill out a program evaluation form. Please, enter the survey ID as a confirmation:", "visible" : false } }
+		
+		, { "action" : "Click on the Previous button.", "description" : "Go to the Claim Information step by clicking on the Previous button." }
+		, { "action" : "Select", "field" : { "label": "How many students have completed 12 consecutive weeks or longer working in your clinic?", "value" : "2" } }
+		, { "action" : "Click on the Next button.", "description" : "Go to the Documents step by clicking on the Next button." }
+
+		, { "action" : "Expect", "field" : { "label": "Student 1 - Food-animal case log", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Student 1 has been requested to fill out a program evaluation form. Please, enter the survey ID as a confirmation:", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Student 2 - Food-animal case log", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Student 2 has been requested to fill out a program evaluation form. Please, enter the survey ID as a confirmation:", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Student 3 - Food-animal case log", "visible" : false } }
+		, { "action" : "Expect", "field" : { "label": "Student 3 has been requested to fill out a program evaluation form. Please, enter the survey ID as a confirmation:", "visible" : false } }
+		
+		, { "action" : "Click on the Previous button.", "description" : "Go to the Claim Information step by clicking on the Previous button." }
+		, { "action" : "Select", "field" : { "label": "How many students have completed 12 consecutive weeks or longer working in your clinic?", "value" : "3" } }
+		, { "action" : "Click on the Next button.", "description" : "Go to the Documents step by clicking on the Next button." }
+
+		, { "action" : "Expect", "field" : { "label": "Student 1 - Food-animal case log", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Student 1 has been requested to fill out a program evaluation form. Please, enter the survey ID as a confirmation:", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Student 2 - Food-animal case log", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Student 2 has been requested to fill out a program evaluation form. Please, enter the survey ID as a confirmation:", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Student 3 - Food-animal case log", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Student 3 has been requested to fill out a program evaluation form. Please, enter the survey ID as a confirmation:", "visible" : true, "required" : true } }
+		
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : true } }
+		
+	]
+}
