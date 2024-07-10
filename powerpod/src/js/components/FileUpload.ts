@@ -11,6 +11,7 @@ import {
   ALLOWED_FILE_TYPES,
   RawFile,
   UploadedDoc,
+  convertExtensionToLowerCase,
   formatBytes,
   generateDocumentSubject,
   generateFileInputStr,
@@ -258,9 +259,11 @@ class FileUpload extends LitElement {
     });
     const { name, type, size } = file;
 
+    const filename = convertExtensionToLowerCase(name);
+
     const docIndex =
       this.docs.push({
-        filename: name,
+        filename,
         filesize: size,
         mimetype: type,
         status: 'pending',
@@ -308,7 +311,7 @@ class FileUpload extends LitElement {
       const payload = {
         formId,
         subject,
-        filename: name,
+        filename,
         documentbody,
         mimetype: type,
       };
