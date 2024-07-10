@@ -44,7 +44,7 @@ export function addSaveButton() {
     return;
   }
 
-  saveButton.onclick = () => saveFormData();
+  saveButton.onclick = () => saveFormData({});
 }
 
 export async function saveFormData({ customPayload = {} }) {
@@ -95,7 +95,7 @@ export async function saveFormData({ customPayload = {} }) {
     payload = {
       [field]: value,
       ...payload,
-      ...customPayload,
+      ...(Object.keys(customPayload)?.length && customPayload),
     };
 
     if (customPayload && Object.keys(customPayload).length > 0) {

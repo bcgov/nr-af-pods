@@ -16,7 +16,8 @@ export async function customizeDocumentsStep() {
     programAbbreviation.includes('ABPP') ||
     programAbbreviation === 'NEFBA' ||
     programAbbreviation === 'NEFBA2' ||
-    programAbbreviation.includes('KTTP')
+    programAbbreviation.includes('KTTP') ||
+    programAbbreviation === 'VVTS'
   ) {
     addDocumentsStepText();
   }
@@ -107,11 +108,14 @@ async function addSatisfactionSurveyChefsIframe() {
 
     setFieldValue('quartech_satisfactionsurveyid', chefsSubmissionId);
 
-    saveFormData({
-      customPayload: {
-        quartech_satisfactionsurveychefssubmissionid: chefsSubmissionGuidResult,
-      },
-    });
+    if (chefsSubmissionGuidResult) {
+      saveFormData({
+        customPayload: {
+          quartech_satisfactionsurveychefssubmissionid:
+            chefsSubmissionGuidResult,
+        },
+      });
+    }
   });
 
   let div = document.createElement('div');

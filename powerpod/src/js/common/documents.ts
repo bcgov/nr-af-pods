@@ -316,6 +316,8 @@ export async function generateDocumentSubject(
 ): Promise<{ subject: string; fileId: string }> {
   const { name, size, type } = file;
 
+  const filename = convertExtensionToLowerCase(name);
+
   const { contactId } = getCurrentUser();
 
   if (!contactId) {
@@ -342,7 +344,7 @@ export async function generateDocumentSubject(
   const formattedTimeUTC = getCurrentTimeUTC();
   const fileId = crypto.randomUUID();
 
-  let subject = `${name} (${formatBytes(
+  let subject = `${filename} (${formatBytes(
     size
   )}) [fileId:${fileId}] uploaded on ${formattedTimeUTC} by ${fullname} [contactId:${contactId}]`;
 
@@ -361,6 +363,7 @@ export async function postDocument(file: RawFile, fieldName: string) {
     data: { file, fieldName },
   });
   const { name, type } = file;
+  const filename = convertExtensionToLowerCase(name);
   const documentbody = await readFileAsBase64(file);
 
   const { subject, fileId } = await generateDocumentSubject(file, fieldName);
@@ -381,7 +384,7 @@ export async function postDocument(file: RawFile, fieldName: string) {
   const payload = {
     formId,
     subject,
-    filename: name,
+    filename,
     documentbody,
     mimetype: type,
     formType,
@@ -493,7 +496,7 @@ export function validateFileUpload(file) {
     data: { file },
   });
   const re = /(?:\.([^.]+))?$/; // regex to pull file extension string
-  const ext = re.exec(file.name)[1];
+  const ext = re.exec(file.name)[1]?.toLowerCase();
 
   // note: microsoft seems to use binary system for byte conversion
   const fileSizeInKB = formatBytes(file.size, 2, 'KB', true);
@@ -565,4 +568,46 @@ export function addDocumentsStepText() {
       supportingDocumentationNoteHtmlContent
     );
   }
+}
+
+export function separateFileNameAndExtension(fileName) {
+  // Split the file name by the last dot
+  const lastDotIndex = fileName.lastIndexOf('.');
+
+  if (lastDotIndex === -1) {
+    // No dot found, return the original fileName and an empty extension
+    return {
+      name: fileName,
+      extension: '',
+    };
+  }
+
+  // Extract the file name and extension
+  const name = fileName.substring(0, lastDotIndex);
+  const extension = fileName.substring(lastDotIndex);
+
+  return {
+    name: name,
+    extension: extension,
+  };
+}
+
+export function convertExtensionToLowerCase(fileName) {
+  // Split the file name by the last dot
+  const lastDotIndex = fileName.lastIndexOf('.');
+
+  if (lastDotIndex === -1) {
+    // No dot found, return the original fileName
+    return fileName;
+  }
+
+  // Extract the file name and extension
+  const name = fileName.substring(0, lastDotIndex);
+  let extension = fileName.substring(lastDotIndex);
+
+  // Convert the extension to lowercase
+  extension = extension.toLowerCase();
+
+  // Return the file name with the converted extension
+  return name + extension;
 }
