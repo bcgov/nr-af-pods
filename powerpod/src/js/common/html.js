@@ -350,7 +350,7 @@ export function observeChanges(
     logger.info({
       fn: observeChanges,
       message: 'Change observed',
-      data: { id, element, disableInitialCall },
+      data: { id, element, disableInitialCall, customFunc },
     });
     if (customFunc) {
       customFunc(mutations);
@@ -358,7 +358,11 @@ export function observeChanges(
       validateRequiredFields();
     }
   });
-  if (element && element.nodeType === Node.ELEMENT_NODE) {
+  if (
+    element &&
+    (element.nodeType === Node.ELEMENT_NODE ||
+      element.nodeType === Node.DOCUMENT_NODE)
+  ) {
     observer.observe(element, {
       attributes: true,
       childList: true,
