@@ -53,6 +53,46 @@ export function customizeClaimInfoStep() {
     }
   }
 
+  function addVVTSApprovedFundingAmount() {
+    const iframe = document.querySelector(
+      'fieldset[aria-label="Coding Section (DO NOT REMOVE)"] iframe'
+    );
+    // @ts-ignore
+    const innerDoc = iframe?.contentDocument
+      ? // @ts-ignore
+        iframe.contentDocument
+      : // @ts-ignore
+        iframe.contentWindow.document;
+    const numberOfStudentsApprovedFieldElement = innerDoc?.getElementById(
+      'quartech_numberofstudentsapproved'
+    );
+
+    logger.info({
+      fn: addVVTSApprovedFundingAmount,
+      message: `Change detected...`,
+      data: {
+        numberOfStudentsApprovedFieldElement,
+        value: numberOfStudentsApprovedFieldElement?.value,
+      },
+    });
+
+    if (
+      numberOfStudentsApprovedFieldElement &&
+      numberOfStudentsApprovedFieldElement?.value !== undefined &&
+      !document.querySelector('#vvtsFundingApprovedAmount')
+    ) {
+      const vvtsApprovedFundingAmountHtmlContent = `
+        <div id="vvtsFundingApprovedAmount" style="padding-bottom: 20px;">
+          Total funding amount per student will be $6,000. Your clinic was approved for <b>${numberOfStudentsApprovedFieldElement?.value}</b> students.
+        </div>
+      `;
+
+      $('#quartech_numberofstudentscompletedconsecutivework')
+        .closest('tr')
+        .before(vvtsApprovedFundingAmountHtmlContent);
+    }
+  }
+
   function addRequestedClaimAmountNote() {
     if (!document.querySelector('#requestedClaimAmountNote')) {
       const requestedClaimAmountNoteHtmlContent = `<div id="requestedClaimAmountNote" style="padding-bottom: 20px;">
@@ -110,6 +150,23 @@ export function customizeClaimInfoStep() {
     }
   }
   // END step specific functions
+
+  if (programAbbreviation === 'VVTS') {
+    observeIframeChanges(
+      addVVTSApprovedFundingAmount,
+      'quartech_numberofstudentsapproved',
+      'quartech_numberofstudentsapproved'
+    );
+    verifyTotalSumEqualsRequestedAmount();
+
+    $('#quartech_totalfees').on('change keyup blur', () => {
+      verifyTotalSumEqualsRequestedAmount();
+    });
+
+    $('#quartech_totalsumofreportedexpenses').on('change keyup blur', () => {
+      verifyTotalSumEqualsRequestedAmount();
+    });
+  }
 
   if (programAbbreviation.includes('KTTP')) {
     addInstructions();
