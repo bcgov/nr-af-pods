@@ -141,15 +141,22 @@ async function addChefsVVTSIframe() {
     }
   });
 
-  let div = document.createElement('div');
-  div.innerHTML = `<iframe id='chefsVVTSIframe' src="${chefsUrl}" height="800" width="100%" title="VVTS End of Program Survey in CHEFS">
-        </iframe><br/>`;
+  let trElement = document.createElement('tr');
+  trElement.innerHTML = `
+    <td colspan="2" rowspan="1" class="clearfix cell textarea form-control-cell">
+      <iframe id='chefsVVTSIframe' src="${chefsUrl}" height="800" width="100%" title="VVTS End of Program Survey in CHEFS">
+      </iframe><br/>
+    </td>
+    <td class="cell zero-cell"></td>
+  `;
 
   const fieldLabelDivContainer = $(`#quartech_vvts_programevaluationid_label`)
     .parent()
+    .parent()
+    .parent()
     .parent();
 
-  fieldLabelDivContainer.prepend(div);
+  fieldLabelDivContainer.prepend(trElement);
 }
 
 async function addSatisfactionSurveyChefsIframe() {
