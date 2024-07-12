@@ -1,4 +1,8 @@
-import { hideQuestion, observeIframeChanges } from '../../common/html.js';
+import {
+  combineElementsIntoOneRowNew,
+  hideQuestion,
+  observeIframeChanges,
+} from '../../common/html.js';
 import { getEnvVars } from '../../common/env.js';
 import { getProgramAbbreviation } from '../../common/program.ts';
 import { configureFields } from '../../common/fieldConfiguration.js';
@@ -12,6 +16,7 @@ const logger = Logger('claim/steps/documents');
 
 export async function customizeDocumentsStep() {
   const programAbbreviation = getProgramAbbreviation();
+  configureFields();
   if (
     programAbbreviation.includes('ABPP') ||
     programAbbreviation === 'NEFBA' ||
@@ -19,15 +24,34 @@ export async function customizeDocumentsStep() {
     programAbbreviation.includes('KTTP') ||
     programAbbreviation === 'VVTS'
   ) {
-    addChefsVVTSIframe();
-    addDocumentsStepText();
-  }
+    combineElementsIntoOneRowNew('quartech_vvts_programevaluationid');
+    combineElementsIntoOneRowNew('quartech_vvts_s1_programevaluationsurveyid');
+    combineElementsIntoOneRowNew('quartech_vvts_s2_programevaluationsurveyid');
+    combineElementsIntoOneRowNew('quartech_vvts_s3_programevaluationsurveyid');
 
-  configureFields();
+    $('#quartech_vvts_s1_foodanimalcaselog')
+      .parent()
+      .parent()
+      .attr('colspan', '2');
+
+    $('#quartech_vvts_s2_foodanimalcaselog')
+      .parent()
+      .parent()
+      .attr('colspan', '2');
+    $('#quartech_vvts_s3_foodanimalcaselog')
+      .parent()
+      .parent()
+      .attr('colspan', '2');
+
+    addChefsVVTSIframe();
+    addDocumentsStepText(
+      $('#quartech_vvts_s1_foodanimalcaselog')?.parent()?.parent(),
+      true
+    );
+  }
 
   if (programAbbreviation === 'NEFBA') {
     addSatisfactionSurveyChefsIframe();
-
     observeIframeChanges(
       customizeBusinessPlanDocumentsQuestions,
       null,

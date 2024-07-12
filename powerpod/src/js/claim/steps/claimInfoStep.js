@@ -82,9 +82,12 @@ export function customizeClaimInfoStep() {
       !document.querySelector('#vvtsFundingApprovedAmount')
     ) {
       const vvtsApprovedFundingAmountHtmlContent = `
-        <div id="vvtsFundingApprovedAmount" style="padding-bottom: 20px;">
-          Total funding amount per student will be $6,000. Your clinic was approved for <b>${numberOfStudentsApprovedFieldElement?.value}</b> students.
-        </div>
+        <tr>
+          <td colspan="2" rowspan="1" class="clearfix cell money form-control-cell"><div id="vvtsFundingApprovedAmount" style="padding-bottom: 20px;">
+            Total funding amount per student will be $6,000. Your clinic was approved for <b>${numberOfStudentsApprovedFieldElement?.value}</b> student(s).
+          </div></td>
+          <td class="cell zero-cell"></td>
+        </tr>
       `;
 
       $('#quartech_numberofstudentscompletedconsecutivework')

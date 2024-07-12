@@ -529,6 +529,10 @@ export function setFieldValue(name, value) {
 }
 
 export function combineElementsIntoOneRowNew(name) {
+  logger.info({
+    fn: combineElementsIntoOneRowNew,
+    message: `Combining elements into one row for name: ${name}`,
+  });
   const inputElement = $(`#${name}`);
   const labelElement = $(`#${name}_label`);
 

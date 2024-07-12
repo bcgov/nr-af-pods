@@ -194,9 +194,31 @@ export function getFieldsBySectionClaim(stepName, forceRefresh = false) {
   let fields = claimSection.fields;
 
   fields.forEach((s) => {
+    // TODO: Improve this as we do regression testing
+    // Only enable for VVTS and appropriate steps right now.
+    if (
+      programName === 'VVTS' &&
+      ![
+        FormStep.ProjectResults,
+        FormStep.ApplicantInfo,
+        FormStep.Documents,
+        FormStep.DeclarationAndConsent,
+        FormStep.Unknown,
+        FormStep.DemographicInfo,
+      ].includes(stepName)
+    ) {
+      combineElementsIntoOneRowNew(s.name);
+    }
+    if (s.visibleIf) {
+      logger.warn({
+        fn: getFieldsBySectionClaim,
+        message: `NOT showing field since conditionally defined visibleIf, name: ${s.name}`,
+      });
+      return;
+    }
     logger.info({
       fn: getFieldsBySectionClaim,
-      message: `showing field name: ${s.name}`,
+      message: `showing field name: ${s.name}, for programName: ${programName}, stepName: ${stepName}`,
     });
     showFieldRow(s.name);
     store.dispatch('addFieldData', s);

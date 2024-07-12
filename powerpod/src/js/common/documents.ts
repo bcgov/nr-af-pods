@@ -531,7 +531,10 @@ export function validateFileUpload(file) {
   return false;
 }
 
-export function addDocumentsStepText() {
+export function addDocumentsStepText(
+  overrideWithElement = null,
+  overrideWithPrepend = false
+) {
   const allowedDocumentsTooltipText =
     getGlobalConfigData()?.AllowedDocumentsTooltipText;
 
@@ -564,9 +567,17 @@ export function addDocumentsStepText() {
     }
   </div>`;
 
-    $('fieldset[aria-label="Supporting Documents"] > legend').after(
-      supportingDocumentationNoteHtmlContent
-    );
+    if (!overrideWithPrepend) {
+      (
+        overrideWithElement ??
+        $('fieldset[aria-label="Supporting Documents"] > legend')
+      ).after(supportingDocumentationNoteHtmlContent);
+    } else {
+      (
+        overrideWithElement ??
+        $('fieldset[aria-label="Supporting Documents"] > legend')
+      ).prepend(supportingDocumentationNoteHtmlContent);
+    }
   }
 }
 
