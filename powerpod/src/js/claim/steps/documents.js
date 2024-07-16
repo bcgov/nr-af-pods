@@ -21,9 +21,12 @@ export async function customizeDocumentsStep() {
     programAbbreviation.includes('ABPP') ||
     programAbbreviation === 'NEFBA' ||
     programAbbreviation === 'NEFBA2' ||
-    programAbbreviation.includes('KTTP') ||
-    programAbbreviation === 'VVTS'
+    programAbbreviation.includes('KTTP')
   ) {
+    addDocumentsStepText();
+  }
+
+  if (programAbbreviation === 'VVTS') {
     $('#quartech_vvts_s1_foodanimalcaselog')
       .parent()
       .parent()
