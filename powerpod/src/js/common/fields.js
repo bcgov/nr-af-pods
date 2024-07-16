@@ -194,14 +194,19 @@ export function getFieldsBySectionClaim(stepName, forceRefresh = false) {
   let fields = claimSection.fields;
 
   fields.forEach((s) => {
+    logger.info({
+      fn: getFieldsBySectionClaim,
+      message: `Getting field with fieldName: ${s.name}...`,
+      data: { programName, stepName, fieldName: s.name, field: s },
+    });
     // TODO: Improve this as we do regression testing
     // Only enable for VVTS and appropriate steps right now.
     if (
       programName === 'VVTS' &&
+      s.elementType !== 'FileInput' &&
       ![
         FormStep.ProjectResults,
         FormStep.ApplicantInfo,
-        FormStep.Documents,
         FormStep.DeclarationAndConsent,
         FormStep.Unknown,
         FormStep.DemographicInfo,

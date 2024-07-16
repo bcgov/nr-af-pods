@@ -437,6 +437,12 @@ export function setRequiredField(
   logger.info({
     fn: setRequiredField,
     message: `Start configuring required fieldName: ${fieldName}, elemType: ${elemType}`,
+    data: {
+      element: $(`#${fieldName}`),
+      fieldName,
+      elemType,
+      validationErrorMessage,
+    },
   });
   $(`#${fieldName}_label`).parent().addClass('required');
   // @ts-ignore
