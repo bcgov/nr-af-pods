@@ -389,7 +389,7 @@ export function observeChanges(
     }
     return observer;
   }
-  logger.warn({
+  logger.error({
     fn: observeChanges,
     message: 'Unable to assign observer for some reason',
     data: {

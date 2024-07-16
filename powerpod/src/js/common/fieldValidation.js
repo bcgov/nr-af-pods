@@ -287,7 +287,7 @@ export function validateRequiredField({
 
   logger.info({
     fn: validateRequiredField,
-    message: `Required field fieldName: ${fieldName}, isEmptyField: ${isEmptyField}`,
+    message: `Required field fieldName: ${fieldName}, elemType: ${elemType} isEmptyField: ${isEmptyField}`,
   });
 
   if (isEmptyField) {
