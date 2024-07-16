@@ -24,11 +24,6 @@ export async function customizeDocumentsStep() {
     programAbbreviation.includes('KTTP') ||
     programAbbreviation === 'VVTS'
   ) {
-    combineElementsIntoOneRowNew('quartech_vvts_programevaluationid');
-    combineElementsIntoOneRowNew('quartech_vvts_s1_programevaluationsurveyid');
-    combineElementsIntoOneRowNew('quartech_vvts_s2_programevaluationsurveyid');
-    combineElementsIntoOneRowNew('quartech_vvts_s3_programevaluationsurveyid');
-
     $('#quartech_vvts_s1_foodanimalcaselog')
       .parent()
       .parent()
