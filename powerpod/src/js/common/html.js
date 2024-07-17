@@ -2,11 +2,15 @@ import { HtmlElementType, doc } from './constants.js';
 import { Logger } from './logger.js';
 import { validateRequiredFields } from './fieldValidation.js';
 import { POWERPOD } from './constants.js';
+import { cleanString } from './documents.js';
 
 const logger = Logger('common/html');
 
 POWERPOD.html = {
   observeChanges,
+  getControlType,
+  getControlValue,
+  getInfoValue,
 };
 
 export function redirectToFormId(id) {
@@ -40,6 +44,10 @@ export function getControlType(tr) {
       },
     });
     return;
+  }
+
+  if (control?.id && POWERPOD.state?.fields[control.id]?.elementType) {
+    return POWERPOD.state?.fields[control.id]?.elementType;
   }
 
   const tag = control.tagName.toLowerCase();
@@ -109,7 +117,12 @@ export function getControlValue({ tr, rawValue = false }) {
 
   const controlDiv = tr.querySelector('.control');
 
-  if (type === HtmlElementType.CurrencyInput) {
+  if (type === HtmlElementType.FileInput) {
+    const value = controlDiv
+      ?.querySelector('textarea')
+      .value?.replace(/\n/g, ' ');
+    return cleanString(value);
+  } else if (type === HtmlElementType.CurrencyInput) {
     const value = controlDiv?.querySelector('input')?.value;
     if (rawValue) return value;
     return `$${value}`;
@@ -391,7 +404,7 @@ export function observeChanges(
   }
   logger.error({
     fn: observeChanges,
-    message: 'Unable to assign observer for some reason',
+    message: `Unable to assign observer for some reason`,
     data: {
       element,
       elementNodeType: element.nodeType,
