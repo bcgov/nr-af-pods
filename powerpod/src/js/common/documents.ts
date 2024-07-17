@@ -622,3 +622,15 @@ export function convertExtensionToLowerCase(fileName) {
   // Return the file name with the converted extension
   return name + extension;
 }
+
+export function cleanString(inputString) {
+  // Remove anything inside the square brackets and the brackets themselves
+  inputString = inputString.replace(/\[.*?\]/g, '');
+  // Remove extra spaces but retain newline characters
+  inputString = inputString
+    .replace(/[ \t]+/g, ' ')
+    .replace(/ \n/g, '\n')
+    .replace(/\n /g, '\n');
+  // Trim whitespace at the start and end
+  return inputString.trim();
+}

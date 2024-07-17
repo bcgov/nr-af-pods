@@ -214,6 +214,7 @@ export function getFieldsBySectionClaim(stepName, forceRefresh = false) {
     ) {
       combineElementsIntoOneRowNew(s.name);
     }
+    store.dispatch('addFieldData', s);
     if (s.visibleIf) {
       logger.warn({
         fn: getFieldsBySectionClaim,
@@ -226,7 +227,6 @@ export function getFieldsBySectionClaim(stepName, forceRefresh = false) {
       message: `showing field name: ${s.name}, for programName: ${programName}, stepName: ${stepName}`,
     });
     showFieldRow(s.name);
-    store.dispatch('addFieldData', s);
   });
 
   localStorage.setItem(
