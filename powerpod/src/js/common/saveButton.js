@@ -1,6 +1,7 @@
 import store from '../store/index.js';
-import { POWERPOD } from './constants.js';
-import { patchClaimData } from './fetch.js';
+import { getFormType } from './applicationUtils.js';
+import { Form, POWERPOD } from './constants.js';
+import { patchApplicationData, patchClaimData } from './fetch.js';
 import { getFormId } from './form.js';
 import { Logger } from './logger.js';
 import { isObjectEmpty } from './utils.js';
@@ -118,17 +119,24 @@ export async function saveFormData({ customPayload = {} }) {
   }
 
   const formId = getFormId();
+  const formType = getFormType();
 
   // @ts-ignore
   saveButton.value = 'Saving...';
 
   try {
-    const res = await patchClaimData({ id: formId, fieldData: payload });
+    let res;
+
+    if (formType === Form.Application) {
+      res = await patchApplicationData({ id: formId, fieldData: payload });
+    } else if (formType === Form.Claim) {
+      res = await patchClaimData({ id: formId, fieldData: payload });
+    }
 
     logger.info({
       fn: saveFormData,
       message: 'successfully patched claim data with payload',
-      data: { payload },
+      data: { formId, formType, payload },
     });
   } catch (e) {
     logger.error({

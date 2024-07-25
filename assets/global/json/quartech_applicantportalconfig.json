@@ -1,6 +1,6 @@
 {
   "tags": ["Global", "ALL", "Application", "StaffPortal"],
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "Global JSON config used in Applications",
   "FieldsConfig": {
     "programs": [
@@ -32,7 +32,8 @@
                 }
               },
               {
-                "name": "quartech_nocragstnumber"
+                "name": "quartech_nocragstnumber",
+                "elementType": "Checkbox"
               },
               {
                 "name": "quartech_reasonwhynocraorgstnumber",

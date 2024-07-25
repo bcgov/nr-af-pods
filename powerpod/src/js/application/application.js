@@ -25,7 +25,7 @@ import {
 import { getGlobalConfigData } from '../common/config.js';
 import { addFormDataOnClickHandler } from '../common/form.js';
 import { preloadRequestVerificationToken } from '../common/dynamics.ts';
-import { getExistingDraftApplicationId } from '../common/applicationUtils.js';
+import { addSaveButton } from '../common/saveButton.js';
 
 const logger = Logger('application/application');
 
@@ -133,6 +133,8 @@ async function updatePageForSelectedProgram(programId = undefined) {
   }
 
   const currentStep = getCurrentStep();
+
+  addSaveButton();
 
   if (!programId || currentStep === 'UnknownStep') {
     hideLoadingAnimation();

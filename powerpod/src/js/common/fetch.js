@@ -29,6 +29,8 @@ export const ENDPOINT_URL = {
   get_orgbook_credentials_data: (topicId) =>
     `https://orgbook.gov.bc.ca/api/v4/topic/${topicId}/credential-set`,
   patch_quartech_claim_data: (id) => `/_api/quartech_claims(${id})`,
+  patch_application_data: (id) =>
+    `/_api/msgov_businessgrantapplications(${id})`,
   get_application_data: (id) =>
     `/_api/msgov_businessgrantapplications?$filter=msgov_businessgrantapplicationid%20eq%20${id}`,
   get_draft_applications_for_programid_data: (programid) =>
@@ -494,6 +496,22 @@ export async function postApplicationData({
       'quartech_Program@odata.bind': `/msgov_programs(${programid})`,
       'quartech_Applicant@odata.bind': `/contacts(${contactid})`,
       quartech_originalsource: 255550002, // always set to "Portal" for Draft status
+    }),
+    ...options,
+  });
+}
+
+export async function patchApplicationData({ id, fieldData, ...options }) {
+  return fetch({
+    method: 'PATCH',
+    url: ENDPOINT_URL.patch_application_data(id),
+    datatype: DATATYPE.json,
+    includeODataHeaders: true,
+    addRequestVerificationToken: true,
+    processData: false,
+    returnData: true,
+    data: JSON.stringify({
+      ...fieldData,
     }),
     ...options,
   });
