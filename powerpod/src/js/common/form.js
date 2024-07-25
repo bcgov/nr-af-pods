@@ -284,10 +284,11 @@ export function generateFormJson() {
 
       const controlType = getControlType(tr);
       const questionText = getInfoValue(tr);
+      const controlId = getControlId(tr);
 
       logger.info({
         fn: generateFormJson,
-        message: `For controlType: ${controlType}; found questionText: ${questionText}, try finding answerText next...`,
+        message: `For controlId: ${controlId}, with controlType: ${controlType}; found questionText: ${questionText}, try finding answerText next...`,
         data: { tr },
       });
 
@@ -295,7 +296,7 @@ export function generateFormJson() {
 
       logger.info({
         fn: generateFormJson,
-        message: 'Converting form row to JSON...',
+        message: `Converting controlId: ${controlId} form row to JSON...`,
         data: {
           tr,
           questionText,
@@ -306,7 +307,7 @@ export function generateFormJson() {
       if (!questionText) {
         logger.error({
           fn: generateFormJson,
-          message: 'Could not find question text',
+          message: `Could not find question text for controlId: ${controlId}`,
           data: {
             tr,
           },
