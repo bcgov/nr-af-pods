@@ -1,0 +1,225 @@
+{
+  "tags": ["Application", "StaffPortal", "VLB", "VLB"],
+  "version": "1.0.0",
+  "name": "Veterinary and Veterinary Technologists Locums Working in BC Food Animal Practices Pilot Program",
+  "abbreviation": "VLB",
+  "hiddenSteps": "tab_Deliverables_Budget",
+  "sections": [
+    {
+      "name": "ApplicantInfoStep",
+      "fields": [
+        {
+          "name": "quartech_vlb_veterinarianrole",
+          "label": "I am a",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_professionallicensenumber",
+          "label": "What is your professional license number?",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "EligibilityStep",
+      "displayName": "Availability",
+      "fields": [
+        {
+          "name": "quartech_vlb_vetservices",
+          "label": "I am willing to provide",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_numberofdaysofservice",
+          "label": "I am willing to provide approximately the following number of days of service per year",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_availability_septodec",
+          "label": "September to December 2024",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_availability_jantomar",
+          "label": "January to March 2025",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_availability_aprtojun",
+          "label": "April to Jun 2025",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_availability_jultosep",
+          "label": "July to September 2025",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_availability_octtodec",
+          "label": "October to December 2025",
+          "elementType": "DropdownSelect",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "ProjectStep",
+      "displayName": "Scope of Practice",
+      "fields": [
+        {
+          "name": "quartech_vlb_cap_beefcattleherdhealth",
+          "label": "Beef cattle herd health (vaccination protocols, pregnancy and semen testing)",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_cap_beefcattlesickanimalcare",
+          "label": "Beef cattle sick animal care (e.g. diagnosis, treatment plans, post mortems)",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_cap_beefcattleemergencycare",
+          "label": "Beef cattle emergency care (e.g. calving, C-section, prolapses)",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_cap_dairycattleherdhealth",
+          "label": "Dairy cattle herd health (e.g. pregnancy testing)",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_cap_dairycattlesickanimalcare",
+          "label": "Dairy cattle sick animal care (e.g. make diagnosis, treatment plans)",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_cap_dairycattleemergencycare",
+          "label": "Dairy cattle emergency care (e.g. calving, C-section, DA’s)",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_cap_smallruminantservices",
+          "label": "Small ruminant services",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_cap_commercialswineservices",
+          "label": "Commercial swine services",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_cap_smallholderswineservices",
+          "label": "Smallholder swine services",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_cap_commercialpoultryservices",
+          "label": "Commercial poultry services",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_cap_smallholderpoultryservices",
+          "label": "Smallholder poultry services",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_cap_equinepreventativecare",
+          "label": "Equine preventative care (e.g. vaccines)",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_cap_equinedentistry",
+          "label": "Equine dentistry",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_cap_equineurgentcare",
+          "label": "Equine urgent care (e.g. colics, lacerations, foot abscesses, laminitis, euthanasia)",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_cap_companionanimalpreventativecare",
+          "label": "Companion animal preventative care",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_cap_companionanimalspayandneuter",
+          "label": "Companion animal spay and neuter",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_cap_companionanimaldentistry",
+          "label": "Companion animal dentistry",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_cap_companionanimalsickanimalcare",
+          "label": "Companion animal sick animal care",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_cap_companionanimalemergencysurgery",
+          "label": "Companion animal emergency surgery (e.g. GDV, C-section, enterotomy, lacerations, enucleations)",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_oncallafterhoursservices",
+          "label": "Willingness to provide on call/after hours services during locums",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_otherinformationforpracticestoknow",
+          "label": "Other information that you would like practices to know",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "DocumentsStep",
+      "fields": [
+        {
+          "name": "quartech_vlb_proofofvetlicense",
+          "label": "Proof of license/registration with either College of Veterinarians of BC (CVBC) or BC Veterinary Technologists Association (BCVTA)",
+          "elementType": "FileInput"
+        }
+      ]
+    },
+    {
+      "name": "DemographicInfoStep",
+      "fields": [
+        {
+          "name": "quartech_chefsconfirmationid",
+          "required": true,
+          "tooltipText": "This number is automatically generated when the survey has been submitted",
+          "label": "Demographic Data Collection Survey ID number"
+        }
+      ]
+    }
+  ]
+}

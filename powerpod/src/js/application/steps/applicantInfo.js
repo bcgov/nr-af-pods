@@ -30,12 +30,18 @@ export function customizeApplicantInfoStep() {
 
   customizeTypesOfBusinessOrganization();
 
-  if (getProgramAbbreviation().includes('ABPP')) {
+  const programAbbreviation = getProgramAbbreviation();
+
+  if (programAbbreviation.includes('ABPP')) {
     customizeApplicantInfoStepForABPP();
   }
 
-  if (getProgramAbbreviation() === 'NEFBA') {
+  if (programAbbreviation === 'NEFBA') {
     customizeApplicantInfoStepForNEFBA();
+  }
+
+  if (programAbbreviation === 'VLB') {
+    customizeApplicantInfoStepForVLB();
   }
 }
 

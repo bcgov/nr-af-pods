@@ -350,6 +350,17 @@ function showSumNotEqualWarning(show) {
 }
 
 function verifyTotalSumEqualsRequestedAmount() {
+  const programAbbreviation = getProgramAbbreviation();
+
+  // skip verifying total sum if any of the following programs
+  if (
+    programAbbreviation === 'NEFBA2' ||
+    programAbbreviation === 'VLB' ||
+    programAbbreviation === 'VVTS'
+  ) {
+    return;
+  }
+
   if (
     $('#quartech_totalfees')?.val() !==
     $('#quartech_totalsumofreportedexpenses')?.val()
