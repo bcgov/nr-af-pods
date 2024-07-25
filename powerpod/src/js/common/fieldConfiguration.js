@@ -1,4 +1,4 @@
-import { Form, HtmlElementType, doc } from './constants.js';
+import { Environment, Form, HtmlElementType, doc } from './constants.js';
 import { customizeCurrencyInput } from './currency.js';
 import {
   getFieldsBySectionClaim,
@@ -25,6 +25,7 @@ import { renderCustomComponent } from './components.js';
 import '../components/FileUpload.js';
 import store from '../store/index.js';
 import { getFormType } from './applicationUtils.js';
+import { getEnv } from './env.js';
 
 const logger = Logger('common/fieldConfiguration');
 
@@ -231,6 +232,16 @@ export function configureFields() {
 }
 
 function setupCanadaPostAddressComplete(fields) {
+  const env = getEnv();
+
+  if (env !== Environment.PROD) {
+    logger.warn({
+      fn: setupCanadaPostAddressComplete,
+      message: `Skipping Canada Post since env detected is not prod, but is env: ${env}`,
+    });
+    return;
+  }
+
   const options = {
     key: 'kb98-fz49-gp47-dk74',
   };
