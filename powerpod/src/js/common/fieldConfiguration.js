@@ -325,6 +325,10 @@ function setupCanadaPostAddressComplete(fields) {
 }
 
 export function updateFieldValue(name, elementType, format) {
+  logger.info({
+    fn: updateFieldValue,
+    message: `updateFieldValue called for name: ${name}, elementType: ${elementType}, format: ${format}`,
+  });
   let value = '';
   switch (elementType) {
     case HtmlElementType.FileInput:
@@ -340,13 +344,16 @@ export function updateFieldValue(name, elementType, format) {
       // @ts-ignore
       value = document.querySelector(`#${name}`)?.value;
       break;
+    case HtmlElementType.Checkbox:
+      value = document.querySelector(`#${name}`)?.checked;
+      break;
     case HtmlElementType.SingleOptionSet:
     case HtmlElementType.DatePicker:
     default: // HtmlElementTypeEnum.Input
       value = $(`#${name}`)?.val();
       break;
   }
-  if (!value || !value.length) {
+  if (value === null || value === undefined) {
     logger.warn({
       fn: updateFieldValue,
       message: `nothing to save for name: ${name}, value: ${value}, format: ${format}`,
@@ -368,7 +375,7 @@ export function updateFieldValue(name, elementType, format) {
   logger.info({
     fn: updateFieldValue,
     message: `Saving field data for name: ${name} and value: ${value}, format: ${format}`,
-    data: { name, value, format },
+    data: { name, value, format, elementType },
   });
   store.dispatch('addFieldData', { name, value });
 }
@@ -421,6 +428,7 @@ export function setFieldObserver(
         updateFieldValue(fieldName, elementType, format);
       });
       break;
+    case HtmlElementType.Checkbox:
     default: // HtmlElementTypeEnum.Input
       $(`#${fieldName}`).on('change keyup', function (event) {
         updateFieldValue(fieldName, elementType, format);

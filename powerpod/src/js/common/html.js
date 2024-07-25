@@ -101,6 +101,12 @@ export function isHiddenRow(tr) {
   return false;
 }
 
+export function getControlId(tr) {
+  const questionDiv = tr.querySelector('.info');
+  const id = questionDiv?.querySelector('label')?.getAttribute('for');
+  return id;
+}
+
 export function getInfoValue(tr) {
   const questionDiv = tr.querySelector('.info');
   const questionText = questionDiv?.querySelector('label')?.textContent;
