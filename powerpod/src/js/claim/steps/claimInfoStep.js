@@ -160,15 +160,16 @@ export function customizeClaimInfoStep() {
       'quartech_numberofstudentsapproved',
       'quartech_numberofstudentsapproved'
     );
-    verifyTotalSumEqualsRequestedAmount();
+    // The following is removed as per request in TASK 4578:
+    // verifyTotalSumEqualsRequestedAmount();
 
-    $('#quartech_totalfees').on('change keyup blur', () => {
-      verifyTotalSumEqualsRequestedAmount();
-    });
+    // $('#quartech_totalfees').on('change keyup blur', () => {
+    //   verifyTotalSumEqualsRequestedAmount();
+    // });
 
-    $('#quartech_totalsumofreportedexpenses').on('change keyup blur', () => {
-      verifyTotalSumEqualsRequestedAmount();
-    });
+    // $('#quartech_totalsumofreportedexpenses').on('change keyup blur', () => {
+    //   verifyTotalSumEqualsRequestedAmount();
+    // });
   }
 
   if (programAbbreviation.includes('KTTP')) {
@@ -190,11 +191,12 @@ export function customizeClaimInfoStep() {
     addFundingInformationNote();
     addRequestedClaimAmountNote();
 
-    verifyTotalSumEqualsRequestedAmount();
+    // The following is removed as per request in TASK 4578:
+    // verifyTotalSumEqualsRequestedAmount();
 
-    $('#quartech_totalfees').on('change keyup blur', () => {
-      verifyTotalSumEqualsRequestedAmount();
-    });
+    // $('#quartech_totalfees').on('change keyup blur', () => {
+    //   verifyTotalSumEqualsRequestedAmount();
+    // });
   }
 
   if (programAbbreviation === 'NEFBA') {
