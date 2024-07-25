@@ -115,7 +115,7 @@ export function getFieldsBySectionApplication(stepName, forceRefresh = false) {
     // TODO: Improve this as we do regression testing
     // Only enable for NEFBA2 and appropriate steps right now.
     if (
-      programName === 'NEFBA2' &&
+      (programName === 'NEFBA2' || programName === 'VLB') &&
       ![
         FormStep.Documents,
         FormStep.DeclarationAndConsent,
