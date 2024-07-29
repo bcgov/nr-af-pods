@@ -2,7 +2,12 @@ import { getGlobalConfigData } from '../../common/config.js';
 import { YES_VALUE } from '../../common/constants.js';
 import { getOrgbookAutocompleteData } from '../../common/fetch.js';
 import { initOnChange_DependentRequiredField } from '../../common/fieldConditionalLogic.js';
-import { addTextAboveField, addTextBelowField } from '../../common/html.js';
+import {
+  addTextAboveField,
+  addTextBelowField,
+  hideFieldsetTitle,
+  relocateField,
+} from '../../common/html.js';
 import { Logger } from '../../common/logger.js';
 import {
   getProgramAbbreviation,
@@ -43,6 +48,10 @@ export function customizeApplicantInfoStep() {
   if (programAbbreviation === 'VLB') {
     customizeApplicantInfoStepForVLB();
   }
+}
+
+function customizeApplicantInfoStepForVLB() {
+  hideFieldsetTitle('Application Contact');
 }
 
 function initOnChange_PreviouslyReceivedKttpFunding() {

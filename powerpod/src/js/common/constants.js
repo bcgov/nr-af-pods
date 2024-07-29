@@ -116,4 +116,5 @@ export const POWERPOD = {
   doNotUnhideLoader: false,
   redirectToNewId: false,
   components: {},
+  onChangeHandlers: {},
 };

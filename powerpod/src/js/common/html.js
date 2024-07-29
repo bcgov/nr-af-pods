@@ -7,10 +7,42 @@ import { cleanString } from './documents.js';
 const logger = Logger('common/html');
 
 POWERPOD.html = {
-  observeChanges,
+  redirectToFormId,
   getControlType,
-  getControlValue,
+  isEmptyRow,
+  isHiddenRow,
+  getControlId,
   getInfoValue,
+  getControlValue,
+  listenForIframeReadyStateChanges,
+  onDocumentReadyState,
+  showFieldsetElement,
+  getFieldLabel,
+  showFieldRow,
+  addHtmlToTabDiv,
+  hideSection,
+  showSection,
+  hideTable,
+  showTable,
+  addHtmlToSection,
+  addTextAboveField,
+  addTextBelowField,
+  addHtmlToField,
+  observeChanges,
+  observeIframeChanges,
+  hideQuestion,
+  showOrHideAndReturnValue,
+  setFieldValue,
+  relocateField,
+  combineElementsIntoOneRowNew,
+  combineElementsIntoOneRow,
+  hideAllStepSections,
+  hideFields,
+  hideFieldSets,
+  hideFieldsAndSections,
+  isNode,
+  getFieldNameLabel,
+  htmlDecode,
 };
 
 export function redirectToFormId(id) {
@@ -215,6 +247,11 @@ export function showFieldRow(fieldName) {
   if (!fieldRow) return;
 
   $(fieldRow)?.css({ display: '' });
+
+  const isRequired = POWERPOD.state.fields?.[fieldName].required;
+  if (isRequired) {
+    $(`#${fieldName}_label`).parent().addClass('required');
+  }
 
   // check if a fieldset exists and make sure it's visible if so
   const nearestFieldSet = fieldRow.closest('fieldset');
@@ -538,13 +575,73 @@ export function showOrHideAndReturnValue(valueElementId, descriptionElementId) {
  * @param {string} name - The name of the associated field id.
  * @param {string} value - The value to set the field to.
  */
-export function setFieldValue(name, value) {
+export function setFieldValue(name, value, elementType = null) {
+  logger.info({
+    fn: setFieldValue,
+    message: `Setting field value for name: ${name}, value: ${value}, elementType: ${elementType}`,
+  });
   const element = document.querySelector(`#${name}`);
   if (!element) return;
   // @ts-ignore
-  element.value = value;
+  if (elementType === HtmlElementType.Checkbox) {
+    element.checked = value;
+  } else {
+    element.value = value;
+  }
   const e = new Event('change');
   element.dispatchEvent(e);
+}
+
+export function relocateField(field) {
+  const { originFieldName, destinationFieldName, relativePosition } =
+    field.relocateField;
+
+  if (!originFieldName || !destinationFieldName || !relativePosition) {
+    logger.error({
+      fn: relocateField,
+      message: `Missing a required parameter to relocate field`,
+      data: field,
+    });
+    return;
+  }
+  logger.info({
+    fn: relocateField,
+    message: `Starting moving originFieldName: ${originFieldName} ${relativePosition} destinationFieldName: ${destinationFieldName}`,
+  });
+
+  const elementToMove = $(`#${originFieldName}`);
+  const rowToMove = elementToMove.closest('tr');
+  const clonedRowToMove = rowToMove.clone();
+
+  const moveToElement = document.getElementById(destinationFieldName);
+  const moveToRow = moveToElement?.closest('tr');
+
+  if (!moveToRow) {
+    logger.error({
+      fn: relocateField,
+      message: `Unable to find nearest row to destinationFieldName: ${destinationFieldName}`,
+      data: {
+        originInputId: originFieldName,
+        destinationInputId: destinationFieldName,
+        relativePosition,
+      },
+    });
+    return;
+  }
+
+  if (relativePosition === 'above') {
+    moveToRow.insertAdjacentElement('beforebegin', clonedRowToMove?.[0]);
+  } else if (relativePosition === 'below') {
+    moveToRow.insertAdjacentElement('afterend', clonedRowToMove?.[0]);
+  }
+
+  // cleanup original row
+  rowToMove.remove();
+
+  logger.info({
+    fn: relocateField,
+    message: `Successfully moved originFieldName: ${originFieldName} to ${relativePosition} destinationFieldName: ${destinationFieldName}`,
+  });
 }
 
 export function combineElementsIntoOneRowNew(name) {
@@ -681,7 +778,54 @@ export function getFieldNameLabel(fieldName) {
   return label;
 }
 
+export function setFieldNameLabel(fieldName, label) {
+  const labelElement = $(`#${fieldName}_label`);
+
+  if (!labelElement) {
+    logger.error({
+      fn: setFieldNameLabel,
+      message: `Could not find fieldName: ${fieldName} label element`,
+    });
+    return;
+  }
+  const obj = $(`#${fieldName}_label`)?.text(label);
+  obj?.html(obj?.html()?.replace(/\n/g, '<br/>'));
+
+  logger.info({
+    fn: setFieldNameLabel,
+    message: `Successfully set fieldName: ${fieldName} to ${label}`,
+  });
+}
+
 export function htmlDecode(input) {
   var doc = new DOMParser().parseFromString(input, 'text/html');
   return doc.documentElement.textContent?.replace(/[^\x00-\x7F]/g, '');
+}
+
+export function copyFromFieldAToFieldB(fromFieldNameA, toFieldNameB) {
+  const fromFieldNameAElement = document.getElementById(fromFieldNameA);
+
+  setFieldValue(toFieldNameB, fromFieldNameAElement.value || '');
+
+  logger.info({
+    fn: copyFromFieldAToFieldB,
+    message: `Successfully copied value ${
+      fromFieldNameAElement.value || ''
+    } from ${fromFieldNameA} to ${toFieldNameB}`,
+  });
+}
+
+export function hideFieldsetTitle(ariaLabel) {
+  // Find the fieldset element by aria-label attribute
+  const fieldset = document.querySelector(
+    `fieldset[aria-label="${ariaLabel}"]`
+  );
+
+  // Select the legend tag inside the fieldset
+  const legend = fieldset?.querySelector('legend');
+
+  // Hide the legend element
+  if (legend) {
+    legend.style.display = 'none';
+  }
 }

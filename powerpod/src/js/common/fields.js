@@ -4,9 +4,13 @@ import {
   getClaimConfigData,
   getGlobalConfigData,
 } from './config.js';
-import { combineElementsIntoOneRowNew, showFieldRow } from './html.js';
+import {
+  combineElementsIntoOneRowNew,
+  relocateField,
+  showFieldRow,
+} from './html.js';
 import { Logger } from './logger.js';
-import { getProgramAbbreviation } from './program.ts';
+import { getCurrentStep, getProgramAbbreviation } from './program.ts';
 import { POWERPOD, FormStep } from './constants.js';
 import { mergeFieldArrays } from './utils.js';
 import { configureSections } from './sections.js';
@@ -17,6 +21,7 @@ POWERPOD.fields = {
   loading: true,
   getFieldsBySectionApplication,
   getFieldsBySectionClaim,
+  getFieldConfig,
 };
 
 const logger = Logger('common/fields');
@@ -124,6 +129,14 @@ export function getFieldsBySectionApplication(stepName, forceRefresh = false) {
       ].includes(stepName)
     ) {
       combineElementsIntoOneRowNew(s.name);
+    }
+    store.dispatch('addFieldData', s);
+    if (s.relocateField) {
+      logger.info({
+        fn: getFieldsBySectionApplication,
+        message: `relocating field name: ${s.name}`,
+      });
+      relocateField(s);
     }
     if (s.visibleIf) {
       logger.warn({
@@ -248,4 +261,23 @@ export function getGlobalFieldsConfig() {
   return getGlobalConfigData()?.FieldsConfig?.programs?.find(
     (program) => program.name === 'ALL'
   );
+}
+
+export function getFieldConfig(name) {
+  let programName = getProgramAbbreviation();
+  let stepName = getCurrentStep();
+
+  const fieldsConfig = JSON.parse(
+    localStorage.getItem(`fieldsData-${programName}-${stepName}`)
+  );
+
+  const fieldConfig = fieldsConfig.first((f) => f.name === name);
+
+  logger.info({
+    fn: getFieldConfig,
+    message: `Retrieved field config for name: ${name}`,
+    data: { fieldConfig },
+  });
+
+  return fieldConfig;
 }
