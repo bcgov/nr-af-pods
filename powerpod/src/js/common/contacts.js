@@ -1,7 +1,12 @@
+import { POWERPOD } from './constants.js';
 import { getContactData } from '../common/fetch.js';
 import { Logger } from './logger.js';
 
 const logger = Logger('common/contacts');
+
+POWERPOD.contacts = {
+  getContactName,
+};
 
 export async function getContactName(contactId) {
   const { data } = await getContactData({ contactId });

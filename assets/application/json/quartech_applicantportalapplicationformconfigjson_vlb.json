@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "VLB", "VLB"],
-  "version": "1.0.0",
+  "version": "1.1.5",
   "name": "Veterinary and Veterinary Technologists Locums Working in BC Food Animal Practices Pilot Program",
   "abbreviation": "VLB",
   "hiddenSteps": "tab_Deliverables_Budget",
@@ -8,6 +8,83 @@
     {
       "name": "ApplicantInfoStep",
       "fields": [
+        {
+          "name": "quartech_nocragstnumber",
+          "label": "I do not have a Canada Revenue Agency (CRA) Business Number",
+          "elementType": "Checkbox",
+          "initialValue": true,
+          "relocateField": {
+            "originFieldName": "quartech_nocragstnumber",
+            "destinationFieldName": "quartech_legalbusinessororganizationname",
+            "relativePosition": "above"
+          },
+          "onChangeHandler": "setBusinessOrPersonalStateForVLB"
+        },
+        {
+          "name": "quartech_legalbusinessororganizationname",
+          "tooltipText": "For a partnership, it is the names of the partners or the name the business was registered under with provincial or territorial authorities (e.g., farm name or if none provided use 'First name Last name'). For a corporation, it is the name that appears on the certificate of incorporation.",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_nocragstnumber",
+            "selectedValue": false,
+            "techComment": "Visible & Required ONLY if 'I do not have a Canada Revenue Agency (CRA) Business Number' below is UN-CHECKED.",
+            "valueIfHidden": {
+              "type": "combineFields",
+              "fieldNames": [
+                "quartech_legalnamefirst",
+                "quartech_legalnamelast"
+              ]
+            },
+            "valueIfVisible": {
+              "type": "raw",
+              "value": ""
+            }
+          }
+        },
+        {
+          "name": "quartech_reasonwhynocraorgstnumber",
+          "hidden": true
+        },
+        {
+          "name": "quartech_legalnamefirst",
+          "required": true,
+          "relocateField": {
+            "originFieldName": "quartech_legalnamefirst",
+            "destinationFieldName": "quartech_businesssuitenumberoptional",
+            "relativePosition": "above"
+          },
+          "onChangeHandler": "populateBusinessNameOnChangeFirstOrLastNameVLB"
+        },
+        {
+          "name": "quartech_legalnamelast",
+          "required": true,
+          "relocateField": {
+            "originFieldName": "quartech_legalnamelast",
+            "destinationFieldName": "quartech_businesssuitenumberoptional",
+            "relativePosition": "above"
+          },
+          "onChangeHandler": "populateBusinessNameOnChangeFirstOrLastNameVLB"
+        },
+        {
+          "name": "quartech_businessphonenumber",
+          "format": "phoneNumber",
+          "required": true,
+          "validation": {
+            "type": "length",
+            "value": 14,
+            "comparison": "equalTo",
+            "postfix": "digits",
+            "overrideDisplayValue": 10
+          }
+        },
+        {
+          "name": "quartech_businesscity",
+          "required": true,
+          "validation": {
+            "intervalBased": true
+          },
+          "onChangeHandler": "populatePhoneNumberEmailAndCityOnChangeVLB"
+        },
         {
           "name": "quartech_vlb_veterinarianrole",
           "label": "I am a",
@@ -18,6 +95,33 @@
           "name": "quartech_vlb_professionallicensenumber",
           "label": "What is your professional license number?",
           "required": true
+        },
+        {
+          "name": "quartech_positionorjobtitle",
+          "hidden": true
+        },
+        {
+          "name": "quartech_city",
+          "hidden": true
+        },
+        {
+          "name": "quartech_telephone",
+          "format": "phoneNumber",
+          "required": true,
+          "validation": {
+            "type": "length",
+            "value": 14,
+            "comparison": "equalTo",
+            "postfix": "digits",
+            "overrideDisplayValue": 10
+          },
+          "onChangeHandler": "populatePhoneNumberEmailAndCityOnChangeVLB"
+        },
+        {
+          "name": "quartech_email",
+          "format": "email",
+          "required": true,
+          "onChangeHandler": "populatePhoneNumberEmailAndCityOnChangeVLB"
         }
       ]
     },

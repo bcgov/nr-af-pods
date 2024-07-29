@@ -3,6 +3,7 @@ import { setDynamicallyRequiredFields } from './fieldConfiguration.js';
 import { validateStepFields } from './fieldValidation.js';
 import { Logger } from './logger.js';
 import { getControlValue, showFieldRow } from './html.js';
+import { getFieldConfig } from './fields.js';
 
 const logger = Logger('common/fieldConditionalLogic');
 
@@ -257,6 +258,8 @@ export function shouldRequireDependentField({
     return;
   }
 
+  const fieldConfig = getFieldConfig(requiredFieldTag);
+
   if (shouldBeRequired) {
     logger.info({
       fn: shouldRequireDependentField,
@@ -277,6 +280,14 @@ export function shouldRequireDependentField({
         $(requiredFieldInputElement).change(function () {
           validationFunc(getCurrentStep());
         });
+      }
+
+      if (!!fieldConfig?.visibleIf?.valueIfVisible) {
+        const { type, value } = fieldConfig.visibleIf.valueIfVisible;
+
+        if (type === 'raw' && (value !== undefined || value !== null)) {
+          $(requiredFieldInputElement).val(value);
+        }
       }
     }
   } else {
@@ -299,6 +310,23 @@ export function shouldRequireDependentField({
     }
     $(`#${requiredFieldTag}_name`)?.val(''); // needed for lookup search/modal input elements
     $(requiredFieldInputElement).val('');
+
+    if (!!fieldConfig?.visibleIf?.valueIfHidden) {
+      const { type, fieldNames } = fieldConfig.visibleIf.valueIfHidden;
+
+      if (type === 'combineFields' && fieldNames?.length >= 1) {
+        let fieldValues = [];
+
+        fieldNames.forEach((fName) => {
+          const inputValue = document.getElementById(fName)?.value;
+          fieldValues.push(inputValue);
+        });
+
+        const newValue = fieldValues.join(' ');
+
+        $(requiredFieldInputElement).val(newValue);
+      }
+    }
   }
 
   if (customFunc) {
