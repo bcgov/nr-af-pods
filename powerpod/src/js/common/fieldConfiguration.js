@@ -26,6 +26,7 @@ import '../components/FileUpload.js';
 import store from '../store/index.js';
 import { getFormType } from './applicationUtils.js';
 import { getEnv } from './env.js';
+import { setOnChangeHandler } from '../onChangeHandlers.js';
 
 const logger = Logger('common/fieldConfiguration');
 
@@ -79,6 +80,7 @@ export function configureFields() {
       visibleIf,
       oneLine,
       initialValue,
+      onChangeHandler,
     } = fields[i];
     logger.info({
       fn: configureFields,
@@ -89,6 +91,10 @@ export function configureFields() {
         fn: configureFields,
         message: `could not find existing element for field name: ${name}`,
       });
+      return;
+    }
+    if (onChangeHandler) {
+      setOnChangeHandler(name, elementType, onChangeHandler);
     }
     setFieldObserver(name, elementType, format);
     if (hasUpperCase(name)) {
@@ -133,7 +139,7 @@ export function configureFields() {
       hideFieldByFieldName(name, validateStepFields(stepName), doNotBlank);
     }
     if (initialValue) {
-      setFieldValue(name, initialValue);
+      setFieldValue(name, initialValue, elementType);
     }
     // max characters
     if (maxLength) {
@@ -221,7 +227,7 @@ export function configureFields() {
         },
       });
     }
-    if (visibleIf) {
+    if (visibleIf && !hidden) {
       initializeVisibleIf(name, required, visibleIf);
     }
   }
