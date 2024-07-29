@@ -3,6 +3,7 @@ import { POWERPOD, doc } from './constants.js';
 import {
   getControlType,
   getControlValue,
+  getControlId,
   getInfoValue,
   isEmptyRow,
   isHiddenRow,
