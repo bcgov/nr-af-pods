@@ -1,6 +1,6 @@
 {
+  "version": "1.2.1",
   "tags": ["Application", "StaffPortal", "VLB", "VLB"],
-  "version": "1.1.6",
   "name": "Veterinary and Veterinary Technologists Locums Working in BC Food Animal Practices Pilot Program",
   "abbreviation": "VLB",
   "hiddenSteps": "tab_Deliverables_Budget",
@@ -144,6 +144,51 @@
           "label": "I am willing to provide",
           "elementType": "DropdownSelect",
           "required": true
+        },
+        {
+          "name": "quartech_vlb_servicecoverageinbc",
+          "label": "I am willing to work in the following areas of the province (choose all that apply)",
+          "required": true,
+          "elementType": "MultiOptionSet",
+          "disableSingleLine": true,
+          "visibleIf": {
+            "fieldName": "quartech_vlb_vetservices",
+            "selectedValueIn": [255550000, 255550001],
+            "techComment": "In-person only OR Both in-person and telemedicine services"
+          }
+        },
+        {
+          "name": "quartech_validbcdriverslicense",
+          "label": "I have a valid BC drivers license",
+          "required": true,
+          "elementType": "DropdownSelect",
+          "visibleIf": {
+            "fieldName": "quartech_vlb_vetservices",
+            "selectedValueIn": [255550000, 255550001],
+            "techComment": "In-person only OR Both in-person and telemedicine services"
+          }
+        },
+        {
+          "name": "quartech_workingdrivinginremotelocations",
+          "label": "I am comfortable working and driving in remote locations",
+          "required": true,
+          "elementType": "DropdownSelect",
+          "visibleIf": {
+            "fieldName": "quartech_vlb_vetservices",
+            "selectedValueIn": [255550000, 255550001],
+            "techComment": "In-person only OR Both in-person and telemedicine services"
+          }
+        },
+        {
+          "name": "quartech_workingdrivinginwinterweather",
+          "label": "I am comfortable working and driving in winter weather",
+          "required": true,
+          "elementType": "DropdownSelect",
+          "visibleIf": {
+            "fieldName": "quartech_vlb_vetservices",
+            "selectedValueIn": [255550000, 255550001],
+            "techComment": "In-person only OR Both in-person and telemedicine services"
+          }
         },
         {
           "name": "quartech_numberofdaysofservice",

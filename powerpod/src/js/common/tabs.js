@@ -1,8 +1,12 @@
 // @ts-nocheck
 import { Logger } from './logger.js';
-import { FormStep, TabDisplayNames, TabNames } from './constants.js';
+import { FormStep, POWERPOD, TabDisplayNames, TabNames } from './constants.js';
 
 const logger = Logger('common/tabs');
+
+POWERPOD.tabs = {
+  setTabName,
+};
 
 export function hideTabs(hiddenTabsNames) {
   if (!hiddenTabsNames || !hiddenTabsNames.length) {
@@ -75,16 +79,31 @@ function getTabElement({ displayName, name }) {
     return;
   }
 
-  const tabElement = $('ol.progress li').filter(function () {
-    return $(this).text().includes(displayName);
-  });
+  let tabElement;
+
+  if (Array.isArray(displayName) && displayName.length) {
+    displayName.forEach((dispName) => {
+      let match = $('ol.progress li').filter(function () {
+        return $(this).text().includes(dispName);
+      });
+      if (match && match.length === 1) {
+        tabElement = match;
+        return;
+      }
+    });
+  } else {
+    tabElement = $('ol.progress li').filter(function () {
+      return $(this).text().includes(displayName);
+    });
+  }
 
   if (!tabElement || !tabElement.length) {
     logger.warn({
       fn: getTabElement,
       message: 'Could not find tab element',
       data: {
-        name: displayName,
+        name,
+        displayName,
       },
     });
     return;
