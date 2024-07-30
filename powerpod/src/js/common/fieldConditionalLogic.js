@@ -2,7 +2,7 @@ import { getCurrentStep } from './program.ts';
 import { setDynamicallyRequiredFields } from './fieldConfiguration.js';
 import { validateStepFields } from './fieldValidation.js';
 import { Logger } from './logger.js';
-import { getControlValue, showFieldRow } from './html.js';
+import { disableSingleLine, getControlValue, showFieldRow } from './html.js';
 import { getFieldConfig } from './fields.js';
 
 const logger = Logger('common/fieldConditionalLogic');
@@ -288,6 +288,10 @@ export function shouldRequireDependentField({
         if (type === 'raw' && (value !== undefined || value !== null)) {
           $(requiredFieldInputElement).val(value);
         }
+      }
+
+      if (fieldConfig?.disableSingleLine) {
+        disableSingleLine(requiredFieldTag);
       }
     }
   } else {

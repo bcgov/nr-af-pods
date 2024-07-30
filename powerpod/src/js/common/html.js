@@ -248,7 +248,7 @@ export function showFieldRow(fieldName) {
 
   $(fieldRow)?.css({ display: '' });
 
-  const isRequired = POWERPOD.state.fields?.[fieldName].required;
+  const isRequired = POWERPOD.state?.fields?.[fieldName].required;
   if (isRequired) {
     $(`#${fieldName}_label`).parent().addClass('required');
   }
@@ -681,6 +681,12 @@ export function combineElementsIntoOneRowNew(name) {
 
   const newInfoDiv = clonedTd.find('div.info');
   newInfoDiv.remove();
+}
+
+export function disableSingleLine(name) {
+  const inputElement = $(`#${name}`);
+  const inputTd = inputElement.closest('td');
+  inputTd.attr('colspan', '2');
 }
 
 export function combineElementsIntoOneRow(

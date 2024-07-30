@@ -6,12 +6,13 @@ import {
 } from './config.js';
 import {
   combineElementsIntoOneRowNew,
+  disableSingleLine,
   relocateField,
   showFieldRow,
 } from './html.js';
 import { Logger } from './logger.js';
 import { getCurrentStep, getProgramAbbreviation } from './program.ts';
-import { POWERPOD, FormStep } from './constants.js';
+import { POWERPOD, FormStep, HtmlElementType } from './constants.js';
 import { mergeFieldArrays } from './utils.js';
 import { configureSections } from './sections.js';
 import { hideTabs } from './tabs.js';
@@ -120,6 +121,7 @@ export function getFieldsBySectionApplication(stepName, forceRefresh = false) {
     // TODO: Improve this as we do regression testing
     // Only enable for NEFBA2 and appropriate steps right now.
     if (
+      !s.disableSingleLine &&
       (programName === 'NEFBA2' || programName === 'VLB') &&
       ![
         FormStep.Documents,
@@ -129,6 +131,9 @@ export function getFieldsBySectionApplication(stepName, forceRefresh = false) {
       ].includes(stepName)
     ) {
       combineElementsIntoOneRowNew(s.name);
+    }
+    if (s.disableSingleLine) {
+      disableSingleLine(name);
     }
     store.dispatch('addFieldData', s);
     if (s.relocateField) {
