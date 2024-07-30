@@ -4,7 +4,12 @@ import {
   getFieldsBySectionClaim,
   getFieldsBySectionApplication,
 } from './fields.js';
-import { hideFieldByFieldName, observeChanges, setFieldValue } from './html.js';
+import {
+  getMultiOptionSetElementValue,
+  hideFieldByFieldName,
+  observeChanges,
+  setFieldValue,
+} from './html.js';
 import { Logger } from './logger.js';
 import { FieldMaskType, maskInput } from './masking.js';
 import { getOptions } from './options.js';
@@ -352,10 +357,7 @@ export function updateFieldValue(name, elementType, format) {
       value = $(`#${name}`)?.val();
       break;
     case HtmlElementType.MultiOptionSet:
-      logger.error({
-        fn: updateFieldValue,
-        message: 'updateFieldValue not setup for multi options sets yet',
-      });
+      value = getMultiOptionSetElementValue(name, true);
       break;
     case HtmlElementType.DropdownSelect:
       // @ts-ignore
