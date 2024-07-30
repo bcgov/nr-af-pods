@@ -2,7 +2,7 @@ import store from '../store/index.js';
 import { getFormType } from './applicationUtils.js';
 import { Form, POWERPOD } from './constants.js';
 import { patchApplicationData, patchClaimData } from './fetch.js';
-import { getFormId } from './form.js';
+import { generateFormJson, getFormId } from './form.js';
 import { Logger } from './logger.js';
 import { isObjectEmpty } from './utils.js';
 
@@ -45,7 +45,7 @@ export function addSaveButton() {
     return;
   }
 
-  saveButton.onclick = () => saveFormData({});
+  saveButton.onclick = async () => saveFormData({});
 }
 
 export async function saveFormData({ customPayload = {} }) {
@@ -62,12 +62,16 @@ export async function saveFormData({ customPayload = {} }) {
     message: 'Start saving form data...',
     data: { fields: store?.state?.fields ?? null },
   });
+  // @ts-ignore
+  saveButton.value = 'Saving...';
+  generateFormJson();
 
   if (isObjectEmpty(store?.state?.fields || {})) {
     logger.warn({
       fn: saveFormData,
       message: 'No field data to save',
     });
+    saveButton.value = 'Save';
     return;
   }
 
@@ -115,14 +119,12 @@ export async function saveFormData({ customPayload = {} }) {
       fn: saveFormData,
       message: 'no payload data to save',
     });
+    saveButton.value = 'Save';
     return;
   }
 
   const formId = getFormId();
   const formType = getFormType();
-
-  // @ts-ignore
-  saveButton.value = 'Saving...';
 
   try {
     let res;
