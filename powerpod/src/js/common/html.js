@@ -39,6 +39,7 @@ POWERPOD.html = {
   hideAllStepSections,
   hideFields,
   hideFieldSets,
+  hideFieldsetTitle,
   hideFieldsAndSections,
   isNode,
   getFieldNameLabel,
@@ -263,7 +264,7 @@ export function addHtmlToTabDiv(
   htmlContentToAdd,
   topOrBottom = 'top'
 ) {
-  const tabDiv = doc.querySelector(`div[data-name='${tabDataName}']`);
+  const tabDiv = document.querySelector(`div[data-name='${tabDataName}']`);
   if (!tabDiv) {
     logger.error({
       fn: addHtmlToTabDiv,
@@ -272,15 +273,15 @@ export function addHtmlToTabDiv(
     return;
   }
 
-  const divElement = doc.createElement('div');
+  const divElement = document.createElement('div');
 
   divElement.setAttribute('quartechHtml', 'true');
   divElement.innerHTML = htmlContentToAdd;
 
   if (topOrBottom === 'top') {
-    tabDiv.prepend(divElement);
+    tabDiv.insertAdjacentElement('beforebegin', divElement);
   } else {
-    tabDiv.append(divElement);
+    tabDiv.insertAdjacentElement('afterend', divElement);
   }
 }
 
