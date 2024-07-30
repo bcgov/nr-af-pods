@@ -198,6 +198,14 @@ export function getProgramAbbreviation() {
   const programData = localStorage.getItem('programData');
   const programAbbreviation =
     JSON.parse(programData)?.quartech_programabbreviation;
+
+  if (!programAbbreviation) {
+    logger.error({
+      fn: getProgramAbbreviation,
+      message: 'Failed to get program abbreviation',
+    });
+    return;
+  }
   return programAbbreviation;
 }
 
