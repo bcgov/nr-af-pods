@@ -79,8 +79,10 @@ export function getControlType(tr) {
     return;
   }
 
-  if (control?.id && POWERPOD.state?.fields[control.id]?.elementType) {
-    return POWERPOD.state?.fields[control.id]?.elementType;
+  const controlId = getControlId(tr);
+
+  if (control?.id && POWERPOD.state?.fields[controlId]?.elementType) {
+    return POWERPOD.state?.fields[controlId]?.elementType;
   }
 
   const tag = control.tagName.toLowerCase();
@@ -146,12 +148,12 @@ export function getInfoValue(tr) {
   return questionText;
 }
 
-export function getControlValue({ tr, rawValue = false }) {
+export function getControlValue({ controlId, tr, rawValue = false }) {
   const type = getControlType(tr);
 
   logger.info({
     fn: getControlValue,
-    message: `Attempting to get control value for type: ${type}, rawValue: ${rawValue}`,
+    message: `Attempting to get control value for controlId: ${controlId} type: ${type}, rawValue: ${rawValue}`,
   });
 
   const controlDiv = tr.querySelector('.control');
@@ -184,8 +186,53 @@ export function getControlValue({ tr, rawValue = false }) {
     if (rawValue) return checked;
     if (checked) return 'Yes';
     return 'No';
+  } else if (type === HtmlElementType.MultiOptionSet && controlId) {
+    return getMultiOptionSetElementValue(controlId, rawValue);
   }
   return null;
+}
+
+export function getMultiOptionSetElementValue(controlId, rawValue) {
+  const inputElement = document.getElementById(controlId);
+  if (!inputElement) {
+    logger.error({
+      fn: getMultiOptionSetElementValue,
+      message: `Could not find input element for MultiOptionSet element controlId: ${controlId}`,
+    });
+    return;
+  }
+  if (inputElement.value?.length <= 0) {
+    logger.warn({
+      fn: getMultiOptionSetElementValue,
+      message: `MultiOptionSet value empty for controlId: ${controlId}`,
+    });
+    return;
+  }
+  const multiOptionSetValueArray = JSON.parse(inputElement.value);
+
+  let valueStrArray = [];
+
+  if (rawValue) {
+    multiOptionSetValueArray.forEach((set) => {
+      valueStrArray.push(set?.Value);
+    });
+  } else {
+    multiOptionSetValueArray.forEach((set) => {
+      const label = set?.Label.UserLocalizedLabel?.Label || '';
+      if (label?.length > 0) {
+        valueStrArray.push(label);
+      }
+    });
+  }
+
+  const valueStr = valueStrArray.join(', ');
+
+  logger.info({
+    fn: getMultiOptionSetElementValue,
+    message: `For controlId: ${controlId} found valueStr: ${valueStr}`,
+  });
+
+  return valueStr;
 }
 
 export function listenForIframeReadyStateChanges(iframe, fn) {

@@ -138,15 +138,37 @@ export function getFormId() {
 
 export function addFormDataOnClickHandler() {
   const nextButton = document.getElementById('NextButton');
-  nextButton?.addEventListener('click', formDataOnClickHandler);
+
+  if (!nextButton?.onclick) {
+    logger.error({
+      fn: addFormDataOnClickHandler,
+      message: `Error getting existing next btn on click handler`,
+      data: { nextButton },
+    });
+    return;
+  }
+
+  const nextFn = nextButton.onclick;
+
+  nextButton.removeAttribute('onclick');
+
+  nextButton?.addEventListener('click', (event) =>
+    formDataOnClickHandler(event, nextFn)
+  );
+
+  logger.info({
+    fn: addFormDataOnClickHandler,
+    message:
+      'Successfully configured next button onclick handler for form data',
+  });
 }
 
-function formDataOnClickHandler(event) {
+function formDataOnClickHandler(event, nextFn) {
   const startTime = Date.now();
   event?.stopImmediatePropagation();
   event?.preventDefault();
   if (generateFormJson()) {
-    event?.target?.onclick();
+    nextFn();
   } else {
     logger.error({
       fn: formDataOnClickHandler,
@@ -293,7 +315,7 @@ export function generateFormJson() {
         data: { tr },
       });
 
-      const answerText = getControlValue({ tr });
+      const answerText = getControlValue({ tr, controlId });
 
       logger.info({
         fn: generateFormJson,
