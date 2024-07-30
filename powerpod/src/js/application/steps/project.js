@@ -11,8 +11,11 @@ import {
   shouldRequireDependentField,
 } from '../../common/fieldConditionalLogic.js';
 import {
+  addHtmlToSection,
+  addHtmlToTabDiv,
   addTextAboveField,
   addTextBelowField,
+  hideFieldsetTitle,
   setFieldValue,
 } from '../../common/html.js';
 import { processLocationData } from '../../common/locations.ts';
@@ -113,10 +116,23 @@ function hideShow_WhyActiviyNotOpenToPublic(selectedValue) {
   }
 }
 
+function customizeProjectStepForVLB() {
+  addHtmlToTabDiv(
+    'tab_Project',
+    'Within your approved scope of practice (CVBC PPR, CVBC PSA, RVT), please indicate your capacity to provide the following types of veterinary services:',
+    'top'
+  );
+  hideFieldsetTitle('Description');
+}
+
 function setProjectStepRequiredFields() {
   configureFields();
 
   const programAbbreviation = getProgramAbbreviation();
+
+  if (programAbbreviation === 'VLB') {
+    customizeProjectStepForVLB();
+  }
 
   // START KTTP PROJECT STEP CUSTOMIZATION
   if (programAbbreviation && programAbbreviation.includes('KTTP')) {
