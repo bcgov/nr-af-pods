@@ -1,0 +1,148 @@
+{
+  "tags": ["ApplicationInformationForm", "StaffPortal", "VLB"],
+  "version": "1.0.0",
+  "name": "Veterinary and Veterinary Technologists Locums Working in BC Food Animal Practices Pilot Program",
+  "abbreviation": "VLB",
+  "tabs": [
+    {
+      "name": "generalInfoTab",
+      "sections": [
+        {
+          "name": "generalSection",
+          "fields": [
+            {
+              "name": "quartech_iaflabel",
+              "visible": false
+            },
+            {
+              "name": "quartech_naicsindustry",
+              "autoFillValue": "0536ddd2-37d3-ed11-a7c7-000d3ae8acde",
+              "autoFillLabel": "541940 Veterinary services",
+              "autoFillValueTechComment": "Auto populate the 'NAISC - Industry' with the '541940 Veterinary services' lookup record, aka. guid = 0536ddd2-37d3-ed11-a7c7-000d3ae8acde",
+              "disabled": true
+            }
+          ]
+        },
+        {
+          "name": "businessSummarySection",
+          "fields": [
+            {
+              "name": "quartech_recipienttype",
+              "autoFillValue": 255550006,
+              "autoFillValueTechComment": "Auto populate the 'Type of Business / Organization' with the 'Service Provider' option, aka. value = 255550006",
+              "disabled": true
+            },
+            {
+              "name": "quartech_previousyeargrossincome",
+              "visible": false
+            },
+            {
+              "name": "quartech_lengthoftimeinbusinessinmonths",
+              "visible": false
+            },
+            {
+              "name": "quartech_designatedregistrantname",
+              "visible": false
+            },
+            {
+              "name": "quartech_designatedregistrantphonenumber",
+              "visible": false
+            },
+            {
+              "name": "quartech_numberoffulltimeveterinarians",
+              "visible": false
+            },
+            {
+              "name": "quartech_numberofregisteredvettechnologists",
+              "visible": false
+            },
+            {
+              "name": "quartech_numberofvetclientpatientrelationships",
+              "visible": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "applicationReviewTab",
+      "sections": [
+        {
+          "name": "documentSubmissionSection",
+          "fields": [
+            {
+              "name": "quartech_isthesubmittedapplicationcomplete",
+              "visible": true
+            }
+          ]
+        },
+        {
+          "name": "eligibilitySection",
+          "fields": [
+            {
+              "name": "quartech_vlb_activeregistration_ppr",
+              "visible": true
+            },
+            {
+              "name": "quartech_vlb_activeregistration_psacvbc",
+              "visible": true
+            },
+            {
+              "name": "quartech_vlb_activeregistration_rvt",
+              "visible": true
+            }
+          ]
+        },
+        {
+          "name": "evaluationSection",
+          "fields": [
+            {
+              "name": "quartech_review1outcome",
+              "visible": true
+            },
+            {
+              "name": "quartech_reviewer1score",
+              "visible": false
+            },
+            {
+              "name": "quartech_tr2_completedon",
+              "visible": false
+            },
+            {
+              "name": "quartech_reviewer2score",
+              "visible": false
+            },
+            {
+              "name": "quartech_tr3_completedon",
+              "visible": false
+            },
+            {
+              "name": "quartech_reviewer3score",
+              "visible": false
+            },
+            {
+              "name": "quartech_finalscore",
+              "visible": false
+            },
+            {
+              "name": "quartech_approvaldiscussioncompletedon",
+              "visible": false
+            },
+            {
+              "name": "quartech_reviewcommitteediscussioncompletedon",
+              "visible": false
+            },
+            {
+              "name": "quartech_followupquestions",
+              "visible": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "documentsTab",
+      "fields": []
+    }
+  ]
+}
