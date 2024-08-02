@@ -1,4 +1,5 @@
 import { doc, POWERPOD } from './constants';
+import { getControlType, getControlValue } from './html';
 import { Logger } from './logger';
 
 const logger = Logger('common/components');
@@ -67,9 +68,21 @@ export function renderCustomComponent(params) {
     data: { params },
   });
 
-  const existingValue = $(`#${fieldId}`).val();
+  let existingValue = null;
+  const tr = document.getElementById(fieldId)?.closest('tr');
+  existingValue = getControlValue({
+    controlId: fieldId,
+    tr,
+    rawValue: true,
+  });
 
-  if (existingValue?.length > 0 && existingValue !== '[]') {
+  logger.info({
+    fn: renderCustomComponent,
+    message: `For fieldId: ${fieldId}, found existingValue: ${existingValue}`,
+    data: { params, existingValue, tr },
+  });
+
+  if (existingValue !== null && existingValue !== '[]') {
     logger.info({
       fn: renderCustomComponent,
       message: `Setting existing value for mappedValueKey: ${mappedValueKey} to existingValue: ${existingValue}`,
