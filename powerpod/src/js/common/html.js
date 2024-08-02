@@ -2,7 +2,7 @@ import { HtmlElementType, doc } from './constants.js';
 import { Logger } from './logger.js';
 import { validateRequiredFields } from './fieldValidation.js';
 import { POWERPOD } from './constants.js';
-import { cleanString } from './documents.js';
+import { cleanString } from './documents.ts';
 
 const logger = Logger('common/html');
 
@@ -159,10 +159,9 @@ export function getControlValue({ controlId, tr, rawValue = false }) {
   const controlDiv = tr.querySelector('.control');
 
   if (type === HtmlElementType.FileInput) {
-    const value = controlDiv
-      ?.querySelector('textarea')
-      .value?.replace(/\n/g, ' ');
-    return cleanString(value);
+    const value = controlDiv?.querySelector('textarea').value;
+    if (rawValue) return value;
+    return cleanString(value?.replace(/\n/g, ' '));
   } else if (type === HtmlElementType.CurrencyInput) {
     const value = controlDiv?.querySelector('input')?.value;
     if (rawValue) return value;
@@ -183,6 +182,11 @@ export function getControlValue({ controlId, tr, rawValue = false }) {
     return selectedOptionText;
   } else if (type === HtmlElementType.Checkbox) {
     const checked = controlDiv?.querySelector('input')?.checked;
+    logger.info({
+      fn: getControlValue,
+      message: `Found control value for type: ${type}, rawValue: ${rawValue}, checked: ${checked}`,
+      data: { controlDiv },
+    });
     if (rawValue) return checked;
     if (checked) return 'Yes';
     return 'No';

@@ -1,4 +1,10 @@
-import { Environment, Form, HtmlElementType, doc } from './constants.js';
+import {
+  Environment,
+  Form,
+  HtmlElementType,
+  POWERPOD,
+  doc,
+} from './constants.js';
 import { customizeCurrencyInput } from './currency.js';
 import {
   getFieldsBySectionClaim,
@@ -28,10 +34,13 @@ import { initializeVisibleIf } from './fieldConditionalLogic.js';
 import { useScript } from './scripts.js';
 import { renderCustomComponent } from './components.js';
 import '../components/FileUpload.js';
+import '../components/Checkbox.js';
 import store from '../store/index.js';
 import { getFormType } from './applicationUtils.js';
 import { getEnv } from './env.js';
-import { setOnChangeHandler } from '../onChangeHandlers.js';
+import { setOnChangeHandler } from './onChangeHandlers.js';
+import { hasCraNumberCheckboxEventHandler } from './customEventHandlers.js';
+import { initCraNumberCheckbox } from './initValuesFns.js';
 
 const logger = Logger('common/fieldConfiguration');
 
@@ -86,6 +95,7 @@ export function configureFields() {
       oneLine,
       initialValue,
       onChangeHandler,
+      customComponent,
     } = fields[i];
     logger.info({
       fn: configureFields,
@@ -191,6 +201,53 @@ export function configureFields() {
       maskInput(name, FieldMaskType.PostalCode);
     }
 
+    if (customComponent && customComponent.customElementTag) {
+      logger.info({
+        fn: configureFields,
+        message: `Start configuring custom component for field name: ${name}`,
+        data: { customComponent },
+      });
+      const { customElementTag, mappedValueKey, customEventName } =
+        customComponent;
+
+      let customEventHandlerFn = (name) => {};
+      let customInitValuesFn = (
+        mappedValueKey,
+        existingValue,
+        customElement
+      ) => {};
+
+      if (customComponent.customEventHandler) {
+        const { customEventHandler } = customComponent;
+        customEventHandlerFn =
+          POWERPOD.customEventHandlers[customEventHandler] ||
+          customEventHandlerFn;
+      }
+
+      if (customComponent.customInitValueFn) {
+        const { customInitValueFn } = customComponent;
+        customInitValuesFn =
+          POWERPOD.initValuesFns[customInitValueFn] || customInitValuesFn;
+      }
+
+      const params = {
+        fieldId: name,
+        customElementTag: customElementTag,
+        customEventHandler: customEventHandlerFn(name),
+        mappedValueKey: 'inputvalue',
+        customEvent: customEventName,
+        initValuesFn: customInitValuesFn,
+      };
+
+      logger.info({
+        fn: configureFields,
+        message: `Rendering custom component`,
+        data: { params },
+      });
+
+      renderCustomComponent(params);
+    }
+
     if (elementType === HtmlElementType.FileInput) {
       let defaultFileTypes =
         '.csv,.doc,.docx,.odt,.pdf,.xls,.xlsx,.ods,.gif,.jpeg,.jpg,.png,.svg,.tif';
@@ -198,7 +255,7 @@ export function configureFields() {
 
       logger.info({
         fn: configureFields,
-        message: 'Start configuring custom component',
+        message: `Start configuring custom component for FileInput`,
       });
       renderCustomComponent({
         fieldId: name,
