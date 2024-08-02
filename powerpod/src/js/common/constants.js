@@ -117,4 +117,6 @@ export const POWERPOD = {
   redirectToNewId: false,
   components: {},
   onChangeHandlers: {},
+  customEventHandlers: {},
+  initValuesFns: {},
 };

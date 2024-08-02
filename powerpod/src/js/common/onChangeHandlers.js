@@ -1,4 +1,4 @@
-import { HtmlElementType, POWERPOD } from './common/constants.js';
+import { HtmlElementType, POWERPOD } from './constants.js';
 import {
   copyFromFieldAToFieldB,
   hideFieldByFieldName,
@@ -7,8 +7,8 @@ import {
   setFieldNameLabel,
   setFieldValue,
   showFieldRow,
-} from './common/html.js';
-import { Logger } from './common/logger.js';
+} from './html.js';
+import { Logger } from './logger.js';
 
 POWERPOD.onChangeHandlers = {
   populateBusinessNameOnChangeFirstOrLastNameVLB,
@@ -108,6 +108,11 @@ export function setBusinessOrPersonalStateForVLB() {
   }
 
   const checked = noCraNumberCheckbox.checked;
+
+  logger.info({
+    fn: setBusinessOrPersonalStateForVLB,
+    message: `Successfully found quartech_nocragstnumber with checked: ${checked}`,
+  });
 
   const addressFieldNames = [
     'quartech_businesssuitenumberoptional',
