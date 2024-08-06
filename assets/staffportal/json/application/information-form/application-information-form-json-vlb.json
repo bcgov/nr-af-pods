@@ -1,12 +1,23 @@
 {
   "tags": ["ApplicationInformationForm", "StaffPortal", "VLB"],
-  "version": "1.0.0",
+  "version": "1.0.1",
   "name": "Veterinary and Veterinary Technologists Locums Working in BC Food Animal Practices Pilot Program",
   "abbreviation": "VLB",
   "tabs": [
     {
       "name": "generalInfoTab",
       "sections": [
+        {
+          "name": "applicantInfoSection",
+          "fields": [
+            {
+              "name": "quartech_vlb_professionallicensenumber",
+              "label": "Professional license number",
+              "visible": true,
+              "disabled": true			  
+            }
+          ]
+        },
         {
           "name": "generalSection",
           "fields": [
