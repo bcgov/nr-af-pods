@@ -1,0 +1,56 @@
+{
+  "tags": ["ProjectForm", "StaffPortal", "VLB"],
+  "version": "1.0.0",
+  "name": "Veterinary and Veterinary Technologists Locums Working in BC Food Animal Practices Pilot Program",
+  "abbreviation": "VLB",
+  "tabs": [
+    {
+      "name": "projectReviewTab",
+      "sections": [
+        {
+          "name": "agreementSignedSection",
+          "fields": [
+            {
+              "name": "quartech_contributionagreement",
+              "visible": false
+            },
+            {
+              "name": "quartech_projectapproval",
+              "label": "Project Approval sent to Applicant"
+            }
+          ]
+        },
+        {
+          "name": "claimProcessingSection",
+          "fields": [
+            {
+              "name": "quartech_allinvoicesreceiptsreceived",
+              "visible": false
+            },
+            {
+              "name": "quartech_eventreportreceived",
+              "visible": false
+            },
+            {
+              "name": "quartech_itemizedexpenselistreceived",
+              "visible": false
+            },
+            {
+              "name": "quartech_reimbursementverified",
+              "visible": false
+            }
+          ]
+        },
+        {
+          "name": "paymentSection",
+          "fields": [
+            {
+              "name": "quartech_eaapprovalsent",
+              "visible": false
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
