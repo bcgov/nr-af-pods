@@ -25,6 +25,7 @@ export function hideLoadingAnimation() {
     return;
   }
 
+  POWERPOD.loading = false;
   const loader = doc.getElementById('loader');
   if (loader) {
     logger.info({

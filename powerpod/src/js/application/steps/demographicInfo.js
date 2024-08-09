@@ -10,6 +10,7 @@ import { configureFields } from '../../common/fieldConfiguration.js';
 import { setFieldReadOnly } from '../../common/fieldValidation.js';
 import { validateDemographicInfoRequiredFields } from '../validation.js';
 import { getProgramEmailAddress } from '../../common/program.ts';
+import { saveFormData } from '../../common/saveButton.js';
 
 const logger = Logger('application/steps/demographicInfo');
 
@@ -398,18 +399,27 @@ async function addDemographicInfoChefsIframe() {
 
       const submissionPayload = JSON.parse(event.data);
 
+      const chefsSubmissionGuidResult = submissionPayload.submissionId;
+
       logger.info({
         fn: addDemographicInfoChefsIframe,
-        message: 'received submissionId: ' + submissionPayload.submissionId,
+        message:
+          'received chefsSubmissionGuidResult: ' + chefsSubmissionGuidResult,
       });
 
-      $('#quartech_chefssubmissionid').val(submissionPayload.submissionId);
-
-      const confirmationId = submissionPayload.submissionId
+      const chefsSubmissionId = chefsSubmissionGuidResult
         .substring(0, 8)
         .toUpperCase();
 
-      setFieldValue('quartech_chefsconfirmationid', confirmationId);
+      setFieldValue('quartech_chefsconfirmationid', chefsSubmissionId);
+
+      if (chefsSubmissionGuidResult) {
+        saveFormData({
+          customPayload: {
+            quartech_chefsconfirmationid: chefsSubmissionId,
+          },
+        });
+      }
     });
   }
 

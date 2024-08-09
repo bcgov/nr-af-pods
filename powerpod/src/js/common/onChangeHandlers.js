@@ -1,3 +1,4 @@
+import store from '../store/index.js';
 import { HtmlElementType, POWERPOD } from './constants.js';
 import {
   copyFromFieldAToFieldB,
@@ -90,6 +91,10 @@ export function setOnChangeHandler(fieldName, elemType, onChangeHandlerName) {
     fn: setOnChangeHandler,
     message: `Successfully set onChangeHandler for fieldName: ${fieldName}, elemType: ${elemType}, onChangeHandlerName: ${onChangeHandlerName}`,
   });
+  store.dispatch('addFieldData', {
+    name: fieldName,
+    onChangeHandlerSet: true,
+  });
 }
 
 // Sets address labels to "Business" if "I do not have a Canada Revenue Agency (CRA) Business Number" is NOT checked
@@ -150,6 +155,7 @@ export function setBusinessOrPersonalStateForVLB() {
   ];
 
   // If it's CHECKED meaning it's a PERSON
+  // PERSON:
   if (checked) {
     addressFieldNames.forEach((fName, index) => {
       setFieldNameLabel(fName, addressFieldLabels[index]);
@@ -167,6 +173,7 @@ export function setBusinessOrPersonalStateForVLB() {
     // Note: in this case Business City field label is actually just "City" since it's for a person NOT a business
     copyFromFieldAToFieldB('quartech_businesscity', 'quartech_city');
   } else {
+    // BUSINESS:
     addressFieldNames.forEach((fName, index) => {
       setFieldNameLabel(fName, businessAddressFieldLabels[index]);
     });

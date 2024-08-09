@@ -39,6 +39,7 @@ import store from '../store/index.js';
 import { getFormType } from './applicationUtils.js';
 import { getEnv } from './env.js';
 import { setOnChangeHandler } from './onChangeHandlers.js';
+import { generateVisibleValueForBusinessNameVLB } from './valueGeneration.js';
 import { hasCraNumberCheckboxEventHandler } from './customEventHandlers.js';
 import { initCraNumberCheckbox } from './initValuesFns.js';
 
