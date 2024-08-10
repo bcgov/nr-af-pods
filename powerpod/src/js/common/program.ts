@@ -236,18 +236,16 @@ export function getCurrentStep() {
     return activeStep;
   }
 
+  logger.info({
+    fn: getCurrentStep,
+    message: `Trying to find formStep for activeTabName: ${activeTabName}`,
+    data: {
+      TabDisplayNames,
+    },
+  });
   activeStep =
     Object.keys(TabDisplayNames).find((formStep) => {
       const tabDisplayName = TabDisplayNames[formStep];
-      logger.info({
-        fn: getCurrentStep,
-        message: `Trying to find formStep for activeTabName: ${activeTabName}`,
-        data: {
-          TabDisplayNames,
-          formStep,
-          tabDisplayName,
-        },
-      });
       return (
         tabDisplayName === activeTabName ||
         tabDisplayName.includes(activeTabName)

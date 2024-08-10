@@ -93,7 +93,6 @@ export function configureFields() {
       doNotBlank = false,
       fileTypes, // not currently used anywhere
       visibleIf,
-      oneLine,
       initialValue,
       onChangeHandler,
       customComponent,

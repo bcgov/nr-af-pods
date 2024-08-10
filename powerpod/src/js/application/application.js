@@ -43,17 +43,7 @@ export function initApplication() {
 }
 
 function updatePageForDemographicStep() {
-  var demographicInfoStepIframe = document.getElementById(
-    'ApplicationDemographicInfoStepQuickViewForm'
-  );
-  demographicInfoStepIframe.addEventListener('load', function () {
-    var programid = document
-      .querySelector('#ApplicationDemographicInfoStepQuickViewForm')
-      // @ts-ignore
-      ?.contentWindow?.document?.querySelector('#quartech_program')?.value;
-
-    updatePageForSelectedProgram();
-  });
+  updatePageForSelectedProgram();
 }
 
 function customizePageForFirefox() {

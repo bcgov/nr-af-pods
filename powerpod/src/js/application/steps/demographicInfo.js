@@ -1,6 +1,8 @@
 import { NO_VALUE, YES_VALUE } from '../../common/constants.js';
 import { getEnvVars } from '../../common/env.js';
 import {
+  addHtmlToSection,
+  addTextAboveField,
   hideAllStepSections,
   hideSection,
   setFieldValue,
@@ -11,6 +13,8 @@ import { setFieldReadOnly } from '../../common/fieldValidation.js';
 import { validateDemographicInfoRequiredFields } from '../validation.js';
 import { getProgramEmailAddress } from '../../common/program.ts';
 import { saveFormData } from '../../common/saveButton.js';
+import { getFormId } from '../../common/form.js';
+import { getApplicationData } from '../../common/fetch.js';
 
 const logger = Logger('application/steps/demographicInfo');
 
@@ -41,14 +45,13 @@ export function customizeDemographicInfoStep(programData) {
 }
 
 function addDemographicDataDescriptionOldVersionForABPP() {
-  let div = document.createElement('div');
   const programEmailAddress = getProgramEmailAddress();
-  div.innerHTML =
+  const html =
     '<p>The Province of British Columbia supports inclusive and increased representation of underrepresented groups. By providing the information below, you are helping to improve the delivery of programming. At this time, the questions focus on three identity groups, and do not cover all potential groups who are underrepresented in the agriculture sector. We plan to expand the focus to other underrepresented groups in future.</p>' +
     `<p>Your personal information is collected under section 26(c) and 26(e) of the Freedom of Information and Protection of Privacy Act for the purposes of evaluating applications and for the planning and evaluating of the S-CAP Ministry Program. The demographic information you provide is voluntary and will not be used to assess your eligibility for this program. Each individual understands the purposes of the collection, use, and disclosure of their demographic personal information. The information you provide will be shared with the federal government to fulfill the provincial obligations under the Sustainable Canadian Agricultural Partnership (S-CAP) bilateral agreement. It may be combined with other survey or administrative data sources and used for statistical, research and evaluation purposes. If any information is published, your responses will be combined with the responses of others so that you cannot be identified. If you have any questions about the collection of your information, please contact the program manager at <a href = "mailto: ${programEmailAddress}">${programEmailAddress}</a>.</p>` +
     '<p><span>Required Field </span><span style="color:red">*</span></p>';
 
-  $("[data-name='DemographicData_Tab1']").parent().prepend(div);
+  addHtmlToSection('tab_Demographic_Info', html);
 }
 
 function addViewExampleTo_Q1a() {
@@ -351,43 +354,90 @@ function addDemographicInfoPercentageColumnTitle() {
 function showChefsIntegration() {
   addDemographicDataDescription();
 
-  hideAllStepSections();
-  $("[data-name='DemographicInfoChefsSubmissionSection']")
-    .parent()
-    .css('display', 'block');
+  // hideAllStepSections();
+  // $("[data-name='DemographicInfoChefsSubmissionSection']")
+  //   .parent()
+  //   .css('display', 'block');
 
   addDemographicInfoChefsIframe();
 }
 
 function addDemographicDataDescription() {
-  let div = document.createElement('div');
-  div.innerHTML = `<h3>Demographic Data Collection</h3>
+  const html = `<h3>Demographic Data Collection</h3>
     <p>The Province of British Columbia supports inclusive and increased representation of underrepresented groups. By participating in the survey below, you are helping to improve the delivery of programming. At this time, the questions focus on three identity groups (Indigenous, women and youth), and do not cover all potential groups who are underrepresented in the agriculture sector. We plan to expand the focus to other underrepresented groups in future.</p>
     <p>The survey is conducted independently of the funding program to which you are applying, and your survey responses will not be included in your funding application. If you wish to save a copy of your survey responses, you will have the option of emailing it to yourself upon completion. Please see the top of the survey form for instructions on how to receive a copy by email.</p>`;
 
-  $("[data-name='DemographicData_Tab1']").parent().prepend(div);
+  addHtmlToSection('tab_Demographic_Info', html);
 }
 
 async function addDemographicInfoChefsIframe() {
   $('#quartech_chefssubmissionid')?.closest('tr')?.css({ display: 'none' });
 
-  setFieldReadOnly('quartech_chefsconfirmationid');
+  setFieldReadOnly('quartech_chefsid');
 
-  const chefsSubmissionId = $('#quartech_chefssubmissionid')?.val();
+  let chefsIdElement = document.getElementById('quartech_chefsid');
+  chefsIdElement.style.setProperty('background-color', '#fff3cd', 'important');
+  chefsIdElement.style.fontWeight = 'bold';
+
+  const chefsSubmissionGuid = $('#quartech_chefssubmissionid')?.val();
+
+  // Shorthand ID result for Staff
+  const chefsSubmissionId = $('#quartech_chefsid')?.val();
+
+  if (chefsSubmissionGuid || chefsSubmissionId) {
+    // Logic has since changed, if there's an ID present, we don't need to do anything.
+    // chefsUrl = `https://submit.digital.gov.bc.ca/app/form/success?s=${chefsSubmissionGuid}`;
+
+    logger.info({
+      fn: addDemographicInfoChefsIframe,
+      message: `Demographic info survey has already been completed, chefsSubmissionGuid: ${chefsSubmissionGuid}, chefsSubmissionId: ${chefsSubmissionId}`,
+    });
+    return;
+  }
+
   let chefsUrl = '';
 
-  if (chefsSubmissionId) {
-    chefsUrl = `https://submit.digital.gov.bc.ca/app/form/success?s=${chefsSubmissionId}`;
+  if (chefsSubmissionGuid) {
+    chefsUrl = `https://submit.digital.gov.bc.ca/app/form/success?s=${chefsSubmissionGuid}`;
   } else {
-    const { quartech_ChefsDemographicDataFormId: chefsDemographicDataFormId } =
-      await getEnvVars();
+    const {
+      quartech_ChefsDemographicDataFormId: chefsDemographicDataFormId,
+      quartech_ChefsDemographicDataIndividualsFormId:
+        chefsDemographicDataIndividualsFormId,
+    } = await getEnvVars();
 
-    if (!chefsDemographicDataFormId) {
-      alert(
-        'Bad config: Applicant Portal Config should contain the ChefsDemographicDataFormId element'
-      );
+    const formId = getFormId();
+
+    const applicationDataRes = await getApplicationData({ id: formId });
+
+    if (!applicationDataRes?.data?.value?.[0]) {
+      logger.error({
+        fn: addDemographicInfoChefsIframe,
+        message: `Could not get application data result to determine whether individual or business`,
+      });
     }
-    chefsUrl = `https://submit.digital.gov.bc.ca/app/form/submit?f=${chefsDemographicDataFormId}`;
+
+    const { quartech_nocragstnumber } = applicationDataRes?.data?.value?.[0];
+
+    // If no CRA number then it's an individual
+    if (quartech_nocragstnumber) {
+      if (!chefsDemographicDataIndividualsFormId) {
+        logger.error({
+          fn: addDemographicInfoChefsIframe,
+          message: `Bad config: Env Vars should contain the quartech_ChefsDemographicDataFormId element`,
+        });
+      }
+      chefsUrl = `https://submit.digital.gov.bc.ca/app/form/submit?f=${chefsDemographicDataIndividualsFormId}`;
+    } else {
+      // Otherwise it's a business
+      if (!chefsDemographicDataFormId) {
+        logger.error({
+          fn: addDemographicInfoChefsIframe,
+          message: `Bad config: Env Vars should contain the quartech_ChefsDemographicDataFormId element`,
+        });
+      }
+      chefsUrl = `https://submit.digital.gov.bc.ca/app/form/submit?f=${chefsDemographicDataFormId}`;
+    }
 
     window.addEventListener('message', function (event) {
       if (event.origin != 'https://submit.digital.gov.bc.ca') {
@@ -411,25 +461,22 @@ async function addDemographicInfoChefsIframe() {
         .substring(0, 8)
         .toUpperCase();
 
-      setFieldValue('quartech_chefsconfirmationid', chefsSubmissionId);
+      setFieldValue('quartech_chefsid', chefsSubmissionId);
+      setFieldValue('quartech_chefssubmissionid', chefsSubmissionGuidResult);
 
       if (chefsSubmissionGuidResult) {
         saveFormData({
           customPayload: {
-            quartech_chefsconfirmationid: chefsSubmissionId,
+            quartech_chefsid: chefsSubmissionId,
+            quartech_chefssubmissionid: chefsSubmissionGuidResult,
           },
         });
       }
     });
   }
 
-  let div = document.createElement('div');
-  div.innerHTML = `<iframe id='chefsDemographicInfoIframe' src="${chefsUrl}" height="800" width="100%" title="Demographic Info in CHEFS">
+  const html = `<iframe id='chefsDemographicInfoIframe' src="${chefsUrl}" height="800" width="100%" title="Demographic Info in CHEFS">
       </iframe><br/>`;
 
-  const fieldLabelDivContainer = $(`#quartech_chefsconfirmationid_label`)
-    .parent()
-    .parent();
-
-  fieldLabelDivContainer.prepend(div);
+  addTextAboveField('quartech_chefsid', html);
 }

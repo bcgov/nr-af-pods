@@ -6,6 +6,7 @@ const logger = Logger('common/tabs');
 
 POWERPOD.tabs = {
   setTabName,
+  getTabElement,
 };
 
 export function hideTabs(hiddenTabsNames) {

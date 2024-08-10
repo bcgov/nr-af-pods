@@ -119,8 +119,9 @@ export function isEmptyRow(tr) {
   const firstTd = tr.querySelector('td');
   if (
     !firstTd ||
-    firstTd?.getAttribute('quartechHtml') === 'true' ||
-    firstTd?.getAttribute('class').includes('zero-cell') ||
+    (firstTd?.getAttribute('quartechHtml') &&
+      firstTd?.getAttribute('quartechHtml') === 'true') ||
+    firstTd?.getAttribute('class')?.includes('zero-cell') ||
     firstTd.children?.length === 0
   ) {
     return true;
@@ -292,11 +293,27 @@ export function getFieldLabel(fieldName) {
 }
 
 export function showFieldRow(fieldName) {
+  logger.info({
+    fn: showFieldRow,
+    message: `showFieldRow called for fieldName: ${fieldName}`,
+  });
   const fieldLabelElement = document.querySelector(`#${fieldName}_label`);
-  if (!fieldLabelElement) return;
+  if (!fieldLabelElement) {
+    logger.error({
+      fn: showFieldRow,
+      message: `could not find fieldLabelElement for fieldName: ${fieldName}`,
+    });
+    return;
+  }
   const fieldRow = fieldLabelElement.closest('tr');
 
-  if (!fieldRow) return;
+  if (!fieldRow) {
+    logger.error({
+      fn: showFieldRow,
+      message: `could not find fieldRow for fieldName: ${fieldName}`,
+    });
+    return;
+  }
 
   $(fieldRow)?.css({ display: '' });
 
@@ -307,7 +324,21 @@ export function showFieldRow(fieldName) {
 
   // check if a fieldset exists and make sure it's visible if so
   const nearestFieldSet = fieldRow.closest('fieldset');
-  $(nearestFieldSet)?.css({ display: '' });
+  if (!nearestFieldSet) {
+    logger.error({
+      fn: showFieldRow,
+      message: `could not find nearestFieldSet to fieldName: ${fieldName}`,
+    });
+  }
+  $(nearestFieldSet).css({ display: '' });
+
+  const displayStyle = nearestFieldSet?.style?.display;
+
+  logger.info({
+    fn: showFieldRow,
+    message: `successfully ran showFieldRow for fieldName: ${fieldName}`,
+    data: { nearestFieldSet, displayStyle },
+  });
 }
 
 export function addHtmlToTabDiv(
