@@ -315,7 +315,7 @@ export function generateFormJson() {
         data: { tr },
       });
 
-      const answerText = getControlValue({
+      let answerText = getControlValue({
         tr,
         controlId,
         forTemplateGeneration: true,
@@ -330,6 +330,14 @@ export function generateFormJson() {
           answerText,
         },
       });
+
+      if (!answerText || answerText === 'undefined') {
+        logger.warn({
+          fn: generateFormJson,
+          message: `answerText for controlId: ${controlId} was missing or undefined, answerText: ${answerText}, setting it to an empty string`,
+        });
+        answerText = '';
+      }
 
       if (!questionText) {
         logger.error({
