@@ -126,10 +126,20 @@ export async function getExistingDraftApplicationId() {
 
       const { contactId } = getCurrentUser();
 
+      let quartech_nocragstnumber = null;
+      if (programId === '8806d490-8f44-ef11-a316-002248ae4517') {
+        logger.info({
+          fn: getExistingDraftApplicationId,
+          message: `Detected VLB program id, starting app with quartech_nocragstnumber = true;`,
+        });
+        quartech_nocragstnumber = true;
+      }
+
       const payload = {
         id: uuid,
         programid: programId,
         contactid: contactId,
+        ...(quartech_nocragstnumber != null && { quartech_nocragstnumber }),
       };
 
       const response = await postApplicationData(payload);

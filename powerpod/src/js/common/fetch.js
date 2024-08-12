@@ -487,6 +487,7 @@ export async function postApplicationData({
   id,
   programid,
   contactid,
+  quartech_nocragstnumber = null,
   ...options
 }) {
   return fetch({
@@ -502,6 +503,7 @@ export async function postApplicationData({
       'quartech_Program@odata.bind': `/msgov_programs(${programid})`,
       'quartech_Applicant@odata.bind': `/contacts(${contactid})`,
       quartech_originalsource: 255550002, // always set to "Portal" for Draft status
+      ...(quartech_nocragstnumber != null && { quartech_nocragstnumber }),
     }),
     ...options,
   });
