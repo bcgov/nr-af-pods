@@ -36,6 +36,10 @@ export const ENDPOINT_URL = {
   get_draft_applications_for_programid_data: (programid) =>
     `/_api/msgov_businessgrantapplications?$filter=_quartech_program_value%20eq%20${programid}%20and%20quartech_applicationstatus%20eq%20255550002%20and%20statuscode%20eq%201&$select=msgov_businessgrantapplicationid,_quartech_program_value,quartech_applicationstatus,statuscode`,
   post_application_data: '/_api/msgov_businessgrantapplications',
+  get_demographic_info_data: (demographicInfoId) =>
+    `/_api/quartech_demographicinfos(${demographicInfoId})`,
+  patch_demographic_info_data: (demographicInfoId) =>
+    `/_api/quartech_demographicinfos(${demographicInfoId})`,
 };
 
 POWERPOD.fetch = {
@@ -59,6 +63,8 @@ POWERPOD.fetch = {
   getApplicationData,
   getDraftApplicationsForProgramIdData,
   postApplicationData,
+  getDemographicInfoData,
+  patchDemographicInfoData,
 };
 
 const CONTENT_TYPE = {
@@ -505,6 +511,29 @@ export async function patchApplicationData({ id, fieldData, ...options }) {
   return fetch({
     method: 'PATCH',
     url: ENDPOINT_URL.patch_application_data(id),
+    datatype: DATATYPE.json,
+    includeODataHeaders: true,
+    addRequestVerificationToken: true,
+    processData: false,
+    returnData: true,
+    data: JSON.stringify({
+      ...fieldData,
+    }),
+    ...options,
+  });
+}
+
+export async function getDemographicInfoData({ id, ...options }) {
+  return fetch({
+    url: ENDPOINT_URL.get_demographic_info_data(id),
+    returnData: true,
+  });
+}
+
+export async function patchDemographicInfoData({ id, fieldData, ...options }) {
+  return fetch({
+    method: 'PATCH',
+    url: ENDPOINT_URL.patch_demographic_info_data(id),
     datatype: DATATYPE.json,
     includeODataHeaders: true,
     addRequestVerificationToken: true,

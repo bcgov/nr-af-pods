@@ -2,6 +2,7 @@ import {
   getExistingDraftApplicationId,
   getExistingDraftApplicationId,
 } from './applicationUtils.js';
+import { getApplicationConfigData } from './config.js';
 import { POWERPOD, FormStep, TabDisplayNames, doc } from './constants.js';
 import { getDraftApplicationsForProgramIdData } from './fetch.js';
 import { htmlDecode, onDocumentReadyState, redirectToFormId } from './html.js';
@@ -174,13 +175,23 @@ export async function getProgramId() {
   // New logic:
   // const existingDraftApplicationId =
 
-  const programId = programIdHiddenValue || programIdParam;
+  let programId = programIdHiddenValue || programIdParam;
+  if (!programId) {
+    logger.warn({
+      fn: getProgramId,
+      message:
+        `Could not find program id in either coding section or url params. ` +
+        `As a last resort, pull programId from config data`,
+    });
+    const config = getApplicationConfigData();
+    programId = config.programId;
+  }
   if (!programId) {
     logger.error({
       fn: getProgramId,
       message:
         'Could not find program id in either coding section or url params. ' +
-        'Check that HTML content is present in Portal Management.',
+        'Check that HTML content and/or config programId is present in Portal Management.',
     });
   }
 
@@ -225,18 +236,16 @@ export function getCurrentStep() {
     return activeStep;
   }
 
+  logger.info({
+    fn: getCurrentStep,
+    message: `Trying to find formStep for activeTabName: ${activeTabName}`,
+    data: {
+      TabDisplayNames,
+    },
+  });
   activeStep =
     Object.keys(TabDisplayNames).find((formStep) => {
       const tabDisplayName = TabDisplayNames[formStep];
-      logger.info({
-        fn: getCurrentStep,
-        message: `Trying to find formStep for activeTabName: ${activeTabName}`,
-        data: {
-          TabDisplayNames,
-          formStep,
-          tabDisplayName,
-        },
-      });
       return (
         tabDisplayName === activeTabName ||
         tabDisplayName.includes(activeTabName)

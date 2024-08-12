@@ -119,4 +119,6 @@ export const POWERPOD = {
   onChangeHandlers: {},
   customEventHandlers: {},
   initValuesFns: {},
+  valueGeneration: {},
+  loading: true,
 };

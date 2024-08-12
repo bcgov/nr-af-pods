@@ -1,9 +1,10 @@
 import store from '../store/index.js';
 import { getFormType } from './applicationUtils.js';
-import { Form, POWERPOD } from './constants.js';
+import { Form, FormStep, POWERPOD } from './constants.js';
 import { patchApplicationData, patchClaimData } from './fetch.js';
 import { generateFormJson, getFormId } from './form.js';
 import { Logger } from './logger.js';
+import { getCurrentStep } from './program.js';
 import { isObjectEmpty } from './utils.js';
 
 const logger = Logger('common/saveButton');
@@ -13,6 +14,14 @@ POWERPOD.saveButton = {
 };
 
 export function addSaveButton() {
+  const currentStep = getCurrentStep();
+  if (currentStep === FormStep.DeclarationAndConsent) {
+    logger.info({
+      fn: addSaveButton,
+      message: `Skip adding save button on currentStep: ${currentStep}`,
+    });
+    return;
+  }
   const saveBtnHtml = `
     <input 
       type="button"
@@ -137,14 +146,14 @@ export async function saveFormData({ customPayload = {} }) {
 
     logger.info({
       fn: saveFormData,
-      message: 'successfully patched claim data with payload',
+      message: 'successfully patched form data with payload',
       data: { formId, formType, payload },
     });
   } catch (e) {
     logger.error({
       fn: saveFormData,
-      message: 'failed to patch claim data',
-      data: { e },
+      message: `failed to patch form data for formType: ${formType}`,
+      data: { e, formId, formType, payload },
     });
   } finally {
     // @ts-ignore

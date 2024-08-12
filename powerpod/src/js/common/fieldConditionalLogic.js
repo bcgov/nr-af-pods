@@ -4,6 +4,7 @@ import { validateStepFields } from './fieldValidation.js';
 import { Logger } from './logger.js';
 import { disableSingleLine, getControlValue, showFieldRow } from './html.js';
 import { getFieldConfig } from './fields.js';
+import { POWERPOD } from './constants.js';
 
 const logger = Logger('common/fieldConditionalLogic');
 
@@ -284,9 +285,43 @@ export function shouldRequireDependentField({
 
       if (!!fieldConfig?.visibleIf?.valueIfVisible) {
         const { type, value } = fieldConfig.visibleIf.valueIfVisible;
+        logger.info({
+          fn: shouldRequireDependentField,
+          message: `visibleIf.valueIfVisible has been configured for fieldName: ${requiredFieldTag}, start setup with values:`,
+          data: { valueIfVisible: fieldConfig.visibleIf.valueIfVisible },
+        });
 
         if (type === 'raw' && (value !== undefined || value !== null)) {
+          logger.info({
+            fn: shouldRequireDependentField,
+            message: `visibleIf.valueIfVisible has been configured, setting value: ${value} for fieldName: ${requiredFieldTag}`,
+          });
           $(requiredFieldInputElement).val(value);
+        } else if (type === 'function') {
+          const valueGeneratorFunction = POWERPOD.valueGeneration[value];
+          if (
+            !valueGeneratorFunction ||
+            typeof valueGeneratorFunction !== 'function'
+          ) {
+            logger.error({
+              fn: shouldRequireDependentField,
+              message: `for fieldName: ${requiredFieldTag} could not find valueGeneration function for value: ${value}`,
+            });
+            return;
+          }
+          const newValue = valueGeneratorFunction();
+          if (newValue == undefined) {
+            logger.info({
+              fn: shouldRequireDependentField,
+              message: `visibleIf.valueIfVisible has been configured, valueGenerator: ${value} returned undefined, skipping setting value for fieldName: ${requiredFieldTag}`,
+            });
+            return;
+          }
+          logger.info({
+            fn: shouldRequireDependentField,
+            message: `visibleIf.valueIfVisible has been configured, valueGenerator: ${value} returned and setting value: ${newValue} for fieldName: ${requiredFieldTag}`,
+          });
+          $(requiredFieldInputElement).val(newValue);
         }
       }
 
@@ -316,7 +351,12 @@ export function shouldRequireDependentField({
     $(requiredFieldInputElement).val('');
 
     if (!!fieldConfig?.visibleIf?.valueIfHidden) {
-      const { type, fieldNames } = fieldConfig.visibleIf.valueIfHidden;
+      const { type, fieldNames, value } = fieldConfig.visibleIf.valueIfHidden;
+      logger.info({
+        fn: shouldRequireDependentField,
+        message: `visibleIf.valueIfHidden has been configured for fieldName: ${requiredFieldTag}, start setup with values:`,
+        data: { valueIfHidden: fieldConfig.visibleIf.valueIfHidden },
+      });
 
       if (type === 'combineFields' && fieldNames?.length >= 1) {
         let fieldValues = [];
@@ -328,6 +368,10 @@ export function shouldRequireDependentField({
 
         const newValue = fieldValues.join(' ');
 
+        logger.info({
+          fn: shouldRequireDependentField,
+          message: `visibleIf.valueIfHidden has been configured, setting value: ${newValue} for fieldName: ${requiredFieldTag}`,
+        });
         $(requiredFieldInputElement).val(newValue);
       }
     }
