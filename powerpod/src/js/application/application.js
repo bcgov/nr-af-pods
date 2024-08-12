@@ -43,17 +43,7 @@ export function initApplication() {
 }
 
 function updatePageForDemographicStep() {
-  var demographicInfoStepIframe = document.getElementById(
-    'ApplicationDemographicInfoStepQuickViewForm'
-  );
-  demographicInfoStepIframe.addEventListener('load', function () {
-    var programid = document
-      .querySelector('#ApplicationDemographicInfoStepQuickViewForm')
-      // @ts-ignore
-      ?.contentWindow?.document?.querySelector('#quartech_program')?.value;
-
-    updatePageForSelectedProgram(programid);
-  });
+  updatePageForSelectedProgram();
 }
 
 function customizePageForFirefox() {
@@ -107,6 +97,11 @@ async function updatePageForSelectedProgram(programId = undefined) {
     formId = fetchedFormId;
     redirect = fetchedRedirect || false;
   }
+
+  logger.info({
+    fn: updatePageForSelectedProgram,
+    message: `Determining redirect for programId: ${programId}, found formId: ${formId}, found redirect: ${redirect}`,
+  });
 
   if ((POWERPOD.redirectToNewId || redirect) && formId) {
     logger.info({

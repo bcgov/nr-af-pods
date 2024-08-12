@@ -122,12 +122,10 @@ export function getFieldsBySectionApplication(stepName, forceRefresh = false) {
     // Only enable for NEFBA2 and appropriate steps right now.
     if (
       !s.disableSingleLine &&
-      (programName === 'NEFBA2' || programName === 'VLB') &&
       ![
         FormStep.Documents,
         FormStep.DeclarationAndConsent,
         FormStep.Unknown,
-        FormStep.DemographicInfo,
       ].includes(stepName)
     ) {
       combineElementsIntoOneRowNew(s.name);

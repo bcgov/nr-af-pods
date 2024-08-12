@@ -7,6 +7,7 @@ import {
 import { getProgramAbbreviation } from '../../common/program.ts';
 import { configureFields } from '../../common/fieldConfiguration.js';
 import { Logger } from '../../common/logger.js';
+import { validateStepFields } from '../../common/fieldValidation.js';
 
 const logger = Logger('application/steps/deliverablesBudget');
 
@@ -343,6 +344,10 @@ function calculateNetChangeInProfit() {
 }
 
 export function calculateEstimatedActivityBudget() {
+  logger.info({
+    fn: calculateEstimatedActivityBudget,
+    message: `Calculating estimated activity budget...`,
+  });
   // @ts-ignore
   let fee = parseFloat($('#quartech_smefee').val().replace(/,/g, ''));
   if (isNaN(fee)) fee = 0.0;
@@ -439,4 +444,6 @@ export function calculateEstimatedActivityBudget() {
   $('#quartech_totalfundingrequiredfromtheprogram').val(
     totalFundingRequiredWithCurrencyFormat.replace('CA$', '')
   );
+
+  validateStepFields();
 }

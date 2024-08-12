@@ -1,9 +1,9 @@
 {
-  "version": "1.3.0",
+  "version": "1.3.6",
   "tags": ["Application", "StaffPortal", "VLB", "VLB"],
   "name": "Veterinary and Veterinary Technologists Locums Working in BC Food Animal Practices Pilot Program",
   "abbreviation": "VLB",
-  "hiddenSteps": "tab_Deliverables_Budget",
+  "programId": "8806d490-8f44-ef11-a316-002248ae4517",
   "sections": [
     {
       "name": "ApplicantInfoStep",
@@ -42,8 +42,8 @@
               ]
             },
             "valueIfVisible": {
-              "type": "raw",
-              "value": ""
+              "type": "function",
+              "value": "generateVisibleValueForBusinessNameVLB"
             }
           }
         },
@@ -384,10 +384,11 @@
       "name": "DemographicInfoStep",
       "fields": [
         {
-          "name": "quartech_chefsconfirmationid",
+          "name": "quartech_chefsid",
           "required": true,
           "tooltipText": "This number is automatically generated when the survey has been submitted",
-          "label": "Demographic Data Collection Survey ID number"
+          "label": "Demographic Data Collection Survey ID number",
+          "bold": true
         }
       ]
     }

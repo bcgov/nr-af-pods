@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "KTTP-StreamTwo", "KTTP2"],
-  "version": "1.0.4",
+  "version": "1.0.6",
   "name": "KTTP - Hands On Learning For Skill and Knowledge Development Activities",
   "abbreviation": "KTTP-StreamTwo",
   "hiddenSteps": "tab_eligibility",
@@ -105,7 +105,7 @@
           "elementType": "DropdownSelect",
           "label": "Has this organization received funding from other Government of British Columbia (the Province) programs in the last year?"
         },
-  		  {
+        {
           "name": "quartech_ifyespleaseexplainwhenandfromwhichprogram",
           "visibleIf": {
             "fieldName": "quartech_hasthisorganizationreceivedfundingfrmother",
@@ -468,6 +468,18 @@
             "value": "0",
             "comparison": "greaterThanOrEqualTo"
           }
+        }
+      ]
+    },
+    {
+      "name": "DemographicInfoStep",
+      "fields": [
+        {
+          "name": "quartech_chefsid",
+          "required": true,
+          "tooltipText": "This number is automatically generated when the survey has been submitted",
+          "label": "Demographic Data Collection Survey ID number",
+          "bold": true
         }
       ]
     }

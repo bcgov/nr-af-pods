@@ -1,3 +1,12 @@
+/*
+  -------------------
+  FILE INFO
+  -------------------
+  version: 1.0.1
+  name: Application CSS
+  type: CSS
+  description: This is the CSS used on the Application web page
+*/
 label {
   font-weight: unset;
 }
@@ -62,11 +71,6 @@ table[data-name='DemographicInfoChefsSubmissionSection'] {
     display: inline-block;
     width: 18%;
   }
-}
-
-#quartech_chefsconfirmationid {
-  background-color: #fff3cd !important;
-  font-weight: 700;
 }
 
 fieldset:has(
