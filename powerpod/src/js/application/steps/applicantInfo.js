@@ -5,6 +5,7 @@ import { initOnChange_DependentRequiredField } from '../../common/fieldCondition
 import {
   addTextAboveField,
   addTextBelowField,
+  getFieldInfoDiv,
   hideFieldsetTitle,
   relocateField,
 } from '../../common/html.js';
@@ -52,6 +53,8 @@ export function customizeApplicantInfoStep() {
 
 function customizeApplicantInfoStepForVLB() {
   hideFieldsetTitle('Application Contact');
+  const doYouHaveCRANumberInfoDiv = getFieldInfoDiv('quartech_nocragstnumber');
+  doYouHaveCRANumberInfoDiv?.css({ paddingLeft: 0 });
 }
 
 function initOnChange_PreviouslyReceivedKttpFunding() {

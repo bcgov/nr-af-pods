@@ -32,11 +32,7 @@ const logger = Logger('application/application');
 export function initApplication() {
   preloadRequestVerificationToken();
   hideFieldsAndSections();
-  if (getCurrentStep() === FormStep.DemographicInfo) {
-    updatePageForDemographicStep();
-  } else {
-    updatePageForSelectedProgram();
-  }
+  updatePageForSelectedProgram();
   // addNewAppSystemNotice();
 
   customizePageForFirefox();
