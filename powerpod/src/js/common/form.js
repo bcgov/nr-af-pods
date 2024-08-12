@@ -367,7 +367,8 @@ export function generateFormJson() {
 
   logger.info({
     fn: generateFormJson,
-    message: 'Setting word template field data',
+    message:
+      'Setting word template field data: \n' + `${JSON.stringify(formJsonObj)}`,
     data: {
       formJsonObj,
       wordTemplateDataElement: wordTemplateDataElement[0],
