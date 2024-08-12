@@ -44,6 +44,7 @@ POWERPOD.html = {
   isNode,
   getFieldNameLabel,
   htmlDecode,
+  getFieldInfoDiv,
 };
 
 export function redirectToFormId(id) {
@@ -917,4 +918,18 @@ export function hideFieldsetTitle(ariaLabel) {
   if (legend) {
     legend.style.display = 'none';
   }
+}
+
+export function getFieldInfoDiv(name) {
+  const infoDiv = $(`#${name}_label`)?.closest('td')?.find('div.info');
+
+  if (!infoDiv) {
+    logger.error({
+      fn: getFieldInfoDiv,
+      message: `Could not find info div for field name: ${name}`,
+    });
+    return;
+  }
+
+  return infoDiv;
 }
