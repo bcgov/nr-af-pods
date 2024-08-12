@@ -87,6 +87,10 @@ export const TabNames = {
   [FormStep.ProjectResults]: 'projectResultsTab',
 };
 
+export const ProgramIds = {
+  VLB: '8806d490-8f44-ef11-a316-002248ae4517',
+};
+
 export const YES_VALUE = '255550000';
 export const NO_VALUE = '255550001';
 export const OTHER_VALUE = '255550010';

@@ -315,7 +315,11 @@ export function generateFormJson() {
         data: { tr },
       });
 
-      const answerText = getControlValue({ tr, controlId });
+      const answerText = getControlValue({
+        tr,
+        controlId,
+        forTemplateGeneration: true,
+      });
 
       logger.info({
         fn: generateFormJson,

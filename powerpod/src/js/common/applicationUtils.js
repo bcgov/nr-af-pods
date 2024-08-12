@@ -4,6 +4,7 @@ import {
   ClaimPaths,
   Form,
   win,
+  ProgramIds,
 } from './constants.js';
 import { getCurrentUser } from './dynamics.ts';
 import {
@@ -127,7 +128,7 @@ export async function getExistingDraftApplicationId() {
       const { contactId } = getCurrentUser();
 
       let quartech_nocragstnumber = null;
-      if (programId === '8806d490-8f44-ef11-a316-002248ae4517') {
+      if (programId === ProgramIds.VLB) {
         logger.info({
           fn: getExistingDraftApplicationId,
           message: `Detected VLB program id, starting app with quartech_nocragstnumber = true;`,

@@ -1,8 +1,9 @@
-import { HtmlElementType, doc } from './constants.js';
+import { HtmlElementType, ProgramIds, doc } from './constants.js';
 import { Logger } from './logger.js';
 import { validateRequiredFields } from './fieldValidation.js';
 import { POWERPOD } from './constants.js';
 import { cleanString } from './documents.ts';
+import { getProgramId } from './program.ts';
 
 const logger = Logger('common/html');
 
@@ -150,15 +151,36 @@ export function getInfoValue(tr) {
   return questionText;
 }
 
-export function getControlValue({ controlId, tr, rawValue = false }) {
+export function getControlValue({
+  controlId,
+  tr,
+  rawValue = false,
+  forTemplateGeneration = false,
+}) {
   const type = getControlType(tr);
 
   logger.info({
     fn: getControlValue,
     message: `Attempting to get control value for controlId: ${controlId} type: ${type}, rawValue: ${rawValue}`,
+    data: {
+      controlId,
+      tr,
+      rawValue,
+      forTemplateGeneration,
+      programId: POWERPOD.program?.programId,
+    },
   });
 
   const controlDiv = tr.querySelector('.control');
+
+  if (forTemplateGeneration && controlId === 'quartech_nocragstnumber') {
+    if (POWERPOD.program?.programId === ProgramIds.VLB) {
+      const checked =
+        document.getElementsByTagName('quartech-checkbox')?.[0].inputValue;
+      if (checked === 'true' || checked === true) return 'Yes';
+      return 'No';
+    }
+  }
 
   if (type === HtmlElementType.FileInput) {
     const value = controlDiv?.querySelector('textarea').value;
@@ -190,7 +212,7 @@ export function getControlValue({ controlId, tr, rawValue = false }) {
       data: { controlDiv },
     });
     if (rawValue) return checked;
-    if (checked) return 'Yes';
+    if (checked === 'true' || checked === true) return 'Yes';
     return 'No';
   } else if (type === HtmlElementType.MultiOptionSet && controlId) {
     return getMultiOptionSetElementValue(controlId, rawValue);
