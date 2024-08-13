@@ -2,9 +2,14 @@ import { getCurrentStep } from './program.ts';
 import { setDynamicallyRequiredFields } from './fieldConfiguration.js';
 import { validateStepFields } from './fieldValidation.js';
 import { Logger } from './logger.js';
-import { disableSingleLine, getControlValue, showFieldRow } from './html.js';
+import {
+  disableSingleLine,
+  getControlValue,
+  setMultiSelectValues,
+  showFieldRow,
+} from './html.js';
 import { getFieldConfig } from './fields.js';
-import { POWERPOD } from './constants.js';
+import { HtmlElementType, POWERPOD } from './constants.js';
 
 const logger = Logger('common/fieldConditionalLogic');
 
@@ -332,7 +337,10 @@ export function shouldRequireDependentField({
   } else {
     logger.info({
       fn: shouldRequireDependentField,
-      message: `Setting dynamic field to hidden requiredFieldTag: ${requiredFieldTag}`,
+      message: `Setting dynamic field to hidden requiredFieldTag: ${requiredFieldTag}, fieldConfig: ${JSON.stringify(
+        fieldConfig
+      )}`,
+      data: { fieldConfig },
     });
     $(requiredFieldRow).css({ display: 'none' });
 
@@ -347,8 +355,14 @@ export function shouldRequireDependentField({
       }
       $(requiredFieldInputElement).off('change');
     }
-    $(`#${requiredFieldTag}_name`)?.val(''); // needed for lookup search/modal input elements
-    $(requiredFieldInputElement).val('');
+
+    // for multi option sets specifically must use custom function
+    if (fieldConfig.elementType === HtmlElementType.MultiOptionSet) {
+      setMultiSelectValues(requiredFieldTag, []);
+    } else {
+      $(`#${requiredFieldTag}_name`)?.val(''); // needed for lookup search/modal input elements
+      $(requiredFieldInputElement).val('');
+    }
 
     if (!!fieldConfig?.visibleIf?.valueIfHidden) {
       const { type, fieldNames, value } = fieldConfig.visibleIf.valueIfHidden;

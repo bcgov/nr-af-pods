@@ -6,3 +6,8 @@
   script.src = src;
   document.head.appendChild(script);
 })();
+
+(function (executionContext) {
+  console.log('this is a test, executionContext:')
+  console.log(executionContext);
+})();
