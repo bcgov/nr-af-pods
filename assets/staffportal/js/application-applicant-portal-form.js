@@ -1,9 +1,21 @@
+/*
+  -------------------
+  FILE INFO
+  -------------------
+  version: 1.0.0
+  name: application-applicant-portal-form-script
+  type: JavaScript (JS)
+  description: This is the Web Resource called "application-applicant-portal-form-script" that executes on
+    "Applicant Portal - Application Submission" "On Load" event
+  */
 var PODS = window.PODS || {};
 (function () {
     // Global variables
     var fieldsDisplayLogicMap =  new Map();
 
     this.formOnLoad = async function (executionContext) {
+        console.log('quartech_application-form-script: formOnLoad executed....');
+        
 		const formContext = executionContext.getFormContext()
 
         await PODS.hideAllFields(formContext)
