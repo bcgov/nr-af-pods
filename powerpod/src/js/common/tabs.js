@@ -155,7 +155,7 @@ export function setTabName(name, displayName) {
   const tabElement = getTabElement({ displayName: initialTabDisplayName });
 
   if (tabElement) {
-    tabElement.innerHTML = displayName;
+    tabElement.firstChild.nodeValue = displayName; // Replace 'New Text' with your desired text
     logger.info({
       fn: setTabName,
       message: `Successfully updated tab name from ${name} to ${displayName}`,
