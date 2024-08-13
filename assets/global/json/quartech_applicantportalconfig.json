@@ -1,6 +1,6 @@
 {
   "tags": ["Global", "ALL", "Application", "StaffPortal"],
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Global JSON config used in Applications",
   "FieldsConfig": {
     "programs": [
@@ -45,10 +45,12 @@
               },
               {
                 "name": "quartech_businesssuitenumberoptional",
+                "label": "Business - Suite Number (optional)",
                 "visible": true
               },
               {
                 "name": "quartech_businessstreetnumber",
+                "label": "Business - Street number",
                 "required": true,
                 "validation": {
                   "intervalBased": true
@@ -56,6 +58,7 @@
               },
               {
                 "name": "quartech_businessstreet",
+                "label": "Business - Street",
                 "required": true,
                 "validation": {
                   "intervalBased": true
@@ -63,6 +66,7 @@
               },
               {
                 "name": "quartech_businesscity",
+                "label": "Business City",
                 "required": true,
                 "validation": {
                   "intervalBased": true
@@ -70,6 +74,7 @@
               },
               {
                 "name": "quartech_businessprovinceterritory",
+                "label": "Business Province/Territory",
                 "required": true,
                 "validation": {
                   "intervalBased": true
@@ -77,6 +82,7 @@
               },
               {
                 "name": "quartech_businesspostalcode",
+                "label": "Business Postal Code",
                 "format": "postalCode",
                 "required": true,
                 "validation": {
@@ -85,6 +91,7 @@
               },
               {
                 "name": "quartech_businessphonenumber",
+                "label": "Business Phone Number",
                 "format": "phoneNumber",
                 "required": true,
                 "validation": {
@@ -97,6 +104,7 @@
               },
               {
                 "name": "quartech_businessemailaddress",
+                "label": "Business Email Address",
                 "format": "email",
                 "required": true
               },

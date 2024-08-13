@@ -46,6 +46,7 @@ POWERPOD.html = {
   getFieldNameLabel,
   htmlDecode,
   getFieldInfoDiv,
+  setMultiSelectValues,
 };
 
 export function redirectToFormId(id) {
@@ -954,4 +955,31 @@ export function getFieldInfoDiv(name) {
   }
 
   return infoDiv;
+}
+
+// Note: values should be an array of raw values from the mutli optionset, e.g. [255550000]
+export function setMultiSelectValues(name, values = []) {
+  const originalSelectElementForMSOS = $(`#${name}_0`);
+
+  if (!originalSelectElementForMSOS || !originalSelectElementForMSOS.length) {
+    logger.error({
+      fn: setMultiSelectValues,
+      message: `Could not get original select control element for Msos, see initializeMsosLibrary, MultiSelectOptionSet libraries, https://pbauerochse.github.io/searchable-option-list/`,
+    });
+    return;
+  }
+
+  // @ts-ignore
+  if (!originalSelectElementForMSOS.multiSelectOptionSet()) {
+    logger.error({
+      fn: setMultiSelectValues,
+      message: `Could not get multiSelectOptionSet() object form original select control element for Msos, see initializeMsosLibrary, MultiSelectOptionSet libraries, https://pbauerochse.github.io/searchable-option-list/`,
+    });
+    return;
+  }
+  // @ts-ignore
+  originalSelectElementForMSOS.multiSelectOptionSet().refreshControl(values);
+
+  // to select specific items:
+  // $(`#${multiSelectFieldName}_0`).multiSelectOptionSet().refreshControl([255550005])
 }

@@ -1,7 +1,7 @@
 {
   "name": "powerpod",
   "type": "module",
-  "version": "1.8.4",
+  "version": "1.8.5",
   "description": "Powerpod is a jQuery plugin that enhances functionality of Power Pages components.",
   "main": "dist/powerpod",
   "scripts": {

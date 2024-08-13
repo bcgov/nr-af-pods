@@ -1,5 +1,5 @@
 {
-  "version": "1.3.8",
+  "version": "1.3.9",
   "tags": ["Application", "StaffPortal", "VLB", "VLB"],
   "name": "Veterinary and Veterinary Technologists Locums Working in BC Food Animal Practices Pilot Program",
   "abbreviation": "VLB",
@@ -72,7 +72,55 @@
           "onChangeHandler": "populateBusinessNameOnChangeFirstOrLastNameVLB"
         },
         {
+          "name": "quartech_businesssuitenumberoptional",
+          "label": "Suite Number (optional)",
+          "visible": true
+        },
+        {
+          "name": "quartech_businessstreetnumber",
+          "label": "Street number",
+          "required": true,
+          "validation": {
+            "intervalBased": true
+          }
+        },
+        {
+          "name": "quartech_businessstreet",
+          "label": "Street",
+          "required": true,
+          "validation": {
+            "intervalBased": true
+          }
+        },
+        {
+          "name": "quartech_businesscity",
+          "label": "City",
+          "required": true,
+          "validation": {
+            "intervalBased": true
+          },
+          "onChangeHandler": "populatePhoneNumberEmailAndCityOnChangeVLB"
+        },
+        {
+          "name": "quartech_businessprovinceterritory",
+          "label": "Province/Territory",
+          "required": true,
+          "validation": {
+            "intervalBased": true
+          }
+        },
+        {
+          "name": "quartech_businesspostalcode",
+          "label": "Postal Code",
+          "format": "postalCode",
+          "required": true,
+          "validation": {
+            "intervalBased": true
+          }
+        },
+        {
           "name": "quartech_businessphonenumber",
+          "label": "Phone Number",
           "format": "phoneNumber",
           "required": true,
           "validation": {
@@ -84,12 +132,10 @@
           }
         },
         {
-          "name": "quartech_businesscity",
-          "required": true,
-          "validation": {
-            "intervalBased": true
-          },
-          "onChangeHandler": "populatePhoneNumberEmailAndCityOnChangeVLB"
+          "name": "quartech_businessemailaddress",
+          "label": "Email Address",
+          "format": "email",
+          "required": true
         },
         {
           "name": "quartech_vlb_veterinarianrole",
