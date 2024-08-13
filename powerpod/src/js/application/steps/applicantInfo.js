@@ -16,6 +16,7 @@ import {
 } from '../../common/program.ts';
 import { useScript } from '../../common/scripts.js';
 import { configureFields } from '../../common/fieldConfiguration.js';
+import { setBusinessOrPersonalStateForVLB } from '../../common/onChangeHandlers.js';
 
 const logger = Logger('application/steps/applicantInfo');
 
@@ -48,6 +49,7 @@ export function customizeApplicantInfoStep() {
 
   if (programAbbreviation === 'VLB') {
     customizeApplicantInfoStepForVLB();
+    setBusinessOrPersonalStateForVLB()
   }
 }
 
