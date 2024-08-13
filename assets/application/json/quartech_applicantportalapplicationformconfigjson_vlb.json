@@ -1,5 +1,5 @@
 {
-  "version": "1.3.9",
+  "version": "1.4.0",
   "tags": ["Application", "StaffPortal", "VLB", "VLB"],
   "name": "Veterinary and Veterinary Technologists Locums Working in BC Food Animal Practices Pilot Program",
   "abbreviation": "VLB",
@@ -364,7 +364,7 @@
         },
         {
           "name": "quartech_vlb_cap_equineurgentcare",
-          "label": "Equine urgent care (e.g. colics, lacerations, foot abscesses, laminitis, euthanasia)",
+          "label": "Equine urgent care\n(e.g. colics, lacerations, foot abscesses, laminitis, euthanasia)",
           "elementType": "DropdownSelect",
           "required": true
         },
