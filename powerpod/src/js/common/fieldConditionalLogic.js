@@ -357,7 +357,10 @@ export function shouldRequireDependentField({
     }
 
     // for multi option sets specifically must use custom function
-    if (fieldConfig.elementType === HtmlElementType.MultiOptionSet) {
+    if (
+      fieldConfig?.elementType &&
+      fieldConfig?.elementType === HtmlElementType.MultiOptionSet
+    ) {
       setMultiSelectValues(requiredFieldTag, []);
     } else {
       $(`#${requiredFieldTag}_name`)?.val(''); // needed for lookup search/modal input elements
