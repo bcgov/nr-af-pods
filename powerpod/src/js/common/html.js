@@ -957,8 +957,7 @@ export function getFieldInfoDiv(name) {
   return infoDiv;
 }
 
-// Note: values should be an array of raw values from the mutli optionset, e.g. [255550000]
-export function setMultiSelectValues(name, values = []) {
+export function getOriginalMsosElement(name) {
   const originalSelectElementForMSOS = $(`#${name}_0`);
 
   if (!originalSelectElementForMSOS || !originalSelectElementForMSOS.length) {
@@ -969,8 +968,15 @@ export function setMultiSelectValues(name, values = []) {
     return;
   }
 
+  return originalSelectElementForMSOS;
+}
+
+// Note: values should be an array of raw values from the mutli optionset, e.g. [255550000]
+export function setMultiSelectValues(name, values = []) {
+  const originalSelectElementForMSOS = getOriginalMsosElement(name);
+
   // @ts-ignore
-  if (!originalSelectElementForMSOS.multiSelectOptionSet()) {
+  if (!originalSelectElementForMSOS?.multiSelectOptionSet()) {
     logger.error({
       fn: setMultiSelectValues,
       message: `Could not get multiSelectOptionSet() object form original select control element for Msos, see initializeMsosLibrary, MultiSelectOptionSet libraries, https://pbauerochse.github.io/searchable-option-list/`,
