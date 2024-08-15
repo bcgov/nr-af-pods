@@ -56,7 +56,7 @@ function isScriptAdded(id) {
  * @function
  * @param {string} id - The id of the associated script.
  */
-function isScriptFullyLoaded(id) {
+export function isScriptFullyLoaded(id) {
   return id in script.loadmap && script.loadmap[id];
 }
 
