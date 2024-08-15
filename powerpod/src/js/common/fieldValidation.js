@@ -15,6 +15,7 @@ import {
   getFieldsBySectionClaim,
   getFieldsBySectionApplication,
 } from './fields.js';
+import { getOriginalMsosElement } from './html.js';
 import { Logger } from './logger.js';
 import { getOptions } from './options.js';
 import { getCurrentStep, getProgramAbbreviation } from './program.ts';
@@ -271,7 +272,12 @@ export function validateRequiredField({
         'IS REQUIRED. Please ensure at least one file per required upload field is confirmed & uploaded successfully.';
       break;
     case HtmlElementType.MultiOptionSet:
-      isEmptyField = $(`li[id*='${fieldName}-selected-item-']`)?.length == 0;
+      const originalSelectElementForMSOS = getOriginalMsosElement(fieldName);
+      const selectionContainer =
+        // @ts-ignore
+        originalSelectElementForMSOS?.multiSelectOptionSet()?.$selection;
+      const selectedItems = selectionContainer.find('li[aria-selected="true"]');
+      isEmptyField = selectedItems.length === 0;
       break;
     case HtmlElementType.DropdownSelect:
       isEmptyField =
