@@ -10,6 +10,7 @@ import {
   showFieldRow,
 } from './html.js';
 import { Logger } from './logger.js';
+import { isScriptFullyLoaded } from './scripts.js';
 
 POWERPOD.onChangeHandlers = {
   populateBusinessNameOnChangeFirstOrLastNameVLB,
@@ -181,9 +182,24 @@ export function setBusinessOrPersonalStateForVLB() {
     showFieldRow('quartech_businessphonenumber');
     showFieldRow('quartech_businessemailaddress');
 
-    setFieldValue('quartech_businessphonenumber', '');
-    setFieldValue('quartech_businessemailaddress', '');
-    setFieldValue('quartech_city', '');
+    const isScriptLoaded = isScriptFullyLoaded('jquerymask');
+
+    logger.info({
+      fn: setBusinessOrPersonalStateForVLB,
+      message: `Decide whether to empty fields: quartech_businessphonenumber, quartech_businessemailaddress, quartech_city, isScriptLoaded: ${isScriptLoaded}`,
+    });
+
+    // if jquerymask is not loaded yet, it's safe to assume it's the initial load, so do nothing
+    if (isScriptLoaded) {
+      setFieldValue('quartech_businessphonenumber', '');
+      setFieldValue('quartech_businessemailaddress', '');
+      setFieldValue('quartech_city', '');
+    } else {
+      logger.info({
+        fn: setBusinessOrPersonalStateForVLB,
+        message: `Skip emptying fields since scripts are still loading... quartech_businessphonenumber, quartech_businessemailaddress, quartech_city, isScriptLoaded: ${isScriptLoaded}`,
+      });
+    }
   }
 
   logger.info({
