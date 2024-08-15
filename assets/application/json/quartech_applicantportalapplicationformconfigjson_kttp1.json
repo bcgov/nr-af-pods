@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "KTTP-SMEA", "KTTP1"],
-  "version": "1.0.6",
+  "version": "1.0.7",
   "name": "KTTP - Subject Matter Expert Activities",
   "abbreviation": "KTTP-SMEA",
   "hiddenSteps": "tab_eligibility",
@@ -9,10 +9,84 @@
       "name": "ApplicantInfoStep",
       "fields": [
         {
+          "name": "quartech_indigenousapplicant",
+          "required": true,
+          "elementType": "DropdownSelect"
+        },
+        {
+          "name": "quartech_applicanttype",
+          "required": true,
+          "elementType": "DropdownSelect",
+          "label": "Applicant Type"
+        },
+        {
+          "name": "quartech_yearproductionestablished",
+          "labe": "Year Business Established",
+          "required": true,
+          "validation": {
+            "type": "numeric",
+            "value": "1900",
+            "comparison": "greaterThan"
+          }
+        },
+        {
+          "name": "quartech_numberoffulltimeemployees",
+          "label": "How many full-time employees do you employ?",
+          "format": "number",
+          "required": true,
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          }
+        },
+        {
+          "name": "quartech_numberofparttimeemployees",
+          "label": "How many part-time employees do you employ (including seasonal)?",
+          "format": "number",
+          "required": true,
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          }
+        },
+        {
+          "name": "quartech_previousyeargrossincome",
+          "label": "What was your estimated total gross income in the previous year?",
+          "required": true,
+          "format": "currency",
+          "maxDigits": 13,
+          "emptyInitialValue": true,
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          }
+        },
+        {
+          "name": "quartech_previousyearnetincome",
+          "label": "What was your estimated total net income in the previous year?",
+          "required": true,
+          "format": "currency",
+          "maxDigits": 13,
+          "emptyInitialValue": true,
+          "allowNegatives": true
+        },
+        {
           "name": "quartech_recipienttype",
           "required": true,
           "elementType": "DropdownSelect",
-          "label": "Type of Business / Organization"
+          "label": "Type of Business / Organization. If your operation does both processing and primary production, please select the one that will primarily benefit from this program."
+        },
+        {
+          "name": "quartech_commodity",
+          "label": "What is your primary production?",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_recipienttype",
+            "selectedValue": 255550001
+          }
         }
       ]
     },
