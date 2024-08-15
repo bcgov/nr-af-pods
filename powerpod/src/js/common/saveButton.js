@@ -73,7 +73,7 @@ export async function saveFormData({ customPayload = {} }) {
   });
   // @ts-ignore
   saveButton.value = 'Saving...';
-  generateFormJson(true);
+  generateFormJson();
 
   if (isObjectEmpty(store?.state?.fields || {})) {
     logger.warn({
