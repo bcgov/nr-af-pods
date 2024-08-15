@@ -4,6 +4,7 @@ import { validateRequiredFields } from './fieldValidation.js';
 import { POWERPOD } from './constants.js';
 import { cleanString } from './documents.ts';
 import { getProgramId } from './program.ts';
+import store from '../store/index.js';
 
 const logger = Logger('common/html');
 
@@ -697,6 +698,8 @@ export function setFieldValue(name, value, elementType = null) {
   }
   const e = new Event('change');
   element.dispatchEvent(e);
+
+  store.dispatch('addFieldData', { name, value: value });
 }
 
 export function relocateField(field) {
