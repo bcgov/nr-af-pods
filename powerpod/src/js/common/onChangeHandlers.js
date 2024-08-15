@@ -193,7 +193,7 @@ export function setBusinessOrPersonalStateForVLB() {
     if (isScriptLoaded) {
       setFieldValue('quartech_businessphonenumber', '');
       setFieldValue('quartech_businessemailaddress', '');
-      setFieldValue('quartech_city', '');
+      copyFromFieldAToFieldB('quartech_businesscity', 'quartech_city');
     } else {
       logger.info({
         fn: setBusinessOrPersonalStateForVLB,
@@ -224,15 +224,18 @@ export function populatePhoneNumberEmailAndCityOnChangeVLB() {
     return;
   }
 
-  const checked = noCraNumberCheckbox.checked;
+  const isIndividual = noCraNumberCheckbox.checked;
 
-  if (!checked) {
+  if (!isIndividual) {
+    copyFromFieldAToFieldB('quartech_businesscity', 'quartech_city');
     logger.info({
       fn: populatePhoneNumberEmailAndCityOnChangeVLB,
-      message: `"I do not have a Canada Revenue Agency (CRA) Business Number" is not checked, DO NOTHING`,
+      message: `"I do not have a Canada Revenue Agency (CRA) Business Number" is not checked, isIndividual: ${isIndividual}`,
     });
     return;
   }
+
+  // ELSE if it's an INDIVIDUAL:
 
   copyFromFieldAToFieldB('quartech_email', 'quartech_businessemailaddress');
   copyFromFieldAToFieldB('quartech_telephone', 'quartech_businessphonenumber');
@@ -242,7 +245,7 @@ export function populatePhoneNumberEmailAndCityOnChangeVLB() {
 
   logger.info({
     fn: populatePhoneNumberEmailAndCityOnChangeVLB,
-    message: `Successfully ran onChangeHandler populateBusinessPhoneNumberOnChange, checked: ${checked}`,
+    message: `Successfully ran onChangeHandler populateBusinessPhoneNumberOnChange, isIndividual: ${isIndividual},`,
   });
 }
 
