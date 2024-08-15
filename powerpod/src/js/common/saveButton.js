@@ -96,6 +96,12 @@ export async function saveFormData({ customPayload = {} }) {
     });
 
     const fieldData = fieldsStore[field];
+    logger.info({
+      fn: saveFormData,
+      message: `found stored data for field: ${field}, fieldData: ${JSON.stringify(
+        fieldData
+      )}`,
+    });
     const { value, error } = fieldData;
 
     if (error && error.length) {
