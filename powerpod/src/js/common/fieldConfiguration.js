@@ -9,12 +9,21 @@ import { customizeCurrencyInput } from './currency.js';
 import {
   getFieldsBySectionClaim,
   getFieldsBySectionApplication,
+  getFieldConfig,
 } from './fields.js';
 import {
+  getControlType,
+  getControlValue,
+  getFieldErrorDiv,
+  getFieldLabel,
+  getFieldRow,
   getMultiOptionSetElementValue,
+  getOriginalMsosElement,
   hideFieldByFieldName,
+  newGetOriginalMultiOptionSetElementValue,
   observeChanges,
   setFieldValue,
+  showFieldRow,
 } from './html.js';
 import { Logger } from './logger.js';
 import { FieldMaskType, maskInput } from './masking.js';
@@ -24,13 +33,19 @@ import { setupTooltip } from './tooltip.js';
 import { hasUpperCase } from './utils.js';
 import {
   addValidationCheck,
+  displayActiveFieldErrors,
   setFieldReadOnly,
   setInputMaxLength,
   validateEmailAddressField,
+  validateRequiredField,
   validateRequiredFields,
+  validateStepField,
   validateStepFields,
 } from './fieldValidation.js';
-import { initializeVisibleIf } from './fieldConditionalLogic.js';
+import {
+  initializeVisibleIf,
+  setFieldVisibility,
+} from './fieldConditionalLogic.js';
 import { useScript } from './scripts.js';
 import { renderCustomComponent } from './components.js';
 import '../components/FileUpload.js';
@@ -44,6 +59,305 @@ import { hasCraNumberCheckboxEventHandler } from './customEventHandlers.js';
 import { initCraNumberCheckbox } from './initValuesFns.js';
 
 const logger = Logger('common/fieldConfiguration');
+
+export function configureField(field) {
+  const {
+    name,
+    required,
+    validation,
+    hidden,
+    format,
+    // TO-DO: group these under a currency config object
+    allowNegatives, // CURRENCY-specific, applies if format === 'currency'
+    maxDigits, // CURRENCY-specific, applies if format === 'currency'
+    emptyInitialValue, // CURRENCY-specific, applies if format === 'currency'
+    maxLength, // only works on string inputs
+    label,
+    bold, // bolds the label text
+    type,
+    tooltipText,
+    tooltipTargetElementId,
+    skipCalculatingBudget = undefined,
+    hideLabel,
+    readOnly,
+    doNotBlank = false,
+    fileTypes, // not currently used anywhere
+    visibleIf,
+    initialValue,
+    onChangeHandler,
+    customComponent,
+    newLabel,
+    visible = true,
+  } = field;
+  let { elementType } = field;
+  logger.info({
+    fn: configureField,
+    message: `setting field definition for field name: ${name}`,
+    data: { field },
+  });
+  //////////////////////////
+  //////////////////////////
+  if (type === 'SectionTitle') {
+    if (hidden) {
+      const sectionElement = $(`fieldset[aria-label="${name}"]`);
+      if (sectionElement) {
+        sectionElement?.css('display', 'none');
+      }
+    }
+    if (newLabel) {
+      var fieldset = document.querySelector(`fieldset[aria-label="${name}"]`);
+      if (fieldset) {
+        fieldset.setAttribute('aria-label', newLabel);
+        var h3Tag = fieldset.querySelector('h3');
+        if (h3Tag) {
+          h3Tag.innerHTML = newLabel;
+        }
+      }
+    }
+    // continuing for type SectionTitle because nothing else is supported for this field type
+    return;
+  }
+  ////////////////////////
+  ////////////////////////
+  if (!$(`#${name}`)) {
+    logger.error({
+      fn: configureField,
+      message: `could not find existing element for field name: ${name}`,
+    });
+    return;
+  }
+  store.dispatch('addFieldData', {
+    name,
+    loading: true,
+  });
+  // If elementType is not given, fill it out for future reference
+  if (!elementType) {
+    logger.info({
+      fn: configureField,
+      message: `Field elementType not set, try to determine it using getControlType func for name: ${name}`,
+    });
+    const fieldRow = getFieldRow(name);
+    if (!fieldRow) {
+      logger.error({
+        fn: configureField,
+        message: `could not find fieldRow for fieldName: ${name}`,
+      });
+    }
+    elementType = getControlType({ tr: fieldRow, controlId: name });
+    store.dispatch('addFieldData', {
+      name,
+      elementType,
+    });
+  }
+  if (hidden) {
+    hideFieldByFieldName(name, doNotBlank);
+    logger.info({
+      fn: configureField,
+      message: `aborting field config for fieldName: ${name}, since it is hidden`,
+    });
+    return; // no need to do any config yet if field is hidden
+  }
+  setFieldObserver(name, elementType, format);
+  // cleanup resize handlers that break UI
+  if (elementType === HtmlElementType.MultiOptionSet) {
+    const originalSelectElementForMSOS = getOriginalMsosElement(name);
+    if (originalSelectElementForMSOS) {
+      const { _handleWindowResize, internalScrollWrapper } =
+        // @ts-ignore
+        originalSelectElementForMSOS.multiSelectOptionSet();
+      $(window).off('resize', _handleWindowResize);
+      $(window).off('resize', internalScrollWrapper);
+    }
+  }
+  if (label) {
+    const obj = $(`#${name}_label`)?.text(label);
+    obj?.html(obj?.html()?.replace(/\n/g, '<br/>'));
+  } else {
+    const existingLabel = getFieldLabel(name);
+    store.dispatch('addFieldData', {
+      name,
+      label: existingLabel,
+    });
+  }
+  if (onChangeHandler) {
+    setOnChangeHandler(name, elementType, onChangeHandler);
+  }
+  if (hasUpperCase(name)) {
+    logger.warn({
+      fn: configureField,
+      message: `Warning! Field name: ${name} contains an uppercase letter, please confirm if it was intentional or not.`,
+    });
+  }
+  if (tooltipText) {
+    setupTooltip({ name, tooltipText, tooltipTargetElementId, elementType });
+  }
+  if (bold) {
+    const labelElement = $(`#${name}_label`);
+    labelElement.css('font-weight', 'bold');
+  }
+  if (hideLabel) {
+    $(`#${name}_label`)?.css('display', 'none');
+  }
+  // if (required) {
+  //   if (elementType) {
+  //     setRequiredField(name, elementType);
+  //   } else {
+  //     setRequiredField(name);
+  //   }
+  // }
+  if (validation) {
+    addValidationCheck(name, validation);
+  }
+  if (initialValue) {
+    setFieldValue(name, initialValue, elementType);
+  }
+  // max characters
+  if (maxLength) {
+    setInputMaxLength(name, maxLength);
+  }
+  if (readOnly) {
+    setFieldReadOnly(name);
+  }
+  if (format === 'email') {
+    maskInput(name, FieldMaskType.Email);
+    // validateEmailAddressField(name);
+  } else if (format === 'currency') {
+    customizeCurrencyInput({
+      inputId: name,
+      ...(skipCalculatingBudget !== undefined
+        ? { skipCalculatingBudget }
+        : { skipCalculatingBudget: true }),
+      ...(maxDigits ? { maxDigits } : { maxDigits: 13 }),
+      ...(emptyInitialValue && { emptyInitialValue }),
+      ...(allowNegatives && { allowNegatives }),
+    });
+  } else if (format === 'percentage') {
+    customizeCurrencyInput({
+      inputId: name,
+      skipCalculatingBudget: true,
+      maxDigits: 5,
+      limitInputValue: '100.00',
+      hideDollarSign: true,
+    });
+  } else if (format === 'number') {
+    $(`#${name}`).attr('type', 'number');
+    if (!allowNegatives) {
+      $(`#${name}`).attr('min', '0');
+      $(`#${name}`).attr(
+        'oninput',
+        'this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null'
+      );
+    }
+  } else if (format === 'cra') {
+    maskInput(name, FieldMaskType.CRA);
+  } else if (format === 'phoneNumber') {
+    maskInput(name, FieldMaskType.PhoneNumber);
+  } else if (format === 'postalCode') {
+    maskInput(name, FieldMaskType.PostalCode);
+  }
+
+  if (customComponent && customComponent.customElementTag) {
+    logger.info({
+      fn: configureField,
+      message: `Start configuring custom component for field name: ${name}`,
+      data: { customComponent },
+    });
+    const { customElementTag, mappedValueKey, customEventName } =
+      customComponent;
+
+    let customEventHandlerFn = (name) => {};
+    let customInitValuesFn = (
+      mappedValueKey,
+      existingValue,
+      customElement
+    ) => {};
+
+    if (customComponent.customEventHandler) {
+      const { customEventHandler } = customComponent;
+      customEventHandlerFn =
+        POWERPOD.customEventHandlers[customEventHandler] ||
+        customEventHandlerFn;
+    }
+
+    if (customComponent.customInitValueFn) {
+      const { customInitValueFn } = customComponent;
+      customInitValuesFn =
+        POWERPOD.initValuesFns[customInitValueFn] || customInitValuesFn;
+    }
+
+    const params = {
+      fieldId: name,
+      customElementTag: customElementTag,
+      customEventHandler: customEventHandlerFn(name),
+      mappedValueKey: 'inputvalue',
+      customEvent: customEventName,
+      initValuesFn: customInitValuesFn,
+    };
+
+    logger.info({
+      fn: configureField,
+      message: `Rendering custom component`,
+      data: { params },
+    });
+
+    renderCustomComponent(params);
+  }
+
+  if (elementType === HtmlElementType.FileInput) {
+    let defaultFileTypes =
+      '.csv,.doc,.docx,.odt,.pdf,.xls,.xlsx,.ods,.gif,.jpeg,.jpg,.png,.svg,.tif';
+    $(`#${name}_AttachFile`)?.attr('accept', fileTypes ?? defaultFileTypes);
+
+    logger.info({
+      fn: configureField,
+      message: `Start configuring custom component for FileInput`,
+    });
+    renderCustomComponent({
+      fieldId: name,
+      customElementTag: 'file-upload',
+      attributes: {
+        fieldName: name,
+      },
+      customEvent: 'onChangeFileUpload',
+      customEventHandler: (event, customElement) => {
+        logger.info({
+          fn: configureField,
+          message: 'onChangeFileUpload event listener triggered',
+          data: { event, customElement },
+        });
+        const docs = JSON.parse(event.detail.value);
+        const fileInputStr = event.detail.fileInputStr;
+        customElement.setAttribute('fileInputStr', fileInputStr);
+        customElement.setAttribute('docs', JSON.stringify(docs));
+        customElement.setAttribute('formType', getFormType());
+        setFieldValue(name, fileInputStr);
+        // validateRequiredFields();
+      },
+      mappedValueKey: 'fileInputStr',
+      customSetupFn: () => {
+        const notes = doc.getElementById('notescontrol');
+        const entityNotes = notes?.querySelector('.entity-notes');
+        if (entityNotes) {
+          // @ts-ignore
+          entityNotes.style.display = 'none';
+        }
+      },
+    });
+  }
+  if (visibleIf && !hidden) {
+    // initializeVisibleIf(name, required, visibleIf);
+    setFieldVisibility(name);
+  } else {
+    showFieldRow(name);
+  }
+
+  store.dispatch('addFieldData', {
+    name,
+    loading: false,
+  });
+
+  validateStepField(name);
+}
 
 export function configureFields() {
   const stepName = getCurrentStep();
@@ -70,233 +384,14 @@ export function configureFields() {
   });
 
   for (let i = 0; i < fields.length; i++) {
-    const {
-      name,
-      elementType,
-      required,
-      validation,
-      hidden,
-      format,
-      // TO-DO: group these under a currency config object
-      allowNegatives, // CURRENCY-specific, applies if format === 'currency'
-      maxDigits, // CURRENCY-specific, applies if format === 'currency'
-      emptyInitialValue, // CURRENCY-specific, applies if format === 'currency'
-      maxLength, // only works on string inputs
-      label,
-      bold, // bolds the label text
-      type,
-      tooltipText,
-      tooltipTargetElementId,
-      skipCalculatingBudget = undefined,
-      hideLabel,
-      readOnly,
-      doNotBlank = false,
-      fileTypes, // not currently used anywhere
-      visibleIf,
-      initialValue,
-      onChangeHandler,
-      customComponent,
-    } = fields[i];
-    logger.info({
-      fn: configureFields,
-      message: `setting field definition for field name: ${name}`,
-    });
-    if (!$(`#${name}`)) {
-      logger.error({
-        fn: configureFields,
-        message: `could not find existing element for field name: ${name}`,
-      });
-      return;
-    }
-    if (onChangeHandler) {
-      setOnChangeHandler(name, elementType, onChangeHandler);
-    }
-    setFieldObserver(name, elementType, format);
-    if (hasUpperCase(name)) {
-      logger.warn({
-        fn: configureFields,
-        message: `Warning! Field name: ${name} contains an uppercase letter, please confirm if it was intentional or not.`,
-      });
-    }
-    if (type === 'SectionTitle' && hidden) {
-      const sectionElement = $(`fieldset[aria-label="${name}"]`);
-      if (sectionElement) {
-        sectionElement?.css('display', 'none');
-      }
-      // continuing for type SectionTitle because nothing else is supported for this field type
-      continue;
-    }
-    if (tooltipText) {
-      setupTooltip({ name, tooltipText, tooltipTargetElementId, elementType });
-    }
-    if (label) {
-      const obj = $(`#${name}_label`)?.text(label);
-      obj?.html(obj?.html()?.replace(/\n/g, '<br/>'));
-    }
-    if (bold) {
-      const labelElement = $(`#${name}_label`);
-      labelElement.css('font-weight', 'bold');
-    }
-    if (hideLabel) {
-      $(`#${name}_label`)?.css('display', 'none');
-    }
-    if (required) {
-      if (elementType) {
-        setRequiredField(name, elementType);
-      } else {
-        setRequiredField(name);
-      }
-    }
-    if (validation) {
-      addValidationCheck(name, validation);
-    }
-    if (hidden) {
-      hideFieldByFieldName(name, validateStepFields(stepName), doNotBlank);
-    }
-    if (initialValue) {
-      setFieldValue(name, initialValue, elementType);
-    }
-    // max characters
-    if (maxLength) {
-      setInputMaxLength(name, maxLength);
-    }
-    if (readOnly) {
-      setFieldReadOnly(name);
-    }
-    if (format === 'email') {
-      maskInput(name, FieldMaskType.Email);
-      validateEmailAddressField(name);
-    } else if (format === 'currency') {
-      customizeCurrencyInput({
-        inputId: name,
-        ...(skipCalculatingBudget !== undefined
-          ? { skipCalculatingBudget }
-          : { skipCalculatingBudget: true }),
-        ...(maxDigits ? { maxDigits } : { maxDigits: 13 }),
-        ...(emptyInitialValue && { emptyInitialValue }),
-        ...(allowNegatives && { allowNegatives }),
-      });
-    } else if (format === 'percentage') {
-      customizeCurrencyInput({
-        inputId: name,
-        skipCalculatingBudget: true,
-        maxDigits: 5,
-        limitInputValue: '100.00',
-        hideDollarSign: true,
-      });
-    } else if (format === 'number') {
-      $(`#${name}`).attr('type', 'number');
-      if (!allowNegatives) {
-        $(`#${name}`).attr('min', '0');
-        $(`#${name}`).attr(
-          'oninput',
-          'this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null'
-        );
-      }
-    } else if (format === 'cra') {
-      maskInput(name, FieldMaskType.CRA);
-    } else if (format === 'phoneNumber') {
-      maskInput(name, FieldMaskType.PhoneNumber);
-    } else if (format === 'postalCode') {
-      maskInput(name, FieldMaskType.PostalCode);
-    }
-
-    if (customComponent && customComponent.customElementTag) {
-      logger.info({
-        fn: configureFields,
-        message: `Start configuring custom component for field name: ${name}`,
-        data: { customComponent },
-      });
-      const { customElementTag, mappedValueKey, customEventName } =
-        customComponent;
-
-      let customEventHandlerFn = (name) => {};
-      let customInitValuesFn = (
-        mappedValueKey,
-        existingValue,
-        customElement
-      ) => {};
-
-      if (customComponent.customEventHandler) {
-        const { customEventHandler } = customComponent;
-        customEventHandlerFn =
-          POWERPOD.customEventHandlers[customEventHandler] ||
-          customEventHandlerFn;
-      }
-
-      if (customComponent.customInitValueFn) {
-        const { customInitValueFn } = customComponent;
-        customInitValuesFn =
-          POWERPOD.initValuesFns[customInitValueFn] || customInitValuesFn;
-      }
-
-      const params = {
-        fieldId: name,
-        customElementTag: customElementTag,
-        customEventHandler: customEventHandlerFn(name),
-        mappedValueKey: 'inputvalue',
-        customEvent: customEventName,
-        initValuesFn: customInitValuesFn,
-      };
-
-      logger.info({
-        fn: configureFields,
-        message: `Rendering custom component`,
-        data: { params },
-      });
-
-      renderCustomComponent(params);
-    }
-
-    if (elementType === HtmlElementType.FileInput) {
-      let defaultFileTypes =
-        '.csv,.doc,.docx,.odt,.pdf,.xls,.xlsx,.ods,.gif,.jpeg,.jpg,.png,.svg,.tif';
-      $(`#${name}_AttachFile`)?.attr('accept', fileTypes ?? defaultFileTypes);
-
-      logger.info({
-        fn: configureFields,
-        message: `Start configuring custom component for FileInput`,
-      });
-      renderCustomComponent({
-        fieldId: name,
-        customElementTag: 'file-upload',
-        attributes: {
-          fieldName: name,
-        },
-        customEvent: 'onChangeFileUpload',
-        customEventHandler: (event, customElement) => {
-          logger.info({
-            fn: configureFields,
-            message: 'onChangeFileUpload event listener triggered',
-            data: { event, customElement },
-          });
-          const docs = JSON.parse(event.detail.value);
-          const fileInputStr = event.detail.fileInputStr;
-          customElement.setAttribute('fileInputStr', fileInputStr);
-          customElement.setAttribute('docs', JSON.stringify(docs));
-          customElement.setAttribute('formType', getFormType());
-          setFieldValue(name, fileInputStr);
-          validateRequiredFields();
-        },
-        mappedValueKey: 'fileInputStr',
-        customSetupFn: () => {
-          const notes = doc.getElementById('notescontrol');
-          const entityNotes = notes?.querySelector('.entity-notes');
-          if (entityNotes) {
-            // @ts-ignore
-            entityNotes.style.display = 'none';
-          }
-        },
-      });
-    }
-    if (visibleIf && !hidden) {
-      initializeVisibleIf(name, required, visibleIf);
-    }
+    configureField(fields[i]);
   }
 
   setupCanadaPostAddressComplete(fields);
 
-  setDynamicallyRequiredFields(stepName);
+  // setDynamicallyRequiredFields(stepName);
+
+  POWERPOD.fieldConfiguration.loading = false;
 }
 
 function setupCanadaPostAddressComplete(fields) {
@@ -403,18 +498,25 @@ function setupCanadaPostAddressComplete(fields) {
   });
 }
 
-export function updateFieldValue(name, elementType, format) {
+export function updateFieldValue(name, elementType = '', format) {
+  const fieldConfig = getFieldConfig(name);
   logger.info({
     fn: updateFieldValue,
     message: `updateFieldValue called for name: ${name}, elementType: ${elementType}, format: ${format}`,
   });
+  if (!elementType) {
+    elementType = fieldConfig.elementType;
+  }
   let value = '';
   switch (elementType) {
     case HtmlElementType.FileInput:
       value = $(`#${name}`)?.val();
       break;
+    case HtmlElementType.MultiSelectPicklist:
+      value = $(`#${name}`).val();
+      break;
     case HtmlElementType.MultiOptionSet:
-      value = getMultiOptionSetElementValue(name, true);
+      value = newGetOriginalMultiOptionSetElementValue(name, true);
       break;
     case HtmlElementType.DropdownSelect:
       // @ts-ignore
@@ -425,6 +527,9 @@ export function updateFieldValue(name, elementType, format) {
       break;
     case HtmlElementType.SingleOptionSet:
     case HtmlElementType.DatePicker:
+      const tr = getFieldRow(name);
+      value = getControlValue({ controlId: name, tr, rawValue: true });
+      break;
     default: // HtmlElementTypeEnum.Input
       value = $(`#${name}`)?.val();
       break;
@@ -454,6 +559,14 @@ export function updateFieldValue(name, elementType, format) {
     data: { name, value, format, elementType },
   });
   store.dispatch('addFieldData', { name, value });
+
+  if (fieldConfig.dependentFields?.length) {
+    fieldConfig.dependentFields.forEach((dependentFieldName) => {
+      setFieldVisibility(dependentFieldName);
+    });
+  }
+
+  validateStepField(name);
 }
 
 // this is used to update store/state values of fields
@@ -489,18 +602,22 @@ export function setFieldObserver(
       observeChanges(datePickerElement, () =>
         updateFieldValue(fieldName, elementType)
       );
-      $(`#${fieldName}_datepicker_description`).on('blur input', () => {
-        updateFieldValue(fieldName, elementType, format);
-      });
+      $(`#${fieldName}_datepicker_description`).on(
+        'change focus blur input',
+        () => {
+          updateFieldValue(fieldName, elementType, format);
+        }
+      );
       break;
+    case HtmlElementType.MultiSelectPicklist:
     case HtmlElementType.SingleOptionSet:
     case HtmlElementType.MultiOptionSet:
-      $(`input[id*='${fieldName}']`).on('change', function () {
+      $(`input[id*='${fieldName}']`).on('change focus blur', function () {
         updateFieldValue(fieldName, elementType, format);
       });
       break;
     case HtmlElementType.DropdownSelect:
-      $(`select[id*='${fieldName}']`).on('change', function () {
+      $(`select[id*='${fieldName}']`).on('change focus blur', function () {
         updateFieldValue(fieldName, elementType, format);
       });
       break;
@@ -532,13 +649,15 @@ export function setRequiredField(
   // @ts-ignore
   $(`#${fieldName}`).attr('required', true);
 
-  let div = document.createElement('div');
-  div.id = `${fieldName}_error_message`;
-  div.className = 'error_message';
-  // @ts-ignore
-  div.style = 'display:none;';
-  div.innerHTML = `<span'>${validationErrorMessage}</span>`;
-  $(`#${fieldName}`).parent().append(div);
+  // let errorMessageElement = getFieldErrorDiv(fieldName);
+
+  // let div = document.createElement('div');
+  // div.id = `${fieldName}_error_message`;
+  // div.className = 'error_message';
+  // // @ts-ignore
+  // div.style = 'display:none;';
+  // div.innerHTML = `<span'>${validationErrorMessage}</span>`;
+  // $(`#${fieldName}`).parent().append(div);
 
   switch (elemType) {
     case HtmlElementType.FileInput:
@@ -549,51 +668,48 @@ export function setRequiredField(
         message: 'observe changes on file input element',
         data: { attachFileField, textareaField, fieldName },
       });
-      observeChanges(attachFileField);
-      attachFileField?.on('blur input', () => {
-        validateRequiredFields();
-      });
-      textareaField?.on('change', function () {
-        validateRequiredFields();
-      });
+      // observeChanges(attachFileField);
+      // attachFileField?.on('blur input', () => {
+      //   validateRequiredField(fieldName);
+      // });
+      // textareaField?.on('change', function () {
+      //   validateRequiredField(fieldName);
+      // });
       break;
     case HtmlElementType.DatePicker:
       logger.info({
         fn: setRequiredField,
         message: `Configuring required datepicker element for fieldName: ${fieldName}`,
       });
-      const datePickerElement = $(
-        `input[id=${fieldName}_datepicker_description]`
-      ).parent()[0];
-      logger.info({
-        fn: setRequiredField,
-        message: 'observe changes on datepicker element',
-        data: { datePickerElement },
-      });
-      observeChanges(datePickerElement);
-      $(`#${fieldName}_datepicker_description`).on('blur input', () => {
-        validateRequiredFields();
-      });
+      // const datePickerElement = $(
+      //   `input[id=${fieldName}_datepicker_description]`
+      // ).parent()[0];
+      // // logger.info({
+      // //   fn: setRequiredField,
+      // //   message: 'observe changes on datepicker element',
+      // //   data: { datePickerElement },
+      // // });
+      // // observeChanges(datePickerElement);
+      // // $(`#${fieldName}_datepicker_description`).on('blur input', () => {
+      // //   validateRequiredField(fieldName);
+      // // });
       break;
+    case HtmlElementType.MultiSelectPicklist:
     case HtmlElementType.SingleOptionSet:
     case HtmlElementType.MultiOptionSet:
-      $(`input[id*='${fieldName}']`).on('change', function () {
-        validateRequiredFields();
-        logger.info({
-          fn: setRequiredField,
-          message: 'Q3 updated... validateRequiredFields...',
-        });
-      });
+      // $(`input[id*='${fieldName}']`).on('change', function () {
+      //   validateRequiredField(fieldName);
+      // });
       break;
     case HtmlElementType.DropdownSelect:
-      $(`select[id*='${fieldName}']`).on('change', function () {
-        validateRequiredFields();
-      });
+      // $(`select[id*='${fieldName}']`).on('change', function () {
+      //   validateRequiredField(fieldName);
+      // });
       break;
     default: // HtmlElementTypeEnum.Input
-      $(`#${fieldName}`).on('change keyup', function (event) {
-        validateRequiredFields();
-      });
+      // $(`#${fieldName}`).on('change keyup', function (event) {
+      //   validateRequiredField(fieldName);
+      // });
       break;
   }
 }

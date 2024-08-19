@@ -137,136 +137,136 @@ function setProjectStepRequiredFields() {
   // START KTTP PROJECT STEP CUSTOMIZATION
   if (programAbbreviation && programAbbreviation.includes('KTTP')) {
     // START Organization Information
-    initOnChange_DependentRequiredField({
-      dependentOnValue: YES_VALUE,
-      dependentOnElementTag:
-        'quartech_hasthisorganizationreceivedkttpfundingin',
-      requiredFieldTag: 'quartech_ifyespleaseexplainwhenandforwhichactivity',
-    });
-    initOnChange_DependentRequiredField({
-      dependentOnValue: YES_VALUE,
-      dependentOnElementTag:
-        'quartech_hasthisorganizationreceivedfundingfrmother',
-      requiredFieldTag: 'quartech_ifyespleaseexplainwhenandfromwhichprogram',
-    });
+    // initOnChange_DependentRequiredField({
+    //   dependentOnValue: YES_VALUE,
+    //   dependentOnElementTag:
+    //     'quartech_hasthisorganizationreceivedkttpfundingin',
+    //   requiredFieldTag: 'quartech_ifyespleaseexplainwhenandforwhichactivity',
+    // });
+    // initOnChange_DependentRequiredField({
+    //   dependentOnValue: YES_VALUE,
+    //   dependentOnElementTag:
+    //     'quartech_hasthisorganizationreceivedfundingfrmother',
+    //   requiredFieldTag: 'quartech_ifyespleaseexplainwhenandfromwhichprogram',
+    // });
     // END Organization Information
 
     // START Collaborating Organization Information
-    initOnChange_DependentRequiredField({
-      dependentOnValue: YES_VALUE,
-      dependentOnElementTag: 'quartech_areyoucollaboratingwithanyotherorg',
-      requiredFieldTag: 'quartech_ifyespleaseprovidelegalbusinessorganization',
-      shouldBeRequired: false,
-    });
-    initOnChange_DependentRequiredField({
-      dependentOnValue: YES_VALUE,
-      dependentOnElementTag: 'quartech_areyoucollaboratingwithanyotherorg',
-      requiredFieldTag: 'quartech_ifyespleaseprovideacontactname',
-      shouldBeRequired: false,
-    });
-    initOnChange_DependentRequiredField({
-      dependentOnValue: YES_VALUE,
-      dependentOnElementTag: 'quartech_areyoucollaboratingwithanyotherorg',
-      requiredFieldTag: 'quartech_ifyespleaseprovideabriefbackgroundoutlinin',
-      shouldBeRequired: false,
-    });
+    // initOnChange_DependentRequiredField({
+    //   dependentOnValue: YES_VALUE,
+    //   dependentOnElementTag: 'quartech_areyoucollaboratingwithanyotherorg',
+    //   requiredFieldTag: 'quartech_ifyespleaseprovidelegalbusinessorganization',
+    //   shouldBeRequired: false,
+    // });
+    // initOnChange_DependentRequiredField({
+    //   dependentOnValue: YES_VALUE,
+    //   dependentOnElementTag: 'quartech_areyoucollaboratingwithanyotherorg',
+    //   requiredFieldTag: 'quartech_ifyespleaseprovideacontactname',
+    //   shouldBeRequired: false,
+    // });
+    // initOnChange_DependentRequiredField({
+    //   dependentOnValue: YES_VALUE,
+    //   dependentOnElementTag: 'quartech_areyoucollaboratingwithanyotherorg',
+    //   requiredFieldTag: 'quartech_ifyespleaseprovideabriefbackgroundoutlinin',
+    //   shouldBeRequired: false,
+    // });
     // END Collaborating Organization Information
 
     // START Activity Information
-    initOnChange_DependentRequiredField({
-      dependentOnValue: YES_VALUE,
-      dependentOnElementTag:
-        'quartech_areyouapplyingforatraceabilityknowledget',
-      requiredFieldTag: 'quartech_ifyespleaseexplainthetraceabilityactivityt',
-    });
-    initOnChange_DependentRequiredField({
-      dependentOnValue: YES_VALUE,
-      dependentOnElementTag: 'quartech_doestheactivitytakeplaceovermultipleday',
-      requiredFieldTag: 'quartech_ifyespleaseprovidetheadditionaldates',
-    });
-    initOnChange_DependentRequiredField({
-      dependentOnValue: NO_VALUE,
-      dependentOnElementTag: 'quartech_willthisactivitybeopentotheentirepublic',
-      requiredFieldTag: 'quartech_allactivitiesmustbeopentothepublicplease',
-    });
-    initOnChange_DependentRequiredField({
-      dependentOnValue: OTHER_VALUE,
-      dependentOnElementTag:
-        'quartech_pleaseselectthemostapplicableactivitytype',
-      requiredFieldTag: 'quartech_ifotherpleasedescribeyouractivitytype',
-    });
+    // initOnChange_DependentRequiredField({
+    //   dependentOnValue: YES_VALUE,
+    //   dependentOnElementTag:
+    //     'quartech_areyouapplyingforatraceabilityknowledget',
+    //   requiredFieldTag: 'quartech_ifyespleaseexplainthetraceabilityactivityt',
+    // });
+    // initOnChange_DependentRequiredField({
+    //   dependentOnValue: YES_VALUE,
+    //   dependentOnElementTag: 'quartech_doestheactivitytakeplaceovermultipleday',
+    //   requiredFieldTag: 'quartech_ifyespleaseprovidetheadditionaldates',
+    // });
+    // initOnChange_DependentRequiredField({
+    //   dependentOnValue: NO_VALUE,
+    //   dependentOnElementTag: 'quartech_willthisactivitybeopentotheentirepublic',
+    //   requiredFieldTag: 'quartech_allactivitiesmustbeopentothepublicplease',
+    // });
+    // initOnChange_DependentRequiredField({
+    //   dependentOnValue: OTHER_VALUE,
+    //   dependentOnElementTag:
+    //     'quartech_pleaseselectthemostapplicableactivitytype',
+    //   requiredFieldTag: 'quartech_ifotherpleasedescribeyouractivitytype',
+    // });
     // Priority Topic(s). Please select the most applicable topic(s) that your project will focus on.
     // Please select the most applicable purpose that your activity will focus on:
-    const priorityTopicElements = document.querySelector(
-      '#quartech_prioritytopics_i'
-    );
-    const containsOtherPriorityTopicOption = document
-      .querySelector('#quartech_prioritytopics_i')
-      ?.querySelector('li[aria-label="Other for Priority Topic(s)"]');
-    // initial load:
-    if (containsOtherPriorityTopicOption) {
-      initOnChange_DependentRequiredField({
-        dependentOnElementTag: 'quartech_prioritytopics_i',
-        requiredFieldTag: 'quartech_otherprioritytopic',
-        overrideTruthyClause: true,
-      });
-    } else {
-      initOnChange_DependentRequiredField({
-        dependentOnElementTag: 'quartech_prioritytopics_i',
-        requiredFieldTag: 'quartech_otherprioritytopic',
-        overrideTruthyClause: false,
-      });
-    }
+    // const priorityTopicElements = document.querySelector(
+    //   '#quartech_prioritytopics_i'
+    // );
+    // const containsOtherPriorityTopicOption = document
+    //   .querySelector('#quartech_prioritytopics_i')
+    //   ?.querySelector('li[aria-label="Other for Priority Topic(s)"]');
+    // // initial load:
+    // if (containsOtherPriorityTopicOption) {
+    //   initOnChange_DependentRequiredField({
+    //     dependentOnElementTag: 'quartech_prioritytopics_i',
+    //     requiredFieldTag: 'quartech_otherprioritytopic',
+    //     overrideTruthyClause: true,
+    //   });
+    // } else {
+    //   initOnChange_DependentRequiredField({
+    //     dependentOnElementTag: 'quartech_prioritytopics_i',
+    //     requiredFieldTag: 'quartech_otherprioritytopic',
+    //     overrideTruthyClause: false,
+    //   });
+    // }
 
     // setup observer to check each time selected topics changes
-    var observer = new MutationObserver(function (mutations) {
-      if (
-        document
-          .querySelector('#quartech_prioritytopics_i')
-          ?.querySelector('li[aria-label="Other for Priority Topic(s)"]')
-      ) {
-        let isVisible = $(`#quartech_otherprioritytopic_label`).is(':visible');
-        // Here we should dynamically hide/show the comment field & make it required:
-        // Do this by using 'overrideTruthyClause' and force it to show & be required
-        if (!isVisible) {
-          initOnChange_DependentRequiredField({
-            dependentOnElementTag: 'quartech_prioritytopics_i',
-            requiredFieldTag: 'quartech_otherprioritytopic',
-            overrideTruthyClause: true,
-          });
-        }
-      } else {
-        initOnChange_DependentRequiredField({
-          dependentOnElementTag: 'quartech_prioritytopics_i',
-          requiredFieldTag: 'quartech_otherprioritytopic',
-          overrideTruthyClause: false,
-        });
-      }
-    });
+    // var observer = new MutationObserver(function (mutations) {
+    //   if (
+    //     document
+    //       .querySelector('#quartech_prioritytopics_i')
+    //       ?.querySelector('li[aria-label="Other for Priority Topic(s)"]')
+    //   ) {
+    //     let isVisible = $(`#quartech_otherprioritytopic_label`).is(':visible');
+    //     // Here we should dynamically hide/show the comment field & make it required:
+    //     // Do this by using 'overrideTruthyClause' and force it to show & be required
+    //     if (!isVisible) {
+    //       initOnChange_DependentRequiredField({
+    //         dependentOnElementTag: 'quartech_prioritytopics_i',
+    //         requiredFieldTag: 'quartech_otherprioritytopic',
+    //         overrideTruthyClause: true,
+    //       });
+    //     }
+    //   } else {
+    //     initOnChange_DependentRequiredField({
+    //       dependentOnElementTag: 'quartech_prioritytopics_i',
+    //       requiredFieldTag: 'quartech_otherprioritytopic',
+    //       overrideTruthyClause: false,
+    //     });
+    //   }
+    // });
 
-    if (
-      priorityTopicElements &&
-      priorityTopicElements.nodeType === Node.ELEMENT_NODE
-    ) {
-      observer.observe(priorityTopicElements, {
-        attributes: true,
-        childList: true,
-        characterData: true,
-      });
-    }
+    // if (
+    //   priorityTopicElements &&
+    //   priorityTopicElements.nodeType === Node.ELEMENT_NODE
+    // ) {
+    //   observer.observe(priorityTopicElements, {
+    //     attributes: true,
+    //     childList: true,
+    //     characterData: true,
+    //   });
+    // }
 
-    initOnChange_DependentRequiredField({
-      dependentOnValue: OTHER_VALUE,
-      dependentOnElementTag: 'quartech_activitypurpose',
-      requiredFieldTag: 'quartech_ifotherpleasedescribetheactivitypurpose',
-    });
+    // initOnChange_DependentRequiredField({
+    //   dependentOnValue: OTHER_VALUE,
+    //   dependentOnElementTag: 'quartech_activitypurpose',
+    //   requiredFieldTag: 'quartech_ifotherpleasedescribetheactivitypurpose',
+    // });
 
-    initOnChange_DependentRequiredField({
-      dependentOnValue: YES_VALUE,
-      dependentOnElementTag:
-        'quartech_theprocessoflearningandprocessingknowledge',
-      requiredFieldTag: 'quartech_adulteducationandknowlegetransferdescript',
-    });
+    // initOnChange_DependentRequiredField({
+    //   dependentOnValue: YES_VALUE,
+    //   dependentOnElementTag:
+    //     'quartech_theprocessoflearningandprocessingknowledge',
+    //   requiredFieldTag: 'quartech_adulteducationandknowlegetransferdescript',
+    // });
     // END Activity Information
   }
   // END KTTP PROJECT STEP CUSTOMIZATION
@@ -498,136 +498,136 @@ function setProjectStepDependentRequiredFields() {
   // START KTTP CUSTOMIZATION
   if (programAbbreviation.includes('KTTP')) {
     // Please explain if you selected Sector-Wide, or if you have additional information to share on the Commodity/Sector:
-    initOnChange_DependentRequiredField({
-      dependentOnValue: SECTOR_WIDE_ID_VALUE,
-      dependentOnElementTag: 'quartech_naicsindustry',
-      requiredFieldTag: 'quartech_ifotherpleasedescribecommodity',
-    });
-    initOnChange_DependentRequiredField({
-      dependentOnValueArray: [
-        '255550001', // "In-Person"
-        '255550002', // "hybrid"
-      ],
-      dependentOnElementTag: 'quartech_eventtype',
-      requiredFieldTag: 'quartech_projectlocation',
-    });
-    initOnChange_DependentRequiredField({
-      dependentOnValue: '255550001',
-      dependentOnElementTag: 'quartech_projecttakesplaceinotherplaces',
-      requiredFieldTag: 'quartech_venuelocationcitytownetcoronlinesoftwar',
-    });
+    // initOnChange_DependentRequiredField({
+    //   dependentOnValue: SECTOR_WIDE_ID_VALUE,
+    //   dependentOnElementTag: 'quartech_naicsindustry',
+    //   requiredFieldTag: 'quartech_ifotherpleasedescribecommodity',
+    // });
+    // initOnChange_DependentRequiredField({
+    //   dependentOnValueArray: [
+    //     '255550001', // "In-Person"
+    //     '255550002', // "hybrid"
+    //   ],
+    //   dependentOnElementTag: 'quartech_eventtype',
+    //   requiredFieldTag: 'quartech_projectlocation',
+    // });
+    // initOnChange_DependentRequiredField({
+    //   dependentOnValue: '255550001',
+    //   dependentOnElementTag: 'quartech_projecttakesplaceinotherplaces',
+    //   requiredFieldTag: 'quartech_venuelocationcitytownetcoronlinesoftwar',
+    // });
   }
   // END KTTP CUSTOMIZATION
 
   // START ABBP STREAM 2 CUSTOMIZATION
-  if (programAbbreviation === 'ABPP2') {
-    initOnChange_DependentRequiredField({
-      dependentOnValue: YES_VALUE,
-      dependentOnElementTag: 'quartech_useofsupportingconsultant',
-      requiredFieldTag: 'quartech_consultantcompletingoverlimit',
-    });
+  // if (programAbbreviation === 'ABPP2') {
+  //   initOnChange_DependentRequiredField({
+  //     dependentOnValue: YES_VALUE,
+  //     dependentOnElementTag: 'quartech_useofsupportingconsultant',
+  //     requiredFieldTag: 'quartech_consultantcompletingoverlimit',
+  //   });
 
-    initOnChange_DependentRequiredField({
-      dependentOnValue: YES_VALUE,
-      dependentOnElementTag: 'quartech_useofsupportingconsultant',
-      requiredFieldTag: 'quartech_supportingconsultantcompanyname',
-    });
+  //   initOnChange_DependentRequiredField({
+  //     dependentOnValue: YES_VALUE,
+  //     dependentOnElementTag: 'quartech_useofsupportingconsultant',
+  //     requiredFieldTag: 'quartech_supportingconsultantcompanyname',
+  //   });
 
-    initOnChange_DependentRequiredField({
-      dependentOnValue: YES_VALUE,
-      dependentOnElementTag: 'quartech_useofsupportingconsultant',
-      requiredFieldTag: 'quartech_supportingconsultantfullname',
-    });
+  //   initOnChange_DependentRequiredField({
+  //     dependentOnValue: YES_VALUE,
+  //     dependentOnElementTag: 'quartech_useofsupportingconsultant',
+  //     requiredFieldTag: 'quartech_supportingconsultantfullname',
+  //   });
 
-    initOnChange_DependentRequiredField({
-      dependentOnValue: YES_VALUE,
-      dependentOnElementTag: 'quartech_useofsupportingconsultant',
-      requiredFieldTag: 'quartech_supportingconsultantpositiontitle',
-    });
+  //   initOnChange_DependentRequiredField({
+  //     dependentOnValue: YES_VALUE,
+  //     dependentOnElementTag: 'quartech_useofsupportingconsultant',
+  //     requiredFieldTag: 'quartech_supportingconsultantpositiontitle',
+  //   });
 
-    initOnChange_DependentRequiredField({
-      dependentOnValue: YES_VALUE,
-      dependentOnElementTag: 'quartech_useofsupportingconsultant',
-      requiredFieldTag: 'quartech_supportingconsultantrationale',
-    });
+  //   initOnChange_DependentRequiredField({
+  //     dependentOnValue: YES_VALUE,
+  //     dependentOnElementTag: 'quartech_useofsupportingconsultant',
+  //     requiredFieldTag: 'quartech_supportingconsultantrationale',
+  //   });
 
-    // Please provide the names of the co-applicants to your group application
-    // initial load:
+  //   // Please provide the names of the co-applicants to your group application
+  //   // initial load:
 
-    setSingleOrGroupApplicant();
-    if (document.querySelector('#quartech_singleorgroupapplication')) {
-      setSingleOrGroupApplicantOnChange();
-    }
-  }
+  //   setSingleOrGroupApplicant();
+  //   if (document.querySelector('#quartech_singleorgroupapplication')) {
+  //     setSingleOrGroupApplicantOnChange();
+  //   }
+  // }
   // END ABPP STREAM 2 CUSTOMIZATION
 
   // In order to continuously improve communications, we are interested in learning how you heard about this program, please select all options that apply
-  const communicationsOptions = document.querySelector(
-    '#quartech_inordertocontinuouslyimprovecommunications_i'
-  );
-  const containsOtherCommunicationOption = document
-    .querySelector('#quartech_inordertocontinuouslyimprovecommunications_i')
-    ?.querySelector(
-      'li[aria-label="Other for In order to continuously improve communications"]'
-    );
-  // initial load:
-  if (containsOtherCommunicationOption) {
-    initOnChange_DependentRequiredField({
-      dependentOnElementTag:
-        'quartech_inordertocontinuouslyimprovecommunications_i',
-      overrideTruthyClause: true,
-      requiredFieldTag: 'quartech_ifotherpleasedescribe',
-    });
-  } else {
-    initOnChange_DependentRequiredField({
-      dependentOnElementTag:
-        'quartech_inordertocontinuouslyimprovecommunications_i',
-      overrideTruthyClause: false,
-      requiredFieldTag: 'quartech_ifotherpleasedescribe',
-    });
-  }
+  // const communicationsOptions = document.querySelector(
+  //   '#quartech_inordertocontinuouslyimprovecommunications_i'
+  // );
+  // const containsOtherCommunicationOption = document
+  //   .querySelector('#quartech_inordertocontinuouslyimprovecommunications_i')
+  //   ?.querySelector(
+  //     'li[aria-label="Other for In order to continuously improve communications"]'
+  //   );
+  // // initial load:
+  // if (containsOtherCommunicationOption) {
+  //   initOnChange_DependentRequiredField({
+  //     dependentOnElementTag:
+  //       'quartech_inordertocontinuouslyimprovecommunications_i',
+  //     overrideTruthyClause: true,
+  //     requiredFieldTag: 'quartech_ifotherpleasedescribe',
+  //   });
+  // } else {
+  //   initOnChange_DependentRequiredField({
+  //     dependentOnElementTag:
+  //       'quartech_inordertocontinuouslyimprovecommunications_i',
+  //     overrideTruthyClause: false,
+  //     requiredFieldTag: 'quartech_ifotherpleasedescribe',
+  //   });
+  // }
 
-  // setup observer to check each time selected topics changes
-  var observer = new MutationObserver(function (mutations) {
-    if (
-      document
-        .querySelector('#quartech_inordertocontinuouslyimprovecommunications_i')
-        ?.querySelector(
-          'li[aria-label="Other for In order to continuously improve communications"]'
-        )
-    ) {
-      // Only need to show the field when it's not visible, otherwise do nothing
-      let isVisible = $(`#quartech_ifotherpleasedescribe_label`).is(':visible');
-      // Here we should dynamically hide/show the comment field & make it required:
-      // Do this by using 'overrideTruthyClause' and force it to show & be required
-      if (!isVisible) {
-        initOnChange_DependentRequiredField({
-          dependentOnElementTag:
-            'quartech_inordertocontinuouslyimprovecommunications_i',
-          overrideTruthyClause: true,
-          requiredFieldTag: 'quartech_ifotherpleasedescribe',
-        });
-      }
-    } else {
-      initOnChange_DependentRequiredField({
-        dependentOnElementTag:
-          'quartech_inordertocontinuouslyimprovecommunications_i',
-        overrideTruthyClause: false,
-        requiredFieldTag: 'quartech_ifotherpleasedescribe',
-      });
-    }
-  });
+  // // setup observer to check each time selected topics changes
+  // var observer = new MutationObserver(function (mutations) {
+  //   if (
+  //     document
+  //       .querySelector('#quartech_inordertocontinuouslyimprovecommunications_i')
+  //       ?.querySelector(
+  //         'li[aria-label="Other for In order to continuously improve communications"]'
+  //       )
+  //   ) {
+  //     // Only need to show the field when it's not visible, otherwise do nothing
+  //     let isVisible = $(`#quartech_ifotherpleasedescribe_label`).is(':visible');
+  //     // Here we should dynamically hide/show the comment field & make it required:
+  //     // Do this by using 'overrideTruthyClause' and force it to show & be required
+  //     if (!isVisible) {
+  //       initOnChange_DependentRequiredField({
+  //         dependentOnElementTag:
+  //           'quartech_inordertocontinuouslyimprovecommunications_i',
+  //         overrideTruthyClause: true,
+  //         requiredFieldTag: 'quartech_ifotherpleasedescribe',
+  //       });
+  //     }
+  //   } else {
+  //     initOnChange_DependentRequiredField({
+  //       dependentOnElementTag:
+  //         'quartech_inordertocontinuouslyimprovecommunications_i',
+  //       overrideTruthyClause: false,
+  //       requiredFieldTag: 'quartech_ifotherpleasedescribe',
+  //     });
+  //   }
+  // });
 
-  if (
-    communicationsOptions &&
-    communicationsOptions.nodeType === Node.ELEMENT_NODE
-  ) {
-    observer.observe(communicationsOptions, {
-      attributes: true,
-      childList: true,
-      characterData: true,
-    });
-  }
+  // if (
+  //   communicationsOptions &&
+  //   communicationsOptions.nodeType === Node.ELEMENT_NODE
+  // ) {
+  //   observer.observe(communicationsOptions, {
+  //     attributes: true,
+  //     childList: true,
+  //     characterData: true,
+  //   });
+  // }
 }
 
 function setSingleOrGroupApplicant() {

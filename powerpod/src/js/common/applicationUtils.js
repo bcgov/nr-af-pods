@@ -19,7 +19,6 @@ const logger = Logger('common/application');
 
 POWERPOD.applicationUtils = {
   getFormType,
-  preloadExistingDraftApplications: getExistingDraftApplicationId,
   getExistingDraftApplicationId,
   existingDraftApplications: null,
 };

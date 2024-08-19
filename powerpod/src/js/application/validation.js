@@ -1,6 +1,5 @@
 // here goes validation logic specific to application
 import {
-  displayValidationErrors,
   validateStepFields,
 } from '../common/fieldValidation.js';
 import store from '../store/index.js';

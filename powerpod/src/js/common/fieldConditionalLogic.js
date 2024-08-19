@@ -1,17 +1,186 @@
 import { getCurrentStep } from './program.ts';
-import { setDynamicallyRequiredFields } from './fieldConfiguration.js';
-import { validateStepFields } from './fieldValidation.js';
+import {
+  configureField,
+  setDynamicallyRequiredFields,
+} from './fieldConfiguration.js';
+import { validateStepField, validateStepFields } from './fieldValidation.js';
 import { Logger } from './logger.js';
 import {
   disableSingleLine,
   getControlValue,
+  getFieldRow,
+  hideFieldRow,
+  hideQuestion,
   setMultiSelectValues,
   showFieldRow,
 } from './html.js';
 import { getFieldConfig } from './fields.js';
 import { HtmlElementType, POWERPOD } from './constants.js';
+import store from '../store/index.js';
 
 const logger = Logger('common/fieldConditionalLogic');
+
+export function assignDependentFields(fieldConfig) {
+  const { name } = fieldConfig;
+  logger.info({
+    fn: assignDependentFields,
+    message: `starting to set dependent fields for name: ${name}`,
+    data: { fieldConfig },
+  });
+
+  if (fieldConfig.visibleIf.fieldName) {
+    const { fieldName: controlFieldName } = fieldConfig.visibleIf;
+    const controlFieldConfig = getFieldConfig(controlFieldName);
+    checkControlDependentFields({
+      controlFieldConfig,
+      name,
+      fieldConfig,
+      controlFieldName,
+    });
+  } else if (
+    fieldConfig.visibleIf.comparisons &&
+    Array.isArray(fieldConfig.visibleIf.comparisons)
+  ) {
+    const { comparisons } = fieldConfig.visibleIf;
+    comparisons.forEach((c) => {
+      const { fieldName: controlFieldName } = c;
+      const controlFieldConfig = getFieldConfig(controlFieldName);
+      checkControlDependentFields({
+        controlFieldConfig,
+        name,
+        fieldConfig,
+        controlFieldName,
+      });
+    });
+  }
+}
+
+export function checkControlDependentFields(params) {
+  const { controlFieldConfig, name, fieldConfig, controlFieldName } = params;
+  if (
+    controlFieldConfig.dependentFields &&
+    Array.isArray(controlFieldConfig.dependentFields) &&
+    controlFieldConfig.dependentFields?.includes(name)
+  ) {
+    logger.info({
+      fn: checkControlDependentFields,
+      message: `dependent field name: ${name} already assigned to controlFieldName: ${controlFieldName}`,
+      data: { fieldConfig, controlFieldConfig },
+    });
+    return;
+  }
+
+  const dependentFields = controlFieldConfig.dependentFields || [];
+  dependentFields.push(name);
+
+  store.dispatch('addFieldData', { name: controlFieldName, dependentFields });
+}
+
+export function setFieldVisibility(name) {
+  const fieldConfig = getFieldConfig(name);
+  logger.info({
+    fn: setFieldVisibility,
+    message: `starting to set field visibility for name: ${name}`,
+    data: { fieldConfig },
+  });
+  assignDependentFields(fieldConfig);
+  const { visibleIf, doNotBlank } = fieldConfig;
+  let matchesCondition = false;
+  if (visibleIf.fieldName) {
+    const { fieldName, selectedValue, selectedValueIn } = visibleIf;
+
+    const fieldRow = getFieldRow(fieldName);
+
+    const controlValue = getControlValue({
+      controlId: fieldName,
+      tr: fieldRow,
+      rawValue: true,
+    });
+
+    logger.info({
+      fn: setFieldVisibility,
+      message: `checkVisibleIfCondition for name: ${name}`,
+      data: {
+        name,
+        visibleIf,
+        controlValue,
+      },
+    });
+
+    matchesCondition = checkVisibleIfCondition({
+      name,
+      doNotBlank,
+      controlValue,
+      selectedValue,
+      selectedValueIn,
+    });
+  } else if (visibleIf.comparison && visibleIf.comparison === 'or') {
+    const { comparison, comparisons } = visibleIf;
+    matchesCondition = comparisons.some((c) => {
+      const { fieldName, selectedValue, selectedValueIn } = c;
+      const fieldRow = getFieldRow(fieldName);
+      const controlValue = getControlValue({
+        controlId: fieldName,
+        tr: fieldRow,
+        rawValue: true,
+      });
+      logger.info({
+        fn: setFieldVisibility,
+        message: `calling checkVisibleIfCondition for name: ${name}, checking fieldName: ${fieldName}`,
+        data: {
+          name,
+          c,
+          controlValue,
+        },
+      });
+      return checkVisibleIfCondition({
+        name,
+        doNotBlank,
+        controlValue,
+        selectedValue,
+        selectedValueIn,
+      });
+    });
+  }
+
+  if (matchesCondition) {
+    showFieldRow(name);
+    validateStepField(name);
+  } else {
+    hideFieldRow(name, doNotBlank);
+  }
+}
+
+export function checkVisibleIfCondition(params) {
+  const { name, doNotBlank, controlValue, selectedValue, selectedValueIn } =
+    params;
+  if (
+    controlValue === selectedValue ||
+    controlValue === `${selectedValue}` ||
+    selectedValueIn?.includes(controlValue) ||
+    (controlValue?.includes && controlValue?.includes(selectedValue)) ||
+    (Number(controlValue) && selectedValueIn?.includes(Number(controlValue)))
+  ) {
+    logger.info({
+      fn: checkVisibleIfCondition,
+      message: `for name: ${name}, FOUND matching condition`,
+      data: { params },
+    });
+    return true;
+    // showFieldRow(name);
+    // store.dispatch('addFieldData', { name, visible: true });
+  } else {
+    logger.info({
+      fn: checkVisibleIfCondition,
+      message: `for name: ${name}, found did NOT find matching condition`,
+      data: { params },
+    });
+    return false;
+    // hideFieldRow(name, doNotBlank);
+    // hideQuestion(name);
+    // store.dispatch('addFieldData', { name, visible: false });
+  }
+}
 
 export function initializeVisibleIf(name, required, visibleIf) {
   const {
@@ -19,6 +188,18 @@ export function initializeVisibleIf(name, required, visibleIf) {
     selectedValue: dependentSelectedValue,
     selectedValueIn: dependentSelectedValueIn,
   } = visibleIf;
+
+  logger.info({
+    fn: initializeVisibleIf,
+    message: 'Starting to configure dynamic field using visibleIf',
+    data: {
+      name,
+      dependentSelectedValue,
+      dependentSelectedValueIn,
+      dependentFieldName,
+      disableRequiredProp: !required,
+    },
+  });
 
   if (
     !dependentFieldName ||
@@ -40,20 +221,8 @@ export function initializeVisibleIf(name, required, visibleIf) {
     return;
   }
 
-  logger.info({
-    fn: initializeVisibleIf,
-    message: 'Starting to configure dynamic field using visibleIf',
-    data: {
-      name,
-      dependentSelectedValue,
-      dependentSelectedValueIn,
-      dependentFieldName,
-      disableRequiredProp: !required,
-    },
-  });
-
   // Make sure field is visible initially
-  showFieldRow(name);
+  // showFieldRow(name);
 
   // @ts-ignore
   initOnChange_DependentRequiredField({
@@ -144,21 +313,27 @@ function setupDependentRequiredField({
   if (!dependentOnElement) {
     logger.error({
       fn: setupDependentRequiredField,
-      message: `Could not find field for dependentOnElementTag: ${dependentOnElementTag}`,
+      message: `requiredFieldTag: ${requiredFieldTag}, could not find field for dependentOnElementTag: ${dependentOnElementTag}`,
     });
     return;
   }
   // @ts-ignore
   const tr = dependentOnElement.closest('tr');
-  const input = getControlValue({ tr, rawValue: true });
+  const input = getControlValue({
+    controlId: dependentOnElementTag,
+    tr,
+    rawValue: true,
+  });
   logger.info({
     fn: setupDependentRequiredField,
-    message: `Setting up dependent field dependentOnElementTag: ${dependentOnElementTag} with value: ${input}`,
+    message: `requiredFieldTag: ${requiredFieldTag}, setting up dependent field dependentOnElementTag: ${dependentOnElementTag} with value: ${
+      input ?? ''
+    }`,
   });
   if (overrideTruthyClause != undefined) {
     logger.info({
       fn: setupDependentRequiredField,
-      message: `Overriding truthy clause overrideTruthyClause: ${overrideTruthyClause}`,
+      message: `requiredFieldTag: ${requiredFieldTag}, overriding truthy clause overrideTruthyClause: ${overrideTruthyClause}`,
       data: { dependentOnElementTag, input },
     });
     if (overrideTruthyClause === true) {
@@ -185,11 +360,12 @@ function setupDependentRequiredField({
       input === dependentOnValue ||
       input === `${dependentOnValue}` ||
       dependentOnValueArray.includes(input) ||
+      input?.includes(dependentOnValue) ||
       (Number(input) && dependentOnValueArray.includes(Number(input)))
     ) {
       logger.info({
         fn: setupDependentRequiredField,
-        message: `Value matches visibleIf condition`,
+        message: `requiredFieldTag: ${requiredFieldTag}, value matches visibleIf condition, dependentOnElementTag: ${dependentOnElementTag}`,
         data: {
           dependentOnElementTag,
           input,
@@ -209,7 +385,7 @@ function setupDependentRequiredField({
     } else {
       logger.info({
         fn: setupDependentRequiredField,
-        message: `Value DOES NOT match visibleIf condition`,
+        message: `requiredFieldTag: ${requiredFieldTag}, value DOES NOT match visibleIf condition`,
         data: {
           dependentOnElementTag,
           input,
@@ -265,28 +441,35 @@ export function shouldRequireDependentField({
   }
 
   const fieldConfig = getFieldConfig(requiredFieldTag);
+  const loadingAllFieldConfig = POWERPOD.fieldConfiguration.loading;
+  const loadingFieldConfig =
+    POWERPOD.state?.fields?.[requiredFieldTag]?.loading;
 
   if (shouldBeRequired) {
     logger.info({
       fn: shouldRequireDependentField,
-      message: `Setting dynamic field to visible requiredFieldTag: ${requiredFieldTag}`,
+      message: `Setting dynamic field to visible requiredFieldTag: ${requiredFieldTag}, loadingAllFieldConfig: ${loadingAllFieldConfig}, loadingFieldConfig: ${loadingFieldConfig}`,
     });
     $(requiredFieldRow).css({ display: '' });
 
     if (!disableRequiredProp) {
       // @ts-ignore
-      localStorage.setItem(`shouldRequire_${requiredFieldTag}`, true);
-      if (setRequiredFieldsFunc) {
-        setRequiredFieldsFunc(getCurrentStep());
-      }
+      // localStorage.setItem(`shouldRequire_${requiredFieldTag}`, true);
+      // if (setRequiredFieldsFunc) {
+      //   setRequiredFieldsFunc(getCurrentStep());
+      // }
 
-      if (validationFunc) {
-        validationFunc(getCurrentStep());
-        // re-validate every time user modifies additional info input
-        $(requiredFieldInputElement).change(function () {
-          validationFunc(getCurrentStep());
-        });
+      // if (validationFunc) {
+      //   validationFunc(getCurrentStep());
+      //   // re-validate every time user modifies additional info input
+      //   $(requiredFieldInputElement).change(function () {
+      //     validationFunc(getCurrentStep());
+      //   });
+      // }
+      if (!loadingAllFieldConfig && !loadingFieldConfig) {
+        configureField(fieldConfig);
       }
+      validateStepField(requiredFieldTag);
 
       if (!!fieldConfig?.visibleIf?.valueIfVisible) {
         const { type, value } = fieldConfig.visibleIf.valueIfVisible;
@@ -331,7 +514,11 @@ export function shouldRequireDependentField({
       }
 
       if (fieldConfig?.disableSingleLine) {
-        disableSingleLine(requiredFieldTag);
+        if (fieldConfig?.elementType === HtmlElementType.MultiOptionSet) {
+          disableSingleLine(requiredFieldTag, fieldConfig?.elementType);
+        } else {
+          disableSingleLine(requiredFieldTag);
+        }
       }
     }
   } else {
@@ -347,12 +534,13 @@ export function shouldRequireDependentField({
     if (!disableRequiredProp) {
       $(`#${requiredFieldTag}_label`).parent().removeClass('required');
       localStorage.removeItem(`shouldRequire_${requiredFieldTag}`);
-      if (setRequiredFieldsFunc) {
-        setRequiredFieldsFunc(getCurrentStep());
-      }
-      if (validationFunc) {
-        validationFunc(getCurrentStep());
-      }
+      // if (setRequiredFieldsFunc) {
+      //   setRequiredFieldsFunc(getCurrentStep());
+      // }
+      // if (validationFunc) {
+      //   validationFunc(getCurrentStep());
+      // }
+      validateStepField(requiredFieldTag);
       $(requiredFieldInputElement).off('change');
     }
 

@@ -10,9 +10,9 @@
     "esModuleInterop": true,
     "outDir": "../dist",
     "declaration": true,
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
+    "moduleResolution": "node",
     "noEmit": true,
+    "allowImportingTsExtensions": true,
     "experimentalDecorators": true,
     "useDefineForClassFields": false
   },

@@ -15,7 +15,12 @@ import {
   getFieldsBySectionClaim,
   getFieldsBySectionApplication,
 } from './fields.js';
-import { getOriginalMsosElement } from './html.js';
+import {
+  getControlValue,
+  getFieldErrorDiv,
+  getFieldRow,
+  getOriginalMsosElement,
+} from './html.js';
 import { Logger } from './logger.js';
 import { getOptions } from './options.js';
 import { getCurrentStep, getProgramAbbreviation } from './program.ts';
@@ -33,6 +38,110 @@ export function validateRequiredFields() {
     return;
   }
   validateStepFields(currentStep);
+}
+
+export function validateStepField(fieldName) {
+  logger.info({
+    fn: validateStepField,
+    message: `start validating fieldName: ${fieldName}`,
+  });
+
+  if (!POWERPOD.state?.fields?.[fieldName]) {
+    logger.error({
+      fn: validateStepField,
+      message: `failed to find fieldName: ${fieldName} in state`,
+    });
+    return;
+  }
+  const { name, required, elementType, validation, format } =
+    POWERPOD.state?.fields?.[fieldName];
+  let fieldErrorHtml = '';
+  let errorMsg = '';
+  if (required) {
+    errorMsg = validateRequiredField({
+      fieldName: name,
+      elemType: elementType,
+    });
+    if (errorMsg && errorMsg.length) {
+      fieldErrorHtml = fieldErrorHtml.concat(errorMsg);
+    }
+  }
+  if (validation?.type === 'numeric') {
+    const { value, comparison } = validation;
+    errorMsg = validateNumericFieldValue(name, value, comparison) ?? '';
+    if (errorMsg && errorMsg.length) {
+      fieldErrorHtml = fieldErrorHtml.concat(errorMsg);
+    }
+  }
+  if (validation?.type === 'length') {
+    const { value, comparison, forceRequired, postfix, overrideDisplayValue } =
+      validation;
+    errorMsg = validateFieldLength(
+      name,
+      value,
+      comparison,
+      forceRequired,
+      postfix,
+      overrideDisplayValue
+    );
+    logger.info({
+      fn: validateStepField,
+      message: 'Generate length validation error html...',
+    });
+    // Display instant feedback on field input
+    if (errorMsg && errorMsg.length > 0) {
+      fieldErrorHtml = fieldErrorHtml.concat(`<div>${errorMsg}</div>`);
+      logger.info({
+        fn: validateStepField,
+        message: 'Done generating length validation error html...',
+      });
+    }
+  }
+  if (format === 'email') {
+    errorMsg = validateEmailAddressField(name);
+    logger.info({
+      fn: validateStepField,
+      message: 'Generate email validation error html...',
+    });
+    // Display instant feedback on field input
+    if (errorMsg && errorMsg.length > 0) {
+      fieldErrorHtml = fieldErrorHtml.concat(`<div>${errorMsg}</div>`);
+      logger.info({
+        fn: validateStepField,
+        message: 'Done generating email validation error html...',
+      });
+    }
+  }
+  logger.info({
+    fn: validateStepField,
+    message: `Found error message for field: ${name}, errorMsg: ${fieldErrorHtml}`,
+  });
+  let errorMessageElement = getFieldErrorDiv(fieldName);
+  if (!errorMessageElement) {
+    logger.error({
+      fn: validateStepField,
+      message: `Failed to find field error div, fieldName: ${fieldName}`,
+    });
+    return;
+  }
+  if (fieldErrorHtml && fieldErrorHtml.length > 0) {
+    $(errorMessageElement).html(fieldErrorHtml);
+    $(errorMessageElement).css({ display: '' });
+    $(`#${fieldName}`).css({ border: '1px solid #e5636c' });
+    store.dispatch('addFieldData', {
+      name,
+      error: `${fieldErrorHtml}`,
+    });
+  } else {
+    $(errorMessageElement).css({ display: 'none' });
+    $(`#${fieldName}`).css({ border: '' });
+    store.dispatch('addFieldData', {
+      name,
+      error: '',
+    });
+  }
+
+  displayActiveFieldErrors();
 }
 
 export function validateStepFields(stepName, returnString) {
@@ -237,28 +346,26 @@ export function validateStepFields(stepName, returnString) {
   }
 
   // displayValidationErrors(validationErrorHtml);
-  store.dispatch('setValidationError', validationErrorHtml);
+  // store.dispatch('setValidationError', validationErrorHtml);
 }
 
 export function validateRequiredField({
   fieldName,
   elemType = HtmlElementType.Input,
-  errorMessage = 'IS REQUIRED',
+  errorMessage = 'Please enter a value, this field is required.',
 }) {
   logger.info({
     fn: validateRequiredField,
     message: `Start validating required fieldName: ${fieldName} of elemType: ${elemType}`,
   });
-  let isVisible = $(`#${fieldName}_label`)?.is(':visible');
-
-  let skipValidationAsNotVisible = !isVisible;
-  if (skipValidationAsNotVisible) {
-    logger.warn({
-      fn: validateRequiredField,
-      message: `Validate called on not visible fieldName: ${fieldName} of elemType: ${elemType}`,
-    });
-    return '';
-  }
+  // let isVisible = $(`#${fieldName}_label`)?.is(':visible');
+  // if (!isVisible) {
+  //   logger.warn({
+  //     fn: validateRequiredField,
+  //     message: `Validate called on not visible fieldName: ${fieldName} of elemType: ${elemType}`,
+  //   });
+  //   return '';
+  // }
 
   let validationErrorHtml = '';
 
@@ -269,15 +376,20 @@ export function validateRequiredField({
         // @ts-ignore
         $(`#${fieldName}`)?.val()?.length === 0;
       errorMessage =
-        'IS REQUIRED. Please ensure at least one file per required upload field is confirmed & uploaded successfully.';
+        'Please ensure at least one file per required upload field is confirmed & uploaded successfully.';
       break;
+    // case HtmlElementType.MultiSelectPicklist:
+    // isEmptyField = $(`li[id*='${fieldName}-selected-item-']`)?.length == 0;
+    // break;
     case HtmlElementType.MultiOptionSet:
       const originalSelectElementForMSOS = getOriginalMsosElement(fieldName);
       const selectionContainer =
         // @ts-ignore
         originalSelectElementForMSOS?.multiSelectOptionSet()?.$selection;
-      const selectedItems = selectionContainer.find('li[aria-selected="true"]');
-      isEmptyField = selectedItems.length === 0;
+      const selectedItems = selectionContainer?.find(
+        'li[aria-selected="true"]'
+      );
+      isEmptyField = selectedItems?.length === 0;
       break;
     case HtmlElementType.DropdownSelect:
       isEmptyField =
@@ -286,7 +398,17 @@ export function validateRequiredField({
       break;
     case HtmlElementType.SingleOptionSet:
     case HtmlElementType.DatePicker:
-    default: // HtmlElementTypeEnum.Input
+      let fieldRow = getFieldRow(fieldName);
+      let value = getControlValue({
+        controlId: fieldName,
+        tr: fieldRow,
+        rawValue: false,
+      });
+      isEmptyField = value?.length === 0;
+      break;
+    case HtmlElementType.MultiSelectPicklist:
+    case HtmlElementType.Input:
+    default:
       isEmptyField = $(`#${fieldName}`)?.val() == '';
       break;
   }
@@ -302,7 +424,7 @@ export function validateRequiredField({
       message: `Required field fieldName: ${fieldName} is empty! Set validation error message`,
     });
     const fieldLabelText = $(`#${fieldName}_label`).text();
-    validationErrorHtml = `<div><span>"${fieldLabelText}"</span><span style="color:red;"> ${errorMessage}</span></div>`;
+    validationErrorHtml = `<div><span style="color:red;"> ${errorMessage}</span></div>`;
     // $(`#${fieldName}`).on("focusout", function () {
     //   $(`#${fieldName}_error_message`).css({ display: "" });
     //   $(`#${fieldName}`).css({ border: "1px solid #e5636c" });
@@ -433,38 +555,60 @@ export function validateFieldLength(
 
 export function validateEmailAddressField(fieldName) {
   const fieldElement = document.querySelector(`#${fieldName}`);
-  let errorMessageElement = document.querySelector(
-    `#${fieldName}_error_message`
-  );
-
-  if (!fieldElement) return;
-  if (!errorMessageElement) {
-    let div = document.createElement('div');
-    div.id = `${fieldName}_error_message`;
-    div.className = 'error_message';
-    // @ts-ignore
-    div.style = 'display:none;';
-    $(`#${fieldName}`).parent().append(div);
-
-    errorMessageElement = document.querySelector(`#${fieldName}_error_message`);
-
-    if (!errorMessageElement) return;
+  if (!fieldElement) {
+    logger.error({
+      fn: validateEmailAddressField,
+      message: `Could not find fieldElement for fieldName: ${fieldName}`,
+    });
+    return;
   }
 
   const pattern = /^\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i;
 
-  $(fieldElement).on('keyup keydown', () => {
-    // @ts-ignore
-    const input = fieldElement.value;
-    if (!input || !pattern.test(input)) {
-      $(fieldElement).css({ border: '1px solid #e5636c' });
-      $(errorMessageElement).html('<span>Email: must be a valid email.</span>');
-      $(errorMessageElement).css({ display: '' });
-    } else {
-      $(fieldElement).css({ border: '' });
-      $(errorMessageElement).css({ display: 'none' });
-    }
+  const input = fieldElement?.value;
+  if (!input || !pattern.test(input)) {
+    return '<span>Must be a valid email address.</span>';
+  } else {
+    return '';
+  }
+}
+
+export function displayActiveFieldErrors() {
+  const fields = POWERPOD.state.fields;
+  logger.info({
+    fn: displayActiveFieldErrors,
+    message: `checking field state for active errors on fields...`,
+    data: { fields },
   });
+
+  const fieldsWithErrors = Object.values(fields).filter(
+    (f) =>
+      f.error &&
+      !f.hidden &&
+      (f.visible != undefined || f.visible != null) &&
+      f.visible
+  );
+
+  if (!fieldsWithErrors || fieldsWithErrors.length === 0) {
+    logger.info({
+      fn: displayActiveFieldErrors,
+      message: `No active errors on any fields to display`,
+    });
+    store.dispatch('setValidationError', '');
+    return;
+  }
+
+  let validationErrorHtml = '';
+
+  fieldsWithErrors.forEach((field) => {
+    const errorWithLabelText = field.error.replace(
+      '<div>',
+      `<div><span>"${field.label}"</span>`
+    );
+    validationErrorHtml = validationErrorHtml.concat(errorWithLabelText);
+  });
+
+  store.dispatch('setValidationError', validationErrorHtml);
 }
 
 export function displayValidationErrors(validationErrorHtml) {
@@ -517,17 +661,12 @@ export function addValidationCheck(fieldName, validation) {
     // integration for now, it's only needed in production
     if (env === Environment.PROD) {
       setInterval(() => {
-        if (POWERPOD.validation.enableIntervalBased) validateStepFields();
+        if (POWERPOD.validation.enableIntervalBased)
+          validateStepField(fieldName);
       }, 1000);
       return;
     }
   }
-  $(`input[id*='${fieldName}']`).on(
-    validation?.event ?? 'onchange',
-    function () {
-      validateStepFields();
-    }
-  );
 }
 
 export function setInputMaxLength(fieldName, maxLength) {

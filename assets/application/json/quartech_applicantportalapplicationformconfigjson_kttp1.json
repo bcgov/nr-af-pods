@@ -1,83 +1,27 @@
 {
   "tags": ["Application", "StaffPortal", "KTTP-SMEA", "KTTP1"],
-  "version": "1.0.7",
+  "version": "1.2.3",
   "name": "KTTP - Subject Matter Expert Activities",
   "abbreviation": "KTTP-SMEA",
+  "programId": "25493093-9d2b-ee11-bdf4-000d3af3ac95",
   "hiddenSteps": "tab_eligibility",
   "sections": [
     {
       "name": "ApplicantInfoStep",
       "fields": [
         {
-          "name": "quartech_indigenousapplicant",
-          "required": true,
-          "elementType": "DropdownSelect"
+          "name": "quartech_city",
+          "hidden": true
         },
         {
-          "name": "quartech_applicanttype",
-          "required": true,
-          "elementType": "DropdownSelect",
-          "label": "Applicant Type"
-        },
-        {
-          "name": "quartech_yearproductionestablished",
-          "labe": "Year Business Established",
-          "required": true,
-          "validation": {
-            "type": "numeric",
-            "value": "1900",
-            "comparison": "greaterThan"
-          }
-        },
-        {
-          "name": "quartech_numberoffulltimeemployees",
-          "label": "How many full-time employees do you employ?",
-          "format": "number",
-          "required": true,
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThanOrEqualTo"
-          }
-        },
-        {
-          "name": "quartech_numberofparttimeemployees",
-          "label": "How many part-time employees do you employ (including seasonal)?",
-          "format": "number",
-          "required": true,
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThanOrEqualTo"
-          }
-        },
-        {
-          "name": "quartech_previousyeargrossincome",
-          "label": "What was your estimated total gross income in the previous year?",
-          "required": true,
-          "format": "currency",
-          "maxDigits": 13,
-          "emptyInitialValue": true,
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThanOrEqualTo"
-          }
-        },
-        {
-          "name": "quartech_previousyearnetincome",
-          "label": "What was your estimated total net income in the previous year?",
-          "required": true,
-          "format": "currency",
-          "maxDigits": 13,
-          "emptyInitialValue": true,
-          "allowNegatives": true
+          "name": "quartech_email",
+          "label": "Email address for communication about this application:"
         },
         {
           "name": "quartech_recipienttype",
           "required": true,
           "elementType": "DropdownSelect",
-          "label": "Type of Business / Organization. If your operation does both processing and primary production, please select the one that will primarily benefit from this program."
+          "label": "Type of Business / Organization"
         },
         {
           "name": "quartech_commodity",
@@ -86,6 +30,82 @@
           "visibleIf": {
             "fieldName": "quartech_recipienttype",
             "selectedValue": 255550001
+          }
+        },
+        {
+          "name": "Business Overview",
+          "type": "SectionTitle",
+          "newLabel": "Organization Information"
+        },
+        {
+          "name": "quartech_businessdescription",
+          "label": "Organization Background",
+          "required": true
+        },
+        {
+          "name": "quartech_hasthisorganizationreceivedkttpfundingin",
+          "label": "Has this organization received KTTP funding in previous years?",
+          "required": true,
+          "elementType": "DropdownSelect"
+        },
+        {
+          "name": "quartech_ifyespleaseexplainwhenandforwhichactivity",
+          "label": "Please explain when and for which activity",
+          "visibleIf": {
+            "fieldName": "quartech_hasthisorganizationreceivedkttpfundingin",
+            "selectedValue": 255550000,
+            "techComment": "Yes value"
+          }
+        },
+        {
+          "name": "quartech_hasthisorganizationreceivedfundingfrmother",
+          "label": "Has this organization received funding from other Government of British Columbia (the Province) programs in the last year?",
+          "required": true,
+          "elementType": "DropdownSelect"
+        },
+        {
+          "name": "quartech_ifyespleaseexplainwhenandfromwhichprogram",
+          "label": "If Yes, please explain when and from which program",
+          "visibleIf": {
+            "fieldName": "quartech_hasthisorganizationreceivedfundingfrmother",
+            "selectedValue": 255550000,
+            "techComment": "Yes value"
+          }
+        },
+        {
+          "name": "quartech_areyoucollaboratingwithanyotherorg",
+          "label": "Will your organization be collaborating with any other organizations on this project?",
+          "required": true,
+          "elementType": "DropdownSelect"
+        },
+        {
+          "name": "quartech_ifyespleaseprovidelegalbusinessorganization",
+          "label": "Legal Business/Organization Name",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_areyoucollaboratingwithanyotherorg",
+            "selectedValue": 255550000,
+            "techComment": "Yes value"
+          }
+        },
+        {
+          "name": "quartech_ifyespleaseprovideacontactname",
+          "label": "Contact Name",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_areyoucollaboratingwithanyotherorg",
+            "selectedValue": 255550000,
+            "techComment": "Yes value"
+          }
+        },
+        {
+          "name": "quartech_ifyespleaseprovideabriefbackgroundoutlinin",
+          "label": "Please provide a brief description of the organization and what their role be in this activity (300 words maximum)",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_areyoucollaboratingwithanyotherorg",
+            "selectedValue": 255550000,
+            "techComment": "Yes value"
           }
         }
       ]
@@ -106,16 +126,19 @@
         },
         {
           "name": "quartech_naicsindustry",
+          "elementType": "MultiSelectPicklist",
           "required": true,
+          "disableSingleLine": false,
           "label": "Please select the primary Commodity/Sector that will benefit from this project"
         },
         {
-          "name": "quartech_quartech_ifotherpleasedescribecommodity",
+          "name": "quartech_ifotherpleasedescribecommodity",
           "label": "Please explain if you selected Sector-Wide, or if you have additional information to share on the Commodity/Sector",
+          "required": true,
           "visibleIf": {
             "fieldName": "quartech_naicsindustry",
-            "selectedValue": 99999,
-            "techComment": "99999 - Sector Wide record"
+            "selectedValue": "6ce2584f-4740-ee11-be6e-000d3af3ac95",
+            "techComment": "Raw value for * Sector Wide"
           }
         },
         {
@@ -126,21 +149,45 @@
         },
         {
           "name": "quartech_projectlocation",
-          "tooltipText": "If your project takes place in multiple locations, please identify the location with the most funding allocated to."
+          "required": true,
+          "disableSingleLine": false,
+          "tooltipText": "If your project takes place in multiple locations, please identify the location with the most funding allocated to.",
+          "visibleIf": {
+            "fieldName": "quartech_eventtype",
+            "selectedValueIn": [255550001, 255550002],
+            "techComment": "Display if Event Type is In-Person or Hybrid"
+          }
+        },
+        {
+          "name": "quartech_projecttakesplaceinotherplaces",
+          "required": true,
+          "elementType": "DropdownSelect",
+          "tooltipText": "Will your project take place in more than one place?"
         },
         {
           "name": "quartech_venuelocationcitytownetcoronlinesoftwar",
           "required": true,
-          "label": "Additional Location of Events (city of the venue, and use \",\" to separate each city if more than one city)",
-          "tooltipText": "Project locations in addition to what you have provided in the question above."
+          "label": "Additional Project Locations",
+          "tooltipText": "Project locations in addition to what you have provided in the question above.",
+          "visibleIf": {
+            "fieldName": "quartech_projecttakesplaceinotherplaces",
+            "selectedValue": 255550001,
+            "techComment": "Display if answer is YES"
+          }
         },
         {
           "name": "quartech_staffsupporter",
+          "hidden": true,
           "required": true,
           "label": "If you worked with a Ministry Staff Supporter, please provide their name:"
         },
         {
+          "name": "quartech_inordertocontinuouslyimprovecommunications",
+          "hidden": true
+        },
+        {
           "name": "quartech_ifotherpleasedescribe",
+          "hidden": true,
           "visibleIf": {
             "fieldName": "quartech_inordertocontinuouslyimprovecommunications",
             "selectedValue": 255550006,
@@ -150,11 +197,13 @@
         {
           "name": "quartech_orgbackground",
           "required": true,
+          "hidden": true,
           "label": "Organization Background",
           "tooltipText": "Please provide a few points outlining the organization’s mandate, history, size, commodity, geographical area and/or other background information. 300 words maximum."
         },
         {
           "name": "quartech_hasthisorganizationreceivedkttpfundingin",
+          "hidden": true,
           "required": true,
           "elementType": "DropdownSelect",
           "label": "Has this organization received KTTP funding in previous years?"
@@ -169,6 +218,7 @@
         },
         {
           "name": "quartech_hasthisorganizationreceivedfundingfrmother",
+          "hidden": true,
           "required": true,
           "elementType": "DropdownSelect",
           "label": "Has this organization received funding from other Government of British Columbia (the Province) programs in the last year?"
@@ -191,12 +241,14 @@
         },
         {
           "name": "quartech_areyoucollaboratingwithanyotherorg",
+          "hidden": true,
           "required": true,
           "elementType": "DropdownSelect",
           "label": "Has this organization received funding from other Government of British Columbia (the Province) programs in the last year?"
         },
         {
           "name": "quartech_ifyespleaseprovidelegalbusinessorganization",
+          "hidden": true,
           "visibleIf": {
             "fieldName": "quartech_areyoucollaboratingwithanyotherorg",
             "selectedValue": 255550000,
@@ -205,6 +257,7 @@
         },
         {
           "name": "quartech_ifyespleaseprovideacontactname",
+          "hidden": true,
           "visibleIf": {
             "fieldName": "quartech_areyoucollaboratingwithanyotherorg",
             "selectedValue": 255550000,
@@ -213,6 +266,7 @@
         },
         {
           "name": "quartech_ifyespleaseprovideabriefbackgroundoutlinin",
+          "hidden": true,
           "visibleIf": {
             "fieldName": "quartech_areyoucollaboratingwithanyotherorg",
             "selectedValue": 255550000,
@@ -221,6 +275,7 @@
         },
         {
           "name": "quartech_areyouapplyingforatraceabilityknowledget",
+          "hidden": true,
           "required": true,
           "elementType": "DropdownSelect",
           "label": "Are you applying for a Traceability Knowledge Transfer Activity? (please note, seafood organizations are eligible for this type of activity)",
@@ -228,6 +283,8 @@
         },
         {
           "name": "quartech_ifyespleaseexplainthetraceabilityactivityt",
+          "hidden": true,
+          "label": "If yes, please explain the Traceability activity that will be included in your event/activity.",
           "visibleIf": {
             "fieldName": "quartech_areyouapplyingforatraceabilityknowledget",
             "selectedValue": 255550000,
@@ -241,6 +298,8 @@
         },
         {
           "name": "quartech_smephonenumber",
+          "label": "SME Phone Number",
+          "required": true,
           "format": "phoneNumber",
           "validation": {
             "type": "length",
@@ -248,32 +307,40 @@
             "comparison": "equalTo",
             "postfix": "digits",
             "overrideDisplayValue": 10
-          },
-          "required": true,
-          "label": "Subject Matter Expert (SME) Phone Number:"
+          }
         },
         {
           "name": "quartech_smeemail",
+          "label": "SME Email",
           "format": "email",
-          "required": true,
-          "label": "Subject Matter Expert (SME) Email:"
+          "required": true
         },
         {
           "name": "quartech_smewebsite",
-          "label": "Subject Matter Expert (SME) Website:"
+          "label": "SME Website"
+        },
+        {
+          "name": "quartech_facilitatorexpertisedescription",
+          "label": "Describe the expertise of the Subject Matter Expert (SME) and what experience they have in transferring knowledge",
+          "required": true
         },
         {
           "name": "quartech_activitystartdate",
+          "label": "Activity Start Date",
           "required": true,
-          "elementType": "DatePicker"
+          "elementType": "DatePicker",
+          "disableSingleLine": false
         },
         {
           "name": "quartech_doestheactivitytakeplaceovermultipleday",
+          "label": "Does the activity take place over multiple days?",
           "required": true,
           "elementType": "DropdownSelect"
         },
         {
           "name": "quartech_ifyespleaseprovidetheadditionaldates",
+          "label": "If Yes, please provide the additional dates",
+          "required": true,
           "visibleIf": {
             "fieldName": "quartech_doestheactivitytakeplaceovermultipleday",
             "selectedValue": 255550000,
@@ -282,15 +349,18 @@
         },
         {
           "name": "quartech_willthisactivitybeopentotheentirepublic",
+          "label": "Will this activity be open to any agriculture and seafood producers/ processors that wish to attend?",
           "required": true,
           "elementType": "DropdownSelect"
         },
         {
           "name": "quartech_allactivitiesmustbeopentothepublicplease",
+          "label": "Please explain why this event will not be open to other producers/processors",
+          "required": true,
           "visibleIf": {
             "fieldName": "quartech_willthisactivitybeopentotheentirepublic",
-            "selectedValue": 255550000,
-            "techComment": "Yes value"
+            "selectedValue": 255550001,
+            "techComment": "No value"
           }
         },
         {
@@ -303,11 +373,14 @@
         },
         {
           "name": "quartech_pleaseselectthemostapplicableactivitytype",
+          "label": "Please select the most applicable activity type",
           "required": true,
           "elementType": "DropdownSelect"
         },
         {
           "name": "quartech_ifotherpleasedescribeyouractivitytype",
+          "label": "If Other, please describe your activity type",
+          "required": true,
           "visibleIf": {
             "fieldName": "quartech_pleaseselectthemostapplicableactivitytype",
             "selectedValue": 255550010,
@@ -315,60 +388,89 @@
           }
         },
         {
-          "name": "quartech_prioritytopics",
+          "name": "quartech_prioritytopicmostapplicable",
+          "label": "Priority Topic(s). Please select the most applicable topic that your project will focus on.",
           "required": true,
-          "elementType": "MultiOptionSet"
+          "disableSingleLine": false,
+          "elementType": "DropdownSelect"
+        },
+        {
+          "name": "quartech_prioritytopicsecondary",
+          "label": "If applicable, select a secondary priority topic that you project will focus on",
+          "elementType": "DropdownSelect"
         },
         {
           "name": "quartech_otherprioritytopic",
           "maxLength": 10000,
           "label": "Please describe the priority topic(s).",
+          "required": true,
           "visibleIf": {
-            "fieldName": "quartech_prioritytopics",
-            "selectedValue": 255550007,
-            "techComment": "Other value"
+            "comparison": "or",
+            "comparisons": [
+              {
+                "fieldName": "quartech_prioritytopicmostapplicable",
+                "selectedValue": 255550007,
+                "techComment": "Other value"
+              },
+              {
+                "fieldName": "quartech_prioritytopicsecondary",
+                "selectedValue": 255550007,
+                "techComment": "Other value"
+              }
+            ]
           }
         },
         {
           "name": "quartech_activitypurpose",
+          "label": "Please select the most applicable purpose that your activity will focus on",
           "required": true,
           "elementType": "DropdownSelect"
         },
         {
           "name": "quartech_ifotherpleasedescribetheactivitypurpose",
+          "required": "true",
           "maxLength": 10000,
-          "label": "Please describe the priority topic(s).",
+          "label": "If Other, please describe the activity purpose",
           "visibleIf": {
             "fieldName": "quartech_activitypurpose",
             "selectedValue": 255550010,
             "techComment": "Other value"
+          },
+          "relocateField": {
+            "originFieldName": "quartech_ifotherpleasedescribetheactivitypurpose",
+            "destinationFieldName": "quartech_activitypurpose",
+            "relativePosition": "below"
           }
         },
         {
           "name": "quartech_proposedactivitystopicpurposeintent",
+          "label": "Explain what your activity will be about, why you're doing it, and what you hope to achieve. Make sure the things you hope to achieve can be measured, and explain how they will make a difference. Say clearly what participants will learn or be able to do by the end of the activity. Include a description of timelines, list of materials, etc.",
           "required": true,
           "tooltipText": "Keep in mind that you will be asked to measure outcomes in your post-project report."
         },
         {
-          "name": "quartech_proposedactivitydescription",
-          "required": true
-        },
-        {
-          "name": "quartech_facilitatorexpertisedescription",
-          "required": true
-        },
-        {
           "name": "quartech_accessandinclusivenessdescription",
+          "label": "The Province supports inclusiveness and increased representation of target and underrepresented groups. Please describe how you will work towards increasing access and inclusiveness of your activity?",
           "required": true,
           "tooltipText": "For more information about planning for inclusive activities, please refer to the Program Guide."
         },
         {
+          "name": "quartech_proposedactivitydescription",
+          "label": "Please describe the activities you will undertake to achieve your outcomes. Activities should describe how you intend to complete your outcome and include a description of timelines, materials, etc.",
+          "hidden": true,
+          "required": true
+        },
+        {
           "name": "quartech_theprocessoflearningandprocessingknowledge",
+          "label": "The process of learning and processing knowledge changes from children to adults. Will your event be adapted for adult learning?",
+          "hidden": true,
           "required": true,
           "tooltipText": "The Province would like to see funded activities incorporate adult learning principles and techniques to increase the project’s success in transferring knowledge to attendees. For more information, please refer to the Program Guide."
         },
         {
-          "name": "quartech_adulteducationandknowlegetransferdescript"
+          "name": "quartech_adulteducationandknowlegetransferdescript",
+          "label": "If Yes, please describe how the proposed activities will use best practices in adult education and knowledge transfer. How will you evaluate if you have been successful?",
+          "hidden": true
         },
         {
           "name": "Business Plan",
