@@ -5,6 +5,7 @@ import { patchApplicationData, patchClaimData } from './fetch.js';
 import { generateFormJson, getFormId } from './form.js';
 import { Logger } from './logger.js';
 import { getCurrentStep } from './program.js';
+import { PropertyReferences, PropertyReferenceValues } from './propertyRefs.js';
 import { isObjectEmpty } from './utils.js';
 
 const logger = Logger('common/saveButton');
@@ -112,11 +113,23 @@ export async function saveFormData({ customPayload = {} }) {
       return;
     }
 
-    payload = {
-      [field]: value,
-      ...payload,
-      ...(Object.keys(customPayload)?.length && customPayload),
-    };
+    // @ts-ignore
+    if (PropertyReferences[field]) {
+      payload = {
+        // @ts-ignore
+        ...(value && {
+          [PropertyReferences[field]]: PropertyReferenceValues[field](value),
+        }),
+        ...payload,
+        ...(Object.keys(customPayload)?.length && customPayload),
+      };
+    } else {
+      payload = {
+        ...(value && { [field]: value }),
+        ...payload,
+        ...(Object.keys(customPayload)?.length && customPayload),
+      };
+    }
 
     if (customPayload && Object.keys(customPayload).length > 0) {
       logger.info({

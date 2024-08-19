@@ -3,9 +3,11 @@ import resolve from '@rollup/plugin-node-resolve';
 import babel from '@rollup/plugin-babel';
 import typescript from '@rollup/plugin-typescript';
 import css from 'rollup-plugin-import-css';
+import json from '@rollup/plugin-json';
+import commonjs from '@rollup/plugin-commonjs';
 
 const licenseContent = `/*!
-* powerpod 1.9.2
+* powerpod 1.9.4
 * https://github.com/bcgov/nr-af-pods/powerpod
 *
 * @license GPLv3 for open source use only
@@ -59,8 +61,10 @@ module.exports = [
     ],
     plugins: [
       resolve(),
+      json(),
       typescript({
         tsconfig: 'src/tsconfig.json',
+        noEmit: true, // Already set in tsconfig.json, but this makes it explicit
       }),
       css(),
       babel({

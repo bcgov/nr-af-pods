@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "KTTP-Stream3", "KTTP3"],
-  "version": "1.0.6",
+  "version": "1.0.7",
   "name": "KTTP - Regenerative Agriculture Activities",
   "abbreviation": "KTTP-Stream3",
   "hiddenSteps": "tab_eligibility",
@@ -211,7 +211,8 @@
         {
           "name": "quartech_activitystartdate",
           "required": true,
-          "elementType": "DatePicker"
+          "elementType": "DatePicker",
+          "disableSingleLine": true
         },
         {
           "name": "quartech_doestheactivitytakeplaceovermultipleday",

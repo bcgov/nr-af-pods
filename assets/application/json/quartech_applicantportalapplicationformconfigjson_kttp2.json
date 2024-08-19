@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "KTTP-StreamTwo", "KTTP2"],
-  "version": "1.0.6",
+  "version": "1.0.7",
   "name": "KTTP - Hands On Learning For Skill and Knowledge Development Activities",
   "abbreviation": "KTTP-StreamTwo",
   "hiddenSteps": "tab_eligibility",
@@ -196,7 +196,8 @@
         {
           "name": "quartech_activitystartdate",
           "required": true,
-          "elementType": "DatePicker"
+          "elementType": "DatePicker",
+          "disableSingleLine": true
         },
         {
           "name": "quartech_doestheactivitytakeplaceovermultipleday",

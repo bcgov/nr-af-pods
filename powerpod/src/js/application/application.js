@@ -170,7 +170,7 @@ async function updatePageForSelectedProgram(programId = undefined) {
         });
         updateFormStepForSelectedProgram(programData);
         hideLoadingAnimation();
-        validateRequiredFields();
+        // validateRequiredFields();
 
         addFormDataOnClickHandler(); // for form data json generation
       }

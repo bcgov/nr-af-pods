@@ -305,9 +305,9 @@ export function generateFormJson() {
         return;
       }
 
-      const controlType = getControlType(tr);
       const questionText = getInfoValue(tr);
       const controlId = getControlId(tr);
+      const controlType = getControlType({ tr });
 
       logger.info({
         fn: generateFormJson,
