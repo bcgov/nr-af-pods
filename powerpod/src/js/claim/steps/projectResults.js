@@ -6,7 +6,6 @@ import { configureFields } from '../../common/fieldConfiguration.js';
 import { customizeSingleOrGroupApplicantQuestions } from '../fieldLogic.js';
 
 export function customizeProjectResultsStep() {
-  // initInputMasking();
   configureFields();
 
   const programAbbreviation = getProgramAbbreviation();

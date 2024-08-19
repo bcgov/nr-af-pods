@@ -14,46 +14,14 @@
           "elementType": "DropdownSelect"
         },
         {
-          "name": "quartech_recipienttype",
-          "required": true,
-          "elementType": "DropdownSelect",
-          "label": "Type of Business / Organization. If your operation does both processing and primary production, please select the one that will primarily benefit from this program."
-        },
-        {
-          "name": "quartech_commodity",
-          "visibleIf": {
-            "fieldName": "quartech_recipienttype",
-            "selectedValue": 255550001
-          }
-        },
-        {
-          "name": "quartech_othercommoditiesproducedharvested",
-          "visibleIf": {
-            "fieldName": "quartech_recipienttype",
-            "selectedValue": 255550001
-          }
-        },
-        {
-          "name": "quartech_primarilyprocess",
-          "visibleIf": {
-            "fieldName": "quartech_recipienttype",
-            "selectedValue": 255550002
-          }
-        },
-        {
-          "name": "quartech_otherproductsprocessed",
-          "visibleIf": {
-            "fieldName": "quartech_recipienttype",
-            "selectedValue": 255550002
-          }
-        },
-        {
           "name": "quartech_applicanttype",
           "required": true,
-          "elementType": "DropdownSelect"
+          "elementType": "DropdownSelect",
+          "label": "Applicant Type"
         },
         {
           "name": "quartech_yearproductionestablished",
+          "labe": "Year Business Established",
           "required": true,
           "validation": {
             "type": "numeric",
@@ -63,6 +31,7 @@
         },
         {
           "name": "quartech_numberoffulltimeemployees",
+          "label": "How many full-time employees do you employ?",
           "format": "number",
           "required": true,
           "validation": {
@@ -73,6 +42,7 @@
         },
         {
           "name": "quartech_numberofparttimeemployees",
+          "label": "How many part-time employees do you employ (including seasonal)?",
           "format": "number",
           "required": true,
           "validation": {
@@ -83,6 +53,7 @@
         },
         {
           "name": "quartech_previousyeargrossincome",
+          "label": "What was your estimated total gross income in the previous year?",
           "required": true,
           "format": "currency",
           "maxDigits": 13,
@@ -95,11 +66,27 @@
         },
         {
           "name": "quartech_previousyearnetincome",
+          "label": "What was your estimated total net income in the previous year?",
           "required": true,
           "format": "currency",
           "maxDigits": 13,
           "emptyInitialValue": true,
           "allowNegatives": true
+        },
+        {
+          "name": "quartech_recipienttype",
+          "required": true,
+          "elementType": "DropdownSelect",
+          "label": "Type of Business / Organization. If your operation does both processing and primary production, please select the one that will primarily benefit from this program."
+        },
+        {
+          "name": "quartech_commodity",
+          "label": "What is your primary production?",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_recipienttype",
+            "selectedValue": 255550001
+          }
         },
         {
           "name": "quartech_operationdoesprocessingandprimaryproducti",

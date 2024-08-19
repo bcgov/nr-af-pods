@@ -31,6 +31,7 @@ export const HtmlElementType = {
   FileInput: 'FileInput',
   SingleOptionSet: 'SingleOptionSet',
   MultiOptionSet: 'MultiOptionSet',
+  MultiSelectPicklist: 'MultiSelectPicklist',
   DropdownSelect: 'DropdownSelect',
   DatePicker: 'DatePicker',
   Checkbox: 'Checkbox',
@@ -125,4 +126,8 @@ export const POWERPOD = {
   initValuesFns: {},
   valueGeneration: {},
   loading: true,
+  fieldConfiguration: {
+    loading: true,
+  },
+  dateUtils: {},
 };

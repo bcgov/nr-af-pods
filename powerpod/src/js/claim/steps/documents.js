@@ -1,5 +1,4 @@
 import {
-  combineElementsIntoOneRowNew,
   hideQuestion,
   observeIframeChanges,
 } from '../../common/html.js';

@@ -1,5 +1,6 @@
 import { POWERPOD } from './constants.js';
 import { Logger } from './logger.js';
+import localConfigJson from '../../../../assets/application/json/quartech_applicantportalapplicationformconfigjson_kttp1.json';
 
 const logger = Logger('common/config');
 
@@ -62,7 +63,24 @@ export function getClaimConfigData() {
 }
 
 export function getApplicationConfigData(programId) {
+  const { pathname: path } = window.location;
+  logger.info({
+    fn: getApplicationConfigData,
+    message:
+      'checking path to determine if we should use localhost or hosted data',
+    data: { path },
+  });
+
+  if (path.includes('application-dev') && localConfigJson) {
+    logger.info({
+      fn: getApplicationConfigData,
+      message: 'successfully fetched application config data from localhost',
+      data: { localConfigJson },
+    });
+    return localConfigJson;
+  }
   const programData = localStorage.getItem('programData');
+
   const configDataJSON =
     JSON.parse(programData)?.quartech_applicantportalapplicationformconfigjson;
   const podsConfigData = JSON.parse(configDataJSON);

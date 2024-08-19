@@ -1,6 +1,6 @@
 {
   "tags": ["Global", "ALL", "Application", "StaffPortal"],
-  "version": "1.0.5",
+  "version": "1.0.8",
   "description": "Global JSON config used in Applications",
   "FieldsConfig": {
     "programs": [
@@ -149,7 +149,8 @@
               {
                 "name": "quartech_inordertocontinuouslyimprovecommunications",
                 "required": true,
-                "elementType": "MultiOptionSet"
+                "elementType": "MultiSelectPicklist",
+                "disableSingleLine": true
               },
               {
                 "name": "quartech_ifotherpleasedescribe",

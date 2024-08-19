@@ -118,9 +118,13 @@ export function getFieldsBySectionApplication(stepName, forceRefresh = false) {
   }
 
   fields.forEach((s) => {
+    if (s.type === 'SectionTitle') {
+      return;
+    }
     // TODO: Improve this as we do regression testing
     // Only enable for NEFBA2 and appropriate steps right now.
     if (
+      s.type !== 'SectionTitle' &&
       !s.disableSingleLine &&
       ![
         FormStep.Documents,
@@ -131,9 +135,9 @@ export function getFieldsBySectionApplication(stepName, forceRefresh = false) {
       combineElementsIntoOneRowNew(s.name);
     }
     if (s.disableSingleLine) {
-      disableSingleLine(name);
+      disableSingleLine(s.name);
     }
-    store.dispatch('addFieldData', s);
+    store.dispatch('addFieldData', { ...s, loading: true });
     if (s.relocateField) {
       logger.info({
         fn: getFieldsBySectionApplication,
@@ -141,18 +145,20 @@ export function getFieldsBySectionApplication(stepName, forceRefresh = false) {
       });
       relocateField(s);
     }
-    if (s.visibleIf) {
-      logger.warn({
-        fn: getFieldsBySectionApplication,
-        message: `NOT showing field since conditionally defined visibleIf, name: ${s.name}`,
-      });
-      return;
-    }
-    logger.info({
-      fn: getFieldsBySectionApplication,
-      message: `showing field name: ${s.name}`,
-    });
-    showFieldRow(s.name);
+    // if (s.visibleIf) {
+    //   logger.warn({
+    //     fn: getFieldsBySectionApplication,
+    //     message: `NOT showing field since conditionally defined visibleIf, name: ${s.name}`,
+    //   });
+    //   return;
+    // }
+    // if (s.type !== 'SectionTitle') {
+    //   logger.info({
+    //     fn: getFieldsBySectionApplication,
+    //     message: `showing field name: ${s.name}, s: ${JSON.stringify(s)}`,
+    //   });
+    //   showFieldRow(s.name);
+    // }
   });
   localStorage.setItem(
     `fieldsData-${programName}-${stepName}`,
@@ -266,19 +272,36 @@ export function getGlobalFieldsConfig() {
   );
 }
 
-export function getFieldConfig(name) {
-  let programName = getProgramAbbreviation();
-  let stepName = getCurrentStep();
+export function getFieldConfig(fieldName) {
+  let fieldConfig;
+  if (POWERPOD.state?.fields?.[fieldName]) {
+    fieldConfig = POWERPOD.state?.fields?.[fieldName];
+  } else {
+    logger.warn({
+      fn: getFieldConfig,
+      message: `Could not find field config in state, trying local storage`,
+    });
+    let programName = getProgramAbbreviation();
+    let stepName = getCurrentStep();
 
-  const fieldsConfig = JSON.parse(
-    localStorage.getItem(`fieldsData-${programName}-${stepName}`)
-  );
+    const fieldsConfig = JSON.parse(
+      localStorage.getItem(`fieldsData-${programName}-${stepName}`)
+    );
 
-  const fieldConfig = fieldsConfig.first((f) => f.name === name);
+    fieldConfig = fieldsConfig.first((f) => f.name === fieldName);
+  }
+
+  if (!fieldConfig) {
+    logger.error({
+      fn: getFieldConfig,
+      message: `Could not find fieldConfig for fieldName: ${fieldName}`,
+    });
+    return;
+  }
 
   logger.info({
     fn: getFieldConfig,
-    message: `Retrieved field config for name: ${name}`,
+    message: `Retrieved field config for name: ${fieldName}`,
     data: { fieldConfig },
   });
 

@@ -1,11 +1,7 @@
-import {
-  getExistingDraftApplicationId,
-  getExistingDraftApplicationId,
-} from './applicationUtils.js';
+import { getExistingDraftApplicationId } from './applicationUtils.js';
 import { getApplicationConfigData } from './config.js';
 import { POWERPOD, FormStep, TabDisplayNames, doc } from './constants.js';
-import { getDraftApplicationsForProgramIdData } from './fetch.js';
-import { htmlDecode, onDocumentReadyState, redirectToFormId } from './html.js';
+import { htmlDecode } from './html.js';
 import { Logger } from './logger.js';
 
 const logger = Logger('common/program');

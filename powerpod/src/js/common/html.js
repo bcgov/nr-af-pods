@@ -1,10 +1,15 @@
 import { HtmlElementType, ProgramIds, doc } from './constants.js';
 import { Logger } from './logger.js';
-import { validateRequiredFields } from './fieldValidation.js';
+import {
+  validateRequiredFields,
+  validateStepField,
+} from './fieldValidation.js';
 import { POWERPOD } from './constants.js';
 import { cleanString } from './documents.ts';
 import { getProgramId } from './program.ts';
 import store from '../store/index.js';
+import { getFieldConfig } from './fields.js';
+import { convertDateToISO } from './date.js';
 
 const logger = Logger('common/html');
 
@@ -34,6 +39,7 @@ POWERPOD.html = {
   observeIframeChanges,
   hideQuestion,
   showOrHideAndReturnValue,
+  getFieldRow,
   setFieldValue,
   relocateField,
   combineElementsIntoOneRowNew,
@@ -48,6 +54,9 @@ POWERPOD.html = {
   htmlDecode,
   getFieldInfoDiv,
   setMultiSelectValues,
+  getMultiOptionSetElementValue,
+  getOriginalMsosElement,
+  newGetOriginalMultiOptionSetElementValue,
 };
 
 export function redirectToFormId(id) {
@@ -65,8 +74,8 @@ export function redirectToFormId(id) {
   window.location.href = currentUrl.toString();
 }
 
-export function getControlType(tr) {
-  const controlDiv = tr.querySelector('div.control');
+export function getControlType({ tr, controlId = '', skipState = false }) {
+  const controlDiv = tr?.querySelector('div.control');
   const control = controlDiv?.querySelector(
     'input[id*=quartech_], textarea[id*=quartech_], select[id*=quartech_]'
   );
@@ -83,10 +92,24 @@ export function getControlType(tr) {
     return;
   }
 
-  const controlId = getControlId(tr);
+  if (!controlId) {
+    controlId = getControlId(tr);
+  }
 
-  if (control?.id && POWERPOD.state?.fields[controlId]?.elementType) {
-    return POWERPOD.state?.fields[controlId]?.elementType;
+  let controlType;
+
+  if (
+    !skipState &&
+    control?.id &&
+    POWERPOD.state?.fields[controlId]?.elementType
+  ) {
+    controlType = POWERPOD.state?.fields[controlId]?.elementType;
+    logger.info({
+      fn: getControlType,
+      message: `Successfully found control type from STATE for controlId: ${controlId}, found elementType: ${controlType}`,
+      data: { tr, controlId },
+    });
+    return controlType;
   }
 
   const tag = control.tagName.toLowerCase();
@@ -94,29 +117,46 @@ export function getControlType(tr) {
   const typeAttribute = control.getAttribute('type');
 
   if (tag === 'input' && classes?.includes('money')) {
-    return HtmlElementType.CurrencyInput;
+    controlType = HtmlElementType.CurrencyInput;
+  } else if (
+    tag === 'input' &&
+    classes?.includes('text') &&
+    classes?.includes('lookup') &&
+    classes?.includes('form-control')
+  ) {
+    controlType = HtmlElementType.MultiSelectPicklist;
   } else if (tag === 'input' && classes?.includes('text')) {
-    return HtmlElementType.Input;
+    controlType = HtmlElementType.Input;
   } else if (tag === 'input' && classes?.includes('datetime')) {
-    return HtmlElementType.DatePicker;
+    controlType = HtmlElementType.DatePicker;
   } else if (tag === 'textarea' && classes?.includes('textarea')) {
-    return HtmlElementType.TextArea;
+    controlType = HtmlElementType.TextArea;
   } else if (tag === 'select' && classes?.includes('picklist')) {
-    return HtmlElementType.DropdownSelect;
+    controlType = HtmlElementType.DropdownSelect;
   } else if (tag === 'input' && control.type === 'checkbox') {
-    return HtmlElementType.Checkbox;
+    controlType = HtmlElementType.Checkbox;
+  } else if (tag === 'input' && classes?.includes('msos-input')) {
+    controlType = HtmlElementType.MultiOptionSet;
   }
-  logger.error({
+  if (!controlType) {
+    logger.error({
+      fn: getControlType,
+      message: 'Could not determine control type',
+      data: {
+        tr,
+        control,
+        tag,
+        classes,
+      },
+    });
+    return HtmlElementType.Unknown;
+  }
+  logger.info({
     fn: getControlType,
-    message: 'Could not determine control type',
-    data: {
-      tr,
-      control,
-      tag,
-      classes,
-    },
+    message: `Successfully found control type for controlId: ${controlId}, found elementType: ${controlType}`,
+    data: { tr, controlId },
   });
-  return HtmlElementType.Unknown;
+  return controlType;
 }
 
 export function isEmptyRow(tr) {
@@ -159,7 +199,7 @@ export function getControlValue({
   rawValue = false,
   forTemplateGeneration = false,
 }) {
-  const type = getControlType(tr);
+  const type = getControlType({ tr, controlId });
 
   logger.info({
     fn: getControlValue,
@@ -175,37 +215,58 @@ export function getControlValue({
 
   const controlDiv = tr.querySelector('.control');
 
+  let finalValue;
   if (forTemplateGeneration && controlId === 'quartech_nocragstnumber') {
     if (POWERPOD.program?.programId === ProgramIds.VLB) {
       const checked =
         document.getElementsByTagName('quartech-checkbox')?.[0].inputValue;
-      if (checked === 'true' || checked === true) return 'Yes';
-      return 'No';
+      if (checked === 'true' || checked === true) finalValue = 'Yes';
+      finalValue = 'No';
     }
-  }
-
-  if (type === HtmlElementType.FileInput) {
+  } else if (type === HtmlElementType.FileInput) {
     const value = controlDiv?.querySelector('textarea').value;
-    if (rawValue) return value;
-    return cleanString(value?.replace(/\n/g, ' '));
+    if (rawValue) {
+      finalValue = value;
+    } else {
+      finalValue = cleanString(value?.replace(/\n/g, ' '));
+    }
   } else if (type === HtmlElementType.CurrencyInput) {
     const value = controlDiv?.querySelector('input')?.value;
-    if (rawValue) return value;
-    return `$${value}`;
+    if (rawValue) {
+      finalValue = value;
+    } else {
+      finalValue = `$${value}`;
+    }
   } else if (type === HtmlElementType.Input) {
-    return controlDiv?.querySelector('input')?.value;
+    finalValue = controlDiv?.querySelector('input')?.value;
   } else if (type === HtmlElementType.DatePicker) {
-    return controlDiv?.querySelector('div > .datetimepicker > input')?.value;
+    const value = controlDiv?.querySelector(
+      'div > .datetimepicker > input'
+    )?.value;
+    if (rawValue && value?.length) {
+      logger.info({
+        fn: getControlValue,
+        message: `Attempting to convert date raw value to ISO format, value: ${value}`,
+      });
+      finalValue = convertDateToISO(value) ?? '';
+    } else {
+      finalValue = value ?? '';
+    }
   } else if (type === HtmlElementType.TextArea) {
-    return controlDiv?.querySelector('textarea').value?.replace(/\n/g, ' ');
+    finalValue = controlDiv
+      ?.querySelector('textarea')
+      .value?.replace(/\n/g, ' ');
   } else if (type === HtmlElementType.DropdownSelect) {
     const selectElement = controlDiv?.querySelector('select');
-    if (rawValue) return selectElement.value;
-    const selectedIndex = selectElement?.selectedIndex;
-    const selectedOption = selectElement.options[selectedIndex];
-    const selectedOptionText =
-      selectedOption.textContent || selectedOption.innerText;
-    return selectedOptionText;
+    if (rawValue) {
+      finalValue = selectElement.value;
+    } else {
+      const selectedIndex = selectElement?.selectedIndex;
+      const selectedOption = selectElement.options[selectedIndex];
+      const selectedOptionText =
+        selectedOption.textContent || selectedOption.innerText;
+      finalValue = selectedOptionText;
+    }
   } else if (type === HtmlElementType.Checkbox) {
     const checked = controlDiv?.querySelector('input')?.checked;
     logger.info({
@@ -213,13 +274,92 @@ export function getControlValue({
       message: `Found control value for type: ${type}, rawValue: ${rawValue}, checked: ${checked}`,
       data: { controlDiv },
     });
-    if (rawValue) return checked;
-    if (checked === 'true' || checked === true) return 'Yes';
-    return 'No';
+    if (rawValue) {
+      finalValue = checked;
+    } else {
+      if (checked === 'true' || checked === true) return 'Yes';
+      finalValue = 'No';
+    }
   } else if (type === HtmlElementType.MultiOptionSet && controlId) {
-    return getMultiOptionSetElementValue(controlId, rawValue);
+    finalValue = newGetOriginalMultiOptionSetElementValue(controlId, rawValue);
+  } else if (type === HtmlElementType.MultiSelectPicklist && controlId) {
+    if (rawValue) {
+      finalValue = document?.getElementById(controlId)?.value;
+    } else {
+      finalValue = controlDiv?.querySelector('input')?.value;
+    }
   }
-  return null;
+
+  logger.info({
+    fn: getControlValue,
+    message: `For controlId: ${controlId}, rawValue: ${rawValue}, forTemplateGeneration: ${forTemplateGeneration} found finalValue: ${finalValue}`,
+    data: {
+      controlId,
+      tr,
+      rawValue,
+      forTemplateGeneration,
+      finalValue,
+    },
+  });
+
+  return finalValue;
+}
+
+export function newGetOriginalMultiOptionSetElementValue(controlId, rawValue) {
+  const originalSelectElementForMSOS = getOriginalMsosElement(controlId);
+  if (!originalSelectElementForMSOS) {
+    logger.error({
+      fn: newGetOriginalMultiOptionSetElementValue,
+      message: `Could not find original msos element for controlId: ${controlId}`,
+    });
+    return;
+  }
+  const selectionContainer =
+    // @ts-ignore
+    originalSelectElementForMSOS?.multiSelectOptionSet()?.$selection;
+  if (!selectionContainer) {
+    logger.error({
+      fn: newGetOriginalMultiOptionSetElementValue,
+      message: `Could not find msos selectionContainer for controlId: ${controlId}`,
+    });
+    return;
+  }
+  const selectedItems = selectionContainer?.find('li[aria-selected="true"]');
+  const inputElements = selectedItems?.find('input');
+  if (
+    !selectedItems &&
+    !selectedItems.length &&
+    !inputElements &&
+    !inputElements.length
+  ) {
+    logger.warn({
+      fn: newGetOriginalMultiOptionSetElementValue,
+      message: `Could not find any selectedItems or inputElements for controlId: ${controlId}`,
+    });
+    return '';
+  }
+  let valueStrArray = [];
+  if (rawValue) {
+    for (let i = 0; i < inputElements.length; i++) {
+      const input = inputElements[i];
+      valueStrArray.push(input?.value);
+    }
+  } else {
+    for (let i = 0; i < inputElements.length; i++) {
+      const input = inputElements[i];
+      const label = input.getAttribute('aria-label') || '';
+      valueStrArray.push(label);
+    }
+  }
+
+  const valueStr = valueStrArray.join(', ');
+
+  logger.info({
+    fn: newGetOriginalMultiOptionSetElementValue,
+    message: `For controlId: ${controlId} found valueStr: ${valueStr}`,
+  });
+
+  return valueStr;
 }
 
 export function getMultiOptionSetElementValue(controlId, rawValue) {
@@ -231,7 +371,7 @@ export function getMultiOptionSetElementValue(controlId, rawValue) {
     });
     return;
   }
-  if (inputElement.value?.length <= 0) {
+  if (inputElement.value === undefined || inputElement.value?.length <= 0) {
     logger.warn({
       fn: getMultiOptionSetElementValue,
       message: `MultiOptionSet value empty for controlId: ${controlId}`,
@@ -317,20 +457,64 @@ export function getFieldLabel(fieldName) {
   return label;
 }
 
-export function showFieldRow(fieldName) {
-  logger.info({
-    fn: showFieldRow,
-    message: `showFieldRow called for fieldName: ${fieldName}`,
-  });
+export function getFieldRow(fieldName) {
   const fieldLabelElement = document.querySelector(`#${fieldName}_label`);
   if (!fieldLabelElement) {
     logger.error({
-      fn: showFieldRow,
+      fn: getFieldRow,
       message: `could not find fieldLabelElement for fieldName: ${fieldName}`,
     });
     return;
   }
   const fieldRow = fieldLabelElement.closest('tr');
+
+  if (!fieldRow) {
+    logger.error({
+      fn: getFieldRow,
+      message: `could not find fieldRow for fieldName: ${fieldName}`,
+    });
+    return;
+  }
+
+  return fieldRow;
+}
+
+export function hideFieldRow(fieldName, doNotBlank = false) {
+  logger.info({
+    fn: hideFieldRow,
+    message: `hideFieldRow called for fieldName: ${fieldName}`,
+  });
+  const fieldRow = getFieldRow(fieldName);
+
+  if (!fieldRow) {
+    logger.error({
+      fn: hideFieldRow,
+      message: `could not find fieldRow for fieldName: ${fieldName}`,
+    });
+    return;
+  }
+
+  $(fieldRow)?.css({ display: 'none' });
+
+  if (!doNotBlank) {
+    setFieldValueToEmptyState(fieldName);
+  }
+
+  store.dispatch('addFieldData', { name: fieldName, visible: false });
+
+  logger.info({
+    fn: hideFieldRow,
+    message: `successfully ran hideFieldRow for fieldName: ${fieldName}`,
+    data: { fieldRow },
+  });
+}
+
+export function showFieldRow(fieldName) {
+  logger.info({
+    fn: showFieldRow,
+    message: `showFieldRow called for fieldName: ${fieldName}`,
+  });
+  const fieldRow = getFieldRow(fieldName);
 
   if (!fieldRow) {
     logger.error({
@@ -358,6 +542,10 @@ export function showFieldRow(fieldName) {
   $(nearestFieldSet).css({ display: '' });
 
   const displayStyle = nearestFieldSet?.style?.display;
+
+  store.dispatch('addFieldData', { name: fieldName, visible: true });
+
+  validateStepField(fieldName);
 
   logger.info({
     fn: showFieldRow,
@@ -519,7 +707,7 @@ export function observeChanges(
     if (customFunc) {
       customFunc(mutations);
     } else {
-      validateRequiredFields();
+      // validateRequiredFields();
     }
   });
   if (
@@ -548,7 +736,7 @@ export function observeChanges(
       if (customFunc) {
         customFunc();
       } else {
-        validateRequiredFields();
+        // validateRequiredFields();
       }
     }
     return observer;
@@ -619,11 +807,7 @@ export function observeIframeChanges(
   }
 }
 
-export function hideFieldByFieldName(
-  fieldName,
-  validationFunc,
-  doNotBlank = false
-) {
+export function hideFieldByFieldName(fieldName, doNotBlank = false) {
   const fieldLabelElement = document.querySelector(`#${fieldName}_label`);
   if (!fieldLabelElement) return;
   const fieldRow = fieldLabelElement.closest('tr');
@@ -635,13 +819,13 @@ export function hideFieldByFieldName(
   $(fieldRow).css({ display: 'none' });
   $(`#${fieldName}_label`).parent().removeClass('required');
   localStorage.removeItem(`shouldRequire_${fieldName}`);
-  if (validationFunc) {
-    validationFunc();
-  }
+  // if (validationFunc) {
+  //   validationFunc();
+  // }
   $(fieldInputElement).off('change');
 
   if (!doNotBlank) {
-    $(fieldInputElement).val('');
+    setFieldValueToEmptyState(fieldName);
   }
 }
 
@@ -651,7 +835,9 @@ export function hideQuestion(fieldName) {
   const fieldLabelElement = document.querySelector(`#${fieldName}_label`);
   const fieldRow = fieldLabelElement.closest('tr');
   $(fieldRow).css({ display: 'none' });
-  validateRequiredFields();
+
+  // store.dispatch('addFieldData', { name: fieldName, visible: false });
+  // validateRequiredFields();
 }
 
 export function showOrHideAndReturnValue(valueElementId, descriptionElementId) {
@@ -779,23 +965,47 @@ export function combineElementsIntoOneRowNew(name) {
   // find and delete colgroup config, if it exists
   tableElement.find('colgroup')?.remove();
 
-  const controlDiv = inputElement.closest('div.control');
-
   const tr = inputElement.closest('tr');
 
-  const clonedTd = inputTd.clone();
-  clonedTd.attr('colspan', '1');
-  tr.append(clonedTd);
+  // Clone the <td> element without children
+  const newTd = $('<td>');
 
-  controlDiv.remove();
+  // Copy attributes from the original <tr> to the new <tr>
+  $.each(inputTd[0].attributes, function () {
+    newTd.attr(this.name, this.value);
+  });
 
-  const newInfoDiv = clonedTd.find('div.info');
-  newInfoDiv.remove();
+  newTd.attr('colspan', '1');
+  tr.append(newTd);
+  inputTd.children().not('div.info').appendTo(newTd);
 }
 
-export function disableSingleLine(name) {
-  const inputElement = $(`#${name}`);
+export function disableSingleLine(name, elementType = '') {
+  logger.info({
+    fn: disableSingleLine,
+    message: `Disable single line for name: ${name}, elementType: ${elementType}`,
+  });
+  let inputElement;
+  if (elementType === HtmlElementType.MultiOptionSet) {
+    inputElement = $(`#${name}_0`);
+  } else {
+    inputElement = $(`#${name}`);
+  }
+  if (!inputElement) {
+    logger.error({
+      fn: disableSingleLine,
+      message: `Failed to disable single line, could not find input element for name: ${name}, elementType: ${HtmlElementType}`,
+    });
+    return;
+  }
   const inputTd = inputElement.closest('td');
+  if (!inputTd) {
+    logger.error({
+      fn: disableSingleLine,
+      message: `Failed to disable single line, could not find input td element for name: ${name}, elementType: ${HtmlElementType}`,
+    });
+    return;
+  }
   inputTd.attr('colspan', '2');
 }
 
@@ -966,7 +1176,7 @@ export function getOriginalMsosElement(name) {
   if (!originalSelectElementForMSOS || !originalSelectElementForMSOS.length) {
     logger.error({
       fn: setMultiSelectValues,
-      message: `Could not get original select control element for Msos, see initializeMsosLibrary, MultiSelectOptionSet libraries, https://pbauerochse.github.io/searchable-option-list/`,
+      message: `Could not get original select control element for fieldName: ${name} for Msos, see initializeMsosLibrary, MultiSelectOptionSet libraries, https://pbauerochse.github.io/searchable-option-list/`,
     });
     return;
   }
@@ -991,4 +1201,48 @@ export function setMultiSelectValues(name, values = []) {
 
   // to select specific items:
   // $(`#${multiSelectFieldName}_0`).multiSelectOptionSet().refreshControl([255550005])
+}
+
+export function getFieldErrorDiv(fieldName) {
+  let errorMessageElement = document.querySelector(
+    `#${fieldName}_error_message`
+  );
+
+  if (!errorMessageElement) {
+    let div = document.createElement('div');
+    div.id = `${fieldName}_error_message`;
+    div.className = 'error_message';
+    // @ts-ignore
+    div.style = 'display:none;';
+
+    const control = getFieldRow(fieldName)?.querySelector('div.control');
+    control?.insertAdjacentElement('afterend', div);
+
+    errorMessageElement = document.querySelector(`#${fieldName}_error_message`);
+
+    if (!errorMessageElement) {
+      logger.error({
+        fn: getFieldErrorDiv,
+        message: `Failed to find field error div, fieldName: ${fieldName}`,
+      });
+      return;
+    }
+  }
+
+  return errorMessageElement;
+}
+
+export function setFieldValueToEmptyState(fieldName) {
+  const fieldConfig = getFieldConfig(fieldName);
+  // for multi option sets specifically must use custom function
+  if (
+    fieldConfig?.elementType &&
+    fieldConfig?.elementType === HtmlElementType.MultiOptionSet
+  ) {
+    setMultiSelectValues(fieldName, []);
+  } else {
+    $(`#${fieldName}_name`)?.val(''); // needed for lookup search/modal input elements
+    $(fieldName).val('');
+    setFieldValue(fieldName, '');
+  }
 }
