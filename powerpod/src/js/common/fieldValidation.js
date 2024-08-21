@@ -14,6 +14,7 @@ import { getEnv } from './env.ts';
 import {
   getFieldsBySectionClaim,
   getFieldsBySectionApplication,
+  getFieldConfig,
 } from './fields.js';
 import {
   getControlValue,
@@ -41,56 +42,73 @@ export function validateRequiredFields() {
 }
 
 export function validateStepField(fieldName) {
-  logger.info({
-    fn: validateStepField,
-    message: `start validating fieldName: ${fieldName}`,
-  });
-
-  if (!POWERPOD.state?.fields?.[fieldName]) {
+  const fieldConfig = getFieldConfig(fieldName);
+  if (!fieldConfig) {
     logger.error({
       fn: validateStepField,
       message: `failed to find fieldName: ${fieldName} in state`,
     });
     return;
   }
-  const { name, required, elementType, validation, format } =
-    POWERPOD.state?.fields?.[fieldName];
+  if (fieldConfig.hidden) {
+    logger.warn({
+      fn: validateStepField,
+      message: `skip validating HIDDEN fieldName: ${fieldName}`,
+      data: { fieldConfig },
+    });
+    // clear any field errors if present
+    if (fieldConfig.error?.length) {
+      store.dispatch('addFieldData', {
+        name,
+        error: '',
+      });
+    }
+    return;
+  }
+  logger.info({
+    fn: validateStepField,
+    message: `start validating fieldName: ${fieldName}`,
+    data: { fieldConfig },
+  });
+  const { name, required, elementType, validation, format } = fieldConfig;
   let fieldErrorHtml = '';
   let errorMsg = '';
   if (required) {
-    errorMsg = validateRequiredField({
-      fieldName: name,
-      elemType: elementType,
-    });
+    errorMsg =
+      validateRequiredField({
+        fieldName: name,
+        elemType: elementType,
+      }) ?? '';
     if (errorMsg && errorMsg.length) {
-      fieldErrorHtml = fieldErrorHtml.concat(errorMsg);
+      fieldErrorHtml = fieldErrorHtml.concat(errorMsg + ' ');
     }
   }
   if (validation?.type === 'numeric') {
     const { value, comparison } = validation;
     errorMsg = validateNumericFieldValue(name, value, comparison) ?? '';
     if (errorMsg && errorMsg.length) {
-      fieldErrorHtml = fieldErrorHtml.concat(errorMsg);
+      fieldErrorHtml = fieldErrorHtml.concat(errorMsg + ' ');
     }
   }
   if (validation?.type === 'length') {
     const { value, comparison, forceRequired, postfix, overrideDisplayValue } =
       validation;
-    errorMsg = validateFieldLength(
-      name,
-      value,
-      comparison,
-      forceRequired,
-      postfix,
-      overrideDisplayValue
-    );
+    errorMsg =
+      validateFieldLength(
+        name,
+        value,
+        comparison,
+        forceRequired,
+        postfix,
+        overrideDisplayValue
+      ) ?? '';
     logger.info({
       fn: validateStepField,
       message: 'Generate length validation error html...',
     });
     // Display instant feedback on field input
     if (errorMsg && errorMsg.length > 0) {
-      fieldErrorHtml = fieldErrorHtml.concat(`<div>${errorMsg}</div>`);
+      fieldErrorHtml = fieldErrorHtml.concat(errorMsg + ' ');
       logger.info({
         fn: validateStepField,
         message: 'Done generating length validation error html...',
@@ -98,24 +116,20 @@ export function validateStepField(fieldName) {
     }
   }
   if (format === 'email') {
-    errorMsg = validateEmailAddressField(name);
+    errorMsg = validateEmailAddressField(name) ?? '';
     logger.info({
       fn: validateStepField,
       message: 'Generate email validation error html...',
     });
     // Display instant feedback on field input
     if (errorMsg && errorMsg.length > 0) {
-      fieldErrorHtml = fieldErrorHtml.concat(`<div>${errorMsg}</div>`);
+      fieldErrorHtml = fieldErrorHtml.concat(errorMsg + ' ');
       logger.info({
         fn: validateStepField,
         message: 'Done generating email validation error html...',
       });
     }
   }
-  logger.info({
-    fn: validateStepField,
-    message: `Found error message for field: ${name}, errorMsg: ${fieldErrorHtml}`,
-  });
   let errorMessageElement = getFieldErrorDiv(fieldName);
   if (!errorMessageElement) {
     logger.error({
@@ -124,20 +138,59 @@ export function validateStepField(fieldName) {
     });
     return;
   }
-  if (fieldErrorHtml && fieldErrorHtml.length > 0) {
-    $(errorMessageElement).html(fieldErrorHtml);
-    $(errorMessageElement).css({ display: '' });
-    $(`#${fieldName}`).css({ border: '1px solid #e5636c' });
-    store.dispatch('addFieldData', {
-      name,
-      error: `${fieldErrorHtml}`,
+
+  if (!fieldErrorHtml?.length) {
+    logger.info({
+      fn: validateStepField,
+      message: `Did NOT find error message for field: ${name}`,
     });
-  } else {
     $(errorMessageElement).css({ display: 'none' });
-    $(`#${fieldName}`).css({ border: '' });
+    if (fieldConfig.elementType === HtmlElementType.MultiOptionSet) {
+      if (document.querySelector(`#${fieldName}_i`)?.style?.border) {
+        document.querySelector(`#${fieldName}_i`).style.border = '';
+      }
+    } else {
+      $(`#${fieldName}`).css({ border: '' });
+    }
     store.dispatch('addFieldData', {
       name,
       error: '',
+    });
+  } else {
+    logger.info({
+      fn: validateStepField,
+      message: `Found error message for field: ${name}, fieldErrorHtml: ${fieldErrorHtml}`,
+    });
+    // only show error message ON FIELD if field has been touched
+    if (fieldConfig.touched) {
+      logger.info({
+        fn: validateStepField,
+        message: `Field has been touched name: ${name}, show error message on field: ${name}, fieldErrorHtml: ${fieldErrorHtml}`,
+      });
+      $(errorMessageElement).html(fieldErrorHtml);
+      $(errorMessageElement).css({ display: '' });
+      if (fieldConfig.elementType === HtmlElementType.MultiOptionSet) {
+        $(`#${fieldName}_i`).css({ border: '1px solid #e5636c' });
+      } else {
+        $(`#${fieldName}`).css({ border: '1px solid #e5636c' });
+      }
+    } else {
+      logger.info({
+        fn: validateStepField,
+        message: `Field NOT touched yet name: ${name}, skip showing error message on field: ${name}, fieldErrorHtml: ${fieldErrorHtml}`,
+      });
+      $(errorMessageElement).css({ display: 'none' });
+      if (fieldConfig.elementType === HtmlElementType.MultiOptionSet) {
+        if (document.querySelector(`#${fieldName}_i`)?.style?.border) {
+          document.querySelector(`#${fieldName}_i`).style.border = '';
+        }
+      } else {
+        $(`#${fieldName}`).css({ border: '' });
+      }
+    }
+    store.dispatch('addFieldData', {
+      name,
+      error: `${fieldErrorHtml}`,
     });
   }
 
@@ -169,98 +222,7 @@ export function validateStepFields(stepName, returnString) {
   });
 
   for (let i = 0; i < fields.length; i++) {
-    const { name, required, elementType, validation } = fields[i];
-    let fieldErrorHtml = '';
-    let errorMsg = '';
-    if (required) {
-      if (elementType) {
-        errorMsg = validateRequiredField({
-          fieldName: name,
-          elemType: elementType,
-        });
-      } else {
-        errorMsg = validateRequiredField({ fieldName: name });
-      }
-      if (errorMsg && errorMsg.length) {
-        validationErrorHtml = validationErrorHtml.concat(errorMsg);
-        fieldErrorHtml = fieldErrorHtml.concat(errorMsg);
-      }
-    }
-    if (validation?.type === 'numeric') {
-      const { value, comparison } = validation;
-      errorMsg = validateNumericFieldValue(name, value, comparison) ?? '';
-      if (errorMsg && errorMsg.length) {
-        validationErrorHtml = validationErrorHtml.concat(errorMsg);
-        fieldErrorHtml = fieldErrorHtml.concat(errorMsg);
-      }
-    }
-    if (validation?.type === 'length') {
-      const {
-        value,
-        comparison,
-        forceRequired,
-        postfix,
-        overrideDisplayValue,
-      } = validation;
-      errorMsg = validateFieldLength(
-        name,
-        value,
-        comparison,
-        forceRequired,
-        postfix,
-        overrideDisplayValue
-      );
-      logger.info({
-        fn: validateStepFields,
-        message: 'Generate length validation error html...',
-        data: { validationErrorHtml },
-      });
-      // Display instant feedback on field input
-      if (errorMsg && errorMsg.length > 0) {
-        $(`#${name}_error_message`).html(errorMsg);
-        $(`#${name}`).on('focusout', function () {
-          $(`#${name}_error_message`).css({ display: '' });
-          $(`#${name}`).css({ border: '1px solid #e5636c' });
-        });
-        const fieldLabelText = $(`#${name}_label`).text();
-        const errorMsgPrefix = `<span>"${fieldLabelText}"</span>`;
-        validationErrorHtml = validationErrorHtml.concat(
-          `<div>${errorMsgPrefix}${errorMsg}</div>`
-        );
-        fieldErrorHtml = fieldErrorHtml.concat(
-          `<div>${errorMsgPrefix}${errorMsg}</div>`
-        );
-        logger.info({
-          fn: validateStepFields,
-          message: 'Done generating length validation error html...',
-          data: { validationErrorHtml },
-        });
-      } else {
-        logger.info({
-          fn: validateStepFields,
-          message: 'Nothing to display for length validation error html...',
-          data: { validationErrorHtml },
-        });
-        $(`#${name}`).off('focusout');
-        $(`#${name}_error_message`).css({ display: 'none' });
-        $(`#${name}`).css({ border: '' });
-      }
-    }
-    logger.info({
-      fn: validateStepFields,
-      message: `Found error message for field: ${name}, errorMsg: ${fieldErrorHtml}`,
-    });
-    if (fieldErrorHtml && fieldErrorHtml.length > 0) {
-      store.dispatch('addFieldData', {
-        name,
-        error: `${fieldErrorHtml}`,
-      });
-    } else {
-      store.dispatch('addFieldData', {
-        name,
-        error: '',
-      });
-    }
+    validateStepField(fields[i].name);
   }
 
   logger.info({
@@ -369,62 +331,27 @@ export function validateRequiredField({
 
   let validationErrorHtml = '';
 
-  var isEmptyField = true;
-  switch (elemType) {
-    case HtmlElementType.FileInput:
-      isEmptyField =
-        // @ts-ignore
-        $(`#${fieldName}`)?.val()?.length === 0;
-      errorMessage =
-        'Please ensure at least one file per required upload field is confirmed & uploaded successfully.';
-      break;
-    // case HtmlElementType.MultiSelectPicklist:
-    // isEmptyField = $(`li[id*='${fieldName}-selected-item-']`)?.length == 0;
-    // break;
-    case HtmlElementType.MultiOptionSet:
-      const originalSelectElementForMSOS = getOriginalMsosElement(fieldName);
-      const selectionContainer =
-        // @ts-ignore
-        originalSelectElementForMSOS?.multiSelectOptionSet()?.$selection;
-      const selectedItems = selectionContainer?.find(
-        'li[aria-selected="true"]'
-      );
-      isEmptyField = selectedItems?.length === 0;
-      break;
-    case HtmlElementType.DropdownSelect:
-      isEmptyField =
-        // @ts-ignore
-        document.querySelector(`#${fieldName}`)?.value?.length == 0;
-      break;
-    case HtmlElementType.SingleOptionSet:
-    case HtmlElementType.DatePicker:
-      let fieldRow = getFieldRow(fieldName);
-      let value = getControlValue({
-        controlId: fieldName,
-        tr: fieldRow,
-        rawValue: false,
-      });
-      isEmptyField = value?.length === 0;
-      break;
-    case HtmlElementType.MultiSelectPicklist:
-    case HtmlElementType.Input:
-    default:
-      isEmptyField = $(`#${fieldName}`)?.val() == '';
-      break;
-  }
+  const fieldRow = getFieldRow(fieldName);
+  const value = getControlValue({
+    controlId: fieldName,
+    tr: fieldRow,
+    raw: true,
+  });
 
   logger.info({
     fn: validateRequiredField,
-    message: `Required field fieldName: ${fieldName}, elemType: ${elemType} isEmptyField: ${isEmptyField}`,
+    message: `Required field fieldName: ${fieldName}, elemType: ${elemType} isEmptyField: ${
+      !value || !value.length
+    }, value: ${value}`,
   });
 
-  if (isEmptyField) {
+  if (!value || !value.length) {
     logger.info({
       fn: validateRequiredField,
       message: `Required field fieldName: ${fieldName} is empty! Set validation error message`,
     });
-    const fieldLabelText = $(`#${fieldName}_label`).text();
-    validationErrorHtml = `<div><span style="color:red;"> ${errorMessage}</span></div>`;
+    // const fieldLabelText = $(`#${fieldName}_label`).text();
+    validationErrorHtml = `<span style="color:red;"> ${errorMessage}</span>`;
     // $(`#${fieldName}`).on("focusout", function () {
     //   $(`#${fieldName}_error_message`).css({ display: "" });
     //   $(`#${fieldName}`).css({ border: "1px solid #e5636c" });
@@ -460,32 +387,32 @@ export function validateNumericFieldValue(
     element.value.replace(/,/g, '').replace('$', '')
   );
   const fieldLabelText = $(`#${fieldName}_label`).text();
-  const genericErrorMsg = `<div><span>"${fieldLabelText}"</span><span style="color:red;"> Please enter a valid number`;
+  const genericErrorMsg = `<span style="color:red;"> Please enter a valid number`;
   switch (operator) {
     case 'greaterThan':
       // @ts-ignore
       return !(value > comparisonValue) || value === ''
-        ? `${genericErrorMsg}. The value must be greater than ${comparisonValue}.</span></div>`
+        ? `${genericErrorMsg}. The value must be greater than ${comparisonValue}.</span>`
         : '';
     case 'lessThan':
       // @ts-ignore
       return !(value < comparisonValue) || value === ''
-        ? `${genericErrorMsg}. The value must be less than ${comparisonValue}.</span></div>`
+        ? `${genericErrorMsg}. The value must be less than ${comparisonValue}.</span>`
         : '';
     case 'equalTo':
       // @ts-ignore
       return !(value === comparisonValue) || value === ''
-        ? `${genericErrorMsg}. The value must be equal to ${comparisonValue}.</span></div>`
+        ? `${genericErrorMsg}. The value must be equal to ${comparisonValue}.</span>`
         : '';
     case 'greaterThanOrEqualTo':
       // @ts-ignore
       return !(value >= comparisonValue) || value === ''
-        ? `${genericErrorMsg}. The value must be greater than or equal to ${comparisonValue}.</span></div>`
+        ? `${genericErrorMsg}. The value must be greater than or equal to ${comparisonValue}.</span>`
         : '';
     case 'lessThanOrEqualTo':
       // @ts-ignore
       return !(value <= comparisonValue) || value === ''
-        ? `${genericErrorMsg}. The value must be less than or equal to ${comparisonValue}.</span></div>`
+        ? `${genericErrorMsg}. The value must be less than or equal to ${comparisonValue}.</span>`
         : '';
     default:
       return 'Invalid operator';
@@ -516,35 +443,35 @@ export function validateFieldLength(
 
   // @ts-ignore
   const value = element.value.length;
-  const genericErrorMsg = `<span style="color:red;"> Please enter a valid length`;
+  const genericErrorMsg = `<span style="color:red;">Please enter a valid length,`;
   switch (operator) {
     case 'greaterThan':
       return !(value > comparisonValue) || value === ''
-        ? `${genericErrorMsg}. The length must be greater than ${
+        ? `${genericErrorMsg} must be greater than ${
             overrideDisplayValue ?? comparisonValue
           }${postfix ? ` ${postfix}` : ''}.</span>`
         : '';
     case 'lessThan':
       return !(value < comparisonValue) || value === ''
-        ? `${genericErrorMsg}. The length must be less than ${
+        ? `${genericErrorMsg} must be less than ${
             overrideDisplayValue ?? comparisonValue
           }${postfix ? ` ${postfix}` : ''}.</span>`
         : '';
     case 'equalTo':
       return !(value === comparisonValue) || value === ''
-        ? `${genericErrorMsg}. The length must be equal to ${
+        ? `${genericErrorMsg} must be equal to ${
             overrideDisplayValue ?? comparisonValue
           }${postfix ? ` ${postfix}` : ''}.</span>`
         : '';
     case 'greaterThanOrEqualTo':
       return !(value >= comparisonValue) || value === ''
-        ? `${genericErrorMsg}. The length must be greater than or equal to ${
+        ? `${genericErrorMsg} must be greater than or equal to ${
             overrideDisplayValue ?? comparisonValue
           }${postfix ? ` ${postfix}` : ''}.</span>`
         : '';
     case 'lessThanOrEqualTo':
       return !(value <= comparisonValue) || value === ''
-        ? `${genericErrorMsg}. The length must be less than or equal to ${
+        ? `${genericErrorMsg} must be less than or equal to ${
             overrideDisplayValue ?? comparisonValue
           }${postfix ? ` ${postfix}` : ''}.</span>`
         : '';
@@ -567,7 +494,7 @@ export function validateEmailAddressField(fieldName) {
 
   const input = fieldElement?.value;
   if (!input || !pattern.test(input)) {
-    return '<span>Must be a valid email address.</span>';
+    return '<span style="color:red;">Must be a valid email address.</span>';
   } else {
     return '';
   }
@@ -601,11 +528,16 @@ export function displayActiveFieldErrors() {
   let validationErrorHtml = '';
 
   fieldsWithErrors.forEach((field) => {
-    const errorWithLabelText = field.error.replace(
-      '<div>',
-      `<div><span>"${field.label}"</span>`
+    const errorWithLabelText = `<span>"${field.label}":</span>` + field.error;
+    validationErrorHtml = validationErrorHtml.concat(
+      `<div>${errorWithLabelText}</div>`
     );
-    validationErrorHtml = validationErrorHtml.concat(errorWithLabelText);
+  });
+
+  logger.info({
+    fn: displayActiveFieldErrors,
+    message: `found fields with errors...`,
+    data: { fieldsWithErrors, validationErrorHtml },
   });
 
   store.dispatch('setValidationError', validationErrorHtml);

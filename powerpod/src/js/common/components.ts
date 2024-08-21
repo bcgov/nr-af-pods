@@ -73,7 +73,7 @@ export function renderCustomComponent(params) {
   existingValue = getControlValue({
     controlId: fieldId,
     tr,
-    rawValue: true,
+    raw: true,
   });
 
   logger.info({
