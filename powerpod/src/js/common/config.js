@@ -1,6 +1,6 @@
 import { POWERPOD } from './constants.js';
 import { Logger } from './logger.js';
-// import localConfigJson from '../../../../assets/application/json/quartech_applicantportalapplicationformconfigjson_kttp1.json';
+// import localConfigJson from '../../../../assets/application/json/quartech_applicantportalapplicationformconfigjson_vlb.json';
 
 const logger = Logger('common/config');
 

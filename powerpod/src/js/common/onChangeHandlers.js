@@ -3,6 +3,7 @@ import { HtmlElementType, POWERPOD } from './constants.js';
 import {
   copyFromFieldAToFieldB,
   hideFieldByFieldName,
+  hideFieldRow,
   isHiddenRow,
   observeChanges,
   setFieldNameLabel,
@@ -113,11 +114,11 @@ export function setBusinessOrPersonalStateForVLB() {
     return;
   }
 
-  const checked = noCraNumberCheckbox.checked;
+  const noCraNumberCheckboxChecked = noCraNumberCheckbox.checked;
 
   logger.info({
     fn: setBusinessOrPersonalStateForVLB,
-    message: `Successfully found quartech_nocragstnumber with checked: ${checked}`,
+    message: `Successfully found quartech_nocragstnumber with checked: ${noCraNumberCheckboxChecked}`,
   });
 
   const addressFieldNames = [
@@ -131,7 +132,7 @@ export function setBusinessOrPersonalStateForVLB() {
     'quartech_businessemailaddress',
   ];
 
-  // labels if "I do not have a Canada Revenue Agency (CRA) Business Number" is NOT checked
+  // labels if "Do you have a Canada Revenue Agency (CRA) Business Number?" IS checked
   const businessAddressFieldLabels = [
     'Business - Suite Number (optional)',
     'Business - Street number',
@@ -143,7 +144,7 @@ export function setBusinessOrPersonalStateForVLB() {
     'Business Email Address',
   ];
 
-  // labels if "I do not have a Canada Revenue Agency (CRA) Business Number" IS checked
+  // labels if "Do you have a Canada Revenue Agency (CRA) Business Number?" is NOT checked
   const addressFieldLabels = [
     'Suite Number (optional)',
     'Street number',
@@ -155,15 +156,12 @@ export function setBusinessOrPersonalStateForVLB() {
     'Email Address',
   ];
 
-  // If it's CHECKED meaning it's a PERSON
+  // if "Do you have a Canada Revenue Agency (CRA) Business Number?" is NOT checked:
   // PERSON:
-  if (checked) {
+  if (noCraNumberCheckboxChecked) {
     addressFieldNames.forEach((fName, index) => {
       setFieldNameLabel(fName, addressFieldLabels[index]);
     });
-
-    hideFieldByFieldName('quartech_businessphonenumber');
-    hideFieldByFieldName('quartech_businessemailaddress');
 
     copyFromFieldAToFieldB('quartech_email', 'quartech_businessemailaddress');
     copyFromFieldAToFieldB(
@@ -173,14 +171,24 @@ export function setBusinessOrPersonalStateForVLB() {
 
     // Note: in this case Business City field label is actually just "City" since it's for a person NOT a business
     copyFromFieldAToFieldB('quartech_businesscity', 'quartech_city');
+
+    // hide rows and DO NOT blank them
+    hideFieldRow({
+      fieldName: 'quartech_businessphonenumber',
+      doNotBlank: true,
+    });
+    hideFieldRow({
+      fieldName: 'quartech_businessemailaddress',
+      doNotBlank: true,
+    });
+
+    populateBusinessNameOnChangeFirstOrLastNameVLB();
   } else {
+    // if "Do you have a Canada Revenue Agency (CRA) Business Number?" IS checked:
     // BUSINESS:
     addressFieldNames.forEach((fName, index) => {
       setFieldNameLabel(fName, businessAddressFieldLabels[index]);
     });
-
-    showFieldRow('quartech_businessphonenumber');
-    showFieldRow('quartech_businessemailaddress');
 
     const isScriptLoaded = isScriptFullyLoaded('jquerymask');
 
@@ -200,6 +208,9 @@ export function setBusinessOrPersonalStateForVLB() {
         message: `Skip emptying fields since scripts are still loading... quartech_businessphonenumber, quartech_businessemailaddress, quartech_city, isScriptLoaded: ${isScriptLoaded}`,
       });
     }
+
+    showFieldRow('quartech_businessphonenumber');
+    showFieldRow('quartech_businessemailaddress');
   }
 
   logger.info({
@@ -285,10 +296,9 @@ export function populateBusinessNameOnChangeFirstOrLastNameVLB() {
 
   const newValue = fieldValues.join(' ');
 
+  setFieldValue(legalBusinessOrgNameTag, newValue);
   logger.info({
     fn: populateBusinessNameOnChangeFirstOrLastNameVLB,
-    message: `Setting field tag: quartech_legalbusinessororganizationname to value: ${newValue}`,
+    message: `Successfuly set field tag: quartech_legalbusinessororganizationname to value: ${newValue}`,
   });
-
-  $(legalBusinessOrgNameTagElement).val(newValue);
 }

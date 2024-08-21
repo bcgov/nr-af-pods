@@ -20,6 +20,7 @@ import {
   getMultiOptionSetElementValue,
   getOriginalMsosElement,
   hideFieldByFieldName,
+  hideFieldRow,
   newGetOriginalMultiOptionSetElementValue,
   observeChanges,
   setFieldValue,
@@ -150,14 +151,14 @@ export function configureField(field) {
     });
   }
   if (hidden) {
-    hideFieldByFieldName(name, doNotBlank);
+    hideFieldRow({ fieldName: name, doNotBlank });
     logger.info({
       fn: configureField,
       message: `aborting field config for fieldName: ${name}, since it is hidden`,
     });
     return; // no need to do any config yet if field is hidden
   }
-  setFieldObserver(name, elementType, format);
+  setFieldObserver(name, format);
   // cleanup resize handlers that break UI
   if (elementType === HtmlElementType.MultiOptionSet) {
     const originalSelectElementForMSOS = getOriginalMsosElement(name);
@@ -498,67 +499,69 @@ function setupCanadaPostAddressComplete(fields) {
   });
 }
 
-export function updateFieldValue(name, elementType = '', format) {
+export function updateFieldValue(name, value = undefined) {
   const fieldConfig = getFieldConfig(name);
+  const { elementType, format } = fieldConfig.elementType;
   logger.info({
     fn: updateFieldValue,
-    message: `updateFieldValue called for name: ${name}, elementType: ${elementType}, format: ${format}`,
+    message: `updateFieldValue called for name: ${name}, value: ${
+      value === undefined ? 'NOT PASSED' : value
+    }, elementType: ${elementType}, format: ${format}`,
   });
-  if (!elementType) {
-    elementType = fieldConfig.elementType;
-  }
-  let value = '';
-  switch (elementType) {
-    case HtmlElementType.FileInput:
-      value = $(`#${name}`)?.val();
-      break;
-    case HtmlElementType.MultiSelectPicklist:
-      value = $(`#${name}`).val();
-      break;
-    case HtmlElementType.MultiOptionSet:
-      value = newGetOriginalMultiOptionSetElementValue(name, true);
-      break;
-    case HtmlElementType.DropdownSelect:
+  // if no value passed, get current value from HTML
+  if (value === undefined) {
+    switch (elementType) {
+      case HtmlElementType.FileInput:
+        value = $(`#${name}`)?.val();
+        break;
+      case HtmlElementType.MultiSelectPicklist:
+        value = $(`#${name}`).val();
+        break;
+      case HtmlElementType.MultiOptionSet:
+        value = newGetOriginalMultiOptionSetElementValue(name, true);
+        break;
+      case HtmlElementType.DropdownSelect:
+        // @ts-ignore
+        value = document.querySelector(`#${name}`)?.value;
+        break;
+      case HtmlElementType.Checkbox:
+        value = document.querySelector(`#${name}`)?.checked;
+        break;
+      case HtmlElementType.SingleOptionSet:
+      case HtmlElementType.DatePicker:
+        const tr = getFieldRow(name);
+        value = getControlValue({ controlId: name, tr, raw: true });
+        break;
+      default: // HtmlElementTypeEnum.Input
+        value = $(`#${name}`)?.val();
+        break;
+    }
+    if (value === null || value === undefined) {
+      logger.warn({
+        fn: updateFieldValue,
+        message: `nothing to save for name: ${name}, value: ${value}, format: ${format}`,
+        data: { name, value, format },
+      });
+      store.dispatch('addFieldData', { name, value: null });
+      return;
+    }
+    if (format === 'currency') {
+      let noCommas = value.replace(/,/g, '');
+      let floatNumber = parseFloat(noCommas);
       // @ts-ignore
-      value = document.querySelector(`#${name}`)?.value;
-      break;
-    case HtmlElementType.Checkbox:
-      value = document.querySelector(`#${name}`)?.checked;
-      break;
-    case HtmlElementType.SingleOptionSet:
-    case HtmlElementType.DatePicker:
-      const tr = getFieldRow(name);
-      value = getControlValue({ controlId: name, tr, rawValue: true });
-      break;
-    default: // HtmlElementTypeEnum.Input
-      value = $(`#${name}`)?.val();
-      break;
-  }
-  if (value === null || value === undefined) {
-    logger.warn({
-      fn: updateFieldValue,
-      message: `nothing to save for name: ${name}, value: ${value}, format: ${format}`,
-      data: { name, value, format },
-    });
-    store.dispatch('addFieldData', { name, value: null });
-    return;
-  }
-  if (format === 'currency') {
-    let noCommas = value.replace(/,/g, '');
-    let floatNumber = parseFloat(noCommas);
-    // @ts-ignore
-    value = floatNumber;
-  } else if (format === 'number') {
-    let integerNumber = parseInt(value, 10);
-    // @ts-ignore
-    value = integerNumber;
+      value = floatNumber;
+    } else if (format === 'number') {
+      let integerNumber = parseInt(value, 10);
+      // @ts-ignore
+      value = integerNumber;
+    }
   }
   logger.info({
     fn: updateFieldValue,
     message: `Saving field data for name: ${name} and value: ${value}, format: ${format}`,
     data: { name, value, format, elementType },
   });
-  store.dispatch('addFieldData', { name, value });
+  store.dispatch('addFieldData', { name, value, touched: true });
 
   if (fieldConfig.dependentFields?.length) {
     fieldConfig.dependentFields.forEach((dependentFieldName) => {
@@ -569,62 +572,89 @@ export function updateFieldValue(name, elementType = '', format) {
   validateStepField(name);
 }
 
+export function setDirtyField(name) {
+  const fieldConfig = getFieldConfig(name);
+  if (fieldConfig.touched === false) {
+    logger.info({
+      fn: setDirtyField,
+      message: `Setting field name: ${name} to dirty status, touched: true`,
+    });
+    store.dispatch('addFieldData', { name, touched: true });
+    validateStepField(name);
+  }
+}
+
 // this is used to update store/state values of fields
-export function setFieldObserver(
-  fieldName,
-  elementType = HtmlElementType.Input,
-  format = ''
-) {
+export function setFieldObserver(name, format = '') {
   // set appropriate observer/on change listener depending on field type
+  const fieldConfig = getFieldConfig(name);
+  const elementType = fieldConfig.elementType;
   logger.info({
     fn: setFieldObserver,
-    message: `Watching for value changes on name: ${fieldName}, elementType: ${elementType}`,
-    data: { fieldName, elementType, format },
+    message: `Watching for value changes on name: ${name}, elementType: ${elementType}, format: ${format}`,
   });
   switch (elementType) {
     case HtmlElementType.FileInput:
-      const textareaField = $(`#${fieldName}`);
-      const attachFileField = $(`input[id=${fieldName}_AttachFile]`);
+      const textareaField = $(`#${name}`);
+      const attachFileField = $(`input[id=${name}_AttachFile]`);
       observeChanges(attachFileField, () => {
-        updateFieldValue(fieldName, elementType, format);
+        updateFieldValue(name);
       });
-      attachFileField?.on('blur input', () => {
-        updateFieldValue(fieldName, elementType, format);
+      attachFileField?.on('change input', () => {
+        updateFieldValue(name);
       });
-      textareaField?.on('change', function () {
-        updateFieldValue(fieldName, elementType, format);
+      attachFileField?.on('focus click blur touchstart', () => {
+        setDirtyField(name);
+      });
+      textareaField?.on('change input', function () {
+        updateFieldValue(name);
+      });
+      textareaField?.on('focus click blur touchstart', function () {
+        setDirtyField(name);
       });
       break;
     case HtmlElementType.DatePicker:
       const datePickerElement = $(
-        `input[id=${fieldName}_datepicker_description]`
+        `input[id=${name}_datepicker_description]`
       ).parent()[0];
-      observeChanges(datePickerElement, () =>
-        updateFieldValue(fieldName, elementType)
-      );
-      $(`#${fieldName}_datepicker_description`).on(
-        'change focus blur input',
+      observeChanges(datePickerElement, () => updateFieldValue(name));
+      $(`#${name}_datepicker_description`).on('change input', () => {
+        updateFieldValue(name);
+      });
+      $(`#${name}_datepicker_description`).on(
+        'focus click blur touchstart',
         () => {
-          updateFieldValue(fieldName, elementType, format);
+          if (fieldConfig.touched === false) {
+            setDirtyField(name);
+          }
         }
       );
       break;
     case HtmlElementType.MultiSelectPicklist:
     case HtmlElementType.SingleOptionSet:
     case HtmlElementType.MultiOptionSet:
-      $(`input[id*='${fieldName}']`).on('change focus blur', function () {
-        updateFieldValue(fieldName, elementType, format);
+      $(`input[id*='${name}']`).on('change input', function () {
+        updateFieldValue(name);
+      });
+      $(`input[id*='${name}']`).on('focus click blur touchstart', function () {
+        setDirtyField(name);
       });
       break;
     case HtmlElementType.DropdownSelect:
-      $(`select[id*='${fieldName}']`).on('change focus blur', function () {
-        updateFieldValue(fieldName, elementType, format);
+      $(`select[id*='${name}']`).on('change input', function () {
+        updateFieldValue(name);
+      });
+      $(`select[id*='${name}']`).on('focus click blur touchstart', function () {
+        setDirtyField(name);
       });
       break;
     case HtmlElementType.Checkbox:
     default: // HtmlElementTypeEnum.Input
-      $(`#${fieldName}`).on('change keyup', function (event) {
-        updateFieldValue(fieldName, elementType, format);
+      $(`#${name}`).on('change input', function (event) {
+        updateFieldValue(name);
+      });
+      $(`#${name}`).on('focus click blur touchstart', function (event) {
+        setDirtyField(name);
       });
       break;
   }

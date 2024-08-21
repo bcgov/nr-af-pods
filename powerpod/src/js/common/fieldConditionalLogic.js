@@ -94,7 +94,7 @@ export function setFieldVisibility(name) {
     const controlValue = getControlValue({
       controlId: fieldName,
       tr: fieldRow,
-      rawValue: true,
+      raw: true,
     });
 
     logger.info({
@@ -122,7 +122,7 @@ export function setFieldVisibility(name) {
       const controlValue = getControlValue({
         controlId: fieldName,
         tr: fieldRow,
-        rawValue: true,
+        raw: true,
       });
       logger.info({
         fn: setFieldVisibility,
@@ -147,7 +147,7 @@ export function setFieldVisibility(name) {
     showFieldRow(name);
     validateStepField(name);
   } else {
-    hideFieldRow(name, doNotBlank);
+    hideFieldRow({ fieldName: name, doNotBlank });
   }
 }
 
@@ -322,7 +322,7 @@ function setupDependentRequiredField({
   const input = getControlValue({
     controlId: dependentOnElementTag,
     tr,
-    rawValue: true,
+    raw: true,
   });
   logger.info({
     fn: setupDependentRequiredField,

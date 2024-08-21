@@ -1,4 +1,7 @@
-import { displayValidationErrors } from '../common/fieldValidation.js';
+import {
+  displayActiveFieldErrors,
+  displayValidationErrors,
+} from '../common/fieldValidation.js';
 import { hideQuestion, showFieldRow } from '../common/html.js';
 import { Logger } from '../common/logger.js';
 
@@ -29,12 +32,6 @@ export default {
       ...fieldData,
       ...payload,
     };
-
-    // if (payload.visible) {
-    //   showFieldRow(payload.name);
-    // } else {
-    //   hideQuestion(payload.name);
-    // }
 
     state.fields[payload.name] = fieldData;
     return state;

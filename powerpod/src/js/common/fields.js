@@ -137,7 +137,7 @@ export function getFieldsBySectionApplication(stepName, forceRefresh = false) {
     if (s.disableSingleLine) {
       disableSingleLine(s.name);
     }
-    store.dispatch('addFieldData', { ...s, loading: true });
+    store.dispatch('addFieldData', { ...s, loading: true, touched: false });
     if (s.relocateField) {
       logger.info({
         fn: getFieldsBySectionApplication,
@@ -236,7 +236,7 @@ export function getFieldsBySectionClaim(stepName, forceRefresh = false) {
     ) {
       combineElementsIntoOneRowNew(s.name);
     }
-    store.dispatch('addFieldData', s);
+    store.dispatch('addFieldData', { ...s, touched: false });
     if (s.visibleIf) {
       logger.warn({
         fn: getFieldsBySectionClaim,
