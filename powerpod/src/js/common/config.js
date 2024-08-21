@@ -1,6 +1,7 @@
 import { POWERPOD } from './constants.js';
 import { Logger } from './logger.js';
-import localConfigJson from '../../../../assets/application/json/quartech_applicantportalapplicationformconfigjson_kttp1.json';
+// UNCOMMENT THIS IF YOU WANT TO FORCE TO USE LOCAL JSON CONFIG:
+// import localConfigJson from '../../../../assets/application/json/quartech_applicantportalapplicationformconfigjson_kttp1.json';
 
 const logger = Logger('common/config');
 
@@ -71,14 +72,17 @@ export function getApplicationConfigData(programId) {
     data: { path },
   });
 
-  if (path.includes('application-dev') && localConfigJson) {
-    logger.info({
-      fn: getApplicationConfigData,
-      message: 'successfully fetched application config data from localhost',
-      data: { localConfigJson },
-    });
-    return localConfigJson;
-  }
+  // UNCOMMENT THIS IF YOU WANT TO FORCE TO USE LOCAL JSON CONFIG
+  // if (path.includes('application-dev') && localConfigJson) {
+  //   logger.info({
+  //     fn: getApplicationConfigData,
+  //     message: 'successfully fetched application config data from localhost',
+  //     data: { localConfigJson },
+  //   });
+  //   return localConfigJson;
+  // }
+  // UNCOMMENT THIS IF YOU WANT TO FORCE TO USE LOCAL JSON CONFIG
+
   const programData = localStorage.getItem('programData');
 
   const configDataJSON =
