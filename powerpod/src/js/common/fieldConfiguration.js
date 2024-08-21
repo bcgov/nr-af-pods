@@ -520,32 +520,33 @@ export function updateFieldValue(name, value = undefined) {
   });
   // if no value passed, get current value from HTML
   if (value === undefined) {
-    switch (elementType) {
-      case HtmlElementType.FileInput:
-        value = $(`#${name}`)?.val();
-        break;
-      case HtmlElementType.MultiSelectPicklist:
-        value = $(`#${name}`).val();
-        break;
-      case HtmlElementType.MultiOptionSet:
-        value = newGetOriginalMultiOptionSetElementValue(name, true);
-        break;
-      case HtmlElementType.DropdownSelect:
-        // @ts-ignore
-        value = document.querySelector(`#${name}`)?.value;
-        break;
-      case HtmlElementType.Checkbox:
-        value = document.querySelector(`#${name}`)?.checked;
-        break;
-      case HtmlElementType.SingleOptionSet:
-      case HtmlElementType.DatePicker:
-        const tr = getFieldRow(name);
-        value = getControlValue({ controlId: name, tr, raw: true });
-        break;
-      default: // HtmlElementTypeEnum.Input
-        value = $(`#${name}`)?.val();
-        break;
-    }
+    value = getControlValue({ controlId: name, raw: true });
+    // switch (elementType) {
+    //   case HtmlElementType.FileInput:
+    //     value = $(`#${name}`)?.val();
+    //     break;
+    //   case HtmlElementType.MultiSelectPicklist:
+    //     value = $(`#${name}`).val();
+    //     break;
+    //   case HtmlElementType.MultiOptionSet:
+    //     value = newGetOriginalMultiOptionSetElementValue(name, true);
+    //     break;
+    //   case HtmlElementType.DropdownSelect:
+    //     // @ts-ignore
+    //     value = document.querySelector(`#${name}`)?.value;
+    //     break;
+    //   case HtmlElementType.Checkbox:
+    //     value = document.querySelector(`#${name}`)?.checked;
+    //     break;
+    //   case HtmlElementType.SingleOptionSet:
+    //   case HtmlElementType.DatePicker:
+    //     const tr = getFieldRow(name);
+    //     value = getControlValue({ controlId: name, tr, raw: true });
+    //     break;
+    //   default: // HtmlElementTypeEnum.Input
+    //     value = $(`#${name}`)?.val();
+    //     break;
+    // }
     if (value === null || value === undefined) {
       logger.warn({
         fn: updateFieldValue,
