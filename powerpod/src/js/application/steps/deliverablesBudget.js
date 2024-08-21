@@ -5,16 +5,18 @@ import {
   showOrHideAndReturnValue,
 } from '../../common/html.js';
 import { getProgramAbbreviation } from '../../common/program.ts';
-import { configureFields } from '../../common/fieldConfiguration.js';
+import {
+  configureFields,
+  updateFieldValue,
+} from '../../common/fieldConfiguration.js';
 import { Logger } from '../../common/logger.js';
 import { validateStepFields } from '../../common/fieldValidation.js';
 
 const logger = Logger('application/steps/deliverablesBudget');
 
 export function customizeDeliverablesBudgetStep() {
-  const programAbbreviation = getProgramAbbreviation();
-
   configureFields();
+  const programAbbreviation = getProgramAbbreviation();
 
   // START ALL PROGRAMS/STREAMS CUSTOMIZATION
   const deliverablesBudgetTabTitleElement = document.querySelector(
@@ -85,14 +87,6 @@ export function customizeDeliverablesBudgetStep() {
     const deliverablesBudgetSectionElement = document.querySelector(
       '#EntityFormView > div.tab.clearfix > div > div > fieldset:nth-child(1) > legend > h3'
     );
-    if (
-      deliverablesBudgetSectionElement.textContent.includes(
-        'Deliverables & Budget'
-      )
-    ) {
-      deliverablesBudgetSectionElement.textContent =
-        'Estimated Activity Budget';
-    }
 
     // SET read-only: Total Activity Cost
     $('#quartech_estimatedbudgettotalactivitycost').prop('readonly', true);
@@ -133,6 +127,7 @@ export function customizeDeliverablesBudgetStep() {
 function setOnKeypressBudgetInput(elementId) {
   $(`#${elementId}`).on('change keyup blur', function () {
     calculateEstimatedActivityBudget();
+    updateFieldValue(elementId);
   });
 }
 
@@ -165,68 +160,54 @@ function initialDeliverablesBudgetSingleRowSetup() {
 
 function setupEstimatedActivityBudget() {
   // setup table config to support single row
-  initialDeliverablesBudgetSingleRowSetup();
-
+  // initialDeliverablesBudgetSingleRowSetup();
   // SME Travel (airfare, parking, etc)
-  const travelValueElementId = 'quartech_smetravelairfareparkingetc';
-  const travelDescriptionElementId =
-    'quartech_pleasedescribemodeoftravelifapplicable';
-
-  combineElementsIntoOneRow(travelValueElementId, travelDescriptionElementId);
-
+  // const travelValueElementId = 'quartech_smetravelairfareparkingetc';
+  // const travelDescriptionElementId =
+  //   'quartech_pleasedescribemodeoftravelifapplicable';
+  // combineElementsIntoOneRow(travelValueElementId, travelDescriptionElementId);
   // SME Accommodation
-  const accommodationValueElementId = 'quartech_smeaccommodation';
-  const accommodationDescriptionElementId =
-    'quartech_pleasedescribeaccommodationwherewillthesme';
-
-  combineElementsIntoOneRow(
-    accommodationValueElementId,
-    accommodationDescriptionElementId
-  );
-
+  // const accommodationValueElementId = 'quartech_smeaccommodation';
+  // const accommodationDescriptionElementId =
+  //   'quartech_pleasedescribeaccommodationwherewillthesme';
+  // combineElementsIntoOneRow(
+  //   accommodationValueElementId,
+  //   accommodationDescriptionElementId
+  // );
   // Facility, Equipment, Technology Rental
-  const rentalValueElementId = 'quartech_facilityequipmenttechnologyrental';
-  const rentalDescriptionElementId =
-    'quartech_pleasedescribeequipmentrequiredifapplicable';
-
-  combineElementsIntoOneRow(rentalValueElementId, rentalDescriptionElementId);
-
+  // const rentalValueElementId = 'quartech_facilityequipmenttechnologyrental';
+  // const rentalDescriptionElementId =
+  //   'quartech_pleasedescrŽibeequipmentrequiredifapplicable';
+  // combineElementsIntoOneRow(rentalValueElementId, rentalDescriptionElementId);
   // Advertising/Communications
-  const advertisingValueElementId = 'quartech_advertisingcommunications';
-  const advertisingDescriptionElementId =
-    'quartech_pleasedescribewhatformsofadvertisingcommunic';
-
-  combineElementsIntoOneRow(
-    advertisingValueElementId,
-    advertisingDescriptionElementId
-  );
-
+  // const advertisingValueElementId = 'quartech_advertisingcommunications';
+  // const advertisingDescriptionElementId =
+  //   'quartech_pleasedescribewhatformsofadvertisingcommunic';
+  // combineElementsIntoOneRow(
+  //   advertisingValueElementId,
+  //   advertisingDescriptionElementId
+  // );
   // Administration Costs
-  const administrationValueElementId = 'quartech_administrationcosts';
-  const administrationDescriptionElementId =
-    'quartech_pleasedescribetheadministrativecoststobeinc';
-
-  combineElementsIntoOneRow(
-    administrationValueElementId,
-    administrationDescriptionElementId
-  );
-
+  // const administrationValueElementId = 'quartech_administrationcosts';
+  // const administrationDescriptionElementId =
+  //   'quartech_pleasedescribetheadministrativecoststobeinc';
+  // combineElementsIntoOneRow(
+  //   administrationValueElementId,
+  //   administrationDescriptionElementId
+  // );
   // Other Costs
-  const otherValueElementId = 'quartech_othercost';
-  const otherDescriptionElementId = 'quartech_pleaseexplainotherifapplicable';
-
-  combineElementsIntoOneRow(otherValueElementId, otherDescriptionElementId);
-
+  // const otherValueElementId = 'quartech_othercost';
+  // const otherDescriptionElementId = 'quartech_pleaseexplainotherifapplicable';
+  // combineElementsIntoOneRow(otherValueElementId, otherDescriptionElementId);
   // Cost-Share Contribution (cash or in-kind donation)
-  const costShareValueElementId =
-    'quartech_costsharecontributioncashorinkinddonation';
-  const costShareDescriptionElementId =
-    'quartech_pleaseexplainwhotheotherpartnersareandwha';
-
-  combineElementsIntoOneRow(
-    costShareValueElementId,
-    costShareDescriptionElementId
-  );
+  // const costShareValueElementId =
+  //   'quartech_costsharecontributioncashorinkinddonation';
+  // const costShareDescriptionElementId =
+  //   'quartech_pleaseexplainwhotheotherpartnersareandwha';
+  // combineElementsIntoOneRow(
+  //   costShareValueElementId,
+  //   costShareDescriptionElementId
+  // );
 }
 
 // @ts-ignore
@@ -445,5 +426,5 @@ export function calculateEstimatedActivityBudget() {
     totalFundingRequiredWithCurrencyFormat.replace('CA$', '')
   );
 
-  validateStepFields();
+  // validateStepFields();
 }

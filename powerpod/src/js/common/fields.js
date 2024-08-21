@@ -277,10 +277,11 @@ export function getFieldConfig(fieldName) {
   if (POWERPOD.state?.fields?.[fieldName]) {
     fieldConfig = POWERPOD.state?.fields?.[fieldName];
   } else {
-    logger.warn({
+    logger.error({
       fn: getFieldConfig,
       message: `Could not find field config in state, trying local storage`,
     });
+    return;
     let programName = getProgramAbbreviation();
     let stepName = getCurrentStep();
 
