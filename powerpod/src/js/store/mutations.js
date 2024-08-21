@@ -80,4 +80,15 @@ export default {
     displayValidationErrors(state.validationError);
     return state;
   },
+  addToFieldOrder(state, payload) {
+    logger.info({
+      fn: this.addToFieldOrder,
+      message: 'Add field to fieldOrder array',
+      data: { state, payload },
+    });
+    const newFieldOrder = state.fieldOrder;
+    newFieldOrder.push(payload);
+    state.fieldOrder = newFieldOrder;
+    return state;
+  },
 };

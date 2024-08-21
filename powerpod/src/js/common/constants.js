@@ -126,8 +126,7 @@ export const POWERPOD = {
   initValuesFns: {},
   valueGeneration: {},
   loading: true,
-  fieldConfiguration: {
-    loading: true,
-  },
+  loadingFieldsIntoState: true,
+  configuringFields: true,
   dateUtils: {},
 };

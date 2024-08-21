@@ -332,6 +332,7 @@ export function getControlValue({
       store.dispatch('addFieldData', {
         name: controlId,
         value: rawValue,
+        revalidate: true,
       });
     }
     return rawValue;
@@ -533,6 +534,8 @@ export function hideFieldRow({ fieldName, doNotBlank = false }) {
 
   if (!doNotBlank) {
     setFieldValueToEmptyState(fieldName);
+  } else {
+    updateFieldValue(fieldName);
   }
 
   store.dispatch('addFieldData', {
@@ -585,7 +588,11 @@ export function showFieldRow(fieldName) {
 
   const displayStyle = nearestFieldSet?.style?.display;
 
-  store.dispatch('addFieldData', { name: fieldName, visible: true });
+  store.dispatch('addFieldData', {
+    name: fieldName,
+    visible: true,
+    revalidate: true,
+  });
 
   validateStepField(fieldName);
 
@@ -862,6 +869,7 @@ export function hideFieldByFieldName(fieldName, doNotBlank = false) {
   store.dispatch('addFieldData', {
     name: fieldName,
     visible: false,
+    revalidate: true,
     erorr: '',
   });
 

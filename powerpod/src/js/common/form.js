@@ -9,6 +9,7 @@ import {
   isHiddenRow,
 } from './html.js';
 import { Logger } from './logger.js';
+import store from '../store/index.js';
 
 const logger = Logger('common/form');
 
@@ -182,7 +183,7 @@ function formDataOnClickHandler(event, nextFn) {
   });
 }
 
-export function generateFormJson() {
+export function generateFormJson(setFieldOrder = false) {
   const containerElement = document.querySelector('#EntityFormView');
 
   const wordTemplateDataElement = containerElement.querySelectorAll(
@@ -284,10 +285,16 @@ export function generateFormJson() {
     };
 
     trArray.forEach((tr) => {
+      const controlId = getControlId(tr);
+      // exit early if the intention is just to set the field order
+      if (setFieldOrder) {
+        store.dispatch('addToFieldOrder', controlId);
+        return;
+      }
       if (isHiddenRow(tr)) {
         logger.info({
           fn: generateFormJson,
-          message: 'Skipping hidden row',
+          message: `Skipping hidden row, controlId: ${controlId}`,
           data: {
             tr,
           },
@@ -297,7 +304,7 @@ export function generateFormJson() {
       if (isEmptyRow(tr)) {
         logger.info({
           fn: generateFormJson,
-          message: 'Skipping empty row',
+          message: `Skipping empty row, controlId: ${controlId}`,
           data: {
             tr,
           },
@@ -306,7 +313,6 @@ export function generateFormJson() {
       }
 
       const questionText = getInfoValue(tr);
-      const controlId = getControlId(tr);
       const controlType = getControlType({ tr });
 
       logger.info({
