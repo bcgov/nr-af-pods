@@ -1,14 +1,30 @@
 {
   "tags": ["Application", "StaffPortal", "KTTP-SMEA", "KTTP1"],
-  "version": "1.2.6",
+  "version": "1.2.8",
   "name": "KTTP - Subject Matter Expert Activities",
   "abbreviation": "KTTP-SMEA",
   "programId": "25493093-9d2b-ee11-bdf4-000d3af3ac95",
-  "hiddenSteps": "tab_eligibility",
   "sections": [
     {
       "name": "ApplicantInfoStep",
+      "subsections": [
+        {
+          "name": "Business Overview",
+          "type": "SectionTitle",
+          "newLabel": "Organization Information"
+        }
+      ],
       "fields": [
+        {
+          "name": "quartech_ifyespleaseprovidelegalbusinessorganization",
+          "label": "Legal Business/Organization Name",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_areyoucollaboratingwithanyotherorg",
+            "selectedValue": 255550000,
+            "techComment": "Yes value"
+          }
+        },
         {
           "name": "quartech_city",
           "hidden": true
@@ -31,11 +47,6 @@
             "fieldName": "quartech_recipienttype",
             "selectedValue": 255550001
           }
-        },
-        {
-          "name": "Business Overview",
-          "type": "SectionTitle",
-          "newLabel": "Organization Information"
         },
         {
           "name": "quartech_businessdescription",
@@ -79,16 +90,6 @@
           "elementType": "DropdownSelect"
         },
         {
-          "name": "quartech_ifyespleaseprovidelegalbusinessorganization",
-          "label": "Legal Business/Organization Name",
-          "required": true,
-          "visibleIf": {
-            "fieldName": "quartech_areyoucollaboratingwithanyotherorg",
-            "selectedValue": 255550000,
-            "techComment": "Yes value"
-          }
-        },
-        {
           "name": "quartech_ifyespleaseprovideacontactname",
           "label": "Contact Name",
           "required": true,
@@ -112,6 +113,13 @@
     },
     {
       "name": "ProjectStep",
+      "subsections": [
+        {
+          "name": "Business Plan",
+          "type": "SectionTitle",
+          "hidden": true
+        }
+      ],
       "fields": [
         {
           "name": "quartech_applicantsprojectname",
@@ -471,22 +479,19 @@
           "name": "quartech_adulteducationandknowlegetransferdescript",
           "label": "If Yes, please describe how the proposed activities will use best practices in adult education and knowledge transfer. How will you evaluate if you have been successful?",
           "hidden": true
-        },
-        {
-          "name": "Business Plan",
-          "type": "SectionTitle",
-          "hidden": true
         }
       ]
     },
     {
       "name": "DeliverablesBudgetStep",
-      "fields": [
+      "subsections": [
         {
           "name": "Deliverables & Budget",
           "type": "SectionTitle",
           "newLabel": "Budget"
-        },
+        }
+      ],
+      "fields": [
         {
           "name": "quartech_smefee",
           "format": "currency",
@@ -690,6 +695,12 @@
           "tooltipText": "This number is automatically generated when the survey has been submitted",
           "label": "Demographic Data Collection Survey ID number",
           "bold": true
+        },
+        {
+          "name": "quartech_chefssubmissionid",
+          "label": "CHEFS Submission Id",
+          "hidden": true,
+          "doNotBlank": true
         }
       ]
     }

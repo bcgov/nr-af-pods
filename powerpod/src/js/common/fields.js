@@ -9,6 +9,8 @@ import {
   disableSingleLine,
   relocateField,
   showFieldRow,
+  getFieldRow,
+  getControlType,
 } from './html.js';
 import { Logger } from './logger.js';
 import { getCurrentStep, getProgramAbbreviation } from './program.ts';
@@ -31,15 +33,32 @@ const logger = Logger('common/fields');
 export function getFieldsBySectionApplication(stepName, forceRefresh = false) {
   let programName = getProgramAbbreviation();
 
+  // OLD: now try getting results from state
   // load cached results unless forceRefresh flag is passed
+  // if (!forceRefresh) {
+  //   const savedData = localStorage.getItem(
+  //     `fieldsData-${programName}-${stepName}`
+  //   );
+  //   if (savedData) {
+  //     return JSON.parse(savedData);
+  //   }
+  // }
+
   if (!forceRefresh) {
-    const savedData = localStorage.getItem(
-      `fieldsData-${programName}-${stepName}`
-    );
-    if (savedData) {
-      return JSON.parse(savedData);
+    if (POWERPOD.loadingFieldsIntoState === false) {
+      logger.info({
+        fn: getFieldsBySectionApplication,
+        message: `returning cached state for fields`,
+        data: { fields: POWERPOD.state.fields },
+      });
+      return POWERPOD.state.fields;
     }
   }
+
+  logger.info({
+    fn: getFieldsBySectionApplication,
+    message: `start building initial fields state loading: ${POWERPOD.loadingFieldsIntoState}`,
+  });
 
   const globalConfigData = getGlobalFieldsConfig();
   logger.info({
@@ -117,12 +136,20 @@ export function getFieldsBySectionApplication(stepName, forceRefresh = false) {
     fields = mergeFieldArrays(globalFields, fields, 'name');
   }
 
+  localStorage.setItem(
+    `fieldsData-${programName}-${stepName}`,
+    JSON.stringify(fields)
+  );
+
   fields.forEach((s) => {
-    if (s.type === 'SectionTitle') {
-      return;
-    }
     // TODO: Improve this as we do regression testing
     // Only enable for NEFBA2 and appropriate steps right now.
+    if (document.getElementById(s.name) === null) {
+      logger.warn({
+        fn: `Skipping non-exist field configured in JSON s.name: ${s.name}`,
+      });
+      return;
+    }
     if (
       s.type !== 'SectionTitle' &&
       !s.disableSingleLine &&
@@ -137,7 +164,29 @@ export function getFieldsBySectionApplication(stepName, forceRefresh = false) {
     if (s.disableSingleLine) {
       disableSingleLine(s.name);
     }
-    store.dispatch('addFieldData', { ...s, loading: true, touched: false });
+    // If elementType is not given, fill it out for future reference
+    if (!s.elementType) {
+      logger.info({
+        fn: getFieldsBySectionApplication,
+        message: `Field elementType not set, try to determine it using getControlType func for s.name: ${s.name}`,
+      });
+      const fieldRow = getFieldRow(s.name);
+      if (!fieldRow) {
+        logger.error({
+          fn: getFieldsBySectionApplication,
+          message: `could not find fieldRow for fieldName: ${s.name}`,
+        });
+      }
+      const elementType = getControlType({ tr: fieldRow, controlId: s.name });
+      s.elementType = elementType;
+    }
+    ///
+    store.dispatch('addFieldData', {
+      ...s,
+      loading: true,
+      touched: false,
+      revalidate: true,
+    });
     if (s.relocateField) {
       logger.info({
         fn: getFieldsBySectionApplication,
@@ -160,20 +209,16 @@ export function getFieldsBySectionApplication(stepName, forceRefresh = false) {
     //   showFieldRow(s.name);
     // }
   });
-  localStorage.setItem(
-    `fieldsData-${programName}-${stepName}`,
-    JSON.stringify(fields)
-  );
+
+  POWERPOD.loadingFieldsIntoState = false;
 
   logger.info({
     fn: getFieldsBySectionApplication,
-    message: 'fieldsData:',
-    data: fields,
+    message: 'done loading intial field state, fieldsData:',
+    data: { fields: POWERPOD.state.fields },
   });
 
-  POWERPOD.fields.loading = false;
-
-  return fields;
+  return POWERPOD.state.fields;
 }
 
 export function getFieldsBySectionClaim(stepName, forceRefresh = false) {
@@ -276,21 +321,22 @@ export function getFieldConfig(fieldName) {
   let fieldConfig;
   if (POWERPOD.state?.fields?.[fieldName]) {
     fieldConfig = POWERPOD.state?.fields?.[fieldName];
-  } else {
-    logger.error({
-      fn: getFieldConfig,
-      message: `Could not find field config in state, trying local storage`,
-    });
-    return;
-    let programName = getProgramAbbreviation();
-    let stepName = getCurrentStep();
-
-    const fieldsConfig = JSON.parse(
-      localStorage.getItem(`fieldsData-${programName}-${stepName}`)
-    );
-
-    fieldConfig = fieldsConfig.first((f) => f.name === fieldName);
   }
+  // else {
+  //   logger.error({
+  //     fn: getFieldConfig,
+  //     message: `Could not find field config in state, trying local storage`,
+  //   });
+  //   return;
+  //   let programName = getProgramAbbreviation();
+  //   let stepName = getCurrentStep();
+
+  //   const fieldsConfig = JSON.parse(
+  //     localStorage.getItem(`fieldsData-${programName}-${stepName}`)
+  //   );
+
+  //   fieldConfig = fieldsConfig.first((f) => f.name === fieldName);
+  // }
 
   if (!fieldConfig) {
     logger.error({

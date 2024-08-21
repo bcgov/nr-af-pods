@@ -516,7 +516,7 @@ export function shouldRequireDependentField({
   }
 
   const fieldConfig = getFieldConfig(requiredFieldTag);
-  const loadingAllFieldConfig = POWERPOD.fieldConfiguration.loading;
+  const loadingAllFieldConfig = POWERPOD.configuringFields;
   const loadingFieldConfig =
     POWERPOD.state?.fields?.[requiredFieldTag]?.loading;
 

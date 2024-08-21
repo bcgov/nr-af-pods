@@ -58,6 +58,7 @@ import { setOnChangeHandler } from './onChangeHandlers.js';
 import { generateVisibleValueForBusinessNameVLB } from './valueGeneration.js';
 import { hasCraNumberCheckboxEventHandler } from './customEventHandlers.js';
 import { initCraNumberCheckbox } from './initValuesFns.js';
+import { generateFormJson } from './form.js';
 
 const logger = Logger('common/fieldConfiguration');
 
@@ -96,40 +97,6 @@ export function configureField(field) {
     message: `setting field definition for field name: ${name}`,
     data: { field },
   });
-  //////////////////////////
-  //////////////////////////
-  if (type === 'SectionTitle') {
-    if (hidden) {
-      const sectionElement = $(`fieldset[aria-label="${name}"]`);
-      if (sectionElement) {
-        sectionElement?.css('display', 'none');
-      }
-    }
-    if (newLabel) {
-      var fieldset = document.querySelector(`fieldset[aria-label="${name}"]`);
-      if (!fieldset) {
-        logger.error({
-          fn: configureField,
-          message: `Failed to find fieldset for name: ${name}, type: ${type}, newLabel: ${newLabel}`,
-        });
-        return;
-      }
-      fieldset.setAttribute('aria-label', newLabel);
-      var h3Tag = fieldset.querySelector('h3');
-      if (!h3Tag) {
-        logger.error({
-          fn: configureField,
-          message: `Failed to find h3Tag for name: ${name}, type: ${type}, newLabel: ${newLabel}`,
-        });
-        return;
-      }
-      h3Tag.innerHTML = newLabel;
-    }
-    // continuing for type SectionTitle because nothing else is supported for this field type
-    return;
-  }
-  ////////////////////////
-  ////////////////////////
   if (!$(`#${name}`)) {
     logger.error({
       fn: configureField,
@@ -141,25 +108,6 @@ export function configureField(field) {
     name,
     loading: true,
   });
-  // If elementType is not given, fill it out for future reference
-  if (!elementType) {
-    logger.info({
-      fn: configureField,
-      message: `Field elementType not set, try to determine it using getControlType func for name: ${name}`,
-    });
-    const fieldRow = getFieldRow(name);
-    if (!fieldRow) {
-      logger.error({
-        fn: configureField,
-        message: `could not find fieldRow for fieldName: ${name}`,
-      });
-    }
-    elementType = getControlType({ tr: fieldRow, controlId: name });
-    store.dispatch('addFieldData', {
-      name,
-      elementType,
-    });
-  }
   if (hidden) {
     hideFieldRow({ fieldName: name, doNotBlank });
     logger.info({
@@ -394,15 +342,17 @@ export function configureFields() {
     },
   });
 
-  for (let i = 0; i < fields.length; i++) {
-    configureField(fields[i]);
-  }
+  Object.values(fields).forEach((field) => {
+    configureField(field);
+  });
 
   setupCanadaPostAddressComplete(fields);
 
   // setDynamicallyRequiredFields(stepName);
 
-  POWERPOD.fieldConfiguration.loading = false;
+  generateFormJson(true);
+
+  POWERPOD.configuringFields = false;
 }
 
 function setupCanadaPostAddressComplete(fields) {
@@ -553,7 +503,7 @@ export function updateFieldValue(name, value = undefined) {
         message: `nothing to save for name: ${name}, value: ${value}, format: ${format}`,
         data: { name, value, format },
       });
-      store.dispatch('addFieldData', { name, value: null });
+      store.dispatch('addFieldData', { name, value: null, revalidate: true });
       return;
     }
     if (format === 'currency') {
@@ -572,7 +522,12 @@ export function updateFieldValue(name, value = undefined) {
     message: `Saving field data for name: ${name} and value: ${value}, format: ${format}`,
     data: { name, value, format, elementType },
   });
-  store.dispatch('addFieldData', { name, value, touched: true });
+  store.dispatch('addFieldData', {
+    name,
+    value,
+    touched: true,
+    revalidate: true,
+  });
 
   if (fieldConfig.dependentFields?.length) {
     fieldConfig.dependentFields.forEach((dependentFieldName) => {
@@ -580,19 +535,51 @@ export function updateFieldValue(name, value = undefined) {
     });
   }
 
-  validateStepField(name);
+  validateNeededFields(name);
 }
 
 export function setDirtyField(name) {
   const fieldConfig = getFieldConfig(name);
+  // If field has never been touched before, always validate
   if (fieldConfig.touched === false) {
     logger.info({
       fn: setDirtyField,
       message: `Setting dirty field name: ${name} to dirty status, touched: true`,
     });
     store.dispatch('addFieldData', { name, touched: true });
-    validateStepField(name);
   }
+  validateStepField(name);
+}
+
+export function validateNeededFields(name) {
+  if (POWERPOD.configuringFields) {
+    logger.warn({
+      fn: validateNeededFields,
+      message: `Still configuring fields, DO NOT validate yet`,
+    });
+    return;
+  }
+  if (!POWERPOD.state.fieldOrder?.length) {
+    return;
+  }
+  const fieldOrder = POWERPOD.state.fieldOrder;
+  const index = fieldOrder.indexOf(name);
+  const resultArray = fieldOrder.slice(0, index + 1);
+  const fields = POWERPOD.state.fields;
+  const fieldsToSetDirty = Object.values(fields).filter(
+    (f) => resultArray.includes(f.name) && !f.hidden
+  );
+  const fieldsToRevalidate = Object.keys(fieldsToSetDirty).map(
+    (key) => fieldsToSetDirty[key].name
+  );
+  logger.info({
+    fn: validateNeededFields,
+    message: `for name: ${name}, validating the following fields: ${JSON.stringify(
+      fieldsToRevalidate
+    )}`,
+    data: { name, index, fieldOrder, fieldsToSetDirty, fieldsToRevalidate },
+  });
+  fieldsToRevalidate.forEach((res) => setDirtyField(res));
 }
 
 // this is used to update store/state values of fields
@@ -615,13 +602,13 @@ export function setFieldObserver(name, format = '') {
         updateFieldValue(name);
       });
       attachFileField?.on('focus click blur touchstart', () => {
-        setDirtyField(name);
+        validateNeededFields(name);
       });
       textareaField?.on('change input', function () {
         updateFieldValue(name);
       });
       textareaField?.on('focus click blur touchstart', function () {
-        setDirtyField(name);
+        validateNeededFields(name);
       });
       break;
     case HtmlElementType.DatePicker:
@@ -636,7 +623,7 @@ export function setFieldObserver(name, format = '') {
         'focus click blur touchstart',
         () => {
           if (fieldConfig.touched === false) {
-            setDirtyField(name);
+            validateNeededFields(name);
           }
         }
       );
@@ -648,7 +635,7 @@ export function setFieldObserver(name, format = '') {
         updateFieldValue(name);
       });
       $(`input[id*='${name}']`).on('focus click blur touchstart', function () {
-        setDirtyField(name);
+        validateNeededFields(name);
       });
       break;
     case HtmlElementType.DropdownSelect:
@@ -656,7 +643,7 @@ export function setFieldObserver(name, format = '') {
         updateFieldValue(name);
       });
       $(`select[id*='${name}']`).on('focus click blur touchstart', function () {
-        setDirtyField(name);
+        validateNeededFields(name);
       });
       break;
     case HtmlElementType.Checkbox:
@@ -665,7 +652,7 @@ export function setFieldObserver(name, format = '') {
         updateFieldValue(name);
       });
       $(`#${name}`).on('focus click blur touchstart', function (event) {
-        setDirtyField(name);
+        validateNeededFields(name);
       });
       break;
   }
