@@ -564,7 +564,8 @@ export function validateNeededFields(name) {
   }
   const fieldOrder = POWERPOD.state.fieldOrder;
   const index = fieldOrder.indexOf(name);
-  const resultArray = fieldOrder.slice(0, index + 1);
+  const resultArray = fieldOrder.slice(0, index);
+  resultArray.push(name);
   const fields = POWERPOD.state.fields;
   const fieldsToSetDirty = Object.values(fields).filter(
     (f) => resultArray.includes(f.name) && !f.hidden
