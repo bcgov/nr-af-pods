@@ -3,7 +3,11 @@ import {
   configureField,
   setDynamicallyRequiredFields,
 } from './fieldConfiguration.js';
-import { validateStepField, validateStepFields } from './fieldValidation.js';
+import {
+  validateNumericFieldValue,
+  validateStepField,
+  validateStepFields,
+} from './fieldValidation.js';
 import { Logger } from './logger.js';
 import {
   disableSingleLine,
@@ -87,33 +91,57 @@ export function setFieldVisibility(name) {
   const { visibleIf, doNotBlank } = fieldConfig;
   let matchesCondition = false;
   if (visibleIf.fieldName) {
-    const { fieldName, selectedValue, selectedValueIn } = visibleIf;
+    const {
+      fieldName: dependentOnFieldName,
+      selectedValue,
+      selectedValueIn,
+      comparison,
+      value,
+    } = visibleIf;
 
-    const fieldRow = getFieldRow(fieldName);
+    const fieldRow = getFieldRow(dependentOnFieldName);
 
     const controlValue = getControlValue({
-      controlId: fieldName,
+      controlId: dependentOnFieldName,
       tr: fieldRow,
       raw: true,
     });
 
-    logger.info({
-      fn: setFieldVisibility,
-      message: `checkVisibleIfCondition for name: ${name}`,
-      data: {
+    if (comparison && value) {
+      logger.info({
+        fn: setFieldVisibility,
+        message: `checkVisibleIfComparison for name: ${name}`,
+        data: {
+          name,
+          visibleIf,
+          controlValue,
+        },
+      });
+      matchesCondition = checkVisibleIfComparison({
         name,
-        visibleIf,
+        dependentOnFieldName,
         controlValue,
-      },
-    });
+        comparison,
+        value,
+      });
+    } else {
+      logger.info({
+        fn: setFieldVisibility,
+        message: `checkVisibleIfCondition for name: ${name}`,
+        data: {
+          name,
+          visibleIf,
+          controlValue,
+        },
+      });
 
-    matchesCondition = checkVisibleIfCondition({
-      name,
-      doNotBlank,
-      controlValue,
-      selectedValue,
-      selectedValueIn,
-    });
+      matchesCondition = checkVisibleIfCondition({
+        name,
+        controlValue,
+        selectedValue,
+        selectedValueIn,
+      });
+    }
   } else if (visibleIf.comparison && visibleIf.comparison === 'or') {
     const { comparison, comparisons } = visibleIf;
     matchesCondition = comparisons.some((c) => {
@@ -135,7 +163,6 @@ export function setFieldVisibility(name) {
       });
       return checkVisibleIfCondition({
         name,
-        doNotBlank,
         controlValue,
         selectedValue,
         selectedValueIn,
@@ -151,9 +178,56 @@ export function setFieldVisibility(name) {
   }
 }
 
-export function checkVisibleIfCondition(params) {
-  const { name, doNotBlank, controlValue, selectedValue, selectedValueIn } =
-    params;
+export function checkVisibleIfComparison({
+  name,
+  dependentOnFieldName,
+  controlValue,
+  comparison,
+  value,
+}) {
+  const params = {
+    name,
+    controlValue,
+    comparison,
+    value,
+  };
+  logger.info({
+    fn: checkVisibleIfComparison,
+    message: `for name: ${name}, doing a comparison: ${comparison}, controlValue: ${controlValue}`,
+    data: { params },
+  });
+  if (controlValue === '') {
+    logger.info({
+      fn: checkVisibleIfComparison,
+      message: `for name: ${name}, cannot compare an empty value, DOES NOT match visibleIf condition`,
+      data: { params },
+    });
+    return false;
+  }
+  const getNumericValidationError = validateNumericFieldValue(
+    dependentOnFieldName,
+    value,
+    comparison
+  );
+  logger.info({
+    fn: checkVisibleIfComparison,
+    message: `for name: ${name}, comparison: ${comparison} returned numericValidationResult: ${getNumericValidationError}, controlValue: ${controlValue}`,
+    data: { params },
+  });
+  // if there's no error, means conditions match
+  if (getNumericValidationError === '') {
+    return true;
+  }
+  return false;
+}
+
+export function checkVisibleIfCondition({
+  name,
+  controlValue,
+  selectedValue,
+  selectedValueIn,
+}) {
+  const params = { name, controlValue, selectedValue, selectedValueIn };
   if (
     controlValue === selectedValue ||
     controlValue === `${selectedValue}` ||

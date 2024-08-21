@@ -1,4 +1,5 @@
 import { calculateEstimatedActivityBudget } from '../application/steps/deliverablesBudget.js';
+import { updateFieldValue } from './fieldConfiguration.js';
 import { Logger } from './logger.js';
 
 const logger = Logger('common/currency');
@@ -352,6 +353,7 @@ function handleNewValueEntered(inputCtr, skipCalculatingBudget = false) {
 
     if (!skipCalculatingBudget) {
       calculateEstimatedActivityBudget();
+      updateFieldValue(inputCtr[0].id, newValue);
     }
     let isAddition = false;
 

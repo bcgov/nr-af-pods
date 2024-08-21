@@ -59,6 +59,7 @@ POWERPOD.html = {
   getMultiOptionSetElementValue,
   getOriginalMsosElement,
   newGetOriginalMultiOptionSetElementValue,
+  renameSectionLabel,
 };
 
 export function redirectToFormId(id) {
@@ -884,22 +885,22 @@ export function hideQuestion(fieldName) {
 
 export function showOrHideAndReturnValue(valueElementId, descriptionElementId) {
   const valueElement = $(`#${valueElementId}`);
-  const descriptionElement = $(`#${descriptionElementId}`);
+  // const descriptionElement = $(`#${descriptionElementId}`);
 
   // @ts-ignore
   let value = parseFloat(valueElement.val().replace(/,/g, ''));
   if (isNaN(value)) value = 0.0;
 
-  const hideDescription = value == 0.0;
-  if (hideDescription) {
-    descriptionElement.val('');
-    descriptionElement.closest('td').css('display', 'none');
-    valueElement.closest('td').attr('colspan', '2');
-  } else {
-    descriptionElement.closest('td').css('display', 'block');
-    descriptionElement.closest('td').attr('colspan', '1');
-    valueElement.closest('td').attr('colspan', '1');
-  }
+  // const hideDescription = value == 0.0;
+  // if (hideDescription) {
+  //   descriptionElement.val('');
+  //   descriptionElement.closest('td').css('display', 'none');
+  //   valueElement.closest('td').attr('colspan', '2');
+  // } else {
+  //   descriptionElement.closest('td').css('display', 'block');
+  //   descriptionElement.closest('td').attr('colspan', '1');
+  //   valueElement.closest('td').attr('colspan', '1');
+  // }
 
   return value;
 }
@@ -1294,4 +1295,30 @@ export function setFieldValueToEmptyState(fieldName) {
     $(fieldName).val('');
     setFieldValue(fieldName, '');
   }
+}
+
+export function renameSectionLabel(name, newLabel) {
+  const h3Tags = document.querySelectorAll('h3'); // Select all <h3> elements
+
+  let matchingElement = null;
+
+  h3Tags.forEach((h3) => {
+    if (h3.textContent.includes(name)) {
+      matchingElement = h3;
+    }
+  });
+
+  if (!matchingElement) {
+    logger.error({
+      fn: renameSectionLabel,
+      message: `Failed to find fieldset for name: ${name}, type: ${type}, newLabel: ${newLabel}`,
+    });
+    return;
+  }
+
+  console.log('Found <h3>:', matchingElement);
+  logger.info({
+    fn: renameSectionLabel,
+    message: `Succesfully renamed section name: ${name}, to newLabel: ${newLabel}`,
+  });
 }
