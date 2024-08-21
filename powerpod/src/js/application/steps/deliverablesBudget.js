@@ -229,6 +229,7 @@ function getCurrencyFieldValue(valueElementId) {
 function setOnKeypressTotalProjectInput(elementId) {
   $(`#${elementId}`).on('change keyup blur', function () {
     calculateTotalProjectCost();
+    updateFieldValue(elementId);
   });
 }
 
@@ -425,6 +426,7 @@ export function calculateEstimatedActivityBudget() {
   $('#quartech_totalfundingrequiredfromtheprogram').val(
     totalFundingRequiredWithCurrencyFormat.replace('CA$', '')
   );
+  updateFieldValue('quartech_totalfundingrequiredfromtheprogram');
 
   // validateStepFields();
 }
