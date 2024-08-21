@@ -145,7 +145,10 @@ export function validateStepField(fieldName) {
       message: `Did NOT find error message for field: ${name}`,
     });
     $(errorMessageElement).css({ display: 'none' });
-    if (fieldConfig.elementType === HtmlElementType.MultiOptionSet) {
+    if (
+      elementType === HtmlElementType.MultiOptionSet ||
+      elementType === HtmlElementType.MultiSelectPicklist
+    ) {
       if (document.querySelector(`#${fieldName}_i`)?.style?.border) {
         document.querySelector(`#${fieldName}_i`).style.border = '';
       }
@@ -155,6 +158,7 @@ export function validateStepField(fieldName) {
     store.dispatch('addFieldData', {
       name,
       error: '',
+      revalidate: false,
     });
   } else {
     logger.info({
@@ -169,7 +173,10 @@ export function validateStepField(fieldName) {
       });
       $(errorMessageElement).html(fieldErrorHtml);
       $(errorMessageElement).css({ display: '' });
-      if (fieldConfig.elementType === HtmlElementType.MultiOptionSet) {
+      if (
+        elementType === HtmlElementType.MultiOptionSet ||
+        elementType === HtmlElementType.MultiSelectPicklist
+      ) {
         $(`#${fieldName}_i`).css({ border: '1px solid #e5636c' });
       } else {
         $(`#${fieldName}`).css({ border: '1px solid #e5636c' });
@@ -180,7 +187,10 @@ export function validateStepField(fieldName) {
         message: `Field NOT touched yet name: ${name}, skip showing error message on field: ${name}, fieldErrorHtml: ${fieldErrorHtml}`,
       });
       $(errorMessageElement).css({ display: 'none' });
-      if (fieldConfig.elementType === HtmlElementType.MultiOptionSet) {
+      if (
+        elementType === HtmlElementType.MultiOptionSet ||
+        elementType === HtmlElementType.MultiSelectPicklist
+      ) {
         if (document.querySelector(`#${fieldName}_i`)?.style?.border) {
           document.querySelector(`#${fieldName}_i`).style.border = '';
         }
@@ -191,6 +201,7 @@ export function validateStepField(fieldName) {
     store.dispatch('addFieldData', {
       name,
       error: `${fieldErrorHtml}`,
+      revalidate: false,
     });
   }
 
