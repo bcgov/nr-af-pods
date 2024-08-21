@@ -107,13 +107,23 @@ export function configureField(field) {
     }
     if (newLabel) {
       var fieldset = document.querySelector(`fieldset[aria-label="${name}"]`);
-      if (fieldset) {
-        fieldset.setAttribute('aria-label', newLabel);
-        var h3Tag = fieldset.querySelector('h3');
-        if (h3Tag) {
-          h3Tag.innerHTML = newLabel;
-        }
+      if (!fieldset) {
+        logger.error({
+          fn: configureField,
+          message: `Failed to find fieldset for name: ${name}, type: ${type}, newLabel: ${newLabel}`,
+        });
+        return;
       }
+      fieldset.setAttribute('aria-label', newLabel);
+      var h3Tag = fieldset.querySelector('h3');
+      if (!h3Tag) {
+        logger.error({
+          fn: configureField,
+          message: `Failed to find h3Tag for name: ${name}, type: ${type}, newLabel: ${newLabel}`,
+        });
+        return;
+      }
+      h3Tag.innerHTML = newLabel;
     }
     // continuing for type SectionTitle because nothing else is supported for this field type
     return;
@@ -577,7 +587,7 @@ export function setDirtyField(name) {
   if (fieldConfig.touched === false) {
     logger.info({
       fn: setDirtyField,
-      message: `Setting field name: ${name} to dirty status, touched: true`,
+      message: `Setting dirty field name: ${name} to dirty status, touched: true`,
     });
     store.dispatch('addFieldData', { name, touched: true });
     validateStepField(name);

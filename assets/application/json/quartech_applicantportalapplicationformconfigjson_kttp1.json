@@ -483,6 +483,11 @@
       "name": "DeliverablesBudgetStep",
       "fields": [
         {
+          "name": "Deliverables & Budget",
+          "type": "SectionTitle",
+          "newLabel": "Budget"
+        },
+        {
           "name": "quartech_smefee",
           "format": "currency",
           "maxDigits": 13,
@@ -508,7 +513,13 @@
         },
         {
           "name": "quartech_pleasedescribemodeoftravelifapplicable",
-          "label": "Please describe mode of travel"
+          "label": "Please describe mode of travel",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_smetravelairfareparkingetc",
+            "comparison": "greaterThan",
+            "value": "0"
+          }
         },
         {
           "name": "quartech_smeaccommodation",
@@ -524,7 +535,13 @@
         },
         {
           "name": "quartech_pleasedescribeaccommodationwherewillthesme",
-          "label": "Please describe accommodation, where will the SME be staying?"
+          "label": "Please describe accommodation, where will the SME be staying?",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_smeaccommodation",
+            "comparison": "greaterThan",
+            "value": "0"
+          }
         },
         {
           "name": "quartech_facilityequipmenttechnologyrental",
@@ -540,7 +557,13 @@
         },
         {
           "name": "quartech_pleasedescribeequipmentrequiredifapplicable",
-          "label": "Please describe equipment required"
+          "label": "Please describe equipment required",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_facilityequipmenttechnologyrental",
+            "comparison": "greaterThan",
+            "value": "0"
+          }
         },
         {
           "name": "quartech_advertisingcommunications",
@@ -558,7 +581,13 @@
         {
           "name": "quartech_pleasedescribewhatformsofadvertisingcommunic",
           "maxLength": 10000,
-          "label": "Please describe what forms of advertising/communications are planned"
+          "label": "Please describe what forms of advertising/communications are planned",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_advertisingcommunications",
+            "comparison": "greaterThan",
+            "value": "0"
+          }
         },
         {
           "name": "quartech_administrationcosts",
@@ -576,7 +605,13 @@
         {
           "name": "quartech_pleasedescribetheadministrativecoststobeinc",
           "maxLength": 10000,
-          "label": "Please describe the administrative costs to be incurred"
+          "label": "Please describe the administrative cost",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_administrationcosts",
+            "comparison": "greaterThan",
+            "value": "0"
+          }
         },
         {
           "name": "quartech_othercost",
@@ -592,14 +627,20 @@
         },
         {
           "name": "quartech_pleaseexplainotherifapplicable",
-          "label": "Please explain Other"
+          "label": "Please explain Other",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_othercost",
+            "comparison": "greaterThan",
+            "value": "0"
+          }
         },
         {
           "name": "quartech_estimatedbudgettotalactivitycost",
           "format": "currency",
           "maxDigits": 11,
           "required": true,
-          "label": "Total proposed budget",
+          "label": "Total Activity Cost",
           "validation": {
             "type": "numeric",
             "value": "0",
@@ -626,7 +667,13 @@
         },
         {
           "name": "quartech_pleaseexplainwhotheotherpartnersareandwha",
-          "label": "Please explain who the other partners are, and what portion they are contributing (both cash and in-kind)"
+          "label": "Please explain who the other partners are, and what portion they are contributing (both cash and in-kind)",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_costsharecontributioncashorinkinddonation",
+            "comparison": "greaterThan",
+            "value": "0"
+          }
         },
         {
           "name": "quartech_totalfundingrequiredfromtheprogram",

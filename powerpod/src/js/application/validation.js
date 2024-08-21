@@ -1,7 +1,6 @@
 // here goes validation logic specific to application
-import {
-  validateStepFields,
-} from '../common/fieldValidation.js';
+import { POWERPOD } from '../common/constants.js';
+import { validateStepFields } from '../common/fieldValidation.js';
 import store from '../store/index.js';
 
 export function validateIsConsultantEitherBciaOrCpa() {
@@ -36,7 +35,8 @@ export function validateIsConsultantEitherBciaOrCpa() {
 }
 
 export function validateDemographicInfoRequiredFields() {
-  let validationErrorHtml = validateStepFields('DemographicInfoStep', true);
+  // let validationErrorHtml = validateStepFields('DemographicInfoStep', true);
+  let validationErrorHtml = POWERPOD.state.validationError;
 
   let demographicPercentageValidationError = validateDemographicPercentages();
 
