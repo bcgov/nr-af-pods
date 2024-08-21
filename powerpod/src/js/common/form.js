@@ -285,9 +285,14 @@ export function generateFormJson(setFieldOrder = false) {
     };
 
     trArray.forEach((tr) => {
-      const controlId = getControlId(tr);
+      const controlType = getControlType({ tr });
+      const controlId = getControlId(tr, controlType);
       // exit early if the intention is just to set the field order
-      if (setFieldOrder) {
+      if (controlId && setFieldOrder) {
+        logger.info({
+          fn: generateFormJson,
+          message: `addToFieldOrder controlId: ${controlId}`,
+        });
         store.dispatch('addToFieldOrder', controlId);
         return;
       }
@@ -313,7 +318,6 @@ export function generateFormJson(setFieldOrder = false) {
       }
 
       const questionText = getInfoValue(tr);
-      const controlType = getControlType({ tr });
 
       logger.info({
         fn: generateFormJson,
