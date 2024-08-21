@@ -84,7 +84,7 @@ export function getControlType({ tr, controlId = '', skipState = false }) {
   );
 
   if (!control) {
-    logger.error({
+    logger.warn({
       fn: getControlType,
       message: 'Could not find form control element',
       data: {
@@ -184,9 +184,34 @@ export function isHiddenRow(tr) {
   return false;
 }
 
-export function getControlId(tr) {
-  const questionDiv = tr.querySelector('.info');
-  const id = questionDiv?.querySelector('label')?.getAttribute('for');
+export function getControlId(tr, controlType = '') {
+  let id = '';
+  if (
+    controlType === HtmlElementType.MultiSelectPicklist ||
+    controlType === HtmlElementType.DatePicker
+  ) {
+    const labelElement = tr.querySelector('label.field-label');
+    if (!labelElement) {
+      logger.error({
+        fn: getControlId,
+        message: `Failed to get label element for control, controlType: ${controlType}`,
+        data: { tr, controlType },
+      });
+      return;
+    }
+    id = labelElement.id.replace('_label', '');
+  } else {
+    const questionDiv = tr.querySelector('.info');
+    id = questionDiv?.querySelector('label')?.getAttribute('for');
+  }
+  if (!id) {
+    logger.error({
+      fn: getControlId,
+      message: `Failed to get id for control, controlType: ${controlType}`,
+      data: { tr, controlType },
+    });
+    return;
+  }
   return id;
 }
 
