@@ -1,5 +1,5 @@
 {
-  "version": "1.4.0",
+  "version": "1.4.1",
   "tags": ["Application", "StaffPortal", "VLB", "VLB"],
   "name": "Veterinary and Veterinary Technologists Locums Working in BC Food Animal Practices Pilot Program",
   "abbreviation": "VLB",
@@ -202,7 +202,7 @@
           "label": "I am willing to work in the following areas of the province (choose all that apply)",
           "required": true,
           "elementType": "MultiOptionSet",
-          "disableSingleLine": true,
+          "disableSingleLine": false,
           "visibleIf": {
             "fieldName": "quartech_vlb_vetservices",
             "selectedValueIn": [255550000, 255550001],

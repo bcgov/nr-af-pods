@@ -118,6 +118,7 @@ export async function saveFormData({ customPayload = {} }) {
       payload = {
         // @ts-ignore
         ...(value && {
+          // @ts-ignore
           [PropertyReferences[field]]: PropertyReferenceValues[field](value),
         }),
         ...payload,

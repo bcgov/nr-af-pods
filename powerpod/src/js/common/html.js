@@ -1,6 +1,7 @@
 import { HtmlElementType, ProgramIds, doc } from './constants.js';
 import { Logger } from './logger.js';
 import {
+  displayActiveFieldErrors,
   validateRequiredFields,
   validateStepField,
 } from './fieldValidation.js';
@@ -10,6 +11,7 @@ import { getProgramId } from './program.ts';
 import store from '../store/index.js';
 import { getFieldConfig } from './fields.js';
 import { convertDateToISO } from './date.js';
+import { updateFieldValue } from './fieldConfiguration.js';
 
 const logger = Logger('common/html');
 
@@ -196,18 +198,18 @@ export function getInfoValue(tr) {
 export function getControlValue({
   controlId,
   tr,
-  rawValue = false,
+  raw = false,
   forTemplateGeneration = false,
 }) {
-  const type = getControlType({ tr, controlId });
+  const elementType = getControlType({ tr, controlId });
 
   logger.info({
     fn: getControlValue,
-    message: `Attempting to get control value for controlId: ${controlId} type: ${type}, rawValue: ${rawValue}`,
+    message: `Attempting to get control value for controlId: ${controlId} type: ${elementType}, raw: ${raw}`,
     data: {
       controlId,
       tr,
-      rawValue,
+      raw,
       forTemplateGeneration,
       programId: POWERPOD.program?.programId,
     },
@@ -215,97 +217,124 @@ export function getControlValue({
 
   const controlDiv = tr.querySelector('.control');
 
-  let finalValue;
+  let rawValue, verboseValue;
   if (forTemplateGeneration && controlId === 'quartech_nocragstnumber') {
     if (POWERPOD.program?.programId === ProgramIds.VLB) {
       const checked =
         document.getElementsByTagName('quartech-checkbox')?.[0].inputValue;
-      if (checked === 'true' || checked === true) finalValue = 'Yes';
-      finalValue = 'No';
+      if (checked === 'true' || checked === true) {
+        verboseValue = 'Yes';
+      } else {
+        verboseValue = 'No';
+      }
+      rawValue = verboseValue;
     }
-  } else if (type === HtmlElementType.FileInput) {
+  } else if (elementType === HtmlElementType.FileInput) {
     const value = controlDiv?.querySelector('textarea').value;
-    if (rawValue) {
-      finalValue = value;
+    if (raw) {
+      rawValue = value;
     } else {
-      finalValue = cleanString(value?.replace(/\n/g, ' '));
+      verboseValue = cleanString(value?.replace(/\n/g, ' '));
     }
-  } else if (type === HtmlElementType.CurrencyInput) {
+  } else if (elementType === HtmlElementType.CurrencyInput) {
     const value = controlDiv?.querySelector('input')?.value;
-    if (rawValue) {
-      finalValue = value;
+    if (raw) {
+      rawValue = value;
     } else {
-      finalValue = `$${value}`;
+      verboseValue = `$${value}`;
     }
-  } else if (type === HtmlElementType.Input) {
-    finalValue = controlDiv?.querySelector('input')?.value;
-  } else if (type === HtmlElementType.DatePicker) {
+  } else if (elementType === HtmlElementType.Input) {
+    verboseValue = controlDiv?.querySelector('input')?.value;
+    rawValue = verboseValue;
+  } else if (elementType === HtmlElementType.DatePicker) {
     const value = controlDiv?.querySelector(
       'div > .datetimepicker > input'
     )?.value;
-    if (rawValue && value?.length) {
+    if (raw && value?.length) {
       logger.info({
         fn: getControlValue,
         message: `Attempting to convert date raw value to ISO format, value: ${value}`,
       });
-      finalValue = convertDateToISO(value) ?? '';
+      rawValue = convertDateToISO(value) ?? '';
     } else {
-      finalValue = value ?? '';
+      verboseValue = value ?? '';
     }
-  } else if (type === HtmlElementType.TextArea) {
-    finalValue = controlDiv
+  } else if (elementType === HtmlElementType.TextArea) {
+    verboseValue = controlDiv
       ?.querySelector('textarea')
       .value?.replace(/\n/g, ' ');
-  } else if (type === HtmlElementType.DropdownSelect) {
+    rawValue = verboseValue;
+  } else if (elementType === HtmlElementType.DropdownSelect) {
     const selectElement = controlDiv?.querySelector('select');
-    if (rawValue) {
-      finalValue = selectElement.value;
+    if (raw) {
+      rawValue = selectElement.value;
     } else {
       const selectedIndex = selectElement?.selectedIndex;
       const selectedOption = selectElement.options[selectedIndex];
       const selectedOptionText =
         selectedOption.textContent || selectedOption.innerText;
-      finalValue = selectedOptionText;
+      verboseValue = selectedOptionText;
     }
-  } else if (type === HtmlElementType.Checkbox) {
+  } else if (elementType === HtmlElementType.Checkbox) {
     const checked = controlDiv?.querySelector('input')?.checked;
     logger.info({
       fn: getControlValue,
-      message: `Found control value for type: ${type}, rawValue: ${rawValue}, checked: ${checked}`,
+      message: `Found control value for type: ${elementType}, raw: ${raw}, checked: ${checked}`,
       data: { controlDiv },
     });
-    if (rawValue) {
-      finalValue = checked;
+    if (raw) {
+      rawValue = checked;
     } else {
-      if (checked === 'true' || checked === true) return 'Yes';
-      finalValue = 'No';
+      if (checked === 'true' || checked === true) {
+        verboseValue = 'Yes';
+      } else {
+        verboseValue = 'No';
+      }
     }
-  } else if (type === HtmlElementType.MultiOptionSet && controlId) {
-    finalValue = newGetOriginalMultiOptionSetElementValue(controlId, rawValue);
-  } else if (type === HtmlElementType.MultiSelectPicklist && controlId) {
-    if (rawValue) {
-      finalValue = document?.getElementById(controlId)?.value;
+  } else if (elementType === HtmlElementType.MultiOptionSet && controlId) {
+    if (raw) {
+      rawValue = newGetOriginalMultiOptionSetElementValue(controlId, raw);
     } else {
-      finalValue = controlDiv?.querySelector('input')?.value;
+      verboseValue = newGetOriginalMultiOptionSetElementValue(controlId);
+    }
+  } else if (elementType === HtmlElementType.MultiSelectPicklist && controlId) {
+    if (raw) {
+      rawValue = document?.getElementById(controlId)?.value;
+    } else {
+      verboseValue = controlDiv?.querySelector('input')?.value;
     }
   }
 
   logger.info({
     fn: getControlValue,
-    message: `For controlId: ${controlId}, rawValue: ${rawValue}, forTemplateGeneration: ${forTemplateGeneration} found finalValue: ${finalValue}`,
+    message: `
+      For controlId: ${controlId}, raw: ${raw}, 
+      forTemplateGeneration: ${forTemplateGeneration} found rawValue: ${rawValue} 
+      finalValue: ${verboseValue}`,
     data: {
       controlId,
       tr,
-      rawValue,
+      raw,
       forTemplateGeneration,
-      finalValue,
+      finalValue: verboseValue,
+      rawValue,
     },
   });
 
-  return finalValue;
+  if (raw) {
+    if (POWERPOD.state?.fields?.[controlId]?.value !== raw) {
+      store.dispatch('addFieldData', {
+        name: controlId,
+        value: rawValue,
+      });
+    }
+    return rawValue;
+  }
+
+  return verboseValue;
 }
 
-export function newGetOriginalMultiOptionSetElementValue(controlId, rawValue) {
+export function newGetOriginalMultiOptionSetElementValue(controlId, raw) {
   const originalSelectElementForMSOS = getOriginalMsosElement(controlId);
   if (!originalSelectElementForMSOS) {
     logger.error({
@@ -339,7 +368,7 @@ export function newGetOriginalMultiOptionSetElementValue(controlId, rawValue) {
     return '';
   }
   let valueStrArray = [];
-  if (rawValue) {
+  if (raw) {
     for (let i = 0; i < inputElements.length; i++) {
       const input = inputElements[i];
       valueStrArray.push(input?.value);
@@ -362,7 +391,7 @@ export function newGetOriginalMultiOptionSetElementValue(controlId, rawValue) {
   return valueStr;
 }
 
-export function getMultiOptionSetElementValue(controlId, rawValue) {
+export function getMultiOptionSetElementValue(controlId, raw) {
   const inputElement = document.getElementById(controlId);
   if (!inputElement) {
     logger.error({
@@ -382,7 +411,7 @@ export function getMultiOptionSetElementValue(controlId, rawValue) {
 
   let valueStrArray = [];
 
-  if (rawValue) {
+  if (raw) {
     multiOptionSetValueArray.forEach((set) => {
       valueStrArray.push(set?.Value);
     });
@@ -479,10 +508,10 @@ export function getFieldRow(fieldName) {
   return fieldRow;
 }
 
-export function hideFieldRow(fieldName, doNotBlank = false) {
+export function hideFieldRow({ fieldName, doNotBlank = false }) {
   logger.info({
     fn: hideFieldRow,
-    message: `hideFieldRow called for fieldName: ${fieldName}`,
+    message: `hideFieldRow called for fieldName: ${fieldName}, doNotBlank: ${doNotBlank}`,
   });
   const fieldRow = getFieldRow(fieldName);
 
@@ -500,11 +529,18 @@ export function hideFieldRow(fieldName, doNotBlank = false) {
     setFieldValueToEmptyState(fieldName);
   }
 
-  store.dispatch('addFieldData', { name: fieldName, visible: false });
+  store.dispatch('addFieldData', {
+    name: fieldName,
+    visible: false,
+    error: '',
+    touched: false,
+  });
+
+  displayActiveFieldErrors();
 
   logger.info({
     fn: hideFieldRow,
-    message: `successfully ran hideFieldRow for fieldName: ${fieldName}`,
+    message: `successfully ran hideFieldRow for fieldName: ${fieldName}, doNotBlank: ${doNotBlank}`,
     data: { fieldRow },
   });
 }
@@ -817,6 +853,12 @@ export function hideFieldByFieldName(fieldName, doNotBlank = false) {
   if (!fieldRow || !fieldInputElement) return;
 
   $(fieldRow).css({ display: 'none' });
+  store.dispatch('addFieldData', {
+    name: fieldName,
+    visible: false,
+    erorr: '',
+  });
+
   $(`#${fieldName}_label`).parent().removeClass('required');
   localStorage.removeItem(`shouldRequire_${fieldName}`);
   // if (validationFunc) {
@@ -885,7 +927,7 @@ export function setFieldValue(name, value, elementType = null) {
   const e = new Event('change');
   element.dispatchEvent(e);
 
-  store.dispatch('addFieldData', { name, value: value });
+  updateFieldValue(name, value);
 }
 
 export function relocateField(field) {
@@ -1130,6 +1172,13 @@ export function htmlDecode(input) {
 
 export function copyFromFieldAToFieldB(fromFieldNameA, toFieldNameB) {
   const fromFieldNameAElement = document.getElementById(fromFieldNameA);
+
+  logger.info({
+    fn: copyFromFieldAToFieldB,
+    message: `Start copying value ${
+      fromFieldNameAElement.value || ''
+    } from ${fromFieldNameA} to ${toFieldNameB}`,
+  });
 
   setFieldValue(toFieldNameB, fromFieldNameAElement.value || '');
 
