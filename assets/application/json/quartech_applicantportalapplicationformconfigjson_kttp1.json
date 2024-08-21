@@ -639,7 +639,6 @@
           "name": "quartech_estimatedbudgettotalactivitycost",
           "format": "currency",
           "maxDigits": 11,
-          "required": true,
           "label": "Total Activity Cost",
           "validation": {
             "type": "numeric",
@@ -673,7 +672,6 @@
           "name": "quartech_totalfundingrequiredfromtheprogram",
           "format": "currency",
           "maxDigits": 11,
-          "required": true,
           "label": "Total Funding Required From The Program",
           "validation": {
             "type": "numeric",

@@ -311,6 +311,26 @@ export function validateStepFields(stepName, returnString) {
   // store.dispatch('setValidationError', validationErrorHtml);
 }
 
+export function isEmpty(value) {
+  // Check if the value is undefined
+  if (value === undefined) {
+    return true;
+  }
+
+  // Check if the value is a string with length 0
+  if (typeof value === 'string' && value.length === 0) {
+    return true;
+  }
+
+  // For numbers and floats, a value of 0 is not considered empty
+  if (typeof value === 'number' && value === 0) {
+    return false;
+  }
+
+  // Return false for all other cases (non-empty strings, non-zero numbers, etc.)
+  return false;
+}
+
 export function validateRequiredField({
   fieldName,
   elemType = HtmlElementType.Input,
@@ -330,11 +350,8 @@ export function validateRequiredField({
   // }
 
   let validationErrorHtml = '';
-
-  const fieldRow = getFieldRow(fieldName);
   const value = getControlValue({
     controlId: fieldName,
-    tr: fieldRow,
     raw: true,
   });
 
@@ -345,7 +362,7 @@ export function validateRequiredField({
     }, value: ${value}`,
   });
 
-  if (!value || !value.length) {
+  if (isEmpty(value)) {
     logger.info({
       fn: validateRequiredField,
       message: `Required field fieldName: ${fieldName} is empty! Set validation error message`,

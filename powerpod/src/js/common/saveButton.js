@@ -103,9 +103,9 @@ export async function saveFormData({ customPayload = {} }) {
         fieldData
       )}`,
     });
-    const { value, error } = fieldData;
+    const { value = undefined, error, touched } = fieldData;
 
-    if (error && error.length) {
+    if ((error && error.length) || !touched) {
       logger.warn({
         fn: saveFormData,
         message: `skipping saving data for field name: ${field}`,
@@ -117,16 +117,18 @@ export async function saveFormData({ customPayload = {} }) {
     if (PropertyReferences[field]) {
       payload = {
         // @ts-ignore
-        ...(value && {
+        ...(value !== undefined &&
           // @ts-ignore
-          [PropertyReferences[field]]: PropertyReferenceValues[field](value),
-        }),
+          PropertyReferenceValues[field] && {
+            // @ts-ignore
+            [PropertyReferences[field]]: PropertyReferenceValues[field](value),
+          }),
         ...payload,
         ...(Object.keys(customPayload)?.length && customPayload),
       };
     } else {
       payload = {
-        ...(value && { [field]: value }),
+        ...(value !== undefined && { [field]: value }),
         ...payload,
         ...(Object.keys(customPayload)?.length && customPayload),
       };

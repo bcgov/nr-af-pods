@@ -207,7 +207,8 @@ export function checkVisibleIfComparison({
   const getNumericValidationError = validateNumericFieldValue(
     dependentOnFieldName,
     value,
-    comparison
+    comparison,
+    true
   );
   logger.info({
     fn: checkVisibleIfComparison,
