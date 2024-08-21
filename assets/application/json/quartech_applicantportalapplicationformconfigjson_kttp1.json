@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "KTTP-SMEA", "KTTP1"],
-  "version": "1.2.4",
+  "version": "1.2.5",
   "name": "KTTP - Subject Matter Expert Activities",
   "abbreviation": "KTTP-SMEA",
   "programId": "25493093-9d2b-ee11-bdf4-000d3af3ac95",
@@ -646,12 +646,6 @@
             "value": "0",
             "comparison": "greaterThanOrEqualTo"
           }
-        },
-        {
-          "name": "quartech_deliverables",
-          "required": true,
-          "maxLength": 10000,
-          "label": "Deliverables"
         },
         {
           "name": "quartech_costsharecontributioncashorinkinddonation",
