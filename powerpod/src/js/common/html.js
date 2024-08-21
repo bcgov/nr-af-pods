@@ -534,7 +534,7 @@ export function hideFieldRow({ fieldName, doNotBlank = false }) {
     name: fieldName,
     visible: false,
     error: '',
-    touched: false,
+    // touched: true,
   });
 
   displayActiveFieldErrors();
