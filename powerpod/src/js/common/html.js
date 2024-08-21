@@ -198,10 +198,14 @@ export function getInfoValue(tr) {
 
 export function getControlValue({
   controlId,
-  tr,
+  tr = undefined,
   raw = false,
   forTemplateGeneration = false,
 }) {
+  if (tr === undefined) {
+    // @ts-ignore
+    tr = getFieldRow(controlId);
+  }
   const elementType = getControlType({ tr, controlId });
 
   logger.info({
@@ -240,7 +244,8 @@ export function getControlValue({
   } else if (elementType === HtmlElementType.CurrencyInput) {
     const value = controlDiv?.querySelector('input')?.value;
     if (raw) {
-      rawValue = value;
+      const floatVal = parseFloat(value.replace(/,/g, ''));
+      rawValue = !isNaN(floatVal) ? floatVal : undefined;
     } else {
       verboseValue = `$${value}`;
     }
@@ -534,7 +539,7 @@ export function hideFieldRow({ fieldName, doNotBlank = false }) {
     name: fieldName,
     visible: false,
     error: '',
-    // touched: true,
+    // touched: false,
   });
 
   displayActiveFieldErrors();
