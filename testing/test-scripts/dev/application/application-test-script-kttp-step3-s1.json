@@ -1,0 +1,112 @@
+{
+	"name": "Application - KTTP - Test Script - Project Step",
+	"testSteps" : [
+		{   "action" : "open-new-tab", "url": "https://af-pods-dev.powerappsportals.com/application/?programid=25493093-9d2b-ee11-bdf4-000d3af3ac95" }
+
+		
+		, { "action" : "Expect", "field" : { "label": "Project Title", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Project Description", "visible" : true, "required" : true } }
+		
+		, { "action" : "Expect", "field" : { "label": "Please select the primary Commodity/Sector that will benefit from this project", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Please explain if you selected Sector-Wide, or if you have additional information to share on the Commodity/Sector", "visible" : false } }
+		, { "action" : "Enter", "field" : { "label": "Please select the primary Commodity/Sector that will benefit from this project", "value" : "* Sector Wide" } }
+		, { "action" : "Expect", "field" : { "label": "Please explain if you selected Sector-Wide, or if you have additional information to share on the Commodity/Sector", "visible" : true, "required" : true } }
+		
+		, { "action" : "Expect", "field" : { "label": "Will the event be virtual, in-person, or hybrid?", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Primary Location", "visible" : false } }
+		, { "action" : "Select", "field" : { "label": "Will the event be virtual, in-person, or hybrid?", "value" : "in-person" } }
+		, { "action" : "Expect", "field" : { "label": "Primary Location", "visible" : true, "required" : true } }
+		, { "action" : "Select", "field" : { "label": "Will the event be virtual, in-person, or hybrid?", "value" : "virtual" } }
+		, { "action" : "Expect", "field" : { "label": "Primary Location", "visible" : false } }
+		, { "action" : "Select", "field" : { "label": "Will the event be virtual, in-person, or hybrid?", "value" : "hybrid" } }
+		, { "action" : "Expect", "field" : { "label": "Primary Location", "visible" : true, "required" : true } }
+		
+		, { "action" : "Expect", "field" : { "label": "Will your project take place in more than one place?", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Additional Project Locations", "visible" : false } }
+		, { "action" : "Select", "field" : { "label": "Will your project take place in more than one place?", "value" : "Yes" } }
+		, { "action" : "Expect", "field" : { "label": "Additional Project Locations", "visible" : true, "required" : true } }
+		
+		, { "action" : "Expect", "field" : { "label": "If you worked with a Ministry Staff Supporter, please provide their name", "visible" : true, "required" : true } }
+		
+		, { "action" : "Expect", "field" : { "label": "In order to continuously improve communications, we are interested in learning how you heard about this program, please select all options that apply", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "If Other, please describe", "visible" : false } }
+		, { "action" : "Select", "field" : { "label": "In order to continuously improve communications, we are interested in learning how you heard about this program, please select all options that apply ", "value" : "Other" } }
+		, { "action" : "Expect", "field" : { "label": "If Other, please describe", "visible" : true, "required" : true } }
+		
+		, { "action" : "Expect", "field" : { "label": "Organization Background", "visible" : true, "required" : true } }
+
+		, { "action" : "Expect", "field" : { "label": "Has this organization received KTTP funding in previous years?", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Please explain when and for which activity", "visible" : false } }
+		, { "action" : "Select", "field" : { "label": "Has this organization received KTTP funding in previous years?", "value" : "Yes" } }
+		, { "action" : "Expect", "field" : { "label": "Please explain when and for which activity", "visible" : true, "required" : true } }
+		
+		, { "action" : "Expect", "field" : { "label": "Has this organization received funding from other Government of British Columbia (the Province) programs in the last year?", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "If Yes, please explain when and from which program", "visible" : false } }
+		, { "action" : "Select", "field" : { "label": "Has this organization received funding from other Government of British Columbia (the Province) programs in the last year?", "value" : "Yes" } }
+		, { "action" : "Expect", "field" : { "label": "If Yes, please explain when and from which program", "visible" : true, "required" : true } }
+		
+		, { "action" : "Expect", "field" : { "label": "Will your organization be collaborating with any other organizations on this project?", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Please provide Legal Business/Organization Name", "visible" : false } }
+		, { "action" : "Expect", "field" : { "label": "Please provide a Contact Name", "visible" : false } }
+		, { "action" : "Expect", "field" : { "label": "Please provide a brief background outlining the organization and what their role be in the delivery of this activity (300 words maximum)", "visible" : false } }
+		, { "action" : "Select", "field" : { "label": "Will your organization be collaborating with any other organizations on this project?", "value" : "Yes" } }
+		, { "action" : "Expect", "field" : { "label": "Please provide Legal Business/Organization Name", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Please provide a Contact Name", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Please provide a brief background outlining the organization and what their role be in the delivery of this activity (300 words maximum)", "visible" : true, "required" : true } }
+		
+		, { "action" : "Expect", "field" : { "label": "Are you applying for a Traceability Knowledge Transfer Activity? (please note, seafood organizations are eligible for this type of activity)", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "If yes, please explain the Traceability activity that will be included in your event/activity.", "visible" : false } }
+		, { "action" : "Select", "field" : { "label": "Are you applying for a Traceability Knowledge Transfer Activity? (please note, seafood organizations are eligible for this type of activity)", "value" : "Yes" } }
+		, { "action" : "Expect", "field" : { "label": "If yes, please explain the Traceability activity that will be included in your event/activity.", "visible" : true, "required" : true } }
+		
+		, { "action" : "Expect", "field" : { "label": "Subject Matter Expert (SME) Name", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "SME Phone Number:", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "SME Email:", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "SME Website:", "visible" : true, "required" : false } }
+		, { "action" : "Expect", "field" : { "label": "Activity Start Date", "visible" : true, "required" : true } }
+		
+		, { "action" : "Expect", "field" : { "label": "Does the activity take place over multiple days?", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "If Yes, please provide the additional dates:", "visible" : false } }
+		, { "action" : "Select", "field" : { "label": "Does the activity take place over multiple days?", "value" : "Yes" } }
+		, { "action" : "Expect", "field" : { "label": "If Yes, please provide the additional dates:", "visible" : true, "required" : true } }
+		
+		, { "action" : "Expect", "field" : { "label": "Will this activity be open to the public?", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "All activities must be open to the public, please explain why this event will not be open to the public.", "visible" : false } }
+		, { "action" : "Select", "field" : { "label": "Will this activity be open to the public?", "value" : "No" } }
+		, { "action" : "Expect", "field" : { "label": "All activities must be open to the public, please explain why this event will not be open to the public.", "visible" : true, "required" : true } }
+		
+		, { "action" : "Expect", "field" : { "label": "Number of B.C. agriculture producers/ processors/ businesses expected to attend this activity:", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Number of overall attendees expected to attend this activity:", "visible" : true, "required" : true } }
+		
+		, { "action" : "Expect", "field" : { "label": "Please select the most applicable activity type:", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "If Other, please describe your activity type", "visible" : false } }
+		, { "action" : "Select", "field" : { "label": "Please select the most applicable activity type:", "value" : "Other" } }
+		, { "action" : "Expect", "field" : { "label": "If Other, please describe your activity type", "visible" : true, "required" : true } }
+		
+		, { "action" : "Expect", "field" : { "label": "Priority Topic(s). Please select the most applicable topic(s) that your project will focus on.", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Please describe the priority topic(s).", "visible" : false } }
+		, { "action" : "Select", "field" : { "label": "Priority Topic(s). Please select the most applicable topic(s) that your project will focus on.", "value" : "Other" } }
+		, { "action" : "Expect", "field" : { "label": "Please describe the priority topic(s).", "visible" : true, "required" : true } }
+		
+		, { "action" : "Expect", "field" : { "label": "Please select the most applicable purpose that your activity will focus on:", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "If Other, please describe the activity purpose:", "visible" : false } }
+		, { "action" : "Select", "field" : { "label": "Please select the most applicable purpose that your activity will focus on:", "value" : "Other" } }
+		, { "action" : "Expect", "field" : { "label": "If Other, please describe the activity purpose:", "visible" : true, "required" : true } }
+		
+		, { "action" : "Expect", "field" : { "label": "Please describe your proposed activity's topic, purpose and intended outcome(s). Outcomes should be measurable and speak to the impact or results you intend to achieve. Be sure to clearly articulate the knowledge, behaviour or skills that participants will have at the end of the activity:", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Please describe the activities you will undertake to achieve your outcomes. Activities should describe how you intend to complete your outcome and include a description of timelines, materials, etc.", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Please describe the expertise of the Subject Matter Expert (SME) and what experience do they have in transferring knowledge?", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "The Province supports inclusiveness and increased representation of target and underrepresented groups. Please describe how you will work towards increasing access and inclusiveness of your activity?", "visible" : true, "required" : true } }
+
+		, { "action" : "Expect", "field" : { "label": "The process of learning and processing knowledge changes from children to adults. Will your event be adapted for adult learning?", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "If Yes, please describe how the proposed activities will use best practices in adult education and knowledge transfer. How will you evaluate if you have been successful?", "visible" : false } }
+		, { "action" : "Select", "field" : { "label": "The process of learning and processing knowledge changes from children to adults. Will your event be adapted for adult learning?", "value" : "Yes" } }
+		, { "action" : "Expect", "field" : { "label": "If Yes, please describe how the proposed activities will use best practices in adult education and knowledge transfer. How will you evaluate if you have been successful?", "visible" : true, "required" : true } }
+		
+		
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : true } }
+		
+
+		, { "action" : "Enter", "button" : { "label": "Next", "disabled" : false } }
+	]
+}
