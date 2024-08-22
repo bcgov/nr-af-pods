@@ -11,6 +11,7 @@ import {
 } from '../../common/fieldConfiguration.js';
 import { Logger } from '../../common/logger.js';
 import { validateStepFields } from '../../common/fieldValidation.js';
+import { POWERPOD } from '../../common/constants.js';
 
 const logger = Logger('application/steps/deliverablesBudget');
 
@@ -127,7 +128,11 @@ export function customizeDeliverablesBudgetStep() {
 function setOnKeypressBudgetInput(elementId) {
   $(`#${elementId}`).on('change keyup blur', function () {
     calculateEstimatedActivityBudget();
-    updateFieldValue(elementId);
+    updateFieldValue({
+      name: elementId,
+      // skipValidation: true,
+      origin: setOnKeypressBudgetInput.name,
+    });
   });
 }
 
@@ -229,7 +234,11 @@ function getCurrencyFieldValue(valueElementId) {
 function setOnKeypressTotalProjectInput(elementId) {
   $(`#${elementId}`).on('change keyup blur', function () {
     calculateTotalProjectCost();
-    updateFieldValue(elementId);
+    updateFieldValue({
+      name: elementId,
+      // skipValidation: true,
+      origin: setOnKeypressBudgetInput.name,
+    });
   });
 }
 
@@ -426,7 +435,11 @@ export function calculateEstimatedActivityBudget() {
   $('#quartech_totalfundingrequiredfromtheprogram').val(
     totalFundingRequiredWithCurrencyFormat.replace('CA$', '')
   );
-  updateFieldValue('quartech_totalfundingrequiredfromtheprogram');
+  updateFieldValue({
+    name: 'quartech_totalfundingrequiredfromtheprogram',
+    skipValidation: POWERPOD.loading,
+    origin: calculateEstimatedActivityBudget.name,
+  });
 
   // validateStepFields();
 }

@@ -353,7 +353,11 @@ function handleNewValueEntered(inputCtr, skipCalculatingBudget = false) {
 
     if (!skipCalculatingBudget) {
       calculateEstimatedActivityBudget();
-      updateFieldValue(inputCtr[0].id, newValue);
+      updateFieldValue({
+        name: inputCtr[0].id,
+        // skipValidation: true,
+        origin: handleNewValueEntered.name,
+      });
     }
     let isAddition = false;
 

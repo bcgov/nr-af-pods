@@ -81,12 +81,11 @@ export function checkControlDependentFields(params) {
 }
 
 export function setFieldVisibility(name) {
-  const fieldConfig = getFieldConfig(name);
   logger.info({
     fn: setFieldVisibility,
     message: `starting to set field visibility for name: ${name}`,
-    data: { fieldConfig },
   });
+  const fieldConfig = getFieldConfig(name);
   assignDependentFields(fieldConfig);
   const { visibleIf, doNotBlank } = fieldConfig;
   let matchesCondition = false;
@@ -204,12 +203,12 @@ export function checkVisibleIfComparison({
     });
     return false;
   }
-  const getNumericValidationError = validateNumericFieldValue(
-    dependentOnFieldName,
-    value,
-    comparison,
-    true
-  );
+  const getNumericValidationError = validateNumericFieldValue({
+    fieldName: dependentOnFieldName,
+    comparisonValue: value,
+    operator: comparison,
+    forceRequired: true,
+  });
   logger.info({
     fn: checkVisibleIfComparison,
     message: `for name: ${name}, comparison: ${comparison} returned numericValidationResult: ${getNumericValidationError}, controlValue: ${controlValue}`,

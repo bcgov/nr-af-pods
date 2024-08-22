@@ -82,12 +82,19 @@ export function validateStepField(fieldName) {
         errorMessage,
       }) ?? '';
     if (errorMsg && errorMsg.length) {
-      fieldErrorHtml = fieldErrorHtml.concat(errorMsg + ' ');
+      fieldErrorHtml = fieldErrorHtml.concat(errorMsg);
     }
   }
   if (validation?.type === 'numeric') {
     const { value, comparison } = validation;
-    errorMsg = validateNumericFieldValue(name, value, comparison) ?? '';
+    errorMsg =
+      // @ts-ignore
+      validateNumericFieldValue({
+        fieldName: name,
+        comparisonValue: value,
+        operator: comparison,
+        errorMessage,
+      }) ?? '';
     if (errorMsg && errorMsg.length) {
       fieldErrorHtml = fieldErrorHtml.concat(errorMsg + ' ');
     }
@@ -400,18 +407,38 @@ export function validateRequiredField({
   return validationErrorHtml;
 }
 
-export function validateNumericFieldValue(
+export function validateNumericFieldValue({
   fieldName,
   comparisonValue,
   operator,
-  forceRequired
-) {
+  forceRequired = false,
+  errorMessage = '',
+}) {
+  const params = {
+    fieldName,
+    comparisonValue,
+    operator,
+    forceRequired,
+    errorMessage,
+  };
   const element = document.querySelector(`#${fieldName}`);
 
-  if (!element) return;
+  if (!element) {
+    logger.error({
+      fn: validateNumericFieldValue,
+      message: `failed to find element for numeric field validation`,
+      data: params,
+    });
+    return;
+  }
 
   // @ts-ignore
   if (element.value === '' && !forceRequired) {
+    logger.info({
+      fn: validateNumericFieldValue,
+      message: `element control value is empty, but it is not required, so skip numeric validation`,
+      data: params,
+    });
     return '';
   }
 
@@ -419,37 +446,58 @@ export function validateNumericFieldValue(
     // @ts-ignore
     element.value.replace(/,/g, '').replace('$', '')
   );
-  const fieldLabelText = $(`#${fieldName}_label`).text();
+  let finalMessage = '';
   const genericErrorMsg = `<span style="color:red;"> Please enter a valid number`;
   switch (operator) {
     case 'greaterThan':
       // @ts-ignore
-      return !(value > comparisonValue) || value === ''
-        ? `${genericErrorMsg}. The value must be greater than ${comparisonValue}.</span>`
-        : '';
+      if (!(value > comparisonValue) || value === '') {
+        finalMessage = `${genericErrorMsg}. The value must be greater than ${comparisonValue}.</span>`;
+      }
+      break;
     case 'lessThan':
       // @ts-ignore
-      return !(value < comparisonValue) || value === ''
-        ? `${genericErrorMsg}. The value must be less than ${comparisonValue}.</span>`
-        : '';
+      if (!(value < comparisonValue) || value === '') {
+        finalMessage = `${genericErrorMsg}. The value must be less than ${comparisonValue}.</span>`;
+      }
+      break;
     case 'equalTo':
       // @ts-ignore
-      return !(value === comparisonValue) || value === ''
-        ? `${genericErrorMsg}. The value must be equal to ${comparisonValue}.</span>`
-        : '';
+      if (!(value === comparisonValue) || value === '') {
+        finalMessage = `${genericErrorMsg}. The value must be equal to ${comparisonValue}.</span>`;
+      }
+      break;
     case 'greaterThanOrEqualTo':
       // @ts-ignore
-      return !(value >= comparisonValue) || value === ''
-        ? `${genericErrorMsg}. The value must be greater than or equal to ${comparisonValue}.</span>`
-        : '';
+      if (!(value >= comparisonValue) || value === '') {
+        finalMessage = `${genericErrorMsg}. The value must be greater than or equal to ${comparisonValue}.</span>`;
+      }
+      break;
     case 'lessThanOrEqualTo':
       // @ts-ignore
-      return !(value <= comparisonValue) || value === ''
-        ? `${genericErrorMsg}. The value must be less than or equal to ${comparisonValue}.</span>`
-        : '';
+      if (!(value <= comparisonValue) || value === '') {
+        finalMessage = `${genericErrorMsg}. The value must be less than or equal to ${comparisonValue}.</span>`;
+      }
+      break;
     default:
-      return 'Invalid operator';
+      finalMessage = 'Invalid operator';
+      logger.error({
+        fn: validateNumericFieldValue,
+        message: `Invalid operator`,
+      });
+      break;
   }
+  if (errorMessage?.length > 0 && finalMessage?.length > 0) {
+    finalMessage = errorMessage;
+  }
+  logger.info({
+    fn: validateNumericFieldValue,
+    message: `returning error message: ${
+      finalMessage?.length > 0 ? finalMessage : 'VALIDATION PASSED'
+    }`,
+    data: { params, finalMessage },
+  });
+  return finalMessage;
 }
 
 export function validateFieldLength(
@@ -561,7 +609,7 @@ export function displayActiveFieldErrors() {
   let validationErrorHtml = '';
 
   fieldsWithErrors.forEach((field) => {
-    const errorWithLabelText = `<span>"${field.label}":</span>` + field.error;
+    const errorWithLabelText = `<span>"${field.label}":</span> <span style="color: red;">${field.error}</span>`;
     validationErrorHtml = validationErrorHtml.concat(
       `<div>${errorWithLabelText}</div>`
     );

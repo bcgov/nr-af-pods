@@ -168,7 +168,7 @@ export function configureField(field) {
     addValidationCheck(name, validation);
   }
   if (initialValue) {
-    setFieldValue(name, initialValue, elementType);
+    setFieldValue(name, initialValue, elementType, true);
   }
   // max characters
   if (maxLength) {
@@ -459,15 +459,25 @@ function setupCanadaPostAddressComplete(fields) {
   });
 }
 
-export function updateFieldValue(name, value = undefined) {
-  const fieldConfig = getFieldConfig(name);
-  const { elementType, format } = fieldConfig.elementType;
+export function updateFieldValue({
+  name,
+  value = undefined,
+  skipValidation = false,
+  origin = '',
+}) {
+  const params = {
+    name,
+    value,
+    skipValidation,
+    origin,
+  };
   logger.info({
     fn: updateFieldValue,
-    message: `updateFieldValue called for name: ${name}, value: ${
-      value === undefined ? 'NOT PASSED' : value
-    }, elementType: ${elementType}, format: ${format}`,
+    message: `updateFieldValue called for name: ${name}, origin: ${origin}, is still configuringFields: ${POWERPOD.configuringFields}, loading: ${POWERPOD.loading}`,
+    data: params,
   });
+  const fieldConfig = getFieldConfig(name);
+  const { elementType, format } = fieldConfig.elementType;
   // if no value passed, get current value from HTML
   if (value === undefined) {
     value = getControlValue({ controlId: name, raw: true });
@@ -517,6 +527,16 @@ export function updateFieldValue(name, value = undefined) {
       value = integerNumber;
     }
   }
+
+  if (fieldConfig.value === value) {
+    logger.info({
+      fn: updateFieldValue,
+      message: `No need to update state or validate new value as it is the same for name: ${name}`,
+      data: { params, fieldConfig, value },
+    });
+    return;
+  }
+
   logger.info({
     fn: updateFieldValue,
     message: `Saving field data for name: ${name} and value: ${value}, format: ${format}`,
@@ -525,7 +545,7 @@ export function updateFieldValue(name, value = undefined) {
   store.dispatch('addFieldData', {
     name,
     value,
-    touched: true,
+    touched: skipValidation ? false : true,
     revalidate: true,
   });
 
@@ -535,10 +555,15 @@ export function updateFieldValue(name, value = undefined) {
     });
   }
 
-  validateNeededFields(name);
+  if (!skipValidation)
+    validateNeededFields({ name, origin: updateFieldValue.name });
 }
 
 export function setDirtyField(name) {
+  logger.info({
+    fn: setDirtyField,
+    message: `set dirty field for name: ${name}`,
+  });
   const fieldConfig = getFieldConfig(name);
   // If field has never been touched before, always validate
   if (fieldConfig.touched === false) {
@@ -551,7 +576,11 @@ export function setDirtyField(name) {
   validateStepField(name);
 }
 
-export function validateNeededFields(name) {
+export function validateNeededFields({ name, origin = '' }) {
+  logger.info({
+    fn: validateNeededFields,
+    message: `called for name: ${name} from origin: ${origin}`,
+  });
   if (POWERPOD.configuringFields) {
     logger.warn({
       fn: validateNeededFields,
@@ -604,31 +633,45 @@ export function setFieldObserver(name, format = '') {
       //   updateFieldValue(name);
       // });
       attachFileField?.on('change input', () => {
-        updateFieldValue(name);
+        updateFieldValue({
+          name,
+          origin: `setFieldObserver case HtmlElementType.FileInput: attachFileField?.on('change input'...`,
+        });
       });
       attachFileField?.on('focus click blur touchstart', () => {
-        validateNeededFields(name);
+        validateNeededFields({ name, origin: setFieldObserver.name });
       });
       textareaField?.on('change input', function () {
-        updateFieldValue(name);
+        updateFieldValue({
+          name,
+          origin: `setFieldObserver case HtmlElementType.FileInput: textareaField?.on('change input'...`,
+        });
       });
       textareaField?.on('focus click blur touchstart', function () {
-        validateNeededFields(name);
+        validateNeededFields({ name, origin: setFieldObserver.name });
       });
       break;
     case HtmlElementType.DatePicker:
       const datePickerElement = $(
         `input[id=${name}_datepicker_description]`
       ).parent()[0];
-      observeChanges(datePickerElement, () => updateFieldValue(name));
+      observeChanges(datePickerElement, () =>
+        updateFieldValue({
+          name,
+          origin: `setFieldObserver case HtmlElementType.DatePicker: observeChanges(datePickerElement,...`,
+        })
+      );
       $(`#${name}_datepicker_description`).on('change input', () => {
-        updateFieldValue(name);
+        updateFieldValue({
+          name,
+          origin: `setFieldObserver case HtmlElementType.DatePicker: $(\`#${name}_datepicker_description\`).on('change input'...`,
+        });
       });
       $(`#${name}_datepicker_description`).on(
         'focus click blur touchstart',
         () => {
           if (fieldConfig.touched === false) {
-            validateNeededFields(name);
+            validateNeededFields({ name, origin: setFieldObserver.name });
           }
         }
       );
@@ -637,27 +680,36 @@ export function setFieldObserver(name, format = '') {
     case HtmlElementType.SingleOptionSet:
     case HtmlElementType.MultiOptionSet:
       $(`input[id*='${name}']`).on('change input', function () {
-        updateFieldValue(name);
+        updateFieldValue({
+          name,
+          origin: `setFieldObserver case HtmlElementType.MultiOptionSet: $(\`input[id*='${name}']\`).on('change input'...`,
+        });
       });
       $(`input[id*='${name}']`).on('focus click blur touchstart', function () {
-        validateNeededFields(name);
+        validateNeededFields({ name, origin: setFieldObserver.name });
       });
       break;
     case HtmlElementType.DropdownSelect:
       $(`select[id*='${name}']`).on('change input', function () {
-        updateFieldValue(name);
+        updateFieldValue({
+          name,
+          origin: `setFieldObserver case HtmlElementType.DropdownSelect: $(\`select[id*='${name}']\`).on('change input'...`,
+        });
       });
       $(`select[id*='${name}']`).on('focus click blur touchstart', function () {
-        validateNeededFields(name);
+        validateNeededFields({ name, origin: setFieldObserver.name });
       });
       break;
     case HtmlElementType.Checkbox:
     default: // HtmlElementTypeEnum.Input
       $(`#${name}`).on('change input', function (event) {
-        updateFieldValue(name);
+        updateFieldValue({
+          name,
+          origin: `setFieldObserver case DEFAULT: $(\`#${name}\`).on('change input'...`,
+        });
       });
       $(`#${name}`).on('focus click blur touchstart', function (event) {
-        validateNeededFields(name);
+        validateNeededFields({ name, origin: setFieldObserver.name });
       });
       break;
   }

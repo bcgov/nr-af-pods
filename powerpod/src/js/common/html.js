@@ -580,7 +580,11 @@ export function hideFieldRow({ fieldName, doNotBlank = false }) {
   if (!doNotBlank) {
     setFieldValueToEmptyState(fieldName);
   } else {
-    updateFieldValue(fieldName);
+    updateFieldValue({
+      name: fieldName,
+      // skipValidation: true,
+      origin: hideFieldRow.name,
+    });
   }
 
   store.dispatch('addFieldData', {
@@ -970,10 +974,15 @@ export function showOrHideAndReturnValue(valueElementId, descriptionElementId) {
  * @param {string} name - The name of the associated field id.
  * @param {string} value - The value to set the field to.
  */
-export function setFieldValue(name, value, elementType = null) {
+export function setFieldValue(
+  name,
+  value,
+  elementType = null,
+  skipValidation = false
+) {
   logger.info({
     fn: setFieldValue,
-    message: `Setting field value for name: ${name}, value: ${value}, elementType: ${elementType}`,
+    message: `Setting field value for name: ${name}, value: ${value}, elementType: ${elementType}, skipValidation: ${skipValidation}`,
   });
   const element = document.querySelector(`#${name}`);
   if (!element) return;
@@ -986,7 +995,7 @@ export function setFieldValue(name, value, elementType = null) {
   const e = new Event('change');
   element.dispatchEvent(e);
 
-  updateFieldValue(name, value);
+  updateFieldValue({ name, value, skipValidation, origin: setFieldValue.name });
 }
 
 export function relocateField(field) {
@@ -1351,7 +1360,7 @@ export function setFieldValueToEmptyState(fieldName) {
   } else {
     $(`#${fieldName}_name`)?.val(''); // needed for lookup search/modal input elements
     $(fieldName).val('');
-    setFieldValue(fieldName, '');
+    setFieldValue(fieldName, '', null, true);
   }
 }
 
