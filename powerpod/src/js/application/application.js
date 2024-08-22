@@ -222,15 +222,6 @@ function updateFormStepForSelectedProgram(programData) {
       'display',
       'none'
     );
-  } else if (programAbbreviation && programAbbreviation.includes('KTTP')) {
-    $("div[id*='ProgressIndicator'] li:contains('Documents')").css(
-      'display',
-      'none'
-    );
-    $("div[id*='ProgressIndicator'] li:contains('Eligibility')").css(
-      'display',
-      'none'
-    );
   }
 
   const currentStep = getCurrentStep();

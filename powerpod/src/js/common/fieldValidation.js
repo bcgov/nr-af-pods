@@ -378,6 +378,9 @@ export function validateRequiredField({
       fn: validateRequiredField,
       message: `Required field fieldName: ${fieldName} is empty! Set validation error message`,
     });
+    if (elemType === HtmlElementType.FileInput) {
+      errorMessage = 'Please upload the required documents before continuing.';
+    }
     // const fieldLabelText = $(`#${fieldName}_label`).text();
     validationErrorHtml = `<span style="color:red;"> ${errorMessage}</span>`;
     // $(`#${fieldName}`).on("focusout", function () {

@@ -560,6 +560,10 @@ export function validateNeededFields(name) {
     return;
   }
   if (!POWERPOD.state.fieldOrder?.length) {
+    logger.error({
+      fn: validateNeededFields,
+      message: `No fields found in powerpod.state.fieldOrder, unable to validate`,
+    });
     return;
   }
   const fieldOrder = POWERPOD.state.fieldOrder;
@@ -596,9 +600,9 @@ export function setFieldObserver(name, format = '') {
     case HtmlElementType.FileInput:
       const textareaField = $(`#${name}`);
       const attachFileField = $(`input[id=${name}_AttachFile]`);
-      observeChanges(attachFileField, () => {
-        updateFieldValue(name);
-      });
+      // observeChanges(attachFileField, () => {
+      //   updateFieldValue(name);
+      // });
       attachFileField?.on('change input', () => {
         updateFieldValue(name);
       });

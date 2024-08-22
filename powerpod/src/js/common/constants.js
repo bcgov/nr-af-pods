@@ -35,6 +35,7 @@ export const HtmlElementType = {
   DropdownSelect: 'DropdownSelect',
   DatePicker: 'DatePicker',
   Checkbox: 'Checkbox',
+  NotesControl: 'NotesControl',
   Unknown: 'Unknown',
 };
 

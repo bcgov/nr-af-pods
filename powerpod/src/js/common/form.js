@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { POWERPOD, doc } from './constants.js';
+import { HtmlElementType, POWERPOD, doc } from './constants.js';
 import {
   getControlType,
   getControlValue,
@@ -190,7 +190,10 @@ export function generateFormJson(setFieldOrder = false) {
     'textarea[id*="quartech_wordtemplatedata"]'
   );
 
-  if (!wordTemplateDataElement || !wordTemplateDataElement.length) {
+  if (
+    !setFieldOrder &&
+    (!wordTemplateDataElement || !wordTemplateDataElement.length)
+  ) {
     logger.info({
       fn: generateFormJson,
       message: 'No need to generate form json if no word template field exists',
@@ -286,6 +289,14 @@ export function generateFormJson(setFieldOrder = false) {
 
     trArray.forEach((tr) => {
       const controlType = getControlType({ tr });
+      if (controlType === HtmlElementType.NotesControl) {
+        logger.info({
+          fn: generateFormJson,
+          message: 'Skipping notes control element',
+          data: { tr },
+        });
+        return;
+      }
       const controlId = getControlId(tr, controlType);
       // exit early if the intention is just to set the field order
       if (controlId && setFieldOrder) {
@@ -317,7 +328,7 @@ export function generateFormJson(setFieldOrder = false) {
         return;
       }
 
-      const questionText = getInfoValue(tr);
+      let questionText = getInfoValue(tr);
 
       logger.info({
         fn: generateFormJson,
@@ -349,10 +360,14 @@ export function generateFormJson(setFieldOrder = false) {
         answerText = '';
       }
 
+      if (!questionText && POWERPOD.state?.fields?.[controlId]?.label) {
+        questionText = POWERPOD.state?.fields?.[controlId]?.label;
+      }
+
       if (!questionText) {
-        logger.error({
+        logger.warn({
           fn: generateFormJson,
-          message: `Could not find question text for controlId: ${controlId}`,
+          message: `Could not find question text for controlId: ${controlId}, controlType: ${controlType}`,
           data: {
             tr,
           },
@@ -382,6 +397,15 @@ export function generateFormJson(setFieldOrder = false) {
       });
     });
   });
+
+  if (setFieldOrder) {
+    logger.info({
+      fn: generateFormJson,
+      message: `Successfully generated field order state array, exiting...`,
+      data: { fieldOrder: POWERPOD.state.fieldOrder },
+    });
+    return;
+  }
 
   logger.info({
     fn: generateFormJson,

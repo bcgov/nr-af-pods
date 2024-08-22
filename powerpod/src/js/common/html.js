@@ -78,21 +78,41 @@ export function redirectToFormId(id) {
 }
 
 export function getControlType({ tr, controlId = '', skipState = false }) {
+  if (controlId && POWERPOD.state?.fields?.[controlId]?.elementType) {
+    return POWERPOD.state.fields[controlId].elementType;
+  }
+
+  logger.info({
+    fn: getControlType,
+    message: `Control/element type not found in state, start determining type...`,
+    data: { tr, controlId, skipState },
+  });
+
   const controlDiv = tr?.querySelector('div.control');
   const control = controlDiv?.querySelector(
     'input[id*=quartech_], textarea[id*=quartech_], select[id*=quartech_]'
   );
 
   if (!control) {
-    logger.warn({
-      fn: getControlType,
-      message: 'Could not find form control element',
-      data: {
-        tr,
-        control,
-      },
-    });
-    return;
+    // exit early for notescontrol file upload
+    if (tr.querySelector('#notescontrol')) {
+      logger.info({
+        fn: getControlType,
+        message: 'Found notes control control type',
+        data: { tr },
+      });
+      return HtmlElementType.NotesControl;
+    } else {
+      logger.warn({
+        fn: getControlType,
+        message: 'Could not find form control element, might be an empty row',
+        data: {
+          tr,
+          control,
+        },
+      });
+      return;
+    }
   }
 
   if (!controlId) {
@@ -205,9 +225,9 @@ export function getControlId(tr, controlType = '') {
     id = questionDiv?.querySelector('label')?.getAttribute('for');
   }
   if (!id) {
-    logger.error({
+    logger.warn({
       fn: getControlId,
-      message: `Failed to get id for control, controlType: ${controlType}`,
+      message: `Failed to get id for control, might be an empty row controlType: ${controlType}`,
       data: { tr, controlType },
     });
     return;
@@ -260,7 +280,7 @@ export function getControlValue({
       rawValue = verboseValue;
     }
   } else if (elementType === HtmlElementType.FileInput) {
-    const value = controlDiv?.querySelector('textarea').value;
+    const value = controlDiv?.querySelector('textarea')?.value;
     if (raw) {
       rawValue = value;
     } else {
