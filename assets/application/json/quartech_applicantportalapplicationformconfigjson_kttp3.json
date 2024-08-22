@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "KTTP-Stream3", "KTTP3"],
-  "version": "1.0.7",
+  "version": "1.0.9",
   "name": "KTTP - Regenerative Agriculture Activities",
   "abbreviation": "KTTP-Stream3",
   "hiddenSteps": "tab_eligibility",
@@ -495,7 +495,9 @@
           "required": true,
           "tooltipText": "This number is automatically generated when the survey has been submitted",
           "label": "Demographic Data Collection Survey ID number",
-          "bold": true
+          "bold": true,
+          "readOnly": true,
+          "errorMessage": "Please complete the required survey, this field will autofill."
         }
       ]
     }

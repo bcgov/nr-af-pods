@@ -70,7 +70,8 @@ export function validateStepField(fieldName) {
     message: `start validating fieldName: ${fieldName}`,
     data: { fieldConfig },
   });
-  const { name, required, elementType, validation, format } = fieldConfig;
+  const { name, required, elementType, validation, format, errorMessage } =
+    fieldConfig;
   let fieldErrorHtml = '';
   let errorMsg = '';
   if (required) {
@@ -78,6 +79,7 @@ export function validateStepField(fieldName) {
       validateRequiredField({
         fieldName: name,
         elemType: elementType,
+        errorMessage,
       }) ?? '';
     if (errorMsg && errorMsg.length) {
       fieldErrorHtml = fieldErrorHtml.concat(errorMsg + ' ');
@@ -182,7 +184,7 @@ export function validateStepField(fieldName) {
         $(`#${fieldName}`).css({ border: '1px solid #e5636c' });
       }
     } else {
-      logger.info({
+      logger.warn({
         fn: validateStepField,
         message: `Field NOT touched yet name: ${name}, skip showing error message on field: ${name}, fieldErrorHtml: ${fieldErrorHtml}`,
       });

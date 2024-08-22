@@ -373,11 +373,16 @@ function addDemographicDataDescription() {
 async function addDemographicInfoChefsIframe() {
   $('#quartech_chefssubmissionid')?.closest('tr')?.css({ display: 'none' });
 
-  setFieldReadOnly('quartech_chefsid');
+  // setFieldReadOnly('quartech_chefsid');
 
   let chefsIdElement = document.getElementById('quartech_chefsid');
-  chefsIdElement.style.setProperty('background-color', '#fff3cd', 'important');
-  chefsIdElement.style.fontWeight = 'bold';
+  if (chefsIdElement)
+    chefsIdElement.style.setProperty(
+      'background-color',
+      '#fff3cd',
+      'important'
+    );
+  // chefsIdElement.style.fontWeight = 'bold';
 
   const chefsSubmissionGuid = $('#quartech_chefssubmissionid')?.val();
 

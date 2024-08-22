@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "NEFBA", "NEFBA Phase 1"],
-  "version": "1.0.4",
+  "version": "1.0.5",
   "name": "New Entrant Farm Business Accelerator",
   "abbreviation": "NEFBA",
   "hiddenSteps": "tab_Deliverables_Budget",
@@ -226,7 +226,9 @@
           "required": true,
           "tooltipText": "This number is automatically generated when the survey has been submitted",
           "label": "Demographic Data Collection Survey ID number",
-          "bold": true
+          "bold": true,
+          "readOnly": true,
+          "errorMessage": "Please complete the required survey, this field will autofill."
         }
       ]
     },

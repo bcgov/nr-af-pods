@@ -433,7 +433,9 @@
           "required": true,
           "tooltipText": "This number is automatically generated when the survey has been submitted",
           "label": "Demographic Data Collection Survey ID number",
-          "bold": true
+          "bold": true,
+          "readOnly": true,
+          "errorMessage": "Please complete the required survey, this field will autofill."
         },
         {
           "name": "quartech_chefssubmissionid",
