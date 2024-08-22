@@ -41,6 +41,14 @@ export default function powerpod(options) {
   logger.info({ message: 'setting up API with options:', data: getOptions() });
   setAPI();
 
+  if (window?.location?.search?.includes('&msg=success')) {
+    logger.warn({
+      message: `ABORT initialization... success page detected.`,
+    });
+    // @ts-ignore
+    return window.powerpod;
+  }
+
   switch (getOptions().form) {
     case Form.Application:
       logger.info({ message: `initializing ${Form.Application}` });
@@ -69,7 +77,7 @@ function setAPI() {
     };
   };
   // @ts-ignore
-  POWERPOD.version = '2.1.2';
+  POWERPOD.version = '2.1.3';
   // @ts-ignore
   window.powerpod = POWERPOD;
 }

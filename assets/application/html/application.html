@@ -2,7 +2,7 @@
   -------------------
   FILE INFO
   -------------------
-  version: 1.0.0
+  version: 1.0.1
   name: Application Web Page HTML
   type: HTML Content
   description: This is the HTML content for the Application web page.
@@ -11,7 +11,10 @@
   <div id="spinner"></div>
 </div>
 <script type="text/javascript">
-  if (!!document.querySelector('#loader')) {
+  if (
+    !!document.querySelector('#loader') &&
+    !window?.location?.search?.includes('&msg=success')
+  ) {
     document.head.insertAdjacentHTML(
       'beforeend',
       `
