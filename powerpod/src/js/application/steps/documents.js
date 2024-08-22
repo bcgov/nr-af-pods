@@ -14,7 +14,8 @@ export function customizeDocumentsStep() {
   if (
     programAbbreviation.includes('ABPP') ||
     programAbbreviation === 'NEFBA2' ||
-    programAbbreviation === 'VLB'
+    programAbbreviation === 'VLB' ||
+    programAbbreviation.includes('KTTP')
   ) {
     addDocumentsStepText();
   }

@@ -687,6 +687,17 @@
       ]
     },
     {
+      "name": "DocumentsStep",
+      "fields": [
+        {
+          "name": "quartech_relatedquotesandplans",
+          "label": "Attach an event agenda. Please visit the program page for more detailed information regarding the requirements for an event agenda",
+          "required": true,
+          "elementType": "FileInput"
+        }
+      ]
+    },
+    {
       "name": "DemographicInfoStep",
       "fields": [
         {
