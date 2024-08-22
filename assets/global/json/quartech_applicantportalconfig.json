@@ -1,6 +1,6 @@
 {
   "tags": ["Global", "ALL", "Application", "StaffPortal"],
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Global JSON config used in Applications",
   "FieldsConfig": {
     "programs": [
@@ -42,6 +42,10 @@
                   "fieldName": "quartech_nocragstnumber",
                   "selectedValue": true
                 }
+              },
+              {
+                "name": "quartech_doingbusinessas",
+                "label": "Doing Business As (if different from Legal Business/Organization Name)"
               },
               {
                 "name": "quartech_businesssuitenumberoptional",
