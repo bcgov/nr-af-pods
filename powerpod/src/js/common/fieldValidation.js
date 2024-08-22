@@ -73,51 +73,49 @@ export function validateStepField(fieldName) {
   const { name, required, elementType, validation, format, errorMessage } =
     fieldConfig;
   let fieldErrorHtml = '';
-  let errorMsg = '';
+  let errorMsgs = [];
   if (required) {
-    errorMsg =
-      validateRequiredField({
-        fieldName: name,
-        elemType: elementType,
-        errorMessage,
-      }) ?? '';
+    const errorMsg = validateRequiredField({
+      fieldName: name,
+      elemType: elementType,
+      errorMessage,
+    });
     if (errorMsg && errorMsg.length) {
-      fieldErrorHtml = fieldErrorHtml.concat(errorMsg);
+      errorMsgs.push(errorMsg);
     }
   }
   if (validation?.type === 'numeric') {
     const { value, comparison } = validation;
-    errorMsg =
+    const errorMsg =
       // @ts-ignore
       validateNumericFieldValue({
         fieldName: name,
         comparisonValue: value,
         operator: comparison,
         errorMessage,
-      }) ?? '';
+      });
     if (errorMsg && errorMsg.length) {
-      fieldErrorHtml = fieldErrorHtml.concat(errorMsg + ' ');
+      errorMsgs.push(errorMsg);
     }
   }
   if (validation?.type === 'length') {
     const { value, comparison, forceRequired, postfix, overrideDisplayValue } =
       validation;
-    errorMsg =
-      validateFieldLength(
-        name,
-        value,
-        comparison,
-        forceRequired,
-        postfix,
-        overrideDisplayValue
-      ) ?? '';
+    const errorMsg = validateFieldLength(
+      name,
+      value,
+      comparison,
+      forceRequired,
+      postfix,
+      overrideDisplayValue
+    );
     logger.info({
       fn: validateStepField,
       message: 'Generate length validation error html...',
     });
     // Display instant feedback on field input
     if (errorMsg && errorMsg.length > 0) {
-      fieldErrorHtml = fieldErrorHtml.concat(errorMsg + ' ');
+      errorMsgs.push(errorMsg);
       logger.info({
         fn: validateStepField,
         message: 'Done generating length validation error html...',
@@ -125,14 +123,14 @@ export function validateStepField(fieldName) {
     }
   }
   if (format === 'email') {
-    errorMsg = validateEmailAddressField(name) ?? '';
+    const errorMsg = validateEmailAddressField(name);
     logger.info({
       fn: validateStepField,
       message: 'Generate email validation error html...',
     });
     // Display instant feedback on field input
     if (errorMsg && errorMsg.length > 0) {
-      fieldErrorHtml = fieldErrorHtml.concat(errorMsg + ' ');
+      errorMsgs.push(errorMsg);
       logger.info({
         fn: validateStepField,
         message: 'Done generating email validation error html...',
@@ -147,6 +145,8 @@ export function validateStepField(fieldName) {
     });
     return;
   }
+
+  fieldErrorHtml = errorMsgs.join('<br />');
 
   if (!fieldErrorHtml?.length) {
     logger.info({
@@ -209,7 +209,7 @@ export function validateStepField(fieldName) {
     }
     store.dispatch('addFieldData', {
       name,
-      error: `${fieldErrorHtml}`,
+      error: errorMsgs?.join(' ') ?? '',
       revalidate: false,
     });
   }
@@ -575,7 +575,7 @@ export function validateEmailAddressField(fieldName) {
 
   const input = fieldElement?.value;
   if (!input || !pattern.test(input)) {
-    return '<span style="color:red;">Must be a valid email address.</span>';
+    return '<span style="color:red;">Please enter a valid email address.</span>';
   } else {
     return '';
   }
