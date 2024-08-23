@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "KTTP-SMEA", "KTTP1"],
-  "version": "1.3.5",
+  "version": "1.3.6",
   "name": "KTTP - Subject Matter Expert Activities",
   "abbreviation": "KTTP-SMEA",
   "programId": "25493093-9d2b-ee11-bdf4-000d3af3ac95",
@@ -32,7 +32,7 @@
         },
         {
           "name": "quartech_email",
-          "label": "Email address for communication about this application:"
+          "label": "Email address for communication about this application"
         },
         {
           "name": "quartech_recipienttype",
@@ -185,10 +185,72 @@
           }
         },
         {
+          "name": "quartech_pleaseselectthemostapplicableactivitytype",
+          "label": "Please select the most applicable activity type",
+          "required": true,
+          "elementType": "DropdownSelect"
+        },
+        {
+          "name": "quartech_ifotherpleasedescribeyouractivitytype",
+          "label": "If Other, please describe your activity type",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_pleaseselectthemostapplicableactivitytype",
+            "selectedValue": 255550010,
+            "techComment": "Other value"
+          }
+        },
+        {
+          "name": "quartech_prioritytopicmostapplicable",
+          "label": "Priority Topic(s). Please select the most applicable topic that your project will focus on.",
+          "required": true,
+          "disableSingleLine": false,
+          "elementType": "DropdownSelect"
+        },
+        {
+          "name": "quartech_prioritytopicsecondary",
+          "label": "If applicable, select a secondary priority topic that you project will focus on",
+          "elementType": "DropdownSelect"
+        },
+        {
+          "name": "quartech_activitypurpose",
+          "label": "Please select the most applicable purpose that your activity will focus on",
+          "required": true,
+          "elementType": "DropdownSelect"
+        },
+        {
+          "name": "quartech_ifotherpleasedescribetheactivitypurpose",
+          "required": "true",
+          "maxLength": 10000,
+          "label": "If Other, please describe the activity purpose",
+          "visibleIf": {
+            "fieldName": "quartech_activitypurpose",
+            "selectedValue": 255550010,
+            "techComment": "Other value"
+          },
+          "relocateField": {
+            "originFieldName": "quartech_ifotherpleasedescribetheactivitypurpose",
+            "destinationFieldName": "quartech_activitypurpose",
+            "relativePosition": "below"
+          }
+        },
+        {
+          "name": "quartech_proposedactivitystopicpurposeintent",
+          "label": "Explain what your activity will be about, why you're doing it, and what you hope to achieve. Make sure the things you hope to achieve can be measured, and explain how they will make a difference. Say clearly what participants will learn or be able to do by the end of the activity. Include a description of timelines, list of materials, etc.",
+          "required": true,
+          "tooltipText": "Keep in mind that you will be asked to measure outcomes in your post-project report."
+        },
+        {
+          "name": "quartech_accessandinclusivenessdescription",
+          "label": "The Province supports inclusiveness and increased representation of target and underrepresented groups. Please describe how you will work towards increasing access and inclusiveness of your activity?",
+          "required": true,
+          "tooltipText": "For more information about planning for inclusive activities, please refer to the Program Guide."
+        },
+        {
           "name": "quartech_staffsupporter",
           "hidden": true,
           "required": true,
-          "label": "If you worked with a Ministry Staff Supporter, please provide their name:"
+          "label": "If you worked with a Ministry Staff Supporter, please provide their name"
         },
         {
           "name": "quartech_inordertocontinuouslyimprovecommunications",
@@ -303,7 +365,7 @@
         {
           "name": "quartech_subjectmatterexpertsmename",
           "required": true,
-          "label": "Subject Matter Expert (SME) Name:"
+          "label": "Subject Matter Expert (SME) Name"
         },
         {
           "name": "quartech_smephonenumber",
@@ -374,94 +436,13 @@
         },
         {
           "name": "quartech_numberofbcagricultureproducersprocessors",
+          "label": "Number of B.C. agriculture and seafood producers/ processors/ businesses expected to attend this activity",
           "required": true
         },
         {
           "name": "quartech_numberofoverallattendeesexpectedtoattendthi",
+          "label": "Number of overall attendees expected to attend this activity",
           "required": true
-        },
-        {
-          "name": "quartech_pleaseselectthemostapplicableactivitytype",
-          "label": "Please select the most applicable activity type",
-          "required": true,
-          "elementType": "DropdownSelect"
-        },
-        {
-          "name": "quartech_ifotherpleasedescribeyouractivitytype",
-          "label": "If Other, please describe your activity type",
-          "required": true,
-          "visibleIf": {
-            "fieldName": "quartech_pleaseselectthemostapplicableactivitytype",
-            "selectedValue": 255550010,
-            "techComment": "Other value"
-          }
-        },
-        {
-          "name": "quartech_prioritytopicmostapplicable",
-          "label": "Priority Topic(s). Please select the most applicable topic that your project will focus on.",
-          "required": true,
-          "disableSingleLine": false,
-          "elementType": "DropdownSelect"
-        },
-        {
-          "name": "quartech_prioritytopicsecondary",
-          "label": "If applicable, select a secondary priority topic that you project will focus on",
-          "elementType": "DropdownSelect"
-        },
-        {
-          "name": "quartech_otherprioritytopic",
-          "maxLength": 10000,
-          "label": "Please describe the priority topic(s).",
-          "required": true,
-          "visibleIf": {
-            "comparison": "or",
-            "comparisons": [
-              {
-                "fieldName": "quartech_prioritytopicmostapplicable",
-                "selectedValue": 255550007,
-                "techComment": "Other value"
-              },
-              {
-                "fieldName": "quartech_prioritytopicsecondary",
-                "selectedValue": 255550007,
-                "techComment": "Other value"
-              }
-            ]
-          }
-        },
-        {
-          "name": "quartech_activitypurpose",
-          "label": "Please select the most applicable purpose that your activity will focus on",
-          "required": true,
-          "elementType": "DropdownSelect"
-        },
-        {
-          "name": "quartech_ifotherpleasedescribetheactivitypurpose",
-          "required": "true",
-          "maxLength": 10000,
-          "label": "If Other, please describe the activity purpose",
-          "visibleIf": {
-            "fieldName": "quartech_activitypurpose",
-            "selectedValue": 255550010,
-            "techComment": "Other value"
-          },
-          "relocateField": {
-            "originFieldName": "quartech_ifotherpleasedescribetheactivitypurpose",
-            "destinationFieldName": "quartech_activitypurpose",
-            "relativePosition": "below"
-          }
-        },
-        {
-          "name": "quartech_proposedactivitystopicpurposeintent",
-          "label": "Explain what your activity will be about, why you're doing it, and what you hope to achieve. Make sure the things you hope to achieve can be measured, and explain how they will make a difference. Say clearly what participants will learn or be able to do by the end of the activity. Include a description of timelines, list of materials, etc.",
-          "required": true,
-          "tooltipText": "Keep in mind that you will be asked to measure outcomes in your post-project report."
-        },
-        {
-          "name": "quartech_accessandinclusivenessdescription",
-          "label": "The Province supports inclusiveness and increased representation of target and underrepresented groups. Please describe how you will work towards increasing access and inclusiveness of your activity?",
-          "required": true,
-          "tooltipText": "For more information about planning for inclusive activities, please refer to the Program Guide."
         },
         {
           "name": "quartech_proposedactivitydescription",

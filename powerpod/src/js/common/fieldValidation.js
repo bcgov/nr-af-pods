@@ -148,6 +148,7 @@ export function validateStepField(fieldName) {
 
   fieldErrorHtml = errorMsgs.join('<br />');
 
+  // NO ERROR FOUND:
   if (!fieldErrorHtml?.length) {
     logger.info({
       fn: validateStepField,
@@ -170,10 +171,12 @@ export function validateStepField(fieldName) {
       revalidate: false,
     });
   } else {
+    // IF THERE ARE ERRORS:
     logger.info({
       fn: validateStepField,
       message: `Found error message for field: ${name}, fieldErrorHtml: ${fieldErrorHtml}`,
     });
+
     // only show error message ON FIELD if field has been touched
     if (fieldConfig.touched) {
       logger.info({
@@ -191,6 +194,7 @@ export function validateStepField(fieldName) {
         $(`#${fieldName}`).css({ border: '1px solid #e5636c' });
       }
     } else {
+      // if FIELD NOT TOUCHED
       logger.warn({
         fn: validateStepField,
         message: `Field NOT touched yet name: ${name}, skip showing error message on field: ${name}, fieldErrorHtml: ${fieldErrorHtml}`,
@@ -207,6 +211,7 @@ export function validateStepField(fieldName) {
         $(`#${fieldName}`).css({ border: '' });
       }
     }
+
     store.dispatch('addFieldData', {
       name,
       error: errorMsgs?.join(' ') ?? '',

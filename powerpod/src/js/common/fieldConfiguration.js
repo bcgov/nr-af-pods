@@ -632,23 +632,29 @@ export function setFieldObserver(name, format = '') {
       // observeChanges(attachFileField, () => {
       //   updateFieldValue(name);
       // });
-      attachFileField?.on('change input', () => {
+      attachFileField?.on('change input', (event) => {
         updateFieldValue({
           name,
-          origin: `setFieldObserver case HtmlElementType.FileInput: attachFileField?.on('change input'...`,
+          origin: `${setFieldObserver.name} change input | event.type: ${event.type}`,
         });
       });
-      attachFileField?.on('focus click blur touchstart', () => {
-        validateNeededFields({ name, origin: setFieldObserver.name });
+      attachFileField?.on('focus click blur touchstart', (event) => {
+        validateNeededFields({
+          name,
+          origin: `${setFieldObserver.name} focus click blur touchstart | event.type: ${event.type}`,
+        });
       });
-      textareaField?.on('change input', function () {
+      textareaField?.on('change input', function (event) {
         updateFieldValue({
           name,
-          origin: `setFieldObserver case HtmlElementType.FileInput: textareaField?.on('change input'...`,
+          origin: `${setFieldObserver.name} change input | event.type: ${event.type}`,
         });
       });
-      textareaField?.on('focus click blur touchstart', function () {
-        validateNeededFields({ name, origin: setFieldObserver.name });
+      textareaField?.on('focus click blur touchstart', function (event) {
+        validateNeededFields({
+          name,
+          origin: `${setFieldObserver.name} focus click blur touchstart | event.type: ${event.type}`,
+        });
       });
       break;
     case HtmlElementType.DatePicker:
@@ -658,58 +664,74 @@ export function setFieldObserver(name, format = '') {
       observeChanges(datePickerElement, () =>
         updateFieldValue({
           name,
-          origin: `setFieldObserver case HtmlElementType.DatePicker: observeChanges(datePickerElement,...`,
+          origin: `${setFieldObserver.name} observeChanges(datePickerElement)`,
         })
       );
-      $(`#${name}_datepicker_description`).on('change input', () => {
+      $(`#${name}_datepicker_description`).on('change input', (event) => {
         updateFieldValue({
           name,
-          origin: `setFieldObserver case HtmlElementType.DatePicker: $(\`#${name}_datepicker_description\`).on('change input'...`,
+          origin: `${setFieldObserver.name} change input | event.type: ${event.type}`,
         });
       });
       $(`#${name}_datepicker_description`).on(
         'focus click blur touchstart',
-        () => {
-          if (fieldConfig.touched === false) {
-            validateNeededFields({ name, origin: setFieldObserver.name });
-          }
+        (event) => {
+          validateNeededFields({
+            name,
+            origin: `${setFieldObserver.name} focus click blur touchstart | event.type: ${event.type}`,
+          });
         }
       );
       break;
     case HtmlElementType.MultiSelectPicklist:
     case HtmlElementType.SingleOptionSet:
     case HtmlElementType.MultiOptionSet:
-      $(`input[id*='${name}']`).on('change input', function () {
+      $(`input[id*='${name}']`).on('change input', function (event) {
         updateFieldValue({
           name,
-          origin: `setFieldObserver case HtmlElementType.MultiOptionSet: $(\`input[id*='${name}']\`).on('change input'...`,
+          origin: `${setFieldObserver.name} change input | event.type: ${event.type}`,
         });
       });
-      $(`input[id*='${name}']`).on('focus click blur touchstart', function () {
-        validateNeededFields({ name, origin: setFieldObserver.name });
-      });
+      $(`input[id*='${name}']`).on(
+        'focus click blur touchstart',
+        function (event) {
+          validateNeededFields({
+            name,
+            origin: `${setFieldObserver.name} focus click blur touchstart | event.type: ${event.type}`,
+          });
+        }
+      );
       break;
     case HtmlElementType.DropdownSelect:
-      $(`select[id*='${name}']`).on('change input', function () {
+      $(`select[id*='${name}']`).on('change input', function (event) {
         updateFieldValue({
           name,
-          origin: `setFieldObserver case HtmlElementType.DropdownSelect: $(\`select[id*='${name}']\`).on('change input'...`,
+          origin: `${setFieldObserver.name} change input | event.type: ${event.type}`,
         });
       });
-      $(`select[id*='${name}']`).on('focus click blur touchstart', function () {
-        validateNeededFields({ name, origin: setFieldObserver.name });
-      });
+      $(`select[id*='${name}']`).on(
+        'focus click blur touchstart',
+        function (event) {
+          validateNeededFields({
+            name,
+            origin: `${setFieldObserver.name} focus click blur touchstart | event.type: ${event.type}`,
+          });
+        }
+      );
       break;
     case HtmlElementType.Checkbox:
     default: // HtmlElementTypeEnum.Input
       $(`#${name}`).on('change input', function (event) {
         updateFieldValue({
           name,
-          origin: `setFieldObserver case DEFAULT: $(\`#${name}\`).on('change input'...`,
+          origin: `${setFieldObserver.name} change input | event.type: ${event.type}`,
         });
       });
       $(`#${name}`).on('focus click blur touchstart', function (event) {
-        validateNeededFields({ name, origin: setFieldObserver.name });
+        validateNeededFields({
+          name,
+          origin: `${setFieldObserver.name} focus click blur touchstart | event.type: ${event.type}`,
+        });
       });
       break;
   }

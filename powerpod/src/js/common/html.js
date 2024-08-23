@@ -582,7 +582,7 @@ export function hideFieldRow({ fieldName, doNotBlank = false }) {
   } else {
     updateFieldValue({
       name: fieldName,
-      // skipValidation: true,
+      skipValidation: true,
       origin: hideFieldRow.name,
     });
   }
