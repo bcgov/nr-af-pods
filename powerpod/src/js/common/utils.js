@@ -1,5 +1,16 @@
 // @ts-nocheck
 import { showFieldRow } from './html.js';
+import { POWERPOD } from './constants.js';
+
+POWERPOD.utils = {
+  enableDebugging,
+};
+
+export function enableDebugging() {
+  localStorage.setItem('debug_pp', true);
+  localStorage.getItem('debug_pp');
+  location.reload();
+}
 
 /**
  * Equivalent of jQuery function $().

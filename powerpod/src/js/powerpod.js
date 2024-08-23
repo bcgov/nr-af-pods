@@ -15,6 +15,7 @@ import { Logger } from './common/logger.js';
 import { initApplication } from './application/application.js';
 import { initClaim } from './claim/claim.js';
 import './components/ExpenseReportTable.ts';
+import { hideLoadingAnimation } from './common/loading.js';
 
 const logger = Logger('powerpod');
 
@@ -35,6 +36,11 @@ export default function powerpod(options) {
     }
   }
 
+  if (localStorage.getItem('debug_pp')) {
+    setOption('debugging', true);
+    window.debug_pp = true;
+  }
+
   // combine given options and default options
   setOptions(options);
 
@@ -43,8 +49,9 @@ export default function powerpod(options) {
 
   if (window?.location?.search?.includes('&msg=success')) {
     logger.warn({
-      message: `ABORT initialization... success page detected.`,
+      message: `ABORT initialization... success page detected, hide loader if displayed.`,
     });
+    hideLoadingAnimation();
     // @ts-ignore
     return window.powerpod;
   }
@@ -77,7 +84,7 @@ function setAPI() {
     };
   };
   // @ts-ignore
-  POWERPOD.version = '2.1.4';
+  POWERPOD.version = '2.1.5';
   // @ts-ignore
   window.powerpod = POWERPOD;
 }

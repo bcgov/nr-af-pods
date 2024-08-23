@@ -661,6 +661,14 @@ export function displayValidationErrors(validationErrorHtml) {
     validationErrorsDiv.innerHTML = validationErrorHtml + '</br>';
     // @ts-ignore
     validationErrorsDiv.style = 'display:block;';
+    if (window.debug_pp) {
+      logger.warn({
+        fn: displayValidationErrors,
+        message: `Debugging mode enabled, not disabling next button`,
+      });
+      $('#NextButton').prop('disabled', false);
+      return;
+    }
     $('#NextButton').prop('disabled', true);
   }
 

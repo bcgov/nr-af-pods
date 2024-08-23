@@ -130,4 +130,5 @@ export const POWERPOD = {
   loadingFieldsIntoState: true,
   configuringFields: true,
   dateUtils: {},
+  utils: {},
 };
