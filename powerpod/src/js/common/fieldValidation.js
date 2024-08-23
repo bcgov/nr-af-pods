@@ -153,7 +153,7 @@ export function validateStepField(fieldName) {
       fn: validateStepField,
       message: `Did NOT find error message for field: ${name}`,
     });
-    $(errorMessageElement).css({ display: 'none' });
+    $(errorMessageElement).addClass('hide_error_message');
     if (
       elementType === HtmlElementType.MultiOptionSet ||
       elementType === HtmlElementType.MultiSelectPicklist
@@ -181,7 +181,7 @@ export function validateStepField(fieldName) {
         message: `Field has been touched name: ${name}, show error message on field: ${name}, fieldErrorHtml: ${fieldErrorHtml}`,
       });
       $(errorMessageElement).html(fieldErrorHtml);
-      $(errorMessageElement).css({ display: '' });
+      $(errorMessageElement).removeClass('hide_error_message');
       if (
         elementType === HtmlElementType.MultiOptionSet ||
         elementType === HtmlElementType.MultiSelectPicklist
@@ -195,7 +195,7 @@ export function validateStepField(fieldName) {
         fn: validateStepField,
         message: `Field NOT touched yet name: ${name}, skip showing error message on field: ${name}, fieldErrorHtml: ${fieldErrorHtml}`,
       });
-      $(errorMessageElement).css({ display: 'none' });
+      $(errorMessageElement).addClass('hide_error_message');
       if (
         elementType === HtmlElementType.MultiOptionSet ||
         elementType === HtmlElementType.MultiSelectPicklist
@@ -391,7 +391,7 @@ export function validateRequiredField({
       errorMessage = 'Please upload the required documents before continuing.';
     }
     // const fieldLabelText = $(`#${fieldName}_label`).text();
-    validationErrorHtml = `<span style="color:red;"> ${errorMessage}</span>`;
+    validationErrorHtml = errorMessage;
     // $(`#${fieldName}`).on("focusout", function () {
     //   $(`#${fieldName}_error_message`).css({ display: "" });
     //   $(`#${fieldName}`).css({ border: "1px solid #e5636c" });
@@ -447,36 +447,36 @@ export function validateNumericFieldValue({
     element.value.replace(/,/g, '').replace('$', '')
   );
   let finalMessage = '';
-  const genericErrorMsg = `<span style="color:red;"> Please enter a valid number`;
+  const genericErrorMsg = `Please enter a valid number`;
   switch (operator) {
     case 'greaterThan':
       // @ts-ignore
       if (!(value > comparisonValue) || value === '') {
-        finalMessage = `${genericErrorMsg}. The value must be greater than ${comparisonValue}.</span>`;
+        finalMessage = `${genericErrorMsg}. The value must be greater than ${comparisonValue}.`;
       }
       break;
     case 'lessThan':
       // @ts-ignore
       if (!(value < comparisonValue) || value === '') {
-        finalMessage = `${genericErrorMsg}. The value must be less than ${comparisonValue}.</span>`;
+        finalMessage = `${genericErrorMsg}. The value must be less than ${comparisonValue}.`;
       }
       break;
     case 'equalTo':
       // @ts-ignore
       if (!(value === comparisonValue) || value === '') {
-        finalMessage = `${genericErrorMsg}. The value must be equal to ${comparisonValue}.</span>`;
+        finalMessage = `${genericErrorMsg}. The value must be equal to ${comparisonValue}.`;
       }
       break;
     case 'greaterThanOrEqualTo':
       // @ts-ignore
       if (!(value >= comparisonValue) || value === '') {
-        finalMessage = `${genericErrorMsg}. The value must be greater than or equal to ${comparisonValue}.</span>`;
+        finalMessage = `${genericErrorMsg}. The value must be greater than or equal to ${comparisonValue}.`;
       }
       break;
     case 'lessThanOrEqualTo':
       // @ts-ignore
       if (!(value <= comparisonValue) || value === '') {
-        finalMessage = `${genericErrorMsg}. The value must be less than or equal to ${comparisonValue}.</span>`;
+        finalMessage = `${genericErrorMsg}. The value must be less than or equal to ${comparisonValue}.`;
       }
       break;
     default:
@@ -524,37 +524,37 @@ export function validateFieldLength(
 
   // @ts-ignore
   const value = element.value.length;
-  const genericErrorMsg = `<span style="color:red;">Please enter a valid length,`;
+  const genericErrorMsg = `Please enter a valid length,`;
   switch (operator) {
     case 'greaterThan':
       return !(value > comparisonValue) || value === ''
         ? `${genericErrorMsg} must be greater than ${
             overrideDisplayValue ?? comparisonValue
-          }${postfix ? ` ${postfix}` : ''}.</span>`
+          }${postfix ? ` ${postfix}` : ''}.`
         : '';
     case 'lessThan':
       return !(value < comparisonValue) || value === ''
         ? `${genericErrorMsg} must be less than ${
             overrideDisplayValue ?? comparisonValue
-          }${postfix ? ` ${postfix}` : ''}.</span>`
+          }${postfix ? ` ${postfix}` : ''}.`
         : '';
     case 'equalTo':
       return !(value === comparisonValue) || value === ''
         ? `${genericErrorMsg} must be equal to ${
             overrideDisplayValue ?? comparisonValue
-          }${postfix ? ` ${postfix}` : ''}.</span>`
+          }${postfix ? ` ${postfix}` : ''}.`
         : '';
     case 'greaterThanOrEqualTo':
       return !(value >= comparisonValue) || value === ''
         ? `${genericErrorMsg} must be greater than or equal to ${
             overrideDisplayValue ?? comparisonValue
-          }${postfix ? ` ${postfix}` : ''}.</span>`
+          }${postfix ? ` ${postfix}` : ''}.`
         : '';
     case 'lessThanOrEqualTo':
       return !(value <= comparisonValue) || value === ''
         ? `${genericErrorMsg} must be less than or equal to ${
             overrideDisplayValue ?? comparisonValue
-          }${postfix ? ` ${postfix}` : ''}.</span>`
+          }${postfix ? ` ${postfix}` : ''}.`
         : '';
     default:
       return 'Invalid operator';
@@ -575,7 +575,7 @@ export function validateEmailAddressField(fieldName) {
 
   const input = fieldElement?.value;
   if (!input || !pattern.test(input)) {
-    return '<span style="color:red;">Please enter a valid email address.</span>';
+    return 'Please enter a valid email address.';
   } else {
     return '';
   }

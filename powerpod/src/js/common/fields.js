@@ -136,6 +136,18 @@ export function getFieldsBySectionApplication(stepName, forceRefresh = false) {
     fields = mergeFieldArrays(globalFields, fields, 'name');
   }
 
+  if (
+    localStorage.getItem(
+      `fieldsData-${programName}-${stepName}`,
+      JSON.stringify(fields)
+    )
+  ) {
+    localStorage.removeItem(
+      `fieldsData-${programName}-${stepName}`,
+      JSON.stringify(fields)
+    );
+  }
+
   localStorage.setItem(
     `fieldsData-${programName}-${stepName}`,
     JSON.stringify(fields)

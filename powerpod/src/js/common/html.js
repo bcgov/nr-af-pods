@@ -1328,9 +1328,9 @@ export function getFieldErrorDiv(fieldName) {
   if (!errorMessageElement) {
     let div = document.createElement('div');
     div.id = `${fieldName}_error_message`;
-    div.className = 'error_message';
+    div.className = 'error_message hide_error_message';
     // @ts-ignore
-    div.style = 'display:none;';
+    // div.style = 'visibility:hidden';
 
     const control = getFieldRow(fieldName)?.querySelector('div.control');
     control?.insertAdjacentElement('afterend', div);

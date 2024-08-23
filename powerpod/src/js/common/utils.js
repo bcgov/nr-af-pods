@@ -4,11 +4,17 @@ import { POWERPOD } from './constants.js';
 
 POWERPOD.utils = {
   enableDebugging,
+  disableDebugging,
 };
 
 export function enableDebugging() {
   localStorage.setItem('debug_pp', true);
   localStorage.getItem('debug_pp');
+  location.reload();
+}
+
+export function disableDebugging() {
+  localStorage.removeItem('debug_pp');
   location.reload();
 }
 

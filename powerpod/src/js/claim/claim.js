@@ -73,7 +73,9 @@ async function updatePageForSelectedProgram() {
         fn: updatePageForSelectedProgram,
         message: 'clear any cached data from previous page loads',
       });
-      localStorage.clear();
+      if (localStorage.getItem('programData')) {
+        localStorage.removeItem('programData');
+      }
     },
     onSuccess: (programData, textStatus, xhr) => {
       if (programData) {
