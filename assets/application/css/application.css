@@ -2,7 +2,7 @@
   -------------------
   FILE INFO
   -------------------
-  version: 1.0.5
+  version: 1.0.6
   name: Application CSS
   type: CSS
   description: This is the CSS used on the Application web page
@@ -13,7 +13,7 @@ label {
 
 .error_message {
   color: red;
-  font-size: small;
+  font-size: smaller;
   opacity: 1;
   min-height: 20px;
   transition: opacity 0.3s ease, height 0.3s ease;
