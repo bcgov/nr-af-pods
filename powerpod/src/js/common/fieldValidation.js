@@ -72,6 +72,16 @@ export function validateStepField(fieldName) {
   });
   const { name, required, elementType, validation, format, errorMessage } =
     fieldConfig;
+
+  const needsValidation = required || validation || format;
+  if (!needsValidation) {
+    logger.warn({
+      fn: validateStepField,
+      message: `no validation options configured, skip validating fieldName: ${fieldName}`,
+      data: { fieldConfig },
+    });
+    return;
+  }
   let fieldErrorHtml = '';
   let errorMsgs = [];
   if (required) {

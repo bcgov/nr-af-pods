@@ -1,6 +1,6 @@
 (function () {
   const src =
-    'https://cdn.jsdelivr.net/gh/bcgov/nr-af-pods@dev/powerpod/releases/powerpod-2.1.9.min.js';
+    'https://cdn.jsdelivr.net/gh/bcgov/nr-af-pods@dev/powerpod/releases/powerpod-2.2.0.min.js';
   const script = document.createElement('script');
   script.setAttribute('async', '');
   script.src = src;
