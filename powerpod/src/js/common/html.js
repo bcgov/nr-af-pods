@@ -301,14 +301,16 @@ export function getControlValue({
     const value = controlDiv?.querySelector(
       'div > .datetimepicker > input'
     )?.value;
-    if (raw && value?.length) {
+    if (value?.length) {
       logger.info({
         fn: getControlValue,
         message: `Attempting to convert date raw value to ISO format, value: ${value}`,
       });
-      rawValue = convertDateToISO(value) ?? '';
-    } else {
+      rawValue =  convertDateToISO(value) ?? '';
       verboseValue = value ?? '';
+    } else {
+      rawValue = '';
+      verboseValue = ''
     }
   } else if (elementType === HtmlElementType.TextArea) {
     verboseValue = controlDiv
@@ -361,25 +363,26 @@ export function getControlValue({
     message: `
       For controlId: ${controlId}, raw: ${raw}, 
       forTemplateGeneration: ${forTemplateGeneration} found rawValue: ${rawValue} 
-      finalValue: ${verboseValue}`,
+      verboseValue: ${verboseValue}`,
     data: {
       controlId,
       tr,
       raw,
       forTemplateGeneration,
-      finalValue: verboseValue,
+      verboseValue,
       rawValue,
     },
   });
 
+  if (POWERPOD.state?.fields?.[controlId]?.value !== rawValue) {
+    store.dispatch('addFieldData', {
+      name: controlId,
+      value: rawValue,
+      revalidate: true,
+    });
+  }
+
   if (raw) {
-    if (POWERPOD.state?.fields?.[controlId]?.value !== raw) {
-      store.dispatch('addFieldData', {
-        name: controlId,
-        value: rawValue,
-        revalidate: true,
-      });
-    }
     return rawValue;
   }
 
