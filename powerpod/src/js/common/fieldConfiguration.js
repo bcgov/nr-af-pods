@@ -116,7 +116,6 @@ export function configureField(field) {
     });
     return; // no need to do any config yet if field is hidden
   }
-  setFieldObserver(name, format);
   // cleanup resize handlers that break UI
   if (elementType === HtmlElementType.MultiOptionSet) {
     const originalSelectElementForMSOS = getOriginalMsosElement(name);
@@ -161,13 +160,6 @@ export function configureField(field) {
   if (hideLabel) {
     $(`#${name}_label`)?.css('display', 'none');
   }
-  // if (required) {
-  //   if (elementType) {
-  //     setRequiredField(name, elementType);
-  //   } else {
-  //     setRequiredField(name);
-  //   }
-  // }
   if (validation) {
     addValidationCheck(name, validation);
   }
@@ -320,6 +312,8 @@ export function configureField(field) {
   });
 
   validateStepField(name);
+
+  setFieldObserver(name, format);
 }
 
 export function configureFields() {
@@ -662,10 +656,21 @@ export function setFieldObserver(name, format = '') {
       });
       break;
     case HtmlElementType.DatePicker:
-      const datePickerElement = $(
-        `input[id=${name}_datepicker_description]`
-      ).parent()[0];
-      observeChanges(datePickerElement, () =>
+      const inputElement = $(`#${name}`);
+      const inputElementParent = inputElement.parent()[0];
+      const datePickerElement = $(`input[id=${name}_datepicker_description]`);
+      const datePickerParentElement = datePickerElement.parent()[0];
+      logger.info({
+        fn: setFieldObserver,
+        message: 'datePickerElement:',
+        data: {
+          inputElement,
+          inputElementParent,
+          datePickerElement,
+          datePickerParentElement,
+        },
+      });
+      observeChanges(inputElementParent, () =>
         updateFieldValue({
           name,
           origin: `${setFieldObserver.name} observeChanges(datePickerElement)`,
