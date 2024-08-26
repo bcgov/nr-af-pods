@@ -129,8 +129,12 @@ export function configureField(field) {
     }
   }
   if (label) {
-    const obj = $(`#${name}_label`)?.text(label);
-    obj?.html(obj?.html()?.replace(/\n/g, '<br/>'));
+    logger.info({
+      fn: configureField,
+      message: `Found label configuration for name: ${name}, label: ${label}`,
+    });
+    const newLabel = label.replace(/\n/g, '<br/>');
+    $(`#${name}_label`)?.html(newLabel);
   } else {
     const existingLabel = getFieldLabel(name);
     store.dispatch('addFieldData', {
