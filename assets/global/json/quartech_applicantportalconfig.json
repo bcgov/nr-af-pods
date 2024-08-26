@@ -1,331 +1,327 @@
 {
-    "tags": [
-        "Global",
-        "ALL",
-        "Application",
-        "StaffPortal"
+  "tags": ["Global", "ALL", "Application", "StaffPortal"],
+  "version": "1.1.0",
+  "description": "Global JSON config used in Applications",
+  "FieldsConfig": {
+    "programs": [
+      {
+        "name": "ALL",
+        "sections": [
+          {
+            "name": "ApplicantInfoStep",
+            "fields": [
+              {
+                "name": "quartech_legalbusinessororganizationname",
+                "tooltipText": "For a partnership, it is the names of the partners or the name the business was registered under with provincial or territorial authorities (e.g., farm name or if none provided use 'First name Last name'). For a corporation, it is the name that appears on the certificate of incorporation.",
+                "required": true
+              },
+              {
+                "name": "quartech_businessregistrationnumber",
+                "format": "cra",
+                "required": true,
+                "maxLength": 9,
+                "validation": {
+                  "type": "length",
+                  "value": 9,
+                  "comparison": "equalTo",
+                  "postfix": "digits"
+                },
+                "visibleIf": {
+                  "fieldName": "quartech_nocragstnumber",
+                  "selectedValue": false
+                }
+              },
+              {
+                "name": "quartech_nocragstnumber",
+                "label": "My / Our business/organization DOES NOT have a Canada Revenue Agency (CRA) or GST Number",
+                "elementType": "Checkbox",
+                "onChangeHandler": "setBusinessOrPersonalAddressLabels"
+              },
+              {
+                "name": "quartech_reasonwhynocraorgstnumber",
+                "required": true,
+                "visibleIf": {
+                  "fieldName": "quartech_nocragstnumber",
+                  "selectedValue": true
+                }
+              },
+              {
+                "name": "quartech_doingbusinessas",
+                "label": "Doing Business As (if different from Legal Business/Organization Name)"
+              },
+              {
+                "name": "quartech_businesssuitenumberoptional",
+                "label": "Business - Suite Number (optional)",
+                "visible": true
+              },
+              {
+                "name": "quartech_businessstreetnumber",
+                "label": "Business - Street number",
+                "required": true,
+                "validation": {
+                  "intervalBased": true
+                }
+              },
+              {
+                "name": "quartech_businessstreet",
+                "label": "Business - Street",
+                "required": true,
+                "validation": {
+                  "intervalBased": true
+                }
+              },
+              {
+                "name": "quartech_businesscity",
+                "label": "Business City",
+                "required": true,
+                "validation": {
+                  "intervalBased": true
+                }
+              },
+              {
+                "name": "quartech_businessprovinceterritory",
+                "label": "Business Province/Territory",
+                "required": true,
+                "validation": {
+                  "intervalBased": true
+                }
+              },
+              {
+                "name": "quartech_businesspostalcode",
+                "label": "Business Postal Code",
+                "format": "postalCode",
+                "required": true,
+                "validation": {
+                  "intervalBased": true
+                }
+              },
+              {
+                "name": "quartech_businessphonenumber",
+                "label": "Business Phone Number",
+                "format": "phoneNumber",
+                "required": true,
+                "validation": {
+                  "type": "length",
+                  "value": 14,
+                  "comparison": "equalTo",
+                  "postfix": "digits",
+                  "overrideDisplayValue": 10
+                }
+              },
+              {
+                "name": "quartech_businessemailaddress",
+                "label": "Business Email Address",
+                "format": "email",
+                "required": true
+              },
+              {
+                "name": "quartech_legalnamefirst",
+                "required": true
+              },
+              {
+                "name": "quartech_legalnamelast",
+                "required": true
+              },
+              {
+                "name": "quartech_positionorjobtitle",
+                "required": true
+              },
+              {
+                "name": "quartech_city",
+                "required": true
+              },
+              {
+                "name": "quartech_telephone",
+                "format": "phoneNumber",
+                "required": true,
+                "validation": {
+                  "type": "length",
+                  "value": 14,
+                  "comparison": "equalTo",
+                  "postfix": "digits",
+                  "overrideDisplayValue": 10
+                }
+              },
+              {
+                "name": "quartech_email",
+                "format": "email",
+                "required": true
+              }
+            ]
+          },
+          {
+            "name": "ProjectStep",
+            "fields": [
+              {
+                "name": "quartech_inordertocontinuouslyimprovecommunications",
+                "required": true,
+                "elementType": "MultiSelectPicklist",
+                "disableSingleLine": true
+              },
+              {
+                "name": "quartech_ifotherpleasedescribe",
+                "visibleIf": {
+                  "fieldName": "quartech_inordertocontinuouslyimprovecommunications",
+                  "selectedValue": 255550006,
+                  "techComment": "Other value"
+                }
+              }
+            ]
+          },
+          {
+            "name": "DemographicInfoStep",
+            "fields": [
+              {
+                "name": "quartech_question1reownerproprietorshiporparnership",
+                "required": true,
+                "elementType": "DropdownSelect"
+              },
+              {
+                "name": "quartech_percentagesharesownedbynewentrants",
+                "required": true,
+                "format": "percentage"
+              },
+              {
+                "name": "quartech_question2regoverningboard",
+                "tooltipText": "Indigenous governing body would include entities such as a band or tribal council, government of a self-governing First Nation or Métis Nation Chartered Community.",
+                "required": true
+              },
+              {
+                "name": "quartech_question2breorganizationtype",
+                "required": true
+              },
+              {
+                "name": "quartech_numberofmembersofthegoverningbody",
+                "required": true
+              },
+              {
+                "name": "quartech_doesyourorganizationtargetanyofthegroups",
+                "required": true,
+                "elementType": "MultiOptionSet"
+              },
+              {
+                "name": "quartech_firstnationssharepercentage",
+                "format": "percentage",
+                "validation": true
+              },
+              {
+                "name": "quartech_inukinuitsharepercentage",
+                "format": "percentage",
+                "validation": true
+              },
+              {
+                "name": "quartech_mtissharepercentage",
+                "format": "percentage",
+                "validation": true
+              },
+              {
+                "name": "quartech_indigenoussharepercentage",
+                "tooltipText": "Only select this option if you are not able to, or prefer not to select a specific Indigenous identity. Do not double count with other Indigenous identities above.",
+                "format": "percentage",
+                "validation": true
+              },
+              {
+                "name": "quartech_womensharepercentage",
+                "format": "percentage",
+                "validation": true
+              },
+              {
+                "name": "quartech_youth40orundersharepercentage",
+                "format": "percentage",
+                "validation": true
+              },
+              {
+                "name": "quartech_nonindiginousnonwomennonyouthshare",
+                "format": "percentage",
+                "validation": true
+              },
+              {
+                "name": "quartech_unabletoansweridentifysharepercentage",
+                "format": "percentage",
+                "validation": true
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "AllowedDocumentsTooltipText": "Text/Document Files<br><ul><li>CSV (Comma Separated Values)</li><li>DOC (Microsoft Word Document)</li><li>DOCX (Microsoft Word Open XML Document)</li><li>ODT (Open Document Text File)</li><li>PDF (Portable Document Format File)</li></ul><br>Spreadsheet Files<ul><li>XLS (Excel Spreadsheet)</li><li>XLSX (Microsoft Excel Open XML Spreadsheet)</li><li>ODS (Open Document Spreadsheet File)</li></ul><br>Image Files<br><ul><li>GIF (Graphical Interchange Format File)</li><li>JPEG (JPEG Image File)</li><li>JPG (JPEG Image File)</li><li>PNG (Portable Network Graphic)</li><li>SVG (Scalable Vector Graphics File)</li><li>TIF (Tagged Image File)</li></ul>",
+  "TypeOfBusiness_ToolTips": {
+    "255550001": {
+      "Option": "Primary Producer",
+      "Tooltip": ""
+    },
+    "255550002": {
+      "Option": "Processor",
+      "Tooltip": ""
+    },
+    "255550003": {
+      "Option": "Industry Organization",
+      "Tooltip": ""
+    },
+    "255550004": {
+      "Option": "Research Body (Institution)",
+      "Tooltip": "Universities and colleges (e.g., private universities and colleges, public degree-granting colleges, public degree-granting universities, public community colleges and vocational schools), foundations, and other educational institutions/school board (public and private), agriculture-based academic institutions, non-for-profit research institutions, research centers, institutions, organizations (i.e., diversification centers), or associations, knowledge transfer and exchange centers, support agencies for research initiatives, circumpolar research organizations, educators/teachers, veterinary colleges (public and private institutions), national researcher, research station."
+    },
+    "255550006": {
+      "Option": "Service Provider",
+      "Tooltip": "agri-business service provider (e.g., feed mills), custom applicators, auctions, animal health practitioner (e.g., veterinaries), industry service providers, grain storage and elevators, external consultants (i.e., business consultant, human resource consultant), agricultural network consulting, food distributor, auction mart, assembly yard, watershed districts, direct food contract packaging manufacturer, farrier, food distributor, livestock transporter, community councils, sheep shearer, direct food contact packaging manufacturer, food distributor, livestock transporter, veterinarian or animal health technician,  equipment providers, equipment maintenance services, food processing (processor) services, husbandry, AI services, animal health provider/services, veterinary clinics, workforce planning boards, brewpubs"
+    },
+    "255550007": {
+      "Option": "Provincial / Territorial / Municipal Government",
+      "Tooltip": "Government departments, crown corporations, school districts, school board. Municipal: RCM (regional, county, municipality), government departments, municipalities, other government bodies (e.g., municipal districts including counties, hamlets, special areas, specialized municipalities, and improvement districts)."
+    },
+    "255550008": {
+      "Option": "Indigenous",
+      "Tooltip": "Indigenous businesses, communities, and organizations (e.g., Industry organization: Producer organization, Processor organization, other industry organization), includes not-for-profit organization and for-profit organization, other Indigenous groups undertaking agricultural initiatives, government, Indigenous self-government, Tribal Councils, associations, Political Territorial Organizations (PTOs)."
+    },
+    "255550009": {
+      "Option": "Student",
+      "Tooltip": "A student pursuing a post-secondary education in agriculture who applies for the Agriculture Student Scholarship through the ministry and receives funds directly to go towards their studies."
+    }
+  },
+  "FieldsHintTexts": {
+    "ForApplicantInfoStep": [
+      {
+        "HintText": "Type to search BC OrgBook",
+        "Field": "Telephone",
+        "FieldName": "quartech_legalbusinessororganizationname"
+      },
+      {
+        "HintText": "(___) ___-____",
+        "Field": "Telephone",
+        "FieldName": "quartech_telephone"
+      }
     ],
-    "version": "1.0.9",
-    "description": "Global JSON config used in Applications",
-    "FieldsConfig": {
-        "programs": [
-            {
-                "name": "ALL",
-                "sections": [
-                    {
-                        "name": "ApplicantInfoStep",
-                        "fields": [
-                            {
-                                "name": "quartech_legalbusinessororganizationname",
-                                "tooltipText": "For a partnership, it is the names of the partners or the name the business was registered under with provincial or territorial authorities (e.g., farm name or if none provided use 'First name Last name'). For a corporation, it is the name that appears on the certificate of incorporation.",
-                                "required": true
-                            },
-                            {
-                                "name": "quartech_businessregistrationnumber",
-                                "format": "cra",
-                                "required": true,
-                                "maxLength": 9,
-                                "validation": {
-                                    "type": "length",
-                                    "value": 9,
-                                    "comparison": "equalTo",
-                                    "postfix": "digits"
-                                },
-                                "visibleIf": {
-                                    "fieldName": "quartech_nocragstnumber",
-                                    "selectedValue": false
-                                }
-                            },
-                            {
-                                "name": "quartech_nocragstnumber",
-                                "label": "My / Our business/organization DOES NOT have a Canada Revenue Agency (CRA) or GST Number",
-                                "elementType": "Checkbox"
-                            },
-                            {
-                                "name": "quartech_reasonwhynocraorgstnumber",
-                                "required": true,
-                                "visibleIf": {
-                                    "fieldName": "quartech_nocragstnumber",
-                                    "selectedValue": true
-                                }
-                            },
-                            {
-                                "name": "quartech_doingbusinessas",
-                                "label": "Doing Business As (if different from Legal Business/Organization Name)"
-                            },
-                            {
-                                "name": "quartech_businesssuitenumberoptional",
-                                "label": "Business - Suite Number (optional)",
-                                "visible": true
-                            },
-                            {
-                                "name": "quartech_businessstreetnumber",
-                                "label": "Business - Street number",
-                                "required": true,
-                                "validation": {
-                                    "intervalBased": true
-                                }
-                            },
-                            {
-                                "name": "quartech_businessstreet",
-                                "label": "Business - Street",
-                                "required": true,
-                                "validation": {
-                                    "intervalBased": true
-                                }
-                            },
-                            {
-                                "name": "quartech_businesscity",
-                                "label": "Business City",
-                                "required": true,
-                                "validation": {
-                                    "intervalBased": true
-                                }
-                            },
-                            {
-                                "name": "quartech_businessprovinceterritory",
-                                "label": "Business Province/Territory",
-                                "required": true,
-                                "validation": {
-                                    "intervalBased": true
-                                }
-                            },
-                            {
-                                "name": "quartech_businesspostalcode",
-                                "label": "Business Postal Code",
-                                "format": "postalCode",
-                                "required": true,
-                                "validation": {
-                                    "intervalBased": true
-                                }
-                            },
-                            {
-                                "name": "quartech_businessphonenumber",
-                                "label": "Business Phone Number",
-                                "format": "phoneNumber",
-                                "required": true,
-                                "validation": {
-                                    "type": "length",
-                                    "value": 14,
-                                    "comparison": "equalTo",
-                                    "postfix": "digits",
-                                    "overrideDisplayValue": 10
-                                }
-                            },
-                            {
-                                "name": "quartech_businessemailaddress",
-                                "label": "Business Email Address",
-                                "format": "email",
-                                "required": true
-                            },
-                            {
-                                "name": "quartech_legalnamefirst",
-                                "required": true
-                            },
-                            {
-                                "name": "quartech_legalnamelast",
-                                "required": true
-                            },
-                            {
-                                "name": "quartech_positionorjobtitle",
-                                "required": true
-                            },
-                            {
-                                "name": "quartech_city",
-                                "required": true
-                            },
-                            {
-                                "name": "quartech_telephone",
-                                "format": "phoneNumber",
-                                "required": true,
-                                "validation": {
-                                    "type": "length",
-                                    "value": 14,
-                                    "comparison": "equalTo",
-                                    "postfix": "digits",
-                                    "overrideDisplayValue": 10
-                                }
-                            },
-                            {
-                                "name": "quartech_email",
-                                "format": "email",
-                                "required": true
-                            }
-                        ]
-                    },
-                    {
-                        "name": "ProjectStep",
-                        "fields": [
-                            {
-                                "name": "quartech_inordertocontinuouslyimprovecommunications",
-                                "required": true,
-                                "elementType": "MultiSelectPicklist",
-                                "disableSingleLine": true
-                            },
-                            {
-                                "name": "quartech_ifotherpleasedescribe",
-                                "visibleIf": {
-                                    "fieldName": "quartech_inordertocontinuouslyimprovecommunications",
-                                    "selectedValue": 255550006,
-                                    "techComment": "Other value"
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "name": "DemographicInfoStep",
-                        "fields": [
-                            {
-                                "name": "quartech_question1reownerproprietorshiporparnership",
-                                "required": true,
-                                "elementType": "DropdownSelect"
-                            },
-                            {
-                                "name": "quartech_percentagesharesownedbynewentrants",
-                                "required": true,
-                                "format": "percentage"
-                            },
-                            {
-                                "name": "quartech_question2regoverningboard",
-                                "tooltipText": "Indigenous governing body would include entities such as a band or tribal council, government of a self-governing First Nation or Métis Nation Chartered Community.",
-                                "required": true
-                            },
-                            {
-                                "name": "quartech_question2breorganizationtype",
-                                "required": true
-                            },
-                            {
-                                "name": "quartech_numberofmembersofthegoverningbody",
-                                "required": true
-                            },
-                            {
-                                "name": "quartech_doesyourorganizationtargetanyofthegroups",
-                                "required": true,
-                                "elementType": "MultiOptionSet"
-                            },
-                            {
-                                "name": "quartech_firstnationssharepercentage",
-                                "format": "percentage",
-                                "validation": true
-                            },
-                            {
-                                "name": "quartech_inukinuitsharepercentage",
-                                "format": "percentage",
-                                "validation": true
-                            },
-                            {
-                                "name": "quartech_mtissharepercentage",
-                                "format": "percentage",
-                                "validation": true
-                            },
-                            {
-                                "name": "quartech_indigenoussharepercentage",
-                                "tooltipText": "Only select this option if you are not able to, or prefer not to select a specific Indigenous identity. Do not double count with other Indigenous identities above.",
-                                "format": "percentage",
-                                "validation": true
-                            },
-                            {
-                                "name": "quartech_womensharepercentage",
-                                "format": "percentage",
-                                "validation": true
-                            },
-                            {
-                                "name": "quartech_youth40orundersharepercentage",
-                                "format": "percentage",
-                                "validation": true
-                            },
-                            {
-                                "name": "quartech_nonindiginousnonwomennonyouthshare",
-                                "format": "percentage",
-                                "validation": true
-                            },
-                            {
-                                "name": "quartech_unabletoansweridentifysharepercentage",
-                                "format": "percentage",
-                                "validation": true
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
-    },
-    "AllowedDocumentsTooltipText": "Text/Document Files<br><ul><li>CSV (Comma Separated Values)</li><li>DOC (Microsoft Word Document)</li><li>DOCX (Microsoft Word Open XML Document)</li><li>ODT (Open Document Text File)</li><li>PDF (Portable Document Format File)</li></ul><br>Spreadsheet Files<ul><li>XLS (Excel Spreadsheet)</li><li>XLSX (Microsoft Excel Open XML Spreadsheet)</li><li>ODS (Open Document Spreadsheet File)</li></ul><br>Image Files<br><ul><li>GIF (Graphical Interchange Format File)</li><li>JPEG (JPEG Image File)</li><li>JPG (JPEG Image File)</li><li>PNG (Portable Network Graphic)</li><li>SVG (Scalable Vector Graphics File)</li><li>TIF (Tagged Image File)</li></ul>",
-    "TypeOfBusiness_ToolTips": {
-        "255550001": {
-            "Option": "Primary Producer",
-            "Tooltip": ""
-        },
-        "255550002": {
-            "Option": "Processor",
-            "Tooltip": ""
-        },
-        "255550003": {
-            "Option": "Industry Organization",
-            "Tooltip": ""
-        },
-        "255550004": {
-            "Option": "Research Body (Institution)",
-            "Tooltip": "Universities and colleges (e.g., private universities and colleges, public degree-granting colleges, public degree-granting universities, public community colleges and vocational schools), foundations, and other educational institutions/school board (public and private), agriculture-based academic institutions, non-for-profit research institutions, research centers, institutions, organizations (i.e., diversification centers), or associations, knowledge transfer and exchange centers, support agencies for research initiatives, circumpolar research organizations, educators/teachers, veterinary colleges (public and private institutions), national researcher, research station."
-        },
-        "255550006": {
-            "Option": "Service Provider",
-            "Tooltip": "agri-business service provider (e.g., feed mills), custom applicators, auctions, animal health practitioner (e.g., veterinaries), industry service providers, grain storage and elevators, external consultants (i.e., business consultant, human resource consultant), agricultural network consulting, food distributor, auction mart, assembly yard, watershed districts, direct food contract packaging manufacturer, farrier, food distributor, livestock transporter, community councils, sheep shearer, direct food contact packaging manufacturer, food distributor, livestock transporter, veterinarian or animal health technician,  equipment providers, equipment maintenance services, food processing (processor) services, husbandry, AI services, animal health provider/services, veterinary clinics, workforce planning boards, brewpubs"
-        },
-        "255550007": {
-            "Option": "Provincial / Territorial / Municipal Government",
-            "Tooltip": "Government departments, crown corporations, school districts, school board. Municipal: RCM (regional, county, municipality), government departments, municipalities, other government bodies (e.g., municipal districts including counties, hamlets, special areas, specialized municipalities, and improvement districts)."
-        },
-        "255550008": {
-            "Option": "Indigenous",
-            "Tooltip": "Indigenous businesses, communities, and organizations (e.g., Industry organization: Producer organization, Processor organization, other industry organization), includes not-for-profit organization and for-profit organization, other Indigenous groups undertaking agricultural initiatives, government, Indigenous self-government, Tribal Councils, associations, Political Territorial Organizations (PTOs)."
-        },
-        "255550009": {
-            "Option": "Student",
-            "Tooltip": "A student pursuing a post-secondary education in agriculture who applies for the Agriculture Student Scholarship through the ministry and receives funds directly to go towards their studies."
-        }
-    },
-    "FieldsHintTexts": {
-        "ForApplicantInfoStep": [
-            {
-                "HintText": "Type to search BC OrgBook",
-                "Field": "Telephone",
-                "FieldName": "quartech_legalbusinessororganizationname"
-            },
-            {
-                "HintText": "(___) ___-____",
-                "Field": "Telephone",
-                "FieldName": "quartech_telephone"
-            }
-        ],
-        "ForProjectStep": [
-            {
-                "HintText": "",
-                "Field": "A field on the Project step",
-                "FieldName": "aField"
-            }
-        ],
-        "ForEstimatedActivityBudgetStep": [
-            {
-                "HintText": "",
-                "Field": "A field on the Estimated Activity Budget step",
-                "FieldName": "aField"
-            }
-        ],
-        "ForDemographicInfoStep": [
-            {
-                "HintText": "",
-                "Field": "A field on the Demographic Info step",
-                "FieldName": "aField"
-            }
-        ],
-        "DeclarationAndConsentStep": [
-            {
-                "HintText": "",
-                "Field": "A field on the Declaration And Consent step",
-                "FieldName": "aField"
-            }
-        ]
-    },
-    "SystemNotice": "<br/><p>This is a new application system. Please bear with us as we work to improve the system. If you have any technical issues with the system or wish to provide feedback to help us to make it as user friendly as possible, please contact: <a href = 'mailto: PODS@gov.bc.ca'>PODS@gov.bc.ca</a>​</p>"
+    "ForProjectStep": [
+      {
+        "HintText": "",
+        "Field": "A field on the Project step",
+        "FieldName": "aField"
+      }
+    ],
+    "ForEstimatedActivityBudgetStep": [
+      {
+        "HintText": "",
+        "Field": "A field on the Estimated Activity Budget step",
+        "FieldName": "aField"
+      }
+    ],
+    "ForDemographicInfoStep": [
+      {
+        "HintText": "",
+        "Field": "A field on the Demographic Info step",
+        "FieldName": "aField"
+      }
+    ],
+    "DeclarationAndConsentStep": [
+      {
+        "HintText": "",
+        "Field": "A field on the Declaration And Consent step",
+        "FieldName": "aField"
+      }
+    ]
+  },
+  "SystemNotice": "<br/><p>This is a new application system. Please bear with us as we work to improve the system. If you have any technical issues with the system or wish to provide feedback to help us to make it as user friendly as possible, please contact: <a href = 'mailto: PODS@gov.bc.ca'>PODS@gov.bc.ca</a>​</p>"
 }

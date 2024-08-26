@@ -99,6 +99,81 @@ export function setOnChangeHandler(fieldName, elemType, onChangeHandlerName) {
   });
 }
 
+export function setBusinessOrPersonalAddressLabels() {
+  const noCraNumberCheckbox = document.getElementById(
+    'quartech_nocragstnumber'
+  );
+
+  if (!noCraNumberCheckbox) {
+    logger.error({
+      fn: setBusinessOrPersonalAddressLabels,
+      message: `Could not find element by id 'quartech_nocragstnumber'`,
+    });
+    return;
+  }
+
+  const noCraNumberCheckboxChecked = noCraNumberCheckbox.checked;
+
+  logger.info({
+    fn: setBusinessOrPersonalAddressLabels,
+    message: `Successfully found quartech_nocragstnumber with checked: ${noCraNumberCheckboxChecked}`,
+  });
+
+  const addressFieldNames = [
+    'quartech_businesssuitenumberoptional',
+    'quartech_businessstreetnumber',
+    'quartech_businessstreet',
+    'quartech_businesscity',
+    'quartech_businessprovinceterritory',
+    'quartech_businesspostalcode',
+    'quartech_businessphonenumber',
+    'quartech_businessemailaddress',
+  ];
+
+  // labels if "Do you have a Canada Revenue Agency (CRA) Business Number?" IS checked
+  const businessAddressFieldLabels = [
+    'Business - Suite Number (optional)',
+    'Business - Street number',
+    'Business - Street',
+    'Business City',
+    'Business Province/Territory',
+    'Business Postal Code',
+    'Business Phone Number',
+    'Business Email Address',
+  ];
+
+  // labels if "Do you have a Canada Revenue Agency (CRA) Business Number?" is NOT checked
+  const addressFieldLabels = [
+    'Suite Number (optional)',
+    'Street number',
+    'Street',
+    'City',
+    'Province/Territory',
+    'Postal Code',
+    'Phone Number',
+    'Email Address',
+  ];
+
+  // if "Do you have a Canada Revenue Agency (CRA) Business Number?" is NOT checked:
+  // PERSON:
+  if (noCraNumberCheckboxChecked) {
+    addressFieldNames.forEach((fName, index) => {
+      setFieldNameLabel(fName, addressFieldLabels[index]);
+    });
+  } else {
+    // if "Do you have a Canada Revenue Agency (CRA) Business Number?" IS checked:
+    // BUSINESS:
+    addressFieldNames.forEach((fName, index) => {
+      setFieldNameLabel(fName, businessAddressFieldLabels[index]);
+    });
+  }
+
+  logger.info({
+    fn: setBusinessOrPersonalAddressLabels,
+    message: `Successfully set labels for address fields based on quartech_nocragstnumber`,
+  });
+}
+
 // Sets address labels to "Business" if "I do not have a Canada Revenue Agency (CRA) Business Number" is NOT checked
 // Sets address labels to normal if "I do not have a Canada Revenue Agency (CRA) Business Number" IS checked
 export function setBusinessOrPersonalStateForVLB() {
