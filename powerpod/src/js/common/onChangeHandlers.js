@@ -2,7 +2,6 @@ import store from '../store/index.js';
 import { HtmlElementType, POWERPOD } from './constants.js';
 import {
   copyFromFieldAToFieldB,
-  hideFieldByFieldName,
   hideFieldRow,
   isHiddenRow,
   observeChanges,
@@ -17,6 +16,7 @@ POWERPOD.onChangeHandlers = {
   populateBusinessNameOnChangeFirstOrLastNameVLB,
   setBusinessOrPersonalStateForVLB,
   populatePhoneNumberEmailAndCityOnChangeVLB,
+  setBusinessOrPersonalAddressLabels,
 };
 
 const logger = Logger('common/onChangeHandlers');

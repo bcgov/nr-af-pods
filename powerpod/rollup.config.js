@@ -7,7 +7,7 @@ import json from '@rollup/plugin-json';
 import commonjs from '@rollup/plugin-commonjs';
 
 const licenseContent = `/*!
-* powerpod 2.2.5
+* powerpod 2.2.6
 * https://github.com/bcgov/nr-af-pods/powerpod
 *
 * @license GPLv3 for open source use only

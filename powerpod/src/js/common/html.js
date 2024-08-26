@@ -268,32 +268,29 @@ export function getControlValue({
   const controlDiv = tr.querySelector('.control');
 
   let rawValue, verboseValue;
-  if (forTemplateGeneration && controlId === 'quartech_nocragstnumber') {
-    if (POWERPOD.program?.programId === ProgramIds.VLB) {
-      const checked =
-        document.getElementsByTagName('quartech-checkbox')?.[0].inputValue;
-      if (checked === 'true' || checked === true) {
-        verboseValue = 'Yes';
-      } else {
-        verboseValue = 'No';
-      }
-      rawValue = verboseValue;
+  // SPECIAL CASE FOR VLB WHERE NO CRA NUMBER CHECKBOX IS CUSTOM COMPONENT / REVERSED
+  if (
+    forTemplateGeneration &&
+    controlId === 'quartech_nocragstnumber' &&
+    POWERPOD.program?.programId === ProgramIds.VLB
+  ) {
+    const checked =
+      document.getElementsByTagName('quartech-checkbox')?.[0].inputValue;
+    if (checked === 'true' || checked === true) {
+      verboseValue = 'Yes';
+    } else {
+      verboseValue = 'No';
     }
+    rawValue = verboseValue;
   } else if (elementType === HtmlElementType.FileInput) {
     const value = controlDiv?.querySelector('textarea')?.value;
-    if (raw) {
-      rawValue = value;
-    } else {
-      verboseValue = cleanString(value?.replace(/\n/g, ' '));
-    }
+    rawValue = value;
+    verboseValue = cleanString(value?.replace(/\n/g, ' '));
   } else if (elementType === HtmlElementType.CurrencyInput) {
     const value = controlDiv?.querySelector('input')?.value;
-    if (raw) {
-      const floatVal = parseFloat(value.replace(/,/g, ''));
-      rawValue = !isNaN(floatVal) ? floatVal : undefined;
-    } else {
-      verboseValue = `$${value}`;
-    }
+    const floatVal = parseFloat(value.replace(/,/g, ''));
+    rawValue = !isNaN(floatVal) ? floatVal : undefined;
+    verboseValue = `$${value}`;
   } else if (elementType === HtmlElementType.Input) {
     verboseValue = controlDiv?.querySelector('input')?.value;
     rawValue = verboseValue;
@@ -306,11 +303,11 @@ export function getControlValue({
         fn: getControlValue,
         message: `Attempting to convert date raw value to ISO format, value: ${value}`,
       });
-      rawValue =  convertDateToISO(value) ?? '';
+      rawValue = convertDateToISO(value) ?? '';
       verboseValue = value ?? '';
     } else {
       rawValue = '';
-      verboseValue = ''
+      verboseValue = '';
     }
   } else if (elementType === HtmlElementType.TextArea) {
     verboseValue = controlDiv
@@ -319,15 +316,12 @@ export function getControlValue({
     rawValue = verboseValue;
   } else if (elementType === HtmlElementType.DropdownSelect) {
     const selectElement = controlDiv?.querySelector('select');
-    if (raw) {
-      rawValue = selectElement.value;
-    } else {
-      const selectedIndex = selectElement?.selectedIndex;
-      const selectedOption = selectElement.options[selectedIndex];
-      const selectedOptionText =
-        selectedOption.textContent || selectedOption.innerText;
-      verboseValue = selectedOptionText;
-    }
+    rawValue = selectElement.value;
+    const selectedIndex = selectElement?.selectedIndex;
+    const selectedOption = selectElement.options[selectedIndex];
+    const selectedOptionText =
+      selectedOption.textContent || selectedOption.innerText;
+    verboseValue = selectedOptionText;
   } else if (elementType === HtmlElementType.Checkbox) {
     const checked = controlDiv?.querySelector('input')?.checked;
     logger.info({
@@ -335,37 +329,26 @@ export function getControlValue({
       message: `Found control value for type: ${elementType}, raw: ${raw}, checked: ${checked}`,
       data: { controlDiv },
     });
-    if (raw) {
-      rawValue = checked;
+    rawValue = checked;
+    if (checked === 'true' || checked === true) {
+      verboseValue = 'Yes';
     } else {
-      if (checked === 'true' || checked === true) {
-        verboseValue = 'Yes';
-      } else {
-        verboseValue = 'No';
-      }
+      verboseValue = 'No';
     }
   } else if (elementType === HtmlElementType.MultiOptionSet && controlId) {
-    if (raw) {
-      rawValue = newGetOriginalMultiOptionSetElementValue(controlId, raw);
-    } else {
-      verboseValue = newGetOriginalMultiOptionSetElementValue(controlId);
-    }
+    rawValue = newGetOriginalMultiOptionSetElementValue(controlId, raw);
+    verboseValue = newGetOriginalMultiOptionSetElementValue(controlId);
   } else if (elementType === HtmlElementType.MultiSelectPicklist && controlId) {
-    if (raw) {
-      rawValue = document?.getElementById(controlId)?.value;
-    } else {
-      verboseValue = controlDiv?.querySelector('input')?.value;
-    }
+    rawValue = document?.getElementById(controlId)?.value;
+    verboseValue = controlDiv?.querySelector('input')?.value;
   }
 
   logger.info({
     fn: getControlValue,
-    message: `
-      For controlId: ${controlId}, raw: ${raw}, 
-      forTemplateGeneration: ${forTemplateGeneration} found rawValue: ${rawValue} 
-      verboseValue: ${verboseValue}`,
+    message: `For controlId: ${controlId}, raw: ${raw}, forTemplateGeneration: ${forTemplateGeneration} found rawValue: ${rawValue} verboseValue: ${verboseValue}`,
     data: {
       controlId,
+      elementType,
       tr,
       raw,
       forTemplateGeneration,
