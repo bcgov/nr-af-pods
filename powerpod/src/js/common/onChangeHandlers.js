@@ -274,8 +274,10 @@ export function setBusinessOrPersonalStateForVLB() {
 
     // if jquerymask is not loaded yet, it's safe to assume it's the initial load, so do nothing
     if (isScriptLoaded) {
-      setFieldValue('quartech_businessphonenumber', '');
-      setFieldValue('quartech_businessemailaddress', '');
+      // @ts-ignore
+      setFieldValue({ name: 'quartech_businessphonenumber', value: '' });
+      // @ts-ignore
+      setFieldValue({ name: 'quartech_businessemailaddress', value: '' });
       copyFromFieldAToFieldB('quartech_businesscity', 'quartech_city');
     } else {
       logger.info({
@@ -371,7 +373,8 @@ export function populateBusinessNameOnChangeFirstOrLastNameVLB() {
 
   const newValue = fieldValues.join(' ');
 
-  setFieldValue(legalBusinessOrgNameTag, newValue);
+  // @ts-ignore
+  setFieldValue({ name: legalBusinessOrgNameTag, value: newValue });
   logger.info({
     fn: populateBusinessNameOnChangeFirstOrLastNameVLB,
     message: `Successfuly set field tag: quartech_legalbusinessororganizationname to value: ${newValue}`,

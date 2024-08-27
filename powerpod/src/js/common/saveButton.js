@@ -1,6 +1,6 @@
 import store from '../store/index.js';
 import { getFormType } from './applicationUtils.js';
-import { Form, FormStep, POWERPOD } from './constants.js';
+import { Form, FormStep, HtmlElementType, POWERPOD } from './constants.js';
 import { patchApplicationData, patchClaimData } from './fetch.js';
 import { generateFormJson, getFormId } from './form.js';
 import { Logger } from './logger.js';
@@ -74,7 +74,14 @@ export async function saveFormData({ customPayload = {} }) {
   });
   // @ts-ignore
   saveButton.value = 'Saving...';
-  generateFormJson();
+  const formJsonRes = generateFormJson();
+
+  if (!formJsonRes) {
+    logger.error({
+      fn: saveButton,
+      message: `Failed to generateFormJson`
+    });
+  }
 
   if (isObjectEmpty(store?.state?.fields || {})) {
     logger.warn({
@@ -103,7 +110,7 @@ export async function saveFormData({ customPayload = {} }) {
         fieldData
       )}`,
     });
-    const { value = undefined, error, touched } = fieldData;
+    const { value = undefined, error, touched, elementType } = fieldData;
 
     if ((error && error.length) || !touched) {
       logger.warn({

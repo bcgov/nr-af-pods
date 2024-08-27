@@ -21,6 +21,7 @@
         },
         {
           "name": "quartech_commodity",
+          "elementType": "MultiSelectPicklist",
           "visibleIf": {
             "fieldName": "quartech_recipienttype",
             "selectedValue": 255550001

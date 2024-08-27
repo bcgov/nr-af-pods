@@ -435,31 +435,31 @@ function setupApplicantInfoStepFields() {
       '<div>The Province is committed to supporting the success of Indigenous businesses in the agriculture and food sector. We understand that Indigenous businesses may have distinct characteristics reflecting regulatory, operational, cultural, and other factors. We aim for flexibility in our program delivery to reduce barriers and ensure the accessibility of our programs. If you are interested in applying to the Program but have questions about the application process or eligibility criteria, please contact Program staff at Agribusiness@gov.bc.ca<br /><br /></div>'
     );
     // @ts-ignore
-    initOnChange_DependentRequiredField({
-      dependentOnValue: '255550001',
-      dependentOnElementTag: 'quartech_recipienttype',
-      requiredFieldTag: 'quartech_commodity',
-    });
+    // initOnChange_DependentRequiredField({
+    //   dependentOnValue: '255550001',
+    //   dependentOnElementTag: 'quartech_recipienttype',
+    //   requiredFieldTag: 'quartech_commodity',
+    // });
     // @ts-ignore
-    initOnChange_DependentRequiredField({
-      dependentOnValue: '255550001',
-      dependentOnElementTag: 'quartech_recipienttype',
-      requiredFieldTag: 'quartech_othercommoditiesproducedharvested',
-      disableRequiredProp: true,
-    });
+    // initOnChange_DependentRequiredField({
+    //   dependentOnValue: '255550001',
+    //   dependentOnElementTag: 'quartech_recipienttype',
+    //   requiredFieldTag: 'quartech_othercommoditiesproducedharvested',
+    //   disableRequiredProp: true,
+    // });
     // @ts-ignore
-    initOnChange_DependentRequiredField({
-      dependentOnValue: '255550002',
-      dependentOnElementTag: 'quartech_recipienttype',
-      requiredFieldTag: 'quartech_primarilyprocess',
-    });
+    // initOnChange_DependentRequiredField({
+    //   dependentOnValue: '255550002',
+    //   dependentOnElementTag: 'quartech_recipienttype',
+    //   requiredFieldTag: 'quartech_primarilyprocess',
+    // });
     // @ts-ignore
-    initOnChange_DependentRequiredField({
-      dependentOnValue: '255550002',
-      dependentOnElementTag: 'quartech_recipienttype',
-      requiredFieldTag: 'quartech_otherproductsprocessed',
-      disableRequiredProp: true,
-    });
+    // initOnChange_DependentRequiredField({
+    //   dependentOnValue: '255550002',
+    //   dependentOnElementTag: 'quartech_recipienttype',
+    //   requiredFieldTag: 'quartech_otherproductsprocessed',
+    //   disableRequiredProp: true,
+    // });
   }
 
   // Reset "What is your primary production?" value when "Type of Business / Organization" is changed

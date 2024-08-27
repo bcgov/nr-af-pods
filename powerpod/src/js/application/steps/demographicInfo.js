@@ -466,8 +466,19 @@ async function addDemographicInfoChefsIframe() {
         .substring(0, 8)
         .toUpperCase();
 
-      setFieldValue('quartech_chefsid', chefsSubmissionId);
-      setFieldValue('quartech_chefssubmissionid', chefsSubmissionGuidResult);
+      if (!chefsSubmissionId || !chefsSubmissionGuidResult) {
+        logger.error({
+          fn: addDemographicInfoChefsIframe,
+          message: `Failed to get chefsSubmissionId`,
+        });
+        return;
+      }
+
+      setFieldValue({ name: 'quartech_chefsid', value: chefsSubmissionId });
+      setFieldValue({
+        name: 'quartech_chefssubmissionid',
+        value: chefsSubmissionGuidResult,
+      });
 
       if (chefsSubmissionGuidResult) {
         saveFormData({

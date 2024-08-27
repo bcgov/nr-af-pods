@@ -960,12 +960,12 @@ export function showOrHideAndReturnValue(valueElementId, descriptionElementId) {
  * @param {string} name - The name of the associated field id.
  * @param {string} value - The value to set the field to.
  */
-export function setFieldValue(
+export function setFieldValue({
   name,
   value,
   elementType = null,
-  skipValidation = false
-) {
+  skipValidation = false,
+}) {
   logger.info({
     fn: setFieldValue,
     message: `Setting field value for name: ${name}, value: ${value}, elementType: ${elementType}, skipValidation: ${skipValidation}`,
@@ -1227,19 +1227,31 @@ export function htmlDecode(input) {
 export function copyFromFieldAToFieldB(fromFieldNameA, toFieldNameB) {
   const fromFieldNameAElement = document.getElementById(fromFieldNameA);
 
+  if (!fromFieldNameAElement) {
+    logger.error({
+      fn: copyFromFieldAToFieldB,
+      message: `could not find element forfromFieldNameA: ${fromFieldNameA}`,
+    });
+    return;
+  }
+
   logger.info({
     fn: copyFromFieldAToFieldB,
     message: `Start copying value ${
-      fromFieldNameAElement.value || ''
+      fromFieldNameAElement?.value || ''
     } from ${fromFieldNameA} to ${toFieldNameB}`,
   });
 
-  setFieldValue(toFieldNameB, fromFieldNameAElement.value || '');
+  // @ts-ignore
+  setFieldValue({
+    name: toFieldNameB,
+    value: fromFieldNameAElement?.value || '',
+  });
 
   logger.info({
     fn: copyFromFieldAToFieldB,
     message: `Successfully copied value ${
-      fromFieldNameAElement.value || ''
+      fromFieldNameAElement?.value || ''
     } from ${fromFieldNameA} to ${toFieldNameB}`,
   });
 }
@@ -1346,7 +1358,8 @@ export function setFieldValueToEmptyState(fieldName) {
   } else {
     $(`#${fieldName}_name`)?.val(''); // needed for lookup search/modal input elements
     $(fieldName).val('');
-    setFieldValue(fieldName, '', null, true);
+    // @ts-ignore
+    setFieldValue({ name: fieldName, value: '', skipValidation: true });
   }
 }
 
