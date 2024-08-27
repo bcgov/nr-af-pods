@@ -24,6 +24,11 @@ export function hasCraNumberCheckboxEventHandler(name) {
     });
     customElement.setAttribute('inputvalue', checked);
     // set reverse value for dynamics field
-    setFieldValue(name, !checked, HtmlElementType.Checkbox);
+    // @ts-ignore
+    setFieldValue({
+      name,
+      value: !checked,
+      elementType: HtmlElementType.Checkbox,
+    });
   };
 }

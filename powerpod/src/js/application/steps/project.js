@@ -150,7 +150,6 @@ function setProjectStepRequiredFields() {
     //   requiredFieldTag: 'quartech_ifyespleaseexplainwhenandfromwhichprogram',
     // });
     // END Organization Information
-
     // START Collaborating Organization Information
     // initOnChange_DependentRequiredField({
     //   dependentOnValue: YES_VALUE,
@@ -171,7 +170,6 @@ function setProjectStepRequiredFields() {
     //   shouldBeRequired: false,
     // });
     // END Collaborating Organization Information
-
     // START Activity Information
     // initOnChange_DependentRequiredField({
     //   dependentOnValue: YES_VALUE,
@@ -217,7 +215,6 @@ function setProjectStepRequiredFields() {
     //     overrideTruthyClause: false,
     //   });
     // }
-
     // setup observer to check each time selected topics changes
     // var observer = new MutationObserver(function (mutations) {
     //   if (
@@ -243,7 +240,6 @@ function setProjectStepRequiredFields() {
     //     });
     //   }
     // });
-
     // if (
     //   priorityTopicElements &&
     //   priorityTopicElements.nodeType === Node.ELEMENT_NODE
@@ -254,13 +250,11 @@ function setProjectStepRequiredFields() {
     //     characterData: true,
     //   });
     // }
-
     // initOnChange_DependentRequiredField({
     //   dependentOnValue: OTHER_VALUE,
     //   dependentOnElementTag: 'quartech_activitypurpose',
     //   requiredFieldTag: 'quartech_ifotherpleasedescribetheactivitypurpose',
     // });
-
     // initOnChange_DependentRequiredField({
     //   dependentOnValue: YES_VALUE,
     //   dependentOnElementTag:
@@ -763,10 +757,11 @@ function setupChosen() {
   $('.chosen-select').on('change', function () {
     const newSelectedLocations = $('.chosen-select').val();
     const stringToPassToFieldInput = newSelectedLocations.join(', ');
-    setFieldValue(
-      'quartech_venuelocationcitytownetcoronlinesoftwar',
-      stringToPassToFieldInput
-    );
+    // @ts-ignore
+    setFieldValue({
+      name: 'quartech_venuelocationcitytownetcoronlinesoftwar',
+      value: stringToPassToFieldInput,
+    });
   });
 
   setupTooltip({

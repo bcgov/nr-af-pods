@@ -416,21 +416,25 @@ function addExpenseReportGrid() {
       // @ts-ignore
       rows = JSON.parse(event.detail.value);
       customElement.setAttribute('rows', JSON.stringify(rows));
-      setFieldValue(
-        'quartech_eligibleexpenses',
-        JSON.stringify(filterEmptyRows(rows))
-      );
       // @ts-ignore
-      setFieldValue('quartech_totalsumofreportedexpenses', event.detail.total);
+      setFieldValue({
+        name: 'quartech_eligibleexpenses',
+        value: JSON.stringify(filterEmptyRows(rows)),
+      });
+      // @ts-ignore
+      setFieldValue({
+        name: 'quartech_totalsumofreportedexpenses',
+        value: event.detail.total,
+      });
       verifyTotalSumEqualsRequestedAmount();
     },
     mappedValueKey: 'rows',
     initFn: (existingEligibleExpenses) => {
-      setFieldValue(
-        'quartech_totalsumofreportedexpenses',
-        // @ts-ignore
-        getTotalExpenseAmount(JSON.parse(existingEligibleExpenses))
-      );
+      // @ts-ignore
+      setFieldValue({
+        name: 'quartech_totalsumofreportedexpenses',
+        value: getTotalExpenseAmount(JSON.parse(existingEligibleExpenses)),
+      });
       verifyTotalSumEqualsRequestedAmount();
     },
     initValuesFn: (mappedValueKey, existingValue, customElement) => {

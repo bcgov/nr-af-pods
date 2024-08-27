@@ -1,7 +1,4 @@
-import {
-  hideQuestion,
-  observeIframeChanges,
-} from '../../common/html.js';
+import { hideQuestion, observeIframeChanges } from '../../common/html.js';
 import { getEnvVars } from '../../common/env.js';
 import { getProgramAbbreviation } from '../../common/program.ts';
 import { configureFields } from '../../common/fieldConfiguration.js';
@@ -116,16 +113,21 @@ async function addChefsVVTSIframe() {
       'received chefsSubmissionGuidResult: ' + chefsSubmissionGuidResult
     );
 
-    setFieldValue(
-      'quartech_vvts_veterinaryclinicchefssubmissionid',
-      chefsSubmissionGuidResult
-    );
+    // @ts-ignore
+    setFieldValue({
+      name: 'quartech_vvts_veterinaryclinicchefssubmissionid',
+      value: chefsSubmissionGuidResult,
+    });
 
     const chefsSubmissionId = chefsSubmissionGuidResult
       .substring(0, 8)
       .toUpperCase();
 
-    setFieldValue('quartech_vvts_programevaluationid', chefsSubmissionId);
+    // @ts-ignore
+    setFieldValue({
+      name: 'quartech_vvts_programevaluationid',
+      value: chefsSubmissionId,
+    });
 
     if (chefsSubmissionGuidResult) {
       saveFormData({
@@ -214,16 +216,21 @@ async function addSatisfactionSurveyChefsIframe() {
       'received chefsSubmissionGuidResult: ' + chefsSubmissionGuidResult
     );
 
-    setFieldValue(
-      'quartech_satisfactionsurveychefssubmissionid',
-      chefsSubmissionGuidResult
-    );
+    // @ts-ignore
+    setFieldValue({
+      name: 'quartech_satisfactionsurveychefssubmissionid',
+      value: chefsSubmissionGuidResult,
+    });
 
     const chefsSubmissionId = chefsSubmissionGuidResult
       .substring(0, 8)
       .toUpperCase();
 
-    setFieldValue('quartech_satisfactionsurveyid', chefsSubmissionId);
+    // @ts-ignore
+    setFieldValue({
+      name: 'quartech_satisfactionsurveyid',
+      value: chefsSubmissionId,
+    });
 
     if (chefsSubmissionGuidResult) {
       saveFormData({

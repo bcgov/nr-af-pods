@@ -164,7 +164,13 @@ export function configureField(field) {
     addValidationCheck(name, validation);
   }
   if (initialValue) {
-    setFieldValue(name, initialValue, elementType, true);
+    // @ts-ignore
+    setFieldValue({
+      name,
+      value: initialValue,
+      elementType,
+      skipValidation: true,
+    });
   }
   // max characters
   if (maxLength) {
@@ -285,7 +291,8 @@ export function configureField(field) {
         customElement.setAttribute('fileInputStr', fileInputStr);
         customElement.setAttribute('docs', JSON.stringify(docs));
         customElement.setAttribute('formType', getFormType());
-        setFieldValue(name, fileInputStr);
+        // @ts-ignore
+        setFieldValue({ name, value: fileInputStr });
         // validateRequiredFields();
       },
       mappedValueKey: 'fileInputStr',
