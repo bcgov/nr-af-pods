@@ -1,6 +1,6 @@
 {
-  "tags": ["Application", "StaffPortal", "ABPP1"],
-  "version": "1.0.5",
+  "tags": ["Application", "StaffPortal", "ABPP1", "Fall 2024"],
+  "version": "1.1.0",
   "name": "ABPP - Agri-Business and Leadership Development",
   "abbreviation": "ABPP1",
   "hiddenSteps": "",
@@ -14,14 +14,35 @@
           "elementType": "DropdownSelect"
         },
         {
+          "name": "quartech_doingbusinessas",
+          "label": "Doing Business As (if different from Legal Business or Organization Name)",
+          "visible": true
+        },
+        {
+          "name": "quartech_recipienttype",
+          "required": true,
+	  "selectedValue": 255550001,
+          "elementType": "DropdownSelect",
+          "label": "Type of Business / Organization. If your operation does both processing and primary production, please select the one that will primarily benefit from this program."
+        },
+        {
+          "name": "quartech_commodity",
+          "visibleIf": {
+            "fieldName": "quartech_recipienttype",
+            "selectedValue": 255550001
+          }
+        },
+        {
+          "name": "quartech_othercommoditiesproducedharvested",
+          "hidden": true
+        },
+        {
           "name": "quartech_applicanttype",
           "required": true,
-          "elementType": "DropdownSelect",
-          "label": "Applicant Type"
+          "elementType": "DropdownSelect"
         },
         {
           "name": "quartech_yearproductionestablished",
-          "labe": "Year Business Established",
           "required": true,
           "validation": {
             "type": "numeric",
@@ -31,7 +52,6 @@
         },
         {
           "name": "quartech_numberoffulltimeemployees",
-          "label": "How many full-time employees do you employ?",
           "format": "number",
           "required": true,
           "validation": {
@@ -42,7 +62,6 @@
         },
         {
           "name": "quartech_numberofparttimeemployees",
-          "label": "How many part-time employees do you employ (including seasonal)?",
           "format": "number",
           "required": true,
           "validation": {
@@ -53,7 +72,6 @@
         },
         {
           "name": "quartech_previousyeargrossincome",
-          "label": "What was your estimated total gross income in the previous year?",
           "required": true,
           "format": "currency",
           "maxDigits": 13,
@@ -66,7 +84,6 @@
         },
         {
           "name": "quartech_previousyearnetincome",
-          "label": "What was your estimated total net income in the previous year?",
           "required": true,
           "format": "currency",
           "maxDigits": 13,
@@ -74,36 +91,9 @@
           "allowNegatives": true
         },
         {
-          "name": "quartech_recipienttype",
-          "required": true,
-          "elementType": "DropdownSelect",
-          "label": "Type of Business / Organization. If your operation does both processing and primary production, please select the one that will primarily benefit from this program."
-        },
-        {
-          "name": "quartech_commodity",
-          "label": "What is your primary production?",
-          "required": true,
-          "visibleIf": {
-            "fieldName": "quartech_recipienttype",
-            "selectedValue": 255550001
-          }
-        },
-        {
           "name": "quartech_operationdoesprocessingandprimaryproducti",
           "required": true,
           "elementType": "DropdownSelect"
-        },
-        {
-          "name": "quartech_agriprogramsubscriber",
-          "elementType": "DropdownSelect",
-          "required": true
-        },
-        {
-          "name": "quartech_tipreportenrolled",
-          "visibleIf": {
-            "fieldName": "quartech_agriprogramsubscriber",
-            "selectedValue": 255550001
-          }
         },
         {
           "name": "quartech_businessdescription",
@@ -136,6 +126,11 @@
           "required": true
         },
         {
+          "name": "quartech_ifyespleaseprovideabriefbackgroundoutlinin",
+          "label": "Please list all partners or shareholders including their first name and last name.",
+          "required": true
+        },
+        {
           "name": "quartech_annualgrossrevenueoverlimit",
           "elementType": "DropdownSelect",
           "required": true,
@@ -144,26 +139,30 @@
         {
           "name": "quartech_abppsupportoverlimit",
           "elementType": "DropdownSelect",
-          "required": true
+          "required": true,
+          "label": "Have you, or any proprietors, partners or shareholders received support that exceeds the annual maximum funding contribution of $15,000 per fiscal year (April to March), through the B.C. Agri-Business Planning Program?"
         },
         {
           "name": "quartech_abppsupportoverlimitdetail",
           "visibleIf": {
             "fieldName": "quartech_abppsupportoverlimit",
             "selectedValue": 255550000,
+			"label": "Please provide further detail:",
             "techComment": "Yes value"
           }
         },
         {
           "name": "quartech_supportreceivedduringscap",
           "elementType": "DropdownSelect",
-          "required": true
+          "required": true,
+          "label": "Have you or any proprietors, partners or shareholders received support from any other B.C Ministry of Agriculture and Food Program(s) or any other B.C. Government Program(s) during the Sustainable Canadian Agricultural Partnership (S-CAP) Agreement (the Partnership), which is in effect from April 1, 2023, to March 31, 2028? Please note that you cannot receive support for the same eligible activities under these programs more than once during the Partnership?"
         },
         {
           "name": "quartech_supportduringscapdetails",
           "visibleIf": {
             "fieldName": "quartech_supportreceivedduringscap",
             "selectedValue": 255550000,
+			"label": "Please provide further detail:",
             "techComment": "Yes value"
           }
         }
@@ -209,22 +208,16 @@
       "name": "DeliverablesBudgetStep",
       "fields": [
         {
-          "name": "quartech_estimatedbudgettotalactivitycost",
-          "format": "currency",
-          "maxDigits": 11,
-          "required": true,
-          "label": "Total proposed budget",
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThanOrEqualTo"
-          }
-        },
-        {
-          "name": "quartech_detailedproposedbudget",
+          "name": "quartech_ifotherpleasedescribetheactivitypurpose",
           "required": true,
           "maxLength": 10000,
-          "label": "You can either upload an event/training budget document as an attachment or explain the proposed budget in the following text box. If you are uploading the budget as an attachment (in the Documents tab), please enter the file name in this text box (1000 words max)."
+          "label": "Training(s)/course(s)/business management conference(s)"
+        },
+        {
+          "name": "quartech_proposedactivitystopicpurposeintent",
+          "required": true,
+          "maxLength": 10000,
+          "label": "Why you are taking this training(s)/course(s)/business management conference(s)(1000 words max)."
         },
         {
           "name": "quartech_deliverables",
@@ -238,8 +231,32 @@
       "name": "DocumentsStep",
       "fields": [
         {
+          "name": "quartech_vlb_proofofvetlicense",
+          "label": "Proof of license/registration with either College of Veterinarians of BC (CVBC) or BC Veterinary Technologists Association (BCVTA)",
+          "required": true,
+          "elementType": "FileInput"
+        },
+        {
+          "name": "quartech_partialbudget",
+          "label": "Event/training budget",
+          "required": true,
+          "elementType": "FileInput"
+        },
+		{
           "name": "quartech_relatedquotesandplans",
-          "label": "Attach all of the following:",
+          "label": "Direct Deposit Application",
+          "required": true,
+          "elementType": "FileInput"
+        },
+        {
+          "name": "quartech_voidcheque",
+          "label": "Copy of Void Cheque and/or Bank Confirmation Letter confirming bank account information of the business",
+          "required": true,
+          "elementType": "FileInput"
+        },
+        {
+          "name": "quartech_crafarmingincomeverification",
+          "label": "Verification of farming income - Canada Revenue Agency (CRA) Summary/Proof of Gross Income as last reported to the CRA",
           "required": true,
           "elementType": "FileInput"
         }
