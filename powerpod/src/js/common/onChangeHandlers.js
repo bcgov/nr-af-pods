@@ -133,7 +133,7 @@ export function setBusinessOrPersonalAddressLabels() {
   // labels if "Do you have a Canada Revenue Agency (CRA) Business Number?" IS checked
   const businessAddressFieldLabels = [
     'Business - Suite Number (optional)',
-    'Business - Street number',
+    'Business - Street Number',
     'Business - Street',
     'Business City',
     'Business Province/Territory',
@@ -145,7 +145,7 @@ export function setBusinessOrPersonalAddressLabels() {
   // labels if "Do you have a Canada Revenue Agency (CRA) Business Number?" is NOT checked
   const addressFieldLabels = [
     'Suite Number (optional)',
-    'Street number',
+    'Street Number',
     'Street',
     'City',
     'Province/Territory',
@@ -210,7 +210,7 @@ export function setBusinessOrPersonalStateForVLB() {
   // labels if "Do you have a Canada Revenue Agency (CRA) Business Number?" IS checked
   const businessAddressFieldLabels = [
     'Business - Suite Number (optional)',
-    'Business - Street number',
+    'Business - Street Number',
     'Business - Street',
     'Business City',
     'Business Province/Territory',
@@ -222,7 +222,7 @@ export function setBusinessOrPersonalStateForVLB() {
   // labels if "Do you have a Canada Revenue Agency (CRA) Business Number?" is NOT checked
   const addressFieldLabels = [
     'Suite Number (optional)',
-    'Street number',
+    'Street Number',
     'Street',
     'City',
     'Province/Territory',

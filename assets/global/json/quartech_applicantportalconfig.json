@@ -1,6 +1,6 @@
 {
   "tags": ["Global", "ALL", "Application", "StaffPortal"],
-  "version": "1.1.0",
+  "version": "1.1.4",
   "description": "Global JSON config used in Applications",
   "FieldsConfig": {
     "programs": [
@@ -34,8 +34,7 @@
               {
                 "name": "quartech_nocragstnumber",
                 "label": "My / Our business/organization DOES NOT have a Canada Revenue Agency (CRA) or GST Number",
-                "elementType": "Checkbox",
-                "onChangeHandler": "setBusinessOrPersonalAddressLabels"
+                "elementType": "Checkbox"
               },
               {
                 "name": "quartech_reasonwhynocraorgstnumber",
@@ -56,7 +55,7 @@
               },
               {
                 "name": "quartech_businessstreetnumber",
-                "label": "Business - Street number",
+                "label": "Business - Street Number",
                 "required": true,
                 "validation": {
                   "intervalBased": true
@@ -116,6 +115,7 @@
               },
               {
                 "name": "quartech_legalnamefirst",
+                "label": "First Name",
                 "required": true
               },
               {
@@ -124,6 +124,7 @@
               },
               {
                 "name": "quartech_positionorjobtitle",
+                "label": "Position or Job Title",
                 "required": true
               },
               {

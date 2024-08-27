@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "KTTP-SMEA", "KTTP1"],
-  "version": "1.4.3",
+  "version": "1.4.8",
   "name": "KTTP - Subject Matter Expert Activities",
   "abbreviation": "KTTP-SMEA",
   "programId": "25493093-9d2b-ee11-bdf4-000d3af3ac95",
@@ -63,6 +63,7 @@
         {
           "name": "quartech_ifyespleaseexplainwhenandforwhichactivity",
           "label": "Please explain when and for which activity",
+          "required": true,
           "visibleIf": {
             "fieldName": "quartech_hasthisorganizationreceivedkttpfundingin",
             "selectedValue": 255550000,
@@ -77,7 +78,8 @@
         },
         {
           "name": "quartech_ifyespleaseexplainwhenandfromwhichprogram",
-          "label": "If Yes, please explain when and from which program",
+          "label": "Please explain when and from which program",
+          "required": true,
           "visibleIf": {
             "fieldName": "quartech_hasthisorganizationreceivedfundingfrmother",
             "selectedValue": 255550000,
@@ -192,7 +194,7 @@
         },
         {
           "name": "quartech_ifotherpleasedescribeyouractivitytype",
-          "label": "If Other, please describe your activity type",
+          "label": "Please describe your activity type",
           "required": true,
           "visibleIf": {
             "fieldName": "quartech_pleaseselectthemostapplicableactivitytype",
@@ -202,7 +204,7 @@
         },
         {
           "name": "quartech_prioritytopicmostapplicable",
-          "label": "Priority Topic(s). Please select the most applicable topic that your project will focus on.",
+          "label": "Priority Topic(s). Please select the most applicable topic that your project will focus on",
           "required": true,
           "disableSingleLine": false,
           "elementType": "DropdownSelect"
@@ -220,9 +222,9 @@
         },
         {
           "name": "quartech_ifotherpleasedescribetheactivitypurpose",
+          "label": "Please describe the activity purpose",
           "required": "true",
           "maxLength": 10000,
-          "label": "If Other, please describe the activity purpose",
           "visibleIf": {
             "fieldName": "quartech_activitypurpose",
             "selectedValue": 255550010,
@@ -280,69 +282,11 @@
           "label": "Has this organization received KTTP funding in previous years?"
         },
         {
-          "name": "quartech_ifyespleaseexplainwhenandforwhichactivity",
-          "visibleIf": {
-            "fieldName": "quartech_hasthisorganizationreceivedkttpfundingin",
-            "selectedValue": 255550000,
-            "techComment": "Yes value"
-          }
-        },
-        {
           "name": "quartech_hasthisorganizationreceivedfundingfrmother",
           "hidden": true,
           "required": true,
           "elementType": "DropdownSelect",
           "label": "Has this organization received funding from other Government of British Columbia (the Province) programs in the last year?"
-        },
-        {
-          "name": "quartech_ifyespleaseexplainwhenandfromwhichprogram",
-          "visibleIf": {
-            "fieldName": "quartech_hasthisorganizationreceivedfundingfrmother",
-            "selectedValue": 255550000,
-            "techComment": "Yes value"
-          }
-        },
-        {
-          "name": "quartech_ifyespleaseexplainwhenandforwhichactivity",
-          "visibleIf": {
-            "fieldName": "quartech_hasthisorganizationreceivedkttpfundingin",
-            "selectedValue": 255550000,
-            "techComment": "Yes value"
-          }
-        },
-        {
-          "name": "quartech_areyoucollaboratingwithanyotherorg",
-          "hidden": true,
-          "required": true,
-          "elementType": "DropdownSelect",
-          "label": "Has this organization received funding from other Government of British Columbia (the Province) programs in the last year?"
-        },
-        {
-          "name": "quartech_ifyespleaseprovidelegalbusinessorganization",
-          "hidden": true,
-          "visibleIf": {
-            "fieldName": "quartech_areyoucollaboratingwithanyotherorg",
-            "selectedValue": 255550000,
-            "techComment": "Yes value"
-          }
-        },
-        {
-          "name": "quartech_ifyespleaseprovideacontactname",
-          "hidden": true,
-          "visibleIf": {
-            "fieldName": "quartech_areyoucollaboratingwithanyotherorg",
-            "selectedValue": 255550000,
-            "techComment": "Yes value"
-          }
-        },
-        {
-          "name": "quartech_ifyespleaseprovideabriefbackgroundoutlinin",
-          "hidden": true,
-          "visibleIf": {
-            "fieldName": "quartech_areyoucollaboratingwithanyotherorg",
-            "selectedValue": 255550000,
-            "techComment": "Yes value"
-          }
         },
         {
           "name": "quartech_areyouapplyingforatraceabilityknowledget",
@@ -397,7 +341,7 @@
         },
         {
           "name": "quartech_ifyespleaseprovidetheadditionaldates",
-          "label": "If Yes, please provide the additional dates",
+          "label": "Please provide the additional dates",
           "required": true,
           "visibleIf": {
             "fieldName": "quartech_doestheactivitytakeplaceovermultipleday",

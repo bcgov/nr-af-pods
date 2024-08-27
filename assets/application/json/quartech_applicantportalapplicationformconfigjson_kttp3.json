@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "KTTP-Stream3", "KTTP3"],
-  "version": "1.0.9",
+  "version": "1.1.1",
   "name": "KTTP - Regenerative Agriculture Activities",
   "abbreviation": "KTTP-Stream3",
   "hiddenSteps": "tab_eligibility",
@@ -221,6 +221,7 @@
         },
         {
           "name": "quartech_ifyespleaseprovidetheadditionaldates",
+          "label": "Please provide the additional dates",
           "visibleIf": {
             "fieldName": "quartech_doestheactivitytakeplaceovermultipleday",
             "selectedValue": 255550000,
@@ -255,6 +256,8 @@
         },
         {
           "name": "quartech_ifotherpleasedescribeyouractivitytype",
+          "label": "Please describe your activity type",
+          "required": true,
           "visibleIf": {
             "fieldName": "quartech_pleaseselectthemostapplicableactivitytype",
             "selectedValue": 255550010,
@@ -283,8 +286,9 @@
         },
         {
           "name": "quartech_ifotherpleasedescribetheactivitypurpose",
+          "label": "Please describe the activity purpose",
+          "required": true,
           "maxLength": 10000,
-          "label": "Please describe the priority topic(s).",
           "visibleIf": {
             "fieldName": "quartech_activitypurpose",
             "selectedValue": 255550010,

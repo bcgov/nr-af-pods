@@ -1,5 +1,5 @@
 {
-  "version": "1.4.3",
+  "version": "1.4.5",
   "tags": ["Application", "StaffPortal", "VLB", "VLB"],
   "name": "Veterinary and Veterinary Technologists Locums Working in BC Food Animal Practices Pilot Program",
   "abbreviation": "VLB",
@@ -53,6 +53,7 @@
         },
         {
           "name": "quartech_legalnamefirst",
+          "label": "First Name",
           "required": true,
           "relocateField": {
             "originFieldName": "quartech_legalnamefirst",
@@ -78,7 +79,7 @@
         },
         {
           "name": "quartech_businessstreetnumber",
-          "label": "Street number",
+          "label": "Street Number",
           "required": true,
           "validation": {
             "intervalBased": true
@@ -160,6 +161,7 @@
         },
         {
           "name": "quartech_positionorjobtitle",
+          "label": "Position or Job Title",
           "hidden": true
         },
         {
