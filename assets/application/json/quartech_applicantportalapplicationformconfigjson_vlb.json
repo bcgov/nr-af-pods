@@ -412,7 +412,8 @@
         },
         {
           "name": "quartech_inordertocontinuouslyimprovecommunications",
-          "hidden": true
+          "hidden": true,
+          "techComment": "This is NEEDED to override default global json config, please leave this here."
         }
       ]
     },
