@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "ABPP1", "Fall 2024"],
-  "version": "1.1.2",
+  "version": "1.1.4",
   "name": "ABPP - Agri-Business and Leadership Development",
   "abbreviation": "ABPP1",
   "hiddenSteps": "",
@@ -137,31 +137,33 @@
         },
         {
           "name": "quartech_abppsupportoverlimit",
+          "label": "Have you, or any proprietors, partners or shareholders received support that exceeds the annual maximum funding contribution of $15,000 per fiscal year (April to March), through the B.C. Agri-Business Planning Program?",
           "elementType": "DropdownSelect",
-          "required": true,
-          "label": "Have you, or any proprietors, partners or shareholders received support that exceeds the annual maximum funding contribution of $15,000 per fiscal year (April to March), through the B.C. Agri-Business Planning Program?"
+          "required": true
         },
         {
           "name": "quartech_abppsupportoverlimitdetail",
+          "label": "Please provide further detail",
+          "required": true,
           "visibleIf": {
             "fieldName": "quartech_abppsupportoverlimit",
             "selectedValue": 255550000,
-            "label": "Please provide further detail:",
             "techComment": "Yes value"
           }
         },
         {
           "name": "quartech_supportreceivedduringscap",
+          "label": "Have you or any proprietors, partners or shareholders received support from any other B.C Ministry of Agriculture and Food Program(s) or any other B.C. Government Program(s) during the Sustainable Canadian Agricultural Partnership (S-CAP) Agreement (the Partnership), which is in effect from April 1, 2023, to March 31, 2028? Please note that you cannot receive support for the same eligible activities under these programs more than once during the Partnership?",
           "elementType": "DropdownSelect",
-          "required": true,
-          "label": "Have you or any proprietors, partners or shareholders received support from any other B.C Ministry of Agriculture and Food Program(s) or any other B.C. Government Program(s) during the Sustainable Canadian Agricultural Partnership (S-CAP) Agreement (the Partnership), which is in effect from April 1, 2023, to March 31, 2028? Please note that you cannot receive support for the same eligible activities under these programs more than once during the Partnership?"
+          "required": true
         },
         {
           "name": "quartech_supportduringscapdetails",
+          "label": "Please provide further detail",
+          "required": true,
           "visibleIf": {
             "fieldName": "quartech_supportreceivedduringscap",
             "selectedValue": 255550000,
-            "label": "Please provide further detail:",
             "techComment": "Yes value"
           }
         }

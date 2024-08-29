@@ -53,19 +53,19 @@ function customizeEligibilityStepForNEFBA() {
 }
 
 function customizeEligibilityStepForABPP() {
-  addEligibilityNoteText();
+  // addEligibilityNoteText();
   // @ts-ignore
-  initOnChange_DependentRequiredField({
-    dependentOnValue: YES_VALUE,
-    dependentOnElementTag: 'quartech_abppsupportoverlimit',
-    requiredFieldTag: 'quartech_abppsupportoverlimitdetail',
-  });
+  // initOnChange_DependentRequiredField({
+  //   dependentOnValue: YES_VALUE,
+  //   dependentOnElementTag: 'quartech_abppsupportoverlimit',
+  //   requiredFieldTag: 'quartech_abppsupportoverlimitdetail',
+  // });
   // @ts-ignore
-  initOnChange_DependentRequiredField({
-    dependentOnValue: YES_VALUE,
-    dependentOnElementTag: 'quartech_supportreceivedduringscap',
-    requiredFieldTag: 'quartech_supportduringscapdetails',
-  });
+  // initOnChange_DependentRequiredField({
+  //   dependentOnValue: YES_VALUE,
+  //   dependentOnElementTag: 'quartech_supportreceivedduringscap',
+  //   requiredFieldTag: 'quartech_supportduringscapdetails',
+  // });
 }
 
 function customizeEligibilityStepForNEFBA2() {
