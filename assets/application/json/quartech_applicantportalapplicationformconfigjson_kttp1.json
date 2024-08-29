@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "KTTP-SMEA", "KTTP1"],
-  "version": "1.5.0",
+  "version": "1.5.1",
   "name": "KTTP - Subject Matter Expert Activities",
   "abbreviation": "KTTP-SMEA",
   "programId": "25493093-9d2b-ee11-bdf4-000d3af3ac95",
@@ -539,7 +539,7 @@
       "fields": [
         {
           "name": "quartech_relatedquotesandplans",
-          "label": "<b>Applications must upload an event agenda with your application.</b> You may use our <a style='color:blue;' href='https://www2.gov.bc.ca/assets/gov/farming-natural-resources-and-industry/agriculture-and-seafood/programs/knowledge-transfer-events/kttp_agenda_template.docx'>KTTP agenda template</a> or provide your own",
+          "label": "<b>Applications must upload an event agenda with your application.</b> You may use our <a style='color:blue;' href='https://www2.gov.bc.ca/assets/gov/farming-natural-resources-and-industry/agriculture-and-seafood/programs/knowledge-transfer-events/kttp_agenda_template.docx' target='_blank'>KTTP agenda template</a> or provide your own",
           "required": true,
           "elementType": "FileInput"
         }

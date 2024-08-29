@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "ABPP1", "Fall 2024"],
-  "version": "1.1.8",
+  "version": "1.1.9",
   "name": "ABPP - Agri-Business and Leadership Development",
   "abbreviation": "ABPP1",
   "hiddenSteps": "",
@@ -234,7 +234,7 @@
       "fields": [
         {
           "name": "quartech_vlb_proofofvetlicense",
-          "label": "Learning Action Plan <a href='https://www2.gov.bc.ca/assets/gov/farming-natural-resources-and-industry/agriculture-and-seafood/programs/agribusiness-planning/learning_action_plan_fillable_form.docx' style='color:blue;'>(Fillable Form) (DOCX, 968KB)</a>",
+          "label": "Learning Action Plan <a href='https://www2.gov.bc.ca/assets/gov/farming-natural-resources-and-industry/agriculture-and-seafood/programs/agribusiness-planning/learning_action_plan_fillable_form.docx' style='color:blue;' target='_blank'>(Fillable Form) (DOCX, 968KB)</a>",
           "required": true,
           "elementType": "FileInput"
         },
@@ -246,7 +246,7 @@
         },
         {
           "name": "quartech_relatedquotesandplans",
-          "label": "<a href='https://www2.gov.bc.ca/assets/gov/farming-natural-resources-and-industry/agriculture-and-seafood/programs/agribusiness-planning/direct_deposit_application.pdf' style='color: blue'>Direct Deposit Application</a>",
+          "label": "<a href='https://www2.gov.bc.ca/assets/gov/farming-natural-resources-and-industry/agriculture-and-seafood/programs/agribusiness-planning/direct_deposit_application.pdf' style='color: blue' target='_blank'>Direct Deposit Application</a>",
           "required": true,
           "elementType": "FileInput"
         },
