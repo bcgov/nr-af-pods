@@ -556,7 +556,17 @@ export function addDocumentsStepText(
       }
     </style>
     <div id="supportingDocumentationNote" style="padding-bottom: 20px;">
-      You MUST Attach the following  in supported file formats 
+      You MUST Attach the following in 
+            ${
+              allowedDocumentsTooltipText
+                ? `<sl-tooltip>
+          <div slot="content">
+            ${allowedDocumentsTooltipText}
+          </div>
+          <a href="" style="font-size: 15px">supported file formats</a>.
+        </sl-tooltip>`
+                : 'supported file formats.'
+            }
       <br /><br />
       Verification of farming income- Canada Revenue Agency (CRA) Summary/Proof of Gross Income as last reported to the CRA 
       <br /><br />
@@ -568,17 +578,7 @@ export function addDocumentsStepText(
       <br /><br />
       Consultant(s) resume(s) 
       <br /><br />
-      Drag and drop files here or Choose Files up to 15MB each in the 
-      ${
-        allowedDocumentsTooltipText
-          ? `<sl-tooltip>
-          <div slot="content">
-            ${allowedDocumentsTooltipText}
-          </div>
-          <a href="" style="font-size: 15px">supported file formats</a>.
-        </sl-tooltip>`
-          : 'supported file formats.'
-      }
+      Drag and drop files here or Choose Files up to 15MB each
     </div>`;
     } else {
       supportingDocumentationNoteHtmlContent = `
