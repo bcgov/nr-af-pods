@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "ABPP1", "Fall 2024"],
-  "version": "1.2.1",
+  "version": "1.2.2",
   "name": "ABPP - Agri-Business and Leadership Development",
   "abbreviation": "ABPP1",
   "hiddenSteps": "",
@@ -263,6 +263,26 @@
           "label": "Copy of Void Cheque and/or Bank Confirmation Letter confirming bank account information of the business",
           "required": true,
           "elementType": "FileInput"
+        }
+      ]
+    },
+    {
+      "name": "DemographicInfoStep",
+      "fields": [
+        {
+          "name": "quartech_chefsid",
+          "required": true,
+          "tooltipText": "This number is automatically generated when the survey has been submitted",
+          "label": "Demographic Data Collection Survey ID number",
+          "bold": true,
+          "readOnly": true,
+          "errorMessage": "Please complete the required survey, this field will autofill."
+        },
+        {
+          "name": "quartech_chefssubmissionid",
+          "label": "CHEFS Submission Id",
+          "hidden": true,
+          "doNotBlank": true
         }
       ]
     }

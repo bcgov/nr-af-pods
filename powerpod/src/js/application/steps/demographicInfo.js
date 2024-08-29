@@ -24,24 +24,24 @@ export function customizeDemographicInfoStep(programData) {
     message: `Start customizing demographic info step, quartech_disabledchefsdemographicinfo: ${programData?.quartech_disabledchefsdemographicinfo}`,
   });
   configureFields();
-  if (programData?.quartech_disabledchefsdemographicinfo) {
-    addDemographicDataDescriptionOldVersionForABPP();
+  // if (programData?.quartech_disabledchefsdemographicinfo) {
+  //   addDemographicDataDescriptionOldVersionForABPP();
 
-    addViewExampleTo_Q1a();
+  //   addViewExampleTo_Q1a();
 
-    initOnChange_Question1_SoleProprietorshipOrGeneralPartnership();
+  //   initOnChange_Question1_SoleProprietorshipOrGeneralPartnership();
 
-    initOnChange_Question2_Re_GoverningBoard();
+  //   initOnChange_Question2_Re_GoverningBoard();
 
-    initOnChange_Question2b_Re_OrganizationType();
+  //   initOnChange_Question2b_Re_OrganizationType();
 
-    initOnChange_Question4_DoesYourOrganizationTargetAnyGroups();
+  //   initOnChange_Question4_DoesYourOrganizationTargetAnyGroups();
 
-    addDemographicInfoPercentageColumnTitle();
-  } else {
-    // Enable Demographic Info integration with CHEFS
-    showChefsIntegration();
-  }
+  //   addDemographicInfoPercentageColumnTitle();
+  // } else {
+  // Enable Demographic Info integration with CHEFS
+  showChefsIntegration();
+  // }
 }
 
 function addDemographicDataDescriptionOldVersionForABPP() {
@@ -371,6 +371,10 @@ function addDemographicDataDescription() {
 }
 
 async function addDemographicInfoChefsIframe() {
+  logger.info({
+    fn: addDemographicInfoChefsIframe,
+    message: `Start adding chefs iframe...`,
+  });
   $('#quartech_chefssubmissionid')?.closest('tr')?.css({ display: 'none' });
 
   // setFieldReadOnly('quartech_chefsid');
