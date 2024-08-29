@@ -1317,7 +1317,6 @@ export function getOriginalMsosElement(name) {
 
 // Note: values should be an array of raw values from the mutli optionset, e.g. [255550000]
 export function setMultiSelectValues(name, values = []) {
-  debugger;
   const originalSelectElementForMSOS = getOriginalMsosElement(name);
 
   // @ts-ignore

@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "ABPP2"],
-  "version": "1.0.6",
+  "version": "1.0.7",
   "name": "ABPP - Business Planning, Preparedness, and Disaster Recovery",
   "abbreviation": "ABPP2",
   "hiddenSteps": "",
@@ -14,44 +14,26 @@
           "elementType": "DropdownSelect"
         },
         {
+          "name": "quartech_doingbusinessas",
+          "label": "Doing Business As (if different from Legal Business or Organization Name)",
+          "visible": true
+        },
+        {
           "name": "quartech_recipienttype",
+          "label": "Type of Business / Organization. If your operation does both processing and primary production, please select the one that will primarily benefit from this program.",
           "required": true,
-          "elementType": "DropdownSelect",
-          "label": "Type of Business / Organization. If your operation does both processing and primary production, please select the one that will primarily benefit from this program."
+          "initialValue": 255550001,
+          "elementType": "DropdownSelect"
         },
         {
           "name": "quartech_commodity",
+          "label": "What is your primary production?",
+          "required": "true",
           "elementType": "MultiSelectPicklist",
           "visibleIf": {
             "fieldName": "quartech_recipienttype",
             "selectedValue": 255550001
           }
-        },
-        {
-          "name": "quartech_othercommoditiesproducedharvested",
-          "visibleIf": {
-            "fieldName": "quartech_recipienttype",
-            "selectedValue": 255550001
-          }
-        },
-        {
-          "name": "quartech_primarilyprocess",
-          "visibleIf": {
-            "fieldName": "quartech_recipienttype",
-            "selectedValue": 255550002
-          }
-        },
-        {
-          "name": "quartech_otherproductsprocessed",
-          "visibleIf": {
-            "fieldName": "quartech_recipienttype",
-            "selectedValue": 255550002
-          }
-        },
-        {
-          "name": "quartech_operationdoesprocessingandprimaryproducti",
-          "required": true,
-          "elementType": "DropdownSelect"
         },
         {
           "name": "quartech_applicanttype",
@@ -69,6 +51,7 @@
         },
         {
           "name": "quartech_numberoffulltimeemployees",
+          "format": "number",
           "required": true,
           "validation": {
             "type": "numeric",
@@ -78,6 +61,7 @@
         },
         {
           "name": "quartech_numberofparttimeemployees",
+          "format": "number",
           "required": true,
           "validation": {
             "type": "numeric",
@@ -109,18 +93,6 @@
           "name": "quartech_operationdoesprocessingandprimaryproducti",
           "required": true,
           "elementType": "DropdownSelect"
-        },
-        {
-          "name": "quartech_agriprogramsubscriber",
-          "required": true,
-          "elementType": "DropdownSelect"
-        },
-        {
-          "name": "quartech_tipreportenrolled",
-          "visibleIf": {
-            "fieldName": "quartech_agriprogramsubscriber",
-            "selectedValue": 255550001
-          }
         },
         {
           "name": "quartech_businessdescription",

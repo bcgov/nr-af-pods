@@ -1,7 +1,11 @@
 import { POWERPOD } from './constants.js';
 import { Logger } from './logger.js';
 // UNCOMMENT THIS IF YOU WANT TO FORCE TO USE LOCAL JSON CONFIG:
+// KTTP1:
 // import localConfigJson from '../../../../assets/application/json/quartech_applicantportalapplicationformconfigjson_kttp1.json';
+// ABPP1:
+// import localConfigJson from '../../../../assets/application/json/quartech_applicantportalapplicationformconfigjson_abpp1.json';
+// ABPP2:
 // import localConfigJson from '../../../../assets/application/json/quartech_applicantportalapplicationformconfigjson_abpp1.json';
 
 const logger = Logger('common/config');
