@@ -464,7 +464,7 @@ export function getMultiOptionSetElementValue(controlId, raw) {
     });
   } else {
     multiOptionSetValueArray.forEach((set) => {
-      const label = set?.Label.UserLocalizedLabel?.Label || '';
+      const label = set?.Label?.UserLocalizedLabel?.Label || '';
       if (label?.length > 0) {
         valueStrArray.push(label);
       }
