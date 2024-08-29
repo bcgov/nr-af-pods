@@ -116,6 +116,7 @@ export function configureField(field) {
     });
     return; // no need to do any config yet if field is hidden
   }
+  // setFieldObserver(name, format);
   // cleanup resize handlers that break UI
   if (elementType === HtmlElementType.MultiOptionSet) {
     const originalSelectElementForMSOS = getOriginalMsosElement(name);

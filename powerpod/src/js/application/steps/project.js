@@ -402,7 +402,7 @@ function setProjectStepRequiredFields() {
     let dynamicText =
       programAbbreviation === 'ABPP1' ? 'event/training' : 'project';
     if (!document.querySelector('#activityStartDateNotice')) {
-      let htmlContentToAddAboveStartDate = `<div id="activityStartDateNotice" style="padding-top: 15px;">
+      let htmlContentToAddAboveStartDate = `<div id="activityStartDateNotice" style="padding-top: 15px; padding-bottom: 15px;">
         Your ${dynamicText} may have a delayed start date. However, all ${dynamicText}s must be submitted 90 days after the start date, unless an extension of the ${dynamicText} has been granted by the Program Manager. Applications to extend any ${dynamicText} will be considered on a case-by-case basis.
       </div>`;
       addTextBelowField(

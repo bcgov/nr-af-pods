@@ -336,7 +336,7 @@ export function getControlValue({
       verboseValue = 'No';
     }
   } else if (elementType === HtmlElementType.MultiOptionSet && controlId) {
-    rawValue = newGetOriginalMultiOptionSetElementValue(controlId, raw);
+    rawValue = newGetOriginalMultiOptionSetElementValue(controlId, true);
     verboseValue = newGetOriginalMultiOptionSetElementValue(controlId);
   } else if (elementType === HtmlElementType.MultiSelectPicklist && controlId) {
     rawValue = document?.getElementById(controlId)?.value;
@@ -375,11 +375,20 @@ export function getControlValue({
 export function newGetOriginalMultiOptionSetElementValue(controlId, raw) {
   const originalSelectElementForMSOS = getOriginalMsosElement(controlId);
   if (!originalSelectElementForMSOS) {
-    logger.error({
+    logger.warn({
       fn: newGetOriginalMultiOptionSetElementValue,
-      message: `Could not find original msos element for controlId: ${controlId}`,
+      message: `Could not find original msos element for controlId: ${controlId}, attempt to fallback to getMultiOptionSetElementValue`,
     });
-    return;
+
+    const valueStr = getMultiOptionSetElementValue(controlId, raw);
+    if (!valueStr) {
+      logger.error({
+        fn: newGetOriginalMultiOptionSetElementValue,
+        message: `Fallback to getMultiOptionSetElementValue also failed...`,
+      });
+      return;
+    }
+    return valueStr;
   }
   const selectionContainer =
     // @ts-ignore
@@ -467,6 +476,7 @@ export function getMultiOptionSetElementValue(controlId, raw) {
   logger.info({
     fn: getMultiOptionSetElementValue,
     message: `For controlId: ${controlId} found valueStr: ${valueStr}`,
+    data: { controlId, raw },
   });
 
   return valueStr;
@@ -892,6 +902,10 @@ export function observeIframeChanges(
 }
 
 export function hideFieldByFieldName(fieldName, doNotBlank = false) {
+  logger.info({
+    fn: hideFieldByFieldName,
+    message: `hiding field by fieldName: ${fieldName}, doNotBlank: ${doNotBlank}`,
+  });
   const fieldLabelElement = document.querySelector(`#${fieldName}_label`);
   if (!fieldLabelElement) return;
   const fieldRow = fieldLabelElement.closest('tr');
@@ -1286,11 +1300,13 @@ export function getFieldInfoDiv(name) {
 }
 
 export function getOriginalMsosElement(name) {
-  const originalSelectElementForMSOS = $(`#${name}_0`);
+  const originalSelectElementForMSOS = $(`#${name}_0`)?.length
+    ? $(`#${name}_0`)
+    : $(`#${name}_i`);
 
   if (!originalSelectElementForMSOS || !originalSelectElementForMSOS.length) {
     logger.error({
-      fn: setMultiSelectValues,
+      fn: getOriginalMsosElement,
       message: `Could not get original select control element for fieldName: ${name} for Msos, see initializeMsosLibrary, MultiSelectOptionSet libraries, https://pbauerochse.github.io/searchable-option-list/`,
     });
     return;
@@ -1301,6 +1317,7 @@ export function getOriginalMsosElement(name) {
 
 // Note: values should be an array of raw values from the mutli optionset, e.g. [255550000]
 export function setMultiSelectValues(name, values = []) {
+  debugger;
   const originalSelectElementForMSOS = getOriginalMsosElement(name);
 
   // @ts-ignore
@@ -1348,6 +1365,10 @@ export function getFieldErrorDiv(fieldName) {
 }
 
 export function setFieldValueToEmptyState(fieldName) {
+  logger.info({
+    name: setFieldValueToEmptyState,
+    message: `setting fieldName: ${fieldName} value to empty`,
+  });
   const fieldConfig = getFieldConfig(fieldName);
   // for multi option sets specifically must use custom function
   if (
