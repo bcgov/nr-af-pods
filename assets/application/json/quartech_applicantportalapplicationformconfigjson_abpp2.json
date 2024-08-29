@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "ABPP2"],
-  "version": "1.0.7",
+  "version": "1.0.8",
   "name": "ABPP - Business Planning, Preparedness, and Disaster Recovery",
   "abbreviation": "ABPP2",
   "hiddenSteps": "",
@@ -104,33 +104,47 @@
       "name": "EligibilityStep",
       "fields": [
         {
+          "name": "quartech_primaryproducer100or51percent",
+          "label": "Are you either a\n1) Primary Agriculture Producer growing or raising fresh food or agricultural products which are 100% grown or raised in British Columbia and are intended for sale.\n\n OR\n\n2) Agriculture, Food and Beverage Processor processing food, beverage, or agricultural products which are processed and packaged in B.C. with 51% or more of the direct cost of producing the product in its final form (i.e., the sum of raw materials, direct labour, variable processing, and packaging) originating in B.C. When the main raw materials are available in sufficient quantities from B.C. producers, they must be used?",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
           "name": "quartech_bcregisteredbusinessentity",
-          "required": true,
-          "elementType": "DropdownSelect"
+          "elementType": "DropdownSelect",
+          "required": true
         },
         {
           "name": "quartech_farmbusinessistaxableentity",
-          "required": true,
-          "elementType": "DropdownSelect"
+          "elementType": "DropdownSelect",
+          "required": true
         },
         {
           "name": "quartech_allproprietersarebcresidents",
-          "required": true,
-          "elementType": "DropdownSelect"
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_ifyespleaseprovideabriefbackgroundoutlinin",
+          "label": "Please list all partners or shareholders including their first name and last name.",
+          "required": true
         },
         {
           "name": "quartech_annualgrossrevenueoverlimit",
-          "required": true,
           "elementType": "DropdownSelect",
+          "required": true,
           "label": "Did you report total annual gross revenues greater than $50,000/year in the previous year to Canada Revenue Agency? - This eligibility requirement may not be applicable to Indigenous applicants."
         },
         {
           "name": "quartech_abppsupportoverlimit",
-          "required": true,
-          "elementType": "DropdownSelect"
+          "label": "Have you, or any proprietors, partners or shareholders received support that exceeds the annual maximum funding contribution of $15,000 per fiscal year (April to March), through the B.C. Agri-Business Planning Program?",
+          "elementType": "DropdownSelect",
+          "required": true
         },
         {
           "name": "quartech_abppsupportoverlimitdetail",
+          "label": "Please provide further detail",
+          "required": true,
           "visibleIf": {
             "fieldName": "quartech_abppsupportoverlimit",
             "selectedValue": 255550000,
@@ -139,11 +153,14 @@
         },
         {
           "name": "quartech_supportreceivedduringscap",
-          "required": true,
-          "elementType": "DropdownSelect"
+          "label": "Have you or any proprietors, partners or shareholders received support from any other B.C Ministry of Agriculture and Food Program(s) or any other B.C. Government Program(s) during the Sustainable Canadian Agricultural Partnership (S-CAP) Agreement (the Partnership), which is in effect from April 1, 2023, to March 31, 2028? Please note that you cannot receive support for the same eligible activities under these programs more than once during the Partnership?",
+          "elementType": "DropdownSelect",
+          "required": true
         },
         {
           "name": "quartech_supportduringscapdetails",
+          "label": "Please provide further detail",
+          "required": true,
           "visibleIf": {
             "fieldName": "quartech_supportreceivedduringscap",
             "selectedValue": 255550000,
