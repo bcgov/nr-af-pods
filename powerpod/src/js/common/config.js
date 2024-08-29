@@ -6,7 +6,7 @@ import { Logger } from './logger.js';
 // ABPP1:
 // import localConfigJson from '../../../../assets/application/json/quartech_applicantportalapplicationformconfigjson_abpp1.json';
 // ABPP2:
-// import localConfigJson from '../../../../assets/application/json/quartech_applicantportalapplicationformconfigjson_abpp1.json';
+// import localConfigJson from '../../../../assets/application/json/quartech_applicantportalapplicationformconfigjson_abpp2.json';
 
 const logger = Logger('common/config');
 

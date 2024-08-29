@@ -53,8 +53,6 @@ export function customizeApplicantInfoStep() {
   if (programAbbreviation === 'VLB') {
     customizeApplicantInfoStepForVLB();
     setBusinessOrPersonalStateForVLB();
-  } else {
-    setBusinessOrPersonalAddressLabels();
   }
 }
 
