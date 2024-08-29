@@ -13,6 +13,7 @@ import { readFileAsBase64 } from './file.js';
 import { getFormId } from './form.js';
 import { getFormType } from './applicationUtils.js';
 import { getGlobalConfigData } from './config.js';
+import { getProgramAbbreviation } from './program.js';
 
 const logger = Logger('common/documents');
 
@@ -545,27 +546,63 @@ export function addDocumentsStepText(
     });
   }
   if (!document.querySelector('#supportingDocumentationNote')) {
-    const supportingDocumentationNoteHtmlContent = `
-  <style>
-    sl-tooltip::part(body) {
-      font-size: 1.2rem;
+    let supportingDocumentationNoteHtmlContent = ``;
+
+    if (getProgramAbbreviation().includes('ABPP')) {
+      supportingDocumentationNoteHtmlContent = `
+    <style>
+      sl-tooltip::part(body) {
+        font-size: 1.2rem;
+      }
+    </style>
+    <div id="supportingDocumentationNote" style="padding-bottom: 20px;">
+      You MUST Attach the following  in supported file formats 
+      <br /><br />
+      Verification of farming income- Canada Revenue Agency (CRA) Summary/Proof of Gross Income as last reported to the CRA 
+      <br /><br />
+      Direct Deposit Application Direct Deposit Application Form (PDF, 407KB 
+      <br /><br />
+      Copy of Void Cheque and/or Bank Confirmation Letter confirming bank account information of the business 
+      <br /><br />
+      Letter of engagement Letter of Engagement for Services (Fillable Form)  (DOCX, 284KB) 
+      <br /><br />
+      Consultant(s) resume(s) 
+      <br /><br />
+      Drag and drop files here or Choose Files up to 15MB each in the 
+      ${
+        allowedDocumentsTooltipText
+          ? `<sl-tooltip>
+          <div slot="content">
+            ${allowedDocumentsTooltipText}
+          </div>
+          <a href="" style="font-size: 15px">supported file formats</a>.
+        </sl-tooltip>`
+          : 'supported file formats.'
+      }
+    </div>`;
+    } else {
+      supportingDocumentationNoteHtmlContent = `
+    <style>
+      sl-tooltip::part(body) {
+        font-size: 1.2rem;
+      }
+    </style>
+    <div id="supportingDocumentationNote" style="padding-bottom: 20px;">
+      Please choose or drag & drop files to the box below to upload the following documents as attachments (as applicable).
+      <br /><br />
+      You can upload a file up to 15MB each in the 
+      ${
+        allowedDocumentsTooltipText
+          ? `<sl-tooltip>
+          <div slot="content">
+            ${allowedDocumentsTooltipText}
+          </div>
+          <a href="" style="font-size: 15px">supported file formats</a>.
+        </sl-tooltip>`
+          : 'supported file formats.'
+      }
+    </div>`;
     }
-  </style>
-  <div id="supportingDocumentationNote" style="padding-bottom: 20px;">
-    Please choose or drag & drop files to the box below to upload the following documents as attachments (as applicable).
-    <br /><br />
-    You can upload a file up to 15MB each in the 
-    ${
-      allowedDocumentsTooltipText
-        ? `<sl-tooltip>
-        <div slot="content">
-          ${allowedDocumentsTooltipText}
-        </div>
-        <a href="" style="font-size: 15px">supported file formats</a>.
-      </sl-tooltip>`
-        : 'supported file formats.'
-    }
-  </div>`;
 
     if (!overrideWithPrepend) {
       (

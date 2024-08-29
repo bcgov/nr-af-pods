@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "ABPP1", "Fall 2024"],
-  "version": "1.1.6",
+  "version": "1.1.7",
   "name": "ABPP - Agri-Business and Leadership Development",
   "abbreviation": "ABPP1",
   "hiddenSteps": "",
@@ -217,15 +217,15 @@
         },
         {
           "name": "quartech_proposedactivitystopicpurposeintent",
+          "label": "Why you are taking this training(s)/course(s)/business management conference(s)",
           "required": true,
-          "maxLength": 10000,
-          "label": "Why you are taking this training(s)/course(s)/business management conference(s)(1000 words max)."
+          "maxLength": 10000
         },
         {
           "name": "quartech_deliverables",
+          "label": "Please describe how will this improve your business",
           "required": true,
-          "maxLength": 10000,
-          "label": "Please describe the expected learnings or takeaways you have of the experience and how this will improve your business."
+          "maxLength": 10000
         }
       ]
     },
@@ -234,7 +234,7 @@
       "fields": [
         {
           "name": "quartech_vlb_proofofvetlicense",
-          "label": "Proof of license/registration with either College of Veterinarians of BC (CVBC) or BC Veterinary Technologists Association (BCVTA)",
+          "label": "Learning Action Plan <a href='https://www2.gov.bc.ca/assets/gov/farming-natural-resources-and-industry/agriculture-and-seafood/programs/agribusiness-planning/learning_action_plan_fillable_form.docx' style='color:blue;'>(Fillable Form) (DOCX, 968KB)</a>",
           "required": true,
           "elementType": "FileInput"
         },
@@ -246,7 +246,7 @@
         },
         {
           "name": "quartech_relatedquotesandplans",
-          "label": "Direct Deposit Application",
+          "label": "<a href='https://www2.gov.bc.ca/assets/gov/farming-natural-resources-and-industry/agriculture-and-seafood/programs/agribusiness-planning/direct_deposit_application.pdf' style='color: blue'>Direct Deposit Application</a>",
           "required": true,
           "elementType": "FileInput"
         },
