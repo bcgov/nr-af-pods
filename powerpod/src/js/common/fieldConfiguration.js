@@ -703,13 +703,19 @@ export function setFieldObserver(name, format = '') {
     case HtmlElementType.MultiSelectPicklist:
     case HtmlElementType.SingleOptionSet:
     case HtmlElementType.MultiOptionSet:
-      $(`input[id*='${name}']`).on('change input', function (event) {
+      const inputElements = $(`input[id*='${name}']`).parent();
+      logger.info({
+        fn: setFieldObserver,
+        message: `setting name: ${name} elementType: ${HtmlElementType.MultiOptionSet} observer`,
+        data: { inputElements },
+      });
+      inputElements.on('change input', function (event) {
         updateFieldValue({
           name,
           origin: `${setFieldObserver.name} change input | event.type: ${event.type}`,
         });
       });
-      $(`input[id*='${name}']`).on(
+      inputElements.on(
         'focus click blur touchstart',
         function (event) {
           validateNeededFields({
