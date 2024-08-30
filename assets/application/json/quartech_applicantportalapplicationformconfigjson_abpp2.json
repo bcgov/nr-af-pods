@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "ABPP2"],
-  "version": "1.0.8",
+  "version": "1.1.0",
   "name": "ABPP - Business Planning, Preparedness, and Disaster Recovery",
   "abbreviation": "ABPP2",
   "hiddenSteps": "",
@@ -174,99 +174,110 @@
       "fields": [
         {
           "name": "quartech_businessplanningcategory",
+          "label": "Select the category you are applying in",
           "required": true,
           "elementType": "DropdownSelect"
         },
         {
           "name": "quartech_singleorgroupapplication",
+          "label": "Is this a single applicant or part of a group application?",
           "required": true,
           "elementType": "DropdownSelect"
         },
         {
           "name": "quartech_coapplicatntsnames",
-          "maxLength": 10000,
-          "visibleIf": {
-            "fieldName": "quartech_singleorgroupapplication",
-            "selectedValue": 255550001,
-            "techComment": "Group Application value"
-          }
+          "label": "Please provide the names of the co-applicants to your group application",
+          "required": true,
+          "maxLength": 10000
         },
         {
           "name": "quartech_applicantsprojectname",
-          "required": true,
           "label": "Project Title",
+          "required": true,
           "tooltipText": "The name of the project"
         },
         {
           "name": "quartech_projectlocation",
-          "required": true,
-          "label": "Project Location"
+          "label": "Project Location",
+          "required": true
         },
         {
           "name": "quartech_projectdescription",
-          "required": true,
-          "label": "Project Description"
+          "label": "Project Description",
+          "required": true
         },
         {
           "name": "quartech_whenistheprojectstartdate",
+          "label": "Start Date",
           "required": true,
           "elementType": "DatePicker"
         },
         {
           "name": "quartech_activityenddate",
+          "label": "End Date",
           "required": true,
           "elementType": "DatePicker"
         },
         {
-          "name": "quartech_ifotherpleasedescribe",
-          "visibleIf": {
-            "fieldName": "quartech_inordertocontinuouslyimprovecommunications",
-            "selectedValue": 255550006,
-            "techComment": "Other value"
-          }
-        },
-        {
           "name": "quartech_consultantcompanyname",
+          "label": "Consultant's Business Name",
           "required": true,
           "maxLength": 160
         },
         {
           "name": "quartech_consultantfullname",
+          "label": "Consultant's Full Name",
           "required": true,
           "maxLength": 160
         },
         {
           "name": "quartech_consultantpositiontitle",
+          "label": "Consultant's Position/Title",
           "required": true,
           "maxLength": 160
         },
         {
           "name": "quartech_consultantbusinessregistrationgstnumber",
+          "label": "Consultant's Canada Revenue Agency (CRA) Business Number or the first 9 digits of the Goods and Services Tax/Harmonized Sales Tax (GST/HST) number",
           "required": true,
           "maxLength": 9
         },
         {
           "name": "quartech_consultantrelevantknowledgeandexpertise",
+          "label": "Please provide an overview of relevant knowledge and expertise required for the proposed project (500 words appropriate)",
           "required": true,
           "maxLength": 5000
         },
         {
           "name": "quartech_consultantphonenumber",
+          "label": "Consultant's Phone Number",
+          "format": "phoneNumber",
           "required": true,
-          "maxLength": 14
+          "validation": {
+            "type": "length",
+            "value": 14,
+            "comparison": "equalTo",
+            "postfix": "digits",
+            "overrideDisplayValue": 10
+          }
         },
         {
           "name": "quartech_consultantemailaddress",
+          "label": "Consultant's Business Email Address",
           "required": true,
-          "maxLength": 160
+          "format": "email"
         },
         {
           "name": "quartech_useofsupportingconsultant",
+          "label": "Use of Supporting Consultant",
           "required": true,
           "elementType": "DropdownSelect"
         },
         {
           "name": "quartech_consultantcompletingoverlimit",
+          "label": "Will the Supporting Consultant complete more than 10% of the project?",
+          "required": true,
+          "additionalTextBelowField": "**Please note that supporting consultants may not complete more than 40% of the proposed project.",
           "visibleIf": {
             "fieldName": "quartech_useofsupportingconsultant",
             "selectedValue": 255550000,
@@ -274,7 +285,9 @@
           }
         },
         {
-          "name": "quartech_supportingconsultantcompanyName",
+          "name": "quartech_supportingconsultantcompanyname",
+          "label": "Supporting Consultant's Business Name",
+          "required": true,
           "maxLength": 160,
           "visibleIf": {
             "fieldName": "quartech_useofsupportingconsultant",
@@ -284,15 +297,8 @@
         },
         {
           "name": "quartech_supportingconsultantfullname",
-          "maxLength": 160,
-          "visibleIf": {
-            "fieldName": "quartech_useofsupportingconsultant",
-            "selectedValue": 255550000,
-            "techComment": "Yes value"
-          }
-        },
-        {
-          "name": "quartech_supportingconsultantfullname",
+          "label": "Supporting Consultant's Full Name",
+          "required": true,
           "maxLength": 160,
           "visibleIf": {
             "fieldName": "quartech_useofsupportingconsultant",
@@ -302,6 +308,8 @@
         },
         {
           "name": "quartech_supportingconsultantpositiontitle",
+          "label": "Supporting Consultant's Position/Title",
+          "required": true,
           "maxLength": 160,
           "visibleIf": {
             "fieldName": "quartech_useofsupportingconsultant",
@@ -311,6 +319,8 @@
         },
         {
           "name": "quartech_supportingconsultantrationale",
+          "label": "Rationale for inclusion in project (250 words)",
+          "required": true,
           "maxLength": 10000,
           "visibleIf": {
             "fieldName": "quartech_useofsupportingconsultant",

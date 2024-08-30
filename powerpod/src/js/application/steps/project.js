@@ -398,11 +398,11 @@ function setProjectStepRequiredFields() {
   // END ABPP OR NEFBA CUSTOMIZATION
 
   // START ABPP1 AND ABPP2 CUSTOMIZATION
-  if (programAbbreviation && programAbbreviation.includes('ABPP')) {
+  if (programAbbreviation && programAbbreviation === 'ABPP1') {
     let dynamicText =
       programAbbreviation === 'ABPP1' ? 'event/training' : 'project';
     if (!document.querySelector('#activityStartDateNotice')) {
-      let htmlContentToAddAboveStartDate = `<div id="activityStartDateNotice" style="padding-top: 15px; padding-bottom: 15px;">
+      let htmlContentToAddAboveStartDate = `<div id="activityStartDateNotice">
         Your ${dynamicText} may have a delayed start date. However, all ${dynamicText}s must be submitted 90 days after the start date, unless an extension of the ${dynamicText} has been granted by the Program Manager. Applications to extend any ${dynamicText} will be considered on a case-by-case basis.
       </div>`;
       addTextBelowField(
@@ -411,17 +411,17 @@ function setProjectStepRequiredFields() {
       );
     }
 
-    if (programAbbreviation === 'ABPP2') {
-      if (!document.querySelector('#activityEndDateNotice')) {
-        let htmlContentToAddAboveEndDate = `<div id="activityEndDateNotice" style="padding-top: 15px;">
-        Consultants must submit the ${dynamicText} report to the Applicant for review and feedback at least two weeks prior to the ${dynamicText} end date. Revisions requested by the Applicant must be completed by the Consultant and approved by the Applicant prior to the final submission to the program.
-      </div>`;
-        addTextBelowField(
-          'quartech_activityenddate',
-          htmlContentToAddAboveEndDate
-        );
-      }
-    }
+    // if (programAbbreviation === 'ABPP2') {
+    //   if (!document.querySelector('#activityEndDateNotice')) {
+    //     let htmlContentToAddAboveEndDate = `<div id="activityEndDateNotice" style="padding-top: 15px;">
+    //     Consultants must submit the ${dynamicText} report to the Applicant for review and feedback at least two weeks prior to the ${dynamicText} end date. Revisions requested by the Applicant must be completed by the Consultant and approved by the Applicant prior to the final submission to the program.
+    //   </div>`;
+    //     addTextBelowField(
+    //       'quartech_activityenddate',
+    //       htmlContentToAddAboveEndDate
+    //     );
+    //   }
+    // }
   }
   // END ABPP1 AND ABPP2 CUSTOMIZATION
 
@@ -440,27 +440,27 @@ function setProjectStepRequiredFields() {
   // END ONLY ABPP1 CUSTOMIZATION
 
   // START ONLY ABPP2 CUSTOMIZATION
-  if (getProgramAbbreviation() === 'ABPP2') {
-    if (!document.querySelector('#consultantNotice')) {
-      let htmlContentToAddUnderConsultantInfo = `<div id="consultantNotice" style="padding-bottom: 15px;">
-      **Please note that the Ministry reserves the right to refuse projects submitted with consultants who are not considered to be in good standing with the Ministry. Applications with unacceptable consultants listed will be held or waitlisted and the applicants will be given an opportunity to find an acceptable consultant. 
-    </div>`;
-      addTextAboveField(
-        'quartech_consultantcompanyname',
-        htmlContentToAddUnderConsultantInfo
-      );
-    }
+  // if (getProgramAbbreviation() === 'ABPP2') {
+  //   if (!document.querySelector('#consultantNotice')) {
+  //     let htmlContentToAddUnderConsultantInfo = `<div id="consultantNotice" style="padding-bottom: 15px;">
+  //     **Please note that the Ministry reserves the right to refuse projects submitted with consultants who are not considered to be in good standing with the Ministry. Applications with unacceptable consultants listed will be held or waitlisted and the applicants will be given an opportunity to find an acceptable consultant. 
+  //   </div>`;
+  //     addTextAboveField(
+  //       'quartech_consultantcompanyname',
+  //       htmlContentToAddUnderConsultantInfo
+  //     );
+  //   }
 
-    if (!document.querySelector('#moreThan10PercentNotice')) {
-      let htmlContentToAddUnderMoreThan10Percent = `<div id="moreThan10PercentNotice" style="padding-top: 15px;">
-      **Please note that supporting consultants may not complete more than 40% of the proposed project. 
-    </div>`;
-      addTextBelowField(
-        'quartech_consultantcompletingoverlimit',
-        htmlContentToAddUnderMoreThan10Percent
-      );
-    }
-  }
+  //   if (!document.querySelector('#moreThan10PercentNotice')) {
+  //     let htmlContentToAddUnderMoreThan10Percent = `<div id="moreThan10PercentNotice" style="padding-top: 15px;">
+  //     **Please note that supporting consultants may not complete more than 40% of the proposed project. 
+  //   </div>`;
+  //     addTextBelowField(
+  //       'quartech_consultantcompletingoverlimit',
+  //       htmlContentToAddUnderMoreThan10Percent
+  //     );
+  //   }
+  // }
   // END ONLY ABPP2 CUSTOMIZATION
 }
 

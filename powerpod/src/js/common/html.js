@@ -758,7 +758,23 @@ export function addHtmlToField(
   const tdElement = document.createElement('td');
   tdElement.setAttribute('colspan', '2');
   tdElement.setAttribute('quartechHtml', 'true');
+  tdElement.setAttribute('class', 'clearfix cell text form-control-cell');
   tdElement.innerHTML = htmlContentToAdd;
+
+  const fieldConfig = getFieldConfig(fieldName);
+
+  if (
+    fieldConfig &&
+    (fieldConfig.additionalTextAboveField ||
+      fieldConfig.additionalTextBelowField)
+  ) {
+    let html = fieldConfig?.html || [];
+    html.push(uuid);
+    store.dispatch('addFieldData', {
+      name: fieldName,
+      html,
+    });
+  }
 
   newTrElement.append(tdElement);
 }

@@ -87,7 +87,7 @@ export function setFieldVisibility(name) {
   });
   const fieldConfig = getFieldConfig(name);
   assignDependentFields(fieldConfig);
-  const { visibleIf, doNotBlank } = fieldConfig;
+  const { visibleIf, doNotBlank, html, loading } = fieldConfig;
   let matchesCondition = false;
   if (visibleIf.fieldName) {
     const {
@@ -131,6 +131,7 @@ export function setFieldVisibility(name) {
           name,
           visibleIf,
           controlValue,
+          loading,
         },
       });
 
@@ -172,8 +173,22 @@ export function setFieldVisibility(name) {
   if (matchesCondition) {
     showFieldRow(name);
     validateStepField(name);
+
+    if (html) {
+      html.forEach((id) => {
+        let htmlRow = $(`tr[data-uuid="${id}"]`);
+        htmlRow?.css({ display: '' });
+      });
+    }
   } else {
     hideFieldRow({ fieldName: name, doNotBlank });
+
+    if (html) {
+      html.forEach((id) => {
+        let htmlRow = $(`tr[data-uuid="${id}"]`);
+        htmlRow?.css({ display: 'none' });
+      });
+    }
   }
 }
 
@@ -244,10 +259,12 @@ export function checkVisibleIfCondition({
     // showFieldRow(name);
     // store.dispatch('addFieldData', { name, visible: true });
   } else {
+    const loadingAllFieldConfig = POWERPOD.configuringFields;
+    const loadingFieldConfig = POWERPOD.state?.fields?.[name]?.loading;
     logger.info({
       fn: checkVisibleIfCondition,
       message: `for name: ${name}, found did NOT find matching condition`,
-      data: { params },
+      data: { params, loadingAllFieldConfig, loadingFieldConfig },
     });
     return false;
     // hideFieldRow(name, doNotBlank);

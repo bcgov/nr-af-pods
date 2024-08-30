@@ -12,16 +12,12 @@ import {
   getFieldConfig,
 } from './fields.js';
 import {
-  getControlType,
+  addTextAboveField,
+  addTextBelowField,
   getControlValue,
-  getFieldErrorDiv,
   getFieldLabel,
-  getFieldRow,
-  getMultiOptionSetElementValue,
   getOriginalMsosElement,
-  hideFieldByFieldName,
   hideFieldRow,
-  newGetOriginalMultiOptionSetElementValue,
   observeChanges,
   setFieldValue,
   showFieldRow,
@@ -34,19 +30,11 @@ import { setupTooltip } from './tooltip.js';
 import { hasUpperCase } from './utils.js';
 import {
   addValidationCheck,
-  displayActiveFieldErrors,
   setFieldReadOnly,
   setInputMaxLength,
-  validateEmailAddressField,
-  validateRequiredField,
-  validateRequiredFields,
   validateStepField,
-  validateStepFields,
 } from './fieldValidation.js';
-import {
-  initializeVisibleIf,
-  setFieldVisibility,
-} from './fieldConditionalLogic.js';
+import { setFieldVisibility } from './fieldConditionalLogic.js';
 import { useScript } from './scripts.js';
 import { renderCustomComponent } from './components.js';
 import '../components/FileUpload.js';
@@ -55,9 +43,6 @@ import store from '../store/index.js';
 import { getFormType } from './applicationUtils.js';
 import { getEnv } from './env.js';
 import { setOnChangeHandler } from './onChangeHandlers.js';
-import { generateVisibleValueForBusinessNameVLB } from './valueGeneration.js';
-import { hasCraNumberCheckboxEventHandler } from './customEventHandlers.js';
-import { initCraNumberCheckbox } from './initValuesFns.js';
 import { generateFormJson } from './form.js';
 
 const logger = Logger('common/fieldConfiguration');
@@ -90,6 +75,8 @@ export function configureField(field) {
     customComponent,
     newLabel,
     visible = true,
+    additionalTextAboveField,
+    additionalTextBelowField,
   } = field;
   let { elementType } = field;
   logger.info({
@@ -141,6 +128,12 @@ export function configureField(field) {
       name,
       label: existingLabel,
     });
+  }
+  if (additionalTextBelowField) {
+    addTextBelowField(name, additionalTextBelowField);
+  }
+  if (additionalTextAboveField) {
+    addTextAboveField(name, additionalTextAboveField);
   }
   if (onChangeHandler) {
     setOnChangeHandler(name, elementType, onChangeHandler);
@@ -319,6 +312,11 @@ export function configureField(field) {
     loading: false,
   });
 
+  logger.info({
+    fn: configureField,
+    message: `DONE configuring field: ${name}, setting POWERPOD.state.field['${name}'].loading = false`,
+  });
+
   validateStepField(name);
 
   setFieldObserver(name, format);
@@ -359,6 +357,10 @@ export function configureFields() {
   generateFormJson(true);
 
   POWERPOD.configuringFields = false;
+  logger.info({
+    fn: configureFields,
+    message: `DONE configuring fields, setting POWERPOD.configuringFields = false`,
+  });
 }
 
 function setupCanadaPostAddressComplete(fields) {
@@ -715,15 +717,12 @@ export function setFieldObserver(name, format = '') {
           origin: `${setFieldObserver.name} change input | event.type: ${event.type}`,
         });
       });
-      inputElements.on(
-        'focus click blur touchstart',
-        function (event) {
-          validateNeededFields({
-            name,
-            origin: `${setFieldObserver.name} focus click blur touchstart | event.type: ${event.type}`,
-          });
-        }
-      );
+      inputElements.on('focus click blur touchstart', function (event) {
+        validateNeededFields({
+          name,
+          origin: `${setFieldObserver.name} focus click blur touchstart | event.type: ${event.type}`,
+        });
+      });
       break;
     case HtmlElementType.DropdownSelect:
       $(`select[id*='${name}']`).on('change input', function (event) {
