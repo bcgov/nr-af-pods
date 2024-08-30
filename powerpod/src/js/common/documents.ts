@@ -548,53 +548,105 @@ export function addDocumentsStepText(
   if (!document.querySelector('#supportingDocumentationNote')) {
     let supportingDocumentationNoteHtmlContent = ``;
 
-    if (getProgramAbbreviation().includes('ABPP')) {
-      supportingDocumentationNoteHtmlContent = `
-        <style>
-          sl-tooltip::part(body) {
-            font-size: 1.2rem;
-          }
-        </style>
-        <div id="supportingDocumentationNote" style="padding-bottom: 20px">
-          You <b>MUST</b> Attach the following in ${
-            allowedDocumentsTooltipText
-              ? `<sl-tooltip>
-            <div slot="content">${allowedDocumentsTooltipText}</div>
-            <a href="" style="font-size: 15px">supported file formats</a>. </sl-tooltip
-          >`
-              : 'supported file formats.'
-          } <br /><br />
-          <ul>
-            <li>Event/training budget</li>
-            <li>
-              <a
-                href="https://www2.gov.bc.ca/assets/gov/farming-natural-resources-and-industry/agriculture-and-seafood/programs/agribusiness-planning/learning_action_plan_fillable_form.docx"
-                style="font-size: unset; color:blue; margin-left: 0px;"
-                target="_blank"
-              >
-              Learning Action Plan
-              </a>
-            </li>
-            <li>
-              Verification of farming income - Canada Revenue Agency (CRA) Summary/Proof of Gross Income as last reported to the CRA
-            </li>
-            <li>
-              <a
-                href="https://www2.gov.bc.ca/assets/gov/farming-natural-resources-and-industry/agriculture-and-seafood/programs/agribusiness-planning/direct_deposit_application.pdf"
-                style="font-size: unset; color:blue; margin-left: 0px;"
-                target="_blank"
-              >
-                Direct Deposit Application
-              </a>
-            </li>
-            <li>
-              Copy of Void Cheque and/or Bank Confirmation Letter confirming bank account information of the business
-            </li>
-          </ul>
-          <br />
-          Drag and drop files here or Choose Files <b>up to 15MB each.</b>
-        </div>
-      `;
+    const programAbbreviation = getProgramAbbreviation();
+    if (programAbbreviation.includes('ABPP')) {
+      if (programAbbreviation === 'ABPP1') {
+        supportingDocumentationNoteHtmlContent = `
+          <style>
+            sl-tooltip::part(body) {
+              font-size: 1.2rem;
+            }
+          </style>
+          <div id="supportingDocumentationNote" style="padding-bottom: 20px">
+            You <b>MUST</b> Attach the following in ${
+              allowedDocumentsTooltipText
+                ? `<sl-tooltip>
+              <div slot="content">${allowedDocumentsTooltipText}</div>
+              <a href="" style="font-size: 15px">supported file formats</a>. </sl-tooltip
+            >`
+                : 'supported file formats.'
+            } <br /><br />
+            <ul>
+              <li>Event/training budget</li>
+              <li>
+                <a
+                  href="https://www2.gov.bc.ca/assets/gov/farming-natural-resources-and-industry/agriculture-and-seafood/programs/agribusiness-planning/learning_action_plan_fillable_form.docx"
+                  style="font-size: unset; color:blue; margin-left: 0px;"
+                  target="_blank"
+                >
+                Learning Action Plan
+                </a>
+              </li>
+              <li>
+                Verification of farming income - Canada Revenue Agency (CRA) Summary/Proof of Gross Income as last reported to the CRA
+              </li>
+              <li>
+                <a
+                  href="https://www2.gov.bc.ca/assets/gov/farming-natural-resources-and-industry/agriculture-and-seafood/programs/agribusiness-planning/direct_deposit_application.pdf"
+                  style="font-size: unset; color:blue; margin-left: 0px;"
+                  target="_blank"
+                >
+                  Direct Deposit Application
+                </a>
+              </li>
+              <li>
+                Copy of Void Cheque and/or Bank Confirmation Letter confirming bank account information of the business
+              </li>
+            </ul>
+            <br />
+            Drag and drop files here or Choose Files <b>up to 15MB each.</b>
+          </div>
+        `;
+      } else if (programAbbreviation === 'ABPP2') {
+        supportingDocumentationNoteHtmlContent = `
+          <style>
+            sl-tooltip::part(body) {
+              font-size: 1.2rem;
+            }
+          </style>
+          <div id="supportingDocumentationNote" style="padding-bottom: 20px">
+            You <b>MUST</b> Attach the following in ${
+              allowedDocumentsTooltipText
+                ? `<sl-tooltip>
+              <div slot="content">${allowedDocumentsTooltipText}</div>
+              <a href="" style="font-size: 15px">supported file formats</a>. </sl-tooltip
+            >`
+                : 'supported file formats.'
+            } <br /><br />
+            <ul>
+              <li>
+                <a
+                  href="https://www2.gov.bc.ca/assets/gov/farming-natural-resources-and-industry/agriculture-and-seafood/programs/agribusiness-planning/letter_of_engagement_for_services_fillable_form.docx"
+                  style="font-size: unset; color:blue; margin-left: 0px;"
+                  target="_blank"
+                >
+                Letter of engagement
+                </a>
+              </li>
+              <li>
+                Consultant(s) resume(s)
+              </li>
+              <li>
+                Verification of farming income - Canada Revenue Agency (CRA) Summary/Proof of Gross Income as last reported to the CRA
+              </li>
+              <li>
+                <a
+                  href="https://www2.gov.bc.ca/assets/gov/farming-natural-resources-and-industry/agriculture-and-seafood/programs/agribusiness-planning/direct_deposit_application.pdf"
+                  style="font-size: unset; color:blue; margin-left: 0px;"
+                  target="_blank"
+                >
+                  Direct Deposit Application
+                </a>
+              </li>
+              <li>
+                Copy of Void Cheque and/or Bank Confirmation Letter confirming bank account information of the business
+              </li>
+            </ul>
+            <br />
+            Drag and drop files here or Choose Files <b>up to 15MB each.</b>
+          </div>
+        `;
+      }
     } else {
       supportingDocumentationNoteHtmlContent = `
     <style>
