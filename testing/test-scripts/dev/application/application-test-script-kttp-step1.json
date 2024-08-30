@@ -29,34 +29,34 @@
 		, { "action" : "Expect", "field" : { "label": "Position or Job Title", "visible" : true, "required" : true } }
 		, { "action" : "Expect", "field" : { "label": "City", "visible" : true, "required" : true } }
 		, { "action" : "Expect", "field" : { "label": "Telephone", "visible" : true, "required" : true } }
-		, { "action" : "Expect", "field" : { "label": "Email address for communication about this application:", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Email address for communication about this application", "visible" : true, "required" : true } }
 
 		, { "action" : "Expect", "field" : { "label": "Type of Business / Organization", "visible" : true, "required" : true } }
 
 		, { "action" : "Expect", "field" : { "label": "Organization Background", "visible" : true, "required" : true } }
 		
 		, { "action" : "Expect", "field" : { "label": "Has this organization received KTTP funding in previous years?", "visible" : true, "required" : true } }
-		, { "action" : "Enter", "field" : { "label": "Has this organization received KTTP funding in previous years?", "value": "Yes"} }
+		, { "action" : "Select", "field" : { "label": "Has this organization received KTTP funding in previous years?", "value": "Yes"} }
 		, { "action" : "Expect", "field" : { "label": "Please explain when and for which activity", "visible" : true, "required" : true } }
 		
-		, { "action" : "Enter", "field" : { "label": "Has this organization received KTTP funding in previous years?", "value": "No"} }
+		, { "action" : "Select", "field" : { "label": "Has this organization received KTTP funding in previous years?", "value": "No"} }
 		, { "action" : "Expect", "field" : { "label": "Please explain when and for which activity", "visible" : false } }
 		
 		, { "action" : "Expect", "field" : { "label": "Has this organization received funding from other Government of British Columbia (the Province) programs in the last year?", "visible" : true, "required" : true } }
-		, { "action" : "Enter", "field" : { "label": "Has this organization received funding from other Government of British Columbia (the Province) programs in the last year?", "value": "Yes"} }
+		, { "action" : "Select", "field" : { "label": "Has this organization received funding from other Government of British Columbia (the Province) programs in the last year?", "value": "Yes"} }
 		, { "action" : "Expect", "field" : { "label": "If Yes, please explain when and from which program", "visible" : true, "required" : true } }
 		
-		, { "action" : "Enter", "field" : { "label": "Has this organization received funding from other Government of British Columbia (the Province) programs in the last year?", "value": "No"} }
+		, { "action" : "Select", "field" : { "label": "Has this organization received funding from other Government of British Columbia (the Province) programs in the last year?", "value": "No"} }
 		, { "action" : "Expect", "field" : { "label": "If Yes, please explain when and from which program", "visible" : false } }
 		
 		
 		, { "action" : "Expect", "field" : { "label": "Will your organization be collaborating with any other organizations on this project?", "visible" : true, "required" : true } }
-		, { "action" : "Enter", "field" : { "label": "Will your organization be collaborating with any other organizations on this project?", "value": "Yes"} }
+		, { "action" : "Select", "field" : { "label": "Will your organization be collaborating with any other organizations on this project?", "value": "Yes"} }
 		, { "action" : "Expect", "field" : { "label": "Legal Business/Organization Name", "visible" : true, "required" : true } }
 		, { "action" : "Expect", "field" : { "label": "Contact Name", "visible" : true, "required" : true } }
 		, { "action" : "Expect", "field" : { "label": "Please provide a brief description of the organization and what their role be in this activity (300 words maximum)", "visible" : true, "required" : true } }
 
-		, { "action" : "Enter", "field" : { "label": "Will your organization be collaborating with any other organizations on this project?", "value": "No"} }
+		, { "action" : "Select", "field" : { "label": "Will your organization be collaborating with any other organizations on this project?", "value": "No"} }
 		, { "action" : "Expect", "field" : { "label": "Legal Business/Organization Name", "visible" : false } }
 		, { "action" : "Expect", "field" : { "label": "Contact Name", "visible" : false } }
 		, { "action" : "Expect", "field" : { "label": "Please provide a brief description of the organization and what their role be in this activity (300 words maximum)", "visible" : false } }
@@ -80,9 +80,10 @@
 		, { "action" : "Enter", "field" : { "label": "Position or Job Title", "value": "Champion" } }
 		, { "action" : "Enter", "field" : { "label": "City", "value": "Victoria" } }
 		, { "action" : "Enter", "field" : { "label": "Telephone", "value": "(250) 380-9686" } }
-		, { "action" : "Enter", "field" : { "label": "Email address for communication about this application:", "value": "quartech@quartech.com" } }
+		, { "action" : "Enter", "field" : { "label": "Email address for communication about this application", "value": "quartech@quartech.com" } }
 
 		, { "action" : "Select", "field" : { "label": "Type of Business / Organization", "value": "Industry Organization" } }
+		
 
 		, { "action" : "Enter", "field" : { "label": "Organization Background", "value" : "Several years in the business" } }
 		
