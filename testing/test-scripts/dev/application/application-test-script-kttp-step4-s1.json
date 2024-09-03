@@ -54,6 +54,6 @@
 		
 		, { "action" : "Expect", "field" : { "label": "Total Funding Required From The Program ($CAD):", "value" : "65.00" } }
 			
-		, { "action" : "Enter", "button" : { "label": "Next", "disabled" : false } }
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : false } }
 	]
 }
