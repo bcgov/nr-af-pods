@@ -1,5 +1,5 @@
 {
-	"name": "Application - KTTP - Stream 1 - Test Script",
+	"name": "Application - KTTP - Stream 2 - Test Script",
 	"testSteps" : [
 		{   "action" : "open-new-tab", "url": "https://af-pods-dev.powerappsportals.com/application/?programid=25493093-9d2b-ee11-bdf4-000d3af3ac95" }
 		
@@ -119,7 +119,7 @@
 		, { "action" : "Expect", "field" : { "label": "Please describe your activity type", "visible" : false } }
 		, { "action" : "Select", "field" : { "label": "Please select the most applicable activity type", "value" : "Other" } }
 		, { "action" : "Expect", "field" : { "label": "Please describe your activity type", "visible" : true, "required" : true } }
-		, { "action" : "Select", "field" : { "label": "Please select the most applicable activity type", "value" : "Conference" } }
+		, { "action" : "Select", "field" : { "label": "Please select the most applicable activity type", "value" : "Hands-on Workshop" } }
 		, { "action" : "Expect", "field" : { "label": "Please describe your activity type", "visible" : false } }
 
 		, { "action" : "Expect", "field" : { "label": "Priority Topic(s). Please select the most applicable topic that your project will focus on", "visible" : true, "required" : true } }
@@ -135,10 +135,10 @@
 		, { "action" : "Expect", "field" : { "label": "Explain what your activity will be about, why you're doing it, and what you hope to achieve. Make sure the things you hope to achieve can be measured, and explain how they will make a difference.", "visible" : true, "required" : true } }
 		, { "action" : "Expect", "field" : { "label": "The Province supports inclusiveness and increased representation of target and underrepresented groups. Please describe how you will work towards increasing access and inclusiveness of your activity?", "visible" : true, "required" : true } }
 		
-		, { "action" : "Expect", "field" : { "label": "Subject Matter Expert (SME) Name", "visible" : true, "required" : true } }
-		, { "action" : "Expect", "field" : { "label": "SME Email", "visible" : true, "required" : true } }
-		, { "action" : "Expect", "field" : { "label": "SME Website", "visible" : true, "required" : false } }
-		, { "action" : "Expect", "field" : { "label": "Describe the expertise of the Subject Matter Expert (SME) and what experience they have in transferring knowledge", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Facilitator Name", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Facilitator Email", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Facilitator Website", "visible" : true, "required" : false } }
+		, { "action" : "Expect", "field" : { "label": "Describe the expertise of the Facilitator and what experience they have in transferring knowledge", "visible" : true, "required" : true } }
 		, { "action" : "Expect", "field" : { "label": "Activity Start Date", "visible" : true, "required" : true } }
 		
 		, { "action" : "Expect", "field" : { "label": "Does the activity take place over multiple days?", "visible" : true, "required" : true } }
@@ -165,9 +165,9 @@
 		, { "action" : "Select", "field" : { "label": "Priority Topic(s). Please select the most applicable topic that your project will focus on", "value" : "Traceability" } }
 		, { "action" : "Enter", "field" : { "label": "Explain what your activity will be about, why you're doing it, and what you hope to achieve. Make sure the things you hope to achieve can be measured, and explain how they will make a difference.", "value" : "Automated Tests." } }
 		, { "action" : "Enter", "field" : { "label": "The Province supports inclusiveness and increased representation of target and underrepresented groups. Please describe how you will work towards increasing access and inclusiveness of your activity?", "value" : "Automated Tests." } }
-		, { "action" : "Enter", "field" : { "label": "Subject Matter Expert (SME) Name", "value" : "Quartech" } }
-		, { "action" : "Enter", "field" : { "label": "SME Email", "value" : "quartech@quartech.com" } }
-		, { "action" : "Enter", "field" : { "label": "Describe the expertise of the Subject Matter Expert (SME) and what experience they have in transferring knowledge", "value" : "Automated Tests." } }
+		, { "action" : "Enter", "field" : { "label": "Facilitator Name", "value" : "Quartech" } }
+		, { "action" : "Enter", "field" : { "label": "Facilitator Email", "value" : "quartech@quartech.com" } }
+		, { "action" : "Enter", "field" : { "label": "Describe the expertise of the Facilitator and what experience they have in transferring knowledge", "value" : "Automated Tests." } }
 		, { "action" : "Enter", "field" : { "label": "Activity Start Date", "value" : "03/25/1908" } }
 		, { "action" : "Select", "field" : { "label": "Number of B.C. agriculture and seafood producers/ processors/ businesses expected to attend this activity", "value" : "11 - 25" } }
 		, { "action" : "Select", "field" : { "label": "Number of overall attendees expected to attend this activity", "value" : "51 - 100" } }
@@ -177,20 +177,20 @@
 
 		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : true } }
 
-		, { "action" : "Expect", "field" : { "label": "SME Fee", "visible" : true, "required" : false } }
-		, { "action" : "Enter", "field" : { "label": "SME Fee", "value" : "10" } }
+		, { "action" : "Expect", "field" : { "label": "Facilitator Fee", "visible" : true, "required" : false } }
+		, { "action" : "Enter", "field" : { "label": "Facilitator Fee", "value" : "10" } }
 		
-		, { "action" : "Expect", "field" : { "label": "SME Travel (airfare, parking, etc)", "visible" : true, "required" : false } }
+		, { "action" : "Expect", "field" : { "label": "Facilitator Travel (airfare, parking, etc)", "visible" : true, "required" : false } }
 		, { "action" : "Expect", "field" : { "label": "Please describe mode of travel", "visible" : false } }
-		, { "action" : "Enter", "field" : { "label": "SME Travel (airfare, parking, etc)", "value" : "10" } }
+		, { "action" : "Enter", "field" : { "label": "Facilitator Travel (airfare, parking, etc)", "value" : "10" } }
 		, { "action" : "Expect", "field" : { "label": "Please describe mode of travel", "visible" : true, "required" : true } }
 		, { "action" : "Enter", "field" : { "label": "Please describe mode of travel", "value" : "Automated testing" } }
 				
-		, { "action" : "Expect", "field" : { "label": "SME Accommodation", "visible" : true, "required" : false } }
-		, { "action" : "Expect", "field" : { "label": "Please describe accommodation, where will the SME be staying?", "visible" : false } }
-		, { "action" : "Enter", "field" : { "label": "SME Accommodation", "value" : "10" } }
-		, { "action" : "Expect", "field" : { "label": "Please describe accommodation, where will the SME be staying?", "visible" : true, "required" : true } }
-		, { "action" : "Enter", "field" : { "label": "Please describe accommodation, where will the SME be staying?", "value" : "Automated testing" } }
+		, { "action" : "Expect", "field" : { "label": "Facilitator Accommodation", "visible" : true, "required" : false } }
+		, { "action" : "Expect", "field" : { "label": "Please describe accommodation, where will the Facilitator be staying?", "visible" : false } }
+		, { "action" : "Enter", "field" : { "label": "Facilitator Accommodation", "value" : "10" } }
+		, { "action" : "Expect", "field" : { "label": "Please describe accommodation, where will the Facilitator be staying?", "visible" : true, "required" : true } }
+		, { "action" : "Enter", "field" : { "label": "Please describe accommodation, where will the Facilitator be staying?", "value" : "Automated testing" } }
 				
 		, { "action" : "Expect", "field" : { "label": "Facility, Equipment, Technology Rental", "visible" : true, "required" : false } }
 		, { "action" : "Expect", "field" : { "label": "Please describe equipment required", "visible" : false } }
