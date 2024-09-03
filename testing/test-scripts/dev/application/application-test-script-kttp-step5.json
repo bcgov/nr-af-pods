@@ -1,0 +1,11 @@
+{
+	"name": "Application - KTTP - Test Script - Documents Step",
+	"testSteps" : [
+		{   "action" : "open-new-tab", "url": "https://af-pods-dev.powerappsportals.com/application/?programid=25493093-9d2b-ee11-bdf4-000d3af3ac95" }
+
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : true } }
+
+		, { "action" : "Expect", "field" : { "label": "Applications must upload an event agenda with your application. You may use our KTTP agenda template or provide your own", "visible" : true, "required" : true } }		
+	]
+}
+
