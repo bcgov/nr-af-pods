@@ -1,0 +1,9 @@
+{
+	"name": "Application - KTTP - Test Script - Declaration & Consent Step",
+	"testSteps" : [
+		{   "action" : "open-new-tab", "url": "https://af-pods-dev.powerappsportals.com/application/?programid=25493093-9d2b-ee11-bdf4-000d3af3ac95" }
+
+		, { "action" : "Expect", "field" : { "label": "I / We Agree to the above statement.", "visible" : true, "required" : true } }
+		, { "action" : "Enter", "field" : { "label": "I / We Agree to the above statement.", "value" : "checked" } }
+	]
+}
