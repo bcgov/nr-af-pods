@@ -1,0 +1,59 @@
+{
+	"name": "Application - KTTP - Test Script - Deliverables & Budget Step",
+	"testSteps" : [
+		{   "action" : "open-new-tab", "url": "https://af-pods-dev.powerappsportals.com/application/?programid=25493093-9d2b-ee11-bdf4-000d3af3ac95" }
+
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : true } }
+
+		, { "action" : "Expect", "field" : { "label": "SME Fee", "visible" : true, "required" : false } }
+		, { "action" : "Enter", "field" : { "label": "SME Fee", "value" : "10" } }
+		
+		, { "action" : "Expect", "field" : { "label": "SME Travel (airfare, parking, etc)", "visible" : true, "required" : false } }
+		, { "action" : "Expect", "field" : { "label": "Please describe mode of travel", "visible" : false } }
+		, { "action" : "Enter", "field" : { "label": "SME Travel (airfare, parking, etc)", "value" : "10" } }
+		, { "action" : "Expect", "field" : { "label": "Please describe mode of travel", "visible" : true, "required" : true } }
+		, { "action" : "Enter", "field" : { "label": "Please describe mode of travel", "value" : "Automated testing" } }
+				
+		, { "action" : "Expect", "field" : { "label": "SME Accommodation", "visible" : true, "required" : false } }
+		, { "action" : "Expect", "field" : { "label": "Please describe accommodation, where will the SME be staying?", "visible" : false } }
+		, { "action" : "Enter", "field" : { "label": "SME Accommodation", "value" : "10" } }
+		, { "action" : "Expect", "field" : { "label": "Please describe accommodation, where will the SME be staying?", "visible" : true, "required" : true } }
+		, { "action" : "Enter", "field" : { "label": "Please describe accommodation, where will the SME be staying?", "value" : "Automated testing" } }
+				
+		, { "action" : "Expect", "field" : { "label": "Facility, Equipment, Technology Rental", "visible" : true, "required" : false } }
+		, { "action" : "Expect", "field" : { "label": "Please describe equipment required", "visible" : false } }
+		, { "action" : "Enter", "field" : { "label": "Facility, Equipment, Technology Rental", "value" : "10" } }
+		, { "action" : "Expect", "field" : { "label": "Please describe equipment required", "visible" : true, "required" : true } }
+		, { "action" : "Enter", "field" : { "label": "Please describe equipment required", "value" : "Automated testing" } }
+				
+		, { "action" : "Expect", "field" : { "label": "Advertising/Communications", "visible" : true, "required" : false } }
+		, { "action" : "Expect", "field" : { "label": "Please describe what forms of advertising/communications are planned", "visible" : false } }
+		, { "action" : "Enter", "field" : { "label": "Advertising/Communications", "value" : "10" } }
+		, { "action" : "Expect", "field" : { "label": "Please describe what forms of advertising/communications are planned", "visible" : true, "required" : true } }
+		, { "action" : "Enter", "field" : { "label": "Please describe what forms of advertising/communications are planned", "value" : "Automated testing" } }
+				
+		, { "action" : "Expect", "field" : { "label": "Administration Costs", "visible" : true, "required" : false } }
+		, { "action" : "Expect", "field" : { "label": "Please describe the administrative cost", "visible" : false } }
+		, { "action" : "Enter", "field" : { "label": "Administration Costs", "value" : "10" } }
+		, { "action" : "Expect", "field" : { "label": "Please describe the administrative cost", "visible" : true, "required" : true } }
+		, { "action" : "Enter", "field" : { "label": "Please describe the administrative cost", "value" : "Automated testing" } }
+				
+		, { "action" : "Expect", "field" : { "label": "Other Cost", "visible" : true, "required" : false } }
+		, { "action" : "Expect", "field" : { "label": "Please explain Other", "visible" : false } }
+		, { "action" : "Enter", "field" : { "label": "Other Cost", "value" : "10" } }
+		, { "action" : "Expect", "field" : { "label": "Please explain Other", "visible" : true, "required" : true } }
+		, { "action" : "Enter", "field" : { "label": "Please explain Other", "value" : "Automated testing" } }
+				
+		, { "action" : "Expect", "field" : { "label": "Total Activity Cost", "value" : "70.00" } }
+		
+		, { "action" : "Expect", "field" : { "label": "Cost-Share Contribution (cash or in-kind donation)", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Please explain who the other partners are, and what portion they are contributing (both cash and in-kind)", "visible" : false } }
+		, { "action" : "Enter", "field" : { "label": "Cost-Share Contribution (cash or in-kind donation)", "value" : "5" } }
+		, { "action" : "Expect", "field" : { "label": "Please explain who the other partners are, and what portion they are contributing (both cash and in-kind)", "visible" : true, "required" : true } }
+		, { "action" : "Enter", "field" : { "label": "Please explain who the other partners are, and what portion they are contributing (both cash and in-kind)", "value" : "Automated testing" } }
+		
+		, { "action" : "Expect", "field" : { "label": "Total Funding Required From The Program ($CAD):", "value" : "65.00" } }
+			
+		, { "action" : "Enter", "button" : { "label": "Next", "disabled" : false } }
+	]
+}
