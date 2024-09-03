@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "KTTP-StreamTwo", "KTTP2"],
-  "version": "1.2.7",
+  "version": "1.2.9",
   "name": "KTTP Stream Two - Hands on Learning for Skill Development",
   "abbreviation": "KTTP-StreamTwo",
   "programId": "be849e07-9e2b-ee11-bdf4-000d3af3ac95",
@@ -158,6 +158,7 @@
         },
         {
           "name": "quartech_projectlocation",
+          "label": "Primary Location",
           "required": true,
           "disableSingleLine": false,
           "tooltipText": "If your project takes place in multiple locations, please identify the location with the most funding allocated to.",
@@ -169,9 +170,9 @@
         },
         {
           "name": "quartech_projecttakesplaceinotherplaces",
+          "label": "Will your project take place in more than one place?",
           "required": true,
-          "elementType": "DropdownSelect",
-          "tooltipText": "Will your project take place in more than one place?"
+          "elementType": "DropdownSelect"
         },
         {
           "name": "quartech_venuelocationcitytownetcoronlinesoftwar",
