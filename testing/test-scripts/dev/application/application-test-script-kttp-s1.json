@@ -1,0 +1,251 @@
+{
+	"name": "Application - KTTP - Stream 1 - Test Script",
+	"testSteps" : [
+		{   "action" : "open-new-tab", "url": "https://af-pods-dev.powerappsportals.com/application/?programid=25493093-9d2b-ee11-bdf4-000d3af3ac95" }
+		
+		, { "action" : "Expect", "field" : { "label": "Legal Business or Organization Name", "visible" : true, "required" : true } }
+
+		, { "action" : "Expect", "field" : { "label": "My / Our business/organization DOES NOT have a Canada Revenue Agency (CRA) or GST Number", "visible" : true, "required" : false} }
+		, { "action" : "Enter", "field" : { "label": "My / Our business/organization DOES NOT have a Canada Revenue Agency (CRA) or GST Number", "value": "unchecked"} }
+		, { "action" : "Expect", "field" : { "label": "Canada Revenue Agency (CRA) Business Number or the first 9 digits of the Goods and Services Tax/Harmonized Sales Tax (GST/HST) number", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Please explain why your organization doesn't have a CRA Business Number or GST number", "visible" : false } }
+
+		, { "action" : "Enter", "field" : { "label": "My / Our business/organization DOES NOT have a Canada Revenue Agency (CRA) or GST Number", "value": "checked"} }
+		, { "action" : "Expect", "field" : { "label": "Canada Revenue Agency (CRA) Business Number or the first 9 digits of the Goods and Services Tax/Harmonized Sales Tax (GST/HST) number", "visible" : false } }
+		, { "action" : "Expect", "field" : { "label": "Please explain why your organization doesn't have a CRA Business Number or GST number", "visible" : true, "required" : true } }
+
+		, { "action" : "Expect", "field" : { "label": "Doing Business As (if different from Legal Business/Organization Name)", "visible" : true, "required" : false } }
+		, { "action" : "Expect", "field" : { "label": "Business - Suite Number (optional)", "visible" : true, "required" : false } }
+		, { "action" : "Expect", "field" : { "label": "Business - Street Number", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Business - Street", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Business City", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Business Province/Territory", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Business Postal Code", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Business Phone Number", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Business Email Address", "visible" : true, "required" : true } }
+
+		, { "action" : "Expect", "field" : { "label": "First Name", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Last Name", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Position or Job Title", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "City", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Telephone", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Email address for communication about this application", "visible" : true, "required" : true } }
+
+		, { "action" : "Expect", "field" : { "label": "Type of Business / Organization", "visible" : true, "required" : true } }
+
+		, { "action" : "Expect", "field" : { "label": "Organization Background", "visible" : true, "required" : true } }
+		
+		, { "action" : "Expect", "field" : { "label": "Has this organization received KTTP funding in previous years?", "visible" : true, "required" : true } }
+		, { "action" : "Select", "field" : { "label": "Has this organization received KTTP funding in previous years?", "value": "Yes"} }
+		, { "action" : "Expect", "field" : { "label": "Please explain when and for which activity", "visible" : true, "required" : true } }
+		
+		, { "action" : "Select", "field" : { "label": "Has this organization received KTTP funding in previous years?", "value": "No"} }
+		, { "action" : "Expect", "field" : { "label": "Please explain when and for which activity", "visible" : false } }
+		
+		, { "action" : "Expect", "field" : { "label": "Has this organization received funding from other Government of British Columbia (the Province) programs in the last year?", "visible" : true, "required" : true } }
+		, { "action" : "Select", "field" : { "label": "Has this organization received funding from other Government of British Columbia (the Province) programs in the last year?", "value": "Yes"} }
+		, { "action" : "Expect", "field" : { "label": "If Yes, please explain when and from which program", "visible" : true, "required" : true } }
+		
+		, { "action" : "Select", "field" : { "label": "Has this organization received funding from other Government of British Columbia (the Province) programs in the last year?", "value": "No"} }
+		, { "action" : "Expect", "field" : { "label": "If Yes, please explain when and from which program", "visible" : false } }
+		
+		
+		, { "action" : "Expect", "field" : { "label": "Will your organization be collaborating with any other organizations on this project?", "visible" : true, "required" : true } }
+		, { "action" : "Select", "field" : { "label": "Will your organization be collaborating with any other organizations on this project?", "value": "Yes"} }
+		, { "action" : "Expect", "field" : { "label": "Legal Business/Organization Name", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Contact Name", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Please provide a brief description of the organization and what their role be in this activity (300 words maximum)", "visible" : true, "required" : true } }
+
+		, { "action" : "Select", "field" : { "label": "Will your organization be collaborating with any other organizations on this project?", "value": "No"} }
+		, { "action" : "Expect", "field" : { "label": "Legal Business/Organization Name", "visible" : false } }
+		, { "action" : "Expect", "field" : { "label": "Contact Name", "visible" : false } }
+		, { "action" : "Expect", "field" : { "label": "Please provide a brief description of the organization and what their role be in this activity (300 words maximum)", "visible" : false } }
+
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : true } }
+    
+		, { "action" : "Enter", "field" : { "label": "Legal Business or Organization Name", "value": "QUARTECH SYSTEMS LIMITED" } }
+		, { "action" : "Enter", "field" : { "label": "Please explain why your organization doesn't have a CRA Business Number or GST number", "value": "Generated by Test Automation" } }
+
+		, { "action" : "Enter", "field" : { "label": "Business - Suite Number (optional)", "value": "#200" } }
+		, { "action" : "Enter", "field" : { "label": "Business - Street Number", "value": "1012" } }
+		, { "action" : "Enter", "field" : { "label": "Business - Street", "value": "Douglas" } }
+		, { "action" : "Enter", "field" : { "label": "Business City", "value": "Victoria" } }
+		, { "action" : "Select", "field" : { "label": "Business Province/Territory", "value": "British Columbia" } }
+		, { "action" : "Enter", "field" : { "label": "Business Postal Code", "value": "V8W2C3" } }
+		, { "action" : "Enter", "field" : { "label": "Business Phone Number", "value": "(250) 380-9686" } }
+		, { "action" : "Enter", "field" : { "label": "Business Email Address", "value": "quartech@quartech.com" } }
+
+		, { "action" : "Enter", "field" : { "label": "First Name", "value": "Galo" } }
+		, { "action" : "Enter", "field" : { "label": "Last Name", "value": "Doido" } }
+		, { "action" : "Enter", "field" : { "label": "Position or Job Title", "value": "Champion" } }
+		, { "action" : "Enter", "field" : { "label": "City", "value": "Victoria" } }
+		, { "action" : "Enter", "field" : { "label": "Telephone", "value": "(250) 380-9686" } }
+		, { "action" : "Enter", "field" : { "label": "Email address for communication about this application", "value": "quartech@quartech.com" } }
+
+		, { "action" : "Select", "field" : { "label": "Type of Business / Organization", "value": "Industry Organization" } }
+		, { "action" : "Enter", "field" : { "label": "Organization Background", "value" : "Several years in the business" } }
+
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : false } }
+		, { "action" : "Click on the Next button.", "description" : "Go to the Project step by clicking Next button." }
+
+
+		, { "action" : "Expect", "field" : { "label": "Project Title", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Project Description", "visible" : true, "required" : true } }
+		
+		, { "action" : "Expect", "field" : { "label": "Please select the primary Commodity/Sector that will benefit from this project", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Please explain if you selected Sector-Wide, or if you have additional information to share on the Commodity/Sector", "visible" : false } }
+		, { "action" : "Select", "field" : { "label": "Please select the primary Commodity/Sector that will benefit from this project", "value" : "* Sector Wide" } }
+		, { "action" : "Expect", "field" : { "label": "Please explain if you selected Sector-Wide, or if you have additional information to share on the Commodity/Sector", "visible" : true, "required" : true } }
+		, { "action" : "Select", "field" : { "label": "Please select the primary Commodity/Sector that will benefit from this project", "value" : "Apiculture" } }
+		, { "action" : "Expect", "field" : { "label": "Please explain if you selected Sector-Wide, or if you have additional information to share on the Commodity/Sector", "visible" : false } }
+
+		, { "action" : "Expect", "field" : { "label": "Will the event be virtual, in-person, or hybrid?", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Primary Location", "visible" : false } }
+		, { "action" : "Select", "field" : { "label": "Will the event be virtual, in-person, or hybrid?", "value" : "In-person" } }
+		, { "action" : "Expect", "field" : { "label": "Primary Location", "visible" : true, "required" : true } }
+		, { "action" : "Select", "field" : { "label": "Will the event be virtual, in-person, or hybrid?", "value" : "Hybrid" } }
+		, { "action" : "Expect", "field" : { "label": "Primary Location", "visible" : true, "required" : true } }
+		, { "action" : "Select", "field" : { "label": "Will the event be virtual, in-person, or hybrid?", "value" : "Virtual" } }
+		, { "action" : "Expect", "field" : { "label": "Primary Location", "visible" : false } }
+		
+		, { "action" : "Expect", "field" : { "label": "Will your project take place in more than one place?", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Additional Project Locations", "visible" : false } }
+		, { "action" : "Select", "field" : { "label": "Will your project take place in more than one place?", "value" : "Yes" } }
+		, { "action" : "Expect", "field" : { "label": "Additional Project Locations", "visible" : true, "required" : true } }
+		, { "action" : "Select", "field" : { "label": "Will your project take place in more than one place?", "value" : "No" } }
+		, { "action" : "Expect", "field" : { "label": "Additional Project Locations", "visible" : false } }
+		
+		, { "action" : "Expect", "field" : { "label": "Please select the most applicable activity type", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Please describe your activity type", "visible" : false } }
+		, { "action" : "Select", "field" : { "label": "Please select the most applicable activity type", "value" : "Other" } }
+		, { "action" : "Expect", "field" : { "label": "Please describe your activity type", "visible" : true, "required" : true } }
+		, { "action" : "Select", "field" : { "label": "Please select the most applicable activity type", "value" : "Conference" } }
+		, { "action" : "Expect", "field" : { "label": "Please describe your activity type", "visible" : false } }
+
+		, { "action" : "Expect", "field" : { "label": "Priority Topic(s). Please select the most applicable topic that your project will focus on", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "If applicable, select a secondary priority topic that you project will focus on", "visible" : true, "required" : false } }
+		
+		, { "action" : "Expect", "field" : { "label": "Please select the most applicable purpose that your activity will focus on", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Please describe the activity purpose", "visible" : false } }
+		, { "action" : "Select", "field" : { "label": "Please select the most applicable purpose that your activity will focus on", "value" : "Other" } }
+		, { "action" : "Expect", "field" : { "label": "Please describe the activity purpose", "visible" : true, "required" : true } }
+		, { "action" : "Select", "field" : { "label": "Please select the most applicable purpose that your activity will focus on", "value" : "Increasing Technical Skills" } }
+		, { "action" : "Expect", "field" : { "label": "Please describe the activity purpose", "visible" : false } }
+
+		, { "action" : "Expect", "field" : { "label": "Explain what your activity will be about, why you're doing it, and what you hope to achieve. Make sure the things you hope to achieve can be measured, and explain how they will make a difference.", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "The Province supports inclusiveness and increased representation of target and underrepresented groups. Please describe how you will work towards increasing access and inclusiveness of your activity?", "visible" : true, "required" : true } }
+		
+		, { "action" : "Expect", "field" : { "label": "Subject Matter Expert (SME) Name", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "SME Email", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "SME Website", "visible" : true, "required" : false } }
+		, { "action" : "Expect", "field" : { "label": "Describe the expertise of the Subject Matter Expert (SME) and what experience they have in transferring knowledge", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Activity Start Date", "visible" : true, "required" : true } }
+		
+		, { "action" : "Expect", "field" : { "label": "Does the activity take place over multiple days?", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Please provide the additional dates", "visible" : false } }
+		, { "action" : "Select", "field" : { "label": "Does the activity take place over multiple days?", "value" : "Yes" } }
+		, { "action" : "Expect", "field" : { "label": "Please provide the additional dates", "visible" : true, "required" : true } }
+		, { "action" : "Select", "field" : { "label": "Does the activity take place over multiple days?", "value" : "No" } }
+		, { "action" : "Expect", "field" : { "label": "Please provide the additional dates", "visible" : false } }
+				
+		, { "action" : "Expect", "field" : { "label": "Will this activity be open to any agriculture and seafood producers/ processors that wish to attend?", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Please explain why this event will not be open to other producers/processors", "visible" : false } }
+		, { "action" : "Select", "field" : { "label": "Will this activity be open to any agriculture and seafood producers/ processors that wish to attend?", "value" : "No" } }
+		, { "action" : "Expect", "field" : { "label": "Please explain why this event will not be open to other producers/processors", "visible" : true, "required" : true } }
+		, { "action" : "Select", "field" : { "label": "Will this activity be open to any agriculture and seafood producers/ processors that wish to attend?", "value" : "Yes" } }
+		, { "action" : "Expect", "field" : { "label": "Please explain why this event will not be open to other producers/processors", "visible" : false } }
+		
+		, { "action" : "Expect", "field" : { "label": "Number of B.C. agriculture and seafood producers/ processors/ businesses expected to attend this activity", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Number of overall attendees expected to attend this activity", "visible" : true, "required" : true } }
+		
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : true } }
+
+		, { "action" : "Enter", "field" : { "label": "Project Title", "value" : "Quartech Testing" } }
+		, { "action" : "Enter", "field" : { "label": "Project Description", "value" : "Automated Tests." } }
+		, { "action" : "Select", "field" : { "label": "Priority Topic(s). Please select the most applicable topic that your project will focus on", "value" : "Traceability" } }
+		, { "action" : "Enter", "field" : { "label": "Explain what your activity will be about, why you're doing it, and what you hope to achieve. Make sure the things you hope to achieve can be measured, and explain how they will make a difference.", "value" : "Automated Tests." } }
+		, { "action" : "Enter", "field" : { "label": "The Province supports inclusiveness and increased representation of target and underrepresented groups. Please describe how you will work towards increasing access and inclusiveness of your activity?", "value" : "Automated Tests." } }
+		, { "action" : "Enter", "field" : { "label": "Subject Matter Expert (SME) Name", "value" : "Quartech" } }
+		, { "action" : "Enter", "field" : { "label": "SME Email", "value" : "quartech@quartech.com" } }
+		, { "action" : "Enter", "field" : { "label": "Describe the expertise of the Subject Matter Expert (SME) and what experience they have in transferring knowledge", "value" : "Automated Tests." } }
+		, { "action" : "Enter", "field" : { "label": "Activity Start Date", "value" : "03/25/1908" } }
+		, { "action" : "Select", "field" : { "label": "Number of B.C. agriculture and seafood producers/ processors/ businesses expected to attend this activity", "value" : "11 - 25" } }
+		, { "action" : "Select", "field" : { "label": "Number of overall attendees expected to attend this activity", "value" : "51 - 100" } }
+
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : false } }
+		, { "action" : "Click on the Next button.", "description" : "Go to the Deliverables & Budget step by clicking Next button." }
+
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : true } }
+
+		, { "action" : "Expect", "field" : { "label": "SME Fee", "visible" : true, "required" : false } }
+		, { "action" : "Enter", "field" : { "label": "SME Fee", "value" : "10" } }
+		
+		, { "action" : "Expect", "field" : { "label": "SME Travel (airfare, parking, etc)", "visible" : true, "required" : false } }
+		, { "action" : "Expect", "field" : { "label": "Please describe mode of travel", "visible" : false } }
+		, { "action" : "Enter", "field" : { "label": "SME Travel (airfare, parking, etc)", "value" : "10" } }
+		, { "action" : "Expect", "field" : { "label": "Please describe mode of travel", "visible" : true, "required" : true } }
+		, { "action" : "Enter", "field" : { "label": "Please describe mode of travel", "value" : "Automated testing" } }
+				
+		, { "action" : "Expect", "field" : { "label": "SME Accommodation", "visible" : true, "required" : false } }
+		, { "action" : "Expect", "field" : { "label": "Please describe accommodation, where will the SME be staying?", "visible" : false } }
+		, { "action" : "Enter", "field" : { "label": "SME Accommodation", "value" : "10" } }
+		, { "action" : "Expect", "field" : { "label": "Please describe accommodation, where will the SME be staying?", "visible" : true, "required" : true } }
+		, { "action" : "Enter", "field" : { "label": "Please describe accommodation, where will the SME be staying?", "value" : "Automated testing" } }
+				
+		, { "action" : "Expect", "field" : { "label": "Facility, Equipment, Technology Rental", "visible" : true, "required" : false } }
+		, { "action" : "Expect", "field" : { "label": "Please describe equipment required", "visible" : false } }
+		, { "action" : "Enter", "field" : { "label": "Facility, Equipment, Technology Rental", "value" : "10" } }
+		, { "action" : "Expect", "field" : { "label": "Please describe equipment required", "visible" : true, "required" : true } }
+		, { "action" : "Enter", "field" : { "label": "Please describe equipment required", "value" : "Automated testing" } }
+				
+		, { "action" : "Expect", "field" : { "label": "Advertising/Communications", "visible" : true, "required" : false } }
+		, { "action" : "Expect", "field" : { "label": "Please describe what forms of advertising/communications are planned", "visible" : false } }
+		, { "action" : "Enter", "field" : { "label": "Advertising/Communications", "value" : "10" } }
+		, { "action" : "Expect", "field" : { "label": "Please describe what forms of advertising/communications are planned", "visible" : true, "required" : true } }
+		, { "action" : "Enter", "field" : { "label": "Please describe what forms of advertising/communications are planned", "value" : "Automated testing" } }
+				
+		, { "action" : "Expect", "field" : { "label": "Administration Costs", "visible" : true, "required" : false } }
+		, { "action" : "Expect", "field" : { "label": "Please describe the administrative cost", "visible" : false } }
+		, { "action" : "Enter", "field" : { "label": "Administration Costs", "value" : "10" } }
+		, { "action" : "Expect", "field" : { "label": "Please describe the administrative cost", "visible" : true, "required" : true } }
+		, { "action" : "Enter", "field" : { "label": "Please describe the administrative cost", "value" : "Automated testing" } }
+				
+		, { "action" : "Expect", "field" : { "label": "Other Cost", "visible" : true, "required" : false } }
+		, { "action" : "Expect", "field" : { "label": "Please explain Other", "visible" : false } }
+		, { "action" : "Enter", "field" : { "label": "Other Cost", "value" : "10" } }
+		, { "action" : "Expect", "field" : { "label": "Please explain Other", "visible" : true, "required" : true } }
+		, { "action" : "Enter", "field" : { "label": "Please explain Other", "value" : "Automated testing" } }
+				
+		, { "action" : "Expect", "field" : { "label": "Total Activity Cost", "value" : "70.00" } }
+		
+		, { "action" : "Expect", "field" : { "label": "Cost-Share Contribution (cash or in-kind donation)", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Please explain who the other partners are, and what portion they are contributing (both cash and in-kind)", "visible" : false } }
+		, { "action" : "Enter", "field" : { "label": "Cost-Share Contribution (cash or in-kind donation)", "value" : "5" } }
+		, { "action" : "Expect", "field" : { "label": "Please explain who the other partners are, and what portion they are contributing (both cash and in-kind)", "visible" : true, "required" : true } }
+		, { "action" : "Enter", "field" : { "label": "Please explain who the other partners are, and what portion they are contributing (both cash and in-kind)", "value" : "Automated testing" } }
+		
+		, { "action" : "Expect", "field" : { "label": "Total Funding Required From The Program ($CAD):", "value" : "65.00" } }
+			
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : false } }
+		, { "action" : "Click on the Next button.", "description" : "Go to the Documents step by clicking Next button." }
+
+
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : true } }
+		, { "action" : "Expect", "field" : { "label": "Applications must upload an event agenda with your application. You may use our KTTP agenda template or provide your own", "visible" : true, "required" : true } }		
+
+		, { "action" : "Enable the Next button.", "description" : "Enable Next button. Skip the docs upload." }
+		, { "action" : "Click on the Next button.", "description" : "Go to the Demographic Info step by clicking Next button." }
+
+
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : true } }
+		, { "action" : "Expect", "field" : { "label": "Demographic Data Collection Survey ID number", "visible" : true, "required" : true } }		
+
+		, { "action" : "Enable the Next button.", "description" : "Enable Next button. Skip the Demographic Info integration tests." }
+		, { "action" : "Click on the Next button.", "description" : "Go to the Declaration and Consent step by clicking Next button." }
+
+
+		, { "action" : "Expect", "field" : { "label": "I / We agree to the above statement.", "visible" : true, "required" : true } }
+		, { "action" : "Enter", "field" : { "label": "I / We agree to the above statement.", "value" : "checked" } }
+
+	]
+}
