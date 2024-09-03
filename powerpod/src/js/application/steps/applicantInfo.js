@@ -562,7 +562,8 @@ function customizeApplicantInfoStepForABPP() {
     <div>Please provide a brief description of your business e.g.,</div>
     <ul>
       <li>For Primary Producer - farm size in production in units such as acres, metres squared, and number and type of animals, marketing channels (farm gate, wholesale, retail/use of social media)</li>
-      <li>OR For Processor - size of processing area in units such as square feet or metres, number and type of B.C. products used and/or produced, marketing channels (direct, wholesale, retail/use of social media)</li>
+      <span style="margin-left:-18px">OR</span>
+      <li>For Processor - size of processing area in units such as square feet or metres, number and type of B.C. products used and/or produced, marketing channels (direct, wholesale, retail/use of social media)</li>
     </ul>
   </div>`;
   addTextAboveField(
