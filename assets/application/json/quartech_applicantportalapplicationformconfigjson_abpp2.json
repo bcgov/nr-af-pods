@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "ABPP2"],
-  "version": "1.1.4",
+  "version": "1.1.5",
   "name": "ABPP - Business Planning, Preparedness, and Disaster Recovery",
   "abbreviation": "ABPP2",
   "hiddenSteps": "",
@@ -240,7 +240,13 @@
           "name": "quartech_consultantbusinessregistrationgstnumber",
           "label": "Consultant's Canada Revenue Agency (CRA) Business Number or the first 9 digits of the Goods and Services Tax/Harmonized Sales Tax (GST/HST) number",
           "required": true,
-          "maxLength": 9
+          "maxLength": 9,
+          "validation": {
+            "type": "length",
+            "value": 9,
+            "comparison": "equalTo",
+            "postfix": "digits"
+          }
         },
         {
           "name": "quartech_consultantrelevantknowledgeandexpertise",
