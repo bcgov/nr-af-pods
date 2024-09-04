@@ -125,13 +125,6 @@
 		, { "action" : "Expect", "field" : { "label": "Priority Topic(s). Please select the most applicable topic that your project will focus on", "visible" : true, "required" : true } }
 		, { "action" : "Expect", "field" : { "label": "If applicable, select a secondary priority topic that you project will focus on", "visible" : true, "required" : false } }
 		
-		, { "action" : "Expect", "field" : { "label": "Please select the most applicable purpose that your activity will focus on", "visible" : true, "required" : true } }
-		, { "action" : "Expect", "field" : { "label": "Please describe the activity purpose", "visible" : false } }
-		, { "action" : "Select", "field" : { "label": "Please select the most applicable purpose that your activity will focus on", "value" : "Other" } }
-		, { "action" : "Expect", "field" : { "label": "Please describe the activity purpose", "visible" : true, "required" : true } }
-		, { "action" : "Select", "field" : { "label": "Please select the most applicable purpose that your activity will focus on", "value" : "Increasing Technical Skills" } }
-		, { "action" : "Expect", "field" : { "label": "Please describe the activity purpose", "visible" : false } }
-
 		, { "action" : "Expect", "field" : { "label": "Explain what your activity will be about, why you're doing it, and what you hope to achieve. Make sure the things you hope to achieve can be measured, and explain how they will make a difference.", "visible" : true, "required" : true } }
 		, { "action" : "Expect", "field" : { "label": "The Province supports inclusiveness and increased representation of target and underrepresented groups. Please describe how you will work towards increasing access and inclusiveness of your activity?", "visible" : true, "required" : true } }
 		
@@ -224,7 +217,7 @@
 		, { "action" : "Expect", "field" : { "label": "Please explain who the other partners are, and what portion they are contributing (both cash and in-kind)", "visible" : true, "required" : true } }
 		, { "action" : "Enter", "field" : { "label": "Please explain who the other partners are, and what portion they are contributing (both cash and in-kind)", "value" : "Automated testing" } }
 		
-		, { "action" : "Expect", "field" : { "label": "Total Funding Required From The Program ($CAD)", "value" : "65.00" } }
+		, { "action" : "Expect", "field" : { "label": "Total Funding Requested From The Program", "value" : "65.00" } }
 			
 		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : false } }
 		, { "action" : "Click on the Next button.", "description" : "Go to the Documents step by clicking Next button." }

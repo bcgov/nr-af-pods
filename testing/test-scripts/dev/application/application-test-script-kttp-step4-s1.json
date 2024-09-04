@@ -5,8 +5,8 @@
 
 		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : true } }
 
-		, { "action" : "Expect", "field" : { "label": "SME Fee", "visible" : true, "required" : false } }
-		, { "action" : "Enter", "field" : { "label": "SME Fee", "value" : "10" } }
+		, { "action" : "Expect", "field" : { "label": "Subject Matter Expert (SME) Fee", "visible" : true, "required" : false } }
+		, { "action" : "Enter", "field" : { "label": "Subject Matter Expert (SME) Fee", "value" : "10" } }
 		
 		, { "action" : "Expect", "field" : { "label": "SME Travel (airfare, parking, etc)", "visible" : true, "required" : false } }
 		, { "action" : "Expect", "field" : { "label": "Please describe mode of travel", "visible" : false } }
@@ -52,7 +52,7 @@
 		, { "action" : "Expect", "field" : { "label": "Please explain who the other partners are, and what portion they are contributing (both cash and in-kind)", "visible" : true, "required" : true } }
 		, { "action" : "Enter", "field" : { "label": "Please explain who the other partners are, and what portion they are contributing (both cash and in-kind)", "value" : "Automated testing" } }
 		
-		, { "action" : "Expect", "field" : { "label": "Total Funding Required From The Program ($CAD):", "value" : "65.00" } }
+		, { "action" : "Expect", "field" : { "label": "Total Funding Requested From The Program", "value" : "65.00" } }
 			
 		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : false } }
 	]
