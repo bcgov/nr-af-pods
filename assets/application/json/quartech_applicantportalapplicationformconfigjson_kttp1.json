@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "KTTP-SMEA", "KTTP1"],
-  "version": "1.5.7",
+  "version": "1.6.0",
   "name": "KTTP - Subject Matter Expert Activities",
   "abbreviation": "KTTP-SMEA",
   "programId": "25493093-9d2b-ee11-bdf4-000d3af3ac95",
@@ -216,28 +216,6 @@
           "elementType": "DropdownSelect"
         },
         {
-          "name": "quartech_activitypurpose",
-          "label": "Please select the most applicable purpose that your activity will focus on",
-          "required": true,
-          "elementType": "DropdownSelect"
-        },
-        {
-          "name": "quartech_ifotherpleasedescribetheactivitypurpose",
-          "label": "Please describe the activity purpose",
-          "required": "true",
-          "maxLength": 10000,
-          "visibleIf": {
-            "fieldName": "quartech_activitypurpose",
-            "selectedValue": 255550010,
-            "techComment": "Other value"
-          },
-          "relocateField": {
-            "originFieldName": "quartech_ifotherpleasedescribetheactivitypurpose",
-            "destinationFieldName": "quartech_activitypurpose",
-            "relativePosition": "below"
-          }
-        },
-        {
           "name": "quartech_proposedactivitystopicpurposeintent",
           "label": "Explain what your activity will be about, why you're doing it, and what you hope to achieve. Make sure the things you hope to achieve can be measured, and explain how they will make a difference.",
           "required": true,
@@ -345,7 +323,7 @@
           "format": "currency",
           "maxDigits": 13,
           "emptyInitialValue": true,
-          "label": "SME Fee",
+          "label": "Subject Matter Expert (SME) Fee",
           "validation": {
             "type": "numeric",
             "value": "0",
@@ -525,7 +503,7 @@
           "name": "quartech_totalfundingrequiredfromtheprogram",
           "format": "currency",
           "maxDigits": 11,
-          "label": "Total Funding Required From The Program",
+          "label": "Total Funding Requested From the Program",
           "validation": {
             "type": "numeric",
             "value": "0",

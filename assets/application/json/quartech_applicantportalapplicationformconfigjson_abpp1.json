@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "ABPP1", "Fall 2024"],
-  "version": "1.2.3",
+  "version": "1.2.5",
   "name": "ABPP - Agri-Business and Leadership Development",
   "abbreviation": "ABPP1",
   "hiddenSteps": "",
@@ -10,13 +10,69 @@
       "fields": [
         {
           "name": "quartech_indigenousapplicant",
+          "label": "Are you an Indigenous Applicant?",
           "required": true,
           "elementType": "DropdownSelect"
         },
         {
-          "name": "quartech_doingbusinessas",
-          "label": "Doing Business As (if different from Legal Business or Organization Name)",
-          "visible": true
+          "name": "quartech_applicanttype",
+          "label": "Applicant Type",
+          "required": true,
+          "elementType": "DropdownSelect"
+        },
+        {
+          "name": "quartech_yearproductionestablished",
+          "label": "Year Production Established",
+          "required": true,
+          "validation": {
+            "type": "numeric",
+            "value": "1900",
+            "comparison": "greaterThan"
+          }
+        },
+        {
+          "name": "quartech_numberoffulltimeemployees",
+          "label": "How many full-time employees do you employ?",
+          "format": "number",
+          "required": true,
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          }
+        },
+        {
+          "name": "quartech_numberofparttimeemployees",
+          "label": "How many part-time employees do you employ (including seasonal)?",
+          "format": "number",
+          "required": true,
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          }
+        },
+        {
+          "name": "quartech_previousyeargrossincome",
+          "label": "What was your estimated total gross income in the previous year?",
+          "required": true,
+          "format": "currency",
+          "maxDigits": 13,
+          "emptyInitialValue": true,
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          }
+        },
+        {
+          "name": "quartech_previousyearnetincome",
+          "label": "What was your estimated total net income in the previous year?",
+          "required": true,
+          "format": "currency",
+          "maxDigits": 13,
+          "emptyInitialValue": true,
+          "allowNegatives": true
         },
         {
           "name": "quartech_recipienttype",
@@ -36,66 +92,44 @@
           }
         },
         {
-          "name": "quartech_applicanttype",
-          "required": true,
-          "elementType": "DropdownSelect"
-        },
-        {
-          "name": "quartech_yearproductionestablished",
-          "required": true,
-          "validation": {
-            "type": "numeric",
-            "value": "1900",
-            "comparison": "greaterThan"
+          "name": "quartech_othercommoditiesproducedharvested",
+          "label": "If you are a multi-commodity producer, please list any other commodities you produce/harvest",
+          "elementType": "MultiSelectPicklist",
+          "visibleIf": {
+            "fieldName": "quartech_recipienttype",
+            "selectedValue": 255550001,
+            "techComment": "Primary Producer"
           }
         },
         {
-          "name": "quartech_numberoffulltimeemployees",
-          "format": "number",
+          "name": "quartech_primarilyprocess",
+          "label": "What do you primarily process?",
           "required": true,
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThanOrEqualTo"
+          "visibleIf": {
+            "fieldName": "quartech_recipienttype",
+            "selectedValue": 255550002,
+            "techComment": "Processor"
           }
         },
         {
-          "name": "quartech_numberofparttimeemployees",
-          "format": "number",
-          "required": true,
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThanOrEqualTo"
+          "name": "quartech_otherproductsprocessed",
+          "label": "If you process multiple products, please list any other products you produce",
+          "elementType": "MultiSelectPicklist",
+          "visibleIf": {
+            "fieldName": "quartech_recipienttype",
+            "selectedValue": 255550002,
+            "techComment": "Processor"
           }
-        },
-        {
-          "name": "quartech_previousyeargrossincome",
-          "required": true,
-          "format": "currency",
-          "maxDigits": 13,
-          "emptyInitialValue": true,
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThanOrEqualTo"
-          }
-        },
-        {
-          "name": "quartech_previousyearnetincome",
-          "required": true,
-          "format": "currency",
-          "maxDigits": 13,
-          "emptyInitialValue": true,
-          "allowNegatives": true
         },
         {
           "name": "quartech_operationdoesprocessingandprimaryproducti",
+          "label": "Does your operation do both processing and primary production",
           "required": true,
           "elementType": "DropdownSelect"
         },
         {
           "name": "quartech_businessdescription",
+          "label": "Business Description (Maximum 100 words)",
           "required": true
         }
       ]
