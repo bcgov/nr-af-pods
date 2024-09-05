@@ -183,7 +183,7 @@
         {
           "name": "quartech_subjectmatterexpertsmename",
           "required": true,
-          "label": "Facilitator Name:"
+          "label": "Facilitator Name"
         },
         {
           "name": "quartech_smephonenumber",

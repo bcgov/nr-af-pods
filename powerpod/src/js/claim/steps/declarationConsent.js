@@ -36,4 +36,8 @@ function addConsent() {
   );
 
   $("[data-name='applicantDeclarationSection']").parent().prepend(consentDiv);
+
+  $('#quartech_declarationandconsent_label').text(
+    'I / We agree to the above statement.'
+  );
 }

@@ -1236,16 +1236,17 @@ export function setFieldNameLabel(fieldName, label) {
   if (!labelElement) {
     logger.error({
       fn: setFieldNameLabel,
-      message: `Could not find fieldName: ${fieldName} label element`,
+      message: `Could not find field label for fieldName: ${fieldName} label element`,
     });
     return;
   }
-  const obj = $(`#${fieldName}_label`)?.text(label);
-  obj?.html(obj?.html()?.replace(/\n/g, '<br/>'));
+
+  const newLabel = label.replace(/\n/g, '<br/>') ?? label;
+  $(`#${fieldName}_label`)?.html(newLabel);
 
   logger.info({
     fn: setFieldNameLabel,
-    message: `Successfully set fieldName: ${fieldName} to ${label}`,
+    message: `Successfully set field label for fieldName: ${fieldName} to ${label}`,
   });
 }
 

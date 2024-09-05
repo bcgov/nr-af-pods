@@ -19,6 +19,7 @@ import {
   getOriginalMsosElement,
   hideFieldRow,
   observeChanges,
+  setFieldNameLabel,
   setFieldValue,
   showFieldRow,
 } from './html.js';
@@ -44,6 +45,11 @@ import { getFormType } from './applicationUtils.js';
 import { getEnv } from './env.js';
 import { setOnChangeHandler } from './onChangeHandlers.js';
 import { generateFormJson } from './form.js';
+
+// Note: DO NOT remove the below, they are neccesary to import required event handler fns
+//       This is needed due to tree shaking during compilation.
+import { hasCraNumberCheckboxEventHandler } from './customEventHandlers.js';
+import { initCraNumberCheckbox } from './initValuesFns.js';
 
 const logger = Logger('common/fieldConfiguration');
 
@@ -118,10 +124,21 @@ export function configureField(field) {
   if (label) {
     logger.info({
       fn: configureField,
-      message: `Found label configuration for name: ${name}, label: ${label}`,
+      message: `Found field label configuration for name: ${name}, label: ${label}, existingLabel: ${$(
+        `#${name}_label`
+      )?.html()}`,
     });
-    const newLabel = label.replace(/\n/g, '<br/>');
-    $(`#${name}_label`)?.html(newLabel);
+    setFieldNameLabel(name, label);
+    const updatedLabel = $(`#${name}_label`).html();
+    store.dispatch('addFieldData', {
+      name,
+      label: updatedLabel,
+    });
+    logger.info({
+      fn: configureField,
+      message: `Successfully set field label for name: ${name}, label: ${updatedLabel}, selector: ${`#${name}_label`}`,
+      data: { label, updatedLabel, name },
+    });
   } else {
     const existingLabel = getFieldLabel(name);
     store.dispatch('addFieldData', {
@@ -536,7 +553,10 @@ export function updateFieldValue({
     }
   }
 
-  if (fieldConfig.value === value) {
+  if (
+    !fieldConfig?.customComponent?.customEventHandler &&
+    fieldConfig.value === value
+  ) {
     logger.info({
       fn: updateFieldValue,
       message: `No need to update state or validate new value as it is the same for name: ${name}`,

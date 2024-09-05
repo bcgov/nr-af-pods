@@ -30,29 +30,11 @@ const logger = Logger('application/steps/project');
 export function customizeProjectStep(programData) {
   setProjectStepRequiredFields();
 
-  setProjectStepDependentRequiredFields();
-
-  displayLabelsForProjectStep(programData);
-
   customizeActivityTypesDropDownList(programData);
 
   initOnChange_ActiviyOpenToPublic();
 
   initAdditionalLocationsMultiSelect();
-}
-
-function displayLabelsForProjectStep(programData) {
-  const fieldsLabelsMap = JSON.parse(
-    programData.quartech_portalappfieldsdisplaynamesmapping
-  );
-  if (!fieldsLabelsMap) return;
-
-  for (const [fieldName, label] of Object.entries(fieldsLabelsMap)) {
-    let elem = $(`#${fieldName}_label`);
-    if (elem) {
-      elem.text(label);
-    }
-  }
 }
 
 function customizeActivityTypesDropDownList(programData) {
@@ -134,137 +116,6 @@ function setProjectStepRequiredFields() {
     customizeProjectStepForVLB();
   }
 
-  // START KTTP PROJECT STEP CUSTOMIZATION
-  if (programAbbreviation && programAbbreviation.includes('KTTP')) {
-    // START Organization Information
-    // initOnChange_DependentRequiredField({
-    //   dependentOnValue: YES_VALUE,
-    //   dependentOnElementTag:
-    //     'quartech_hasthisorganizationreceivedkttpfundingin',
-    //   requiredFieldTag: 'quartech_ifyespleaseexplainwhenandforwhichactivity',
-    // });
-    // initOnChange_DependentRequiredField({
-    //   dependentOnValue: YES_VALUE,
-    //   dependentOnElementTag:
-    //     'quartech_hasthisorganizationreceivedfundingfrmother',
-    //   requiredFieldTag: 'quartech_ifyespleaseexplainwhenandfromwhichprogram',
-    // });
-    // END Organization Information
-    // START Collaborating Organization Information
-    // initOnChange_DependentRequiredField({
-    //   dependentOnValue: YES_VALUE,
-    //   dependentOnElementTag: 'quartech_areyoucollaboratingwithanyotherorg',
-    //   requiredFieldTag: 'quartech_ifyespleaseprovidelegalbusinessorganization',
-    //   shouldBeRequired: false,
-    // });
-    // initOnChange_DependentRequiredField({
-    //   dependentOnValue: YES_VALUE,
-    //   dependentOnElementTag: 'quartech_areyoucollaboratingwithanyotherorg',
-    //   requiredFieldTag: 'quartech_ifyespleaseprovideacontactname',
-    //   shouldBeRequired: false,
-    // });
-    // initOnChange_DependentRequiredField({
-    //   dependentOnValue: YES_VALUE,
-    //   dependentOnElementTag: 'quartech_areyoucollaboratingwithanyotherorg',
-    //   requiredFieldTag: 'quartech_ifyespleaseprovideabriefbackgroundoutlinin',
-    //   shouldBeRequired: false,
-    // });
-    // END Collaborating Organization Information
-    // START Activity Information
-    // initOnChange_DependentRequiredField({
-    //   dependentOnValue: YES_VALUE,
-    //   dependentOnElementTag:
-    //     'quartech_areyouapplyingforatraceabilityknowledget',
-    //   requiredFieldTag: 'quartech_ifyespleaseexplainthetraceabilityactivityt',
-    // });
-    // initOnChange_DependentRequiredField({
-    //   dependentOnValue: YES_VALUE,
-    //   dependentOnElementTag: 'quartech_doestheactivitytakeplaceovermultipleday',
-    //   requiredFieldTag: 'quartech_ifyespleaseprovidetheadditionaldates',
-    // });
-    // initOnChange_DependentRequiredField({
-    //   dependentOnValue: NO_VALUE,
-    //   dependentOnElementTag: 'quartech_willthisactivitybeopentotheentirepublic',
-    //   requiredFieldTag: 'quartech_allactivitiesmustbeopentothepublicplease',
-    // });
-    // initOnChange_DependentRequiredField({
-    //   dependentOnValue: OTHER_VALUE,
-    //   dependentOnElementTag:
-    //     'quartech_pleaseselectthemostapplicableactivitytype',
-    //   requiredFieldTag: 'quartech_ifotherpleasedescribeyouractivitytype',
-    // });
-    // Priority Topic(s). Please select the most applicable topic(s) that your project will focus on.
-    // Please select the most applicable purpose that your activity will focus on:
-    // const priorityTopicElements = document.querySelector(
-    //   '#quartech_prioritytopics_i'
-    // );
-    // const containsOtherPriorityTopicOption = document
-    //   .querySelector('#quartech_prioritytopics_i')
-    //   ?.querySelector('li[aria-label="Other for Priority Topic(s)"]');
-    // // initial load:
-    // if (containsOtherPriorityTopicOption) {
-    //   initOnChange_DependentRequiredField({
-    //     dependentOnElementTag: 'quartech_prioritytopics_i',
-    //     requiredFieldTag: 'quartech_otherprioritytopic',
-    //     overrideTruthyClause: true,
-    //   });
-    // } else {
-    //   initOnChange_DependentRequiredField({
-    //     dependentOnElementTag: 'quartech_prioritytopics_i',
-    //     requiredFieldTag: 'quartech_otherprioritytopic',
-    //     overrideTruthyClause: false,
-    //   });
-    // }
-    // setup observer to check each time selected topics changes
-    // var observer = new MutationObserver(function (mutations) {
-    //   if (
-    //     document
-    //       .querySelector('#quartech_prioritytopics_i')
-    //       ?.querySelector('li[aria-label="Other for Priority Topic(s)"]')
-    //   ) {
-    //     let isVisible = $(`#quartech_otherprioritytopic_label`).is(':visible');
-    //     // Here we should dynamically hide/show the comment field & make it required:
-    //     // Do this by using 'overrideTruthyClause' and force it to show & be required
-    //     if (!isVisible) {
-    //       initOnChange_DependentRequiredField({
-    //         dependentOnElementTag: 'quartech_prioritytopics_i',
-    //         requiredFieldTag: 'quartech_otherprioritytopic',
-    //         overrideTruthyClause: true,
-    //       });
-    //     }
-    //   } else {
-    //     initOnChange_DependentRequiredField({
-    //       dependentOnElementTag: 'quartech_prioritytopics_i',
-    //       requiredFieldTag: 'quartech_otherprioritytopic',
-    //       overrideTruthyClause: false,
-    //     });
-    //   }
-    // });
-    // if (
-    //   priorityTopicElements &&
-    //   priorityTopicElements.nodeType === Node.ELEMENT_NODE
-    // ) {
-    //   observer.observe(priorityTopicElements, {
-    //     attributes: true,
-    //     childList: true,
-    //     characterData: true,
-    //   });
-    // }
-    // initOnChange_DependentRequiredField({
-    //   dependentOnValue: OTHER_VALUE,
-    //   dependentOnElementTag: 'quartech_activitypurpose',
-    //   requiredFieldTag: 'quartech_ifotherpleasedescribetheactivitypurpose',
-    // });
-    // initOnChange_DependentRequiredField({
-    //   dependentOnValue: YES_VALUE,
-    //   dependentOnElementTag:
-    //     'quartech_theprocessoflearningandprocessingknowledge',
-    //   requiredFieldTag: 'quartech_adulteducationandknowlegetransferdescript',
-    // });
-    // END Activity Information
-  }
-  // END KTTP PROJECT STEP CUSTOMIZATION
-
   // START NEFBA PROJECT STEP CUSTOMIZATION
   if (programAbbreviation && programAbbreviation === 'NEFBA') {
     if (!document.querySelector('#quartech_businessgoals_note')) {
@@ -274,12 +125,14 @@ function setProjectStepRequiredFields() {
       );
     }
 
+    // @ts-ignore
     initOnChange_DependentRequiredField({
       dependentOnValue: '255550000',
       dependentOnElementTag: 'quartech_completingcategory',
       requiredFieldTag: 'quartech_stepstocompletethebusinessplan',
     });
 
+    // @ts-ignore
     initOnChange_DependentRequiredField({
       dependentOnValue: '255550001', // Business Plan Coaching from a Business Consultant ($3,000 in funding)
       dependentOnElementTag: 'quartech_completingcategory',
@@ -329,16 +182,19 @@ function setProjectStepRequiredFields() {
 
     const BUSINESS_PLAN_COACHING_VALUE = '255550001';
     if (programCategoryElementInitialValue === BUSINESS_PLAN_COACHING_VALUE) {
+      // @ts-ignore
       shouldRequireDependentField({
         shouldBeRequired: true,
         requiredFieldTag: 'quartech_bciaregisteredconsultant',
       });
       setBciaOnChange();
     } else {
+      // @ts-ignore
       shouldRequireDependentField({
         shouldBeRequired: false,
         requiredFieldTag: 'quartech_bciaregisteredconsultant',
       });
+      // @ts-ignore
       shouldRequireDependentField({
         shouldBeRequired: false,
         requiredFieldTag: 'quartech_cpaconsultant',
@@ -347,10 +203,13 @@ function setProjectStepRequiredFields() {
     }
 
     $('#quartech_completingcategory').on('change', function () {
+      // @ts-ignore
       const programCategoryValue = document.querySelector(
         '#quartech_completingcategory'
-      ).value;
+        // @ts-ignore
+      )?.value;
       if (programCategoryValue === BUSINESS_PLAN_COACHING_VALUE) {
+        // @ts-ignore
         shouldRequireDependentField({
           shouldBeRequired: true,
           requiredFieldTag: 'quartech_bciaregisteredconsultant',
@@ -358,11 +217,13 @@ function setProjectStepRequiredFields() {
         });
         setBciaOnChange();
       } else {
+        // @ts-ignore
         shouldRequireDependentField({
           shouldBeRequired: false,
           requiredFieldTag: 'quartech_bciaregisteredconsultant',
           // setRequiredFieldsFunc: setProjectStepRequiredFields
         });
+        // @ts-ignore
         shouldRequireDependentField({
           shouldBeRequired: false,
           requiredFieldTag: 'quartech_cpaconsultant',
@@ -443,7 +304,7 @@ function setProjectStepRequiredFields() {
   // if (getProgramAbbreviation() === 'ABPP2') {
   //   if (!document.querySelector('#consultantNotice')) {
   //     let htmlContentToAddUnderConsultantInfo = `<div id="consultantNotice" style="padding-bottom: 15px;">
-  //     **Please note that the Ministry reserves the right to refuse projects submitted with consultants who are not considered to be in good standing with the Ministry. Applications with unacceptable consultants listed will be held or waitlisted and the applicants will be given an opportunity to find an acceptable consultant. 
+  //     **Please note that the Ministry reserves the right to refuse projects submitted with consultants who are not considered to be in good standing with the Ministry. Applications with unacceptable consultants listed will be held or waitlisted and the applicants will be given an opportunity to find an acceptable consultant.
   //   </div>`;
   //     addTextAboveField(
   //       'quartech_consultantcompanyname',
@@ -453,7 +314,7 @@ function setProjectStepRequiredFields() {
 
   //   if (!document.querySelector('#moreThan10PercentNotice')) {
   //     let htmlContentToAddUnderMoreThan10Percent = `<div id="moreThan10PercentNotice" style="padding-top: 15px;">
-  //     **Please note that supporting consultants may not complete more than 40% of the proposed project. 
+  //     **Please note that supporting consultants may not complete more than 40% of the proposed project.
   //   </div>`;
   //     addTextBelowField(
   //       'quartech_consultantcompletingoverlimit',
@@ -466,17 +327,20 @@ function setProjectStepRequiredFields() {
 
 function setBciaOnChange() {
   $('#quartech_bciaregisteredconsultant').on('change', function () {
+    // @ts-ignore
     const bciaConsultantValue = document.querySelector(
       '#quartech_bciaregisteredconsultant'
     ).value;
     const BCIA_NO_VALUE = '255550002';
     if (bciaConsultantValue === BCIA_NO_VALUE) {
+      // @ts-ignore
       shouldRequireDependentField({
         shouldBeRequired: true,
         requiredFieldTag: 'quartech_cpaconsultant',
         setRequiredFieldsFunc: setProjectStepRequiredFields,
       });
     } else {
+      // @ts-ignore
       shouldRequireDependentField({
         shouldBeRequired: false,
         requiredFieldTag: 'quartech_cpaconsultant',
@@ -487,153 +351,18 @@ function setBciaOnChange() {
   });
 }
 
-function setProjectStepDependentRequiredFields() {
-  const programAbbreviation = getProgramAbbreviation();
-  // START KTTP CUSTOMIZATION
-  if (programAbbreviation.includes('KTTP')) {
-    // Please explain if you selected Sector-Wide, or if you have additional information to share on the Commodity/Sector:
-    // initOnChange_DependentRequiredField({
-    //   dependentOnValue: SECTOR_WIDE_ID_VALUE,
-    //   dependentOnElementTag: 'quartech_naicsindustry',
-    //   requiredFieldTag: 'quartech_ifotherpleasedescribecommodity',
-    // });
-    // initOnChange_DependentRequiredField({
-    //   dependentOnValueArray: [
-    //     '255550001', // "In-Person"
-    //     '255550002', // "hybrid"
-    //   ],
-    //   dependentOnElementTag: 'quartech_eventtype',
-    //   requiredFieldTag: 'quartech_projectlocation',
-    // });
-    // initOnChange_DependentRequiredField({
-    //   dependentOnValue: '255550001',
-    //   dependentOnElementTag: 'quartech_projecttakesplaceinotherplaces',
-    //   requiredFieldTag: 'quartech_venuelocationcitytownetcoronlinesoftwar',
-    // });
-  }
-  // END KTTP CUSTOMIZATION
-
-  // START ABBP STREAM 2 CUSTOMIZATION
-  // if (programAbbreviation === 'ABPP2') {
-  //   initOnChange_DependentRequiredField({
-  //     dependentOnValue: YES_VALUE,
-  //     dependentOnElementTag: 'quartech_useofsupportingconsultant',
-  //     requiredFieldTag: 'quartech_consultantcompletingoverlimit',
-  //   });
-
-  //   initOnChange_DependentRequiredField({
-  //     dependentOnValue: YES_VALUE,
-  //     dependentOnElementTag: 'quartech_useofsupportingconsultant',
-  //     requiredFieldTag: 'quartech_supportingconsultantcompanyname',
-  //   });
-
-  //   initOnChange_DependentRequiredField({
-  //     dependentOnValue: YES_VALUE,
-  //     dependentOnElementTag: 'quartech_useofsupportingconsultant',
-  //     requiredFieldTag: 'quartech_supportingconsultantfullname',
-  //   });
-
-  //   initOnChange_DependentRequiredField({
-  //     dependentOnValue: YES_VALUE,
-  //     dependentOnElementTag: 'quartech_useofsupportingconsultant',
-  //     requiredFieldTag: 'quartech_supportingconsultantpositiontitle',
-  //   });
-
-  //   initOnChange_DependentRequiredField({
-  //     dependentOnValue: YES_VALUE,
-  //     dependentOnElementTag: 'quartech_useofsupportingconsultant',
-  //     requiredFieldTag: 'quartech_supportingconsultantrationale',
-  //   });
-
-  //   // Please provide the names of the co-applicants to your group application
-  //   // initial load:
-
-  //   setSingleOrGroupApplicant();
-  //   if (document.querySelector('#quartech_singleorgroupapplication')) {
-  //     setSingleOrGroupApplicantOnChange();
-  //   }
-  // }
-  // END ABPP STREAM 2 CUSTOMIZATION
-
-  // In order to continuously improve communications, we are interested in learning how you heard about this program, please select all options that apply
-  // const communicationsOptions = document.querySelector(
-  //   '#quartech_inordertocontinuouslyimprovecommunications_i'
-  // );
-  // const containsOtherCommunicationOption = document
-  //   .querySelector('#quartech_inordertocontinuouslyimprovecommunications_i')
-  //   ?.querySelector(
-  //     'li[aria-label="Other for In order to continuously improve communications"]'
-  //   );
-  // // initial load:
-  // if (containsOtherCommunicationOption) {
-  //   initOnChange_DependentRequiredField({
-  //     dependentOnElementTag:
-  //       'quartech_inordertocontinuouslyimprovecommunications_i',
-  //     overrideTruthyClause: true,
-  //     requiredFieldTag: 'quartech_ifotherpleasedescribe',
-  //   });
-  // } else {
-  //   initOnChange_DependentRequiredField({
-  //     dependentOnElementTag:
-  //       'quartech_inordertocontinuouslyimprovecommunications_i',
-  //     overrideTruthyClause: false,
-  //     requiredFieldTag: 'quartech_ifotherpleasedescribe',
-  //   });
-  // }
-
-  // // setup observer to check each time selected topics changes
-  // var observer = new MutationObserver(function (mutations) {
-  //   if (
-  //     document
-  //       .querySelector('#quartech_inordertocontinuouslyimprovecommunications_i')
-  //       ?.querySelector(
-  //         'li[aria-label="Other for In order to continuously improve communications"]'
-  //       )
-  //   ) {
-  //     // Only need to show the field when it's not visible, otherwise do nothing
-  //     let isVisible = $(`#quartech_ifotherpleasedescribe_label`).is(':visible');
-  //     // Here we should dynamically hide/show the comment field & make it required:
-  //     // Do this by using 'overrideTruthyClause' and force it to show & be required
-  //     if (!isVisible) {
-  //       initOnChange_DependentRequiredField({
-  //         dependentOnElementTag:
-  //           'quartech_inordertocontinuouslyimprovecommunications_i',
-  //         overrideTruthyClause: true,
-  //         requiredFieldTag: 'quartech_ifotherpleasedescribe',
-  //       });
-  //     }
-  //   } else {
-  //     initOnChange_DependentRequiredField({
-  //       dependentOnElementTag:
-  //         'quartech_inordertocontinuouslyimprovecommunications_i',
-  //       overrideTruthyClause: false,
-  //       requiredFieldTag: 'quartech_ifotherpleasedescribe',
-  //     });
-  //   }
-  // });
-
-  // if (
-  //   communicationsOptions &&
-  //   communicationsOptions.nodeType === Node.ELEMENT_NODE
-  // ) {
-  //   observer.observe(communicationsOptions, {
-  //     attributes: true,
-  //     childList: true,
-  //     characterData: true,
-  //   });
-  // }
-}
-
 function setSingleOrGroupApplicant() {
   let htmlContentToAddAboveCoApplicantNames = `<div id="groupApplicationNotice" style="padding-bottom: 15px;">
   If applying for a group project, please ensure all participants submit their own applications and indicate co-applicants as part of the application process.
 </div>`;
+  // @ts-ignore
   const singleOrGroupApplicationValue = document.querySelector(
     '#quartech_singleorgroupapplication'
   ).value;
   if (singleOrGroupApplicationValue === GROUP_APPLICATION_VALUE) {
     // Here we should dynamically hide/show the comment field & make it required:
     // Do this by using 'overrideTruthyClause' and force it to show & be required
+    // @ts-ignore
     shouldRequireDependentField({
       shouldBeRequired: true,
       requiredFieldTag: 'quartech_coapplicatntsnames',
@@ -652,6 +381,7 @@ function setSingleOrGroupApplicant() {
       );
     }
   } else {
+    // @ts-ignore
     shouldRequireDependentField({
       shouldBeRequired: false,
       requiredFieldTag: 'quartech_coapplicatntsnames',
@@ -723,7 +453,9 @@ function addLocationMultiSelect(municipalJson) {
 
 function setupChosen() {
   logger.info({ fn: setupChosen, message: 'setting up chosen...' });
+  // @ts-ignore
   $('.chosen-select').chosen();
+  // @ts-ignore
   $('.chosen-select-deselect').chosen({ allow_single_deselect: true });
 
   // fetch pre-selected options, if any
@@ -737,6 +469,7 @@ function setupChosen() {
     $('.chosen-select').trigger('chosen:updated');
   }
 
+  // @ts-ignore
   var target = document
     .getElementById('quartech_venuelocationcitytownetcoronlinesoftwar')
     .closest('tr');
@@ -756,7 +489,8 @@ function setupChosen() {
   // update dynamics field value on change of chosen field
   $('.chosen-select').on('change', function () {
     const newSelectedLocations = $('.chosen-select').val();
-    const stringToPassToFieldInput = newSelectedLocations.join(', ');
+    // @ts-ignore
+    const stringToPassToFieldInput = newSelectedLocations?.join(', ');
     // @ts-ignore
     setFieldValue({
       name: 'quartech_venuelocationcitytownetcoronlinesoftwar',

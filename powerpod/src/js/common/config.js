@@ -3,10 +3,14 @@ import { Logger } from './logger.js';
 // UNCOMMENT THIS IF YOU WANT TO FORCE TO USE LOCAL JSON CONFIG:
 // KTTP1:
 // import localConfigJson from '../../../../assets/application/json/quartech_applicantportalapplicationformconfigjson_kttp1.json';
+// KTTP2:
+// import localConfigJson from '../../../../assets/application/json/quartech_applicantportalapplicationformconfigjson_kttp2.json';
 // ABPP1:
 // import localConfigJson from '../../../../assets/application/json/quartech_applicantportalapplicationformconfigjson_abpp1.json';
 // ABPP2:
 // import localConfigJson from '../../../../assets/application/json/quartech_applicantportalapplicationformconfigjson_abpp2.json';
+// VLB:
+// import localConfigJson from '../../../../assets/application/json/quartech_applicantportalapplicationformconfigjson_vlb.json';
 
 const logger = Logger('common/config');
 

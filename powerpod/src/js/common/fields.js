@@ -133,7 +133,7 @@ export function getFieldsBySectionApplication(stepName, forceRefresh = false) {
   } else if (globalSection.fields?.length) {
     // if so, merge them, with application-level config taking precedence
     const globalFields = globalSection.fields;
-    fields = mergeFieldArrays(globalFields, fields, 'name');
+    fields = mergeFieldArrays(fields, globalFields, 'name');
   }
 
   if (
