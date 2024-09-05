@@ -1,0 +1,53 @@
+{
+	"name": "Application - VLB - Availability (Eligibility) Step - Test Script",
+	"testSteps" : [
+		{   "action" : "open-new-tab", "url": "https://af-pods-dev.powerappsportals.com/application/?programid=8806d490-8f44-ef11-a316-002248ae4517" }
+		
+		
+		, { "action" : "Expect", "field" : { "label": "I am willing to provide", "visible" : true, "required" : true} }
+		, { "action" : "Expect", "field" : { "label": "I am willing to work in the following areas of the province (choose all that apply)", "visible" : false } }
+		, { "action" : "Expect", "field" : { "label": "I have a valid BC drivers license", "visible" : false } }
+		, { "action" : "Expect", "field" : { "label": "I am comfortable working and driving in remote locations", "visible" : false } }
+		, { "action" : "Expect", "field" : { "label": "I am comfortable working and driving in winter weather", "visible" : false } }
+		
+		, { "action" : "Select", "field" : { "label": "I am willing to provide", "value": "In-person only"} }
+		, { "action" : "Expect", "field" : { "label": "I am willing to work in the following areas of the province (choose all that apply)", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "I have a valid BC drivers license", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "I am comfortable working and driving in remote locations", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "I am comfortable working and driving in winter weather", "visible" : true, "required" : true } }
+		
+		, { "action" : "Select", "field" : { "label": "I am willing to provide", "value": "Both in-person and telemedicine services"} }
+		, { "action" : "Expect", "field" : { "label": "I am willing to work in the following areas of the province (choose all that apply)", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "I have a valid BC drivers license", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "I am comfortable working and driving in remote locations", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "I am comfortable working and driving in winter weather", "visible" : true, "required" : true } }
+		
+
+		, { "action" : "Select", "field" : { "label": "I am willing to provide", "value": "Telemedicine only"} }
+		, { "action" : "Expect", "field" : { "label": "I am willing to work in the following areas of the province (choose all that apply)", "visible" : false } }
+		, { "action" : "Expect", "field" : { "label": "I have a valid BC drivers license", "visible" : false } }
+		, { "action" : "Expect", "field" : { "label": "I am comfortable working and driving in remote locations", "visible" : false } }
+		, { "action" : "Expect", "field" : { "label": "I am comfortable working and driving in winter weather", "visible" : false } }
+		
+
+		, { "action" : "Expect", "field" : { "label": "I am willing to provide approximately the following number of days of service per year", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "September to December 2024", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "January to March 2025", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "April to Jun 2025", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "July to September 2025", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "October to December 2025", "visible" : true, "required" : true } }
+
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : true } }
+
+		
+		, { "action" : "Select", "field" : { "label": "I am willing to provide approximately the following number of days of service per year", "value": "Less than 10" } }
+		, { "action" : "Select", "field" : { "label": "September to December 2024", "value": "lots" } }
+		, { "action" : "Select", "field" : { "label": "January to March 2025", "value": "limited" } }
+		, { "action" : "Select", "field" : { "label": "April to Jun 2025", "value": "none" } }
+		, { "action" : "Select", "field" : { "label": "July to September 2025", "value": "unsure" } }
+		, { "action" : "Select", "field" : { "label": "October to December 2025", "value": "lots" } }
+			
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : false } }
+
+	]
+}
