@@ -4,7 +4,7 @@
 		{   "action" : "open-new-tab", "url": "https://af-pods-dev.powerappsportals.com/application/?programid=8806d490-8f44-ef11-a316-002248ae4517" }
 		
 		
-		, { "action" : "Expect", "field" : { "label": "Do you have a Canada Revenue Agency (CRA) Business Number?", "visible" : true, "required" : false, "value": "unchecked"} }
+		, { "action" : "Expect", "field" : { "label": "Do you have a Canada Revenue Agency (CRA) Business Number?", "visible" : true, "required" : false, "value": "true"} }
 		, { "action" : "Expect", "field" : { "label": "Legal Business or Organization Name", "visible" : false } }
 		, { "action" : "Expect", "field" : { "label": "Canada Revenue Agency (CRA) Business Number or the first 9 digits of the Goods and Services Tax/Harmonized Sales Tax (GST/HST) number", "visible" : false } }
 		, { "action" : "Expect", "field" : { "label": "Suite Number (optional)", "visible" : true, "required" : false } }
@@ -16,7 +16,7 @@
 		, { "action" : "Expect", "field" : { "label": "Business Phone Number", "visible" : false } }
 		, { "action" : "Expect", "field" : { "label": "Business Email Address", "visible" : false } }
 
-		, { "action" : "Enter", "field" : { "label": "Do you have a Canada Revenue Agency (CRA) Business Number?", "value": "checked"} }
+		, { "action" : "Enter", "field" : { "label": "Do you have a Canada Revenue Agency (CRA) Business Number?", "value": "unchecked"} }
 		, { "action" : "Expect", "field" : { "label": "Legal Business or Organization Name", "visible" : true, "required" : true } }
 		, { "action" : "Expect", "field" : { "label": "Canada Revenue Agency (CRA) Business Number or the first 9 digits of the Goods and Services Tax/Harmonized Sales Tax (GST/HST) number", "visible" : true, "required" : true } }
 		, { "action" : "Expect", "field" : { "label": "Business - Suite Number (optional)", "visible" : true, "required" : false } }
@@ -28,7 +28,7 @@
 		, { "action" : "Expect", "field" : { "label": "Business Phone Number", "visible" : true, "required" : true } }
 		, { "action" : "Expect", "field" : { "label": "Business Email Address", "visible" : true, "required" : true } }
 
-		, { "action" : "Enter", "field" : { "label": "Do you have a Canada Revenue Agency (CRA) Business Number?", "value": "unchecked"} }
+		, { "action" : "Enter", "field" : { "label": "Do you have a Canada Revenue Agency (CRA) Business Number?", "value": "checked"} }
 					
 		, { "action" : "Expect", "field" : { "label": "First Name", "visible" : true, "required" : true } }
 		, { "action" : "Expect", "field" : { "label": "Last Name", "visible" : true, "required" : true } }
