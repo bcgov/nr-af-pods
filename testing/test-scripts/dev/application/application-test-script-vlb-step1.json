@@ -1,0 +1,61 @@
+{
+	"name": "Application - VLB - Applicant Information Step - Test Script",
+	"testSteps" : [
+		{   "action" : "open-new-tab", "url": "https://af-pods-dev.powerappsportals.com/application/?programid=8806d490-8f44-ef11-a316-002248ae4517" }
+		
+		
+		, { "action" : "Expect", "field" : { "label": "I do not have a Canada Revenue Agency (CRA) Business Number", "visible" : true, "required" : false, "value": "checked"} }
+		, { "action" : "Expect", "field" : { "label": "Legal Business or Organization Name", "visible" : false } }
+		, { "action" : "Expect", "field" : { "label": "Canada Revenue Agency (CRA) Business Number or the first 9 digits of the Goods and Services Tax/Harmonized Sales Tax (GST/HST) number", "visible" : false } }
+		, { "action" : "Expect", "field" : { "label": "Suite Number (optional)", "visible" : true, "required" : false } }
+		, { "action" : "Expect", "field" : { "label": "Street Number", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Street", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "City", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Province/Territory", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Postal Code", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Business Phone Number", "visible" : false } }
+		, { "action" : "Expect", "field" : { "label": "Business Email Address", "visible" : false } }
+
+		, { "action" : "Enter", "field" : { "label": "I do not have a Canada Revenue Agency (CRA) Business Number", "value": "unchecked"} }
+		, { "action" : "Expect", "field" : { "label": "Legal Business or Organization Name", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Canada Revenue Agency (CRA) Business Number or the first 9 digits of the Goods and Services Tax/Harmonized Sales Tax (GST/HST) number", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Business - Suite Number", "visible" : true, "required" : false } }
+		, { "action" : "Expect", "field" : { "label": "Business - Street Number", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Business - Street", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Business City", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Business Province/Territory", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Business Postal Code", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Business Phone Number", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Business Email Address", "visible" : true, "required" : true } }
+
+		, { "action" : "Enter", "field" : { "label": "I do not have a Canada Revenue Agency (CRA) Business Number", "value": "checked"} }
+					
+		, { "action" : "Expect", "field" : { "label": "First Name", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Last Name", "visible" : true, "required" : true } }
+		
+		, { "action" : "Expect", "field" : { "label": "Telephone", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Email to be used for correspondence on this application", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "I am a", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "What is your professional license number?", "visible" : true, "required" : true } }
+
+
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : true } }
+    
+		, { "action" : "Enter", "field" : { "label": "First Name", "value": "Galo" } }
+		, { "action" : "Enter", "field" : { "label": "Last Name", "value": "Doido" } }
+		, { "action" : "Enter", "field" : { "label": "Suite Number (optional)", "value": "#200" } }
+		, { "action" : "Enter", "field" : { "label": "Street Number", "value": "1012" } }
+		, { "action" : "Enter", "field" : { "label": "Street", "value": "Douglas" } }
+		, { "action" : "Enter", "field" : { "label": "City", "value": "Victoria" } }
+		, { "action" : "Select", "field" : { "label": "Province/Territory", "value": "British Columbia" } }
+		, { "action" : "Enter", "field" : { "label": "Postal Code", "value": "V8W2C3" } }
+		
+		, { "action" : "Enter", "field" : { "label": "Telephone", "value": "(250) 380-9686" } }
+		, { "action" : "Enter", "field" : { "label": "Email to be used for correspondence on this application", "value": "quartech@quartech.com" } }
+		, { "action" : "Select", "field" : { "label": "I am a", "value" : "A Veterinarian that holds active registration in the Private Practice Registrant (PPR) class with the College of Veterinarians of BC" } }
+		, { "action" : "Enter", "field" : { "label": "What is your professional license number?", "value" : "Automated Test" } }
+			
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : false } }
+
+	]
+}
