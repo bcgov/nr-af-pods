@@ -1,0 +1,11 @@
+{
+	"name": "Application - VLB - Documents Step - Test Script",
+	"testSteps" : [
+		{   "action" : "open-new-tab", "url": "https://af-pods-dev.powerappsportals.com/application/?programid=8806d490-8f44-ef11-a316-002248ae4517" }
+	
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : true } }
+
+		, { "action" : "Expect", "field" : { "label": "Proof of license/registration with either College of Veterinarians of BC (CVBC) or BC Veterinary Technologists Association (BCVTA)", "visible" : true, "required" : true } }		
+	]
+}
+
