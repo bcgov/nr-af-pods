@@ -1,0 +1,61 @@
+{
+	"name": "Application - VLB - Scope of Practice (Project) Step - Test Script",
+	"testSteps" : [
+		{   "action" : "open-new-tab", "url": "https://af-pods-dev.powerappsportals.com/application/?programid=8806d490-8f44-ef11-a316-002248ae4517" }
+		
+		
+		, { "action" : "Expect", "field" : { "label": "Beef cattle herd health (vaccination protocols, pregnancy and semen testing)", "visible" : true, "required" : true} }
+		, { "action" : "Expect", "field" : { "label": "Beef cattle sick animal care (e.g. diagnosis, treatment plans, post mortems)", "visible" : true, "required" : true} }
+		, { "action" : "Expect", "field" : { "label": "Beef cattle emergency care (e.g. calving, C-section, prolapses)", "visible" : true, "required" : true} }
+		, { "action" : "Expect", "field" : { "label": "Dairy cattle herd health (e.g. pregnancy testing)", "visible" : true, "required" : true} }
+		, { "action" : "Expect", "field" : { "label": "Dairy cattle sick animal care (e.g. make diagnosis, treatment plans)", "visible" : true, "required" : true} }
+		, { "action" : "Expect", "field" : { "label": "Dairy cattle emergency care (e.g. calving, C-section, DA’s)", "visible" : true, "required" : true} }
+		, { "action" : "Expect", "field" : { "label": "Small ruminant services", "visible" : true, "required" : true} }
+		, { "action" : "Expect", "field" : { "label": "Commercial swine services", "visible" : true, "required" : true} }
+		, { "action" : "Expect", "field" : { "label": "Smallholder swine services", "visible" : true, "required" : true} }
+		, { "action" : "Expect", "field" : { "label": "Commercial poultry services", "visible" : true, "required" : true} }
+		, { "action" : "Expect", "field" : { "label": "Smallholder poultry services", "visible" : true, "required" : true} }
+		
+		, { "action" : "Expect", "field" : { "label": "Equine preventative care (e.g. vaccines)", "visible" : true, "required" : true} }
+		, { "action" : "Expect", "field" : { "label": "Equine dentistry", "visible" : true, "required" : true} }
+		, { "action" : "Expect", "field" : { "label": "Equine urgent care (e.g. colics, lacerations, foot abscesses, laminitis, euthanasia)", "visible" : true, "required" : true} }
+		
+		, { "action" : "Expect", "field" : { "label": "Companion animal preventative care", "visible" : true, "required" : true} }
+		, { "action" : "Expect", "field" : { "label": "Companion animal spay and neuter", "visible" : true, "required" : true} }
+		, { "action" : "Expect", "field" : { "label": "Companion animal dentistry", "visible" : true, "required" : true} }
+		, { "action" : "Expect", "field" : { "label": "Companion animal sick animal care", "visible" : true, "required" : true} }
+		, { "action" : "Expect", "field" : { "label": "Companion animal emergency surgery (e.g. GDV, C-section, enterotomy, lacerations, enucleations)", "visible" : true, "required" : true} }
+		
+		, { "action" : "Expect", "field" : { "label": "Willingness to provide on call/after hours services during locums", "visible" : true, "required" : true} }
+		, { "action" : "Expect", "field" : { "label": "Other information that you would like practices to know", "visible" : true, "required" : false} }
+		
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : true } }
+
+		, { "action" : "Select", "field" : { "label": "Beef cattle herd health (vaccination protocols, pregnancy and semen testing)", "value": "Ready to go after a quick review of clinic equipment and protocols"} }
+		, { "action" : "Select", "field" : { "label": "Beef cattle sick animal care (e.g. diagnosis, treatment plans, post mortems)", "value": "Willing to provide after a 3 to 5 day refresher"} }
+		, { "action" : "Select", "field" : { "label": "Beef cattle emergency care (e.g. calving, C-section, prolapses)", "value": "Willing to provide after a longer refresher (> 5 days)"} }
+		, { "action" : "Select", "field" : { "label": "Dairy cattle herd health (e.g. pregnancy testing)", "value": "Not willing to provide"} }
+		, { "action" : "Select", "field" : { "label": "Dairy cattle sick animal care (e.g. make diagnosis, treatment plans)", "value": "Ready to go after a quick review of clinic equipment and protocols"} }
+		, { "action" : "Select", "field" : { "label": "Dairy cattle emergency care (e.g. calving, C-section, DA’s)", "value": "Willing to provide after a 3 to 5 day refresher"} }
+		, { "action" : "Select", "field" : { "label": "Small ruminant services", "value": "Willing to provide after a longer refresher (> 5 days)"} }
+		, { "action" : "Select", "field" : { "label": "Commercial swine services", "value": "Not willing to provide"} }
+		, { "action" : "Select", "field" : { "label": "Smallholder swine services", "value": "Ready to go after a quick review of clinic equipment and protocols"} }
+		, { "action" : "Select", "field" : { "label": "Commercial poultry services", "value": "Willing to provide after a 3 to 5 day refresher"} }
+		, { "action" : "Select", "field" : { "label": "Smallholder poultry services", "value": "Willing to provide after a longer refresher (> 5 days)"} }
+		
+		, { "action" : "Select", "field" : { "label": "Equine preventative care (e.g. vaccines)", "value": "Not willing to provide"} }
+		, { "action" : "Select", "field" : { "label": "Equine dentistry", "value": "Ready to go after a quick review of clinic equipment and protocols"} }
+		, { "action" : "Select", "field" : { "label": "Equine urgent care (e.g. colics, lacerations, foot abscesses, laminitis, euthanasia)"} }
+		
+		, { "action" : "Select", "field" : { "label": "Companion animal preventative care", "value": "Willing to provide after a longer refresher (> 5 days)"} }
+		, { "action" : "Select", "field" : { "label": "Companion animal spay and neuter", "value": "Not willing to provide"} }
+		, { "action" : "Select", "field" : { "label": "Companion animal dentistry", "value": "Ready to go after a quick review of clinic equipment and protocols"} }
+		, { "action" : "Select", "field" : { "label": "Companion animal sick animal care", "value": "Willing to provide after a 3 to 5 day refresher"} }
+		, { "action" : "Select", "field" : { "label": "Companion animal emergency surgery (e.g. GDV, C-section, enterotomy, lacerations, enucleations)", "value": "Willing to provide after a longer refresher (> 5 days)"} }
+		
+		, { "action" : "Select", "field" : { "label": "Willingness to provide on call/after hours services during locums", "value": "I am willing to provide on call/after hours services"} }
+				
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : false } }
+
+	]
+}
