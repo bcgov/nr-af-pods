@@ -27,7 +27,6 @@
 		, { "action" : "Expect", "field" : { "label": "First Name", "visible" : true, "required" : true } }
 		, { "action" : "Expect", "field" : { "label": "Last Name", "visible" : true, "required" : true } }
 		, { "action" : "Expect", "field" : { "label": "Position or Job Title", "visible" : true, "required" : true } }
-		, { "action" : "Expect", "field" : { "label": "City", "visible" : true, "required" : true } }
 		, { "action" : "Expect", "field" : { "label": "Telephone", "visible" : true, "required" : true } }
 		, { "action" : "Expect", "field" : { "label": "Email address for communication about this application", "visible" : true, "required" : true } }
 
@@ -44,10 +43,10 @@
 		
 		, { "action" : "Expect", "field" : { "label": "Has this organization received funding from other Government of British Columbia (the Province) programs in the last year?", "visible" : true, "required" : true } }
 		, { "action" : "Select", "field" : { "label": "Has this organization received funding from other Government of British Columbia (the Province) programs in the last year?", "value": "Yes"} }
-		, { "action" : "Expect", "field" : { "label": "If Yes, please explain when and from which program", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Please explain when and from which program", "visible" : true, "required" : true } }
 		
 		, { "action" : "Select", "field" : { "label": "Has this organization received funding from other Government of British Columbia (the Province) programs in the last year?", "value": "No"} }
-		, { "action" : "Expect", "field" : { "label": "If Yes, please explain when and from which program", "visible" : false } }
+		, { "action" : "Expect", "field" : { "label": "Please explain when and from which program", "visible" : false } }
 		
 		
 		, { "action" : "Expect", "field" : { "label": "Will your organization be collaborating with any other organizations on this project?", "visible" : true, "required" : true } }
@@ -78,7 +77,6 @@
 		, { "action" : "Enter", "field" : { "label": "First Name", "value": "Galo" } }
 		, { "action" : "Enter", "field" : { "label": "Last Name", "value": "Doido" } }
 		, { "action" : "Enter", "field" : { "label": "Position or Job Title", "value": "Champion" } }
-		, { "action" : "Enter", "field" : { "label": "City", "value": "Victoria" } }
 		, { "action" : "Enter", "field" : { "label": "Telephone", "value": "(250) 380-9686" } }
 		, { "action" : "Enter", "field" : { "label": "Email address for communication about this application", "value": "quartech@quartech.com" } }
 
