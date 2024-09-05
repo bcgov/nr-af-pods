@@ -1,4 +1,4 @@
-import { hideFieldsAndSections } from "../../common/html.js";
+import { hideFieldsAndSections } from '../../common/html.js';
 
 export function customizeDeclarationConsentStep(programData) {
   hideFieldsAndSections(false);
@@ -29,4 +29,8 @@ function addConsent(programName) {
   div.innerHTML = htmlConsent;
 
   $("[data-name='declarationAndConsentSection']").parent().prepend(div);
+
+  $('#quartech_declarationandconsent_label').text(
+    'I / We agree to the above statement.'
+  );
 }

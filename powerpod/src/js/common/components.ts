@@ -21,7 +21,7 @@ export function renderCustomComponent(params) {
     customElementTag,
     attributes = {},
     customEvent,
-    customEventHandler,
+    customEventHandler = () => {},
     mappedValueKey, // internal element property that should map to the dynamics field, e.g. in this case "rows" maps to quartech_eligibleexpenses
     initValuesFn, // additional function to load initial values
     customSetupFn,
