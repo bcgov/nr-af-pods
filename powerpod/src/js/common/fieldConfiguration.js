@@ -407,8 +407,10 @@ function setupCanadaPostAddressComplete(fields) {
     'quartech_businesspostalcode',
   ];
 
+  const fieldKeys = Object.keys(fields);
+
   const allCpFieldsPresent = cpFieldNames.every((cpFieldName) => {
-    return fields.some(
+    return fieldKeys.some(
       // @ts-ignore
       (field) => field.name === cpFieldName
     );
