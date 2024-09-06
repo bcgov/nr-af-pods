@@ -1,6 +1,6 @@
 {
   "tags": ["Global", "ALL", "Application", "StaffPortal"],
-  "version": "1.1.6",
+  "version": "1.1.8",
   "description": "Global JSON config used in Applications",
   "FieldsConfig": {
     "programs": [
@@ -120,6 +120,7 @@
               },
               {
                 "name": "quartech_legalnamelast",
+                "label": "Last Name",
                 "required": true
               },
               {
@@ -129,6 +130,7 @@
               },
               {
                 "name": "quartech_city",
+                "label": "City",
                 "required": true
               },
               {
@@ -161,7 +163,7 @@
               },
               {
                 "name": "quartech_ifotherpleasedescribe",
-                "label": "If Other, please describe",
+                "label": "Please describe",
                 "required": true,
                 "visibleIf": {
                   "fieldName": "quartech_inordertocontinuouslyimprovecommunications",

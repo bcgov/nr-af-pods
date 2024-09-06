@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "ABPP1", "Fall 2024"],
-  "version": "1.2.6",
+  "version": "1.2.7",
   "name": "ABPP - Agri-Business and Leadership Development",
   "abbreviation": "ABPP1",
   "hiddenSteps": "",
@@ -160,7 +160,7 @@
         },
         {
           "name": "quartech_ifyespleaseprovideabriefbackgroundoutlinin",
-          "label": "Please list all partners or shareholders including their first name and last name.",
+          "label": "Please list all partners or shareholders including their first name and last name",
           "required": true
         },
         {
