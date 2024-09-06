@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "ABPP1", "Fall 2024"],
-  "version": "1.2.7",
+  "version": "1.2.9",
   "name": "ABPP - Agri-Business and Leadership Development",
   "abbreviation": "ABPP1",
   "hiddenSteps": "",
@@ -79,6 +79,7 @@
           "label": "Type of Business / Organization. If your operation does both processing and primary production, please select the one that will primarily benefit from this program.",
           "required": true,
           "initialValue": 255550001,
+          "techComment": "intialValue set to Primary Producer",
           "elementType": "DropdownSelect"
         },
         {

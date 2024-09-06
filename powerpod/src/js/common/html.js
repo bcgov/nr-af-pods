@@ -1009,9 +1009,20 @@ export function setFieldValue({
     element.value = value;
   }
   const e = new Event('change');
+  const updateFieldValueObj = {
+    name,
+    value,
+    skipValidation,
+    origin: setFieldValue.name,
+  };
+  logger.info({
+    fn: setFieldValue,
+    message: `Dispatching change event for field name: ${name}, value: ${value}, elementType: ${elementType}, skipValidation: ${skipValidation}`,
+    data: { e, updateFieldValueObj },
+  });
   element.dispatchEvent(e);
 
-  updateFieldValue({ name, value, skipValidation, origin: setFieldValue.name });
+  updateFieldValue(updateFieldValueObj);
 }
 
 export function relocateField(field) {
@@ -1382,14 +1393,15 @@ export function getFieldErrorDiv(fieldName) {
 
 export function setFieldValueToEmptyState(fieldName) {
   logger.info({
-    name: setFieldValueToEmptyState,
+    fn: setFieldValueToEmptyState,
     message: `setting fieldName: ${fieldName} value to empty`,
   });
   const fieldConfig = getFieldConfig(fieldName);
-  // for multi option sets specifically must use custom function
+  // for multi option sets specifically must set value to [] otherwise gets Unexpected end of json error
   if (
     fieldConfig?.elementType &&
-    fieldConfig?.elementType === HtmlElementType.MultiOptionSet
+    (fieldConfig?.elementType === HtmlElementType.MultiOptionSet ||
+      fieldConfig?.elementType === HtmlElementType.MultiSelectPicklist)
   ) {
     setMultiSelectValues(fieldName, []);
   } else {

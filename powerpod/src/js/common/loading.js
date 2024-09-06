@@ -47,6 +47,7 @@ export function hideLoadingAnimation() {
       message: 'loaderStyle found & finished loading, removing element',
     });
     loaderStyle.parentNode?.removeChild(loaderStyle);
+    window.scrollTo(0, 0);
   } else {
     logger.warn({
       fn: hideLoadingAnimation,
