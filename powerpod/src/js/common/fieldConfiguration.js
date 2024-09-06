@@ -175,13 +175,17 @@ export function configureField(field) {
     addValidationCheck(name, validation);
   }
   if (initialValue) {
-    // @ts-ignore
-    setFieldValue({
-      name,
-      value: initialValue,
-      elementType,
-      skipValidation: true,
-    });
+    // ONLY set initialValue if there's no existing value present
+    const currValue = getControlValue({ controlId: name, raw: true });
+    if (!currValue) {
+      // @ts-ignore
+      setFieldValue({
+        name,
+        value: initialValue,
+        elementType,
+        skipValidation: true,
+      });
+    }
   }
   // max characters
   if (maxLength) {

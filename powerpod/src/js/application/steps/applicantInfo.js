@@ -401,25 +401,25 @@ function setupApplicantInfoStepFields() {
   }
 
   if (programAbbreviation && programAbbreviation.includes('ABPP')) {
-    if (!document.querySelector('#tipReportNotice')) {
-      let htmlContentToAddBelowTipReport = `<div id="tipReportNotice" style="padding-top: 50px;">
-      The TIP report is a free, simplified cash-basis farm financial analysis, which provides you with a cost of production (COP) report to compare your own farm’s current year (income and expenses) to your previous 5-year average and to benchmarks with other farms of similar type and income range: <a style="color:blue" href="https://www2.gov.bc.ca/gov/content/industry/agriculture-seafood/business-market-development/agrifood-business-management/running-a-farm-business/towards-increased-profits-report">Towards Increased Profits (TIP) report - Province of British Columbia (gov.bc.ca)​</a>.
-      </div>`;
-      addTextBelowField(
-        'quartech_tipreportenrolled',
-        htmlContentToAddBelowTipReport
-      );
-    }
+    // if (!document.querySelector('#tipReportNotice')) {
+    //   let htmlContentToAddBelowTipReport = `<div id="tipReportNotice" style="padding-top: 50px;">
+    //   The TIP report is a free, simplified cash-basis farm financial analysis, which provides you with a cost of production (COP) report to compare your own farm’s current year (income and expenses) to your previous 5-year average and to benchmarks with other farms of similar type and income range: <a style="color:blue" href="https://www2.gov.bc.ca/gov/content/industry/agriculture-seafood/business-market-development/agrifood-business-management/running-a-farm-business/towards-increased-profits-report">Towards Increased Profits (TIP) report - Province of British Columbia (gov.bc.ca)​</a>.
+    //   </div>`;
+    //   addTextBelowField(
+    //     'quartech_tipreportenrolled',
+    //     htmlContentToAddBelowTipReport
+    //   );
+    // }
 
     // @ts-ignore
-    initOnChange_DependentRequiredField({
-      dependentOnValue: '255550001',
-      dependentOnElementTag: 'quartech_agriprogramsubscriber',
-      requiredFieldTag: 'quartech_tipreportenrolled',
-      customFunc: setShowOrHideTipNotice,
-    });
+    // initOnChange_DependentRequiredField({
+    //   dependentOnValue: '255550001',
+    //   dependentOnElementTag: 'quartech_agriprogramsubscriber',
+    //   requiredFieldTag: 'quartech_tipreportenrolled',
+    //   customFunc: setShowOrHideTipNotice,
+    // });
 
-    setShowOrHideTipNotice();
+    // setShowOrHideTipNotice();
   }
 
   if (
