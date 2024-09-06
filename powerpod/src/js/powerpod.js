@@ -41,6 +41,11 @@ export default function powerpod(options) {
     window.debug_pp = true;
   }
 
+  if (localStorage.getItem('debug_canadapost')) {
+    setOption('debug_canadapost', true);
+    window.debug_canadapost = true;
+  }
+
   // combine given options and default options
   setOptions(options);
 
@@ -84,7 +89,7 @@ function setAPI() {
     };
   };
   // @ts-ignore
-  POWERPOD.version = '2.5.1';
+  POWERPOD.version = '2.5.2';
   // @ts-ignore
   window.powerpod = POWERPOD;
 }

@@ -31,6 +31,7 @@ const defaultOptions = {
   env: Environment.PROD,
   logging: true,
   debugging: false,
+  debug_canadapost: false,
   // TODO: implement log level filtering
   logLevel: ENV_LOG_LEVEL[Environment.PROD],
   form: null, // if null, will try to auto-detect the form

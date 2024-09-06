@@ -387,13 +387,23 @@ export function configureFields() {
 function setupCanadaPostAddressComplete(fields) {
   const env = getEnv();
 
-  if (env !== Environment.PROD) {
+  if (window.debug_canadapost) {
+    logger.warn({
+      fn: setupCanadaPostAddressComplete,
+      message: `Forcibly enabling Canada Post Address Complete using debug_canadapost flag, env: ${env}`,
+    });
+  } else if (env !== Environment.PROD) {
     logger.warn({
       fn: setupCanadaPostAddressComplete,
       message: `Skipping Canada Post since env detected is not prod, but is env: ${env}`,
     });
     return;
   }
+
+  logger.info({
+    fn: setupCanadaPostAddressComplete,
+    message: `Start setting up Canada Post Address Complete...`,
+  });
 
   const options = {
     key: 'kb98-fz49-gp47-dk74',
@@ -409,27 +419,28 @@ function setupCanadaPostAddressComplete(fields) {
 
   const fieldKeys = Object.keys(fields);
 
-  const allCpFieldsPresent = cpFieldNames.every((cpFieldName) => {
-    return fieldKeys.some(
-      // @ts-ignore
-      (field) => field.name === cpFieldName
-    );
-  });
+  const allCpFieldsPresent = cpFieldNames?.every((val) =>
+    fieldKeys.includes(val)
+  );
 
   logger.info({
     fn: setupCanadaPostAddressComplete,
-    message: `Checked if all addresscomplete fields exist in fields data: allCpFieldsPresent: ${allCpFieldsPresent}`,
-    data: { cpFieldNames, fields, allCpFieldsPresent },
+    message: `Checked if all Canada Post addresscomplete fields exist in fields data: allCpFieldsPresent: ${allCpFieldsPresent}`,
+    data: { cpFieldNames, fieldKeys, allCpFieldsPresent },
   });
 
   if (allCpFieldsPresent) {
+    logger.info({
+      fn: setupCanadaPostAddressComplete,
+      message: `Start setting up Canada Post Address Complete... found all fields! Continue configuration...`,
+    });
     useScript('canadapost', () => {
       // @ts-ignore
       const pca = window.pca;
 
       logger.info({
         fn: setupCanadaPostAddressComplete,
-        message: 'Starting to setup canadapost addresscomplete',
+        message: 'Starting to setup Canada Post Address Complete',
         data: { pca, options },
       });
 
@@ -477,7 +488,7 @@ function setupCanadaPostAddressComplete(fields) {
 
       logger.info({
         fn: setupCanadaPostAddressComplete,
-        message: 'Successfully configured canadapost addresscomplete',
+        message: 'Successfully configured Canada Post Address Complete',
       });
     });
     return;

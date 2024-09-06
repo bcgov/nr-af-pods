@@ -5,6 +5,8 @@ import { POWERPOD } from './constants.js';
 POWERPOD.utils = {
   enableDebugging,
   disableDebugging,
+  enableCanadaPostIntegration,
+  disableCanadaPostIntegration,
 };
 
 export function enableDebugging() {
@@ -15,6 +17,17 @@ export function enableDebugging() {
 
 export function disableDebugging() {
   localStorage.removeItem('debug_pp');
+  location.reload();
+}
+
+export function enableCanadaPostIntegration() {
+  localStorage.setItem('debug_canadapost', true);
+  localStorage.getItem('debug_canadapost');
+  location.reload();
+}
+
+export function disableCanadaPostIntegration() {
+  localStorage.removeItem('debug_canadapost');
   location.reload();
 }
 
