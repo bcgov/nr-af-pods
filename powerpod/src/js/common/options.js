@@ -24,7 +24,7 @@ const ALLOWED_PATHS = [
 export const ENV_LOG_LEVEL = {
   [Environment.DEV]: 10, // show all on DEV
   [Environment.TEST]: 20, // only show WARN & ERROR on TEST
-  [Environment.PROD]: 90, // only show ERROR on PROD
+  [Environment.PROD]: 10, // only show ERROR on PROD
 };
 const defaultOptions = {
   autoinit: true,

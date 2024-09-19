@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { HtmlElementType, POWERPOD, doc } from './constants.js';
+import { HtmlElementType, POWERPOD, doc, Form } from './constants.js';
 import {
   getControlType,
   getControlValue,
@@ -8,6 +8,8 @@ import {
   isEmptyRow,
   isHiddenRow,
 } from './html.js';
+import { getFormType } from './applicationUtils.js';
+import { getProgramData } from './program.js';
 import { Logger } from './logger.js';
 import store from '../store/index.js';
 
@@ -287,6 +289,20 @@ export function generateFormJson(setFieldOrder = false) {
       [questionAnswerListKey]: [],
     };
 
+    const questionKey = `${sectionId}Question`;
+    const answerKey = `${sectionId}Answer`;
+
+    if (sectionId === 'applicantDeclarationSection') {
+      const formType = getFormType();
+      if (formType === Form.Claim) {
+        const consentText = claimConsentHtmlToText();
+        formJsonObj[sectionId][questionAnswerListKey].push({
+          [questionKey]: 'Declaration & Consent Text',
+          [answerKey]: consentText,
+        });
+      }
+    }
+
     trArray.forEach((tr) => {
       const controlType = getControlType({ tr });
       if (controlType === HtmlElementType.NotesControl) {
@@ -388,9 +404,6 @@ export function generateFormJson(setFieldOrder = false) {
         return; // skip this forEach loop
       }
 
-      const questionKey = `${sectionId}Question`;
-      const answerKey = `${sectionId}Answer`;
-
       formJsonObj[sectionId][questionAnswerListKey].push({
         [questionKey]: questionText,
         [answerKey]: answerText,
@@ -419,4 +432,45 @@ export function generateFormJson(setFieldOrder = false) {
 
   wordTemplateDataElement[0].value = JSON.stringify(formJsonObj);
   return true;
+}
+
+export function claimConsentHtmlToText() {
+  const programName = getProgramData()?.quartech_applicantportalprogramname;
+  let html = `
+    <div style='font-style: italic;'>
+      <span>BY SUBMITTING THIS CLAIM FOR PAYMENT FORM TO %%ProgramName%% (the "Program"), I:</span>
+      <u style='text-decoration:none;'>
+          <li>represent that I am the applicant or the fully authorized signatory of the applicant;</li>
+          <li>declare that I have/the applicant has not knowingly submitted false or misleading information and that the information provided in this claim for payment form and attachments is true and correct in every respect to the best of my/the applicant's knowledge;</li>
+          <li>acknowledge the information provided on this claim for payment and attachments will be used by the Ministry of Agriculture and Food (the "Ministry") to assess the applicant's eligibility for funding from the Program;</li>
+          <li>understand that failing to comply with all application requirements may delay the processing of the application or make the applicant ineligible to receive funding under the Program;</li>
+          <li>represent that I have/the applicant has read and understood the Program Terms and Conditions and agree(s) to be bound by the Program Terms and Conditions;</li>
+          <li>represent that the applicant is in compliance with all Program eligibility requirements as described in the Program Terms and Conditions, and in this document;</li>
+          <li>agree to proactively disclose to the Program all other sources of funding the applicant or any partners within the same organization or the same farming or food processing operation receives with respect to the projects funded by this Program, including financial and/or in-kind contributions from federal, provincial, or municipal government;</li>
+          <li>understand that the Program covers costs up to the maximum Approved amount. Any additional fees over and above the approved amount are the responsibility of the applicant and will not be covered by the B.C. Ministry of Agriculture and Food.</li>
+          <li>acknowledge that the Business Number (GST Number) is collected by the Ministry under the authority of the Income Tax Act for the purpose of reporting income.</li>
+      </u>
+      <br/>
+  </div>`;
+  // Create a temporary DOM element
+  const tempDiv = document.createElement('div');
+
+  // Set the HTML content
+  tempDiv.innerHTML = html;
+
+  // Extract text and format it
+  let text = tempDiv.innerText
+    .replace(/\s+/g, ' ') // Remove excess white spaces
+    .replace(/^\d+/, '') // Remove potential numbering issues
+    .replace(/•/g, '') // Remove any bullet points, if exist
+
+    // Handle any placeholders
+    .replace(/%%ProgramName%%/g, programName)
+
+    // Add necessary formatting for better readability
+    .replace(/\s*<li>\s*/gi, '\n- ') // Bullet points
+    .replace(/<br\s*\/?>/gi, '\n'); // Line breaks
+
+  // Return the cleaned and formatted text
+  return text;
 }
