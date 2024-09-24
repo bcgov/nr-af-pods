@@ -3,7 +3,7 @@
   FILE INFO
   -------------------
   NOTE! ENV: DEV/TEST (removed CP integration to save API calls and $$$)
-  version: 1.0.6
+  version: 1.0.8
   name: Head/Bottom
   type: Content Snippet/HTML
   description: This is added to Global Content Snippets configuration in Portal Management, 
@@ -11,6 +11,15 @@
     Sign In/Register page customization, and global custom CSS.
 -->
 <style>
+  p:empty, h3:empty {
+    margin: 0;
+    height: 0;
+    padding: 0;
+    display: block; /* Ensure it's still treated as a block element */
+  }
+  #navbar a {
+    color: #fff !important;
+  }
   @font-face {
     font-family: 'BC Sans';
     font-style: normal;
