@@ -292,7 +292,7 @@ export function generateFormJson(setFieldOrder = false) {
     const questionKey = `${sectionId}Question`;
     const answerKey = `${sectionId}Answer`;
 
-    if (sectionId === 'applicantDeclarationSection') {
+    if (sectionId === 'applicantDeclarationSection' || sectionId === 'declarationAndConsentSection') {
       const formType = getFormType();
       const consentText = generateConsentHtmlToText(formType);
       formJsonObj[sectionId][questionAnswerListKey].push({
