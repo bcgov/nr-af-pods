@@ -112,6 +112,14 @@ export async function saveFormData({ customPayload = {} }) {
     });
     const { value = undefined, error, touched, elementType } = fieldData;
 
+    if (elementType === HtmlElementType.MultiSelectPicklist && (!value || !value.length)) {
+      logger.warn({
+        fn: saveFormData,
+        message: `skipping saving EMPTY data for elementType: ${HtmlElementType.MultiSelectPicklist} field name: ${field}`,
+      });
+      return;
+    }
+
     if ((error && error.length) || !touched) {
       logger.warn({
         fn: saveFormData,

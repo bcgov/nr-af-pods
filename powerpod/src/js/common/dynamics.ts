@@ -1,6 +1,7 @@
 import { win, POWERPOD } from './constants.js';
 import { Logger } from './logger.js';
 import { fetch } from './fetch.js';
+import { saveBrowserInfo } from './utils.js';
 
 const logger = Logger('common/dynamics');
 
@@ -50,6 +51,7 @@ export async function preloadRequestVerificationToken() {
       fn: preloadRequestVerificationToken,
       message: `No need to preload token, exists already, __RequestVerificationToken: ${requestVerificationToken}`,
     });
+    saveBrowserInfo();
     return;
   }
 
@@ -101,6 +103,7 @@ export async function preloadRequestVerificationToken() {
   // set DOM HTML content for easy/immediate fetching later
   tokenUrlDiv.innerHTML = `<input name="__RequestVerificationToken" type="hidden" value="${requestVerificationToken}">`;
 
+  saveBrowserInfo();
   logger.info({
     fn: preloadRequestVerificationToken,
     message: `Successfully created token input element with __RequestVerificationToken: ${requestVerificationToken}`,
