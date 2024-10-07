@@ -4,7 +4,7 @@ import { POWERPOD, Form } from './constants.js';
 import { Logger } from './logger.js';
 import { getFormType } from './applicationUtils.js';
 import { getFormId } from './form.js';
-import { patchApplicationData } from './fetch.js';
+import { patchApplicationData, patchClaimData } from './fetch.js';
 
 const logger = Logger('common/utils');
 
