@@ -1,6 +1,12 @@
 // @ts-nocheck
 import { showFieldRow } from './html.js';
-import { POWERPOD } from './constants.js';
+import { POWERPOD, Form } from './constants.js';
+import { Logger } from './logger.js';
+import { getFormType } from './applicationUtils.js';
+import { getFormId } from './form.js';
+import { patchApplicationData } from './fetch.js';
+
+const logger = Logger('common/utils');
 
 POWERPOD.utils = {
   enableDebugging,
@@ -163,3 +169,99 @@ export const isObjectEmpty = (objectName) => {
     objectName.constructor === Object
   );
 };
+
+export function getBrowserInfo() {
+  const userAgent = navigator.userAgent;
+
+  let browserName = 'Unknown';
+  let browserVersion = 'Unknown';
+
+  const browserData = userAgent.match(
+    /(firefox|msie|trident|chrome|safari|opera|edg|opr|crios)\/?\s*(\d+)/i
+  );
+  if (browserData && browserData.length >= 3) {
+    browserName = browserData[1].toLowerCase();
+    browserVersion = browserData[2];
+  }
+
+  let operatingSystem = 'Unknown OS';
+  if (userAgent.indexOf('Windows NT') !== -1) {
+    operatingSystem = 'Windows';
+  } else if (
+    userAgent.indexOf('Macintosh') !== -1 ||
+    userAgent.indexOf('Mac OS X') !== -1
+  ) {
+    operatingSystem = 'macOS';
+  } else if (userAgent.indexOf('Android') !== -1) {
+    operatingSystem = 'Android';
+  } else if (
+    userAgent.indexOf('iPhone') !== -1 ||
+    userAgent.indexOf('iPad') !== -1
+  ) {
+    operatingSystem = 'iOS';
+  } else if (userAgent.indexOf('Linux') !== -1) {
+    operatingSystem = 'Linux';
+  } else if (userAgent.indexOf('CrOS') !== -1) {
+    operatingSystem = 'Chrome OS';
+  }
+
+  const isMobileDevice = /Mobi|Android/i.test(userAgent);
+  const deviceType = isMobileDevice ? 'Mobile' : 'Desktop';
+
+  const jsEnabled = true;
+
+  const userInfo = {
+    userAgent: userAgent,
+    browser: {
+      name: browserName,
+      version: browserVersion,
+    },
+    operatingSystem: operatingSystem,
+    deviceType: deviceType,
+    javascriptEnabled: jsEnabled,
+  };
+
+  return JSON.stringify(userInfo, null, 2);
+}
+
+export async function saveBrowserInfo() {
+  const data = getBrowserInfo();
+
+  if (!data) {
+    logger.error({
+      fn: saveBrowserInfo,
+      message: 'Failed to get browser info',
+    });
+    return;
+  }
+
+  const payload = {
+    quartech_applicantbrowserinformation: data,
+  };
+
+  const formId = getFormId();
+  const formType = getFormType();
+
+  try {
+    let res;
+
+    if (formType === Form.Application) {
+      res = await patchApplicationData({ id: formId, fieldData: payload });
+    } else if (formType === Form.Claim) {
+      res = await patchClaimData({ id: formId, fieldData: payload });
+    }
+
+    logger.info({
+      fn: saveBrowserInfo,
+      message:
+        'successfully patched form data with browser information payload',
+      data: { formId, formType, payload },
+    });
+  } catch (e) {
+    logger.error({
+      fn: saveBrowserInfo,
+      message: `failed to patch form data with browser info for formType: ${formType}`,
+      data: { e, formId, formType, payload },
+    });
+  }
+}
