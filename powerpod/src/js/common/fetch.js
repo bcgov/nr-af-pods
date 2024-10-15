@@ -40,6 +40,7 @@ export const ENDPOINT_URL = {
     `/_api/quartech_demographicinfos(${demographicInfoId})`,
   patch_demographic_info_data: (demographicInfoId) =>
     `/_api/quartech_demographicinfos(${demographicInfoId})`,
+  post_browserinformation_data: '/_api/quartech_browserinformations',
 };
 
 POWERPOD.fetch = {
@@ -65,6 +66,7 @@ POWERPOD.fetch = {
   postApplicationData,
   getDemographicInfoData,
   patchDemographicInfoData,
+  postBrowserInformationData,
 };
 
 const CONTENT_TYPE = {
@@ -504,6 +506,24 @@ export async function postApplicationData({
       'quartech_Applicant@odata.bind': `/contacts(${contactid})`,
       quartech_originalsource: 255550002, // always set to "Portal" for Draft status
       ...(quartech_nocragstnumber != null && { quartech_nocragstnumber }),
+    }),
+    ...options,
+  });
+}
+
+export async function postBrowserInformationData({
+  ...options
+}) {
+  return fetch({
+    method: 'POST',
+    url: ENDPOINT_URL.post_browserinformation_data,
+    datatype: DATATYPE.json,
+    includeODataHeaders: true,
+    addRequestVerificationToken: true,
+    processData: false,
+    returnData: true,
+    data: JSON.stringify({
+      quartech_name: 'Test'
     }),
     ...options,
   });

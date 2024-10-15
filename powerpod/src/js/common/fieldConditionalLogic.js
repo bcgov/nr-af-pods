@@ -32,7 +32,16 @@ export function assignDependentFields(fieldConfig) {
     data: { fieldConfig },
   });
 
-  if (fieldConfig.visibleIf.fieldName) {
+  if (!fieldConfig.visibleIf) {
+    logger.warn({
+      fn: assignDependentFields,
+      message: `could not find visibleIf configuration for field with name: ${name}`,
+      data: { fieldConfig },
+    });
+    return;
+  }
+
+  if (fieldConfig.visibleIf && fieldConfig.visibleIf.fieldName) {
     const { fieldName: controlFieldName } = fieldConfig.visibleIf;
     const controlFieldConfig = getFieldConfig(controlFieldName);
     checkControlDependentFields({
@@ -42,6 +51,7 @@ export function assignDependentFields(fieldConfig) {
       controlFieldName,
     });
   } else if (
+    fieldConfig.visibleIf &&
     fieldConfig.visibleIf.comparisons &&
     Array.isArray(fieldConfig.visibleIf.comparisons)
   ) {
