@@ -236,15 +236,33 @@ export function getFieldsBySectionApplication(stepName, forceRefresh = false) {
 export function getFieldsBySectionClaim(stepName, forceRefresh = false) {
   let programName = getProgramAbbreviation();
 
+  // OLD: now try getting results from state
   // load cached results unless forceRefresh flag is passed
+  // if (!forceRefresh) {
+  //   const savedData = localStorage.getItem(
+  //     `fieldsData-${programName}-${stepName}`
+  //   );
+  //   if (savedData) {
+  //     return JSON.parse(savedData);
+  //   }
+  // }
+
   if (!forceRefresh) {
-    const savedData = localStorage.getItem(
-      `fieldsData-${programName}-${stepName}`
-    );
-    if (savedData) {
-      return JSON.parse(savedData);
+    if (POWERPOD.loadingFieldsIntoState === false) {
+      logger.info({
+        fn: getFieldsBySectionApplication,
+        message: `returning cached state for fields`,
+        data: { fields: POWERPOD.state.fields },
+      });
+      return POWERPOD.state.fields;
     }
   }
+
+  logger.info({
+    fn: getFieldsBySectionApplication,
+    message: `call getClaimConfigData() to get fields data`,
+    data: { fields: POWERPOD.state.fields },
+  });
 
   const claimConfigData = getClaimConfigData();
   logger.info({
@@ -278,17 +296,13 @@ export function getFieldsBySectionClaim(stepName, forceRefresh = false) {
       message: `Getting field with fieldName: ${s.name}...`,
       data: { programName, stepName, fieldName: s.name, field: s },
     });
-    // TODO: Improve this as we do regression testing
-    // Only enable for VVTS and appropriate steps right now.
     if (
-      programName === 'VVTS' &&
-      s.elementType !== 'FileInput' &&
+      s.type !== 'SectionTitle' &&
+      !s.disableSingleLine &&
       ![
-        FormStep.ProjectResults,
-        FormStep.ApplicantInfo,
+        FormStep.Documents,
         FormStep.DeclarationAndConsent,
         FormStep.Unknown,
-        FormStep.DemographicInfo,
       ].includes(stepName)
     ) {
       combineElementsIntoOneRowNew(s.name);

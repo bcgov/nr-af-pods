@@ -16,17 +16,17 @@ export function customizeProjectResultsStep() {
     programAbbreviation === 'NEFBA2'
   ) {
     // @ts-ignore
-    initOnChange_DependentRequiredField({
-      dependentOnValue: YES_VALUE,
-      dependentOnElementTag: 'quartech_adoptedprojectresults',
-      requiredFieldTag: 'quartech_adoptednumber',
-    });
+    // initOnChange_DependentRequiredField({
+    //   dependentOnValue: YES_VALUE,
+    //   dependentOnElementTag: 'quartech_adoptedprojectresults',
+    //   requiredFieldTag: 'quartech_adoptednumber',
+    // });
     // @ts-ignore
-    initOnChange_DependentRequiredField({
-      dependentOnValue: YES_VALUE,
-      dependentOnElementTag: 'quartech_environmentallybeneficialadoptedresults',
-      requiredFieldTag: 'quartech_environmentallybeneficialadoptednumber',
-    });
+    // initOnChange_DependentRequiredField({
+    //   dependentOnValue: YES_VALUE,
+    //   dependentOnElementTag: 'quartech_environmentallybeneficialadoptedresults',
+    //   requiredFieldTag: 'quartech_environmentallybeneficialadoptednumber',
+    // });
   }
 
   if (programAbbreviation === 'ABPP2') {

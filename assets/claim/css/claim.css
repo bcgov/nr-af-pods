@@ -2,11 +2,37 @@
   -------------------
   FILE INFO
   -------------------
-  version: 1.0.4
+  version: 1.0.6
   name: Claim CSS
   type: CSS
   description: This is the CSS used on the Claim web page
 */
+label {
+  font-weight: unset;
+}
+
+.error_message {
+  color: red;
+  font-size: smaller;
+  opacity: 1;
+  min-height: 20px;
+  transition: opacity 0.3s ease, height 0.3s ease;
+}
+
+.hide_error_message {
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+#actions_div {
+  width: 100% !important;
+}
+
+input::placeholder {
+  opacity: 0.5;
+}
+
 #quartech_businessaddress:focus {
   border: 0px;
   box-shadow: none !important;
@@ -36,6 +62,11 @@
   display: none;
 }
 
+/*  Documents step */
+h4 {
+  font-weight: 200 !important;
+  font-size: 18px !important;
+}
 #AttachFile {
   display: none;
 }
@@ -75,24 +106,6 @@ h4 {
   }
 }
 
-/*  Claim Info step */
-table[data-name='expenseReportSection'],
-table[data-name='fundingInfoSection'],
-table[data-name='applicationInfoSection'],
-table[data-name='claimInfoSection'],
-table[data-name='projectResultsSection'],
-table[data-name='satisfactionSurveySection']
- {
-  .info {
-    float: left;
-    padding-right: 8px;
-    width: 50%;
-  }
-  .control {
-    display: inline-block;
-    width: 50%;
-  }
-}
 #quartech_businessaddress {
   max-height: 80px;
 }

@@ -519,7 +519,7 @@ export function updateFieldValue({
     data: params,
   });
   const fieldConfig = getFieldConfig(name);
-  const { elementType, format } = fieldConfig.elementType;
+  const { elementType, format } = fieldConfig;
   // if no value passed, get current value from HTML
   if (value === undefined) {
     value = getControlValue({ controlId: name, raw: true });

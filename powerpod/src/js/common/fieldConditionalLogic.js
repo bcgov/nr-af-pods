@@ -99,6 +99,14 @@ export function setFieldVisibility(name) {
   assignDependentFields(fieldConfig);
   const { visibleIf, doNotBlank, html, loading } = fieldConfig;
   let matchesCondition = false;
+  if (!visibleIf || !visibleIf.fieldName) {
+    logger.error({
+      fn: setFieldVisibility,
+      message: `error! visibleIf definition missing fieldName for field with name: ${name}`,
+      data: { name, fieldConfig },
+    });
+    return;
+  }
   if (visibleIf.fieldName) {
     const {
       fieldName: dependentOnFieldName,

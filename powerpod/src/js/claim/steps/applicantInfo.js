@@ -18,29 +18,29 @@ export function customizeApplicantInfoStep() {
 
   if (programAbbreviation.includes('KTTP')) {
     // @ts-ignore
-    initOnChange_DependentRequiredField({
-      dependentOnValue: NO_VALUE,
-      dependentOnElementTag: 'quartech_applicantinformationconfirmation',
-      requiredFieldTag: 'quartech_applicantinformationcorrections',
-    });
+    // initOnChange_DependentRequiredField({
+    //   dependentOnValue: NO_VALUE,
+    //   dependentOnElementTag: 'quartech_applicantinformationconfirmation',
+    //   requiredFieldTag: 'quartech_applicantinformationcorrections',
+    // });
   }
 
   if (programAbbreviation === 'NEFBA' || programAbbreviation === 'NEFBA2') {
     // @ts-ignore
-    initOnChange_DependentRequiredField({
-      dependentOnValue: NO_VALUE,
-      dependentOnElementTag: 'quartech_applicantinformationconfirmation',
-      requiredFieldTag: 'quartech_applicantinformationcorrections',
-    });
+    // initOnChange_DependentRequiredField({
+    //   dependentOnValue: NO_VALUE,
+    //   dependentOnElementTag: 'quartech_applicantinformationconfirmation',
+    //   requiredFieldTag: 'quartech_applicantinformationcorrections',
+    // });
   }
 
   if (programAbbreviation.includes('ABPP')) {
     // @ts-ignore
-    initOnChange_DependentRequiredField({
-      dependentOnValue: NO_VALUE,
-      dependentOnElementTag: 'quartech_applicantinformationconfirmation',
-      requiredFieldTag: 'quartech_applicantinformationcorrections',
-    });
+    // initOnChange_DependentRequiredField({
+    //   dependentOnValue: NO_VALUE,
+    //   dependentOnElementTag: 'quartech_applicantinformationconfirmation',
+    //   requiredFieldTag: 'quartech_applicantinformationcorrections',
+    // });
 
     const iframe = document.querySelector(
       'fieldset[aria-label="Coding Section (DO NOT REMOVE)"] iframe'

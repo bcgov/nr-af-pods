@@ -1,6 +1,6 @@
 {
   "tags": ["Claim", "ABPP2"],
-  "version": "1.0.4",
+  "version": "1.0.7",
   "name": "ABPP - Business Planning, Preparedness, and Disaster Recovery",
   "abbreviation": "ABPP2",
   "sections": [
@@ -35,7 +35,12 @@
           "name": "quartech_applicantinformationcorrections",
           "label": "Please provide further detail",
           "required": true,
-          "maxLength": 10000
+          "maxLength": 10000,
+          "visibleIf": {
+            "fieldName": "quartech_applicantinformationconfirmation",
+            "selectedValue": 255550001,
+            "techComment": "No value"
+          }
         },
         {
           "name": "quartech_filenumber",
@@ -69,6 +74,11 @@
             "type": "numeric",
             "value": "0",
             "comparison": "greaterThan"
+          },
+          "visibleIf": {
+            "fieldName": "quartech_adoptedprojectresults",
+            "selectedValue": 255550000,
+            "techComment": "Yes value"
           }
         },
         {
@@ -86,6 +96,11 @@
             "type": "numeric",
             "value": "0",
             "comparison": "greaterThan"
+          },
+          "visibleIf": {
+            "fieldName": "quartech_environmentallybeneficialadoptedresults",
+            "selectedValue": 255550000,
+            "techComment": "Yes value"
           }
         },
         {
