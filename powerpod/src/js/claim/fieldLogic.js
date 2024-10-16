@@ -1,5 +1,5 @@
-import { GROUP_APPLICATION_VALUE } from "../common/constants.js";
-import { hideQuestion } from "../common/html.js";
+import { GROUP_APPLICATION_VALUE } from '../common/constants.js';
+import { hideFieldRow, hideQuestion } from '../common/html.js';
 
 export function customizeSingleOrGroupApplicantQuestions(fieldToHide) {
   const iframe = document.querySelector(
@@ -16,7 +16,8 @@ export function customizeSingleOrGroupApplicantQuestions(fieldToHide) {
   );
   if (!!singleOrGroupApplicationElement) {
     if (singleOrGroupApplicationElement?.value !== GROUP_APPLICATION_VALUE) {
-      hideQuestion(fieldToHide);
+      // hideQuestion(fieldToHide);
+      hideFieldRow({ fieldName: fieldToHide });
     }
   }
 }
