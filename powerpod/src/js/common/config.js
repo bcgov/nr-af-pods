@@ -11,6 +11,10 @@ import { Logger } from './logger.js';
 // import localConfigJson from '../../../../assets/application/json/quartech_applicantportalapplicationformconfigjson_abpp2.json';
 // VLB:
 // import localConfigJson from '../../../../assets/application/json/quartech_applicantportalapplicationformconfigjson_vlb.json';
+// Claim ABPP1:
+// import localConfigJson from '../../../../assets/claim/json/quartech_applicantportalclaimformjson_abpp1.json';
+// Claim ABPP2:
+// import localConfigJson from '../../../../assets/claim/json/quartech_applicantportalclaimformjson_abpp2.json';
 
 const logger = Logger('common/config');
 
@@ -45,6 +49,24 @@ export function getGlobalConfigData() {
 }
 
 export function getClaimConfigData() {
+  const { pathname: path } = window.location;
+  logger.info({
+    fn: getClaimConfigData,
+    message:
+      'checking path to determine if we should use localhost or hosted data',
+    data: { path },
+  });
+  // UNCOMMENT THIS IF YOU WANT TO FORCE TO USE LOCAL JSON CONFIG
+  // if (path.includes('claim-dev') && localConfigJson) {
+  //   logger.info({
+  //     fn: getClaimConfigData,
+  //     message: 'successfully fetched application config data from localhost',
+  //     data: { localConfigJson },
+  //   });
+  //   return localConfigJson;
+  // }
+  // UNCOMMENT THIS IF YOU WANT TO FORCE TO USE LOCAL JSON CONFIG
+
   const programData = localStorage.getItem('programData');
   const configDataJSON =
     JSON.parse(programData)?.quartech_applicantportalclaimformjson;

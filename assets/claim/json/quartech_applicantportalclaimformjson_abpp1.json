@@ -1,6 +1,6 @@
 {
   "tags": ["Claim", "ABBP1"],
-  "version": "1.0.7",
+  "version": "1.0.9",
   "name": "ABPP - Agri-Business and Leadership Development",
   "abbreviation": "ABPP1",
   "hiddenSteps": "",
@@ -69,6 +69,51 @@
             "type": "numeric",
             "value": "0",
             "comparison": "greaterThan"
+          }
+        },
+        {
+          "name": "quartech_numberofbusinesscourses",
+          "label": "Business courses",
+          "additionalTextAboveField": "How many  Business courses,  Leadership courses, Agriculture and/or Business Management conferences were attended?",
+          "required": true,
+          "format": "number",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          }
+        },
+        {
+          "name": "quartech_numberofleadershipcourses",
+          "label": "Leadership courses",
+          "required": true,
+          "format": "number",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          }
+        },
+        {
+          "name": "quartech_numberofagriculturecourses",
+          "label": "Agriculture courses",
+          "required": true,
+          "format": "number",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          }
+        },
+        {
+          "name": "quartech_numberofbusinessmanagementconferences",
+          "label": "Business Management conferences",
+          "required": true,
+          "format": "number",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
           }
         },
         {
