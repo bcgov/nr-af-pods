@@ -1,6 +1,6 @@
 {
   "tags": ["Claim", "ABPP2"],
-  "version": "1.1.1",
+  "version": "1.1.2",
   "name": "ABPP - Business Planning, Preparedness, and Disaster Recovery",
   "abbreviation": "ABPP2",
   "sections": [
@@ -202,6 +202,13 @@
           "label": "Proof of payment of the Consultant's invoice",
           "required": true,
           "elementType": "FileInput"
+        },
+        {
+          "name": "quartech_satisfactionsurveyid",
+          "required": true,
+          "readOnly": true,
+          "tooltipText": "This number is automatically generated when the survey has been submitted",
+          "label": "Program Evaluation Survey ID"
         }
       ]
     }

@@ -57,14 +57,14 @@ export function getClaimConfigData() {
     data: { path },
   });
   // UNCOMMENT THIS IF YOU WANT TO FORCE TO USE LOCAL JSON CONFIG
-  if (path.includes('claim-dev') && localConfigJson) {
-    logger.info({
-      fn: getClaimConfigData,
-      message: 'successfully fetched application config data from localhost',
-      data: { localConfigJson },
-    });
-    return localConfigJson;
-  }
+  // if (path.includes('claim-dev') && localConfigJson) {
+  //   logger.info({
+  //     fn: getClaimConfigData,
+  //     message: 'successfully fetched application config data from localhost',
+  //     data: { localConfigJson },
+  //   });
+  //   return localConfigJson;
+  // }
   // UNCOMMENT THIS IF YOU WANT TO FORCE TO USE LOCAL JSON CONFIG
 
   const programData = localStorage.getItem('programData');
