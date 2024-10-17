@@ -14,7 +14,7 @@ import { Logger } from './logger.js';
 // Claim ABPP1:
 // import localConfigJson from '../../../../assets/claim/json/quartech_applicantportalclaimformjson_abpp1.json';
 // Claim ABPP2:
-import localConfigJson from '../../../../assets/claim/json/quartech_applicantportalclaimformjson_abpp2.json';
+// import localConfigJson from '../../../../assets/claim/json/quartech_applicantportalclaimformjson_abpp2.json';
 
 const logger = Logger('common/config');
 
