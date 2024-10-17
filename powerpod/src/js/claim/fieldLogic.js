@@ -1,5 +1,5 @@
 import { GROUP_APPLICATION_VALUE } from '../common/constants.js';
-import { hideFieldRow, hideQuestion } from '../common/html.js';
+import { hideFieldRow, hideQuestion, showFieldRow } from '../common/html.js';
 
 export function customizeSingleOrGroupApplicantQuestions(fieldToHide) {
   const iframe = document.querySelector(
@@ -17,7 +17,10 @@ export function customizeSingleOrGroupApplicantQuestions(fieldToHide) {
   if (!!singleOrGroupApplicationElement) {
     if (singleOrGroupApplicationElement?.value !== GROUP_APPLICATION_VALUE) {
       // hideQuestion(fieldToHide);
+      // Note: This is used for hiding & showing `quartech_claimcoapplicants`
       hideFieldRow({ fieldName: fieldToHide });
+    } else {
+      showFieldRow(fieldToHide);
     }
   }
 }

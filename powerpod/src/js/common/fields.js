@@ -154,11 +154,10 @@ export function getFieldsBySectionApplication(stepName, forceRefresh = false) {
   );
 
   fields.forEach((s) => {
-    // TODO: Improve this as we do regression testing
-    // Only enable for NEFBA2 and appropriate steps right now.
     if (document.getElementById(s.name) === null) {
       logger.warn({
-        fn: `Skipping non-exist field configured in JSON s.name: ${s.name}`,
+        fn: getFieldsBySectionApplication,
+        message: `Skipping non-exist field configured in JSON s.name: ${s.name}`,
       });
       return;
     }
@@ -291,6 +290,13 @@ export function getFieldsBySectionClaim(stepName, forceRefresh = false) {
   let fields = claimSection.fields;
 
   fields.forEach((s) => {
+    if (document.getElementById(s.name) === null) {
+      logger.warn({
+        fn: getFieldsBySectionClaim,
+        message: `Skipping non-exist field configured in JSON s.name: ${s.name}`,
+      });
+      return;
+    }
     logger.info({
       fn: getFieldsBySectionClaim,
       message: `Getting field with fieldName: ${s.name}...`,
@@ -307,33 +313,66 @@ export function getFieldsBySectionClaim(stepName, forceRefresh = false) {
     ) {
       combineElementsIntoOneRowNew(s.name);
     }
-    store.dispatch('addFieldData', { ...s, touched: false });
-    if (s.visibleIf) {
-      logger.warn({
-        fn: getFieldsBySectionClaim,
-        message: `NOT showing field since conditionally defined visibleIf, name: ${s.name}`,
-      });
-      return;
+    if (s.disableSingleLine) {
+      disableSingleLine(s.name);
     }
+    // If elementType is not given, fill it out for future reference
+    if (!s.elementType) {
+      logger.info({
+        fn: getFieldsBySectionClaim,
+        message: `Field elementType not set, try to determine it using getControlType func for s.name: ${s.name}`,
+      });
+      const fieldRow = getFieldRow(s.name);
+      if (!fieldRow) {
+        logger.error({
+          fn: getFieldsBySectionClaim,
+          message: `could not find fieldRow for fieldName: ${s.name}`,
+        });
+      }
+      const elementType = getControlType({ tr: fieldRow, controlId: s.name });
+      s.elementType = elementType;
+    }
+    store.dispatch('addFieldData', {
+      ...s,
+      loading: true,
+      touched: false,
+      revalidate: true,
+    });
+    if (s.relocateField) {
+      logger.info({
+        fn: getFieldsBySectionClaim,
+        message: `relocating field name: ${s.name}`,
+      });
+      relocateField(s);
+    }
+    // if (s.visibleIf) {
+    //   logger.warn({
+    //     fn: getFieldsBySectionClaim,
+    //     message: `NOT showing field since conditionally defined visibleIf, name: ${s.name}`,
+    //   });
+    //   return;
+    // }
     logger.info({
       fn: getFieldsBySectionClaim,
       message: `showing field name: ${s.name}, for programName: ${programName}, stepName: ${stepName}`,
     });
-    showFieldRow(s.name);
+    // showFieldRow(s.name);
   });
 
-  localStorage.setItem(
-    `fieldsData-${programName}-${stepName}`,
-    JSON.stringify(fields)
-  );
+  POWERPOD.loadingFieldsIntoState = false;
+
+  // localStorage.setItem(
+  //   `fieldsData-${programName}-${stepName}`,
+  //   JSON.stringify(fields)
+  // );
 
   logger.info({
     fn: getFieldsBySectionClaim,
-    message: 'fieldsData:',
-    data: fields,
+    message: 'done loading intial field state, fieldsData:',
+    data: { fields: POWERPOD.state.fields },
   });
 
-  return fields;
+  return POWERPOD.state.fields;
 }
 
 export function getGlobalFieldsConfig() {

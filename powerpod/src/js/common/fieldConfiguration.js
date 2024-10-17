@@ -101,6 +101,19 @@ export function configureField(field) {
     name,
     loading: true,
   });
+  if (initialValue) {
+    // ONLY set initialValue if there's no existing value present
+    const currValue = getControlValue({ controlId: name, raw: true });
+    if (!currValue) {
+      // @ts-ignore
+      setFieldValue({
+        name,
+        value: initialValue,
+        elementType,
+        skipValidation: true,
+      });
+    }
+  }
   if (hidden) {
     hideFieldRow({ fieldName: name, doNotBlank });
     logger.info({
@@ -173,19 +186,6 @@ export function configureField(field) {
   }
   if (validation) {
     addValidationCheck(name, validation);
-  }
-  if (initialValue) {
-    // ONLY set initialValue if there's no existing value present
-    const currValue = getControlValue({ controlId: name, raw: true });
-    if (!currValue) {
-      // @ts-ignore
-      setFieldValue({
-        name,
-        value: initialValue,
-        elementType,
-        skipValidation: true,
-      });
-    }
   }
   // max characters
   if (maxLength) {

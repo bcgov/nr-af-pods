@@ -6,10 +6,12 @@ import {
 } from '../../common/constants.js';
 import { initOnChange_DependentRequiredField } from '../../common/fieldConditionalLogic.js';
 import {
+  hideFieldRow,
   hideQuestion,
   observeChanges,
   observeIframeChanges,
   setFieldValue,
+  showFieldRow,
 } from '../../common/html.js';
 import { getProgramAbbreviation } from '../../common/program.ts';
 import { configureFields } from '../../common/fieldConfiguration.js';
@@ -225,16 +227,20 @@ export function customizeClaimInfoStep() {
 
     if (!!singleOrGroupApplicationElement) {
       if (singleOrGroupApplicationElement?.value !== GROUP_APPLICATION_VALUE) {
-        hideQuestion('quartech_claimcoapplicants');
+        // hideQuestion('quartech_claimcoapplicants');
+        hideFieldRow({ fieldName: 'quartech_claimcoapplicants' });
+      } else {
+        showFieldRow('quartech_claimcoapplicants');
       }
     }
 
-    addRequestedClaimAmountNote();
+    // addRequestedClaimAmountNote();
 
-    addClaimAmountCaveatNote();
-    $('select[id*="quartech_interimorfinalpayment"]').on('change', function () {
-      addClaimAmountCaveatNote();
-    });
+    // Removed for TASK 5135: ABPP S2 Customization
+    // addClaimAmountCaveatNote();
+    // $('select[id*="quartech_interimorfinalpayment"]').on('change', function () {
+    //   addClaimAmountCaveatNote();
+    // });
   }
 
   if (programAbbreviation === 'ABPP1') {
@@ -327,7 +333,8 @@ function customizeInterimPaymentAmountField() {
     setFieldReadOnly('quartech_requestedinterimpaymentamount');
     setFieldReadOnly('quartech_interimorfinalpayment');
   } else {
-    hideQuestion('quartech_requestedinterimpaymentamount');
+    // hideQuestion('quartech_requestedinterimpaymentamount');
+    hideFieldRow({ fieldName: 'quartech_requestedinterimpaymentamount' });
   }
 }
 

@@ -14,7 +14,7 @@ import { Logger } from './logger.js';
 // Claim ABPP1:
 // import localConfigJson from '../../../../assets/claim/json/quartech_applicantportalclaimformjson_abpp1.json';
 // Claim ABPP2:
-// import localConfigJson from '../../../../assets/claim/json/quartech_applicantportalclaimformjson_abpp2.json';
+import localConfigJson from '../../../../assets/claim/json/quartech_applicantportalclaimformjson_abpp2.json';
 
 const logger = Logger('common/config');
 
@@ -57,14 +57,14 @@ export function getClaimConfigData() {
     data: { path },
   });
   // UNCOMMENT THIS IF YOU WANT TO FORCE TO USE LOCAL JSON CONFIG
-  // if (path.includes('claim-dev') && localConfigJson) {
-  //   logger.info({
-  //     fn: getClaimConfigData,
-  //     message: 'successfully fetched application config data from localhost',
-  //     data: { localConfigJson },
-  //   });
-  //   return localConfigJson;
-  // }
+  if (path.includes('claim-dev') && localConfigJson) {
+    logger.info({
+      fn: getClaimConfigData,
+      message: 'successfully fetched application config data from localhost',
+      data: { localConfigJson },
+    });
+    return localConfigJson;
+  }
   // UNCOMMENT THIS IF YOU WANT TO FORCE TO USE LOCAL JSON CONFIG
 
   const programData = localStorage.getItem('programData');

@@ -1,6 +1,6 @@
 {
   "tags": ["Claim", "ABBP1"],
-  "version": "1.0.9",
+  "version": "1.1.1",
   "name": "ABPP - Agri-Business and Leadership Development",
   "abbreviation": "ABPP1",
   "hiddenSteps": "",
@@ -167,28 +167,38 @@
       "fields": [
         {
           "name": "quartech_authorizedclaimedamount",
-          "label": "Approved Amount as per Authorization Letter (Consultant Fee, GST, Total)",
+          "label": "Approved Funding as per Authorization Letter (in total)",
           "readOnly": true
         },
         {
           "name": "quartech_interimorfinalpayment",
           "label": "Are you requesting an interim claim or a final claim?",
-          "required": true,
           "elementType": "DropdownSelect",
           "hidden": true,
-          "doNotBlank": true,
-          "initialValue": "255550001",
-          "techComment": "Initial value is Final claim option"
+          "initialValue": 255550001,
+          "doNotBlank": true
         },
         {
           "name": "quartech_totalfees",
-          "label": "Your requested amount in this current claim",
+          "label": "Your requested amount in this claim (excluding GST)",
+          "additionalTextAboveField": "The Program covers costs up to the maximum amount indicated in your Approval Letter.<br />Any additional fees invoiced will not be covered by the B.C. Ministry of Agriculture and Food",
           "format": "currency",
           "required": true,
           "validation": {
             "type": "numeric",
             "value": "0",
             "comparison": "greaterThan"
+          },
+          "emptyInitialValue": true
+        },
+        {
+          "name": "quartech_gstamountinthisclaim",
+          "label": "Your GST amount in this claim",
+          "required": true,
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
           },
           "emptyInitialValue": true
         }

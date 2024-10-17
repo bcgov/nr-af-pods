@@ -1,6 +1,6 @@
 {
   "tags": ["Claim", "ABPP2"],
-  "version": "1.0.7",
+  "version": "1.1.1",
   "name": "ABPP - Business Planning, Preparedness, and Disaster Recovery",
   "abbreviation": "ABPP2",
   "sections": [
@@ -116,14 +116,16 @@
       "fields": [
         {
           "name": "quartech_authorizedclaimedamount",
-          "label": "Approved Amount as per Authorization Letter (Consultant Fee, GST, Total)",
+          "label": "Approved Funding as per Authorization Letter (in total)",
           "readOnly": true
         },
         {
           "name": "quartech_interimorfinalpayment",
           "label": "Are you requesting an interim claim or a final claim?",
-          "required": true,
-          "elementType": "DropdownSelect"
+          "elementType": "DropdownSelect",
+          "hidden": true,
+          "initialValue": 255550001,
+          "doNotBlank": true
         },
         {
           "name": "quartech_totalprojectcost",
@@ -138,8 +140,14 @@
           "emptyInitialValue": true
         },
         {
+          "name": "quartech_requestedinterimpaymentamount",
+          "label": "Your previously requested interim payment amount",
+          "readOnly": true
+        },
+        {
           "name": "quartech_totalfees",
-          "label": "Your requested amount in this current claim",
+          "label": "Your requested amount in this claim (excluding GST)",
+          "additionalTextAboveField": "The Program covers costs up to the maximum amount indicated in your Approval Letter.<br />Any additional fees invoiced will not be covered by the B.C. Ministry of Agriculture and Food",
           "format": "currency",
           "required": true,
           "validation": {
@@ -150,9 +158,21 @@
           "emptyInitialValue": true
         },
         {
+          "name": "quartech_gstamountinthisclaim",
+          "label": "Your GST amount in this claim",
+          "required": true,
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          },
+          "emptyInitialValue": true
+        },
+        {
           "name": "quartech_claimcoapplicants",
           "label": "Please provide the names of the co-applicants for the claims and the cost and a brief description of the services they are claiming",
-          "required": true
+          "required": true,
+          "hidden": true
         }
       ]
     },

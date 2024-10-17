@@ -1,9 +1,11 @@
 import { GROUP_APPLICATION_VALUE, NO_VALUE } from '../../common/constants.js';
 import { initOnChange_DependentRequiredField } from '../../common/fieldConditionalLogic.js';
 import {
+  hideFieldRow,
   hideQuestion,
   observeChanges,
   observeIframeChanges,
+  showFieldRow,
 } from '../../common/html.js';
 import { Logger } from '../../common/logger.js';
 import { getProgramAbbreviation } from '../../common/program.ts';
@@ -57,7 +59,10 @@ export function customizeApplicantInfoStep() {
 
     if (!!singleOrGroupApplicationElement) {
       if (singleOrGroupApplicationElement?.value !== GROUP_APPLICATION_VALUE) {
-        hideQuestion('quartech_claimcoapplicants');
+        // hideQuestion('quartech_claimcoapplicants');
+        hideFieldRow({ fieldName: 'quartech_claimcoapplicants' });
+      } else {
+        showFieldRow('quartech_claimcoapplicants');
       }
     }
   }

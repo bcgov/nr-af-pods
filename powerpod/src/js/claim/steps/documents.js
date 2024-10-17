@@ -1,4 +1,4 @@
-import { hideQuestion, observeIframeChanges } from '../../common/html.js';
+import { hideFieldRow, hideQuestion, observeIframeChanges } from '../../common/html.js';
 import { getEnvVars } from '../../common/env.js';
 import { getProgramAbbreviation } from '../../common/program.ts';
 import { configureFields } from '../../common/fieldConfiguration.js';
@@ -269,8 +269,10 @@ function customizeBusinessPlanDocumentsQuestions() {
   );
   if (!!completingCategoryElement) {
     if (completingCategoryElement?.value === '255550000') {
-      hideQuestion('quartech_invoices');
-      hideQuestion('quartech_proofofpayment');
+      // hideQuestion('quartech_invoices');
+      hideFieldRow({ fieldName: 'quartech_invoices' });
+      // hideQuestion('quartech_proofofpayment');
+      hideFieldRow({ fieldName: 'quartech_proofofpayment' });
     }
   }
 }
