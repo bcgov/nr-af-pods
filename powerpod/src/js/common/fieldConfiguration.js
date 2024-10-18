@@ -558,12 +558,12 @@ export function updateFieldValue({
       store.dispatch('addFieldData', { name, value: null, revalidate: true });
       return;
     }
-    if (format === 'currency') {
+    if (format === 'currency' && typeof value.replace === 'function') {
       let noCommas = value.replace(/,/g, '');
       let floatNumber = parseFloat(noCommas);
       // @ts-ignore
       value = floatNumber;
-    } else if (format === 'number') {
+    } else if (format === 'number' && value) {
       let integerNumber = parseInt(value, 10);
       // @ts-ignore
       value = integerNumber;
