@@ -96,7 +96,13 @@ class DropdownSearch extends LitElement {
             this.emitEvent();
           }}
         >
-          ${this.options?.map((option) => this.generateOption(option))}
+          ${this.options
+            ?.sort((a, b) => {
+              if (a === 'Other Costs') return 1; // Push "Other Costs" to the end
+              if (b === 'Other Costs') return -1; // Push "Other Costs" to the end
+              return a.localeCompare(b); // Sort alphabetically
+            })
+            .map((option) => this.generateOption(option))}
         </select>
       </div>
       <span>See program guide for eligible expenses</span>

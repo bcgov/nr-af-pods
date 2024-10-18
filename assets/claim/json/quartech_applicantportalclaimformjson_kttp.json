@@ -1,6 +1,6 @@
 {
   "tags": ["Claim", "KTTP", "KTTP-SMEA", "KTTP-StreamTwo", "KTTP-Stream3"],
-  "version": "1.0.9",
+  "version": "1.1.0",
   "description": "Claim form field config used for all KTTP streams",
   "hiddenSteps": "",
   "sections": [
@@ -92,7 +92,8 @@
       "fields": [
         {
           "name": "quartech_eligibleexpenses",
-          "label": "Eligible Expenses"
+          "label": "Eligible Expenses",
+          "disableSingleLine": true
         },
         {
           "name": "quartech_totalsumofreportedexpenses",
