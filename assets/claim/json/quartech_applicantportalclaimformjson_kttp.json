@@ -1,6 +1,6 @@
 {
   "tags": ["Claim", "KTTP", "KTTP-SMEA", "KTTP-StreamTwo", "KTTP-Stream3"],
-  "version": "1.1.0",
+  "version": "1.1.2",
   "description": "Claim form field config used for all KTTP streams",
   "hiddenSteps": "",
   "sections": [
@@ -62,7 +62,9 @@
         {
           "name": "quartech_trainingcategoryfundedbyproject",
           "label": "Select the category that most closely describes the training funded by this project:",
-          "required": true
+          "hidden": true,
+          "doNotBlank": true,
+          "initialValue": 255550000
         },
         {
           "name": "quartech_businessmanagementtrainingparticipants",
@@ -84,6 +86,34 @@
             "value": "0",
             "comparison": "greaterThanOrEqualTo"
           }
+        },
+        {
+          "name": "quartech_majorchangestoagendaoriginallysubmitted",
+          "label": "Summarize any major changes to the agenda from what was originally submitted (e.g. change to topics or guest speakers)",
+          "required": true,
+          "maxLength": 1000
+        },
+        {
+          "name": "quartech_keytakeawaysfromtheactivity",
+          "label": "What were the key takeaways from the activity? (e.g. specific knowledge or skills learned)",
+          "required": true,
+          "maxLength": 1000
+        },
+        {
+          "name": "quartech_anticipatedimpactoftheactivity",
+          "label": "What short-term or long-term impacts do you anticipate as a result of the activity?",
+          "required": true,
+          "maxLength": 1000
+        },
+        {
+          "name": "quartech_lessonslearnedforfutureactivities",
+          "label": "Share any other lessons learned that can inform future knowledge transfer activities",
+          "maxLength": 1000
+        },
+        {
+          "name": "quartech_feedbacktotheprogram",
+          "label": "Do you have any feedback regarding the design and administration of the program? ",
+          "maxLength": 1000
         }
       ]
     },
