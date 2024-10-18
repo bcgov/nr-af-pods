@@ -1,6 +1,6 @@
 {
   "tags": ["Claim", "ABBP1"],
-  "version": "1.1.3",
+  "version": "1.1.4",
   "name": "ABPP - Agri-Business and Leadership Development",
   "abbreviation": "ABPP1",
   "hiddenSteps": "",
@@ -195,6 +195,7 @@
           "name": "quartech_gstamountinthisclaim",
           "label": "Your GST amount in this claim",
           "required": true,
+          "format": "currency",
           "validation": {
             "type": "numeric",
             "value": "0",
