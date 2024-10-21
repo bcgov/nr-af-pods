@@ -24,7 +24,7 @@ import '../../components/TextField.ts';
 import 'fa-icons';
 import { getTotalExpenseAmount } from '../../common/expenseTypes.ts';
 import { Logger } from '../../common/logger.js';
-import { filterEmptyRows } from '../../common/utils.js';
+import { filterEmptyRows, isValidJSON } from '../../common/utils.js';
 import { renderCustomComponent } from '../../common/components.ts';
 
 const logger = Logger('claim/steps/claimInfoStep');
@@ -447,10 +447,15 @@ function addExpenseReportGrid() {
       verifyTotalSumEqualsRequestedAmount();
     },
     initValuesFn: (mappedValueKey, existingValue, customElement) => {
-      if (mappedValueKey === 'rows') {
-        const arr = JSON.parse(existingValue);
-        if (!Array.isArray(arr)) {
-          customElement.setAttribute(`${mappedValueKey}`, JSON.stringify(rows));
+      if (mappedValueKey === 'rows' && existingValue && existingValue.length) {
+        if (isValidJSON(existingValue)) {
+          const arr = JSON.parse(existingValue);
+          if (!Array.isArray(arr)) {
+            customElement.setAttribute(
+              `${mappedValueKey}`,
+              JSON.stringify(rows)
+            );
+          }
         }
       }
     },

@@ -37,6 +37,15 @@ export function disableCanadaPostIntegration() {
   location.reload();
 }
 
+export function isValidJSON(jsonString) {
+  try {
+    JSON.parse(jsonString);
+    return true; // JSON is valid
+  } catch (e) {
+    return false; // JSON is invalid
+  }
+}
+
 /**
  * Equivalent of jQuery function $().
  */
