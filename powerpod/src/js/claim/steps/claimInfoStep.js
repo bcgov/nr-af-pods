@@ -447,16 +447,23 @@ function addExpenseReportGrid() {
       verifyTotalSumEqualsRequestedAmount();
     },
     initValuesFn: (mappedValueKey, existingValue, customElement) => {
-      if (mappedValueKey === 'rows' && existingValue && existingValue.length) {
-        if (isValidJSON(existingValue)) {
-          const arr = JSON.parse(existingValue);
-          if (!Array.isArray(arr)) {
-            customElement.setAttribute(
-              `${mappedValueKey}`,
-              JSON.stringify(rows)
-            );
-          }
+      logger.info({
+        fn: addExpenseReportGrid,
+        message: `Running initValuesFn for Expense Report Grid...`,
+        data: { mappedValueKey, existingValue, customElement },
+      });
+      if (
+        mappedValueKey === 'rows' &&
+        existingValue &&
+        existingValue.length &&
+        isValidJSON(existingValue)
+      ) {
+        const arr = JSON.parse(existingValue);
+        if (!Array.isArray(arr)) {
+          customElement.setAttribute(`${mappedValueKey}`, JSON.stringify(rows));
         }
+      } else if (!existingValue || existingValue.length === 0) {
+        customElement.setAttribute(`${mappedValueKey}`, JSON.stringify(rows));
       }
     },
   });

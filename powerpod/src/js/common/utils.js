@@ -42,6 +42,10 @@ export function isValidJSON(jsonString) {
     JSON.parse(jsonString);
     return true; // JSON is valid
   } catch (e) {
+    logger.error({
+      fn: isValidJSON,
+      message: `Invalid JSON for jsonString: ${jsonString}`,
+    });
     return false; // JSON is invalid
   }
 }
