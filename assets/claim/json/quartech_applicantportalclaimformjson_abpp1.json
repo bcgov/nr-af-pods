@@ -1,6 +1,6 @@
 {
   "tags": ["Claim", "ABBP1"],
-  "version": "1.1.4",
+  "version": "1.1.5",
   "name": "ABPP - Agri-Business and Leadership Development",
   "abbreviation": "ABPP1",
   "hiddenSteps": "",
@@ -229,7 +229,8 @@
         },
         {
           "name": "quartech_satisfactionsurveychefssubmissionid",
-          "hidden": true
+          "hidden": true,
+          "doNotBlank": true
         }
       ]
     }

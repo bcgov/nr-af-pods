@@ -1,6 +1,6 @@
 {
   "tags": ["Claim", "ABPP2"],
-  "version": "1.1.4",
+  "version": "1.1.5",
   "name": "ABPP - Business Planning, Preparedness, and Disaster Recovery",
   "abbreviation": "ABPP2",
   "sections": [
@@ -213,7 +213,8 @@
         },
         {
           "name": "quartech_satisfactionsurveychefssubmissionid",
-          "hidden": true
+          "hidden": true,
+          "doNotBlank": true
         }
       ]
     }
