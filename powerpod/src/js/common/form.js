@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { HtmlElementType, POWERPOD, doc, Form } from './constants.js';
+import { HtmlElementType, POWERPOD, doc, Form, BrowserInformationAction } from './constants.js';
 import {
   getControlType,
   getControlValue,
@@ -12,6 +12,7 @@ import { getFormType } from './applicationUtils.js';
 import { getProgramData } from './program.js';
 import { Logger } from './logger.js';
 import store from '../store/index.js';
+import { saveBrowserInfo } from './utils.js';
 
 const logger = Logger('common/form');
 
@@ -155,9 +156,10 @@ export function addFormDataOnClickHandler() {
 
   nextButton.removeAttribute('onclick');
 
-  nextButton?.addEventListener('click', (event) =>
-    formDataOnClickHandler(event, nextFn)
-  );
+  nextButton?.addEventListener('click', (event) => {
+    saveBrowserInfo(BrowserInformationAction.Next);
+    formDataOnClickHandler(event, nextFn);
+  });
 
   logger.info({
     fn: addFormDataOnClickHandler,
@@ -292,7 +294,10 @@ export function generateFormJson(setFieldOrder = false) {
     const questionKey = `${sectionId}Question`;
     const answerKey = `${sectionId}Answer`;
 
-    if (sectionId === 'applicantDeclarationSection' || sectionId === 'declarationAndConsentSection') {
+    if (
+      sectionId === 'applicantDeclarationSection' ||
+      sectionId === 'declarationAndConsentSection'
+    ) {
       const formType = getFormType();
       const consentText = generateConsentHtmlToText(formType);
       formJsonObj[sectionId][questionAnswerListKey].push({

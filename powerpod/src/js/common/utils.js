@@ -1,10 +1,20 @@
 // @ts-nocheck
 import { showFieldRow } from './html.js';
-import { POWERPOD, Form } from './constants.js';
+import {
+  POWERPOD,
+  Form,
+  BrowserInformationAction,
+  BrowserInformationType,
+} from './constants.js';
 import { Logger } from './logger.js';
 import { getFormType } from './applicationUtils.js';
 import { getFormId } from './form.js';
-import { patchApplicationData, patchClaimData } from './fetch.js';
+import {
+  patchApplicationData,
+  patchClaimData,
+  postBrowserInformationData,
+} from './fetch.js';
+import { getCurrentUser } from './dynamics.js';
 
 const logger = Logger('common/utils');
 
@@ -237,7 +247,7 @@ export function getBrowserInfo() {
   return JSON.stringify(userInfo, null, 2);
 }
 
-export async function saveBrowserInfo() {
+export async function saveBrowserInfo(action = BrowserInformationAction.Load) {
   const data = getBrowserInfo();
 
   if (!data) {
@@ -248,9 +258,11 @@ export async function saveBrowserInfo() {
     return;
   }
 
-  const payload = {
-    quartech_applicantbrowserinformation: data,
-  };
+  // const payload = {
+  //   quartech_applicantbrowserinformation: data,
+  // };
+
+  let payload = {};
 
   const formId = getFormId();
   const formType = getFormType();
@@ -258,22 +270,42 @@ export async function saveBrowserInfo() {
   try {
     let res;
 
+    const { contactId } = getCurrentUser();
     if (formType === Form.Application) {
-      res = await patchApplicationData({ id: formId, fieldData: payload });
+      payload = {
+        applicationId: formId,
+        payload: data,
+        action,
+        type: BrowserInformationType.Information,
+        contactId,
+      };
+      // res = await patchApplicationData({ id: formId, fieldData: payload });
+      res = await postBrowserInformationData(payload);
     } else if (formType === Form.Claim) {
-      res = await patchClaimData({ id: formId, fieldData: payload });
+      payload = {
+        claimId: formId,
+        payload: data,
+        action,
+        type: BrowserInformationType.Information,
+        contactId,
+      };
+      // res = await patchClaimData({ id: formId, fieldData: payload });
+      res = await postBrowserInformationData(payload);
     }
 
     logger.info({
       fn: saveBrowserInfo,
-      message:
-        'successfully patched form data with browser information payload',
+      message: `successfully patched form data with browser information payload: ${JSON.stringify(
+        payload
+      )}`,
       data: { formId, formType, payload },
     });
   } catch (e) {
     logger.error({
       fn: saveBrowserInfo,
-      message: `failed to patch form data with browser info for formType: ${formType}`,
+      message: `failed to patch form data with browser info for formType: ${formType}, payload: ${JSON.stringify(
+        payload
+      )}`,
       data: { e, formId, formType, payload },
     });
   }

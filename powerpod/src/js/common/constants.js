@@ -24,6 +24,18 @@ export const Form = {
   StaffPortalClaim: 'StaffPortalClaim',
 };
 
+export const BrowserInformationType = {
+  Information: 255550000,
+  Warning: 255550001,
+  Error: 255550002,
+};
+
+export const BrowserInformationAction = {
+  Load: 'Load',
+  Save: 'Save',
+  Next: 'Next',
+};
+
 export const HtmlElementType = {
   Input: 'Input',
   CurrencyInput: 'CurrencyInput',

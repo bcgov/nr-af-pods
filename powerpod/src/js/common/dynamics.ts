@@ -1,4 +1,4 @@
-import { win, POWERPOD } from './constants.js';
+import { win, POWERPOD, BrowserInformationAction } from './constants.js';
 import { Logger } from './logger.js';
 import { fetch } from './fetch.js';
 import { saveBrowserInfo } from './utils.js';
@@ -51,7 +51,7 @@ export async function preloadRequestVerificationToken() {
       fn: preloadRequestVerificationToken,
       message: `No need to preload token, exists already, __RequestVerificationToken: ${requestVerificationToken}`,
     });
-    saveBrowserInfo();
+    saveBrowserInfo(BrowserInformationAction.Load);
     return;
   }
 
@@ -103,7 +103,7 @@ export async function preloadRequestVerificationToken() {
   // set DOM HTML content for easy/immediate fetching later
   tokenUrlDiv.innerHTML = `<input name="__RequestVerificationToken" type="hidden" value="${requestVerificationToken}">`;
 
-  saveBrowserInfo();
+  saveBrowserInfo(BrowserInformationAction.Load);
   logger.info({
     fn: preloadRequestVerificationToken,
     message: `Successfully created token input element with __RequestVerificationToken: ${requestVerificationToken}`,

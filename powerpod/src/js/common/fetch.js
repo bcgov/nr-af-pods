@@ -512,6 +512,12 @@ export async function postApplicationData({
 }
 
 export async function postBrowserInformationData({
+  claimId = null,
+  applicationId = null,
+  payload = '',
+  action,
+  type,
+  contactId,
   ...options
 }) {
   return fetch({
@@ -523,7 +529,17 @@ export async function postBrowserInformationData({
     processData: false,
     returnData: true,
     data: JSON.stringify({
-      quartech_name: 'Test'
+      quartech_name: 'POWERPOD',
+      quartech_action: `${action}`,
+      ...(claimId != null && {
+        'quartech_ClaimId@odata.bind': `/quartech_claims(${claimId})`,
+      }),
+      ...(applicationId != null && {
+        'quartech_ApplicationId@odata.bind': `/msgov_businessgrantapplications(${applicationId})`,
+      }),
+      quartech_type: type,
+      quartech_userid: contactId,
+      quartech_applicantbrowserinformation: payload,
     }),
     ...options,
   });

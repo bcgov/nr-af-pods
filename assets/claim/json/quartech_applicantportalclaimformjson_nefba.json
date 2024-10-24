@@ -1,6 +1,6 @@
 {
   "tags": ["Claim", "NEFBA"],
-  "version": "1.0.4",
+  "version": "1.0.5",
   "name": "New Entrant Farm Business Accelerator",
   "abbreviation": "NEFBA",
   "hiddenSteps": "",
@@ -62,31 +62,6 @@
             "type": "numeric",
             "value": "0",
             "comparison": "greaterThan"
-          }
-        },
-        {
-          "name": "quartech_adoptednumber",
-          "required": true,
-          "format": "number",
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThan"
-          }
-        },
-        {
-          "name": "quartech_environmentallybeneficialadoptednumber",
-          "required": true,
-          "format": "number",
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThan"
-          },
-          "visibleIf": {
-            "fieldName": "quartech_environmentallybeneficialadoptedresults",
-            "selectedValue": 255550000,
-            "techComment": "Yes value"
           }
         }
       ]
