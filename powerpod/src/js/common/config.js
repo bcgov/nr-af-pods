@@ -11,6 +11,8 @@ import { Logger } from './logger.js';
 // import localConfigJson from '../../../../assets/application/json/quartech_applicantportalapplicationformconfigjson_abpp2.json';
 // VLB:
 // import localConfigJson from '../../../../assets/application/json/quartech_applicantportalapplicationformconfigjson_vlb.json';
+// NEFBA:
+// import localConfigJson from '../../../../assets/application/json/quartech_applicantportalapplicationformconfigjson_nefba.json';
 // Claim ABPP1:
 // import localConfigJson from '../../../../assets/claim/json/quartech_applicantportalclaimformjson_abpp1.json';
 // Claim ABPP2:

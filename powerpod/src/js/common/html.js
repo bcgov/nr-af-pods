@@ -316,7 +316,15 @@ export function getControlValue({
     rawValue = verboseValue;
   } else if (elementType === HtmlElementType.DropdownSelect) {
     const selectElement = controlDiv?.querySelector('select');
-    rawValue = selectElement.value;
+    if (!selectElement) {
+      logger.error({
+        fn: getControlValue,
+        message: `Could not found selectElement for controlId: ${controlId}`,
+        data: { controlId, tr, raw, forTemplateGeneration },
+      });
+      return;
+    }
+    rawValue = selectElement?.value;
     const selectedIndex = selectElement?.selectedIndex;
     const selectedOption = selectElement.options[selectedIndex];
     const selectedOptionText =
