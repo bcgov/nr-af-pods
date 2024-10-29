@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RibbonDiffXml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <CustomActions>
+    <CustomAction Id="quartech.msgov_businessgrantapplication.NewCancel.Button.CustomAction" Location="Mscrm.Form.msgov_businessgrantapplication.MainTab.Save.Controls._children" Sequence="63">
+      <CommandUIDefinition>
+        <Button Id="quartech.msgov_businessgrantapplication.NewCancel.Button" LabelText="$LocLabels:quartech.msgov_businessgrantapplication.NewCancel.Button.LabelText" Sequence="63" TemplateAlias="o2" />
+      </CommandUIDefinition>
+    </CustomAction>
+  </CustomActions>
+  <Templates>
+    <RibbonTemplates Id="Mscrm.Templates"></RibbonTemplates>
+  </Templates>
+  <CommandDefinitions>
+    <CommandDefinition Id="quartech.msgov_businessgrantapplication.Command0.Command">
+      <EnableRules />
+      <DisplayRules />
+      <Actions />
+    </CommandDefinition>
+  </CommandDefinitions>
+  <RuleDefinitions>
+    <TabDisplayRules />
+    <DisplayRules />
+    <EnableRules />
+  </RuleDefinitions>
+  <LocLabels>
+    <LocLabel Id="quartech.msgov_businessgrantapplication.NewCancel.Button.LabelText">
+      <Titles>
+        <Title description="New Cancel" languagecode="1033" />
+      </Titles>
+    </LocLabel>
+  </LocLabels>
+</RibbonDiffXml>

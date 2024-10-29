@@ -1,0 +1,786 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_sharedcommondataserviceforapps_7bca8"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      },
+      "shared_sharepointonline": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "new_sharedsharepointonline_4ed0e"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "When_a_row_is_added,_modified_or_deleted": {
+          "metadata": {
+            "operationMetadataId": "91e51bb8-a125-4d23-b167-d6ad7dffcd32"
+          },
+          "type": "OpenApiConnectionWebhook",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "SubscribeWebhookTrigger",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "subscriptionRequest/message": 1,
+              "subscriptionRequest/entityname": "annotation",
+              "subscriptionRequest/scope": 4
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        }
+      },
+      "actions": {
+        "Check_if_note_attachments_related_to_Application_": {
+          "actions": {
+            "Get_Application_GUID": {
+              "actions": {
+                "Get_a_row_by_ID": {
+                  "runAfter": {},
+                  "metadata": {
+                    "operationMetadataId": "ac3a368d-f479-43e9-aaaf-f56e63c5b6e6"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_commondataserviceforapps",
+                      "operationId": "GetItem",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                    },
+                    "parameters": {
+                      "entityName": "quartech_applicationsupportingdocuments",
+                      "recordId": "@triggerOutputs()?['body/_objectid_value']"
+                    },
+                    "authentication": "@parameters('$authentication')"
+                  }
+                },
+                "Set_variable": {
+                  "runAfter": {
+                    "Get_a_row_by_ID": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "1608cebe-9f4a-4f93-a031-952e2dd0fb66"
+                  },
+                  "type": "SetVariable",
+                  "inputs": {
+                    "name": "varApplicationGUID",
+                    "value": "@outputs('Get_a_row_by_ID')?['body/_quartech_application_value']"
+                  }
+                },
+                "Set_variable_3": {
+                  "runAfter": {
+                    "Set_variable": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "6135086f-6256-44dc-b5b8-5e8cb0026073"
+                  },
+                  "type": "SetVariable",
+                  "inputs": {
+                    "name": "varDocumentType",
+                    "value": "Supporting Documents"
+                  }
+                }
+              },
+              "runAfter": {},
+              "else": {
+                "actions": {
+                  "Get_a_row_by_ID_2": {
+                    "runAfter": {},
+                    "metadata": {
+                      "operationMetadataId": "07cb5651-7635-4d39-84ca-11117dfe3f4f"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_commondataserviceforapps",
+                        "operationId": "GetItem",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                      },
+                      "parameters": {
+                        "entityName": "quartech_applicationprojectbudgetforms",
+                        "recordId": "@triggerOutputs()?['body/_objectid_value']"
+                      },
+                      "authentication": "@parameters('$authentication')"
+                    }
+                  },
+                  "Set_variable_2": {
+                    "runAfter": {
+                      "Get_a_row_by_ID_2": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "46859af8-e173-4ba7-908c-4361dedc04d5"
+                    },
+                    "type": "SetVariable",
+                    "inputs": {
+                      "name": "varApplicationGUID",
+                      "value": "@outputs('Get_a_row_by_ID_2')?['body/_quartech_application_value']"
+                    }
+                  },
+                  "Set_variable_4": {
+                    "runAfter": {
+                      "Set_variable_2": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "f3c43602-3ce4-47a6-888c-c505eb044fe9"
+                    },
+                    "type": "SetVariable",
+                    "inputs": {
+                      "name": "varDocumentType",
+                      "value": "Project Budget Forms"
+                    }
+                  }
+                }
+              },
+              "expression": {
+                "equals": [
+                  "@triggerOutputs()?['body/_objectid_value@Microsoft.Dynamics.CRM.lookuplogicalname']",
+                  "quartech_applicationsupportingdocument"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "ea9f8879-592b-42a2-8048-c02b7dfbfc60"
+              },
+              "type": "If"
+            },
+            "Get_Application_Record": {
+              "runAfter": {
+                "Get_Application_GUID": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "683ed61f-641c-42ca-8321-f9532a14aeb4"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps",
+                  "operationId": "GetItem",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "entityName": "msgov_businessgrantapplications",
+                  "recordId": "@variables('varApplicationGUID')"
+                },
+                "authentication": "@parameters('$authentication')"
+              }
+            },
+            "Get_Application_Document_Base_Location": {
+              "runAfter": {
+                "Get_Application_Record": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "bd336546-f6bb-4041-9cc6-4022d63a76ab"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps",
+                  "operationId": "ListRecords",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "entityName": "sharepointdocumentlocations",
+                  "fetchXml": "<fetch version=\"1.0\" output-format=\"xml-platform\" mapping=\"logical\" distinct=\"false\">\n  <entity name=\"sharepointdocumentlocation\">\n    <attribute name=\"name\" />\n    <attribute name=\"regardingobjectid\" />\n    <attribute name=\"parentsiteorlocation\" />\n    <attribute name=\"relativeurl\" />\n    <attribute name=\"absoluteurl\" />\n    <attribute name=\"createdon\" />\n    <order attribute=\"name\" descending=\"false\" />\n    <filter type=\"and\">\n      <condition attribute=\"locationtype\" operator=\"eq\" value=\"0\" />\n      <condition attribute=\"servicetype\" operator=\"eq\" value=\"0\" />\n      <condition attribute=\"relativeurl\" operator=\"eq\" value=\"msgov_businessgrantapplication\" />\n    </filter>\n    <link-entity name=\"sharepointsite\" from=\"sharepointsiteid\" to=\"parentsiteorlocation\" link-type=\"inner\" alias=\"ac\">\n      <filter type=\"and\">\n        <condition attribute=\"absoluteurl\" operator=\"eq\" value=\"https://bcgov.sharepoint.com/sites/AF-PODS-DEV\" />\n      </filter>\n    </link-entity>\n  </entity>\n</fetch>"
+                },
+                "authentication": "@parameters('$authentication')"
+              }
+            },
+            "Get_current_Appliaction_record_document_location": {
+              "runAfter": {
+                "Parse_JSON_2": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "ee0bc108-3d6e-47ac-a4b7-3acf548df2a8"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps",
+                  "operationId": "ListRecords",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "entityName": "sharepointdocumentlocations",
+                  "fetchXml": "<fetch version=\"1.0\" output-format=\"xml-platform\" mapping=\"logical\" distinct=\"false\">\n  <entity name=\"sharepointdocumentlocation\">\n    <attribute name=\"name\" />\n    <attribute name=\"regardingobjectid\" />\n    <attribute name=\"parentsiteorlocation\" />\n    <attribute name=\"relativeurl\" />\n    <attribute name=\"absoluteurl\" />\n    <order attribute=\"name\" descending=\"false\" />\n    <filter type=\"and\">\n      <condition attribute=\"locationtype\" operator=\"eq\" value=\"0\" />\n      <condition attribute=\"servicetype\" operator=\"eq\" value=\"0\" />\n      <condition attribute=\"parentsiteorlocation\" operator=\"eq\" value=\"{@{body('Parse_JSON_2')?['sharepointdocumentlocationid']}}\" />\n      <condition attribute=\"relativeurl\" operator=\"eq\" value=\"@{outputs('Get_Application_Record')?['body/quartech_applicationid']}\" />\n    </filter>\n  </entity>\n</fetch>"
+                },
+                "authentication": "@parameters('$authentication')"
+              }
+            },
+            "Condition": {
+              "actions": {
+                "Add_a_new_row": {
+                  "runAfter": {},
+                  "metadata": {
+                    "operationMetadataId": "b8c2309e-d9a1-4dfc-bf18-16c316fe5bdb"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_commondataserviceforapps",
+                      "operationId": "CreateRecord",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                    },
+                    "parameters": {
+                      "entityName": "sharepointdocumentlocations",
+                      "item/name": "@outputs('Get_Application_Record')?['body/quartech_applicationid']",
+                      "item/servicetype": 0,
+                      "item/parentsiteorlocation_sharepointdocumentlocation@odata.bind": "/sharepointdocumentlocations/@{body('Parse_JSON_2')?['sharepointdocumentlocationid']}",
+                      "item/regardingobjectid_msgov_businessgrantapplication@odata.bind": "/msgov_businessgrantapplications/@{variables('varApplicationGUID')}",
+                      "item/relativeurl": "@outputs('Get_Application_Record')?['body/quartech_applicationid']"
+                    },
+                    "authentication": "@parameters('$authentication')"
+                  }
+                }
+              },
+              "runAfter": {
+                "Get_current_Appliaction_record_document_location": [
+                  "Succeeded"
+                ]
+              },
+              "expression": {
+                "equals": [
+                  "@length(outputs('Get_current_Appliaction_record_document_location')?['body/value'])",
+                  0
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "ea9f8879-592b-42a2-8048-c02b7dfbfc60"
+              },
+              "type": "If"
+            },
+            "Parse_JSON": {
+              "runAfter": {
+                "Get_Application_Document_Base_Location": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "068d051c-5473-4777-8bd3-a215252131c1"
+              },
+              "type": "ParseJson",
+              "inputs": {
+                "content": "@outputs('Get_Application_Document_Base_Location')?['body/value']",
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "@@odata.type": {
+                        "type": "string"
+                      },
+                      "@@odata.id": {
+                        "type": "string"
+                      },
+                      "@@odata.etag": {
+                        "type": "string"
+                      },
+                      "@@odata.editLink": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "_parentsiteorlocation_value@OData.Community.Display.V1.FormattedValue": {
+                        "type": "string"
+                      },
+                      "_parentsiteorlocation_value@Microsoft.Dynamics.CRM.associatednavigationproperty": {
+                        "type": "string"
+                      },
+                      "_parentsiteorlocation_value@Microsoft.Dynamics.CRM.lookuplogicalname": {
+                        "type": "string"
+                      },
+                      "_parentsiteorlocation_value@odata.type": {
+                        "type": "string"
+                      },
+                      "_parentsiteorlocation_value": {
+                        "type": "string"
+                      },
+                      "relativeurl": {
+                        "type": "string"
+                      },
+                      "createdon@OData.Community.Display.V1.FormattedValue": {
+                        "type": "string"
+                      },
+                      "createdon@odata.type": {
+                        "type": "string"
+                      },
+                      "createdon": {
+                        "type": "string"
+                      },
+                      "sharepointdocumentlocationid@odata.type": {
+                        "type": "string"
+                      },
+                      "sharepointdocumentlocationid": {
+                        "type": "string"
+                      },
+                      "parentsiteorlocation_sharepointsite@odata.associationLink": {
+                        "type": "string"
+                      },
+                      "parentsiteorlocation_sharepointsite@odata.navigationLink": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "@@odata.type",
+                      "@@odata.id",
+                      "@@odata.etag",
+                      "@@odata.editLink",
+                      "name",
+                      "_parentsiteorlocation_value@OData.Community.Display.V1.FormattedValue",
+                      "_parentsiteorlocation_value@Microsoft.Dynamics.CRM.associatednavigationproperty",
+                      "_parentsiteorlocation_value@Microsoft.Dynamics.CRM.lookuplogicalname",
+                      "_parentsiteorlocation_value@odata.type",
+                      "_parentsiteorlocation_value",
+                      "relativeurl",
+                      "createdon@OData.Community.Display.V1.FormattedValue",
+                      "createdon@odata.type",
+                      "createdon",
+                      "sharepointdocumentlocationid@odata.type",
+                      "sharepointdocumentlocationid",
+                      "parentsiteorlocation_sharepointsite@odata.associationLink",
+                      "parentsiteorlocation_sharepointsite@odata.navigationLink"
+                    ]
+                  }
+                }
+              }
+            },
+            "Compose": {
+              "runAfter": {
+                "Parse_JSON": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "b2e20001-156e-451b-bed0-23b6b65e32d6"
+              },
+              "type": "Compose",
+              "inputs": "@first(body('Parse_JSON'))"
+            },
+            "Parse_JSON_2": {
+              "runAfter": {
+                "Compose": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "7a385f44-3788-4fb2-b2df-d769006063dc"
+              },
+              "type": "ParseJson",
+              "inputs": {
+                "content": "@outputs('Compose')",
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "@@odata.type": {
+                      "type": "string"
+                    },
+                    "@@odata.id": {
+                      "type": "string"
+                    },
+                    "@@odata.etag": {
+                      "type": "string"
+                    },
+                    "@@odata.editLink": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "_parentsiteorlocation_value@OData.Community.Display.V1.FormattedValue": {
+                      "type": "string"
+                    },
+                    "_parentsiteorlocation_value@Microsoft.Dynamics.CRM.associatednavigationproperty": {
+                      "type": "string"
+                    },
+                    "_parentsiteorlocation_value@Microsoft.Dynamics.CRM.lookuplogicalname": {
+                      "type": "string"
+                    },
+                    "_parentsiteorlocation_value@odata.type": {
+                      "type": "string"
+                    },
+                    "_parentsiteorlocation_value": {
+                      "type": "string"
+                    },
+                    "relativeurl": {
+                      "type": "string"
+                    },
+                    "createdon@OData.Community.Display.V1.FormattedValue": {
+                      "type": "string"
+                    },
+                    "createdon@odata.type": {
+                      "type": "string"
+                    },
+                    "createdon": {
+                      "type": "string"
+                    },
+                    "sharepointdocumentlocationid@odata.type": {
+                      "type": "string"
+                    },
+                    "sharepointdocumentlocationid": {
+                      "type": "string"
+                    },
+                    "parentsiteorlocation_sharepointsite@odata.associationLink": {
+                      "type": "string"
+                    },
+                    "parentsiteorlocation_sharepointsite@odata.navigationLink": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "Create_file": {
+              "runAfter": {
+                "Compose_2": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "cdc2d781-2118-4cb6-bc2b-b8da6677f6f5"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline",
+                  "operationId": "CreateFile",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "https://bcgov.sharepoint.com/sites/AF-PODS-DEV",
+                  "folderPath": "/msgov_businessgrantapplication/@{outputs('Get_Application_Record')?['body/quartech_applicationid']}/@{variables('varDocumentType')}",
+                  "name": "@triggerOutputs()?['body/filename']",
+                  "body": "@outputs('Compose_2')"
+                },
+                "authentication": "@parameters('$authentication')"
+              },
+              "runtimeConfiguration": {
+                "contentTransfer": {
+                  "transferMode": "Chunked"
+                }
+              }
+            },
+            "Compose_2": {
+              "runAfter": {
+                "Condition": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "0d57fba9-4947-48a5-91ff-f8e6a9bbf3b6"
+              },
+              "type": "Compose",
+              "inputs": "@base64ToBinary(triggerOutputs()?['body/documentbody'])"
+            },
+            "Condition_2": {
+              "actions": {
+                "Create_a_new_note_to_save_the_document_absolute_url": {
+                  "runAfter": {},
+                  "metadata": {
+                    "operationMetadataId": "f589591c-0179-4bd2-a669-25db99ff3463"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_commondataserviceforapps",
+                      "operationId": "CreateRecord",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                    },
+                    "parameters": {
+                      "entityName": "annotations",
+                      "item/subject": "@triggerOutputs()?['body/filename']",
+                      "item/notetext": "Document Location:    \nhttps://bcgov.sharepoint.com/sites/AF-PODS-DEV/msgov_businessgrantapplication/@{outputs('Get_Application_Record')?['body/quartech_applicationid']}/@{variables('varDocumentType')}",
+                      "item/isdocument": false,
+                      "item/objectid_quartech_applicationprojectbudgetform@odata.bind": "\\quartech_applicationprojectbudgetforms\\@{triggerOutputs()?['body/_objectid_value']}"
+                    },
+                    "authentication": "@parameters('$authentication')"
+                  }
+                }
+              },
+              "runAfter": {
+                "Create_file": [
+                  "Succeeded"
+                ]
+              },
+              "else": {
+                "actions": {
+                  "Create_a_new_note_to_save_the_document_absolute_url_": {
+                    "runAfter": {},
+                    "metadata": {
+                      "operationMetadataId": "2f09231e-5f99-406f-b0d4-22721934b4d6"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_commondataserviceforapps",
+                        "operationId": "CreateRecord",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                      },
+                      "parameters": {
+                        "entityName": "annotations",
+                        "item/subject": "@triggerOutputs()?['body/filename']",
+                        "item/notetext": "Document Location:    \nhttps://bcgov.sharepoint.com/sites/AF-PODS-DEV/msgov_businessgrantapplication/@{outputs('Get_Application_Record')?['body/quartech_applicationid']}/@{variables('varDocumentType')}",
+                        "item/isdocument": false,
+                        "item/objectid_quartech_applicationsupportingdocument@odata.bind": "\\quartech_applicationsupportingdocuments\\@{triggerOutputs()?['body/_objectid_value']}"
+                      },
+                      "authentication": "@parameters('$authentication')"
+                    }
+                  }
+                }
+              },
+              "expression": {
+                "equals": [
+                  "@variables('varDocumentType')",
+                  "Project Budget Forms"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "8f40a2c8-bdfb-4831-a7df-9a99fce231b7"
+              },
+              "type": "If"
+            },
+            "Delete_a_row": {
+              "runAfter": {
+                "Condition_2": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "7b664e43-ce1c-459c-9e7c-965e89201b3b"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps",
+                  "operationId": "DeleteRecord",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "entityName": "annotations",
+                  "recordId": "@body('Parse_JSON_3')?['annotationid']"
+                },
+                "authentication": "@parameters('$authentication')"
+              }
+            }
+          },
+          "runAfter": {
+            "Initialize_variable": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "and": [
+              {
+                "equals": [
+                  "@triggerOutputs()?['body/isdocument']",
+                  "@true"
+                ]
+              },
+              {
+                "or": [
+                  {
+                    "equals": [
+                      "@triggerOutputs()?['body/_objectid_value@Microsoft.Dynamics.CRM.lookuplogicalname']",
+                      "quartech_applicationsupportingdocument"
+                    ]
+                  },
+                  {
+                    "equals": [
+                      "@triggerOutputs()?['body/_objectid_value@Microsoft.Dynamics.CRM.lookuplogicalname']",
+                      "quartech_applicationprojectbudgetform"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "ac7d9c0b-f4c2-4f79-9120-b4f3b04b5f97"
+          },
+          "type": "If"
+        },
+        "Initialize_Application_GUID": {
+          "runAfter": {
+            "Parse_JSON_3": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "377dbc1f-5fd1-405b-bb49-9e111c618e36"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "varApplicationGUID",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Initialize_variable": {
+          "runAfter": {
+            "Initialize_Application_GUID": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "b190f9e7-159a-4230-8974-3dd90e728399"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "varDocumentType",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Parse_JSON_3": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "6d36d1e5-45f0-41bc-ae6b-5a37e1f65e85"
+          },
+          "type": "ParseJson",
+          "inputs": {
+            "content": "@triggerOutputs()?['body']",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "_owningbusinessunit_value": {
+                  "type": "string"
+                },
+                "_owningbusinessunit_value@Microsoft.Dynamics.CRM.lookuplogicalname": {
+                  "type": "string"
+                },
+                "_owningbusinessunit_type": {
+                  "type": "string"
+                },
+                "_objectid_value": {
+                  "type": "string"
+                },
+                "_objectid_value@Microsoft.Dynamics.CRM.lookuplogicalname": {
+                  "type": "string"
+                },
+                "_objectid_type": {
+                  "type": "string"
+                },
+                "subject": {
+                  "type": "string"
+                },
+                "annotationid": {
+                  "type": "string"
+                },
+                "isdocument": {
+                  "type": "boolean"
+                },
+                "filename": {
+                  "type": "string"
+                },
+                "_createdby_value": {
+                  "type": "string"
+                },
+                "_createdby_value@Microsoft.Dynamics.CRM.lookuplogicalname": {
+                  "type": "string"
+                },
+                "_createdby_type": {
+                  "type": "string"
+                },
+                "objecttypecode": {
+                  "type": "string"
+                },
+                "notetext": {
+                  "type": "string"
+                },
+                "filesize": {
+                  "type": "integer"
+                },
+                "_ownerid_value": {
+                  "type": "string"
+                },
+                "_ownerid_value@Microsoft.Dynamics.CRM.lookuplogicalname": {
+                  "type": "string"
+                },
+                "_ownerid_type": {
+                  "type": "string"
+                },
+                "_modifiedby_value": {
+                  "type": "string"
+                },
+                "_modifiedby_value@Microsoft.Dynamics.CRM.lookuplogicalname": {
+                  "type": "string"
+                },
+                "_modifiedby_type": {
+                  "type": "string"
+                },
+                "createdon": {
+                  "type": "string"
+                },
+                "documentbody": {
+                  "type": "string"
+                },
+                "mimetype": {
+                  "type": "string"
+                },
+                "modifiedon": {
+                  "type": "string"
+                },
+                "ItemInternalId": {
+                  "type": "string"
+                },
+                "SdkMessage": {
+                  "type": "string"
+                },
+                "RunAsSystemUserId": {
+                  "type": "string"
+                },
+                "RowVersion": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

@@ -1,0 +1,144 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_PodsSvcAcctDataverse"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "When_Amount_sent_to_CSNR_for_Payment_of_a_Submitted_Claim_has_a_value": {
+          "metadata": {
+            "operationMetadataId": "4d07e0ae-4c03-461b-94c2-6bd1580848af"
+          },
+          "type": "OpenApiConnectionWebhook",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "SubscribeWebhookTrigger",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "subscriptionRequest/message": 3,
+              "subscriptionRequest/entityname": "quartech_claim",
+              "subscriptionRequest/scope": 4,
+              "subscriptionRequest/filteringattributes": "quartech_amountsenttocsnrforpayment",
+              "subscriptionRequest/filterexpression": "quartech_amountsenttocsnrforpayment ge 0 and quartech_claimstatus eq 255550001"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        }
+      },
+      "actions": {
+        "List_ALL_submitted_claims_of_the_project_to_calculate_total_approved_amount": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "134fff2e-3e05-4357-a84b-2b8932b577b1"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "quartech_claims",
+              "$select": "quartech_claimid, quartech_approvedreimbursementamount",
+              "$filter": "quartech_approvedreimbursementamount ge 0 and quartech_amountsenttocsnrforpayment ge 0 and quartech_claimstatus eq 255550001 and _quartech_project_value eq @{triggerOutputs()?['body/_quartech_project_value']}"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Select_ApprovedReimbursementAmount": {
+          "runAfter": {
+            "List_ALL_submitted_claims_of_the_project_to_calculate_total_approved_amount": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "f011c343-bb46-464d-b5e2-f239e73d20c7"
+          },
+          "type": "Select",
+          "inputs": {
+            "from": "@outputs('List_ALL_submitted_claims_of_the_project_to_calculate_total_approved_amount')?['body/value']",
+            "select": "@item()?['quartech_approvedreimbursementamount']"
+          }
+        },
+        "Initialize_JSON": {
+          "runAfter": {
+            "Select_ApprovedReimbursementAmount": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "e8a82555-55cc-488d-8205-73a75864e14e"
+          },
+          "type": "Compose",
+          "inputs": {
+            "root": {
+              "ApprovedReimbursementAmount": "@body('Select_ApprovedReimbursementAmount')"
+            }
+          }
+        },
+        "Run_Amount_Summary": {
+          "runAfter": {
+            "Initialize_JSON": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "033ed292-8b53-471c-b6a0-3dec2814276d"
+          },
+          "type": "Compose",
+          "inputs": "@xpath(xml(outputs('Initialize_JSON')), 'sum(/root/ApprovedReimbursementAmount)')",
+          "description": "xpath(xml(outputs('Initialize_JSON')), 'sum(/root/ApprovedReimbursementAmount)')"
+        },
+        "Populate_Approved_Amount_Summary_to_associated_Project_Actual_Amount_": {
+          "runAfter": {
+            "Run_Amount_Summary": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "a5151e13-79d4-47cc-91f4-15d3db575b21"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "UpdateRecord",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "quartech_grantprojects",
+              "recordId": "@triggerOutputs()?['body/_quartech_project_value']",
+              "item/quartech_actualamount": "@outputs('Run_Amount_Summary')"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

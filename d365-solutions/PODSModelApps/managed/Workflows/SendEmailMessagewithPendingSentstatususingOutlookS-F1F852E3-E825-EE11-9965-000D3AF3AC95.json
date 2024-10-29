@@ -1,0 +1,302 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_PodsSvcAcctDataverse"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      },
+      "shared_office365_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_PodsSvcAcctOffice365Outlook"
+        },
+        "api": {
+          "name": "shared_office365"
+        }
+      },
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_sharedcommondataserviceforapps_f90be"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        }
+      },
+      "triggers": {
+        "When_an_Email_Message_is_set_to_Pending_Sent": {
+          "metadata": {
+            "operationMetadataId": "f11a0159-6611-4290-b671-8305e5904435"
+          },
+          "type": "OpenApiConnectionWebhook",
+          "inputs": {
+            "parameters": {
+              "subscriptionRequest/message": 4,
+              "subscriptionRequest/entityname": "email",
+              "subscriptionRequest/scope": 4,
+              "subscriptionRequest/filterexpression": "statuscode eq 6",
+              "subscriptionRequest/name": "f1f852e3-e825-ee11-9965-000d3af3ac95"
+            },
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+              "operationId": "SubscribeWebhookTrigger",
+              "connectionName": "shared_commondataserviceforapps_1"
+            }
+          }
+        }
+      },
+      "actions": {
+        "Get_the_Email_Message_Details": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "cdf8b838-17c2-440d-a299-c7b59b247bc2"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "parameters": {
+              "entityName": "emails",
+              "recordId": "@triggerOutputs()?['body/activityid']"
+            },
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+              "operationId": "GetItem",
+              "connectionName": "shared_commondataserviceforapps_1"
+            }
+          }
+        },
+        "CheckEmailRegardingType": {
+          "runAfter": {
+            "Get_the_Email_Message_Details": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "f0797da7-4d8c-45ad-b87b-fa451a53808b"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "EmailRegardingType",
+                "type": "string",
+                "value": "@outputs('Get_the_Email_Message_Details')?['body/_regardingobjectid_value@Microsoft.Dynamics.CRM.lookuplogicalname']"
+              }
+            ]
+          }
+        },
+        "Attachment_flag_to_identify_whether_it's_an_internal_or_an_external_email": {
+          "actions": {
+            "Connect_Outlook_to_PODS_Email_Message_and_Send_Email_Notification": {
+              "metadata": {
+                "operationMetadataId": "f37ae31d-eeda-4242-8f3e-8a9eb45412cd"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "parameters": {
+                  "emailMessage/To": "@outputs('Get_the_Email_Message_Details')?['body/torecipients']",
+                  "emailMessage/Subject": "@outputs('Get_the_Email_Message_Details')?['body/subject']",
+                  "emailMessage/Body": "<p>@{outputs('Get_the_Email_Message_Details')?['body/description']}</p>",
+                  "emailMessage/Cc": "@outputs('Get_the_Email_Message_Details')?['body/quartech_program_email_address']",
+                  "emailMessage/ReplyTo": "@outputs('Get_the_Email_Message_Details')?['body/quartech_program_email_address']",
+                  "emailMessage/Importance": "Normal"
+                },
+                "host": {
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365",
+                  "operationId": "SendEmailV2",
+                  "connectionName": "shared_office365_1"
+                }
+              }
+            },
+            "Perform_a_bound_action_to_set_Email_Record_to_\"Sent\"": {
+              "runAfter": {
+                "Connect_Outlook_to_PODS_Email_Message_and_Send_Email_Notification": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "e4b4f4c9-dea2-4187-9781-649492a332d1"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "parameters": {
+                  "entityName": "emails",
+                  "actionName": "Microsoft.Dynamics.CRM.SendEmail",
+                  "recordId": "@outputs('Get_the_Email_Message_Details')?['body/activityid']",
+                  "item/IssueSend": false
+                },
+                "host": {
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+                  "operationId": "PerformBoundAction",
+                  "connectionName": "shared_commondataserviceforapps_1"
+                }
+              },
+              "description": "\"IssueSend\" is to trigger D365's OOTB email function. Since the email has been sent by Outlook, this step is to update the email's Sent status, but not to send the email; on purpose to set it to \"No\"."
+            }
+          },
+          "runAfter": {
+            "Attachments": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Get_all_attachments_associated_with_the_email_record": {
+                "metadata": {
+                  "operationMetadataId": "6bb19dd4-e68e-46a8-a621-214e8a9bfeec"
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "parameters": {
+                    "entityName": "activitymimeattachments",
+                    "$filter": "objecttypecode eq 'email' and _objectid_value eq '@{outputs('Get_the_Email_Message_Details')?['body/activityid']}'"
+                  },
+                  "host": {
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+                    "operationId": "ListRecords",
+                    "connectionName": "shared_commondataserviceforapps_1"
+                  }
+                }
+              },
+              "Apply_to_each": {
+                "foreach": "@outputs('Get_all_attachments_associated_with_the_email_record')?['body/value']",
+                "actions": {
+                  "Attachments_array": {
+                    "type": "AppendToArrayVariable",
+                    "inputs": {
+                      "name": "Attachments",
+                      "value": {
+                        "Name": "@items('Apply_to_each')?['filename']",
+                        "ContentBytes": "@base64ToBinary(items('Apply_to_each')?['body'])"
+                      }
+                    }
+                  }
+                },
+                "runAfter": {
+                  "Get_all_attachments_associated_with_the_email_record": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "6c8aeace-ea0b-4f11-be3e-90022db5ed80"
+                },
+                "type": "Foreach"
+              },
+              "Send_an_email_with_all_attachments": {
+                "runAfter": {
+                  "Apply_to_each": [
+                    "Succeeded"
+                  ]
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "parameters": {
+                    "emailMessage/To": "@triggerBody()?['torecipients']",
+                    "emailMessage/Subject": "@body('Get_the_Email_Message_Details')?['subject']",
+                    "emailMessage/Body": "<p class=\"editor-paragraph\">@{body('Get_the_Email_Message_Details')?['description']}</p>",
+                    "emailMessage/Cc": "@triggerBody()?['quartech_program_email_address']",
+                    "emailMessage/Attachments": "@variables('Attachments')",
+                    "emailMessage/ReplyTo": "@triggerBody()?['quartech_program_email_address']",
+                    "emailMessage/Importance": "Normal"
+                  },
+                  "host": {
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365",
+                    "operationId": "SendEmailV2",
+                    "connectionName": "shared_office365_1"
+                  }
+                }
+              },
+              "Perform_a_bound_action_1": {
+                "runAfter": {
+                  "Send_an_email_with_all_attachments": [
+                    "Succeeded"
+                  ]
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "parameters": {
+                    "entityName": "emails",
+                    "actionName": "Microsoft.Dynamics.CRM.SendEmail",
+                    "recordId": "@body('Get_the_Email_Message_Details')?['activityid']",
+                    "item/IssueSend": false
+                  },
+                  "host": {
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+                    "operationId": "PerformBoundAction",
+                    "connectionName": "shared_commondataserviceforapps"
+                  }
+                }
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+              "@outputs('Get_the_Email_Message_Details')?['body/attachmentcount']",
+              0
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "7177bc0a-d94c-4828-a856-0a3c86da67b5"
+          },
+          "type": "If"
+        },
+        "Check_Attachment": {
+          "runAfter": {
+            "CheckEmailRegardingType": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "642987d9-a4eb-4d34-8f64-10997d094e2a"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "vAttachmentCount",
+                "type": "integer",
+                "value": "@outputs('Get_the_Email_Message_Details')?['body/attachmentcount']"
+              }
+            ]
+          }
+        },
+        "Attachments": {
+          "runAfter": {
+            "Check_Attachment": [
+              "Succeeded"
+            ]
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Attachments",
+                "type": "array"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "templateName": null
+  },
+  "schemaVersion": "1.0.0.0"
+}

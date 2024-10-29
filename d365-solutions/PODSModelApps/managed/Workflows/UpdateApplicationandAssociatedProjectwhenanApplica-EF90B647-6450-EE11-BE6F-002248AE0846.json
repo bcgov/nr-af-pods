@@ -1,0 +1,497 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps_2": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_PodsSvcAcctDataverse"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      },
+      "shared_commondataserviceforapps_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_sharedcommondataserviceforapps_f90be"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "When_an_Application_is_Submitted_from_the_Portal": {
+          "metadata": {
+            "operationMetadataId": "0066fb8e-feeb-4f1f-a0d7-9e2b394185fb"
+          },
+          "type": "OpenApiConnectionWebhook",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "SubscribeWebhookTrigger",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "subscriptionRequest/message": 3,
+              "subscriptionRequest/entityname": "msgov_businessgrantapplication",
+              "subscriptionRequest/scope": 4,
+              "subscriptionRequest/filteringattributes": "quartech_applicationstatus",
+              "subscriptionRequest/filterexpression": "quartech_applicationstatus eq 919830000 and quartech_originalsource eq 255550002 and quartech_documentssubmitted eq false"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        }
+      },
+      "actions": {
+        "Initialize_vProjectLocation": {
+          "runAfter": {
+            "Get_Municipality_\"BC_Wide\"_ID": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "b4648f86-0282-4b07-b8d1-7b87d6aa72ac"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "vProjectLocation",
+                "type": "string",
+                "value": "@{triggerOutputs()?['body/_quartech_whatagriculturalregionistheorganizationoffic_label']}"
+              }
+            ]
+          }
+        },
+        "Initialize_vStartDateperProgram": {
+          "runAfter": {
+            "For_KTTP_Program_and_Event_Type_is_Virtual": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "997ee371-110f-4eaa-ab5d-1f96d365e3ee"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "vStartDateperProgram",
+                "type": "string",
+                "value": "@{null}"
+              }
+            ]
+          }
+        },
+        "If_Program_is_KTTP_using_quartech_activitystartdate": {
+          "actions": {
+            "Use_Activity_Start_Date_value_for_KTTP": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "ce1dfae7-c643-4cf6-9bc6-fcd47c5e5068"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "vStartDateperProgram",
+                "value": "@triggerOutputs()?['body/quartech_activitystartdate']"
+              }
+            },
+            "Use_Activity_End_Date_value_for_KTTP": {
+              "runAfter": {
+                "Use_Activity_Start_Date_value_for_KTTP": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "702762a2-6dd2-4931-adcb-6214e022e937"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "vEndDateperProgram",
+                "value": "@triggerOutputs()?['body/quartech_activityenddate']"
+              }
+            }
+          },
+          "runAfter": {
+            "Initialize_vFiscalYear": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "If_Program_is_ABPP_using_quartech_whenisprojectstartdate": {
+                "actions": {
+                  "Use_When_is_the_project_start_date_for_ABPP": {
+                    "runAfter": {},
+                    "metadata": {
+                      "operationMetadataId": "56c04b5a-8290-4598-b435-9d7cbcce3502"
+                    },
+                    "type": "SetVariable",
+                    "inputs": {
+                      "name": "vStartDateperProgram",
+                      "value": "@triggerOutputs()?['body/quartech_whenistheprojectstartdate']"
+                    }
+                  },
+                  "Use_Project_end_date_for_ABPP": {
+                    "runAfter": {
+                      "Use_When_is_the_project_start_date_for_ABPP": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "18b50058-0b3c-4f9d-b7a0-0e3b1f85aee8"
+                    },
+                    "type": "SetVariable",
+                    "inputs": {
+                      "name": "vEndDateperProgram",
+                      "value": "@triggerOutputs()?['body/quartech_activityenddate']"
+                    }
+                  }
+                },
+                "runAfter": {},
+                "else": {
+                  "actions": {
+                    "If_Program_is_VLB": {
+                      "actions": {
+                        "Set_start_date_variable_to_2024-04-01": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "817bc3f0-5a23-4847-a81b-2270ac4aff36"
+                          },
+                          "type": "SetVariable",
+                          "inputs": {
+                            "name": "vStartDateperProgram",
+                            "value": "2024-04-01"
+                          }
+                        },
+                        "Set_end_date_variable_to_2025-03-31": {
+                          "runAfter": {
+                            "Set_start_date_variable_to_2024-04-01": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "1e17185f-691f-4e76-a6c6-ed1e99c15ad9"
+                          },
+                          "type": "SetVariable",
+                          "inputs": {
+                            "name": "vEndDateperProgram",
+                            "value": "2025-03-31"
+                          }
+                        },
+                        "Get_Municipality_GUID_based_on_City_the_applicant_provides": {
+                          "runAfter": {
+                            "Set_end_date_variable_to_2025-03-31": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "acc4ccec-e996-417b-b58e-8f93dfc9f293"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps_2",
+                              "operationId": "ListRecords",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "quartech_municipals",
+                              "$filter": "contains(quartech_name, '@{triggerOutputs()?['body/quartech_businesscity']}')",
+                              "$top": 1
+                            },
+                            "authentication": "@parameters('$authentication')"
+                          }
+                        },
+                        "Apply_to_each": {
+                          "foreach": "@outputs('Get_Municipality_GUID_based_on_City_the_applicant_provides')?['body/value']",
+                          "actions": {
+                            "Set_Municipality_variable_to_Business_City_field_from_application": {
+                              "runAfter": {},
+                              "metadata": {
+                                "operationMetadataId": "efb9e449-3aca-463e-bd95-791872003b34"
+                              },
+                              "type": "SetVariable",
+                              "inputs": {
+                                "name": "vProjectLocationMunicipality",
+                                "value": "@items('Apply_to_each')?['quartech_municipalid']"
+                              }
+                            }
+                          },
+                          "runAfter": {
+                            "Get_Municipality_GUID_based_on_City_the_applicant_provides": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "b72350c0-4686-4758-afda-f010a35c261b"
+                          },
+                          "type": "Foreach"
+                        }
+                      },
+                      "runAfter": {},
+                      "expression": {
+                        "contains": [
+                          "@outputs('Get_the_associated_Program')?['body/quartech_programabbreviation']",
+                          "VLB"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "a2af742e-46a4-4255-aa5a-f9fab2d7ca47"
+                      },
+                      "type": "If",
+                      "description": "Update start date, end date, and location from City applicant provides"
+                    }
+                  }
+                },
+                "expression": {
+                  "contains": [
+                    "@outputs('Get_the_associated_Program')?['body/quartech_programabbreviation']",
+                    "ABPP"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "b0e13908-75d3-4a44-9bf4-c87b5aa71fa0"
+                },
+                "type": "If"
+              }
+            }
+          },
+          "expression": {
+            "contains": [
+              "@outputs('Get_the_associated_Program')?['body/quartech_programabbreviation']",
+              "KTTP"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "ca318bb6-6fc5-43ba-a58b-a13c2705592d"
+          },
+          "type": "If"
+        },
+        "Get_the_associated_Program": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "e1848671-ef15-48bf-b5a4-1bb31f09e6bd"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "msgov_programs",
+              "recordId": "@triggerOutputs()?['body/_quartech_program_value']"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Initialize_vProjectLocationMunicipality": {
+          "runAfter": {
+            "Initialize_vProjectLocation": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "83459ff6-1401-4b23-9923-a820eaf40685"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "vProjectLocationMunicipality",
+                "type": "string",
+                "value": "@triggerOutputs()?['body/_quartech_projectlocation_value']"
+              }
+            ]
+          }
+        },
+        "Update_Application_with_Program's_current_Fiscal_Year_and_Location": {
+          "runAfter": {
+            "Populate_application_information_to_associated_Project": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "47bf38f6-b1b4-4836-8246-e47b34ebd2bc"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "UpdateRecord",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "msgov_businessgrantapplications",
+              "recordId": "@triggerOutputs()?['body/msgov_businessgrantapplicationid']",
+              "item/quartech_FiscalYear@odata.bind": "@if(empty(variables('vFiscalYear')),null,concat('quartech_fiscalyears(',variables('vFiscalYear'),')'))",
+              "item/quartech_ProjectLocation@odata.bind": "@if(empty(variables('vProjectLocationMunicipality')),null,concat('quartech_municipals(',variables('vProjectLocationMunicipality'),')'))"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Populate_application_information_to_associated_Project": {
+          "runAfter": {
+            "If_Program_is_KTTP_using_quartech_activitystartdate": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "f9c516cd-aa52-4ae6-91d7-088d08aa902f"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "UpdateRecord",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "quartech_grantprojects",
+              "recordId": "@triggerOutputs()?['body/_quartech_project_value']",
+              "item/quartech_estimatedprojectcost": "@triggerOutputs()?['body/quartech_estimatedbudgettotalactivitycost']",
+              "item/quartech_enddate": "@if(equals(variables('vEndDateperProgram'),''),null,variables('vEndDateperProgram'))",
+              "item/quartech_location": "@variables('vProjectLocation')",
+              "item/quartech_ProjectLocation@odata.bind": "@if(empty(variables('vProjectLocationMunicipality')),null,concat('quartech_municipals(',variables('vProjectLocationMunicipality'),')'))",
+              "item/quartech_startdate": "@if(equals(variables('vStartDateperProgram'),''),null,variables('vStartDateperProgram'))",
+              "item/quartech_requestedfunding": "@triggerOutputs()?['body/quartech_totalfundingrequiredfromtheprogram']"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Initialize_vFiscalYear": {
+          "runAfter": {
+            "Initialize_vEndDateperProgram": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "65cb2e1c-494d-4681-8582-b2ec3cf3c302"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "vFiscalYear",
+                "type": "string",
+                "value": "@outputs('Get_the_associated_Program')?['body/_quartech_fiscalyear_value']"
+              }
+            ]
+          }
+        },
+        "Get_Municipality_\"BC_Wide\"_ID": {
+          "runAfter": {
+            "Get_the_associated_Program": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "054a6f48-9b44-4f52-8d42-8f25bde95ecc"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "quartech_municipals",
+              "$filter": "contains(quartech_name, 'BC Wide')",
+              "$top": 1
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "For_KTTP_Program_and_Event_Type_is_Virtual": {
+          "actions": {
+            "Set_Municipal_to_\"BC_Wide\"": {
+              "foreach": "@outputs('Get_Municipality_\"BC_Wide\"_ID')?['body/value']",
+              "actions": {
+                "Set_vProjectLocationMunicipality_to_BC_Wide": {
+                  "runAfter": {},
+                  "metadata": {
+                    "operationMetadataId": "b792e538-586f-4859-a5be-a8115ada60e3"
+                  },
+                  "type": "SetVariable",
+                  "inputs": {
+                    "name": "vProjectLocationMunicipality",
+                    "value": "@items('Set_Municipal_to_\"BC_Wide\"')?['quartech_municipalid']"
+                  }
+                }
+              },
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "39d6717d-258f-40e5-9cb3-ca93cf2785bf"
+              },
+              "type": "Foreach"
+            }
+          },
+          "runAfter": {
+            "Initialize_vProjectLocationMunicipality": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "and": [
+              {
+                "equals": [
+                  "@triggerOutputs()?['body/quartech_eventtype']",
+                  255550000
+                ]
+              },
+              {
+                "contains": [
+                  "@outputs('Get_the_associated_Program')?['body/quartech_programabbreviation']",
+                  "KTTP"
+                ]
+              }
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "3a4eca27-39fe-42ef-84ab-63785dcbcdf5"
+          },
+          "type": "If"
+        },
+        "Initialize_vEndDateperProgram": {
+          "runAfter": {
+            "Initialize_vStartDateperProgram": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "ce194965-2b46-4ddb-a4e5-ea31314b623a"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "vEndDateperProgram",
+                "type": "string",
+                "value": "@{null}"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

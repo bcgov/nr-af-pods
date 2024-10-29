@@ -1,0 +1,127 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_PodsSvcAcctDataverse"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "When_an_Application_is_submitted": {
+          "metadata": {
+            "operationMetadataId": "d9e481d5-28b7-4392-ab7a-0ce1c940912c"
+          },
+          "type": "OpenApiConnectionWebhook",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "SubscribeWebhookTrigger",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "subscriptionRequest/message": 3,
+              "subscriptionRequest/entityname": "msgov_businessgrantapplication",
+              "subscriptionRequest/scope": 4,
+              "subscriptionRequest/filteringattributes": "quartech_applicationstatus",
+              "subscriptionRequest/filterexpression": "quartech_applicationstatus eq 919830000 and quartech_submittedon ne null"
+            },
+            "authentication": "@parameters('$authentication')"
+          },
+          "description": "Application SUBMITTED status: 919830000 | NEFBA Phase 2 guid: 62EB3BC6-DADB-EE11-904D-0022483BD58E | VLB guid: 8806d490-8f44-ef11-a316-002248ae4517 "
+        }
+      },
+      "actions": {
+        "Run_a_Child_Flow:_Create_Application_PDF_using_Application_Word_Template": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "1399a53b-86d5-4af7-b3a9-c8e7bc08b817"
+          },
+          "type": "Workflow",
+          "inputs": {
+            "host": {
+              "workflowReferenceName": "91c269b5-c8e8-ee11-a204-6045bd5f4613"
+            },
+            "body": {
+              "text_5": "{\n\"applicationId\" : \"@{triggerOutputs()?['body/quartech_applicationid']}\",\n\"applicationName\" : \"@{triggerOutputs()?['body/msgov_name']}\",\n\"submissionDateTime\" : \"@{convertTimeZone(triggerOutputs()?['body/quartech_submittedon'], 'UTC','Pacific Standard Time','M/dd/yyyy h:mm tt')}\",\n\"applicantInfoStep\" : @{if(empty(triggerOutputs()?['body/quartech_wordtemplatedataapplicantinfostep']), '{}', triggerOutputs()?['body/quartech_wordtemplatedataapplicantinfostep'])},\n\"eligibilityStep\" : @{if(empty(triggerOutputs()?['body/quartech_wordtemplatedataeligibilitystep']), '{}', triggerOutputs()?['body/quartech_wordtemplatedataeligibilitystep'])},\n\"projectStep\" : @{if(empty(triggerOutputs()?['body/quartech_wordtemplatedataprojectstep']), '{}', triggerOutputs()?['body/quartech_wordtemplatedataprojectstep'])},\n\"budgetStep\" : @{if(empty(triggerOutputs()?['body/quartech_wordtemplatedatabudgetstep']), '{}', triggerOutputs()?['body/quartech_wordtemplatedatabudgetstep'])},\n\"supportingDocumentsStep\" : @{if(empty(triggerOutputs()?['body/quartech_wordtemplatedatadocumentstep']),'{}',triggerOutputs()?['body/quartech_wordtemplatedatadocumentstep'])},\n\"applicantDeclarationStep\" : @{if(empty(triggerOutputs()?['body/quartech_wordtemplatedataconsentstep']),'{}',triggerOutputs()?['body/quartech_wordtemplatedataconsentstep'])},\n\"demographicStep\" : \"@{if(empty(triggerOutputs()?['body/quartech_chefsid']),'',triggerOutputs()?['body/quartech_chefsid'])}\"\n}",
+              "text_6": "{ \n\"fileNameWithoutExtension\": \"Submitted-Application-@{triggerOutputs()?['body/quartech_applicationid']}\",\n\"parentFolderName\" : \"@{triggerOutputs()?['body/quartech_applicationid']}\"\n}",
+              "text_1": "@triggerOutputs()?['body/_quartech_program_value']"
+            }
+          }
+        },
+        "Parse_JSON:_Create_PDF_Response": {
+          "runAfter": {
+            "Run_a_Child_Flow:_Create_Application_PDF_using_Application_Word_Template": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "f7e79f0d-cf16-418d-9900-8a18e2aca4ff"
+          },
+          "type": "ParseJson",
+          "inputs": {
+            "content": "@body('Run_a_Child_Flow:_Create_Application_PDF_using_Application_Word_Template')",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errorMessage": {
+                  "type": "string"
+                },
+                "pdfSpSiteAddress": {
+                  "type": "string"
+                },
+                "pdfFilePath": {
+                  "type": "string"
+                },
+                "pdfFileNameWithoutExtension": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "Run_a_Child_Flow:_Send_Email_PDF_to_Applicant": {
+          "runAfter": {
+            "Parse_JSON:_Create_PDF_Response": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "4423603d-227c-4f58-909d-4055c0c24c69"
+          },
+          "type": "Workflow",
+          "inputs": {
+            "host": {
+              "workflowReferenceName": "bf19de11-59f0-ee11-a1fe-6045bd5f4613"
+            },
+            "body": {
+              "text_1": "@triggerOutputs()?['body/_quartech_program_value']",
+              "text_2": "Application",
+              "text_3": "{ \n\"spSiteAddress\"  :  \"@{body('Parse_JSON:_Create_PDF_Response')?['pdfSpSiteAddress']}\",\n\"pdfFilePath\"  :  \"@{body('Parse_JSON:_Create_PDF_Response')?['pdfFilePath']}\",\n\"pdfFileNameWithoutExtension\"  :  \"@{body('Parse_JSON:_Create_PDF_Response')?['pdfFileNameWithoutExtension']}\"\n}",
+              "text_7": "{\n\"recordGuid\" : \"@{triggerOutputs()?['body/msgov_businessgrantapplicationid']}\",\n\"correspondenceFirstName\": \"@{triggerOutputs()?['body/quartech_legalnamefirst']}\",\n\"correspondenceEmailAddress\" : \"@{triggerOutputs()?['body/quartech_email']}\"\n}"
+            }
+          }
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

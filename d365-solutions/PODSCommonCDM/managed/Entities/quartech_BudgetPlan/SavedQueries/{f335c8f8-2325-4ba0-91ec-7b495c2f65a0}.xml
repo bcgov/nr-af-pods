@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{f335c8f8-2325-4ba0-91ec-7b495c2f65a0}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="quartech_name" select="1" icon="1" preview="1">
+        <row name="result" id="quartech_budgetplanid">
+          <cell name="quartech_name" width="232" />
+          <cell name="quartech_amount" width="91" />
+          <cell name="quartech_fiscalyear" width="116" />
+          <cell name="quartech_program" width="252" />
+          <cell name="quartech_prioritysector" width="300" />
+          <cell name="createdon" width="125" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="quartech_budgetplan">
+          <attribute name="quartech_budgetplanid" />
+          <attribute name="quartech_name" />
+          <attribute name="createdon" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="quartech_program" />
+          <attribute name="quartech_fiscalyear" />
+          <attribute name="quartech_amount" />
+          <order attribute="quartech_fiscalyear" descending="true" />
+          <attribute name="quartech_prioritysector" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active Budget Plans" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

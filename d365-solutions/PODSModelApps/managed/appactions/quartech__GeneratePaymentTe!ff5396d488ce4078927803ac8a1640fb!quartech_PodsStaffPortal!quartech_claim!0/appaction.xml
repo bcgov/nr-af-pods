@@ -1,0 +1,32 @@
+<appaction uniquename="quartech__GeneratePaymentTe!ff5396d488ce4078927803ac8a1640fb!quartech_PodsStaffPortal!quartech_claim!0">
+  <appmoduleid>
+    <uniquename>quartech_PodsStaffPortal</uniquename>
+  </appmoduleid>
+  <buttonlabeltext default="Payment Template">
+    <label description="Payment Template" languagecode="1033" />
+  </buttonlabeltext>
+  <context>1</context>
+  <contextentity>
+    <logicalname>quartech_claim</logicalname>
+  </contextentity>
+  <contextvalue>quartech_claim</contextvalue>
+  <fonticon>$clientsvg:ImportToExcel</fonticon>
+  <hidden>0</hidden>
+  <iscustomizable>1</iscustomizable>
+  <isdisabled>0</isdisabled>
+  <isgrouptitlehidden>0</isgrouptitlehidden>
+  <location>0</location>
+  <name>GeneratePaymentTe!ff5396d488ce4078927803ac8a1640fb</name>
+  <onclickeventjavascriptfunctionname>GeneratePaymentTemplateOnButtonClick</onclickeventjavascriptfunctionname>
+  <onclickeventjavascriptparameters>[{"type":5}]</onclickeventjavascriptparameters>
+  <onclickeventjavascriptwebresourceid>
+    <webresourceid>f9a9dacb-9b6f-ef11-a670-6045bd606e1e</webresourceid>
+  </onclickeventjavascriptwebresourceid>
+  <onclickeventtype>2</onclickeventtype>
+  <origin>0</origin>
+  <sequence>100110513.5000000000</sequence>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+  <type>0</type>
+  <visibilitytype>0</visibilitytype>
+</appaction>

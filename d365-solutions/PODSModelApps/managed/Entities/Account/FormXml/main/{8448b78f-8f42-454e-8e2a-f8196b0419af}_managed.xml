@@ -1,0 +1,519 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{8448b78f-8f42-454e-8e2a-f8196b0419af}</formid>
+    <IntroducedVersion>5.0.0.0</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form showImage="true" shownavigationbar="false" maxWidth="1920" headerdensity="HighWithControls" solutionaction="Modified">
+      <tabs>
+        <tab name="SUMMARY_TAB" id="{3b0b63a9-d379-689a-0ec3-e71eb4c6a841}" IsUserDefined="0" showlabel="true" expanded="true" locklevel="0" ordinalvalue="0" solutionaction="Removed" />
+        <tab name="DETAILS_TAB" id="{11a42c72-9ded-ea04-253d-2143e731b795}" IsUserDefined="0" showlabel="true" expanded="true" ordinalvalue="1" solutionaction="Removed" />
+        <tab name="documents_sharepoint" id="{5240e6be-ed06-8050-7115-ba225c7a4a13}" IsUserDefined="0" locklevel="0" showlabel="true" expanded="true" visible="false" ordinalvalue="3" solutionaction="Modified" />
+        <tab name="AssetsAndLocationsTab" id="{9d2b89a1-bec3-0b60-b2a7-d459b760e832}" IsUserDefined="0" locklevel="0" showlabel="true" expanded="true" ordinalvalue="3" solutionaction="Removed" />
+        <tab name="tab_3" id="{235be3a5-24e6-ed25-0bd2-17be0cc6b52a}" IsUserDefined="0" locklevel="0" showlabel="true" expanded="true" ordinalvalue="0" solutionaction="Added">
+          <labels>
+            <label description="Summary" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="34%" id="0">
+              <sections>
+                <section name="ACCOUNT_INFORMATION" showlabel="true" showbar="false" id="{0eb92e6c-bcb8-0d52-a188-d81543ddb7cd}" IsUserDefined="0" layout="varwidth" columns="1" labelwidth="115" celllabelposition="Left" locklevel="0" celllabelalignment="Left" ordinalvalue="0">
+                  <labels>
+                    <label description="Applicant Information" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{b0e82a7e-5683-d90c-308a-0d779377ea8a}" showlabel="true" ordinalvalue="10000">
+                        <labels>
+                          <label description="Legal Business Name" languagecode="1033" />
+                        </labels>
+                        <control id="name" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="name" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{3eb3c718-09b3-7dbc-0383-de3a2c5bac9e}" showlabel="true" locklevel="0" ordinalvalue="10001">
+                        <labels>
+                          <label description="CSNR Business Name" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_crabusinessname" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="quartech_crabusinessname" disabled="false" uniqueid="{d9e6cb4b-6e1c-3709-2770-c7e28bc27119}" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{4652b44a-9718-0d6b-782c-b235828d5e6c}" showlabel="true" locklevel="0" ordinalvalue="10002">
+                        <labels>
+                          <label description="CRA Business Number" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_businessnumber" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="quartech_businessnumber" disabled="false" uniqueid="{87bb66e1-9b18-9c44-6397-3073811bebe1}" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{dbbde5a1-2a99-36ad-dda2-ec6b2438569d}" showlabel="true" locklevel="0" ordinalvalue="10003">
+                        <labels>
+                          <label description="Corporation Number" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_corporationnumber" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="quartech_corporationnumber" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{1e77d878-4081-aa10-3165-22eb70cb7aea}" showlabel="true" locklevel="0" ordinalvalue="10004">
+                        <labels>
+                          <label description="Supplier Number" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_suppliernumber" classid="{F9A8A302-114E-466A-B582-6771B2AE0D92}" datafieldname="quartech_suppliernumber" disabled="false" uniqueid="{1035D5C0-E82C-0EA8-09DC-D2B7086B3CE1}" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{3441a91e-47c5-672c-7a20-902d6baa9036}" showlabel="true" ordinalvalue="10005">
+                        <labels>
+                          <label description="Phone" languagecode="1033" />
+                        </labels>
+                        <control id="telephone1" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="telephone1" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{8b98a55e-a345-b20e-d46e-801e79d5c1c1}" showlabel="true" ordinalvalue="10006">
+                        <labels>
+                          <label description="Fax" languagecode="1033" />
+                        </labels>
+                        <control id="fax" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="fax" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{43e97672-ba8d-4d98-bf2a-7e67cd8bd9ca}" locklevel="0" colspan="1" rowspan="1" ordinalvalue="10007">
+                        <labels>
+                          <label description="Email" languagecode="1033" />
+                        </labels>
+                        <control id="emailaddress1" classid="{ADA2203E-B4CD-49BE-9DDF-234642B43B52}" datafieldname="emailaddress1" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{b43e757e-a43a-8a51-1b38-0040cd191a00}" showlabel="true" locklevel="0" ordinalvalue="10008">
+                        <labels>
+                          <label description="Parcel Identifier (PID)" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_parcelidentifier" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="quartech_parcelidentifier" disabled="false" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+                <section name="tab_3_section_5" showlabel="false" showbar="false" locklevel="0" id="{487ca990-b592-6311-5527-97a645287dd6}" IsUserDefined="0" layout="varwidth" columns="1" labelwidth="115" celllabelalignment="Left" celllabelposition="Left" ordinalvalue="1">
+                  <labels>
+                    <label description="NAICS Codes" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{d966da3c-7976-5ac0-4e6c-98a087878c57}" showlabel="true" locklevel="0" ordinalvalue="10000">
+                        <labels>
+                          <label description="NAICS - Sector" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_naicssector" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="quartech_naicssector" disabled="false" uniqueid="{633ca3a2-8de4-c971-ac17-97038da751b8}">
+                          <parameters>
+                            <AutoResolve>true</AutoResolve>
+                            <DisableMru>true</DisableMru>
+                            <DisableQuickFind>false</DisableQuickFind>
+                            <DisableViewPicker>true</DisableViewPicker>
+                            <DefaultViewId>{DA104546-41BD-ED11-83FE-002248B219AC}</DefaultViewId>
+                            <AllowFilterOff>false</AllowFilterOff>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{cddc22d8-5998-13b4-4d30-85ba42b5c64e}" showlabel="true" locklevel="0" ordinalvalue="10001">
+                        <labels>
+                          <label description="NAICS - Industry Group" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_naicsindustrygroup" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="quartech_naicsindustrygroup" disabled="false" uniqueid="{17e06d84-cc0e-a484-72b1-a530d14270eb}">
+                          <parameters>
+                            <AutoResolve>true</AutoResolve>
+                            <DisableMru>true</DisableMru>
+                            <DisableQuickFind>false</DisableQuickFind>
+                            <DisableViewPicker>true</DisableViewPicker>
+                            <DefaultViewId>{25235A74-41BD-ED11-83FE-002248B219AC}</DefaultViewId>
+                            <FilterRelationshipName>quartech_quartech_naicscode_quartech_naicscode_ParentCode</FilterRelationshipName>
+                            <DependentAttributeName>account.quartech_naicssector</DependentAttributeName>
+                            <DependentAttributeType>quartech_naicscode</DependentAttributeType>
+                            <AllowFilterOff>false</AllowFilterOff>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{b3991555-68d7-e0a5-b486-14d3ca9384e6}" showlabel="true" locklevel="0" ordinalvalue="10002">
+                        <labels>
+                          <label description="NAICS - Industry" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_naicsindustry" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="quartech_naicsindustry" disabled="false" uniqueid="{dcb65670-389a-0116-a26b-d39079e0ba0e}">
+                          <parameters>
+                            <AutoResolve>true</AutoResolve>
+                            <DisableMru>true</DisableMru>
+                            <DisableQuickFind>false</DisableQuickFind>
+                            <DisableViewPicker>true</DisableViewPicker>
+                            <DefaultViewId>{F130BA8C-41BD-ED11-83FE-002248B219AC}</DefaultViewId>
+                            <FilterRelationshipName>quartech_quartech_naicscode_quartech_naicscode_ParentCode</FilterRelationshipName>
+                            <DependentAttributeName>account.quartech_naicsindustrygroup</DependentAttributeName>
+                            <DependentAttributeType>quartech_naicscode</DependentAttributeType>
+                            <AllowFilterOff>false</AllowFilterOff>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+            <column width="33%" id="1">
+              <sections>
+                <section name="ADDRESS" showlabel="true" locklevel="0" showbar="false" id="{cc0fe06e-4b5f-4648-A62d-84d1514e1fc5}" IsUserDefined="0" layout="varwidth" columns="1" labelwidth="115" celllabelposition="Left" celllabelalignment="Left" ordinalvalue="0">
+                  <labels>
+                    <label description="Applicant Address" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{7be6565d-8767-e85d-eb5b-db84430ea911}" showlabel="true" locklevel="0" ordinalvalue="10000">
+                        <labels>
+                          <label description="Suite Number" languagecode="1033" />
+                        </labels>
+                        <control id="address1_line1" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="address1_line1" disabled="false" uniqueid="{329963a0-b8c7-8b39-99d6-1253d75b4969}" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{7d07c52d-392b-4904-b2ae-21518575c0c7}" showlabel="true" locklevel="0" ordinalvalue="10001">
+                        <labels>
+                          <label description="Street Number" languagecode="1033" />
+                        </labels>
+                        <control id="address1_line2" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="address1_line2" disabled="false" uniqueid="{aac6e9c7-bbd6-a540-ba03-b98766707e86}" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{e8ad9ec1-39a0-3511-d5a9-692282419a05}" showlabel="true" locklevel="0" ordinalvalue="10002">
+                        <labels>
+                          <label description="Street Name" languagecode="1033" />
+                        </labels>
+                        <control id="address1_line3" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="address1_line3" disabled="false" uniqueid="{dae356a8-e6e8-681e-8320-e949b70588ce}" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{8a3dc64b-481e-8abb-78ca-e45400d07cde}" showlabel="true" locklevel="0" ordinalvalue="10003">
+                        <labels>
+                          <label description="City" languagecode="1033" />
+                        </labels>
+                        <control id="address1_city" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="address1_city" disabled="false" uniqueid="{cd8be279-ab57-db49-08dd-44dc7a1e559c}" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{ed18d878-020d-9138-6e13-13b0258dcbbe}" showlabel="true" locklevel="0" ordinalvalue="10004">
+                        <labels>
+                          <label description="Business Province/Territory" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_businessprovinceterritory" classid="{3EF39988-22BB-4f0b-BBBE-64B5A3748AEE}" datafieldname="quartech_businessprovinceterritory" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{82ca4aba-d48d-8938-1093-3eb39c6401cb}" showlabel="true" locklevel="0" ordinalvalue="10005">
+                        <labels>
+                          <label description="Postal Code" languagecode="1033" />
+                        </labels>
+                        <control id="address1_postalcode" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="address1_postalcode" disabled="false" uniqueid="{0426b8db-1a50-a936-04a4-43c3ac3d1073}" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+            <column width="33%" id="2">
+              <sections>
+                <section name="SUMMARY_TAB_section_6" showlabel="true" showbar="false" locklevel="0" id="{d4c3ee9c-ba71-5cdb-31be-2aa505750472}" IsUserDefined="0" layout="varwidth" columns="1" labelwidth="115" celllabelalignment="Left" celllabelposition="Top" ordinalvalue="0">
+                  <labels>
+                    <label description="Contacts" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{b187688c-8410-5990-16ec-e153968ab583}" showlabel="true" locklevel="0" ordinalvalue="10000">
+                        <labels>
+                          <label description="Primary Contact" languagecode="1033" />
+                        </labels>
+                        <control id="primarycontactid" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="primarycontactid" disabled="false" uniqueid="{89d615b5-856c-9662-e88d-e87b9c604b76}">
+                          <parameters>
+                            <FilterRelationshipName>contact_customer_accounts</FilterRelationshipName>
+                            <DependentAttributeName>contact.parentcustomerid</DependentAttributeName>
+                            <DependentAttributeType>account</DependentAttributeType>
+                            <AllowFilterOff>true</AllowFilterOff>
+                            <AutoResolve>true</AutoResolve>
+                            <DisableMru>false</DisableMru>
+                            <DisableQuickFind>false</DisableQuickFind>
+                            <DisableViewPicker>false</DisableViewPicker>
+                            <DefaultViewId>{A2D479C5-53E3-4C69-ADDD-802327E67A0D}</DefaultViewId>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{0F664FFF-E39E-4676-9191-CBA16972B21D}" colspan="1" showlabel="false" ordinalvalue="10001">
+                        <labels>
+                          <label description="Primary Contact" languagecode="1033" />
+                        </labels>
+                        <control id="contactquickform" classid="{5C5600E0-1D6E-4205-A272-BE80DA87FD42}" datafieldname="primarycontactid" disabled="false">
+                          <parameters>
+                            <QuickForms>&lt;QuickFormIds&gt;&lt;QuickFormId entityname="contact"&gt;29DE27BC-A257-4F29-99CF-BAB4A84E688F&lt;/QuickFormId&gt;&lt;/QuickFormIds&gt;</QuickForms>
+                            <ControlMode>Edit</ControlMode>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{6d48070b-b36e-347c-4081-70e43be32513}" showlabel="true" locklevel="0" ordinalvalue="10002">
+                        <labels>
+                          <label description="Alternate Contact" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_alternatecontact" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="quartech_alternatecontact" disabled="false" uniqueid="{d693d36a-0a88-ab5c-2530-cea1db79385a}">
+                          <parameters>
+                            <AutoResolve>true</AutoResolve>
+                            <DisableMru>false</DisableMru>
+                            <DisableQuickFind>false</DisableQuickFind>
+                            <DisableViewPicker>false</DisableViewPicker>
+                            <DefaultViewId>{A2D479C5-53E3-4C69-ADDD-802327E67A0D}</DefaultViewId>
+                            <FilterRelationshipName>contact_customer_accounts</FilterRelationshipName>
+                            <DependentAttributeName>contact.parentcustomerid</DependentAttributeName>
+                            <DependentAttributeType>account</DependentAttributeType>
+                            <AllowFilterOff>true</AllowFilterOff>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{5d56164a-cb35-ae5d-c838-2777c154b4ee}" showlabel="false" colspan="1" auto="false" ordinalvalue="10003">
+                        <labels>
+                          <label description="Alternate Contact" languagecode="1033" />
+                        </labels>
+                        <control id="alternatecontactquickform" classid="{5C5600E0-1D6E-4205-A272-BE80DA87FD42}" datafieldname="quartech_alternatecontact" disabled="false">
+                          <parameters>
+                            <QuickForms>&lt;QuickFormIds&gt;&lt;QuickFormId entityname="contact"&gt;29de27bc-a257-4f29-99cf-bab4a84e688f&lt;/QuickFormId&gt;&lt;/QuickFormIds&gt;</QuickForms>
+                            <ControlMode>Edit</ControlMode>
+                            <DisplayAsCustomer360Tile>false</DisplayAsCustomer360Tile>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{8e24c7e3-6a40-5abb-eadb-254eba5478e2}" showlabel="true" colspan="1" auto="false" rowspan="9" ordinalvalue="10004">
+                        <labels>
+                          <label description="Contacts" languagecode="1033" />
+                        </labels>
+                        <control id="Contacts" classid="{E7A81278-8635-4d9e-8D4D-59480B391C5B}" uniqueid="{36877669-bc86-7bd8-82b1-32ca35de2d50}" indicationOfSubgrid="true">
+                          <parameters>
+                            <ViewId>{73BC2D9B-4E0E-424C-8839-ED59D6817E3A}</ViewId>
+                            <IsUserView>false</IsUserView>
+                            <RelationshipName>contact_customer_accounts</RelationshipName>
+                            <TargetEntityType>contact</TargetEntityType>
+                            <AutoExpand>Fixed</AutoExpand>
+                            <EnableQuickFind>false</EnableQuickFind>
+                            <EnableViewPicker>false</EnableViewPicker>
+                            <ViewIds>{00000000-0000-0000-00AA-000010001003}</ViewIds>
+                            <EnableJumpBar>false</EnableJumpBar>
+                            <ChartGridMode>Grid</ChartGridMode>
+                            <VisualizationId>{E365462F-1DB9-46A8-928D-BEAB1A7A2375}</VisualizationId>
+                            <IsUserChart>false</IsUserChart>
+                            <EnableChartPicker>false</EnableChartPicker>
+                            <RecordsPerPage>6</RecordsPerPage>
+                            <HeaderColorCode>#F3F3F3</HeaderColorCode>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+        <tab name="tab_Applications" id="06e50e04-2aa1-4d91-b99e-e8d57776b97e" IsUserDefined="0" locklevel="0" showlabel="true" ordinalvalue="1" solutionaction="Added">
+          <labels>
+            <label description="Applications" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%" id="0">
+              <sections>
+                <section name="tab_4_section_1" id="1d6682e0-58a5-4956-bde6-ecef06d8e931" IsUserDefined="0" locklevel="0" showlabel="false" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115" ordinalvalue="0">
+                  <labels>
+                    <label description="New Section" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell locklevel="0" id="{6053190b-a107-474f-8019-056d6b603160}" rowspan="4" colspan="1" auto="false" showlabel="false" ordinalvalue="10000">
+                        <labels>
+                          <label description="Contacts" languagecode="1033" />
+                        </labels>
+                        <control indicationOfSubgrid="true" id="Subgrid_new_1" classid="{E7A81278-8635-4D9E-8D4D-59480B391C5B}">
+                          <parameters>
+                            <RecordsPerPage>4</RecordsPerPage>
+                            <AutoExpand>Fixed</AutoExpand>
+                            <EnableQuickFind>false</EnableQuickFind>
+                            <EnableViewPicker>false</EnableViewPicker>
+                            <EnableChartPicker>true</EnableChartPicker>
+                            <ChartGridMode>All</ChartGridMode>
+                            <TargetEntityType>msgov_businessgrantapplication</TargetEntityType>
+                            <ViewId>{841927E1-F445-481A-8340-9010C1962092}</ViewId>
+                            <ViewIds>{841927E1-F445-481A-8340-9010C1962092}</ViewIds>
+                            <RelationshipName>quartech_account_msgov_businessgrantapplication_account</RelationshipName>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row />
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+        <tab name="tab_Projects" id="f09aab44-6040-4eaa-ad0a-fdbdf6e99336" IsUserDefined="0" locklevel="0" showlabel="true" ordinalvalue="2" solutionaction="Added">
+          <labels>
+            <label description="Projects" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%" id="0">
+              <sections>
+                <section name="section_Projects" id="a655eb0d-4ed2-46f0-968b-d6e48c832243" IsUserDefined="0" locklevel="0" showlabel="false" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115" ordinalvalue="0">
+                  <labels>
+                    <label description="Projects" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell locklevel="0" id="{9097f0ad-ba7a-439f-9efc-e9f29451c1a4}" rowspan="4" colspan="1" auto="false" showlabel="false" ordinalvalue="10000">
+                        <labels>
+                          <label description="Contacts" languagecode="1033" />
+                        </labels>
+                        <control indicationOfSubgrid="true" id="Subgrid_Projects" classid="{E7A81278-8635-4D9E-8D4D-59480B391C5B}">
+                          <parameters>
+                            <RecordsPerPage>4</RecordsPerPage>
+                            <AutoExpand>Fixed</AutoExpand>
+                            <EnableQuickFind>false</EnableQuickFind>
+                            <EnableViewPicker>false</EnableViewPicker>
+                            <EnableChartPicker>true</EnableChartPicker>
+                            <ChartGridMode>All</ChartGridMode>
+                            <TargetEntityType>quartech_grantproject</TargetEntityType>
+                            <ViewId>{DD6A210B-9945-4A97-B11F-ED483D81D960}</ViewId>
+                            <ViewIds>{DD6A210B-9945-4A97-B11F-ED483D81D960}</ViewIds>
+                            <RelationshipName>quartech_account_quartech_grantproject_recipient</RelationshipName>
+                            <VisualizationId>{F1F5263A-6BB6-ED11-B596-002248B219AC}</VisualizationId>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row />
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+      <header id="{d5a03552-1183-4347-a237-1f894ba449eb}" columns="111" celllabelposition="Top" labelwidth="115">
+        <rows>
+          <row>
+            <cell id="{d3e19d4e-b2ae-409f-9b4e-5976527c6c83}" ordinalvalue="10000" solutionaction="Removed" />
+            <cell id="{2adb5a52-604d-5aad-ba6a-2bbab6c33594}" showlabel="true" ordinalvalue="20001" solutionaction="Removed" />
+            <cell id="{54b2d0a2-eb77-b3cd-b60a-03ea6944e98e}" showlabel="true" locklevel="1" ordinalvalue="30002">
+              <labels>
+                <label description="Owner" languagecode="1033" solutionaction="Added" />
+              </labels>
+            </cell>
+          </row>
+          <row>
+            <cell id="{2b44ec24-1785-8662-8509-e288ad8799a1}" showlabel="false" ordinalvalue="10000" solutionaction="Added">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{2c80448d-73e3-857d-376e-e984741ac8bb}" showlabel="false" ordinalvalue="20001" solutionaction="Added">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+          </row>
+        </rows>
+      </header>
+      <Navigation>
+        <NavBarAreas solutionaction="Added">
+          <NavBarArea Id="Info">
+            <Titles>
+              <Title LCID="1033" Text="Common" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="Sales">
+            <Titles>
+              <Title LCID="1033" Text="Sales" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="Service">
+            <Titles>
+              <Title LCID="1033" Text="Service" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="Marketing">
+            <Titles>
+              <Title LCID="1033" Text="Marketing" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="ProcessCenter">
+            <Titles>
+              <Title LCID="1033" Text="Process Sessions" />
+            </Titles>
+          </NavBarArea>
+        </NavBarAreas>
+      </Navigation>
+      <controlDescriptions>
+        <controlDescription forControl="{3FF9A528-DD50-4ACA-8F10-2E5ED73513AD}" solutionaction="Removed" />
+        <controlDescription forControl="{47183C8B-B45D-7551-25E7-14C19D3B21A8}" solutionaction="Removed" />
+        <controlDescription forControl="{815D8A5B-6355-47B5-9500-EE2D658820D5}" solutionaction="Removed" />
+        <controlDescription forControl="{771DB681-B422-E9C8-E112-C1396655459D}" solutionaction="Removed" />
+        <controlDescription forControl="{1035D5C0-E82C-0EA8-09DC-D2B7086B3CE1}" solutionaction="Added">
+          <customControl id="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" formFactor="0">
+            <parameters>
+              <datafieldname>quartech_suppliernumber</datafieldname>
+            </parameters>
+          </customControl>
+          <customControl id="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" formFactor="1">
+            <parameters>
+              <datafieldname>quartech_suppliernumber</datafieldname>
+            </parameters>
+          </customControl>
+          <customControl id="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" formFactor="2">
+            <parameters>
+              <datafieldname>quartech_suppliernumber</datafieldname>
+            </parameters>
+          </customControl>
+          <customControl formFactor="-1" name="MscrmControls.InputMask.InputMaskControl">
+            <parameters>
+              <value>quartech_suppliernumber</value>
+              <mask static="true" type="SingleLine.Text">0000000000</mask>
+            </parameters>
+          </customControl>
+        </controlDescription>
+      </controlDescriptions>
+      <footer id="{2fb8bc35-7125-4fa2-83b8-fc450f727363}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left" solutionaction="Added">
+        <rows />
+      </footer>
+    </form>
+    <LocalizedNames>
+      <LocalizedName description="Applicant" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="Updated default Account form. Renamed to Applicant" languagecode="1033" />
+    </Descriptions>
+  </systemform>
+</forms>

@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>0</isdefault>
+    <savedqueryid>{3d2d52bd-1a6d-ee11-8179-000d3af3ac95}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="quartech_name" select="1" preview="1" icon="1">
+        <row name="result" id="quartech_naicscodeid">
+          <cell name="quartech_description" width="300" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="quartech_category" width="200" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="quartech_code" width="100" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
+        <entity name="quartech_naicscode">
+          <attribute name="quartech_description" />
+          <attribute name="quartech_code" />
+          <order attribute="quartech_category" descending="false" />
+          <order attribute="quartech_description" descending="false" />
+          <filter type="and">
+            <condition attribute="quartech_displayedfornefba" operator="eq" value="1" />
+          </filter>
+          <attribute name="quartech_category" />
+          <attribute name="quartech_naicscodeid" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="NEFBA NAICS Codes" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="NAICS codes shown for the NEFBA program." languagecode="1033" />
+    </Descriptions>
+  </savedquery>
+</savedqueries>

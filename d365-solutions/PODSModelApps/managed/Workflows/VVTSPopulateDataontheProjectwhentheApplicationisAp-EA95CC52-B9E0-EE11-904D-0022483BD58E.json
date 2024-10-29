@@ -1,0 +1,105 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_sharedcommondataserviceforapps_f90be"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "VVTS - Approved Amount Per Student (quartech_VVTSApprovedAmountPerStudent)": {
+          "defaultValue": 6000,
+          "type": "Int",
+          "metadata": {
+            "schemaName": "quartech_VVTSApprovedAmountPerStudent",
+            "description": "Approved Amount per student for the VVTS application"
+          }
+        }
+      },
+      "triggers": {
+        "When_a_VVTS_application_is_moved_to_APPROVED_status": {
+          "metadata": {
+            "operationMetadataId": "6c1cc88c-006c-4ca5-8ad6-345af2847a87"
+          },
+          "type": "OpenApiConnectionWebhook",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "SubscribeWebhookTrigger",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "subscriptionRequest/message": 3,
+              "subscriptionRequest/entityname": "msgov_businessgrantapplication",
+              "subscriptionRequest/scope": 4,
+              "subscriptionRequest/filterexpression": "_quartech_program_value eq 49dbba6b-21dc-ee11-904d-6045bd5f4613 and quartech_applicationstatus eq 919830005 and quartech_numberofstudentsapproved ge 1"
+            },
+            "authentication": "@parameters('$authentication')"
+          },
+          "description": "VVTS program record GUID = 49dbba6b-21dc-ee11-904d-6045bd5f4613 | APPROVED application status' value = 919830005"
+        }
+      },
+      "actions": {
+        "Update_the_Approved_Amount_on_the_VVTS_Project": {
+          "runAfter": {
+            "vApprovedAmount": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "0684419e-bb30-415d-9ae6-166aace05d96"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "UpdateRecord",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "quartech_grantprojects",
+              "recordId": "@triggerOutputs()?['body/_quartech_project_value']",
+              "item/quartech_approvedamount": "@variables('vApprovedAmount')"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "vApprovedAmount": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "8c94c8d9-395c-43c4-a347-be5557e7ac3c"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "vApprovedAmount",
+                "type": "float",
+                "value": "@mul(triggerOutputs()?['body/quartech_numberofstudentsapproved'], parameters('VVTS - Approved Amount Per Student (quartech_VVTSApprovedAmountPerStudent)'))"
+              }
+            ]
+          },
+          "description": "Set vApprovedAmount with the $6000 * Number of Approved Students"
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

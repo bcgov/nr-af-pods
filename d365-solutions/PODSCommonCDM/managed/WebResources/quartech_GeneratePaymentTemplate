@@ -1,0 +1,138 @@
+async function GeneratePaymentTemplateOnButtonClick(executionContext) {
+
+    var formContext = executionContext; // Get the form context
+
+
+    // Field schema name on the form
+    var fieldgenerateTemplate = "quartech_generatepaymenttemplate";
+
+    if (formContext.getAttribute(fieldgenerateTemplate) && formContext.getAttribute(fieldgenerateTemplate).getValue() == true) {
+        showAlertDialog("The Payment Template Document has already been generated. Please check the SharePoint location.", "Message");
+        return;
+    }
+    // Checking if Project is not null
+    if (formContext.getAttribute("quartech_project") && formContext.getAttribute("quartech_project").getValue() && formContext.getAttribute("quartech_project").getValue()[0].id) {
+        var entProject = "quartech_grantproject";
+        var projectId = formContext.getAttribute("quartech_project").getValue()[0].id;
+        projectId = projectId.replace("{", "").replace("}", "");
+
+        // Fetch FinancialCodingBlock from Project entity
+        var resultFinancial = await Xrm.WebApi.retrieveRecord(entProject, projectId, "?$select=_quartech_financialcodingblock_value");
+
+        var dataFinancialCoding = resultFinancial._quartech_financialcodingblock_value;
+        var continueProcess = false;
+
+        if (dataFinancialCoding) {
+
+            continueProcess = true;
+        }
+        else {
+            var confirmOptionsFinancial = setConfirmationDialog("The Financial Coding Block is not defined for this project. You can continue and enter the information manually in the Payment Template or cancel and update the financial information before proceeding.", "Confirmation");
+
+            // Show the alert dialog with the message
+            var resultDialogFinancial = await Xrm.Navigation.openConfirmDialog(confirmOptionsFinancial);
+
+            if (resultDialogFinancial.confirmed) {
+
+                continueProcess = true;
+            } else {
+
+                console.log("User clicked Cancel.");
+                continueProcess = false;
+            }
+        }
+        if (continueProcess == true) {
+
+            if (formContext.getAttribute("quartech_applicant") && formContext.getAttribute("quartech_applicant").getValue() && formContext.getAttribute("quartech_applicant").getValue()[0].id) {
+                var entAccount = "account";
+                var applicantId = formContext.getAttribute("quartech_applicant").getValue()[0].id;
+                applicantId = applicantId.replace("{", "").replace("}", "");
+
+                var resultSUpplierNumber = await Xrm.WebApi.retrieveRecord(entAccount, applicantId, "?$select=quartech_suppliernumber");
+
+                var dataSupplierNumber = resultSUpplierNumber.quartech_suppliernumber;
+
+                if (!dataSupplierNumber || dataSupplierNumber.trim() === "") // Check if Applicant's Supplier Number is Empty'
+                {
+                    var confirmOptionsSupplier = setConfirmationDialog("The Supplier Number is not defined for this applicant. You can continue and enter the information manually in the Payment Template or cancel and update the information before proceeding.", "Confirmation")
+                    var resultDialogSupplier = await Xrm.Navigation.openConfirmDialog(confirmOptionsSupplier);
+
+                    if (resultDialogSupplier.confirmed) {
+                        continueProcess = true;
+
+                    }
+                    else {
+                        console.log("User clicked Cancel.");
+                        continueProcess = false;
+                        return;
+                    }
+                }
+                if (continueProcess == true) {
+
+                    // Set the value of the field
+                    formContext.getAttribute(fieldgenerateTemplate).setValue(true); // To Mark Generate Paymenet Template field  as true
+                    // Save the record
+                    formContext.data.save().then(
+                        function success() {
+                            showAlertDialog("The Payment Template Document is being generated and will be available in the SharePoint location.", "Message");
+                        },
+                        function error() {
+                            console.log("Error saving the record.");
+                        }
+                    );
+                }
+
+            }
+            else {
+                showAlertDialog("No Applicant is associated with this claim.", "Message");
+                return;
+            }
+
+        }
+        else {
+            return; // User clicked on Cancel for Financial Block Confirmation Dialog
+        }
+
+
+    }
+    else {
+        showAlertDialog("No Project is associated with this claim.", "Message");
+        return;
+    }
+
+
+
+}
+
+function showAlertDialog(dTEXT, dTITLE) {
+    // Define the message and options for the alert dialog
+    var alertStrings = {
+        confirmButtonLabel: "OK",
+        text: dTEXT,
+        title: dTITLE
+    };
+
+
+    // Show the alert dialog with the message
+    Xrm.Navigation.openAlertDialog(alertStrings).then(
+        function success() {
+            console.log("Alert dialog closed.");
+        },
+        function error() {
+            console.log("Error displaying alert dialog.");
+        }
+    );
+
+}
+
+function setConfirmationDialog(dTEXT, dTITLE) {
+    var confirmOptions = {
+        text: dTEXT,
+        title: dTITLE,
+        confirmButtonLabel: "Continue",
+        cancelButtonLabel: "Cancel"
+    };
+
+    return confirmOptions;
+
+}

@@ -1,0 +1,272 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_PodsSvcAcctDataverse"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      },
+      "shared_office365_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_PodsSvcAcctOffice365Outlook"
+        },
+        "api": {
+          "name": "shared_office365"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "When_Feedback_is_created": {
+          "metadata": {
+            "operationMetadataId": "7245f6ca-e41b-4b2b-ae73-4ade4e2dec67"
+          },
+          "type": "OpenApiConnectionWebhook",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "SubscribeWebhookTrigger",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "subscriptionRequest/message": 1,
+              "subscriptionRequest/entityname": "feedback",
+              "subscriptionRequest/scope": 4
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        }
+      },
+      "actions": {
+        "Get_Feedback": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "59d6461a-00ac-470c-997e-9453063a3577"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "feedback",
+              "recordId": "@triggerOutputs()?['body/feedbackid']"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Get_PODS_Email_Address_record": {
+          "runAfter": {
+            "Get_Feedback": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "13a97280-e78c-40ed-896d-e65cdc100300"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "quartech_podsconfigurations",
+              "recordId": "3d14be0d-6394-ee11-be37-000d3af3ac95"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Initialize_AF.PODS_Notification_User": {
+          "runAfter": {
+            "Initialize_PODSEmailAddress": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "5c59da4b-4131-4c10-8fe0-756e4aeaea82"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "NotificationUser",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Check_AF.PODSNotification@gov.bc.ca": {
+          "runAfter": {
+            "Initialize_AF.PODS_Notification_User": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "3c498a4f-bebe-43af-897e-422296336208"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "systemusers",
+              "$filter": "domainname eq 'AF.PODSNotification@gov.bc.ca'"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Get_AF.PODSNotification@gov.bc.ca_User_GUID": {
+          "foreach": "@outputs('Check_AF.PODSNotification@gov.bc.ca')?['body/value']",
+          "actions": {
+            "Get_a_row_by_ID": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "2f181bcf-3bf8-44e4-82fc-c1be7b9916b1"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps",
+                  "operationId": "GetItem",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "entityName": "systemusers",
+                  "recordId": "@items('Get_AF.PODSNotification@gov.bc.ca_User_GUID')?['systemuserid']"
+                },
+                "authentication": "@parameters('$authentication')"
+              }
+            },
+            "Set_variable": {
+              "runAfter": {
+                "Get_a_row_by_ID": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "ae42fd3a-d2ab-4ad5-841c-706994cb43a7"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "NotificationUser",
+                "value": "@outputs('Get_a_row_by_ID')?['body/systemuserid']"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_AF.PODSNotification@gov.bc.ca": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "5d1f0336-c9b8-48bb-9ffc-c63f177300b1"
+          },
+          "type": "Foreach"
+        },
+        "URL": {
+          "runAfter": {
+            "Get_AF.PODSNotification@gov.bc.ca_User_GUID": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "fb0b0c53-54fe-41f8-be0f-9311bef09cf5"
+          },
+          "type": "Compose",
+          "inputs": "@outputs('Get_Feedback')?['body/@odata.id']"
+        },
+        "Initialize_Link": {
+          "runAfter": {
+            "URL": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "9906aaaa-6f5d-43df-bffd-be4fabfd8724"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Link",
+                "type": "string",
+                "value": "https://@{uriHost(outputs('URL'))}/main.aspx?forceUCI=1&pagetype=entityrecord&etn=feedback&id=@{outputs('Get_Feedback')?['body/feedbackid']}"
+              }
+            ]
+          }
+        },
+        "Send_an_email_(V2)": {
+          "runAfter": {
+            "Initialize_Link": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "c62d109f-8fad-4a24-abff-39223a4c228a"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_office365_1",
+              "operationId": "SendEmailV2",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365"
+            },
+            "parameters": {
+              "emailMessage/To": "@variables('PODSEmailAddress')",
+              "emailMessage/Subject": "New Feedback: @{outputs('Get_Feedback')?['body/title']}",
+              "emailMessage/Body": "<p>New feedback has been received from PODS. It contains the following comments:</p>\n<p>@{outputs('Get_Feedback')?['body/comments']}</p>\n<p>The feedback was sent by @{outputs('Get_Feedback')?['body/adx_contactemail']}<p>\n<p>You can see the feedback in PODS at this location: @{variables('Link')}</p>",
+              "emailMessage/Importance": "Normal"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Initialize_PODSEmailAddress": {
+          "runAfter": {
+            "Get_PODS_Email_Address_record": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "06159eca-e5ab-4a26-87c1-9ddf02dad4d0"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "PODSEmailAddress",
+                "type": "string",
+                "value": "@outputs('Get_PODS_Email_Address_record')?['body/quartech_configdata']"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>0</isdefault>
+    <savedqueryid>{00000000-0000-0000-00aa-000010001031}</savedqueryid>
+    <queryapi></queryapi>
+    <layoutxml>
+      <grid name="resultset" jump="name" select="1" icon="1" preview="1">
+        <row name="result" id="accountid">
+          <cell name="name" width="300" />
+          <cell name="quartech_businessnumber" width="150" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="address1_city" width="150" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="address1_line1" width="100" />
+          <cell name="address1_line2" width="100" />
+          <cell name="address1_line3" width="100" />
+          <cell name="quartech_businessprovinceterritory" width="100" />
+          <cell name="address1_postalcode" width="100" />
+          <cell name="telephone1" width="100" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" output-format="xml-platform" mapping="logical">
+        <entity name="account">
+          <attribute name="name" />
+          <attribute name="address1_city" />
+          <order attribute="name" descending="false" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="1" />
+          </filter>
+          <attribute name="telephone1" />
+          <attribute name="quartech_businessprovinceterritory" />
+          <attribute name="quartech_businessnumber" />
+          <attribute name="address1_postalcode" />
+          <attribute name="address1_line1" />
+          <attribute name="address1_line2" />
+          <attribute name="address1_line3" />
+          <attribute name="accountid" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>5.0.0.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Inactive Applicants" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

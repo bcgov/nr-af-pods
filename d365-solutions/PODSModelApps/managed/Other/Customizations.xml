@@ -1,0 +1,405 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ImportExportXml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" OrganizationVersion="9.2.24101.166" OrganizationSchemaType="Full" CRMServerServiceabilityVersion="9.2.24101.00166">
+  <Entities />
+  <Roles />
+  <Workflows />
+  <FieldSecurityProfiles />
+  <Templates />
+  <EntityMaps />
+  <EntityRelationships />
+  <OrganizationSettings />
+  <optionsets />
+  <Dashboards />
+  <WebResources />
+  <CustomControls />
+  <AppModuleSiteMaps />
+  <AppModules />
+  <EntityDataProviders />
+  <CanvasApps />
+  <appaction_appactionrule_classicrulesset>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.Form.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!msgov_businessgrantapplication!0" appactionruleid.uniquename="msdyn_Mscrm.CanWritePrimary!0">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.Form.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!msgov_businessgrantapplication!0" appactionruleid.uniquename="msdyn_Mscrm.CanWritePrimary!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.Form.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!msgov_businessgrantapplication!0" appactionruleid.uniquename="msdyn_Mscrm.OutlookRenderTypeWeb!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.Form.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!msgov_businessgrantapplication!0" appactionruleid.uniquename="msdyn_Mscrm.PrimaryEntityHasStatecode!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.Form.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!msgov_businessgrantapplication!0" appactionruleid.uniquename="msdyn_Mscrm.PrimaryIsInactive!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.Form.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!msgov_businessgrantapplication!0" appactionruleid.uniquename="msdyn_Mscrm.PrimaryIsNotActivity!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.Form.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!quartech_claim!0" appactionruleid.uniquename="msdyn_Mscrm.CanWritePrimary!0">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.Form.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!quartech_claim!0" appactionruleid.uniquename="msdyn_Mscrm.CanWritePrimary!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.Form.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!quartech_claim!0" appactionruleid.uniquename="msdyn_Mscrm.OutlookRenderTypeWeb!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.Form.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!quartech_claim!0" appactionruleid.uniquename="msdyn_Mscrm.PrimaryEntityHasStatecode!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.Form.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!quartech_claim!0" appactionruleid.uniquename="msdyn_Mscrm.PrimaryIsInactive!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.Form.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!quartech_claim!0" appactionruleid.uniquename="msdyn_Mscrm.PrimaryIsNotActivity!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.Form.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!quartech_grantproject!0" appactionruleid.uniquename="msdyn_Mscrm.CanWritePrimary!0">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.Form.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!quartech_grantproject!0" appactionruleid.uniquename="msdyn_Mscrm.CanWritePrimary!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.Form.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!quartech_grantproject!0" appactionruleid.uniquename="msdyn_Mscrm.OutlookRenderTypeWeb!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.Form.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!quartech_grantproject!0" appactionruleid.uniquename="msdyn_Mscrm.PrimaryEntityHasStatecode!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.Form.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!quartech_grantproject!0" appactionruleid.uniquename="msdyn_Mscrm.PrimaryIsInactive!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.Form.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!quartech_grantproject!0" appactionruleid.uniquename="msdyn_Mscrm.PrimaryIsNotActivity!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.Form.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!msgov_businessgrantapplication!0" appactionruleid.uniquename="msdyn_Mscrm.CanWritePrimary!0">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.Form.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!msgov_businessgrantapplication!0" appactionruleid.uniquename="msdyn_Mscrm.CanWritePrimary!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.Form.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!msgov_businessgrantapplication!0" appactionruleid.uniquename="msdyn_Mscrm.OutlookRenderTypeWeb!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.Form.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!msgov_businessgrantapplication!0" appactionruleid.uniquename="msdyn_Mscrm.PrimaryEntityHasStatecode!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.Form.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!msgov_businessgrantapplication!0" appactionruleid.uniquename="msdyn_Mscrm.PrimaryIsActive!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.Form.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!msgov_businessgrantapplication!0" appactionruleid.uniquename="msdyn_Mscrm.PrimaryIsNotActivity!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.Form.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!quartech_claim!0" appactionruleid.uniquename="msdyn_Mscrm.CanWritePrimary!0">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.Form.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!quartech_claim!0" appactionruleid.uniquename="msdyn_Mscrm.CanWritePrimary!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.Form.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!quartech_claim!0" appactionruleid.uniquename="msdyn_Mscrm.OutlookRenderTypeWeb!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.Form.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!quartech_claim!0" appactionruleid.uniquename="msdyn_Mscrm.PrimaryEntityHasStatecode!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.Form.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!quartech_claim!0" appactionruleid.uniquename="msdyn_Mscrm.PrimaryIsActive!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.Form.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!quartech_claim!0" appactionruleid.uniquename="msdyn_Mscrm.PrimaryIsNotActivity!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.Form.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!quartech_grantproject!0" appactionruleid.uniquename="msdyn_Mscrm.CanWritePrimary!0">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.Form.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!quartech_grantproject!0" appactionruleid.uniquename="msdyn_Mscrm.CanWritePrimary!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.Form.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!quartech_grantproject!0" appactionruleid.uniquename="msdyn_Mscrm.OutlookRenderTypeWeb!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.Form.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!quartech_grantproject!0" appactionruleid.uniquename="msdyn_Mscrm.PrimaryEntityHasStatecode!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.Form.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!quartech_grantproject!0" appactionruleid.uniquename="msdyn_Mscrm.PrimaryIsActive!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.Form.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!quartech_grantproject!0" appactionruleid.uniquename="msdyn_Mscrm.PrimaryIsNotActivity!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.HomepageGrid.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!msgov_businessgrantapplication!1" appactionruleid.uniquename="msdyn_Mscrm.CanWriteSelected!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.HomepageGrid.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!msgov_businessgrantapplication!1" appactionruleid.uniquename="msdyn_Mscrm.SelectedEntityHasStatecode!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.HomepageGrid.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!msgov_businessgrantapplication!1" appactionruleid.uniquename="msdyn_Mscrm.SelectionCountAtLeastOne!0">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.HomepageGrid.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!msgov_businessgrantapplication!1" appactionruleid.uniquename="msdyn_Mscrm.VisualizationPaneNotMaximized!0">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.HomepageGrid.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!quartech_claim!1" appactionruleid.uniquename="msdyn_Mscrm.CanWriteSelected!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.HomepageGrid.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!quartech_claim!1" appactionruleid.uniquename="msdyn_Mscrm.SelectedEntityHasStatecode!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.HomepageGrid.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!quartech_claim!1" appactionruleid.uniquename="msdyn_Mscrm.SelectionCountAtLeastOne!0">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.HomepageGrid.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!quartech_claim!1" appactionruleid.uniquename="msdyn_Mscrm.VisualizationPaneNotMaximized!0">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.HomepageGrid.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!quartech_grantproject!1" appactionruleid.uniquename="msdyn_Mscrm.CanWriteSelected!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.HomepageGrid.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!quartech_grantproject!1" appactionruleid.uniquename="msdyn_Mscrm.SelectedEntityHasStatecode!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.HomepageGrid.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!quartech_grantproject!1" appactionruleid.uniquename="msdyn_Mscrm.SelectionCountAtLeastOne!0">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.HomepageGrid.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!quartech_grantproject!1" appactionruleid.uniquename="msdyn_Mscrm.VisualizationPaneNotMaximized!0">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.HomepageGrid.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!msgov_businessgrantapplication!1" appactionruleid.uniquename="msdyn_Mscrm.CanWriteSelected!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.HomepageGrid.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!msgov_businessgrantapplication!1" appactionruleid.uniquename="msdyn_Mscrm.SelectedEntityHasStatecode!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.HomepageGrid.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!msgov_businessgrantapplication!1" appactionruleid.uniquename="msdyn_Mscrm.SelectionCountAtLeastOne!0">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.HomepageGrid.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!msgov_businessgrantapplication!1" appactionruleid.uniquename="msdyn_Mscrm.VisualizationPaneNotMaximized!0">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.HomepageGrid.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!quartech_claim!1" appactionruleid.uniquename="msdyn_Mscrm.CanWriteSelected!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.HomepageGrid.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!quartech_claim!1" appactionruleid.uniquename="msdyn_Mscrm.SelectedEntityHasStatecode!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.HomepageGrid.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!quartech_claim!1" appactionruleid.uniquename="msdyn_Mscrm.SelectionCountAtLeastOne!0">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.HomepageGrid.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!quartech_claim!1" appactionruleid.uniquename="msdyn_Mscrm.VisualizationPaneNotMaximized!0">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.HomepageGrid.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!quartech_grantproject!1" appactionruleid.uniquename="msdyn_Mscrm.CanWriteSelected!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.HomepageGrid.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!quartech_grantproject!1" appactionruleid.uniquename="msdyn_Mscrm.SelectedEntityHasStatecode!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.HomepageGrid.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!quartech_grantproject!1" appactionruleid.uniquename="msdyn_Mscrm.SelectionCountAtLeastOne!0">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.HomepageGrid.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!quartech_grantproject!1" appactionruleid.uniquename="msdyn_Mscrm.VisualizationPaneNotMaximized!0">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!msgov_businessgrantapplication!2" appactionruleid.uniquename="msdyn_Mscrm.CanWriteSelected!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!msgov_businessgrantapplication!2" appactionruleid.uniquename="msdyn_Mscrm.SelectedEntityHasStatecode!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!msgov_businessgrantapplication!2" appactionruleid.uniquename="msdyn_Mscrm.SelectionCountAtLeastOne!0">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!msgov_businessgrantapplication!2" appactionruleid.uniquename="msdyn_Mscrm.VisualizationPaneNotMaximized!0">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!msgov_businessgrantapplication!3" appactionruleid.uniquename="msdyn_Mscrm.CanWriteSelected!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!msgov_businessgrantapplication!3" appactionruleid.uniquename="msdyn_Mscrm.SelectedEntityHasStatecode!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!msgov_businessgrantapplication!3" appactionruleid.uniquename="msdyn_Mscrm.SelectionCountAtLeastOne!0">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!msgov_businessgrantapplication!3" appactionruleid.uniquename="msdyn_Mscrm.VisualizationPaneNotMaximized!0">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!quartech_claim!2" appactionruleid.uniquename="msdyn_Mscrm.CanWriteSelected!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!quartech_claim!2" appactionruleid.uniquename="msdyn_Mscrm.SelectedEntityHasStatecode!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!quartech_claim!2" appactionruleid.uniquename="msdyn_Mscrm.SelectionCountAtLeastOne!0">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!quartech_claim!2" appactionruleid.uniquename="msdyn_Mscrm.VisualizationPaneNotMaximized!0">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!quartech_claim!3" appactionruleid.uniquename="msdyn_Mscrm.CanWriteSelected!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!quartech_claim!3" appactionruleid.uniquename="msdyn_Mscrm.SelectedEntityHasStatecode!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!quartech_claim!3" appactionruleid.uniquename="msdyn_Mscrm.SelectionCountAtLeastOne!0">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!quartech_claim!3" appactionruleid.uniquename="msdyn_Mscrm.VisualizationPaneNotMaximized!0">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!quartech_grantproject!2" appactionruleid.uniquename="msdyn_Mscrm.CanWriteSelected!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!quartech_grantproject!2" appactionruleid.uniquename="msdyn_Mscrm.SelectedEntityHasStatecode!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!quartech_grantproject!2" appactionruleid.uniquename="msdyn_Mscrm.SelectionCountAtLeastOne!0">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!quartech_grantproject!2" appactionruleid.uniquename="msdyn_Mscrm.VisualizationPaneNotMaximized!0">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!quartech_grantproject!3" appactionruleid.uniquename="msdyn_Mscrm.CanWriteSelected!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!quartech_grantproject!3" appactionruleid.uniquename="msdyn_Mscrm.SelectedEntityHasStatecode!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!quartech_grantproject!3" appactionruleid.uniquename="msdyn_Mscrm.SelectionCountAtLeastOne!0">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Activate!quartech_PodsStaffPortal!quartech_grantproject!3" appactionruleid.uniquename="msdyn_Mscrm.VisualizationPaneNotMaximized!0">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!msgov_businessgrantapplication!2" appactionruleid.uniquename="msdyn_Mscrm.CanWriteSelected!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!msgov_businessgrantapplication!2" appactionruleid.uniquename="msdyn_Mscrm.SelectedEntityHasStatecode!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!msgov_businessgrantapplication!2" appactionruleid.uniquename="msdyn_Mscrm.SelectionCountAtLeastOne!0">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!msgov_businessgrantapplication!2" appactionruleid.uniquename="msdyn_Mscrm.VisualizationPaneNotMaximized!0">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!msgov_businessgrantapplication!3" appactionruleid.uniquename="msdyn_Mscrm.CanWriteSelected!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!msgov_businessgrantapplication!3" appactionruleid.uniquename="msdyn_Mscrm.SelectedEntityHasStatecode!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!msgov_businessgrantapplication!3" appactionruleid.uniquename="msdyn_Mscrm.SelectionCountAtLeastOne!0">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!msgov_businessgrantapplication!3" appactionruleid.uniquename="msdyn_Mscrm.VisualizationPaneNotMaximized!0">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!quartech_claim!2" appactionruleid.uniquename="msdyn_Mscrm.CanWriteSelected!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!quartech_claim!2" appactionruleid.uniquename="msdyn_Mscrm.SelectedEntityHasStatecode!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!quartech_claim!2" appactionruleid.uniquename="msdyn_Mscrm.SelectionCountAtLeastOne!0">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!quartech_claim!2" appactionruleid.uniquename="msdyn_Mscrm.VisualizationPaneNotMaximized!0">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!quartech_claim!3" appactionruleid.uniquename="msdyn_Mscrm.CanWriteSelected!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!quartech_claim!3" appactionruleid.uniquename="msdyn_Mscrm.SelectedEntityHasStatecode!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!quartech_claim!3" appactionruleid.uniquename="msdyn_Mscrm.SelectionCountAtLeastOne!0">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!quartech_claim!3" appactionruleid.uniquename="msdyn_Mscrm.VisualizationPaneNotMaximized!0">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!quartech_grantproject!2" appactionruleid.uniquename="msdyn_Mscrm.CanWriteSelected!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!quartech_grantproject!2" appactionruleid.uniquename="msdyn_Mscrm.SelectedEntityHasStatecode!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!quartech_grantproject!2" appactionruleid.uniquename="msdyn_Mscrm.SelectionCountAtLeastOne!0">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!quartech_grantproject!2" appactionruleid.uniquename="msdyn_Mscrm.VisualizationPaneNotMaximized!0">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!quartech_grantproject!3" appactionruleid.uniquename="msdyn_Mscrm.CanWriteSelected!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!quartech_grantproject!3" appactionruleid.uniquename="msdyn_Mscrm.SelectedEntityHasStatecode!1">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!quartech_grantproject!3" appactionruleid.uniquename="msdyn_Mscrm.SelectionCountAtLeastOne!0">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+    <appaction_appactionrule_classicrules appactionid.uniquename="quartech__Mscrm.SubGrid.{!EntityLogicalName}.Deactivate!quartech_PodsStaffPortal!quartech_grantproject!3" appactionruleid.uniquename="msdyn_Mscrm.VisualizationPaneNotMaximized!0">
+      <iscustomizable>1</iscustomizable>
+    </appaction_appactionrule_classicrules>
+  </appaction_appactionrule_classicrulesset>
+  <connectionreferences>
+    <connectionreference connectionreferencelogicalname="quartech_Pods_SvcAcctExcelOnlineBusiness">
+      <connectionreferencedisplayname>Pods_SvcAcct-ExcelOnlineBusiness</connectionreferencedisplayname>
+      <connectorid>/providers/Microsoft.PowerApps/apis/shared_excelonlinebusiness</connectorid>
+      <description>Excel Online Business Using PODS Service Account</description>
+      <iscustomizable>1</iscustomizable>
+      <statecode>0</statecode>
+      <statuscode>1</statuscode>
+    </connectionreference>
+    <connectionreference connectionreferencelogicalname="quartech_PodsSvcAcctDataverse">
+      <connectionreferencedisplayname>Pods-SvcAcct-Dataverse</connectionreferencedisplayname>
+      <connectorid>/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps</connectorid>
+      <description>Dataverse connection to PODS using the PODS Service Account</description>
+      <iscustomizable>1</iscustomizable>
+      <statecode>0</statecode>
+      <statuscode>1</statuscode>
+    </connectionreference>
+    <connectionreference connectionreferencelogicalname="quartech_PodsSvcAcctOffice365Outlook">
+      <connectionreferencedisplayname>Pods-SvcAcct-Office365Outlook</connectionreferencedisplayname>
+      <connectorid>/providers/Microsoft.PowerApps/apis/shared_office365</connectorid>
+      <description>Connection Reference for using Office 365 Outlook with the PODS Service Account</description>
+      <iscustomizable>1</iscustomizable>
+      <statecode>0</statecode>
+      <statuscode>1</statuscode>
+    </connectionreference>
+    <connectionreference connectionreferencelogicalname="quartech_PodsSvcAcctSharePoint">
+      <connectionreferencedisplayname>Pods-SvcAcct-SharePoint</connectionreferencedisplayname>
+      <connectorid>/providers/Microsoft.PowerApps/apis/shared_sharepointonline</connectorid>
+      <description>Connection Reference to PODS SharePoint Sites using PODS Service Account</description>
+      <iscustomizable>1</iscustomizable>
+      <statecode>0</statecode>
+      <statuscode>1</statuscode>
+    </connectionreference>
+    <connectionreference connectionreferencelogicalname="quartech_PodsSvcAcctWordOnlineBusiness">
+      <connectionreferencedisplayname>Pods-SvcAcct-WordOnlineBusiness</connectionreferencedisplayname>
+      <connectorid>/providers/Microsoft.PowerApps/apis/shared_wordonlinebusiness</connectorid>
+      <description>Word Online Business using PODS Service Account</description>
+      <iscustomizable>1</iscustomizable>
+      <statecode>0</statecode>
+      <statuscode>1</statuscode>
+    </connectionreference>
+    <connectionreference connectionreferencelogicalname="quartech_sharedcommondataserviceforapps_f90be">
+      <connectionreferencedisplayname>PODS Dataverse Connection</connectionreferencedisplayname>
+      <connectorid>/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps</connectorid>
+      <iscustomizable>1</iscustomizable>
+      <statecode>0</statecode>
+      <statuscode>1</statuscode>
+    </connectionreference>
+    <connectionreference connectionreferencelogicalname="quartech_sharedwebcontents_89b79">
+      <connectionreferencedisplayname>HTTPwithAzureAD</connectionreferencedisplayname>
+      <connectorid>/providers/Microsoft.PowerApps/apis/shared_webcontents</connectorid>
+      <description>Used in PDF Generation Flow</description>
+      <iscustomizable>1</iscustomizable>
+      <statecode>0</statecode>
+      <statuscode>1</statuscode>
+    </connectionreference>
+  </connectionreferences>
+  <Languages>
+    <Language>1033</Language>
+  </Languages>
+</ImportExportXml>

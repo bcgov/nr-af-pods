@@ -1,0 +1,738 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_sharepointonline_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_PodsSvcAcctSharePoint"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      },
+      "shared_wordonlinebusiness_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_PodsSvcAcctWordOnlineBusiness"
+        },
+        "api": {
+          "name": "shared_wordonlinebusiness"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "PODS SharePoint Site Address (quartech_PodsSharePointSiteAddress)": {
+          "defaultValue": "https://bcgov.sharepoint.com/sites/AF-PODS-DEV",
+          "type": "String",
+          "metadata": {
+            "schemaName": "quartech_PodsSharePointSiteAddress",
+            "description": "Site Address of the PODS SharePoint"
+          }
+        },
+        "PODS Doc Generation - Word Online - File Folder For Generated Docs (quartech_Pods_DocGeneration_WordOnline_FileFolderForGeneratedDocs)": {
+          "defaultValue": "/PODS Dataverse/Generated Documents",
+          "type": "String",
+          "metadata": {
+            "schemaName": "quartech_Pods_DocGeneration_WordOnline_FileFolderForGeneratedDocs",
+            "description": "Relative Folder where documents are generated in the Documents doc lib of the Word Online (Business) connector "
+          }
+        },
+        "PODS DocumentLibraryId (quartech_DocumentLibraryId)": {
+          "defaultValue": "b!fVeXUfs7uEem7B_WAWl7jXuXBtcAvcJCjKuVOvttfrz9SyeHTeuFTrd7D8gMryH1",
+          "type": "String",
+          "metadata": {
+            "schemaName": "quartech_DocumentLibraryId"
+          }
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "48fbef94-f8bc-4fa0-8b17-37af054cb804"
+          },
+          "type": "Request",
+          "kind": "Button",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text_5": {
+                  "title": "dataToPopulateWordTemplate",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter the data in JSON format to populate the Word Template",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_6": {
+                  "title": "pdfFileInfo",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter the PDF File info including SharePoint location, aka. Site Address, related folder path etc...",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_1": {
+                  "title": "projectGuid",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                }
+              },
+              "required": [
+                "text_5",
+                "text_6",
+                "text_1"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Create_Claim_docx": {
+          "runAfter": {
+            "Switch:_Populate_Word_Template_by_Program_or_Stream": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "de025f1b-ef04-407f-9f59-763d034c99e4"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "CreateFile",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "@parameters('PODS SharePoint Site Address (quartech_PodsSharePointSiteAddress)')",
+              "folderPath": "/Shared Documents@{parameters('PODS Doc Generation - Word Online - File Folder For Generated Docs (quartech_Pods_DocGeneration_WordOnline_FileFolderForGeneratedDocs)')}/",
+              "name": "@{body('Parse_JSON:_PDF_File_Info')?['fileNameWithoutExtension']}.docx",
+              "body": "@variables('vGeneratedFileContent')"
+            },
+            "authentication": {
+              "type": "Raw",
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+            }
+          },
+          "runtimeConfiguration": {
+            "contentTransfer": {
+              "transferMode": "Chunked"
+            }
+          }
+        },
+        "Response": {
+          "runAfter": {
+            "Move_file:_generated_Submitted_Application_docx_to_the_Program_SharePoint_folder": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "2303b2aa-8879-49e1-9225-09b11ccf16fd"
+          },
+          "type": "Response",
+          "kind": "Http",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+              "errorMessage": "",
+              "pdfSpSiteAddress": "@body('Run_a_Child_Flow:_Get_SP_Doc_Location_and_Claim_Template_by_Project_Guid')?['spSiteAddress']",
+              "pdfFilePath": "@{body('Parse_JSON:_Program_SharePoint_Info')?['programStreamFolderPath']}@{body('Parse_JSON:_PDF_File_Info')?['parentFolderName']}/@{body('Parse_JSON:_PDF_File_Info')?['fileNameWithoutExtension']}.pdf",
+              "pdfFileNameWithoutExtension": "@{body('Parse_JSON:_PDF_File_Info')?['fileNameWithoutExtension']}"
+            }
+          }
+        },
+        "Run_a_Child_Flow:_Create_PDF_in_SharePoint": {
+          "runAfter": {
+            "Create_Claim_docx": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "a413ee00-16ed-4619-baa5-cdc80963313b"
+          },
+          "type": "Workflow",
+          "inputs": {
+            "host": {
+              "workflowReferenceName": "cdedf35e-52e8-ee11-a204-6045bd61cd59"
+            },
+            "body": {
+              "text_2": "@body('Parse_JSON:_PDF_File_Info')?['fileNameWithoutExtension']",
+              "text_3": "@body('Parse_JSON:_Program_SharePoint_Info')?['projectFolderName']",
+              "text_4": "@body('Run_a_Child_Flow:_Get_SP_Doc_Location_and_Claim_Template_by_Project_Guid')?['spSiteAddress']",
+              "text": "@body('Parse_JSON:_Program_SharePoint_Info')?['programStreamFolderPath']"
+            }
+          }
+        },
+        "Parse_JSON:_Data_To_Populate_The_Claim_Word_Template__": {
+          "runAfter": {
+            "Run_a_Child_Flow:_Get_SP_Doc_Location_and_Claim_Template_by_Project_Guid": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "caad7904-f885-4935-9b49-bea89952e9e1"
+          },
+          "type": "ParseJson",
+          "inputs": {
+            "content": "@triggerBody()['text_5']",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "claimId": {
+                  "type": "string"
+                },
+                "claimName": {
+                  "type": "string"
+                },
+                "submissionDateTime": {
+                  "type": "string"
+                },
+                "applicantInfoStep": {
+                  "type": "object",
+                  "properties": {
+                    "applicationInfoSection": {
+                      "type": "object",
+                      "properties": {
+                        "displayName": {
+                          "type": "string"
+                        },
+                        "applicationInfoSectionQuestionAnswerList": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "applicationInfoSectionQuestion": {
+                                "type": "string"
+                              },
+                              "applicationInfoSectionAnswer": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "applicationInfoSectionQuestion",
+                              "applicationInfoSectionAnswer"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "projectResultsStep": {
+                  "type": "object",
+                  "properties": {
+                    "projectResultsSection": {
+                      "type": "object",
+                      "properties": {
+                        "displayName": {
+                          "type": "string"
+                        },
+                        "projectResultsSectionQuestionAnswerList": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "projectResultsSectionQuestion": {
+                                "type": "string"
+                              },
+                              "projectResultsSectionAnswer": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "projectResultsSectionQuestion",
+                              "projectResultsSectionAnswer"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "claimStep": {
+                  "type": "object",
+                  "properties": {
+                    "expenseReportSection": {
+                      "type": "object",
+                      "properties": {
+                        "displayName": {
+                          "type": "string"
+                        },
+                        "expenseReportSectionQuestionAnswerList": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "expenseReportSectionQuestion": {
+                                "type": "string"
+                              },
+                              "expenseReportSectionAnswer": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "expenseReportSectionQuestion",
+                              "expenseReportSectionAnswer"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "fundingInfoSection": {
+                      "type": "object",
+                      "properties": {
+                        "displayName": {
+                          "type": "string"
+                        },
+                        "fundingInfoSectionQuestionAnswerList": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "fundingInfoSectionQuestion": {
+                                "type": "string"
+                              },
+                              "fundingInfoSectionAnswer": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "fundingInfoSectionQuestion",
+                              "fundingInfoSectionAnswer"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "claimSection": {
+                      "type": "object",
+                      "properties": {
+                        "displayName": {
+                          "type": "string"
+                        },
+                        "claimSectionQuestionAnswerList": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "claimSectionQuestion": {
+                                "type": "string"
+                              },
+                              "claimSectionAnswer": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "claimSectionQuestion",
+                              "claimSectionAnswer"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "supportingDocumentsStep": {
+                  "type": "object",
+                  "properties": {
+                    "supportingDocumentsSection": {
+                      "type": "object",
+                      "properties": {
+                        "displayName": {
+                          "type": "string"
+                        },
+                        "supportingDocumentsSectionQuestionAnswerList": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "supportingDocumentsSectionQuestion": {
+                                "type": "string"
+                              },
+                              "supportingDocumentsSectionAnswer": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "supportingDocumentsSectionQuestion",
+                              "supportingDocumentsSectionAnswer"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "applicantDeclarationStep": {
+                  "type": "object",
+                  "properties": {
+                    "applicantDeclarationSection": {
+                      "type": "object",
+                      "properties": {
+                        "displayName": {
+                          "type": "string"
+                        },
+                        "applicantDeclarationSectionQuestionAnswerList": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "applicantDeclarationSectionQuestion": {
+                                "type": "string"
+                              },
+                              "applicantDeclarationSectionAnswer": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "applicantDeclarationSectionQuestion",
+                              "applicantDeclarationSectionAnswer"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "Switch:_Populate_Word_Template_by_Program_or_Stream": {
+          "runAfter": {
+            "Initialize_variable:_vGeneratedFileContent": [
+              "Succeeded"
+            ]
+          },
+          "cases": {
+            "Case:_ClaimSubmissionTemplate-WithAllSections": {
+              "case": "ClaimSubmissionTemplate-WithAllSections",
+              "actions": {
+                "Populate_the_Claim_Submission_word_template_with_All_Sections": {
+                  "runAfter": {},
+                  "metadata": {
+                    "01WAHUP65SBZSNHYEU3BGL4IHGIJE2JEHB": "/PODS Templates/Claim Template.docx",
+                    "operationMetadataId": "281ee62d-c0cc-48bf-a4ec-76b677b1b213"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_wordonlinebusiness_1",
+                      "operationId": "CreateFileItem",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_wordonlinebusiness"
+                    },
+                    "parameters": {
+                      "source": "@parameters('PODS SharePoint Site Address (quartech_PodsSharePointSiteAddress)')",
+                      "drive": "@parameters('PODS DocumentLibraryId (quartech_DocumentLibraryId)')",
+                      "file": "/PODS Dataverse/Templates/ClaimSubmissionTemplate-WithAllSections.docx",
+                      "dynamicFileSchema/664209645": "@body('Parse_JSON:_Data_To_Populate_The_Claim_Word_Template__')?['claimName']",
+                      "dynamicFileSchema/763581731": "@body('Parse_JSON:_Data_To_Populate_The_Claim_Word_Template__')?['claimStep']?['claimSection']?['claimSectionQuestionAnswerList']",
+                      "dynamicFileSchema/1634593149": "@body('Parse_JSON:_Data_To_Populate_The_Claim_Word_Template__')?['claimStep']?['fundingInfoSection']?['fundingInfoSectionQuestionAnswerList']",
+                      "dynamicFileSchema/1792247891": "@body('Parse_JSON:_Program_SharePoint_Info')?['programName']",
+                      "dynamicFileSchema/-193773371": "@body('Parse_JSON:_Data_To_Populate_The_Claim_Word_Template__')?['submissionDateTime']",
+                      "dynamicFileSchema/-1118748429": "@body('Parse_JSON:_Data_To_Populate_The_Claim_Word_Template__')?['applicantInfoStep']?['applicationInfoSection']?['applicationInfoSectionQuestionAnswerList']",
+                      "dynamicFileSchema/-596864818": "@body('Parse_JSON:_Data_To_Populate_The_Claim_Word_Template__')?['projectResultsStep']?['projectResultsSection']?['projectResultsSectionQuestionAnswerList']",
+                      "dynamicFileSchema/-588008378": "@body('Parse_JSON:_Data_To_Populate_The_Claim_Word_Template__')?['claimStep']?['expenseReportSection']?['expenseReportSectionQuestionAnswerList']",
+                      "dynamicFileSchema/-182055387": "@body('Parse_JSON:_Data_To_Populate_The_Claim_Word_Template__')?['supportingDocumentsStep']?['supportingDocumentsSection']?['supportingDocumentsSectionQuestionAnswerList']",
+                      "dynamicFileSchema/-436517814": "@body('Parse_JSON:_Data_To_Populate_The_Claim_Word_Template__')?['applicantDeclarationStep']?['applicantDeclarationSection']?['applicantDeclarationSectionQuestionAnswerList']"
+                    },
+                    "authentication": {
+                      "type": "Raw",
+                      "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                    }
+                  }
+                },
+                "Set_variable:_vGeneratedFileContent": {
+                  "runAfter": {
+                    "Populate_the_Claim_Submission_word_template_with_All_Sections": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "8b556903-e700-4219-9d90-13fd85711b17"
+                  },
+                  "type": "SetVariable",
+                  "inputs": {
+                    "name": "vGeneratedFileContent",
+                    "value": "@body('Populate_the_Claim_Submission_word_template_with_All_Sections')"
+                  }
+                }
+              }
+            },
+            "Case:_ClaimSubmissionTemplate-WithoutExpenseReportSection": {
+              "case": "ClaimSubmissionTemplate-WithoutExpenseReportSection",
+              "actions": {
+                "Populate_the_Claim_Submission_word_template_without_Expense_Report_section": {
+                  "runAfter": {},
+                  "metadata": {
+                    "operationMetadataId": "4a263bec-84f4-4958-8686-9681c4bf567c"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_wordonlinebusiness_1",
+                      "operationId": "CreateFileItem",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_wordonlinebusiness"
+                    },
+                    "parameters": {
+                      "source": "@parameters('PODS SharePoint Site Address (quartech_PodsSharePointSiteAddress)')",
+                      "drive": "@parameters('PODS DocumentLibraryId (quartech_DocumentLibraryId)')",
+                      "file": "/PODS Dataverse/Templates/ClaimSubmissionTemplate-WithoutExpenseReportSection.docx",
+                      "dynamicFileSchema/664209645": "@body('Parse_JSON:_Data_To_Populate_The_Claim_Word_Template__')?['claimName']",
+                      "dynamicFileSchema/763581731": "@body('Parse_JSON:_Data_To_Populate_The_Claim_Word_Template__')?['claimStep']?['claimSection']?['claimSectionQuestionAnswerList']",
+                      "dynamicFileSchema/1634593149": "@body('Parse_JSON:_Data_To_Populate_The_Claim_Word_Template__')?['claimStep']?['fundingInfoSection']?['fundingInfoSectionQuestionAnswerList']",
+                      "dynamicFileSchema/1792247891": "@body('Parse_JSON:_Program_SharePoint_Info')?['programName']",
+                      "dynamicFileSchema/-193773371": "@body('Parse_JSON:_Data_To_Populate_The_Claim_Word_Template__')?['submissionDateTime']",
+                      "dynamicFileSchema/-1118748429": "@body('Parse_JSON:_Data_To_Populate_The_Claim_Word_Template__')?['applicantInfoStep']?['applicationInfoSection']?['applicationInfoSectionQuestionAnswerList']",
+                      "dynamicFileSchema/-596864818": "@body('Parse_JSON:_Data_To_Populate_The_Claim_Word_Template__')?['projectResultsStep']?['projectResultsSection']?['projectResultsSectionQuestionAnswerList']",
+                      "dynamicFileSchema/-182055387": "@body('Parse_JSON:_Data_To_Populate_The_Claim_Word_Template__')?['supportingDocumentsStep']?['supportingDocumentsSection']?['supportingDocumentsSectionQuestionAnswerList']",
+                      "dynamicFileSchema/-261379454": "@body('Parse_JSON:_Data_To_Populate_The_Claim_Word_Template__')?['applicantDeclarationStep']?['applicantDeclarationSection']?['applicantDeclarationSectionQuestionAnswerList']"
+                    },
+                    "authentication": {
+                      "type": "Raw",
+                      "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                    }
+                  }
+                },
+                "Set_vGenerated:_File_Content_with_NoExpenseReport_Claim_data": {
+                  "runAfter": {
+                    "Populate_the_Claim_Submission_word_template_without_Expense_Report_section": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "3c068ffd-ac85-4cd0-8da4-48673a659b8f"
+                  },
+                  "type": "SetVariable",
+                  "inputs": {
+                    "name": "vGeneratedFileContent",
+                    "value": "@body('Populate_the_Claim_Submission_word_template_without_Expense_Report_section')"
+                  }
+                }
+              }
+            },
+            "Case:_ClaimSubmissionTemplate-NoFundingInformationSection": {
+              "case": "ClaimSubmissionTemplate-NoFundingInformationSection",
+              "actions": {
+                "Populate_the_Claim_Submission_word_template_No_Funding_Information_section": {
+                  "runAfter": {},
+                  "metadata": {
+                    "01WAHUP65RE6JMF4TREFEI3WAL724EQLED": "/PODS Dataverse/Templates/ClaimSubmissionTemplate-NoFundingInformationSection.docx",
+                    "operationMetadataId": "8d86b20e-6c17-4752-bdf6-09f35537ce16",
+                    "01WAHUP63X7D6Z6PY3UVBIL3L7DFMD5S4Y": "/PODS Dataverse/Templates/ClaimSubmissionTemplate-NoFundingInformationSection.docx"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_wordonlinebusiness_1",
+                      "operationId": "CreateFileItem",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_wordonlinebusiness"
+                    },
+                    "parameters": {
+                      "source": "@parameters('PODS SharePoint Site Address (quartech_PodsSharePointSiteAddress)')",
+                      "drive": "@parameters('PODS DocumentLibraryId (quartech_DocumentLibraryId)')",
+                      "file": "01WAHUP63X7D6Z6PY3UVBIL3L7DFMD5S4Y",
+                      "dynamicFileSchema/664209645": "@body('Parse_JSON:_Data_To_Populate_The_Claim_Word_Template__')?['claimName']",
+                      "dynamicFileSchema/763581731": "@body('Parse_JSON:_Data_To_Populate_The_Claim_Word_Template__')?['claimStep']?['claimSection']?['claimSectionQuestionAnswerList']",
+                      "dynamicFileSchema/1792247891": "@body('Parse_JSON:_Program_SharePoint_Info')?['programName']",
+                      "dynamicFileSchema/-193773371": "@body('Parse_JSON:_Data_To_Populate_The_Claim_Word_Template__')?['submissionDateTime']",
+                      "dynamicFileSchema/-1118748429": "@body('Parse_JSON:_Data_To_Populate_The_Claim_Word_Template__')?['applicantInfoStep']?['applicationInfoSection']?['applicationInfoSectionQuestionAnswerList']",
+                      "dynamicFileSchema/-596864818": "@body('Parse_JSON:_Data_To_Populate_The_Claim_Word_Template__')?['projectResultsStep']?['projectResultsSection']?['projectResultsSectionQuestionAnswerList']",
+                      "dynamicFileSchema/-588008378": "@body('Parse_JSON:_Data_To_Populate_The_Claim_Word_Template__')?['claimStep']?['expenseReportSection']?['expenseReportSectionQuestionAnswerList']",
+                      "dynamicFileSchema/-182055387": "@body('Parse_JSON:_Data_To_Populate_The_Claim_Word_Template__')?['supportingDocumentsStep']?['supportingDocumentsSection']?['supportingDocumentsSectionQuestionAnswerList']",
+                      "dynamicFileSchema/-436517814": "@body('Parse_JSON:_Data_To_Populate_The_Claim_Word_Template__')?['applicantDeclarationStep']?['applicantDeclarationSection']?['applicantDeclarationSectionQuestionAnswerList']"
+                    },
+                    "authentication": {
+                      "type": "Raw",
+                      "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                    }
+                  }
+                },
+                "Set_vGenerated:_File_Content_with_NoFundingInfo_Claim_data": {
+                  "runAfter": {
+                    "Populate_the_Claim_Submission_word_template_No_Funding_Information_section": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "42a6d60b-4186-486e-9ad2-4f8b595d1411"
+                  },
+                  "type": "SetVariable",
+                  "inputs": {
+                    "name": "vGeneratedFileContent",
+                    "value": "@body('Populate_the_Claim_Submission_word_template_No_Funding_Information_section')"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "actions": {
+              "Terminate:_No_Word_Template_for_PDF_generation_for_this_program_or_stream_yet": {
+                "runAfter": {},
+                "metadata": {
+                  "operationMetadataId": "c4bc0b48-e2e9-4cef-b373-242f34cef72b"
+                },
+                "type": "Terminate",
+                "inputs": {
+                  "runStatus": "Cancelled"
+                }
+              }
+            }
+          },
+          "expression": "@body('Parse_JSON:_Program_SharePoint_Info')?['claimWordTemplateFileName']",
+          "metadata": {
+            "operationMetadataId": "abe2585a-a06c-4d27-99e8-e8f9e657f5e8"
+          },
+          "type": "Switch"
+        },
+        "Initialize_variable:_vGeneratedFileContent": {
+          "runAfter": {
+            "Parse_JSON:_Data_To_Populate_The_Claim_Word_Template__": [
+              "Succeeded"
+            ],
+            "Parse_JSON:_PDF_File_Info": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "6a78902b-b657-42f0-ac22-9be1a359d12b"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "vGeneratedFileContent",
+                "type": "object"
+              }
+            ]
+          }
+        },
+        "Parse_JSON:_PDF_File_Info": {
+          "runAfter": {
+            "Parse_JSON:_Program_SharePoint_Info": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "d52aa368-394f-4a0e-b09d-18481bc6ee44"
+          },
+          "type": "ParseJson",
+          "inputs": {
+            "content": "@triggerBody()['text_6']",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "fileNameWithoutExtension": {
+                  "type": "string"
+                },
+                "parentFolderName": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "Parse_JSON:_Program_SharePoint_Info": {
+          "runAfter": {
+            "Run_a_Child_Flow:_Get_SP_Doc_Location_and_Claim_Template_by_Project_Guid": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "8fc0326d-1974-4970-8529-d37d70af3c6c"
+          },
+          "type": "ParseJson",
+          "inputs": {
+            "content": "@body('Run_a_Child_Flow:_Get_SP_Doc_Location_and_Claim_Template_by_Project_Guid')",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errorMessage": {
+                  "type": "string"
+                },
+                "spSiteAddress": {
+                  "type": "string"
+                },
+                "programStreamFolderPath": {
+                  "type": "string"
+                },
+                "projectFolderName": {
+                  "type": "string"
+                },
+                "applicationWordTemplateFileName": {
+                  "type": "string"
+                },
+                "claimWordTemplateFileName": {
+                  "type": "string"
+                },
+                "programGuid": {},
+                "programName": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "Move_file:_generated_Submitted_Application_docx_to_the_Program_SharePoint_folder": {
+          "runAfter": {
+            "Run_a_Child_Flow:_Create_PDF_in_SharePoint": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "851ced19-2049-4d22-a5c6-28e386086ec4"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "MoveFileAsync",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "@parameters('PODS SharePoint Site Address (quartech_PodsSharePointSiteAddress)')",
+              "parameters/sourceFileId": "@outputs('Create_Claim_docx')?['body/Id']",
+              "parameters/destinationDataset": "@body('Run_a_Child_Flow:_Get_SP_Doc_Location_and_Claim_Template_by_Project_Guid')?['spSiteAddress']",
+              "parameters/destinationFolderPath": "@{body('Parse_JSON:_Program_SharePoint_Info')?['programStreamFolderPath']}@{body('Parse_JSON:_Program_SharePoint_Info')?['projectFolderName']}",
+              "parameters/nameConflictBehavior": 1
+            },
+            "authentication": {
+              "type": "Raw",
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+            }
+          }
+        },
+        "Run_a_Child_Flow:_Get_SP_Doc_Location_and_Claim_Template_by_Project_Guid": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "55f9b824-94dd-43ab-ac2b-c2c19a6d0209"
+          },
+          "type": "Workflow",
+          "inputs": {
+            "host": {
+              "workflowReferenceName": "aa3af256-0eee-ee11-a1fe-6045bd5f4613"
+            },
+            "body": {
+              "text": "@triggerBody()['text_1']"
+            }
+          }
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

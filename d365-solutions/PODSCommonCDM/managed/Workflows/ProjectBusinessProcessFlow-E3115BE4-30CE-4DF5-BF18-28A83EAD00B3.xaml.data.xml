@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Workflow WorkflowId="{e3115be4-30ce-4df5-bf18-28a83ead00b3}" Name="Project Business Process Flow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <XamlFileName>/Workflows/ProjectBusinessProcessFlow-E3115BE4-30CE-4DF5-BF18-28A83EAD00B3.xaml</XamlFileName>
+  <Type>1</Type>
+  <Subprocess>0</Subprocess>
+  <Category>4</Category>
+  <Mode>0</Mode>
+  <Scope>4</Scope>
+  <OnDemand>0</OnDemand>
+  <TriggerOnCreate>1</TriggerOnCreate>
+  <TriggerOnDelete>0</TriggerOnDelete>
+  <AsyncAutodelete>0</AsyncAutodelete>
+  <SyncWorkflowLogOnFailure>0</SyncWorkflowLogOnFailure>
+  <StateCode>1</StateCode>
+  <StatusCode>2</StatusCode>
+  <processorder>100</processorder>
+  <RunAs>1</RunAs>
+  <UniqueName>quartech_bpf_grantproject</UniqueName>
+  <IsTransacted>1</IsTransacted>
+  <IntroducedVersion>1.0.1.0</IntroducedVersion>
+  <IsCustomizable>1</IsCustomizable>
+  <BusinessProcessType>0</BusinessProcessType>
+  <IsCustomProcessingStepAllowedForOtherPublishers>1</IsCustomProcessingStepAllowedForOtherPublishers>
+  <ProcessTriggerScope>1</ProcessTriggerScope>
+  <PrimaryEntity>quartech_grantproject</PrimaryEntity>
+  <LocalizedNames>
+    <LocalizedName languagecode="1033" description="Project Business Process Flow" />
+  </LocalizedNames>
+  <labels>
+    <steplabels id="{bf6b2ab1-acd1-4f29-915b-a5e5f262b1f6}">
+      <label languagecode="1033" description="Funding Approval" />
+    </steplabels>
+    <steplabels id="{a600491c-b60b-446f-9c91-165c4675c27b}">
+      <label languagecode="1033" description="Approval Completed" />
+    </steplabels>
+    <steplabels id="{d191dbb6-6f05-4ef7-873a-4863613d6dfc}">
+      <label languagecode="1033" description="Claim Submission" />
+    </steplabels>
+    <steplabels id="{b3b3032a-c0cf-4c90-a603-e566f043e8d0}">
+      <label languagecode="1033" description="Claim Received" />
+    </steplabels>
+    <steplabels id="{6955fde8-8ff2-461f-87bc-fe25b1f3f8c8}">
+      <label languagecode="1033" description="Claim Processing" />
+    </steplabels>
+    <steplabels id="{e595c0f0-601f-4951-a240-b601e033542f}">
+      <label languagecode="1033" description="Claim Approved?" />
+    </steplabels>
+    <steplabels id="{79f2f9db-0500-4c53-a760-43a94a86db6e}">
+      <label languagecode="1033" description="Payment" />
+    </steplabels>
+    <steplabels id="{8cf5a0a1-6ad1-4281-8aeb-b12d3c9ea27c}">
+      <label languagecode="1033" description="Payment Complete" />
+    </steplabels>
+  </labels>
+</Workflow>

@@ -1,0 +1,14 @@
+<environmentvariabledefinition schemaname="quartech_ChefsNefbaSatisfactionSurveyFormId">
+  <defaultvalue>76c2ea18-ec4a-4c9e-beab-66ec0528d074</defaultvalue>
+  <description default="ID of the NEFBA Satisfaction Survey Form in CHEFS">
+    <label description="ID of the NEFBA Satisfaction Survey Form in CHEFS" languagecode="1033" />
+  </description>
+  <displayname default="Chefs Nefba Satisfaction Survey Form Id">
+    <label description="Chefs Nefba Satisfaction Survey Form Id" languagecode="1033" />
+  </displayname>
+  <introducedversion>1.0.0.75</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <secretstore>0</secretstore>
+  <type>100000000</type>
+</environmentvariabledefinition>

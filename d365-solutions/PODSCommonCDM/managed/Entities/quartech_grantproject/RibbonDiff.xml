@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RibbonDiffXml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <CustomActions />
+  <Templates>
+    <RibbonTemplates Id="Mscrm.Templates"></RibbonTemplates>
+  </Templates>
+  <CommandDefinitions>
+    <CommandDefinition Id="quartech.quartech_grantproject.Command0.Command">
+      <EnableRules />
+      <DisplayRules />
+      <Actions>
+        <JavaScriptFunction FunctionName="PODS.openDialog" Library="$webresource:quartech_form-dialog-util">
+          <CrmParameter Value="PrimaryControl" />
+          <CrmParameter Value="FirstPrimaryItemId" />
+          <CrmParameter Value="SelectedEntityTypeName" />
+          <StringParameter Value="quartech_cancelproject_94cf6" />
+          <StringParameter Value="Cancel Project" />
+        </JavaScriptFunction>
+      </Actions>
+    </CommandDefinition>
+  </CommandDefinitions>
+  <RuleDefinitions>
+    <TabDisplayRules />
+    <DisplayRules />
+    <EnableRules />
+  </RuleDefinitions>
+  <LocLabels />
+</RibbonDiffXml>
