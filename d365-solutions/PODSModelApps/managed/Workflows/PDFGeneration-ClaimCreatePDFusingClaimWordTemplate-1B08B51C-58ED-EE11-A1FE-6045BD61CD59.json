@@ -3,18 +3,14 @@
     "connectionReferences": {
       "shared_sharepointonline_1": {
         "runtimeSource": "embedded",
-        "connection": {
-          "connectionReferenceLogicalName": "quartech_PodsSvcAcctSharePoint"
-        },
+        "connection": {},
         "api": {
           "name": "shared_sharepointonline"
         }
       },
       "shared_wordonlinebusiness_1": {
         "runtimeSource": "embedded",
-        "connection": {
-          "connectionReferenceLogicalName": "quartech_PodsSvcAcctWordOnlineBusiness"
-        },
+        "connection": {},
         "api": {
           "name": "shared_wordonlinebusiness"
         }
@@ -372,6 +368,32 @@
                           }
                         }
                       }
+                    },
+                    "satisfactionSurveySection": {
+                      "type": "object",
+                      "properties": {
+                        "displayName": {
+                          "type": "string"
+                        },
+                        "satisfactionSurveySectionQuestionAnswerList": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "satisfactionSurveySectionQuestion": {
+                                "type": "string"
+                              },
+                              "satisfactionSurveySectionAnswer": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "satisfactionSurveySectionQuestion",
+                              "satisfactionSurveySectionAnswer"
+                            ]
+                          }
+                        }
+                      }
                     }
                   }
                 },
@@ -490,6 +512,7 @@
                       "source": "@parameters('PODS SharePoint Site Address (quartech_PodsSharePointSiteAddress)')",
                       "drive": "@parameters('PODS DocumentLibraryId (quartech_DocumentLibraryId)')",
                       "file": "/PODS Dataverse/Templates/ClaimSubmissionTemplate-WithoutExpenseReportSection.docx",
+                      "dynamicFileSchema/270751411": "@body('Parse_JSON:_Data_To_Populate_The_Claim_Word_Template__')?['supportingDocumentsStep']?['satisfactionSurveySection']?['satisfactionSurveySectionQuestionAnswerList']",
                       "dynamicFileSchema/664209645": "@body('Parse_JSON:_Data_To_Populate_The_Claim_Word_Template__')?['claimName']",
                       "dynamicFileSchema/763581731": "@body('Parse_JSON:_Data_To_Populate_The_Claim_Word_Template__')?['claimStep']?['claimSection']?['claimSectionQuestionAnswerList']",
                       "dynamicFileSchema/1634593149": "@body('Parse_JSON:_Data_To_Populate_The_Claim_Word_Template__')?['claimStep']?['fundingInfoSection']?['fundingInfoSectionQuestionAnswerList']",
@@ -573,6 +596,61 @@
                   "inputs": {
                     "name": "vGeneratedFileContent",
                     "value": "@body('Populate_the_Claim_Submission_word_template_No_Funding_Information_section')"
+                  }
+                }
+              }
+            },
+            "Case:_ClaimSubmissionTemplate-NEFBA-Phase2": {
+              "case": "ClaimSubmissionTemplate-NEFBA-Phase2",
+              "actions": {
+                "Populate_a_Microsoft_Word_template_NEFBA_Ph2": {
+                  "runAfter": {},
+                  "metadata": {
+                    "01WAHUP66T6FXA6DKGSVH2LCZCVSHJD5AZ": "/PODS Dataverse/Templates/ClaimSubmissionTemplate-NEFBA-Phase2.docx",
+                    "operationMetadataId": "96bae358-1c48-4d67-b5d1-610807f9f727"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_wordonlinebusiness_1",
+                      "operationId": "CreateFileItem",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_wordonlinebusiness"
+                    },
+                    "parameters": {
+                      "source": "@parameters('PODS SharePoint Site Address (quartech_PodsSharePointSiteAddress)')",
+                      "drive": "@parameters('PODS DocumentLibraryId (quartech_DocumentLibraryId)')",
+                      "file": "01WAHUP66T6FXA6DKGSVH2LCZCVSHJD5AZ",
+                      "dynamicFileSchema/270751411": "@body('Parse_JSON:_Data_To_Populate_The_Claim_Word_Template__')?['supportingDocumentsStep']?['satisfactionSurveySection']?['satisfactionSurveySectionQuestionAnswerList']",
+                      "dynamicFileSchema/664209645": "@body('Parse_JSON:_Data_To_Populate_The_Claim_Word_Template__')?['claimName']",
+                      "dynamicFileSchema/763581731": "@body('Parse_JSON:_Data_To_Populate_The_Claim_Word_Template__')?['claimStep']?['claimSection']?['claimSectionQuestionAnswerList']",
+                      "dynamicFileSchema/1634593149": "@body('Parse_JSON:_Data_To_Populate_The_Claim_Word_Template__')?['claimStep']?['fundingInfoSection']?['fundingInfoSectionQuestionAnswerList']",
+                      "dynamicFileSchema/1792247891": "@body('Parse_JSON:_Program_SharePoint_Info')?['programName']",
+                      "dynamicFileSchema/-193773371": "@body('Parse_JSON:_Data_To_Populate_The_Claim_Word_Template__')?['submissionDateTime']",
+                      "dynamicFileSchema/-1118748429": "@body('Parse_JSON:_Data_To_Populate_The_Claim_Word_Template__')?['applicantInfoStep']?['applicationInfoSection']?['applicationInfoSectionQuestionAnswerList']",
+                      "dynamicFileSchema/-596864818": "@body('Parse_JSON:_Data_To_Populate_The_Claim_Word_Template__')?['projectResultsStep']?['projectResultsSection']?['projectResultsSectionQuestionAnswerList']",
+                      "dynamicFileSchema/-588008378": "@body('Parse_JSON:_Data_To_Populate_The_Claim_Word_Template__')?['claimStep']?['expenseReportSection']?['expenseReportSectionQuestionAnswerList']",
+                      "dynamicFileSchema/-182055387": "@body('Parse_JSON:_Data_To_Populate_The_Claim_Word_Template__')?['supportingDocumentsStep']?['supportingDocumentsSection']?['supportingDocumentsSectionQuestionAnswerList']",
+                      "dynamicFileSchema/-436517814": "@body('Parse_JSON:_Data_To_Populate_The_Claim_Word_Template__')?['applicantDeclarationStep']?['applicantDeclarationSection']?['applicantDeclarationSectionQuestionAnswerList']"
+                    },
+                    "authentication": {
+                      "type": "Raw",
+                      "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                    }
+                  }
+                },
+                "Set_variable": {
+                  "runAfter": {
+                    "Populate_a_Microsoft_Word_template_NEFBA_Ph2": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "128363d0-c47a-498c-9772-ba17f3c63887"
+                  },
+                  "type": "SetVariable",
+                  "inputs": {
+                    "name": "vGeneratedFileContent",
+                    "value": "@body('Populate_a_Microsoft_Word_template_NEFBA_Ph2')"
                   }
                 }
               }

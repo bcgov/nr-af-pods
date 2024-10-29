@@ -1,19 +1,10 @@
 {
   "properties": {
     "connectionReferences": {
-      "shared_commondataserviceforapps_1": {
+      "shared_commondataserviceforapps_2": {
         "runtimeSource": "embedded",
         "connection": {
-          "connectionReferenceLogicalName": "quartech_sharedcommondataserviceforapps_f90be"
-        },
-        "api": {
-          "name": "shared_commondataserviceforapps"
-        }
-      },
-      "shared_commondataserviceforapps": {
-        "runtimeSource": "embedded",
-        "connection": {
-          "connectionReferenceLogicalName": "quartech_sharedcommondataserviceforapps_f90be"
+          "connectionReferenceLogicalName": "quartech_PodsSvcAcctDataverse"
         },
         "api": {
           "name": "shared_commondataserviceforapps"
@@ -41,7 +32,7 @@
           "type": "OpenApiConnectionWebhook",
           "inputs": {
             "host": {
-              "connectionName": "shared_commondataserviceforapps_1",
+              "connectionName": "shared_commondataserviceforapps_2",
               "operationId": "SubscribeWebhookTrigger",
               "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
             },
@@ -65,7 +56,7 @@
           "type": "OpenApiConnection",
           "inputs": {
             "host": {
-              "connectionName": "shared_commondataserviceforapps_1",
+              "connectionName": "shared_commondataserviceforapps_2",
               "operationId": "GetItem",
               "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
             },
@@ -118,7 +109,7 @@
         },
         "Check_if_Program_Abbreviation_contains_ABPP,_NEFBA,VVTS_or_KTTP": {
           "actions": {
-            "Chek_if_Program_Abbreviation_is_ABPP1_and_TotalClaimsCount_is_0": {
+            "Chek_if_Program_Abbreviation_is_ABPP1_and_TotalActiveClaimsCount_is_0": {
               "actions": {
                 "Add_an_ABPP_S1_Final_Claim_record": {
                   "runAfter": {},
@@ -128,7 +119,7 @@
                   "type": "OpenApiConnection",
                   "inputs": {
                     "host": {
-                      "connectionName": "shared_commondataserviceforapps_1",
+                      "connectionName": "shared_commondataserviceforapps_2",
                       "operationId": "CreateRecord",
                       "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
                     },
@@ -166,7 +157,7 @@
               "runAfter": {},
               "else": {
                 "actions": {
-                  "Check_if_Program_Abbreviation_is_VVTS,NEFBA_or_KTTP_and_TotalClaimsCount_is_0": {
+                  "Check_if_Program_Abbr_is_VVTS,NEFBA_or_KTTP_and_TotalActiveClaimsCount_is_0": {
                     "actions": {
                       "Add_a_NEFBA,_KTTP_or_VVTS_Final_Claim_record": {
                         "runAfter": {},
@@ -176,7 +167,7 @@
                         "type": "OpenApiConnection",
                         "inputs": {
                           "host": {
-                            "connectionName": "shared_commondataserviceforapps_1",
+                            "connectionName": "shared_commondataserviceforapps_2",
                             "operationId": "CreateRecord",
                             "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
                           },
@@ -213,7 +204,7 @@
                     "runAfter": {},
                     "else": {
                       "actions": {
-                        "Check_if_Program_Abbreviation_is_ABPP2_and_TotalClaimsCount_is_0": {
+                        "Check_if_Program_Abbreviation_is_ABPP2_and_TotalActiveClaimsCount_is_0": {
                           "actions": {
                             "Add_an_ABPP_S2_Final_Claim": {
                               "runAfter": {},
@@ -223,7 +214,7 @@
                               "type": "OpenApiConnection",
                               "inputs": {
                                 "host": {
-                                  "connectionName": "shared_commondataserviceforapps",
+                                  "connectionName": "shared_commondataserviceforapps_2",
                                   "operationId": "CreateRecord",
                                   "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
                                 },
@@ -284,7 +275,7 @@
                               },
                               {
                                 "equals": [
-                                  "@variables('TotalClaimsCount')",
+                                  "@variables('TotalActiveClaimsCount')",
                                   0
                                 ]
                               }
@@ -301,7 +292,7 @@
                       "and": [
                         {
                           "equals": [
-                            "@variables('TotalClaimsCount')",
+                            "@variables('TotalActiveClaimsCount')",
                             0
                           ]
                         },
@@ -346,7 +337,7 @@
                   },
                   {
                     "equals": [
-                      "@variables('TotalClaimsCount')",
+                      "@variables('TotalActiveClaimsCount')",
                       0
                     ]
                   }
@@ -422,7 +413,7 @@
           "type": "OpenApiConnection",
           "inputs": {
             "host": {
-              "connectionName": "shared_commondataserviceforapps_1",
+              "connectionName": "shared_commondataserviceforapps_2",
               "operationId": "GetItem",
               "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
             },
@@ -446,7 +437,7 @@
           "type": "OpenApiConnection",
           "inputs": {
             "host": {
-              "connectionName": "shared_commondataserviceforapps_1",
+              "connectionName": "shared_commondataserviceforapps_2",
               "operationId": "GetItem",
               "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
             },
@@ -564,7 +555,7 @@
         },
         "List_existing_Draft_Claims_for_the_Project": {
           "runAfter": {
-            "Initialize_TotalClaimsCount": [
+            "Initialize_TotalActiveClaimsCount": [
               "Succeeded"
             ]
           },
@@ -574,7 +565,7 @@
           "type": "OpenApiConnection",
           "inputs": {
             "host": {
-              "connectionName": "shared_commondataserviceforapps_1",
+              "connectionName": "shared_commondataserviceforapps_2",
               "operationId": "ListRecords",
               "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
             },
@@ -603,9 +594,10 @@
                 "value": "@length(outputs('List_existing_Draft_Claims_for_the_Project')?['body/value'])"
               }
             ]
-          }
+          },
+          "description": "Variable set but NOT in used"
         },
-        "List_all_Claims_for_the_Project": {
+        "List_Active_Claims_for_the_Project": {
           "runAfter": {
             "Initialize_BusinessAddressComposite": [
               "Succeeded"
@@ -617,20 +609,21 @@
           "type": "OpenApiConnection",
           "inputs": {
             "host": {
-              "connectionName": "shared_commondataserviceforapps_1",
+              "connectionName": "shared_commondataserviceforapps_2",
               "operationId": "ListRecords",
               "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
             },
             "parameters": {
               "entityName": "quartech_claims",
-              "$filter": "_quartech_project_value eq @{outputs('Get_Project_info')?['body/quartech_grantprojectid']}"
+              "$filter": "_quartech_project_value eq @{outputs('Get_Project_info')?['body/quartech_grantprojectid']} and statecode eq 0"
             },
             "authentication": "@parameters('$authentication')"
-          }
+          },
+          "description": "ADO#5145 - Change the scope to check only Active Claim statecode = 0"
         },
-        "Initialize_TotalClaimsCount": {
+        "Initialize_TotalActiveClaimsCount": {
           "runAfter": {
-            "List_all_Claims_for_the_Project": [
+            "List_Active_Claims_for_the_Project": [
               "Succeeded"
             ]
           },
@@ -641,9 +634,9 @@
           "inputs": {
             "variables": [
               {
-                "name": "TotalClaimsCount",
+                "name": "TotalActiveClaimsCount",
                 "type": "integer",
-                "value": "@length(outputs('List_all_Claims_for_the_Project')?['body/value'])"
+                "value": "@length(outputs('List_Active_Claims_for_the_Project')?['body/value'])"
               }
             ]
           }

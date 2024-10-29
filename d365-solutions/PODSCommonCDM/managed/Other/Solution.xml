@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ImportExportXml version="9.2.24101.166" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" OrganizationVersion="9.2.24101.166" OrganizationSchemaType="Full" CRMServerServiceabilityVersion="9.2.24101.00166">
+<ImportExportXml version="9.2.24102.154" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" OrganizationVersion="9.2.24102.154" OrganizationSchemaType="Full" CRMServerServiceabilityVersion="9.2.24102.00154">
   <SolutionManifest>
     <UniqueName>PODSCommonCDM</UniqueName>
     <LocalizedNames>
@@ -1121,7 +1121,7 @@
       </MissingDependency>
       <MissingDependency>
         <Required type="60" displayName="In Context Form" parentDisplayName="Contact" solution="msdynce_DealManager (9.0.240905.10002)" id="{4c9c89b9-f909-4b34-8f63-b87d7ff2f0c4}">
-          <package>msdynce_SalesInsightsAnchor (9.0.24095.10007)</package>
+          <package>msdynce_SalesInsightsAnchor (9.0.24102.10004)</package>
         </Required>
         <Dependent type="80" schemaName="quartech_PodsStaffPortal" displayName="PODS Staff Portal" />
       </MissingDependency>
@@ -1233,7 +1233,7 @@
       </MissingDependency>
       <MissingDependency>
         <Required type="60" displayName="In Context Form" parentDisplayName="Applicant" solution="msdynce_DealManager (9.0.240905.10002)" id="{face3aa6-99c4-4b7e-af07-55f121cdca86}">
-          <package>msdynce_SalesInsightsAnchor (9.0.24095.10007)</package>
+          <package>msdynce_SalesInsightsAnchor (9.0.24102.10004)</package>
         </Required>
         <Dependent type="80" schemaName="quartech_PodsStaffPortal" displayName="PODS Staff Portal" />
       </MissingDependency>
@@ -1263,7 +1263,7 @@
       </MissingDependency>
       <MissingDependency>
         <Required type="61" schemaName="msdyn_/FollowAttachments/Scripts/Email_Engagement_Attachments.js" displayName="msdyn_/FollowAttachments/Scripts/Email_Engagement_Attachments.js" solution="EmailEngagement (9.0.1.7018)">
-          <package>msdynce_SalesInsightsAnchor (9.0.24095.10007)</package>
+          <package>msdynce_SalesInsightsAnchor (9.0.24102.10004)</package>
         </Required>
         <Dependent type="60" displayName="Email" parentDisplayName="Email" id="{0d1e47ff-12b2-4f53-9090-bee951b98cb4}" />
       </MissingDependency>
@@ -1284,8 +1284,8 @@
         <Dependent type="60" displayName="Information" parentDisplayName="Contact" id="{894cc46a-b0cb-4ab0-8bf6-200544e46a2d}" />
       </MissingDependency>
       <MissingDependency>
-        <Required type="61" schemaName="msdyn_/Scripts/WhoKnowsWhomLoader.js" displayName="msdyn_/Scripts/WhoKnowsWhomLoader.js" solution="msdyn_connectiongraph (9.3.24095.10001)">
-          <package>msdynce_SalesInsightsAnchor (9.0.24095.10007)</package>
+        <Required type="61" schemaName="msdyn_/Scripts/WhoKnowsWhomLoader.js" displayName="msdyn_/Scripts/WhoKnowsWhomLoader.js" solution="msdyn_connectiongraph (9.3.24102.10002)">
+          <package>msdynce_SalesInsightsAnchor (9.0.24102.10004)</package>
         </Required>
         <Dependent type="60" displayName="Contact" parentDisplayName="Contact" id="{1fed44d1-ae68-4a41-bd2b-f13acac4acfa}" />
       </MissingDependency>
@@ -1297,26 +1297,26 @@
       </MissingDependency>
       <MissingDependency>
         <Required type="61" schemaName="msdyn_CopilotEmailAssist.js" displayName="msdyn_CopilotEmailAssist.js" solution="msdyn_CSIntelligence (9.2.24095.1028)">
-          <package>msdyn_ServiceExtendedAnchor (9.0.24095.1004)</package>
+          <package>msdyn_ServiceExtendedAnchor (9.0.24102.1015)</package>
           <package>msdyn_ServiceIntelligenceAnchor (9.2.24095.1028)</package>
         </Required>
         <Dependent type="60" displayName="Email" parentDisplayName="Email" id="{0d1e47ff-12b2-4f53-9090-bee951b98cb4}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="61" schemaName="msdyn_SalesCopilot/Copilot.Library.js" displayName="msdyn_SalesCopilot/Copilot.Library.js" solution="msdyn_SalesCopilot (9.1.24095.10003)">
-          <package>msdynce_SalesAnchor (9.0.24095.10003)</package>
+          <package>msdynce_SalesAnchor (9.0.24102.10001)</package>
         </Required>
         <Dependent type="60" displayName="Email" parentDisplayName="Email" id="{0d1e47ff-12b2-4f53-9090-bee951b98cb4}" />
       </MissingDependency>
       <MissingDependency>
-        <Required type="61" schemaName="msdyn_SalesOmniChannel/SalesPhoneNumber.Library.js" displayName="msdyn_SalesOmniChannel/SalesPhoneNumber.Library.js" solution="msdyn_SalesOmniChannel (9.1.24095.10005)">
-          <package>msdyn_AcceleratedSalesAnchor (9.1.24095.10005)</package>
+        <Required type="61" schemaName="msdyn_SalesOmniChannel/SalesPhoneNumber.Library.js" displayName="msdyn_SalesOmniChannel/SalesPhoneNumber.Library.js" solution="msdyn_SalesOmniChannel (9.1.24102.10002)">
+          <package>msdyn_AcceleratedSalesAnchor (9.1.24102.10002)</package>
         </Required>
         <Dependent type="60" displayName="Contact" parentDisplayName="Contact" id="{1fed44d1-ae68-4a41-bd2b-f13acac4acfa}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="61" schemaName="msdyn_talkingpointsloader.js" displayName="msdyn_talkingpointsloader.js" solution="msdynce_Talkingpoints (9.1.0.59)">
-          <package>msdynce_SalesInsightsAnchor (9.0.24095.10007)</package>
+          <package>msdynce_SalesInsightsAnchor (9.0.24102.10004)</package>
         </Required>
         <Dependent type="60" displayName="Contact" parentDisplayName="Contact" id="{1fed44d1-ae68-4a41-bd2b-f13acac4acfa}" />
       </MissingDependency>
@@ -1540,7 +1540,7 @@
       </MissingDependency>
       <MissingDependency>
         <Required type="61" schemaName="Sales/Contact/Contact_main_system_library.js" displayName="Sales/Contact/Contact_main_system_library.js" solution="msdynce_SalesPatch201904 (9.0.1912.1007)">
-          <package>msdynce_SalesAnchor (9.0.24095.10003)</package>
+          <package>msdynce_SalesAnchor (9.0.24102.10001)</package>
         </Required>
         <Dependent type="60" displayName="Contact Quick Create" parentDisplayName="Contact" id="{661157fe-2fc9-4eaa-835f-5bfa2f7b64f7}" />
       </MissingDependency>
@@ -1555,20 +1555,20 @@
         <Dependent type="60" displayName="Phone Call" parentDisplayName="Phone Call" id="{a91390a5-99bb-4d10-9eee-3a5c87f841f1}" />
       </MissingDependency>
       <MissingDependency>
-        <Required type="66" schemaName="MscrmControls.FieldControls.ToggleControl" displayName="MscrmControls.FieldControls.ToggleControl" solution="BaseCustomControlsCore (9.0.2409.5016)">
-          <package>BaseCustomControlsCore (9.0.2409.5016)</package>
+        <Required type="66" schemaName="MscrmControls.FieldControls.ToggleControl" displayName="MscrmControls.FieldControls.ToggleControl" solution="BaseCustomControlsCore (9.0.2410.2013)">
+          <package>BaseCustomControlsCore (9.0.2410.2013)</package>
         </Required>
         <Dependent type="60" displayName="Applicant Portal" parentDisplayName="Demographic Info" id="{16c13625-7d26-ee11-9965-000d3af3ac95}" />
       </MissingDependency>
       <MissingDependency>
-        <Required type="66" schemaName="MscrmControls.InputMask.InputMaskControl" displayName="MscrmControls.InputMask.InputMaskControl" solution="CustomControlsCore (9.2.24101.00166)">
-          <package>CustomControlsCore (9.2.24101.00166)</package>
+        <Required type="66" schemaName="MscrmControls.InputMask.InputMaskControl" displayName="MscrmControls.InputMask.InputMaskControl" solution="CustomControlsCore (9.2.24102.00154)">
+          <package>CustomControlsCore (9.2.24102.00154)</package>
         </Required>
         <Dependent type="60" displayName="Information" parentDisplayName="Financial Coding Block" id="{ad6c5e09-18fc-4a3a-bca6-fb053306ee0d}" />
       </MissingDependency>
       <MissingDependency>
-        <Required type="66" schemaName="MscrmControls.RichTextEditor.RichTextEditorControl" displayName="MscrmControls.RichTextEditor.RichTextEditorControl" solution="msdyn_RichTextEditor (1.0.0.3972)">
-          <package>msdyn_TimelineExtended (1.0.0.1408)</package>
+        <Required type="66" schemaName="MscrmControls.RichTextEditor.RichTextEditorControl" displayName="MscrmControls.RichTextEditor.RichTextEditorControl" solution="msdyn_RichTextEditor (1.0.0.4082)">
+          <package>msdyn_TimelineExtended (1.0.0.1518)</package>
           <package>msdynce_EnableUCIByDefault (9.0.1.1996)</package>
         </Required>
         <Dependent type="60" displayName="Email" parentDisplayName="Email" id="{0d1e47ff-12b2-4f53-9090-bee951b98cb4}" />

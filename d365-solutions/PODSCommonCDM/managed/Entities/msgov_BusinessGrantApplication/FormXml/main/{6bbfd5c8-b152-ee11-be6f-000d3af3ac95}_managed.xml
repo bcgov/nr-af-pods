@@ -140,6 +140,22 @@
                       </cell>
                     </row>
                     <row>
+                      <cell id="{cc3f54d6-a0f8-41e5-a4c5-4f755ff1c396}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_designatedregistrantname" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="quartech_designatedregistrantname" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{ddcf73ec-2ddb-4cac-9adb-bd9eba4d72b3}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_designatedregistrantphonenumber" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="quartech_designatedregistrantphonenumber" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
                       <cell id="{fd1c722c-8dab-4982-b441-145009a677d7}" locklevel="0" colspan="1" rowspan="1">
                         <labels>
                           <label description="" languagecode="1033" />
@@ -652,6 +668,14 @@
                     <label description="Eligibility" languagecode="1033" />
                   </labels>
                   <rows>
+                    <row>
+                      <cell id="{be270110-660d-45d0-a224-be3d3298e04c}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="Does your veterinary practice offer food animal services?" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_vetpracticeaccreditedbycvbc" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="quartech_vetpracticeaccreditedbycvbc" disabled="false" />
+                      </cell>
+                    </row>
                     <row>
                       <cell id="{ca0ba674-3170-e435-a130-20e8d3edc961}" showlabel="true" locklevel="0">
                         <labels>

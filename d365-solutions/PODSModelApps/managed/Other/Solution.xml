@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ImportExportXml version="9.2.24101.166" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" OrganizationVersion="9.2.24101.166" OrganizationSchemaType="Full" CRMServerServiceabilityVersion="9.2.24101.00166">
+<ImportExportXml version="9.2.24102.154" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" OrganizationVersion="9.2.24102.154" OrganizationSchemaType="Full" CRMServerServiceabilityVersion="9.2.24102.00154">
   <SolutionManifest>
     <UniqueName>PODSModelApps</UniqueName>
     <LocalizedNames>
@@ -732,7 +732,7 @@
       </MissingDependency>
       <MissingDependency>
         <Required type="2" schemaName="defaultpricelevelid" displayName="Price List" parentSchemaName="account" parentDisplayName="Applicant" solution="msdynce_ProductManagement (9.0.4.0066)">
-          <package>msdynce_ProductManagementAnchor (9.0.24095.10002)</package>
+          <package>msdynce_ProductManagementAnchor (9.0.24102.10007)</package>
         </Required>
         <Dependent type="60" displayName="Information" parentDisplayName="Applicant" id="{b053a39a-041a-4356-acef-ddf00182762b}" />
       </MissingDependency>
@@ -1354,7 +1354,7 @@
       </MissingDependency>
       <MissingDependency>
         <Required type="2" schemaName="originatingleadid" displayName="Originating Lead" parentSchemaName="account" parentDisplayName="Applicant" solution="msdynce_LeadManagement (9.0.4.0066)">
-          <package>msdynce_LeadManagementAnchor (9.0.24095.10001)</package>
+          <package>msdynce_LeadManagementAnchor (9.0.24102.10001)</package>
         </Required>
         <Dependent type="60" displayName="Information" parentDisplayName="Applicant" id="{b053a39a-041a-4356-acef-ddf00182762b}" />
       </MissingDependency>
@@ -3204,7 +3204,7 @@
       </MissingDependency>
       <MissingDependency>
         <Required type="2" schemaName="territoryid" displayName="Territory" parentSchemaName="account" parentDisplayName="Applicant" solution="msdynce_Sales (9.0.4.0076)">
-          <package>msdynce_SalesAnchor (9.0.24095.10003)</package>
+          <package>msdynce_SalesAnchor (9.0.24102.10001)</package>
         </Required>
         <Dependent type="60" displayName="Information" parentDisplayName="Applicant" id="{b053a39a-041a-4356-acef-ddf00182762b}" />
       </MissingDependency>
@@ -3420,7 +3420,7 @@
       </MissingDependency>
       <MissingDependency>
         <Required type="60" displayName="In Context Form" parentDisplayName="Contact" solution="msdynce_DealManager (9.0.240905.10002)" id="{4c9c89b9-f909-4b34-8f63-b87d7ff2f0c4}">
-          <package>msdynce_SalesInsightsAnchor (9.0.24095.10007)</package>
+          <package>msdynce_SalesInsightsAnchor (9.0.24102.10004)</package>
         </Required>
         <Dependent type="80" schemaName="quartech_PodsStaffPortal" displayName="PODS Staff Portal" />
       </MissingDependency>
@@ -3553,7 +3553,7 @@
       </MissingDependency>
       <MissingDependency>
         <Required type="60" displayName="In Context Form" parentDisplayName="Applicant" solution="msdynce_DealManager (9.0.240905.10002)" id="{face3aa6-99c4-4b7e-af07-55f121cdca86}">
-          <package>msdynce_SalesInsightsAnchor (9.0.24095.10007)</package>
+          <package>msdynce_SalesInsightsAnchor (9.0.24102.10004)</package>
         </Required>
         <Dependent type="80" schemaName="quartech_PodsStaffPortal" displayName="PODS Staff Portal" />
       </MissingDependency>
@@ -3598,8 +3598,8 @@
         <Dependent type="60" displayName="Information" parentDisplayName="Applicant" id="{b053a39a-041a-4356-acef-ddf00182762b}" />
       </MissingDependency>
       <MissingDependency>
-        <Required type="61" schemaName="msdyn_SalesOmniChannel/SalesPhoneNumber.Library.js" displayName="msdyn_SalesOmniChannel/SalesPhoneNumber.Library.js" solution="msdyn_SalesOmniChannel (9.1.24095.10005)">
-          <package>msdyn_AcceleratedSalesAnchor (9.1.24095.10005)</package>
+        <Required type="61" schemaName="msdyn_SalesOmniChannel/SalesPhoneNumber.Library.js" displayName="msdyn_SalesOmniChannel/SalesPhoneNumber.Library.js" solution="msdyn_SalesOmniChannel (9.1.24102.10002)">
+          <package>msdyn_AcceleratedSalesAnchor (9.1.24102.10002)</package>
         </Required>
         <Dependent type="60" displayName="Applicant" parentDisplayName="Applicant" id="{8448b78f-8f42-454e-8e2a-f8196b0419af}" />
       </MissingDependency>
@@ -3650,8 +3650,8 @@
         <Dependent type="60" displayName="Claim Information" parentDisplayName="Claim" id="{7ae217cf-9069-43b8-abeb-ba171f0cbd81}" />
       </MissingDependency>
       <MissingDependency>
-        <Required type="66" schemaName="MscrmControls.InputMask.InputMaskControl" displayName="MscrmControls.InputMask.InputMaskControl" solution="CustomControlsCore (9.2.24101.00166)">
-          <package>CustomControlsCore (9.2.24101.00166)</package>
+        <Required type="66" schemaName="MscrmControls.InputMask.InputMaskControl" displayName="MscrmControls.InputMask.InputMaskControl" solution="CustomControlsCore (9.2.24102.00154)">
+          <package>CustomControlsCore (9.2.24102.00154)</package>
         </Required>
         <Dependent type="60" displayName="Applicant" parentDisplayName="Applicant" id="{8448b78f-8f42-454e-8e2a-f8196b0419af}" />
       </MissingDependency>

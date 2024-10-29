@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ImportExportXml version="9.2.24101.166" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" OrganizationVersion="9.2.24101.166" OrganizationSchemaType="Full" CRMServerServiceabilityVersion="9.2.24101.00166">
+<ImportExportXml version="9.2.24102.154" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" OrganizationVersion="9.2.24102.154" OrganizationSchemaType="Full" CRMServerServiceabilityVersion="9.2.24102.00154">
   <SolutionManifest>
     <UniqueName>PODSPowerPagesPortal</UniqueName>
     <LocalizedNames>
@@ -728,8 +728,8 @@
         <Dependent type="1" schemaName="msgov_program" displayName="Program" />
       </MissingDependency>
       <MissingDependency>
-        <Required type="66" schemaName="MscrmControls.FieldControls.ToggleControl" displayName="MscrmControls.FieldControls.ToggleControl" solution="BaseCustomControlsCore (9.0.2409.5016)">
-          <package>BaseCustomControlsCore (9.0.2409.5016)</package>
+        <Required type="66" schemaName="MscrmControls.FieldControls.ToggleControl" displayName="MscrmControls.FieldControls.ToggleControl" solution="BaseCustomControlsCore (9.0.2410.2013)">
+          <package>BaseCustomControlsCore (9.0.2410.2013)</package>
         </Required>
         <Dependent type="60" displayName="Applicant Portal" parentDisplayName="Demographic Info" id="{16c13625-7d26-ee11-9965-000d3af3ac95}" />
       </MissingDependency>

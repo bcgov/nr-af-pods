@@ -26,6 +26,6 @@
   <IntroducedVersion>1.0</IntroducedVersion>
   <CdsDependencies>{"cdsdependencies":[{"logicalname":"quartech_grantproject","componenttype":1},{"logicalname":"msgov_businessgrantapplication","componenttype":1},{"logicalname":"quartech_claim","componenttype":1}]}</CdsDependencies>
   <IsCustomizable>1</IsCustomizable>
-  <BackgroundImageUri>/CanvasApps/quartech_podsstaffportaldefaultcommandlibrary45295_BackgroundImageUri</BackgroundImageUri>
-  <DocumentUri>/CanvasApps/quartech_podsstaffportaldefaultcommandlibrary06197_DocumentUri.msapp</DocumentUri>
+  <BackgroundImageUri>/CanvasApps/quartech_podsstaffportaldefaultcommandlibrary37015_BackgroundImageUri</BackgroundImageUri>
+  <DocumentUri>/CanvasApps/quartech_podsstaffportaldefaultcommandlibrary72199_DocumentUri.msapp</DocumentUri>
 </CanvasApp>
