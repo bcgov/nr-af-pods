@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "NEFBA", "NEFBA Phase 1"],
-  "version": "1.0.8",
+  "version": "1.0.9",
   "name": "New Entrant Farm Business Accelerator",
   "abbreviation": "NEFBA",
   "hiddenSteps": "tab_Deliverables_Budget",
@@ -226,6 +226,12 @@
           "bold": true,
           "readOnly": true,
           "errorMessage": "Please complete the required survey, this field will autofill."
+        },
+        {
+          "name": "quartech_chefssubmissionid",
+          "label": "CHEFS Submission Id",
+          "hidden": true,
+          "doNotBlank": true
         }
       ]
     },

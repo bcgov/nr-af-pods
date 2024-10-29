@@ -1,6 +1,6 @@
 {
   "tags": ["Claim", "NEFBA"],
-  "version": "1.0.5",
+  "version": "1.0.6",
   "name": "New Entrant Farm Business Accelerator",
   "abbreviation": "NEFBA",
   "hiddenSteps": "",
@@ -134,6 +134,11 @@
           "required": true,
           "tooltipText": "This number is automatically generated when the survey has been submitted",
           "label": "Satisfaction Survey ID number"
+        },
+        {
+          "name": "quartech_satisfactionsurveychefssubmissionid",
+          "hidden": true,
+          "doNotBlank": true
         }
       ]
     }
