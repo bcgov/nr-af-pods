@@ -1,8 +1,7 @@
 {
   "tags": ["Claim", "KTTP", "KTTP-SMEA", "KTTP-StreamTwo", "KTTP-Stream3"],
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "Claim form field config used for all KTTP streams",
-  "hiddenSteps": "",
   "sections": [
     {
       "name": "ApplicantInfoStep",

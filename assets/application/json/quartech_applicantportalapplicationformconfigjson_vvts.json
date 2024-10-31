@@ -1,9 +1,13 @@
 {
-  "version": "1.0.0",
+  "version": "1.0.1",
   "tags": ["Application", "StaffPortal", "VVTS"],
   "name": "Veterinary and Veterinary Technologists Locums Working in BC Food Animal Practices Pilot Program",
   "abbreviation": "VLB",
   "programId": "49dbba6b-21dc-ee11-904d-6045bd5f4613",
+  "hiddenSteps": [
+    { "name": "tab_Deliverables_Budget" },
+    { "displayName": "Documents" }
+  ],
   "sections": [
     {
       "name": "ApplicantInfoStep",
@@ -196,7 +200,7 @@
     },
     {
       "name": "EligibilityStep",
-      "displayName": "Availability",
+      "displayName": "Practice",
       "fields": [
         {
           "name": "quartech_vlb_vetservices",
@@ -289,7 +293,7 @@
     },
     {
       "name": "ProjectStep",
-      "displayName": "Scope of Practice",
+      "displayName": "Student Candidates",
       "fields": [
         {
           "name": "quartech_vlb_cap_beefcattleherdhealth",

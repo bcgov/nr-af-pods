@@ -1,10 +1,10 @@
 {
   "tags": ["Application", "StaffPortal", "KTTP-SMEA", "KTTP1"],
-  "version": "1.6.0",
+  "version": "1.6.1",
   "name": "KTTP - Subject Matter Expert Activities",
   "abbreviation": "KTTP-SMEA",
   "programId": "25493093-9d2b-ee11-bdf4-000d3af3ac95",
-  "hiddenSteps": "tab_eligibility",
+  "hiddenSteps": [{ "name": "tab_eligibility" }],
   "sections": [
     {
       "name": "ApplicantInfoStep",
