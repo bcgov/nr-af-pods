@@ -1,9 +1,8 @@
 {
   "tags": ["Claim", "NEFBA"],
-  "version": "1.0.6",
+  "version": "1.0.7",
   "name": "New Entrant Farm Business Accelerator",
   "abbreviation": "NEFBA",
-  "hiddenSteps": "",
   "sections": [
     {
       "name": "ApplicantInfoStep",

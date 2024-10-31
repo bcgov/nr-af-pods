@@ -9,39 +9,39 @@ POWERPOD.tabs = {
   getTabElement,
 };
 
-export function hideTabs(hiddenTabsNames) {
-  if (!hiddenTabsNames || !hiddenTabsNames.length) {
+export function hideTabs(hiddenTabs) {
+  if (!hiddenTabs || !hiddenTabs.length) {
     logger.warn({
       fn: hideTabs,
       message: 'Hide tabs called with empty data',
     });
   }
 
-  let tabsToHide = [];
-
-  if (hiddenTabsNames) {
-    tabsToHide = hiddenTabsNames.split(',');
+  if (hiddenTabs && !Array.isArray(hiddenTabs)) {
+    logger.error({
+      fn: hideTabs,
+      message: `check syntax for hiddenSteps in JSON`,
+      data: { hiddenTabs },
+    });
+    return;
   }
 
   logger.info({
     fn: hideTabs,
     message: 'Attempting to hide tabs...',
     data: {
-      hiddenTabsNames,
-      tabsToHide,
+      hiddenTabs,
     },
   });
 
-  tabsToHide.forEach((tabName) => {
-    if (tabName) {
-      const tabElement = getTabElement({ name: tabName });
-      if (tabElement && tabElement.style) {
-        tabElement.style.display = 'none';
-        logger.info({
-          fn: hideTabs,
-          message: `Successfully hid tab for given tabName: ${tabName}`,
-        });
-      }
+  hiddenTabs.forEach(({ name, displayName }) => {
+    const tabElement = getTabElement({ name, displayName });
+    if (tabElement && tabElement.style) {
+      tabElement.style.display = 'none';
+      logger.info({
+        fn: hideTabs,
+        message: `Successfully hid tab for given name: ${name}, displayName: ${displayName}`,
+      });
     }
   });
 }
