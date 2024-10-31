@@ -1,0 +1,457 @@
+{
+  "version": "1.0.0",
+  "tags": ["Application", "StaffPortal", "VVTS"],
+  "name": "Veterinary and Veterinary Technologists Locums Working in BC Food Animal Practices Pilot Program",
+  "abbreviation": "VLB",
+  "programId": "49dbba6b-21dc-ee11-904d-6045bd5f4613",
+  "sections": [
+    {
+      "name": "ApplicantInfoStep",
+      "fields": [
+        {
+          "name": "quartech_nocragstnumber",
+          "label": "Do you have a Canada Revenue Agency (CRA) Business Number?",
+          "elementType": "Checkbox",
+          "customComponent": {
+            "customElementTag": "quartech-checkbox",
+            "customEventHandler": "hasCraNumberCheckboxEventHandler",
+            "customEventName": "onChangeCheckbox",
+            "mappedValueKey": "checked",
+            "customInitValueFn": "initCraNumberCheckbox"
+          },
+          "relocateField": {
+            "originFieldName": "quartech_nocragstnumber",
+            "destinationFieldName": "quartech_legalbusinessororganizationname",
+            "relativePosition": "above"
+          },
+          "onChangeHandler": "setBusinessOrPersonalStateForVLB"
+        },
+        {
+          "name": "quartech_legalbusinessororganizationname",
+          "tooltipText": "For a partnership, it is the names of the partners or the name the business was registered under with provincial or territorial authorities (e.g., farm name or if none provided use 'First name Last name'). For a corporation, it is the name that appears on the certificate of incorporation.",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_nocragstnumber",
+            "selectedValue": false,
+            "techComment": "Visible & Required ONLY if 'I do not have a Canada Revenue Agency (CRA) Business Number' below is UN-CHECKED.",
+            "valueIfHidden": {
+              "type": "combineFields",
+              "fieldNames": [
+                "quartech_legalnamefirst",
+                "quartech_legalnamelast"
+              ]
+            },
+            "valueIfVisible": {
+              "type": "function",
+              "value": "generateVisibleValueForBusinessNameVLB"
+            }
+          }
+        },
+        {
+          "name": "quartech_reasonwhynocraorgstnumber",
+          "hidden": true
+        },
+        {
+          "name": "quartech_doingbusinessas",
+          "label": "Doing Business As (if different from Legal Business/Organization Name)",
+          "hidden": true
+        },
+        {
+          "name": "quartech_legalnamefirst",
+          "label": "First Name",
+          "required": true,
+          "relocateField": {
+            "originFieldName": "quartech_legalnamefirst",
+            "destinationFieldName": "quartech_businesssuitenumberoptional",
+            "relativePosition": "above"
+          },
+          "onChangeHandler": "populateBusinessNameOnChangeFirstOrLastNameVLB"
+        },
+        {
+          "name": "quartech_legalnamelast",
+          "required": true,
+          "relocateField": {
+            "originFieldName": "quartech_legalnamelast",
+            "destinationFieldName": "quartech_businesssuitenumberoptional",
+            "relativePosition": "above"
+          },
+          "onChangeHandler": "populateBusinessNameOnChangeFirstOrLastNameVLB"
+        },
+        {
+          "name": "quartech_businesssuitenumberoptional",
+          "label": "Suite Number (optional)",
+          "visible": true
+        },
+        {
+          "name": "quartech_businessstreetnumber",
+          "label": "Street Number",
+          "required": true,
+          "validation": {
+            "intervalBased": true
+          }
+        },
+        {
+          "name": "quartech_businessstreet",
+          "label": "Street",
+          "required": true,
+          "validation": {
+            "intervalBased": true
+          }
+        },
+        {
+          "name": "quartech_businesscity",
+          "label": "City",
+          "required": true,
+          "validation": {
+            "intervalBased": true
+          },
+          "onChangeHandler": "populatePhoneNumberEmailAndCityOnChangeVLB"
+        },
+        {
+          "name": "quartech_businessprovinceterritory",
+          "label": "Province/Territory",
+          "required": true,
+          "validation": {
+            "intervalBased": true
+          }
+        },
+        {
+          "name": "quartech_businesspostalcode",
+          "label": "Postal Code",
+          "format": "postalCode",
+          "required": true,
+          "validation": {
+            "intervalBased": true
+          }
+        },
+        {
+          "name": "quartech_businessphonenumber",
+          "label": "Phone Number",
+          "format": "phoneNumber",
+          "required": true,
+          "validation": {
+            "type": "length",
+            "value": 14,
+            "comparison": "equalTo",
+            "postfix": "digits",
+            "overrideDisplayValue": 10
+          }
+        },
+        {
+          "name": "quartech_businessemailaddress",
+          "label": "Email Address",
+          "format": "email",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_veterinarianrole",
+          "label": "I am a",
+          "elementType": "DropdownSelect",
+          "required": true,
+          "relocateField": {
+            "originFieldName": "quartech_vlb_veterinarianrole",
+            "destinationFieldName": "quartech_email",
+            "relativePosition": "below"
+          }
+        },
+        {
+          "name": "quartech_vlb_professionallicensenumber",
+          "label": "What is your professional license number?",
+          "required": true,
+          "relocateField": {
+            "originFieldName": "quartech_vlb_professionallicensenumber",
+            "destinationFieldName": "quartech_vlb_veterinarianrole",
+            "relativePosition": "below"
+          }
+        },
+        {
+          "name": "quartech_positionorjobtitle",
+          "label": "Position or Job Title",
+          "hidden": true
+        },
+        {
+          "name": "quartech_city",
+          "hidden": true
+        },
+        {
+          "name": "quartech_telephone",
+          "format": "phoneNumber",
+          "required": true,
+          "validation": {
+            "type": "length",
+            "value": 14,
+            "comparison": "equalTo",
+            "postfix": "digits",
+            "overrideDisplayValue": 10
+          },
+          "onChangeHandler": "populatePhoneNumberEmailAndCityOnChangeVLB"
+        },
+        {
+          "name": "quartech_email",
+          "format": "email",
+          "required": true,
+          "onChangeHandler": "populatePhoneNumberEmailAndCityOnChangeVLB"
+        }
+      ]
+    },
+    {
+      "name": "EligibilityStep",
+      "displayName": "Availability",
+      "fields": [
+        {
+          "name": "quartech_vlb_vetservices",
+          "label": "I am willing to provide",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_servicecoverageinbc",
+          "label": "I am willing to work in the following areas of the province (choose all that apply)",
+          "required": true,
+          "elementType": "MultiOptionSet",
+          "disableSingleLine": false,
+          "visibleIf": {
+            "fieldName": "quartech_vlb_vetservices",
+            "selectedValueIn": [255550000, 255550001],
+            "techComment": "In-person only OR Both in-person and telemedicine services"
+          }
+        },
+        {
+          "name": "quartech_validbcdriverslicense",
+          "label": "I have a valid BC drivers license",
+          "required": true,
+          "elementType": "DropdownSelect",
+          "visibleIf": {
+            "fieldName": "quartech_vlb_vetservices",
+            "selectedValueIn": [255550000, 255550001],
+            "techComment": "In-person only OR Both in-person and telemedicine services"
+          }
+        },
+        {
+          "name": "quartech_workingdrivinginremotelocations",
+          "label": "I am comfortable working and driving in remote locations",
+          "required": true,
+          "elementType": "DropdownSelect",
+          "visibleIf": {
+            "fieldName": "quartech_vlb_vetservices",
+            "selectedValueIn": [255550000, 255550001],
+            "techComment": "In-person only OR Both in-person and telemedicine services"
+          }
+        },
+        {
+          "name": "quartech_workingdrivinginwinterweather",
+          "label": "I am comfortable working and driving in winter weather",
+          "required": true,
+          "elementType": "DropdownSelect",
+          "visibleIf": {
+            "fieldName": "quartech_vlb_vetservices",
+            "selectedValueIn": [255550000, 255550001],
+            "techComment": "In-person only OR Both in-person and telemedicine services"
+          }
+        },
+        {
+          "name": "quartech_numberofdaysofservice",
+          "label": "I am willing to provide approximately the following number of days of service per year",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_availability_septodec",
+          "label": "September to December 2024",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_availability_jantomar",
+          "label": "January to March 2025",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_availability_aprtojun",
+          "label": "April to Jun 2025",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_availability_jultosep",
+          "label": "July to September 2025",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_availability_octtodec",
+          "label": "October to December 2025",
+          "elementType": "DropdownSelect",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "ProjectStep",
+      "displayName": "Scope of Practice",
+      "fields": [
+        {
+          "name": "quartech_vlb_cap_beefcattleherdhealth",
+          "label": "Beef cattle herd health (vaccination protocols, pregnancy and semen testing)",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_cap_beefcattlesickanimalcare",
+          "label": "Beef cattle sick animal care (e.g. diagnosis, treatment plans, post mortems)",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_cap_beefcattleemergencycare",
+          "label": "Beef cattle emergency care (e.g. calving, C-section, prolapses)",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_cap_dairycattleherdhealth",
+          "label": "Dairy cattle herd health (e.g. pregnancy testing)",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_cap_dairycattlesickanimalcare",
+          "label": "Dairy cattle sick animal care (e.g. make diagnosis, treatment plans)",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_cap_dairycattleemergencycare",
+          "label": "Dairy cattle emergency care (e.g. calving, C-section, DA’s)",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_cap_smallruminantservices",
+          "label": "Small ruminant services",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_cap_commercialswineservices",
+          "label": "Commercial swine services",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_cap_smallholderswineservices",
+          "label": "Smallholder swine services",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_cap_commercialpoultryservices",
+          "label": "Commercial poultry services",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_cap_smallholderpoultryservices",
+          "label": "Smallholder poultry services",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_cap_equinepreventativecare",
+          "label": "Equine preventative care (e.g. vaccines)",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_cap_equinedentistry",
+          "label": "Equine dentistry",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_cap_equineurgentcare",
+          "label": "Equine urgent care\n(e.g. colics, lacerations, foot abscesses, laminitis, euthanasia)",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_cap_companionanimalpreventativecare",
+          "label": "Companion animal preventative care",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_cap_companionanimalspayandneuter",
+          "label": "Companion animal spay and neuter",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_cap_companionanimaldentistry",
+          "label": "Companion animal dentistry",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_cap_companionanimalsickanimalcare",
+          "label": "Companion animal sick animal care",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_cap_companionanimalemergencysurgery",
+          "label": "Companion animal emergency surgery (e.g. GDV, C-section, enterotomy, lacerations, enucleations)",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_oncallafterhoursservices",
+          "label": "Willingness to provide on call/after hours services during locums",
+          "elementType": "DropdownSelect",
+          "required": true
+        },
+        {
+          "name": "quartech_vlb_otherinformationforpracticestoknow",
+          "label": "Other information that you would like practices to know"
+        },
+        {
+          "name": "quartech_inordertocontinuouslyimprovecommunications",
+          "hidden": true,
+          "techComment": "This is NEEDED to override default global json config, please leave this here."
+        }
+      ]
+    },
+    {
+      "name": "DocumentsStep",
+      "fields": [
+        {
+          "name": "quartech_vlb_proofofvetlicense",
+          "label": "Proof of license/registration with either College of Veterinarians of BC (CVBC) or BC Veterinary Technologists Association (BCVTA)",
+          "elementType": "FileInput",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "DemographicInfoStep",
+      "fields": [
+        {
+          "name": "quartech_chefsid",
+          "required": true,
+          "tooltipText": "This number is automatically generated when the survey has been submitted",
+          "label": "Demographic Data Collection Survey ID number",
+          "bold": true,
+          "readOnly": true,
+          "errorMessage": "Please complete the required survey, this field will autofill."
+        },
+        {
+          "name": "quartech_chefssubmissionid",
+          "label": "CHEFS Submission Id",
+          "hidden": true,
+          "doNotBlank": true
+        }
+      ]
+    }
+  ]
+}
