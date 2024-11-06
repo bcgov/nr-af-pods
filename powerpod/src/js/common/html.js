@@ -60,6 +60,8 @@ POWERPOD.html = {
   getOriginalMsosElement,
   newGetOriginalMultiOptionSetElementValue,
   renameSectionLabel,
+  addTextAboveSection,
+  addTextBelowSection,
 };
 
 export function redirectToFormId(id) {
@@ -700,14 +702,23 @@ export function showTable(tableDataname) {
   $(`table[data-name=${tableDataname}]`).css('display', '');
 }
 
+export function addTextAboveSection(tableDataName, htmlContentToAdd) {
+  addHtmlToSection(tableDataName, htmlContentToAdd, 'top');
+}
+
+export function addTextBelowSection(tableDataName, htmlContentToAdd) {
+  addHtmlToSection(tableDataName, htmlContentToAdd, 'bottom');
+}
+
 export function addHtmlToSection(
   tableDataName,
   htmlContentToAdd,
   topOrBottom = 'top'
 ) {
-  const sectionTable = doc.querySelector(
-    `table[data-name='${tableDataName}'] > tbody`
+  const sectionTable = document.querySelector(
+    `div[data-name='${tableDataName}'] > .tab-column > div`
   );
+
   if (!sectionTable) {
     logger.error({
       fn: addHtmlToSection,
@@ -715,19 +726,24 @@ export function addHtmlToSection(
     });
     return;
   }
-  const trElement = doc.createElement('tr');
+  const divElement = document.createElement('div');
+  // const trElement = document.createElement('tr');
 
-  const tdElement = document.createElement('td');
-  tdElement.setAttribute('colspan', '2');
-  tdElement.setAttribute('quartechHtml', 'true');
-  tdElement.innerHTML = htmlContentToAdd;
+  // const tdElement = document.createElement('td');
+  // tdElement.setAttribute('colspan', '2');
+  // tdElement.setAttribute('quartechHtml', 'true');
+  // tdElement.innerHTML = htmlContentToAdd;
 
-  trElement.appendChild(tdElement);
+  // trElement.appendChild(tdElement);
+
+  divElement.innerHTML = htmlContentToAdd;
 
   if (topOrBottom === 'top') {
-    sectionTable.prepend(trElement);
+    // sectionTable.prepend(trElement);
+    sectionTable.prepend(divElement);
   } else if (topOrBottom === 'bottom') {
-    sectionTable.append(trElement);
+    // sectionTable.append(trElement);
+    sectionTable.append(divElement);
   }
 }
 

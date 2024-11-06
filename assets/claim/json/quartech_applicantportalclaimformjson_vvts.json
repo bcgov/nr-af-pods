@@ -1,9 +1,8 @@
 {
   "tags": ["Claim", "VVTS"],
   "version": "1.0.0",
-  "name": "Veterinary and Veterinary Technologist Students Working in BC Food Animal Practices",
+  "name": "Veterinary and veterinary technologist students working in B.C. food animal practices",
   "abbreviation": "VVTS",
-  "hiddenSteps": "",
   "sections": [
     {
       "name": "ApplicantInfoStep",
@@ -170,7 +169,7 @@
             "selectedValue": 255550003,
             "techComment": "3 students"
           }
-        }        
+        }
       ]
     }
   ]

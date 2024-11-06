@@ -1,9 +1,8 @@
 {
   "tags": ["Application", "StaffPortal", "ABPP2", "Fall 2024"],
-  "version": "1.2.0",
+  "version": "1.2.1",
   "name": "ABPP - Business Planning, Preparedness, and Disaster Recovery",
   "abbreviation": "ABPP2",
-  "hiddenSteps": "",
   "sections": [
     {
       "name": "ApplicantInfoStep",

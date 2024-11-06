@@ -1,6 +1,11 @@
 import { POWERPOD } from './constants.js';
 import { Logger } from './logger.js';
 // UNCOMMENT THIS IF YOU WANT TO FORCE TO USE LOCAL JSON CONFIG:
+
+// import globalConfigJson from '../../../../assets/global/json/quartech_applicantportalconfig.json';
+/*
+ * APPLICATION FORMS
+ */
 // KTTP1:
 // import localConfigJson from '../../../../assets/application/json/quartech_applicantportalapplicationformconfigjson_kttp1.json';
 // KTTP2:
@@ -13,12 +18,20 @@ import { Logger } from './logger.js';
 // import localConfigJson from '../../../../assets/application/json/quartech_applicantportalapplicationformconfigjson_vlb.json';
 // NEFBA:
 // import localConfigJson from '../../../../assets/application/json/quartech_applicantportalapplicationformconfigjson_nefba.json';
+// VVTS:
+// import localConfigJson from '../../../../assets/application/json/quartech_applicantportalapplicationformconfigjson_vvts.json';
+
+/*
+ * CLAIM FORMS
+ */
 // Claim ABPP1:
 // import localConfigJson from '../../../../assets/claim/json/quartech_applicantportalclaimformjson_abpp1.json';
 // Claim ABPP2:
 // import localConfigJson from '../../../../assets/claim/json/quartech_applicantportalclaimformjson_abpp2.json';
 // Claim KTTP:
 // import localConfigJson from '../../../../assets/claim/json/quartech_applicantportalclaimformjson_kttp.json';
+// Claim NEFBA2:
+// import localConfigJson from '../../../../assets/claim/json/quartech_applicantportalclaimformjson_nefba2.json';
 
 const logger = Logger('common/config');
 
@@ -29,6 +42,27 @@ POWERPOD.config = {
 };
 
 export function getGlobalConfigData() {
+  const { pathname: path } = window.location;
+  logger.info({
+    fn: getGlobalConfigData,
+    message:
+      'checking path to determine if we should use localhost or hosted data',
+    data: { path },
+  });
+  // UNCOMMENT THIS IF YOU WANT TO FORCE TO USE LOCAL JSON CONFIG
+  // if (
+  //   (path.includes('application-dev') || path.includes('application-dev')) &&
+  //   globalConfigJson
+  // ) {
+  //   logger.info({
+  //     fn: getGlobalConfigData,
+  //     message: 'successfully fetched global config data from localhost',
+  //     data: { globalConfigJson },
+  //   });
+  //   return globalConfigJson;
+  // }
+  // UNCOMMENT THIS IF YOU WANT TO FORCE TO USE LOCAL JSON CONFIG
+
   const programData = localStorage.getItem('programData');
   const configDataJSON =
     JSON.parse(programData)?.quartech_ApplicantPortalConfig
