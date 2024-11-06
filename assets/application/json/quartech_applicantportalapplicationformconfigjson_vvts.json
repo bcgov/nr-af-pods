@@ -1,8 +1,8 @@
 {
-  "version": "1.0.1",
+  "version": "1.0.2",
   "tags": ["Application", "StaffPortal", "VVTS"],
   "name": "Veterinary and Veterinary Technologists Locums Working in BC Food Animal Practices Pilot Program",
-  "abbreviation": "VLB",
+  "abbreviation": "VVTS",
   "programId": "49dbba6b-21dc-ee11-904d-6045bd5f4613",
   "hiddenSteps": [
     { "name": "tab_Deliverables_Budget" },
