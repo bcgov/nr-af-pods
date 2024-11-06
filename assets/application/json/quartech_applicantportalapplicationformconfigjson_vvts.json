@@ -11,190 +11,32 @@
   "sections": [
     {
       "name": "ApplicantInfoStep",
+      "dataName": "tab_ApplicantInfo",
+      "additionalTextAboveSection": "<p>Your personal information is collected under section 26(c) and 26(e) of the Freedom of Information and Protection of Privacy Act for the purposes of evaluating applications and for the planning and evaluating of the S-CAP Ministry Program. The information you provide will be shared with the federal government to fulfill the provincial obligations under the Sustainable Canadian Agricultural Partnership (S-CAP) bilateral agreement. It may be combined with other survey or administrative data sources and used for statistical, research and evaluation purposes.</p>",
       "fields": [
         {
-          "name": "quartech_nocragstnumber",
-          "label": "Do you have a Canada Revenue Agency (CRA) Business Number?",
-          "elementType": "Checkbox",
-          "customComponent": {
-            "customElementTag": "quartech-checkbox",
-            "customEventHandler": "hasCraNumberCheckboxEventHandler",
-            "customEventName": "onChangeCheckbox",
-            "mappedValueKey": "checked",
-            "customInitValueFn": "initCraNumberCheckbox"
-          },
-          "relocateField": {
-            "originFieldName": "quartech_nocragstnumber",
-            "destinationFieldName": "quartech_legalbusinessororganizationname",
-            "relativePosition": "above"
-          },
-          "onChangeHandler": "setBusinessOrPersonalStateForVLB"
+          "name": "quartech_designatedregistrantname",
+          "label": "Designated Registrant Name",
+          "required": true
         },
         {
-          "name": "quartech_legalbusinessororganizationname",
-          "tooltipText": "For a partnership, it is the names of the partners or the name the business was registered under with provincial or territorial authorities (e.g., farm name or if none provided use 'First name Last name'). For a corporation, it is the name that appears on the certificate of incorporation.",
+          "name": "quartech_designatedregistrantphonenumber",
+          "label": "Designated Registrant Phone Number",
+          "format": "phoneNumber",
           "required": true,
-          "visibleIf": {
-            "fieldName": "quartech_nocragstnumber",
-            "selectedValue": false,
-            "techComment": "Visible & Required ONLY if 'I do not have a Canada Revenue Agency (CRA) Business Number' below is UN-CHECKED.",
-            "valueIfHidden": {
-              "type": "combineFields",
-              "fieldNames": [
-                "quartech_legalnamefirst",
-                "quartech_legalnamelast"
-              ]
-            },
-            "valueIfVisible": {
-              "type": "function",
-              "value": "generateVisibleValueForBusinessNameVLB"
-            }
+          "validation": {
+            "type": "length",
+            "value": 14,
+            "comparison": "equalTo",
+            "postfix": "digits",
+            "overrideDisplayValue": 10
           }
-        },
-        {
-          "name": "quartech_reasonwhynocraorgstnumber",
-          "hidden": true
-        },
-        {
-          "name": "quartech_doingbusinessas",
-          "label": "Doing Business As (if different from Legal Business/Organization Name)",
-          "hidden": true
         },
         {
           "name": "quartech_legalnamefirst",
           "label": "First Name",
-          "required": true,
-          "relocateField": {
-            "originFieldName": "quartech_legalnamefirst",
-            "destinationFieldName": "quartech_businesssuitenumberoptional",
-            "relativePosition": "above"
-          },
-          "onChangeHandler": "populateBusinessNameOnChangeFirstOrLastNameVLB"
-        },
-        {
-          "name": "quartech_legalnamelast",
-          "required": true,
-          "relocateField": {
-            "originFieldName": "quartech_legalnamelast",
-            "destinationFieldName": "quartech_businesssuitenumberoptional",
-            "relativePosition": "above"
-          },
-          "onChangeHandler": "populateBusinessNameOnChangeFirstOrLastNameVLB"
-        },
-        {
-          "name": "quartech_businesssuitenumberoptional",
-          "label": "Suite Number (optional)",
-          "visible": true
-        },
-        {
-          "name": "quartech_businessstreetnumber",
-          "label": "Street Number",
-          "required": true,
-          "validation": {
-            "intervalBased": true
-          }
-        },
-        {
-          "name": "quartech_businessstreet",
-          "label": "Street",
-          "required": true,
-          "validation": {
-            "intervalBased": true
-          }
-        },
-        {
-          "name": "quartech_businesscity",
-          "label": "City",
-          "required": true,
-          "validation": {
-            "intervalBased": true
-          },
-          "onChangeHandler": "populatePhoneNumberEmailAndCityOnChangeVLB"
-        },
-        {
-          "name": "quartech_businessprovinceterritory",
-          "label": "Province/Territory",
-          "required": true,
-          "validation": {
-            "intervalBased": true
-          }
-        },
-        {
-          "name": "quartech_businesspostalcode",
-          "label": "Postal Code",
-          "format": "postalCode",
-          "required": true,
-          "validation": {
-            "intervalBased": true
-          }
-        },
-        {
-          "name": "quartech_businessphonenumber",
-          "label": "Phone Number",
-          "format": "phoneNumber",
-          "required": true,
-          "validation": {
-            "type": "length",
-            "value": 14,
-            "comparison": "equalTo",
-            "postfix": "digits",
-            "overrideDisplayValue": 10
-          }
-        },
-        {
-          "name": "quartech_businessemailaddress",
-          "label": "Email Address",
-          "format": "email",
+          "additionalTextAboveField": "<p>Please note, Ministry of Agriculture and Food (AF) program staff may reach out to the primary contact throughout the work period to check in, and offer educational opportunities. For a participating practice to be eligible for reimbursement at the end of the work placement, the following documents must be received by the AF program administrator from each practice; end of program data collection, and and program evaluation forms. It is the practice’s responsibility to make sure these are submitted.</p>",
           "required": true
-        },
-        {
-          "name": "quartech_vlb_veterinarianrole",
-          "label": "I am a",
-          "elementType": "DropdownSelect",
-          "required": true,
-          "relocateField": {
-            "originFieldName": "quartech_vlb_veterinarianrole",
-            "destinationFieldName": "quartech_email",
-            "relativePosition": "below"
-          }
-        },
-        {
-          "name": "quartech_vlb_professionallicensenumber",
-          "label": "What is your professional license number?",
-          "required": true,
-          "relocateField": {
-            "originFieldName": "quartech_vlb_professionallicensenumber",
-            "destinationFieldName": "quartech_vlb_veterinarianrole",
-            "relativePosition": "below"
-          }
-        },
-        {
-          "name": "quartech_positionorjobtitle",
-          "label": "Position or Job Title",
-          "hidden": true
-        },
-        {
-          "name": "quartech_city",
-          "hidden": true
-        },
-        {
-          "name": "quartech_telephone",
-          "format": "phoneNumber",
-          "required": true,
-          "validation": {
-            "type": "length",
-            "value": 14,
-            "comparison": "equalTo",
-            "postfix": "digits",
-            "overrideDisplayValue": 10
-          },
-          "onChangeHandler": "populatePhoneNumberEmailAndCityOnChangeVLB"
-        },
-        {
-          "name": "quartech_email",
-          "format": "email",
-          "required": true,
-          "onChangeHandler": "populatePhoneNumberEmailAndCityOnChangeVLB"
         }
       ]
     },

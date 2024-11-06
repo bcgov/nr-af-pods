@@ -1,4 +1,5 @@
 // @ts-nocheck
+import { addTextBelowSection, addTextAboveSection } from './html.js';
 import { Logger } from './logger.js';
 import { getCurrentStep } from './program.js';
 import { setTabName, setHeadings } from './tabs.js';
@@ -20,7 +21,15 @@ export function configureSections(sections) {
         section,
       },
     });
-    const { name: sectionName, displayName, headings, subsections } = section;
+    const {
+      name: sectionName,
+      displayName,
+      headings,
+      subsections,
+      dataName,
+      additionalTextAboveSection,
+      additionalTextBelowSection,
+    } = section;
 
     if (!sectionName) {
       logger.error({
@@ -32,6 +41,14 @@ export function configureSections(sections) {
 
     if (displayName) {
       setTabName(sectionName, displayName);
+    }
+
+    if (additionalTextAboveSection && dataName) {
+      addTextAboveSection(dataName, additionalTextAboveSection);
+    }
+
+    if (additionalTextBelowSection && dataName) {
+      addTextBelowSection(dataName, additionalTextBelowSection);
     }
 
     if (headings && headings.length) {
