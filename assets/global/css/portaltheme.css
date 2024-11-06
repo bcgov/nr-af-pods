@@ -199,9 +199,9 @@ template {
 
 @font-face {
   font-family: BC Sans;
-  src: url(https://af-pods-dev.powerappsportals.com/BCSans-Regular.woff2)
+  src: url(/BCSans-Regular.woff2)
       format('woff2'),
-    url(https://af-pods-dev.powerappsportals.com/BCSans-Regular.woff)
+    url(/BCSans-Regular.woff)
       format('woff');
   font-weight: 400;
   font-style: normal;
@@ -210,9 +210,9 @@ template {
 
 @font-face {
   font-family: BC Sans;
-  src: url(https://af-pods-dev.powerappsportals.com/BCSans-Bold.woff2)
+  src: url(/BCSans-Bold.woff2)
       format('woff2'),
-    url(https://af-pods-dev.powerappsportals.com/BCSans-Bold.woff)
+    url(/BCSans-Bold.woff)
       format('woff');
   font-weight: 700;
   font-style: normal;
@@ -221,9 +221,9 @@ template {
 
 @font-face {
   font-family: BC Sans;
-  src: url(https://af-pods-dev.powerappsportals.com/BCSans-Italic.woff2)
+  src: url(/BCSans-Italic.woff2)
       format('woff2'),
-    url(https://af-pods-dev.powerappsportals.com/BCSans-Italic.woff)
+    url(/BCSans-Italic.woff)
       format('woff');
   font-weight: 400;
   font-style: italic;
@@ -232,9 +232,9 @@ template {
 
 @font-face {
   font-family: BC Sans;
-  src: url(https://af-pods-dev.powerappsportals.com/BCSans-BoldItalic.woff2)
+  src: url(/BCSans-BoldItalic.woff2)
       format('woff2'),
-    url(https://af-pods-dev.powerappsportals.com/BCSans-BoldItalic.woff)
+    url(/BCSans-BoldItalic.woff)
       format('woff');
   font-weight: 700;
   font-style: italic;
@@ -243,9 +243,9 @@ template {
 
 @font-face {
   font-family: BC Sans;
-  src: url(https://af-pods-dev.powerappsportals.com/BCSans-Light.woff2)
+  src: url(/BCSans-Light.woff2)
       format('woff2'),
-    url(https://af-pods-dev.powerappsportals.com/BCSans-Light.woff)
+    url(/BCSans-Light.woff)
       format('woff');
   font-weight: 300;
   font-style: normal;
@@ -254,9 +254,9 @@ template {
 
 @font-face {
   font-family: BC Sans;
-  src: url(https://af-pods-dev.powerappsportals.com/BCSans-LightItalic.woff2)
+  src: url(/BCSans-LightItalic.woff2)
       format('woff2'),
-    url(https://af-pods-dev.powerappsportals.com/BCSans-LightItalic.woff)
+    url(/BCSans-LightItalic.woff)
       format('woff');
   font-weight: 300;
   font-style: italic;

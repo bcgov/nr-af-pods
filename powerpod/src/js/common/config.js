@@ -2,6 +2,7 @@ import { POWERPOD } from './constants.js';
 import { Logger } from './logger.js';
 // UNCOMMENT THIS IF YOU WANT TO FORCE TO USE LOCAL JSON CONFIG:
 
+// import globalConfigJson from '../../../../assets/global/json/quartech_applicantportalconfig.json';
 /*
  * APPLICATION FORMS
  */
@@ -41,6 +42,27 @@ POWERPOD.config = {
 };
 
 export function getGlobalConfigData() {
+  const { pathname: path } = window.location;
+  logger.info({
+    fn: getGlobalConfigData,
+    message:
+      'checking path to determine if we should use localhost or hosted data',
+    data: { path },
+  });
+  // UNCOMMENT THIS IF YOU WANT TO FORCE TO USE LOCAL JSON CONFIG
+  // if (
+  //   (path.includes('application-dev') || path.includes('application-dev')) &&
+  //   globalConfigJson
+  // ) {
+  //   logger.info({
+  //     fn: getGlobalConfigData,
+  //     message: 'successfully fetched global config data from localhost',
+  //     data: { globalConfigJson },
+  //   });
+  //   return globalConfigJson;
+  // }
+  // UNCOMMENT THIS IF YOU WANT TO FORCE TO USE LOCAL JSON CONFIG
+
   const programData = localStorage.getItem('programData');
   const configDataJSON =
     JSON.parse(programData)?.quartech_ApplicantPortalConfig
