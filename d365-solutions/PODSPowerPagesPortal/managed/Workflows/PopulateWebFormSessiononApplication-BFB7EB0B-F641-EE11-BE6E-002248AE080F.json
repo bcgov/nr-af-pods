@@ -1,0 +1,97 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_sharedcommondataserviceforapps_f90be"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "When_a_new_WebFormSession_record_is_added": {
+          "metadata": {
+            "operationMetadataId": "7fb3557c-fa19-4742-a636-8ba03433ba90"
+          },
+          "type": "OpenApiConnectionWebhook",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "SubscribeWebhookTrigger",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "subscriptionRequest/message": 1,
+              "subscriptionRequest/entityname": "adx_webformsession",
+              "subscriptionRequest/scope": 4
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        }
+      },
+      "actions": {
+        "Get_the_associated_Application_record": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "96ab6f58-76c1-4834-98cc-c0caae6fe051"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "msgov_businessgrantapplications",
+              "recordId": "@triggerOutputs()?['body/adx_primaryrecordid']"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Update_a_row": {
+          "runAfter": {
+            "Get_the_associated_Application_record": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "9a8c1717-8914-4095-849c-abe8c06a7b37"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "UpdateRecord",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "msgov_businessgrantapplications",
+              "recordId": "@triggerOutputs()?['body/adx_primaryrecordid']",
+              "item/quartech_WebFormSession@odata.bind": "adx_webformsessions(@{triggerOutputs()?['body/adx_webformsessionid']})"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        }
+      }
+    },
+    "templateName": null
+  },
+  "schemaVersion": "1.0.0.0"
+}

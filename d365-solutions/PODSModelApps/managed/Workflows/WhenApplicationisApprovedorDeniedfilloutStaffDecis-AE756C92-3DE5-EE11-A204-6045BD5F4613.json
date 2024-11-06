@@ -1,0 +1,77 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_PodsSvcAcctDataverse"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "When_Application_Status_is_updated_to_Approved": {
+          "metadata": {
+            "operationMetadataId": "8881b9ab-9e0b-46fc-bf42-79da1888fe92"
+          },
+          "type": "OpenApiConnectionWebhook",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "SubscribeWebhookTrigger",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "subscriptionRequest/message": 3,
+              "subscriptionRequest/entityname": "msgov_businessgrantapplication",
+              "subscriptionRequest/scope": 4,
+              "subscriptionRequest/filteringattributes": "quartech_applicationstatus",
+              "subscriptionRequest/filterexpression": "quartech_applicationstatus eq 919830005 or quartech_applicationstatus eq 919830003"
+            },
+            "authentication": "@parameters('$authentication')"
+          },
+          "description": "APPROVED application status' value 919830005"
+        }
+      },
+      "actions": {
+        "Set_Application_Approved_Date_to_Modified_On": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "d3b48949-d884-4663-ad18-7967a1c146ad"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "UpdateRecord",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "msgov_businessgrantapplications",
+              "recordId": "@triggerOutputs()?['body/msgov_businessgrantapplicationid']",
+              "item/quartech_applicationapproveddate": "@triggerOutputs()?['body/modifiedon']"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

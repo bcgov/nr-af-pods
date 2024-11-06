@@ -1,0 +1,167 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps-1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_PodsSvcAcctDataverse"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "8e700cf0-7c84-4ec7-8cfb-9eaf0dbe1d18"
+          },
+          "type": "Request",
+          "kind": "Button",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "title": "ApplicationGUID",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "number": {
+                  "title": "Project Status",
+                  "type": "number",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter a number",
+                  "x-ms-content-hint": "NUMBER"
+                }
+              },
+              "required": [
+                "text",
+                "number"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Check_if_Project_is_in_Project_Withdrawn_(25555014)_or_Project_Expired_(25555015": {
+          "actions": {
+            "Update_Application_Status_to_Project_Withdrawn_or_Expired": {
+              "runAfter": {
+                "Get_Application_-_Application_Status": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "cc537a42-fff5-446c-bc6c-d10038c03c02"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "parameters": {
+                  "entityName": "msgov_businessgrantapplications",
+                  "recordId": "@triggerBody()['text']",
+                  "item/quartech_applicationstatus": "@triggerBody()['number']",
+                  "item/quartech_statusuponcancellation": "@body('Get_Application_-_Application_Status')?['quartech_applicationstatus']"
+                },
+                "host": {
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+                  "operationId": "UpdateRecord",
+                  "connectionName": "shared_commondataserviceforapps-1"
+                }
+              },
+              "description": "Store Status Upon Cancellation"
+            },
+            "Response": {
+              "runAfter": {
+                "Update_Application_Status_to_Project_Withdrawn_or_Expired": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "9808bb60-3410-4d4e-8d74-1f1700f40cc8"
+              },
+              "type": "Response",
+              "kind": "Http",
+              "inputs": {
+                "statusCode": 200,
+                "body": {
+                  "errorMessage": ""
+                }
+              }
+            },
+            "Get_Application_-_Application_Status": {
+              "type": "OpenApiConnection",
+              "inputs": {
+                "parameters": {
+                  "entityName": "msgov_businessgrantapplications",
+                  "recordId": "@triggerBody()?['text']",
+                  "$select": "quartech_applicationstatus"
+                },
+                "host": {
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+                  "operationId": "GetItem",
+                  "connectionName": "shared_commondataserviceforapps-1"
+                }
+              }
+            }
+          },
+          "runAfter": {},
+          "else": {
+            "actions": {
+              "Terminate_as_Project_Status_is_not_valid": {
+                "metadata": {
+                  "operationMetadataId": "836b88e8-2dec-4415-8b6e-f93046b48b2d"
+                },
+                "type": "Terminate",
+                "inputs": {
+                  "runStatus": "Failed",
+                  "runError": {
+                    "code": "INVALID_PROJECT_CANCELLATION_STATUS",
+                    "message": "Project Status input param must be in Project Withdrawn (25555014) or Project Expired (25555015)"
+                  }
+                }
+              }
+            }
+          },
+          "expression": {
+            "or": [
+              {
+                "equals": [
+                  "@triggerBody()['number']",
+                  255550014
+                ]
+              },
+              {
+                "equals": [
+                  "@triggerBody()['number']",
+                  255550015
+                ]
+              }
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "a9f3e6e7-b319-431c-8ad1-9c66fc03acba"
+          },
+          "type": "If"
+        }
+      }
+    },
+    "templateName": null
+  },
+  "schemaVersion": "1.0.0.0"
+}

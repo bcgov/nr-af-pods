@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<AppModule>
+  <UniqueName>quartech_PodsStaffPortal</UniqueName>
+  <IntroducedVersion>1.0.0.0</IntroducedVersion>
+  <WebResourceId>953b9fac-1e5e-e611-80d6-00155ded156f</WebResourceId>
+  <OptimizedFor></OptimizedFor>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+  <FormFactor>1</FormFactor>
+  <ClientType>4</ClientType>
+  <NavigationType>0</NavigationType>
+  <AppModuleComponents>
+    <AppModuleComponent type="1" schemaName="account" />
+    <AppModuleComponent type="1" schemaName="annotation" />
+    <AppModuleComponent type="1" schemaName="contact" />
+    <AppModuleComponent type="1" schemaName="msgov_businessgrantapplication" />
+    <AppModuleComponent type="1" schemaName="msgov_grant" />
+    <AppModuleComponent type="1" schemaName="msgov_program" />
+    <AppModuleComponent type="1" schemaName="quartech_budgetplan" />
+    <AppModuleComponent type="1" schemaName="quartech_claim" />
+    <AppModuleComponent type="1" schemaName="quartech_commodity" />
+    <AppModuleComponent type="1" schemaName="quartech_demographicinfo" />
+    <AppModuleComponent type="1" schemaName="quartech_financialcodingblock" />
+    <AppModuleComponent type="1" schemaName="quartech_fiscalyear" />
+    <AppModuleComponent type="1" schemaName="quartech_grantproject" />
+    <AppModuleComponent type="1" schemaName="quartech_iaflabel" />
+    <AppModuleComponent type="1" schemaName="quartech_municipal" />
+    <AppModuleComponent type="1" schemaName="quartech_naicscode" />
+    <AppModuleComponent type="1" schemaName="quartech_regionaldistrict" />
+    <AppModuleComponent type="26" id="{00000000-0000-0000-00aa-000000666000}" />
+    <AppModuleComponent type="26" id="{00000000-0000-0000-00aa-000000666400}" />
+    <AppModuleComponent type="26" id="{00000000-0000-0000-00aa-000010001002}" />
+    <AppModuleComponent type="26" id="{00000000-0000-0000-00aa-000010001004}" />
+    <AppModuleComponent type="26" id="{00000000-0000-0000-00aa-000010001031}" />
+    <AppModuleComponent type="26" id="{00000000-0000-0000-00aa-000010001033}" />
+    <AppModuleComponent type="26" id="{00000000-0000-0000-00aa-000010001200}" />
+    <AppModuleComponent type="26" id="{00000000-0000-0000-00aa-000010001210}" />
+    <AppModuleComponent type="26" id="{59e57080-0cc2-e211-9b83-00155d89b902}" />
+    <AppModuleComponent type="26" id="{2e12507b-4be2-ed11-8848-002248ae080f}" />
+    <AppModuleComponent type="26" id="{38a21ffb-4e32-4038-beb9-03172a0dd034}" />
+    <AppModuleComponent type="26" id="{2a2c99cc-66cb-4005-a996-2aaeea061c07}" />
+    <AppModuleComponent type="26" id="{65ffaf9a-e8c5-432d-860b-32f841b00d87}" />
+    <AppModuleComponent type="26" id="{7c262de4-0013-4665-bca1-4e46a233d91e}" />
+    <AppModuleComponent type="26" id="{14ea1914-0e2c-4918-8eca-60930324f18f}" />
+    <AppModuleComponent type="26" id="{f335c8f8-2325-4ba0-91ec-7b495c2f65a0}" />
+    <AppModuleComponent type="26" id="{a2d479c5-53e3-4c69-addd-802327e67a0d}" />
+    <AppModuleComponent type="26" id="{0b1a2f98-b8f5-4586-a06e-8280bee815e0}" />
+    <AppModuleComponent type="26" id="{0d5d377b-5e7c-47b5-bab1-a5cb8b4ac105}" />
+    <AppModuleComponent type="26" id="{a9af0ab8-861d-4cfa-92a5-c6281fed7fab}" />
+    <AppModuleComponent type="26" id="{58fb20ff-d5be-406f-908e-c777e9dedf5f}" />
+    <AppModuleComponent type="26" id="{73bc2d9b-4e0e-424c-8839-ed59d6817e3a}" />
+    <AppModuleComponent type="26" id="{eda26f1e-dbcc-40ad-91f2-ff2878d1d8d8}" />
+    <AppModuleComponent type="60" id="{a0bf4900-6cb6-ed11-b596-002248b219ac}" />
+    <AppModuleComponent type="60" id="{cdbb9298-3b2e-41f3-8f4a-0168d6b09fc4}" />
+    <AppModuleComponent type="60" id="{69cff312-cfb6-4289-9631-249ab85d2c62}" />
+    <AppModuleComponent type="60" id="{d880c3cf-80e2-42f3-82f9-24d040d09f17}" />
+    <AppModuleComponent type="60" id="{2205c86d-ed88-4a2f-a447-3b86a8781f2e}" />
+    <AppModuleComponent type="60" id="{449faa0e-f471-48ec-87d0-4719909546d2}" />
+    <AppModuleComponent type="60" id="{face3aa6-99c4-4b7e-af07-55f121cdca86}" />
+    <AppModuleComponent type="60" id="{7bb87dfd-ec3e-4ed9-8e3e-5725d3067295}" />
+    <AppModuleComponent type="60" id="{661157fe-2fc9-4eaa-835f-5bfa2f7b64f7}" />
+    <AppModuleComponent type="60" id="{f3b707fb-3b5f-45f9-9c6b-5e573bb5d19e}" />
+    <AppModuleComponent type="60" id="{fb65cc73-181c-468b-9bb3-82ecde306991}" />
+    <AppModuleComponent type="60" id="{098ae145-1567-41ec-8398-86dbaac70c9b}" />
+    <AppModuleComponent type="60" id="{bdb0ae1c-32fa-4374-b637-8dafe107bc44}" />
+    <AppModuleComponent type="60" id="{43300723-f867-420b-ab28-976a4d12e6c4}" />
+    <AppModuleComponent type="60" id="{05ea391a-d034-43fe-849b-b4fa3213a2b2}" />
+    <AppModuleComponent type="60" id="{4c9c89b9-f909-4b34-8f63-b87d7ff2f0c4}" />
+    <AppModuleComponent type="60" id="{29de27bc-a257-4f29-99cf-bab4a84e688f}" />
+    <AppModuleComponent type="60" id="{b028db32-3619-48a5-ac51-cf3f947b0ef3}" />
+    <AppModuleComponent type="60" id="{3d22ab88-96c8-4b3f-a533-d4827e2925c9}" />
+    <AppModuleComponent type="60" id="{707fc57b-c5e6-471b-a180-e37ed28a38e2}" />
+    <AppModuleComponent type="60" id="{e9a9c8a9-e94d-47a9-a6c3-ec37ddb83b99}" />
+    <AppModuleComponent type="60" id="{76b81f10-2a08-4f1a-9454-ee38bea94eb5}" />
+    <AppModuleComponent type="60" id="{1fed44d1-ae68-4a41-bd2b-f13acac4acfa}" />
+    <AppModuleComponent type="60" id="{c9e7ec2d-efca-4e4c-b3e3-f63c4bba5e4b}" />
+    <AppModuleComponent type="60" id="{8448b78f-8f42-454e-8e2a-f8196b0419af}" />
+    <AppModuleComponent type="62" schemaName="quartech_PodsStaffPortal" />
+  </AppModuleComponents>
+  <AppModuleRoleMaps>
+    <Role id="{418499fc-8346-ee11-be6f-002248ae0846}" />
+    <Role id="{737d719c-ba0b-ee11-8f6e-000d3af3ac95}" />
+    <Role id="{627090ff-40a3-4053-8790-584edc5be201}" />
+    <Role id="{119f245c-3cc8-4b62-b31c-d1a046ced15d}" />
+  </AppModuleRoleMaps>
+  <LocalizedNames>
+    <LocalizedName description="PODS Staff Portal" languagecode="1033" />
+  </LocalizedNames>
+  <appelements>
+    <appelement uniquename="quartech_quartech_PodsStaffPortal_canvasappid_quartech_cancelapplication_2ea7b">
+      <canvasappid>
+        <name>quartech_cancelapplication_2ea7b</name>
+      </canvasappid>
+      <iscustomizable>1</iscustomizable>
+      <name>quartech_quartech_PodsStaffPortal_canvasappid_quartech_cancelapplication_2ea7b</name>
+    </appelement>
+    <appelement uniquename="quartech_quartech_PodsStaffPortal_canvasappid_quartech_cancelproject_94cf6">
+      <canvasappid>
+        <name>quartech_cancelproject_94cf6</name>
+      </canvasappid>
+      <iscustomizable>1</iscustomizable>
+      <name>quartech_quartech_PodsStaffPortal_canvasappid_quartech_cancelproject_94cf6</name>
+    </appelement>
+    <appelement uniquename="quartech_quartech_PodsStaffPortal_canvasappid_quartech_podsstaffportaldefaultcommandlibrary_1b1fa">
+      <canvasappid>
+        <name>quartech_podsstaffportaldefaultcommandlibrary_1b1fa</name>
+      </canvasappid>
+      <iscustomizable>1</iscustomizable>
+      <name>quartech_quartech_PodsStaffPortal_canvasappid_quartech_podsstaffportaldefaultcommandlibrary_1b1fa</name>
+    </appelement>
+    <appelement uniquename="quartech_quartech_PodsStaffPortal_canvasappid_quartech_reactivatecancelledapplication_0808c">
+      <canvasappid>
+        <name>quartech_reactivatecancelledapplication_0808c</name>
+      </canvasappid>
+      <iscustomizable>1</iscustomizable>
+      <name>quartech_quartech_PodsStaffPortal_canvasappid_quartech_reactivatecancelledapplication_0808c</name>
+    </appelement>
+    <appelement uniquename="quartech_quartech_PodsStaffPortal_canvasappid_quartech_reactivatecancelproject_39fc1">
+      <canvasappid>
+        <name>quartech_reactivatecancelproject_39fc1</name>
+      </canvasappid>
+      <iscustomizable>1</iscustomizable>
+      <name>quartech_quartech_PodsStaffPortal_canvasappid_quartech_reactivatecancelproject_39fc1</name>
+    </appelement>
+  </appelements>
+</AppModule>

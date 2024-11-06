@@ -1,0 +1,148 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_sharedcommondataserviceforapps_f90be"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "When_the_project_lookup_of_an_application_is_updated": {
+          "metadata": {
+            "operationMetadataId": "eded5eaa-01a9-4eb3-984b-b7075f93e3b7"
+          },
+          "type": "OpenApiConnectionWebhook",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "SubscribeWebhookTrigger",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "subscriptionRequest/message": 3,
+              "subscriptionRequest/entityname": "msgov_businessgrantapplication",
+              "subscriptionRequest/scope": 4,
+              "subscriptionRequest/filteringattributes": "quartech_project",
+              "subscriptionRequest/runas": 1
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        }
+      },
+      "actions": {
+        "Get_the_associated_Program_record": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "272652dc-be34-4adf-b8a6-b1b0d384c5c1"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "msgov_programs",
+              "recordId": "@triggerOutputs()?['body/_quartech_program_value']"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Update_Application's_owner_to_the_associated_Program_Team": {
+          "runAfter": {
+            "Get_the_associated_Program_record": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "a6805d13-5143-432d-b645-364772cdc8ec"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "UpdateRecord",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "msgov_businessgrantapplications",
+              "recordId": "@triggerOutputs()?['body/msgov_businessgrantapplicationid']",
+              "item/ownerid@odata.bind": "teams(@{outputs('Get_the_associated_Program_record')?['body/_owningteam_value']})"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Update_Project's_owner_and_Activity_Type_from_Program": {
+          "runAfter": {
+            "Update_Application's_owner_to_the_associated_Program_Team": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "0ebe3e93-17e1-43cd-a7f2-3d04cf581c77"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "UpdateRecord",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "quartech_grantprojects",
+              "recordId": "@triggerOutputs()?['body/_quartech_project_value']",
+              "item/quartech_activitytype": "@outputs('Get_the_associated_Program_record')?['body/quartech_activitytype']",
+              "item/ownerid@odata.bind": "teams(@{outputs('Update_Application''s_owner_to_the_associated_Program_Team')?['body/_owningteam_value']})"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Update_Demographic_Info's_owner_to_the_associated_Program_Team": {
+          "runAfter": {
+            "Update_Project's_owner_and_Activity_Type_from_Program": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "5fa4e0a7-b642-43e8-8c45-b4577673e84b"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "UpdateRecord",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "quartech_demographicinfos",
+              "recordId": "@triggerOutputs()?['body/_quartech_demographicinfo_value']",
+              "item/ownerid@odata.bind": "teams(@{outputs('Update_Project''s_owner_and_Activity_Type_from_Program')?['body/_owningteam_value']})"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

@@ -1,0 +1,150 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_sharedcommondataserviceforapps_faa88"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      },
+      "shared_sendmail": {
+        "runtimeSource": "invoker",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_sharedsendmail_d8240"
+        },
+        "api": {
+          "name": "shared_sendmail"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "42fafd40-081d-43a0-99dd-9dbdad9017f8"
+          },
+          "type": "Request",
+          "kind": "Button",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "required": []
+            }
+          }
+        }
+      },
+      "actions": {
+        "List_rows": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "133582ec-12e7-4a75-8f69-d6c6078234d9"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "msgov_programs"
+            },
+            "authentication": {
+              "type": "Raw",
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+            }
+          }
+        },
+        "Initialize_variable": {
+          "runAfter": {
+            "List_rows": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "2d4440c7-0ad4-40ec-b0a5-09370fb9175a"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "ProgID",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Apply_to_each": {
+          "foreach": "@outputs('List_rows')?['body/value']",
+          "actions": {
+            "Set_variable": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "6c733707-7643-4c9c-87cb-189ef6020460"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "ProgID",
+                "value": "@items('Apply_to_each')?['msgov_programname']"
+              }
+            },
+            "Send_an_email_notification_(V3)": {
+              "runAfter": {
+                "Set_variable": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "60c8f881-c9a8-43a6-8041-0c33df92c84c"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sendmail",
+                  "operationId": "SendEmailV3",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sendmail"
+                },
+                "parameters": {
+                  "request/to": "Dagogo.Williams@gov.bc.ca;",
+                  "request/subject": "Test PODS",
+                  "request/text": "<p>See link to prog<br>\n<br>\nhttps://af-pods-dev.powerappsportals.com/page/New-Application/?id=@{items('Apply_to_each')?['msgov_programname']}&amp;name=@{variables('ProgID')}&amp;ent=msgov_program<br>\n</p>"
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                }
+              }
+            }
+          },
+          "runAfter": {
+            "Initialize_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "863f45b3-23d9-429f-84e1-220066f78114"
+          },
+          "type": "Foreach"
+        }
+      }
+    },
+    "templateName": null
+  },
+  "schemaVersion": "1.0.0.0"
+}

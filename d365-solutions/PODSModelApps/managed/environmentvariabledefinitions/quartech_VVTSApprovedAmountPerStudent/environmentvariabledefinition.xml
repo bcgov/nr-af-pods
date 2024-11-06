@@ -1,0 +1,14 @@
+<environmentvariabledefinition schemaname="quartech_VVTSApprovedAmountPerStudent">
+  <defaultvalue>6000</defaultvalue>
+  <description default="Approved Amount per student for the VVTS application">
+    <label description="Approved Amount per student for the VVTS application" languagecode="1033" />
+  </description>
+  <displayname default="VVTS - Approved Amount Per Student">
+    <label description="VVTS - Approved Amount Per Student" languagecode="1033" />
+  </displayname>
+  <introducedversion>1.0.0.6</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <secretstore>0</secretstore>
+  <type>100000001</type>
+</environmentvariabledefinition>

@@ -1,0 +1,1318 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_sharepointonline_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_PodsSvcAcctSharePoint"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      },
+      "shared_wordonlinebusiness_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_PodsSvcAcctWordOnlineBusiness"
+        },
+        "api": {
+          "name": "shared_wordonlinebusiness"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "PODS SharePoint Site Address (quartech_PodsSharePointSiteAddress)": {
+          "defaultValue": "https://bcgov.sharepoint.com/sites/AF-PODS-DEV",
+          "type": "String",
+          "metadata": {
+            "schemaName": "quartech_PodsSharePointSiteAddress",
+            "description": "Site Address of the PODS SharePoint"
+          }
+        },
+        "PODS Doc Generation - Word Online - File Folder For Generated Docs (quartech_Pods_DocGeneration_WordOnline_FileFolderForGeneratedDocs)": {
+          "defaultValue": "/PODS Dataverse/Generated Documents",
+          "type": "String",
+          "metadata": {
+            "schemaName": "quartech_Pods_DocGeneration_WordOnline_FileFolderForGeneratedDocs",
+            "description": "Relative Folder where documents are generated in the Documents doc lib of the Word Online (Business) connector "
+          }
+        },
+        "PODS DocumentLibraryId (quartech_DocumentLibraryId)": {
+          "defaultValue": "b!fVeXUfs7uEem7B_WAWl7jXuXBtcAvcJCjKuVOvttfrz9SyeHTeuFTrd7D8gMryH1",
+          "type": "String",
+          "metadata": {
+            "schemaName": "quartech_DocumentLibraryId"
+          }
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "48fbef94-f8bc-4fa0-8b17-37af054cb804"
+          },
+          "type": "Request",
+          "kind": "Button",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text_5": {
+                  "title": "dataToPopulateWordTemplate",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter the data in JSON format to populate the Word Template",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_6": {
+                  "title": "pdfFileInfo",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter the PDF File info including SharePoint location, aka. Site Address, related folder path etc...",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_1": {
+                  "title": "programGuid",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                }
+              },
+              "required": [
+                "text_5",
+                "text_6",
+                "text_1"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Create_Application_docx": {
+          "runAfter": {
+            "Switch:_Populate_Word_Template_by_Program_or_Stream": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "de025f1b-ef04-407f-9f59-763d034c99e4"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "CreateFile",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "@parameters('PODS SharePoint Site Address (quartech_PodsSharePointSiteAddress)')",
+              "folderPath": "/Shared Documents@{parameters('PODS Doc Generation - Word Online - File Folder For Generated Docs (quartech_Pods_DocGeneration_WordOnline_FileFolderForGeneratedDocs)')}/",
+              "name": "@{body('Parse_JSON:_PDF_File_Info')?['fileNameWithoutExtension']}.docx",
+              "body": "@variables('vGeneratedFileContent')"
+            },
+            "authentication": {
+              "type": "Raw",
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+            }
+          },
+          "runtimeConfiguration": {
+            "contentTransfer": {
+              "transferMode": "Chunked"
+            }
+          }
+        },
+        "Response": {
+          "runAfter": {
+            "Move_file:_generated_Submitted_Application_docx_to_the_Program_SharePoint_folder": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "2303b2aa-8879-49e1-9225-09b11ccf16fd"
+          },
+          "type": "Response",
+          "kind": "Http",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+              "errorMessage": "",
+              "pdfSpSiteAddress": "@body('Run_a_Child_Flow:_Get_Program_SP_Location_and_Application_Word_Template_Name')?['spSiteAddress']",
+              "pdfFilePath": "@{body('Run_a_Child_Flow:_Get_Program_SP_Location_and_Application_Word_Template_Name')?['folderRelativePath']}@{body('Parse_JSON:_PDF_File_Info')?['parentFolderName']}/@{body('Parse_JSON:_PDF_File_Info')?['fileNameWithoutExtension']}.pdf",
+              "pdfFileNameWithoutExtension": "@{body('Parse_JSON:_PDF_File_Info')?['fileNameWithoutExtension']}"
+            }
+          }
+        },
+        "Run_a_Child_Flow:_Create_PDF_in_SharePoint": {
+          "runAfter": {
+            "Create_Application_docx": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "a413ee00-16ed-4619-baa5-cdc80963313b"
+          },
+          "type": "Workflow",
+          "inputs": {
+            "host": {
+              "workflowReferenceName": "cdedf35e-52e8-ee11-a204-6045bd61cd59"
+            },
+            "body": {
+              "text_2": "@body('Parse_JSON:_PDF_File_Info')?['fileNameWithoutExtension']",
+              "text_3": "@body('Parse_JSON:_PDF_File_Info')?['parentFolderName']",
+              "text_4": "@body('Parse_JSON:_Program_SharePoint_Info')?['spSiteAddress']",
+              "text": "@body('Parse_JSON:_Program_SharePoint_Info')?['folderRelativePath']"
+            }
+          }
+        },
+        "Parse_JSON:_Data_To_Populate_The_Application_Word_Template__": {
+          "runAfter": {
+            "Run_a_Child_Flow:_Get_Program_SP_Location_and_Application_Word_Template_Name": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "caad7904-f885-4935-9b49-bea89952e9e1"
+          },
+          "type": "ParseJson",
+          "inputs": {
+            "content": "@triggerBody()['text_5']",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "applicantInfoStep": {
+                  "type": "object",
+                  "properties": {
+                    "applicantInfoSection": {
+                      "type": "object",
+                      "properties": {
+                        "applicantInfoSectionDisplayName": {
+                          "type": "string"
+                        },
+                        "applicantInfoSectionQuestionAnswerList": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "applicantInfoSectionAnswer": {
+                                "type": "string"
+                              },
+                              "applicantInfoSectionQuestion": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "applicantInfoSectionAnswer",
+                              "applicantInfoSectionQuestion"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "applicationContactSection": {
+                      "type": "object",
+                      "properties": {
+                        "applicationContactSectionDisplayName": {
+                          "type": "string"
+                        },
+                        "applicationContactSectionQuestionAnswerList": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "applicationContactSectionAnswer": {
+                                "type": "string"
+                              },
+                              "applicationContactSectionQuestion": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "applicationContactSectionAnswer",
+                              "applicationContactSectionQuestion"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "businessInfoSection": {
+                      "type": "object",
+                      "properties": {
+                        "businessInfoSectionQuestionAnswerList": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "businessInfoSectionAnswer": {
+                                "type": "string"
+                              },
+                              "businessInfoSectionQuestion": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "businessInfoSectionAnswer",
+                              "businessInfoSectionQuestion"
+                            ]
+                          }
+                        },
+                        "displayName": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "businessOverviewSection": {
+                      "type": "object",
+                      "properties": {
+                        "businessOverviewSectionQuestionAnswerList": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "businessOverviewSectionAnswer": {
+                                "type": "string"
+                              },
+                              "businessOverviewSectionQuestion": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "businessOverviewSectionAnswer",
+                              "businessOverviewSectionQuestion"
+                            ]
+                          }
+                        },
+                        "displayName": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "indigenousApplicantsSection": {
+                      "type": "object",
+                      "properties": {
+                        "displayName": {
+                          "type": "string"
+                        },
+                        "indigenousApplicantsSectionQuestionAnswerList": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "indigenousApplicantsSectionAnswer": {
+                                "type": "string"
+                              },
+                              "indigenousApplicantsSectionQuestion": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "indigenousApplicantsSectionAnswer",
+                              "indigenousApplicantsSectionQuestion"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "collaboratingOrganizationinApplicantInfoSection": {
+                      "type": "object",
+                      "properties": {
+                        "displayName": {
+                          "type": "string"
+                        },
+                        "collaboratingOrganizationinApplicantInfoSectionQuestionAnswerList": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "collaboratingOrganizationinApplicantInfoSectionAnswer": {
+                                "type": "string"
+                              },
+                              "collaboratingOrganizationinApplicantInfoSectionQuestion": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "collaboratingOrganizationinApplicantInfoSectionAnswer",
+                              "collaboratingOrganizationinApplicantInfoSectionQuestion"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "applicationId": {
+                  "type": "string"
+                },
+                "applicationName": {
+                  "type": "string"
+                },
+                "budgetStep": {
+                  "type": "object",
+                  "properties": {
+                    "deliverablesBudgetSection": {
+                      "type": "object",
+                      "properties": {
+                        "deliverablesBudgetSectionQuestionAnswerList": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "deliverablesBudgetSectionAnswer": {
+                                "type": "string"
+                              },
+                              "deliverablesBudgetSectionQuestion": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "deliverablesBudgetSectionAnswer",
+                              "deliverablesBudgetSectionQuestion"
+                            ]
+                          }
+                        },
+                        "displayName": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "partialBudgetSection": {
+                      "type": "object",
+                      "properties": {
+                        "displayName": {
+                          "type": "string"
+                        },
+                        "partialBudgetSectionQuestionAnswerList": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "partialBudgetSectionAnswer": {
+                                "type": "string"
+                              },
+                              "partialBudgetSectionQuestion": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "partialBudgetSectionAnswer",
+                              "partialBudgetSectionQuestion"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "eligibilityStep": {
+                  "type": "object",
+                  "properties": {
+                    "eligibilitySection": {
+                      "type": "object",
+                      "properties": {
+                        "displayName": {
+                          "type": "string"
+                        },
+                        "eligibilitySectionQuestionAnswerList": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "eligibilitySectionAnswer": {
+                                "type": "string"
+                              },
+                              "eligibilitySectionQuestion": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "eligibilitySectionAnswer",
+                              "eligibilitySectionQuestion"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "availabilitySection": {
+                      "type": "object",
+                      "properties": {
+                        "displayName": {
+                          "type": "string"
+                        },
+                        "availabilitySectionQuestionAnswerList": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "availabilitySectionQuestion": {
+                                "type": "string"
+                              },
+                              "availabilitySectionAnswer": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "availabilitySectionQuestion",
+                              "availabilitySectionAnswer"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "otherCostShareProgramsSection": {
+                      "type": "object",
+                      "properties": {
+                        "displayName": {
+                          "type": "string"
+                        },
+                        "otherCostShareProgramsSectionQuestionAnswerList": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "otherCostShareProgramsSectionAnswer": {
+                                "type": "string"
+                              },
+                              "otherCostShareProgramsSectionQuestion": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "otherCostShareProgramsSectionAnswer",
+                              "otherCostShareProgramsSectionQuestion"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "projectStep": {
+                  "type": "object",
+                  "properties": {
+                    "activityInfoSection": {
+                      "type": "object",
+                      "properties": {
+                        "activityInfoSectionQuestionAnswerList": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "activityInfoSectionAnswer": {
+                                "type": "string"
+                              },
+                              "activityInfoSectionQuestion": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "activityInfoSectionAnswer",
+                              "activityInfoSectionQuestion"
+                            ]
+                          }
+                        },
+                        "displayName": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "businessPlanSection": {
+                      "type": "object",
+                      "properties": {
+                        "businessPlanSectionQuestionAnswerList": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "businessPlanSectionAnswer": {
+                                "type": "string"
+                              },
+                              "businessPlanSectionQuestion": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "businessPlanSectionAnswer",
+                              "businessPlanSectionQuestion"
+                            ]
+                          }
+                        },
+                        "displayName": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "collaboratingOrganizationInfoSection": {
+                      "type": "object",
+                      "properties": {
+                        "collaboratingOrganizationInfoSectionQuestionAnswerList": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "collaboratingOrganizationInfoSectionAnswer": {
+                                "type": "string"
+                              },
+                              "collaboratingOrganizationInfoSectionQuestion": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "collaboratingOrganizationInfoSectionAnswer",
+                              "collaboratingOrganizationInfoSectionQuestion"
+                            ]
+                          }
+                        },
+                        "displayName": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "consultantInfoSection": {
+                      "type": "object",
+                      "properties": {
+                        "consultantInfoSectionQuestionAnswerList": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "consultantInfoSectionAnswer": {
+                                "type": "string"
+                              },
+                              "consultantInfoSectionQuestion": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "consultantInfoSectionAnswer",
+                              "consultantInfoSectionQuestion"
+                            ]
+                          }
+                        },
+                        "displayName": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "organizationInfoSection": {
+                      "type": "object",
+                      "properties": {
+                        "displayName": {
+                          "type": "string"
+                        },
+                        "organizationInfoSectionQuestionAnswerList": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "organizationInfoSectionAnswer": {
+                                "type": "string"
+                              },
+                              "organizationInfoSectionQuestion": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "organizationInfoSectionAnswer",
+                              "organizationInfoSectionQuestion"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "programCategorySection": {
+                      "type": "object",
+                      "properties": {
+                        "displayName": {
+                          "type": "string"
+                        },
+                        "programCategorySectionQuestionAnswerList": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "programCategorySectionAnswer": {
+                                "type": "string"
+                              },
+                              "programCategorySectionQuestion": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "programCategorySectionAnswer",
+                              "programCategorySectionQuestion"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "sectionFoodAnimal": {
+                      "type": "object",
+                      "properties": {
+                        "displayName": {
+                          "type": "string"
+                        },
+                        "sectionFoodAnimalQuestionAnswerList": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "sectionFoodAnimalQuestion": {
+                                "type": "string"
+                              },
+                              "sectionFoodAnimalAnswer": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "sectionFoodAnimalQuestion",
+                              "sectionFoodAnimalAnswer"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "sectionEquine": {
+                      "type": "object",
+                      "properties": {
+                        "displayName": {
+                          "type": "string"
+                        },
+                        "sectionEquineQuestionAnswerList": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "sectionEquineQuestion": {
+                                "type": "string"
+                              },
+                              "sectionEquineAnswer": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "sectionEquineQuestion",
+                              "sectionEquineAnswer"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "sectionCompanionAnimal": {
+                      "type": "object",
+                      "properties": {
+                        "displayName": {
+                          "type": "string"
+                        },
+                        "sectionCompanionAnimalQuestionAnswerList": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "sectionCompanionAnimalQuestion": {
+                                "type": "string"
+                              },
+                              "sectionCompanionAnimalAnswer": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "sectionCompanionAnimalQuestion",
+                              "sectionCompanionAnimalAnswer"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "sectionAfterHoursCall": {
+                      "type": "object",
+                      "properties": {
+                        "displayName": {
+                          "type": "string"
+                        },
+                        "sectionAfterHoursCallQuestionAnswerList": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "sectionAfterHoursCallQuestion": {
+                                "type": "string"
+                              },
+                              "sectionAfterHoursCallAnswer": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "sectionAfterHoursCallQuestion",
+                              "sectionAfterHoursCallAnswer"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "projectDescriptionSection": {
+                      "type": "object",
+                      "properties": {
+                        "displayName": {
+                          "type": "string"
+                        },
+                        "projectDescriptionSectionQuestionAnswerList": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "projectDescriptionSectionAnswer": {
+                                "type": "string"
+                              },
+                              "projectDescriptionSectionQuestion": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "submissionDateTime": {
+                  "type": "string"
+                },
+                "supportingDocumentsStep": {
+                  "type": "object",
+                  "properties": {
+                    "supportingDocumentsSection": {
+                      "type": "object",
+                      "properties": {
+                        "displayName": {
+                          "type": "string"
+                        },
+                        "supportingDocumentsSectionQuestionAnswerList": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "supportingDocumentsSectionQuestion": {
+                                "type": "string"
+                              },
+                              "supportingDocumentsSectionAnswer": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "supportingDocumentsSectionQuestion",
+                              "supportingDocumentsSectionAnswer"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "applicantDeclarationStep": {
+                  "type": "object",
+                  "properties": {
+                    "declarationAndConsentSection": {
+                      "type": "object",
+                      "properties": {
+                        "displayName": {
+                          "type": "string"
+                        },
+                        "declarationAndConsentSectionQuestionAnswerList": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "declarationAndConsentSectionQuestion": {
+                                "type": "string"
+                              },
+                              "declarationAndConsentSectionAnswer": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "declarationAndConsentSectionQuestion",
+                              "declarationAndConsentSectionAnswer"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "demographicStep": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "Switch:_Populate_Word_Template_by_Program_or_Stream": {
+          "runAfter": {
+            "Initialize_variable:_vGeneratedFileContent": [
+              "Succeeded"
+            ]
+          },
+          "cases": {
+            "Case:_NEFBA-P2_for_the_NEFBA_Phase_2": {
+              "case": "ApplicationSubmissionTemplate-NEFBA-Phase2",
+              "actions": {
+                "Populate_the_NEFBA_Phase_2_-_Application_Submission_word_template": {
+                  "runAfter": {},
+                  "metadata": {
+                    "01WAHUP65SBZSNHYEU3BGL4IHGIJE2JEHB": "/PODS Templates/Claim Template.docx",
+                    "operationMetadataId": "281ee62d-c0cc-48bf-a4ec-76b677b1b213"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_wordonlinebusiness_1",
+                      "operationId": "CreateFileItem",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_wordonlinebusiness"
+                    },
+                    "parameters": {
+                      "source": "@parameters('PODS SharePoint Site Address (quartech_PodsSharePointSiteAddress)')",
+                      "drive": "@parameters('PODS DocumentLibraryId (quartech_DocumentLibraryId)')",
+                      "file": "/PODS Dataverse/Templates/ApplicationSubmissionTemplate-NEFBA-Phase2.docx",
+                      "dynamicFileSchema/664209645": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['applicationName']",
+                      "dynamicFileSchema/763581731": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['eligibilityStep']?['otherCostShareProgramsSection']?['otherCostShareProgramsSectionQuestionAnswerList']",
+                      "dynamicFileSchema/783776050": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['budgetStep']?['deliverablesBudgetSection']?['deliverablesBudgetSectionQuestionAnswerList']",
+                      "dynamicFileSchema/1634593149": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['eligibilityStep']?['eligibilitySection']?['eligibilitySectionQuestionAnswerList']",
+                      "dynamicFileSchema/1792247891": "@body('Parse_JSON:_Program_SharePoint_Info')?['programName']",
+                      "dynamicFileSchema/-1593540627": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['applicationId']",
+                      "dynamicFileSchema/-193773371": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['submissionDateTime']",
+                      "dynamicFileSchema/-1118748429": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['applicantInfoStep']?['applicantInfoSection']?['applicantInfoSectionQuestionAnswerList']",
+                      "dynamicFileSchema/-596864818": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['applicantInfoStep']?['applicationContactSection']?['applicationContactSectionQuestionAnswerList']",
+                      "dynamicFileSchema/-588008378": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['applicantInfoStep']?['indigenousApplicantsSection']?['indigenousApplicantsSectionQuestionAnswerList']",
+                      "dynamicFileSchema/-1038806910": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['budgetStep']?['partialBudgetSection']?['partialBudgetSectionQuestionAnswerList']",
+                      "dynamicFileSchema/-182055387": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['supportingDocumentsStep']?['supportingDocumentsSection']?['supportingDocumentsSectionQuestionAnswerList']",
+                      "dynamicFileSchema/-1375234799": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['demographicStep']",
+                      "dynamicFileSchema/-436517814": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['applicantDeclarationStep']?['declarationAndConsentSection']?['declarationAndConsentSectionQuestionAnswerList']"
+                    },
+                    "authentication": {
+                      "type": "Raw",
+                      "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                    }
+                  }
+                },
+                "Set_variable:_vGeneratedFileContent": {
+                  "runAfter": {
+                    "Populate_the_NEFBA_Phase_2_-_Application_Submission_word_template": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "8b556903-e700-4219-9d90-13fd85711b17"
+                  },
+                  "type": "SetVariable",
+                  "inputs": {
+                    "name": "vGeneratedFileContent",
+                    "value": "@body('Populate_the_NEFBA_Phase_2_-_Application_Submission_word_template')"
+                  }
+                }
+              }
+            },
+            "Case:_Populate_the_VLB_Word_Template": {
+              "case": "ApplicationSubmissionTemplate-VLB",
+              "actions": {
+                "Populate_the_VLB_Application_Submission_word_template": {
+                  "runAfter": {},
+                  "metadata": {
+                    "01WAHUP67NABJVHCCMXFBYNS7HIQA4ABI6": "/PODS Dataverse/Templates/ApplicationSubmissionTemplate-VLB.docx",
+                    "operationMetadataId": "4f7c7c32-14b3-4c53-ace7-ab2c7c9dfa2a"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_wordonlinebusiness_1",
+                      "operationId": "CreateFileItem",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_wordonlinebusiness"
+                    },
+                    "parameters": {
+                      "source": "@parameters('PODS SharePoint Site Address (quartech_PodsSharePointSiteAddress)')",
+                      "drive": "@parameters('PODS DocumentLibraryId (quartech_DocumentLibraryId)')",
+                      "file": "01WAHUP67NABJVHCCMXFBYNS7HIQA4ABI6",
+                      "dynamicFileSchema/664209645": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['applicationName']",
+                      "dynamicFileSchema/763581731": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['projectStep']?['sectionFoodAnimal']?['sectionFoodAnimalQuestionAnswerList']",
+                      "dynamicFileSchema/783776050": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['projectStep']?['sectionEquine']?['sectionEquineQuestionAnswerList']",
+                      "dynamicFileSchema/1792247891": "@body('Parse_JSON:_Program_SharePoint_Info')?['programName']",
+                      "dynamicFileSchema/-1593540627": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['applicationId']",
+                      "dynamicFileSchema/-193773371": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['submissionDateTime']",
+                      "dynamicFileSchema/-1118748429": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['applicantInfoStep']?['applicantInfoSection']?['applicantInfoSectionQuestionAnswerList']",
+                      "dynamicFileSchema/-596864818": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['applicantInfoStep']?['applicationContactSection']?['applicationContactSectionQuestionAnswerList']",
+                      "dynamicFileSchema/-56788577": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['eligibilityStep']?['availabilitySection']?['availabilitySectionQuestionAnswerList']",
+                      "dynamicFileSchema/-1038806910": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['projectStep']?['sectionCompanionAnimal']?['sectionCompanionAnimalQuestionAnswerList']",
+                      "dynamicFileSchema/-1310088133": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['projectStep']?['sectionAfterHoursCall']?['sectionAfterHoursCallQuestionAnswerList']",
+                      "dynamicFileSchema/-182055387": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['supportingDocumentsStep']?['supportingDocumentsSection']?['supportingDocumentsSectionQuestionAnswerList']",
+                      "dynamicFileSchema/-1375234799": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['demographicStep']",
+                      "dynamicFileSchema/-436517814": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['applicantDeclarationStep']?['declarationAndConsentSection']?['declarationAndConsentSectionQuestionAnswerList']"
+                    },
+                    "authentication": {
+                      "type": "Raw",
+                      "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                    }
+                  }
+                },
+                "Set_variable:_vGeneratedFileContent_-_VLB": {
+                  "runAfter": {
+                    "Populate_the_VLB_Application_Submission_word_template": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "eabaf093-5c7f-42f5-b81d-b8b0277a73b6"
+                  },
+                  "type": "SetVariable",
+                  "inputs": {
+                    "name": "vGeneratedFileContent",
+                    "value": "@body('Populate_the_VLB_Application_Submission_word_template')"
+                  }
+                }
+              }
+            },
+            "Case:_Populate_the_KTTP_S1S2_Fall_2024_Word_Template": {
+              "case": "ApplicationSubmissionTemplate-KTTP",
+              "actions": {
+                "Populate_KTTP_Application_Submission_Word_template": {
+                  "runAfter": {},
+                  "metadata": {
+                    "01WAHUP6ZJRYFUB63JLJD2X5IIQZRBXUKS": "/PODS Dataverse/Templates/ApplicationSubmissionTemplate-KTTP.docx",
+                    "operationMetadataId": "cc1fde6c-fdee-4f31-801a-7aed0c219732"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_wordonlinebusiness_1",
+                      "operationId": "CreateFileItem",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_wordonlinebusiness"
+                    },
+                    "parameters": {
+                      "source": "@parameters('PODS SharePoint Site Address (quartech_PodsSharePointSiteAddress)')",
+                      "drive": "@parameters('PODS DocumentLibraryId (quartech_DocumentLibraryId)')",
+                      "file": "01WAHUP6ZJRYFUB63JLJD2X5IIQZRBXUKS",
+                      "dynamicFileSchema/664209645": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['applicationName']",
+                      "dynamicFileSchema/763581731": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['applicantInfoStep']?['collaboratingOrganizationinApplicantInfoSection']?['collaboratingOrganizationinApplicantInfoSectionQuestionAnswerList']",
+                      "dynamicFileSchema/783776050": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['projectStep']?['projectDescriptionSection']?['projectDescriptionSectionQuestionAnswerList']",
+                      "dynamicFileSchema/1634593149": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['applicantInfoStep']?['businessOverviewSection']?['businessOverviewSectionQuestionAnswerList']",
+                      "dynamicFileSchema/1792247891": "@body('Parse_JSON:_Program_SharePoint_Info')?['programName']",
+                      "dynamicFileSchema/2101759181": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['budgetStep']?['deliverablesBudgetSection']?['deliverablesBudgetSectionQuestionAnswerList']",
+                      "dynamicFileSchema/-1593540627": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['applicationId']",
+                      "dynamicFileSchema/-193773371": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['submissionDateTime']",
+                      "dynamicFileSchema/-1118748429": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['applicantInfoStep']?['applicantInfoSection']?['applicantInfoSectionQuestionAnswerList']",
+                      "dynamicFileSchema/-596864818": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['applicantInfoStep']?['applicationContactSection']?['applicationContactSectionQuestionAnswerList']",
+                      "dynamicFileSchema/-588008378": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['applicantInfoStep']?['businessInfoSection']?['businessInfoSectionQuestionAnswerList']",
+                      "dynamicFileSchema/-1038806910": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['projectStep']?['activityInfoSection']?['activityInfoSectionQuestionAnswerList']",
+                      "dynamicFileSchema/-182055387": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['supportingDocumentsStep']?['supportingDocumentsSection']?['supportingDocumentsSectionQuestionAnswerList']",
+                      "dynamicFileSchema/-1375234799": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['demographicStep']",
+                      "dynamicFileSchema/-436517814": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['applicantDeclarationStep']?['declarationAndConsentSection']?['declarationAndConsentSectionQuestionAnswerList']"
+                    },
+                    "authentication": {
+                      "type": "Raw",
+                      "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                    }
+                  }
+                },
+                "Set_variable:_vGeneratedFileContent_-_KTTP_Fall_2024": {
+                  "runAfter": {
+                    "Populate_KTTP_Application_Submission_Word_template": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "c47f8333-4e27-4e08-aa02-d3b652ee6607"
+                  },
+                  "type": "SetVariable",
+                  "inputs": {
+                    "name": "vGeneratedFileContent",
+                    "value": "@body('Populate_KTTP_Application_Submission_Word_template')"
+                  }
+                }
+              }
+            },
+            "Case:_Populate_the_ABPP_S1_Fall_2024_Word_Template": {
+              "case": "ApplicationSubmissionTemplate-ABPPS1",
+              "actions": {
+                "Populate_ABPPS1_Application_Submission_Word_template": {
+                  "runAfter": {},
+                  "metadata": {
+                    "01WAHUP62RHRZETXKKBNAJDQ7S56TTJ3A2": "/PODS Dataverse/Templates/ApplicationSubmissionTemplate-ABPPS1.docx",
+                    "operationMetadataId": "68a58ab3-0ce6-4996-a69f-6cf4ce5d3db6"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_wordonlinebusiness_1",
+                      "operationId": "CreateFileItem",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_wordonlinebusiness"
+                    },
+                    "parameters": {
+                      "source": "@parameters('PODS SharePoint Site Address (quartech_PodsSharePointSiteAddress)')",
+                      "drive": "@parameters('PODS DocumentLibraryId (quartech_DocumentLibraryId)')",
+                      "file": "01WAHUP62RHRZETXKKBNAJDQ7S56TTJ3A2",
+                      "dynamicFileSchema/664209645": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['applicationName']",
+                      "dynamicFileSchema/763581731": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['applicantInfoStep']?['indigenousApplicantsSection']?['indigenousApplicantsSectionQuestionAnswerList']",
+                      "dynamicFileSchema/783776050": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['projectStep']?['projectDescriptionSection']?['projectDescriptionSectionQuestionAnswerList']",
+                      "dynamicFileSchema/1634593149": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['applicantInfoStep']?['businessOverviewSection']?['businessOverviewSectionQuestionAnswerList']",
+                      "dynamicFileSchema/1792247891": "@body('Parse_JSON:_Program_SharePoint_Info')?['programName']",
+                      "dynamicFileSchema/2101759181": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['budgetStep']?['deliverablesBudgetSection']?['deliverablesBudgetSectionQuestionAnswerList']",
+                      "dynamicFileSchema/-1593540627": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['applicationId']",
+                      "dynamicFileSchema/-193773371": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['submissionDateTime']",
+                      "dynamicFileSchema/-1118748429": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['applicantInfoStep']?['applicantInfoSection']?['applicantInfoSectionQuestionAnswerList']",
+                      "dynamicFileSchema/-596864818": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['applicantInfoStep']?['applicationContactSection']?['applicationContactSectionQuestionAnswerList']",
+                      "dynamicFileSchema/-588008378": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['applicantInfoStep']?['businessInfoSection']?['businessInfoSectionQuestionAnswerList']",
+                      "dynamicFileSchema/-1038806910": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['eligibilityStep']?['eligibilitySection']?['eligibilitySectionQuestionAnswerList']",
+                      "dynamicFileSchema/-182055387": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['supportingDocumentsStep']?['supportingDocumentsSection']?['supportingDocumentsSectionQuestionAnswerList']",
+                      "dynamicFileSchema/-1375234799": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['demographicStep']",
+                      "dynamicFileSchema/-436517814": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['applicantDeclarationStep']?['declarationAndConsentSection']?['declarationAndConsentSectionQuestionAnswerList']"
+                    },
+                    "authentication": {
+                      "type": "Raw",
+                      "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                    }
+                  }
+                },
+                "Set_variable:_vGeneratedFileContent_-_ABPPS1_Fall_2024": {
+                  "runAfter": {
+                    "Populate_ABPPS1_Application_Submission_Word_template": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "175a78db-5366-4b7d-a4d3-241f22119fb3"
+                  },
+                  "type": "SetVariable",
+                  "inputs": {
+                    "name": "vGeneratedFileContent",
+                    "value": "@body('Populate_ABPPS1_Application_Submission_Word_template')"
+                  }
+                }
+              }
+            },
+            "Case:_Populate_the_ABPP_S2_Fall_2024_Word_Template": {
+              "case": "ApplicationSubmissionTemplate-ABPPS2",
+              "actions": {
+                "Populate_ABPPS2_Application_Submission_Word_template": {
+                  "runAfter": {},
+                  "metadata": {
+                    "01WAHUP62TZYZPBJ3EWZA2NKAJKXZLRAZA": "/PODS Dataverse/Templates/ApplicationSubmissionTemplate-ABPPS2.docx",
+                    "operationMetadataId": "b3f731df-ceb5-44f0-a1be-96bd382bd35b"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_wordonlinebusiness_1",
+                      "operationId": "CreateFileItem",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_wordonlinebusiness"
+                    },
+                    "parameters": {
+                      "source": "@parameters('PODS SharePoint Site Address (quartech_PodsSharePointSiteAddress)')",
+                      "drive": "@parameters('PODS DocumentLibraryId (quartech_DocumentLibraryId)')",
+                      "file": "01WAHUP62TZYZPBJ3EWZA2NKAJKXZLRAZA",
+                      "dynamicFileSchema/664209645": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['applicationName']",
+                      "dynamicFileSchema/763581731": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['applicantInfoStep']?['indigenousApplicantsSection']?['indigenousApplicantsSectionQuestionAnswerList']",
+                      "dynamicFileSchema/783776050": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['projectStep']?['projectDescriptionSection']?['projectDescriptionSectionQuestionAnswerList']",
+                      "dynamicFileSchema/1102377269": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['projectStep']?['programCategorySection']?['programCategorySectionQuestionAnswerList']",
+                      "dynamicFileSchema/1634593149": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['applicantInfoStep']?['businessOverviewSection']?['businessOverviewSectionQuestionAnswerList']",
+                      "dynamicFileSchema/1792247891": "@body('Parse_JSON:_Program_SharePoint_Info')?['programName']",
+                      "dynamicFileSchema/2101759181": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['budgetStep']?['deliverablesBudgetSection']?['deliverablesBudgetSectionQuestionAnswerList']",
+                      "dynamicFileSchema/-1593540627": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['applicationId']",
+                      "dynamicFileSchema/-193773371": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['submissionDateTime']",
+                      "dynamicFileSchema/-1118748429": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['applicantInfoStep']?['applicantInfoSection']?['applicantInfoSectionQuestionAnswerList']",
+                      "dynamicFileSchema/-596864818": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['applicantInfoStep']?['applicationContactSection']?['applicationContactSectionQuestionAnswerList']",
+                      "dynamicFileSchema/-588008378": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['applicantInfoStep']?['businessInfoSection']?['businessInfoSectionQuestionAnswerList']",
+                      "dynamicFileSchema/-1038806910": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['eligibilityStep']?['eligibilitySection']?['eligibilitySectionQuestionAnswerList']",
+                      "dynamicFileSchema/-704406512": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['projectStep']?['consultantInfoSection']?['consultantInfoSectionQuestionAnswerList']",
+                      "dynamicFileSchema/-182055387": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['supportingDocumentsStep']?['supportingDocumentsSection']?['supportingDocumentsSectionQuestionAnswerList']",
+                      "dynamicFileSchema/-1375234799": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['demographicStep']",
+                      "dynamicFileSchema/-436517814": "@body('Parse_JSON:_Data_To_Populate_The_Application_Word_Template__')?['applicantDeclarationStep']?['declarationAndConsentSection']?['declarationAndConsentSectionQuestionAnswerList']"
+                    },
+                    "authentication": {
+                      "type": "Raw",
+                      "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                    }
+                  }
+                },
+                "Set_variable:_vGeneratedFileContent_-_ABPPS2_Fall_2024": {
+                  "runAfter": {
+                    "Populate_ABPPS2_Application_Submission_Word_template": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "b8be609a-cc03-4efa-9831-dfbf503f2242"
+                  },
+                  "type": "SetVariable",
+                  "inputs": {
+                    "name": "vGeneratedFileContent",
+                    "value": "@body('Populate_ABPPS2_Application_Submission_Word_template')"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "actions": {
+              "Terminate:_No_Word_Template_for_PDF_generation_for_this_program_or_stream_yet": {
+                "runAfter": {},
+                "metadata": {
+                  "operationMetadataId": "c4bc0b48-e2e9-4cef-b373-242f34cef72b"
+                },
+                "type": "Terminate",
+                "inputs": {
+                  "runStatus": "Cancelled"
+                }
+              }
+            }
+          },
+          "expression": "@body('Parse_JSON:_Program_SharePoint_Info')?['applicationWordTemplateFileName']",
+          "metadata": {
+            "operationMetadataId": "abe2585a-a06c-4d27-99e8-e8f9e657f5e8"
+          },
+          "type": "Switch"
+        },
+        "Initialize_variable:_vGeneratedFileContent": {
+          "runAfter": {
+            "Parse_JSON:_Data_To_Populate_The_Application_Word_Template__": [
+              "Succeeded"
+            ],
+            "Parse_JSON:_PDF_File_Info": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "6a78902b-b657-42f0-ac22-9be1a359d12b"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "vGeneratedFileContent",
+                "type": "object"
+              }
+            ]
+          }
+        },
+        "Parse_JSON:_PDF_File_Info": {
+          "runAfter": {
+            "Parse_JSON:_Program_SharePoint_Info": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "d52aa368-394f-4a0e-b09d-18481bc6ee44"
+          },
+          "type": "ParseJson",
+          "inputs": {
+            "content": "@triggerBody()['text_6']",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "fileNameWithoutExtension": {
+                  "type": "string"
+                },
+                "parentFolderName": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "Parse_JSON:_Program_SharePoint_Info": {
+          "runAfter": {
+            "Run_a_Child_Flow:_Get_Program_SP_Location_and_Application_Word_Template_Name": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "8fc0326d-1974-4970-8529-d37d70af3c6c"
+          },
+          "type": "ParseJson",
+          "inputs": {
+            "content": "@body('Run_a_Child_Flow:_Get_Program_SP_Location_and_Application_Word_Template_Name')",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errorMessage": {
+                  "type": "string"
+                },
+                "spSiteAddress": {
+                  "type": "string"
+                },
+                "folderRelativePath": {
+                  "type": "string"
+                },
+                "applicationWordTemplateFileName": {
+                  "type": "string"
+                },
+                "claimWordTemplateFileName": {
+                  "type": "string"
+                },
+                "programGuid": {
+                  "type": "string"
+                },
+                "programName": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "Run_a_Child_Flow:_Get_Program_SP_Location_and_Application_Word_Template_Name": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "4289e6fa-dd58-430b-a20f-d55e59425478"
+          },
+          "type": "Workflow",
+          "inputs": {
+            "host": {
+              "workflowReferenceName": "75133346-90e8-ee11-a204-6045bd5f4613"
+            },
+            "body": {
+              "text": "@triggerBody()['text_1']"
+            }
+          }
+        },
+        "Move_file:_generated_Submitted_Application_docx_to_the_Program_SharePoint_folder": {
+          "runAfter": {
+            "Run_a_Child_Flow:_Create_PDF_in_SharePoint": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "851ced19-2049-4d22-a5c6-28e386086ec4"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "MoveFileAsync",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "@parameters('PODS SharePoint Site Address (quartech_PodsSharePointSiteAddress)')",
+              "parameters/sourceFileId": "@outputs('Create_Application_docx')?['body/Id']",
+              "parameters/destinationDataset": "@body('Run_a_Child_Flow:_Get_Program_SP_Location_and_Application_Word_Template_Name')?['spSiteAddress']",
+              "parameters/destinationFolderPath": "@{body('Run_a_Child_Flow:_Get_Program_SP_Location_and_Application_Word_Template_Name')?['folderRelativePath']}@{body('Parse_JSON:_PDF_File_Info')?['parentFolderName']}",
+              "parameters/nameConflictBehavior": 1
+            },
+            "authentication": {
+              "type": "Raw",
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+            }
+          }
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

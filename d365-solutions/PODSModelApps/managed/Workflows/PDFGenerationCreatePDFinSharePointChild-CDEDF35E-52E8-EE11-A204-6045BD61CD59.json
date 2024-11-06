@@ -1,0 +1,186 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_sharepointonline_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_PodsSvcAcctSharePoint"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      },
+      "shared_wordonlinebusiness_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_PodsSvcAcctWordOnlineBusiness"
+        },
+        "api": {
+          "name": "shared_wordonlinebusiness"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "PODS SharePoint Site Address (quartech_PodsSharePointSiteAddress)": {
+          "defaultValue": "https://bcgov.sharepoint.com/sites/AF-PODS-DEV",
+          "type": "String",
+          "metadata": {
+            "schemaName": "quartech_PodsSharePointSiteAddress",
+            "description": "Site Address of the PODS SharePoint"
+          }
+        },
+        "PODS Doc Generation - Word Online - File Folder For Generated Docs (quartech_Pods_DocGeneration_WordOnline_FileFolderForGeneratedDocs)": {
+          "defaultValue": "/PODS Dataverse/Generated Documents",
+          "type": "String",
+          "metadata": {
+            "schemaName": "quartech_Pods_DocGeneration_WordOnline_FileFolderForGeneratedDocs",
+            "description": "Relative Folder where documents are generated in the Documents doc lib of the Word Online (Business) connector "
+          }
+        },
+        "PODS DocumentLibraryId (quartech_DocumentLibraryId)": {
+          "defaultValue": "b!fVeXUfs7uEem7B_WAWl7jXuXBtcAvcJCjKuVOvttfrz9SyeHTeuFTrd7D8gMryH1",
+          "type": "String",
+          "metadata": {
+            "schemaName": "quartech_DocumentLibraryId"
+          }
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "48fbef94-f8bc-4fa0-8b17-37af054cb804"
+          },
+          "type": "Request",
+          "kind": "Button",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text_2": {
+                  "title": "pdfFileNameWithoutFileExtension",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_3": {
+                  "title": "pdfParentFolderName",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_4": {
+                  "title": "generatingDocInSpSiteAddress",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text": {
+                  "title": "generatingDocInSpFolderPath",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                }
+              },
+              "required": [
+                "text_2",
+                "text_3"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Response": {
+          "runAfter": {
+            "Create_PDF_file_in_SharePoint": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "2303b2aa-8879-49e1-9225-09b11ccf16fd"
+          },
+          "type": "Response",
+          "kind": "Http",
+          "inputs": {
+            "statusCode": 200,
+            "body": "\"errorMessage\" : \"\",\n\"generatedPdfPath\" : @{outputs('Create_PDF_file_in_SharePoint')?['body/Path']}"
+          }
+        },
+        "Create_PDF_file_in_SharePoint": {
+          "runAfter": {
+            "Convert_Word_Document_to_PDF": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "4f7028b2-96c3-494a-9a79-2bb9d0cb87da"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "CreateFile",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "@triggerBody()?['text_4']",
+              "folderPath": "@{triggerBody()?['text']}@{triggerBody()['text_3']}",
+              "name": "@{triggerBody()['text_2']}.pdf",
+              "body": "@body('Convert_Word_Document_to_PDF')"
+            },
+            "authentication": {
+              "type": "Raw",
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+            }
+          },
+          "runtimeConfiguration": {
+            "contentTransfer": {
+              "transferMode": "Chunked"
+            }
+          }
+        },
+        "Convert_Word_Document_to_PDF": {
+          "runAfter": {},
+          "metadata": {
+            "01WAHUP65GSRHHTL6S6NC2VFQ6J6MVL46P": "/PODS/Generated Documents/Claims/leo-testing-claim02.docx",
+            "operationMetadataId": "c680b283-b72a-419f-aa79-f7a8358b07f5"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_wordonlinebusiness_1",
+              "operationId": "GetFilePDF",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_wordonlinebusiness"
+            },
+            "parameters": {
+              "source": "@parameters('PODS SharePoint Site Address (quartech_PodsSharePointSiteAddress)')",
+              "drive": "@parameters('PODS DocumentLibraryId (quartech_DocumentLibraryId)')",
+              "file": "@{parameters('PODS Doc Generation - Word Online - File Folder For Generated Docs (quartech_Pods_DocGeneration_WordOnline_FileFolderForGeneratedDocs)')}/@{triggerBody()['text_2']}.docx"
+            },
+            "authentication": {
+              "type": "Raw",
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+            }
+          }
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

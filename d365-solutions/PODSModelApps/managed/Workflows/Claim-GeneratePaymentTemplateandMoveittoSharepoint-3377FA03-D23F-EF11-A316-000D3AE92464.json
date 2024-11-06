@@ -1,0 +1,349 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_excelonlinebusiness": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_Pods_SvcAcctExcelOnlineBusiness"
+        },
+        "api": {
+          "name": "shared_excelonlinebusiness"
+        }
+      },
+      "shared_sharepointonline_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_PodsSvcAcctSharePoint"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      },
+      "shared_commondataserviceforapps_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_PodsSvcAcctDataverse"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "PODS SharePoint Site Address (quartech_PodsSharePointSiteAddress)": {
+          "defaultValue": "https://bcgov.sharepoint.com/sites/AF-PODS-DEV",
+          "type": "String",
+          "metadata": {
+            "schemaName": "quartech_PodsSharePointSiteAddress",
+            "description": "Site Address of the PODS SharePoint"
+          }
+        },
+        "PODS DocumentLibraryId (quartech_DocumentLibraryId)": {
+          "defaultValue": "b!fVeXUfs7uEem7B_WAWl7jXuXBtcAvcJCjKuVOvttfrz9SyeHTeuFTrd7D8gMryH1",
+          "type": "String",
+          "metadata": {
+            "schemaName": "quartech_DocumentLibraryId"
+          }
+        }
+      },
+      "triggers": {
+        "When_Generate_Payment_Template_set_to_yes_on_Claim": {
+          "metadata": {
+            "operationMetadataId": "633c9f3d-8e5b-4856-a1f9-0dd753df9544"
+          },
+          "type": "OpenApiConnectionWebhook",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "SubscribeWebhookTrigger",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "subscriptionRequest/message": 3,
+              "subscriptionRequest/entityname": "quartech_claim",
+              "subscriptionRequest/scope": 4,
+              "subscriptionRequest/filteringattributes": "quartech_generatepaymenttemplate",
+              "subscriptionRequest/filterexpression": "quartech_generatepaymenttemplate eq true"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        }
+      },
+      "actions": {
+        "Prepare_File_Content_in_JSON_format": {
+          "runAfter": {
+            "Initialize_file_lock_indicator_and_set_to_true": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "59aac02b-2821-41e8-954f-1bd18c604ae8"
+          },
+          "type": "Compose",
+          "inputs": {
+            "CSNR Business Name": "@{outputs('Get_information_from_associated_Account')?['body/quartech_crabusinessname']}",
+            "Supplier Number": "@{outputs('Get_information_from_associated_Account')?['body/quartech_suppliernumber']}",
+            "Qualified Receiver Name": "@{outputs('Get_User_and_Financial_Coding_Block_information_from_associated_Project')?['body/quartech_qualifiedreceiver/fullname']}",
+            "Expense Authority Name": "@{outputs('Get_User_and_Financial_Coding_Block_information_from_associated_Project')?['body/quartech_expenseauthority/fullname']}",
+            "Client": "@{outputs('Get_User_and_Financial_Coding_Block_information_from_associated_Project')?['body/quartech_financialcodingblock/quartech_client']}",
+            "RESP Centre": "@{outputs('Get_User_and_Financial_Coding_Block_information_from_associated_Project')?['body/quartech_financialcodingblock/quartech_respcentre']}",
+            "Service Line": "@{outputs('Get_User_and_Financial_Coding_Block_information_from_associated_Project')?['body/quartech_financialcodingblock/quartech_serviceline']}",
+            "STOB": "@{outputs('Get_User_and_Financial_Coding_Block_information_from_associated_Project')?['body/quartech_financialcodingblock/quartech_stob']}",
+            "Project": "@{outputs('Get_User_and_Financial_Coding_Block_information_from_associated_Project')?['body/quartech_financialcodingblock/quartech_project']}",
+            "Approved Amount": "@{outputs('Get_User_and_Financial_Coding_Block_information_from_associated_Project')?['body/quartech_actualamount']}"
+          }
+        },
+        "Run_a_Child_Flow:_Get_Program_SP_Location": {
+          "runAfter": {
+            "Get_User_and_Financial_Coding_Block_information_from_associated_Project": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "3299d0f9-660f-4512-824f-05dccaa8fb33"
+          },
+          "type": "Workflow",
+          "inputs": {
+            "host": {
+              "workflowReferenceName": "aa3af256-0eee-ee11-a1fe-6045bd5f4613"
+            },
+            "body": {
+              "text": "@triggerOutputs()?['body/_quartech_project_value']"
+            }
+          }
+        },
+        "Parse_JSON_Program_SharePoint_Info": {
+          "runAfter": {
+            "Initialize_file_lock_indicator_and_set_to_true": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "d2611c9f-0132-41a5-8aee-78ff14bdd640"
+          },
+          "type": "ParseJson",
+          "inputs": {
+            "content": "@body('Run_a_Child_Flow:_Get_Program_SP_Location')",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errorMessage": {
+                  "type": "string"
+                },
+                "spSiteAddress": {
+                  "type": "string"
+                },
+                "programStreamFolderPath": {
+                  "type": "string"
+                },
+                "projectFolderName": {
+                  "type": "string"
+                },
+                "applicationWordTemplateFileName": {
+                  "type": "string"
+                },
+                "claimWordTemplateFileName": {
+                  "type": "string"
+                },
+                "programGuid": {},
+                "programName": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "Pass_value_from_record_to_Template_Excel": {
+          "runAfter": {
+            "Create_new_Payment_Template_Excel_file_for_this_Project": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "80e1b70e-af9e-4ce4-b80c-78b98564d9cd",
+            "tableId": "Ttl_PaymentTemplate"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_excelonlinebusiness",
+              "operationId": "AddRowV2",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_excelonlinebusiness"
+            },
+            "parameters": {
+              "source": "@parameters('PODS SharePoint Site Address (quartech_PodsSharePointSiteAddress)')",
+              "drive": "@parameters('PODS DocumentLibraryId (quartech_DocumentLibraryId)')",
+              "file": "@outputs('Create_new_Payment_Template_Excel_file_for_this_Project')?['body/Id']",
+              "table": "Ttl_PaymentTemplate",
+              "item": "@outputs('Prepare_File_Content_in_JSON_format')"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Create_new_Payment_Template_Excel_file_for_this_Project": {
+          "runAfter": {
+            "Get_file_content_using_path": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "84cd6305-ecd0-47d0-bb79-74181a0435e8"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "CreateFile",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "@parameters('PODS SharePoint Site Address (quartech_PodsSharePointSiteAddress)')",
+              "folderPath": "/Shared Documents/PODS Dataverse/Generated Documents",
+              "name": "PaymentTemplate-@{triggerOutputs()?['body/quartech_name']}.xlsx",
+              "body": "@body('Get_file_content_using_path')"
+            },
+            "authentication": "@parameters('$authentication')"
+          },
+          "runtimeConfiguration": {
+            "contentTransfer": {
+              "transferMode": "Chunked"
+            }
+          }
+        },
+        "Get_file_content_using_path": {
+          "runAfter": {
+            "Parse_JSON_Program_SharePoint_Info": [
+              "Succeeded"
+            ],
+            "Prepare_File_Content_in_JSON_format": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "b66812a6-0ec3-4ff1-93bf-d673eff979dc"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "GetFileContentByPath",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "@parameters('PODS SharePoint Site Address (quartech_PodsSharePointSiteAddress)')",
+              "path": "/Shared Documents/PODS Dataverse/Templates/Payment Template V3.xlsx",
+              "inferContentType": true
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Initialize_file_lock_indicator_and_set_to_true": {
+          "runAfter": {
+            "Run_a_Child_Flow:_Get_Program_SP_Location": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "89454c48-70cb-4079-a8e7-75750af58b19"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "vFileLocked",
+                "type": "boolean",
+                "value": "@true"
+              }
+            ]
+          }
+        },
+        "Get_information_from_associated_Account": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "6a4f9a37-a6fb-442a-b687-7dbc463eaff3"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "accounts",
+              "recordId": "@triggerOutputs()?['body/_quartech_applicant_value']",
+              "$select": "quartech_crabusinessname, quartech_suppliernumber"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Get_User_and_Financial_Coding_Block_information_from_associated_Project": {
+          "runAfter": {
+            "Get_information_from_associated_Account": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "50466666-129c-4b39-afe5-92350f553a7a"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "quartech_grantprojects",
+              "recordId": "@triggerOutputs()?['body/_quartech_project_value']",
+              "$expand": "quartech_ExpenseAuthority($select=fullname), quartech_QualifiedReceiver($select=fullname), quartech_FinancialCodingBlock($select=quartech_client, quartech_project, quartech_respcentre, quartech_serviceline, quartech_stob, quartech_name)"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Send_an_HTTP_request_to_SharePoint": {
+          "runAfter": {
+            "Pass_value_from_record_to_Template_Excel": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "344a546a-a791-4105-9ac8-46941754f0aa"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "HttpRequest",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "@parameters('PODS SharePoint Site Address (quartech_PodsSharePointSiteAddress)')",
+              "parameters/method": "POST",
+              "parameters/uri": "_api/site/CreateCopyJobs",
+              "parameters/headers": {
+                "Accept": "application/json; odata=nometadata",
+                "Content-Type": "application/json; odata=verbose"
+              },
+              "parameters/body": "{\n    \"exportObjectUris\":[\"@{parameters('PODS SharePoint Site Address (quartech_PodsSharePointSiteAddress)')}/Shared%20Documents/PODS%20Dataverse/Generated%20Documents/PaymentTemplate-@{triggerOutputs()?['body/quartech_name']}.xlsx\"],\n    \"destinationUri\":\"@{parameters('PODS SharePoint Site Address (quartech_PodsSharePointSiteAddress)')}@{body('Parse_JSON_Program_SharePoint_Info')?['programStreamFolderPath']}@{body('Parse_JSON_Program_SharePoint_Info')?['projectFolderName']}/@{triggerOutputs()?['body/quartech_name']}\",\n    \"options\":{\n        \"IgnoreVersionHistory\":true,\n        \"AllowSchemaMismatch\":true,\n        \"BypassSharedLock\":true,\n        \"IsMoveMode\":true,\n        \"IncludeItemPermissions\":true,\n        \"SameWebCopyMoveOptimization\":true\n      }\n}"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

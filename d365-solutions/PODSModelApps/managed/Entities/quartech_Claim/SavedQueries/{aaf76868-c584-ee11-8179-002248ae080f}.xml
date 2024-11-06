@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>0</isdefault>
+    <savedqueryid>{aaf76868-c584-ee11-8179-002248ae080f}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="quartech_name" select="1" icon="1" preview="1">
+        <row name="result" id="quartech_claimid">
+          <cell name="quartech_name" width="200" />
+          <cell name="quartech_applicant" width="159" />
+          <cell name="quartech_filenumber" width="164" />
+          <cell name="quartech_claimstatus" width="112" />
+          <cell name="quartech_submittedon" width="153" />
+          <cell name="quartech_interimorfinalpayment" width="149" />
+          <cell name="quartech_authorizedclaimedamount" width="231" />
+          <cell name="quartech_requestedinterimpaymentamount" width="300" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="quartech_totalfees" width="100" />
+          <cell name="quartech_projectenddate" width="136" />
+          <cell name="quartech_declarationandconsent" width="179" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" output-format="xml-platform" mapping="logical">
+        <entity name="quartech_claim">
+          <attribute name="quartech_name" />
+          <attribute name="quartech_applicant" />
+          <attribute name="quartech_declarationandconsent" />
+          <attribute name="quartech_authorizedclaimedamount" />
+          <attribute name="quartech_projectenddate" />
+          <attribute name="quartech_filenumber" />
+          <attribute name="quartech_totalfees" />
+          <order attribute="quartech_name" descending="false" />
+          <attribute name="quartech_requestedinterimpaymentamount" />
+          <attribute name="quartech_claimid" />
+          <attribute name="quartech_claimstatus" />
+          <attribute name="quartech_submittedon" />
+          <attribute name="quartech_interimorfinalpayment" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Project Claims" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="The claims view shown on a project." languagecode="1033" />
+    </Descriptions>
+  </savedquery>
+</savedqueries>

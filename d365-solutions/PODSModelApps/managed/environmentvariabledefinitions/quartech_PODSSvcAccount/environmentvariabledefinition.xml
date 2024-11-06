@@ -1,0 +1,11 @@
+<environmentvariabledefinition schemaname="quartech_PODSSvcAccount">
+  <defaultvalue>{ 	"UserGuid" : "8c1303c1-2c1c-ee11-8f6d-002248ae0846", 	"Name" : "AF.PODS.Notifications" }</defaultvalue>
+  <displayname default="PODS Svc Account">
+    <label description="PODS Svc Account" languagecode="1033" />
+  </displayname>
+  <introducedversion>1.0.0.0</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <secretstore>0</secretstore>
+  <type>100000003</type>
+</environmentvariabledefinition>

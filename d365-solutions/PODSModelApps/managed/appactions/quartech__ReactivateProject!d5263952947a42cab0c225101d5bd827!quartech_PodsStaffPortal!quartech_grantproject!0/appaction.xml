@@ -1,0 +1,37 @@
+<appaction uniquename="quartech__ReactivateProject!d5263952947a42cab0c225101d5bd827!quartech_PodsStaffPortal!quartech_grantproject!0">
+  <appmoduleid>
+    <uniquename>quartech_PodsStaffPortal</uniquename>
+  </appmoduleid>
+  <buttonlabeltext default="Reactivate Project">
+    <label description="Reactivate Project" languagecode="1033" />
+  </buttonlabeltext>
+  <context>1</context>
+  <contextentity>
+    <logicalname>quartech_grantproject</logicalname>
+  </contextentity>
+  <contextvalue>quartech_grantproject</contextvalue>
+  <fonticon>$clientsvg:ActivateOrders</fonticon>
+  <hidden>0</hidden>
+  <iscustomizable>1</iscustomizable>
+  <isdisabled>0</isdisabled>
+  <isgrouptitlehidden>0</isgrouptitlehidden>
+  <location>0</location>
+  <name>ReactivateProject!d5263952947a42cab0c225101d5bd827</name>
+  <onclickeventjavascriptfunctionname>PODS.openDialog</onclickeventjavascriptfunctionname>
+  <onclickeventjavascriptparameters>[{"type":5},{"type":4},{"type":8},{"type":21,"value":"quartech_reactivatecancelproject_39fc1"},{"type":21,"value":"Reactivate Project"}]</onclickeventjavascriptparameters>
+  <onclickeventjavascriptwebresourceid>
+    <webresourceid>e6abea67-82d2-ee11-904d-6045bd5f4613</webresourceid>
+  </onclickeventjavascriptwebresourceid>
+  <onclickeventtype>2</onclickeventtype>
+  <origin>0</origin>
+  <sequence>100100077.5000000000</sequence>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+  <type>0</type>
+  <visibilityformulacomponentlibraryid>
+    <name>quartech_podsstaffportaldefaultcommandlibrary_1b1fa</name>
+  </visibilityformulacomponentlibraryid>
+  <visibilityformulacomponentname>a4ba8c8409ab4429b67074fe1e0ca753</visibilityformulacomponentname>
+  <visibilityformulafunctionname>Visible</visibilityformulafunctionname>
+  <visibilitytype>1</visibilitytype>
+</appaction>

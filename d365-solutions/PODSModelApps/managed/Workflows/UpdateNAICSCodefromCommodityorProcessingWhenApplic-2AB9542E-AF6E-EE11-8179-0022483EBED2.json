@@ -1,0 +1,212 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_sharedcommondataserviceforapps_f90be"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "When_an_Application_is_Submitted_from_the_Portal": {
+          "metadata": {
+            "operationMetadataId": "e4512ec2-40e9-4744-8c30-9743d002c8c6"
+          },
+          "type": "OpenApiConnectionWebhook",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "SubscribeWebhookTrigger",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "subscriptionRequest/message": 3,
+              "subscriptionRequest/entityname": "msgov_businessgrantapplication",
+              "subscriptionRequest/scope": 4,
+              "subscriptionRequest/filteringattributes": "quartech_applicationstatus",
+              "subscriptionRequest/filterexpression": "quartech_applicationstatus eq 919830000 and quartech_originalsource eq 255550002"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        }
+      },
+      "actions": {
+        "Check_if_the_program_is_ABPP_or_NEFBA": {
+          "actions": {
+            "Check_whether_the_Business_is_Processor": {
+              "actions": {
+                "Populate_Primary_Processing_to_NAICS_Code_for_Processor": {
+                  "runAfter": {},
+                  "metadata": {
+                    "operationMetadataId": "dee995df-ec98-4779-815c-a7ef91026f85"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_commondataserviceforapps_1",
+                      "operationId": "UpdateRecord",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                    },
+                    "parameters": {
+                      "entityName": "msgov_businessgrantapplications",
+                      "recordId": "@triggerOutputs()?['body/msgov_businessgrantapplicationid']",
+                      "item/quartech_NAICSIndustry@odata.bind": "quartech_naicscodes(@{triggerOutputs()?['body/_quartech_primarilyprocess_value']})"
+                    },
+                    "authentication": "@parameters('$authentication')"
+                  }
+                }
+              },
+              "runAfter": {},
+              "else": {
+                "actions": {
+                  "Check_whether_the_Business_is_Producer": {
+                    "actions": {
+                      "Get_the_NAICS_Code_based_on_associated_Commodity": {
+                        "runAfter": {},
+                        "metadata": {
+                          "operationMetadataId": "93112344-a1b9-44f5-a3d4-694f6b2a0c4e"
+                        },
+                        "type": "OpenApiConnection",
+                        "inputs": {
+                          "host": {
+                            "connectionName": "shared_commondataserviceforapps_1",
+                            "operationId": "GetItem",
+                            "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                          },
+                          "parameters": {
+                            "entityName": "quartech_commodities",
+                            "recordId": "@triggerOutputs()?['body/_quartech_commodity_value']"
+                          },
+                          "authentication": "@parameters('$authentication')"
+                        }
+                      },
+                      "Populate_Commodity_to_NAICS_Code_for_Producer": {
+                        "runAfter": {
+                          "Get_the_NAICS_Code_based_on_associated_Commodity": [
+                            "Succeeded"
+                          ]
+                        },
+                        "metadata": {
+                          "operationMetadataId": "b60d3e0c-00fe-4728-85d3-b0a936a4c0e1"
+                        },
+                        "type": "OpenApiConnection",
+                        "inputs": {
+                          "host": {
+                            "connectionName": "shared_commondataserviceforapps_1",
+                            "operationId": "UpdateRecord",
+                            "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                          },
+                          "parameters": {
+                            "entityName": "msgov_businessgrantapplications",
+                            "recordId": "@triggerOutputs()?['body/msgov_businessgrantapplicationid']",
+                            "item/quartech_NAICSIndustry@odata.bind": "quartech_naicscodes(@{outputs('Get_the_NAICS_Code_based_on_associated_Commodity')?['body/_quartech_naicscode_value']})"
+                          },
+                          "authentication": "@parameters('$authentication')"
+                        }
+                      }
+                    },
+                    "runAfter": {},
+                    "else": {
+                      "actions": {
+                        "Other_Types_of_Businesse": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "6440a061-c550-4da6-b53a-94c264de3a08"
+                          },
+                          "type": "Terminate",
+                          "inputs": {
+                            "runStatus": "Cancelled"
+                          }
+                        }
+                      }
+                    },
+                    "expression": {
+                      "equals": [
+                        "@triggerOutputs()?['body/quartech_recipienttype']",
+                        255550001
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "51fbb063-15a4-40e4-b78c-6f556f7ccd8e"
+                    },
+                    "type": "If"
+                  }
+                }
+              },
+              "expression": {
+                "equals": [
+                  "@triggerOutputs()?['body/quartech_recipienttype']",
+                  255550002
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "af10e3f8-beec-4ac5-89f6-b977c60924b5"
+              },
+              "type": "If"
+            }
+          },
+          "runAfter": {},
+          "else": {
+            "actions": {
+              "Terminate": {
+                "runAfter": {},
+                "metadata": {
+                  "operationMetadataId": "c27ed3e1-94c6-4a93-9039-d922f2b79c1e"
+                },
+                "type": "Terminate",
+                "inputs": {
+                  "runStatus": "Cancelled"
+                }
+              }
+            }
+          },
+          "expression": {
+            "or": [
+              {
+                "equals": [
+                  "@triggerOutputs()?['body/_quartech_program_value']",
+                  "bae19fa1-4d52-ee11-be6f-000d3af3ac95"
+                ]
+              },
+              {
+                "equals": [
+                  "@triggerOutputs()?['body/_quartech_program_value']",
+                  "188a5355-bf58-ee11-be6f-000d3af3ac95"
+                ]
+              },
+              {
+                "equals": [
+                  "@triggerOutputs()?['body/_quartech_program_value']",
+                  "870d8a26-33c4-ed11-b597-000d3aff121b"
+                ]
+              }
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "cb7d3633-c4fc-425c-965f-d55ba3d6a81a"
+          },
+          "type": "If"
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

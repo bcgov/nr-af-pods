@@ -1,0 +1,268 @@
+<Activity x:Class="XrmWorkflow00000000000000000000000000000000" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mcwc="clr-namespace:Microsoft.Crm.Workflow.ClientActivities;assembly=Microsoft.Crm.Workflow, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" xmlns:mxs="clr-namespace:Microsoft.Xrm.Sdk;assembly=Microsoft.Xrm.Sdk, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" xmlns:mxsq="clr-namespace:Microsoft.Xrm.Sdk.Query;assembly=Microsoft.Xrm.Sdk, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" xmlns:mxswa="clr-namespace:Microsoft.Xrm.Sdk.Workflow.Activities;assembly=Microsoft.Xrm.Sdk.Workflow, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" xmlns:s="clr-namespace:System;assembly=mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" xmlns:srs="clr-namespace:System.Runtime.Serialization;assembly=System.Runtime.Serialization, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" xmlns:this="clr-namespace:" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="InputEntities" Type="InArgument(scg:IDictionary(x:String, mxs:Entity))" />
+    <x:Property Name="CreatedEntities" Type="InArgument(scg:IDictionary(x:String, mxs:Entity))" />
+  </x:Members>
+  <this:XrmWorkflow00000000000000000000000000000000.InputEntities>
+    <InArgument x:TypeArguments="scg:IDictionary(x:String, mxs:Entity)" />
+  </this:XrmWorkflow00000000000000000000000000000000.InputEntities>
+  <this:XrmWorkflow00000000000000000000000000000000.CreatedEntities>
+    <InArgument x:TypeArguments="scg:IDictionary(x:String, mxs:Entity)" />
+  </this:XrmWorkflow00000000000000000000000000000000.CreatedEntities>
+  <mva:VisualBasic.Settings>Assembly references and imported namespaces for internal implementation</mva:VisualBasic.Settings>
+  <mxswa:Workflow>
+    <mxswa:ActivityReference AssemblyQualifiedName="Microsoft.Crm.Workflow.Activities.ConditionSequence, Microsoft.Crm.Workflow, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" DisplayName="ConditionStep1">
+      <mxswa:ActivityReference.Arguments>
+        <InArgument x:TypeArguments="x:Boolean" x:Key="Wait">False</InArgument>
+      </mxswa:ActivityReference.Arguments>
+      <mxswa:ActivityReference.Properties>
+        <sco:Collection x:TypeArguments="Variable" x:Key="Variables">
+          <Variable x:TypeArguments="x:Boolean" Default="False" Name="ConditionBranchStep2_condition" />
+          <Variable x:TypeArguments="x:Object" Name="ConditionBranchStep2_1" />
+          <Variable x:TypeArguments="x:Object" Name="ConditionBranchStep2_2" />
+          <Variable x:TypeArguments="x:Object" Name="ConditionBranchStep2_3" />
+        </sco:Collection>
+        <sco:Collection x:TypeArguments="Activity" x:Key="Activities">
+          <mxswa:GetEntityProperty Attribute="quartech_program" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" Value="[ConditionBranchStep2_1]">
+            <mxswa:GetEntityProperty.TargetType>
+              <InArgument x:TypeArguments="s:Type">
+                <mxswa:ReferenceLiteral x:TypeArguments="s:Type">
+                  <x:Null />
+                </mxswa:ReferenceLiteral>
+              </InArgument>
+            </mxswa:GetEntityProperty.TargetType>
+          </mxswa:GetEntityProperty>
+          <mxswa:ActivityReference AssemblyQualifiedName="Microsoft.Crm.Workflow.Activities.EvaluateExpression, Microsoft.Crm.Workflow, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" DisplayName="EvaluateExpression">
+            <mxswa:ActivityReference.Arguments>
+              <InArgument x:TypeArguments="x:String" x:Key="ExpressionOperator">CreateCrmType</InArgument>
+              <InArgument x:TypeArguments="s:Object[]" x:Key="Parameters">[New Object() { Microsoft.Xrm.Sdk.Workflow.WorkflowPropertyType.Guid, "1abafd2a-8e06-ee11-8f6e-002248ae0846", "UniqueIdentifier" }]</InArgument>
+              <InArgument x:TypeArguments="s:Type" x:Key="TargetType">
+                <mxswa:ReferenceLiteral x:TypeArguments="s:Type" Value="s:Guid" />
+              </InArgument>
+              <OutArgument x:TypeArguments="x:Object" x:Key="Result">[ConditionBranchStep2_3]</OutArgument>
+            </mxswa:ActivityReference.Arguments>
+          </mxswa:ActivityReference>
+          <mxswa:ActivityReference AssemblyQualifiedName="Microsoft.Crm.Workflow.Activities.EvaluateExpression, Microsoft.Crm.Workflow, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" DisplayName="EvaluateExpression">
+            <mxswa:ActivityReference.Arguments>
+              <InArgument x:TypeArguments="x:String" x:Key="ExpressionOperator">CreateCrmType</InArgument>
+              <InArgument x:TypeArguments="s:Object[]" x:Key="Parameters">[New Object() { Microsoft.Xrm.Sdk.Workflow.WorkflowPropertyType.EntityReference, "msgov_program", "EWP&amp;#160;-&amp;#160;Innovation&amp;#160;Project", ConditionBranchStep2_3, "Lookup" }]</InArgument>
+              <InArgument x:TypeArguments="s:Type" x:Key="TargetType">
+                <mxswa:ReferenceLiteral x:TypeArguments="s:Type">
+                  <x:Null />
+                </mxswa:ReferenceLiteral>
+              </InArgument>
+              <OutArgument x:TypeArguments="x:Object" x:Key="Result">[ConditionBranchStep2_2]</OutArgument>
+            </mxswa:ActivityReference.Arguments>
+          </mxswa:ActivityReference>
+          <mxswa:ActivityReference AssemblyQualifiedName="Microsoft.Crm.Workflow.Activities.EvaluateCondition, Microsoft.Crm.Workflow, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" DisplayName="EvaluateCondition">
+            <mxswa:ActivityReference.Arguments>
+              <InArgument x:TypeArguments="mxsq:ConditionOperator" x:Key="ConditionOperator">Equal</InArgument>
+              <InArgument x:TypeArguments="s:Object[]" x:Key="Parameters">[New Object() { ConditionBranchStep2_2 }]</InArgument>
+              <InArgument x:TypeArguments="x:Object" x:Key="Operand">[ConditionBranchStep2_1]</InArgument>
+              <OutArgument x:TypeArguments="x:Boolean" x:Key="Result">[ConditionBranchStep2_condition]</OutArgument>
+            </mxswa:ActivityReference.Arguments>
+          </mxswa:ActivityReference>
+          <mxswa:ActivityReference AssemblyQualifiedName="Microsoft.Crm.Workflow.Activities.ConditionBranch, Microsoft.Crm.Workflow, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" DisplayName="ConditionBranchStep2">
+            <mxswa:ActivityReference.Arguments>
+              <InArgument x:TypeArguments="x:Boolean" x:Key="Condition">[ConditionBranchStep2_condition]</InArgument>
+            </mxswa:ActivityReference.Arguments>
+            <mxswa:ActivityReference.Properties>
+              <mxswa:ActivityReference x:Key="Then" AssemblyQualifiedName="Microsoft.Crm.Workflow.Activities.Composite, Microsoft.Crm.Workflow, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" DisplayName="ConditionBranchStep2">
+                <mxswa:ActivityReference.Properties>
+                  <sco:Collection x:TypeArguments="Variable" x:Key="Variables" />
+                  <sco:Collection x:TypeArguments="Activity" x:Key="Activities">
+                    <Sequence DisplayName="SetVisibilityStep23: Hide Are the applicants an eligible organization?">
+                      <mcwc:SetVisibility ControlId="quartech_aretheapplicantsaneligibleorganization" ControlType="standard" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" IsVisible="False" />
+                    </Sequence>
+                    <Sequence DisplayName="SetAttributeValueStep25: Clear Are the applicants an eligible organization?">
+                      <Sequence.Variables>
+                        <Variable x:TypeArguments="x:Object" Name="SetAttributeValueStep25_1" />
+                      </Sequence.Variables>
+                      <Assign x:TypeArguments="mxs:Entity" To="[CreatedEntities(&quot;primaryEntity#Temp&quot;)]" Value="[New Entity(&quot;msgov_businessgrantapplication&quot;)]" />
+                      <Assign x:TypeArguments="s:Guid" To="[CreatedEntities(&quot;primaryEntity#Temp&quot;).Id]" Value="[InputEntities(&quot;primaryEntity&quot;).Id]" />
+                      <mxswa:SetEntityProperty Attribute="quartech_aretheapplicantsaneligibleorganization" Entity="[CreatedEntities(&quot;primaryEntity#Temp&quot;)]" EntityName="msgov_businessgrantapplication" Value="[SetAttributeValueStep25_1]">
+                        <mxswa:SetEntityProperty.TargetType>
+                          <InArgument x:TypeArguments="s:Type">
+                            <mxswa:ReferenceLiteral x:TypeArguments="s:Type" Value="mxs:OptionSetValue" />
+                          </InArgument>
+                        </mxswa:SetEntityProperty.TargetType>
+                      </mxswa:SetEntityProperty>
+                      <mcwc:SetAttributeValue DisplayName="SetAttributeValueStep25" Entity="[CreatedEntities(&quot;primaryEntity#Temp&quot;)]" EntityName="msgov_businessgrantapplication" />
+                      <Assign x:TypeArguments="mxs:Entity" To="[InputEntities(&quot;primaryEntity&quot;)]" Value="[CreatedEntities(&quot;primaryEntity#Temp&quot;)]" />
+                    </Sequence>
+                    <Sequence DisplayName="SetVisibilityStep27: Clear Is the proposed activity eligible?">
+                      <mcwc:SetVisibility ControlId="quartech_istheproposedactivityeligible" ControlType="standard" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" IsVisible="False" />
+                    </Sequence>
+                    <Sequence DisplayName="SetAttributeValueStep26: Hide Is the proposed activity eligible?">
+                      <Sequence.Variables>
+                        <Variable x:TypeArguments="x:Object" Name="SetAttributeValueStep26_1" />
+                      </Sequence.Variables>
+                      <Assign x:TypeArguments="mxs:Entity" To="[CreatedEntities(&quot;primaryEntity#Temp&quot;)]" Value="[New Entity(&quot;msgov_businessgrantapplication&quot;)]" />
+                      <Assign x:TypeArguments="s:Guid" To="[CreatedEntities(&quot;primaryEntity#Temp&quot;).Id]" Value="[InputEntities(&quot;primaryEntity&quot;).Id]" />
+                      <mxswa:SetEntityProperty Attribute="quartech_istheproposedactivityeligible" Entity="[CreatedEntities(&quot;primaryEntity#Temp&quot;)]" EntityName="msgov_businessgrantapplication" Value="[SetAttributeValueStep26_1]">
+                        <mxswa:SetEntityProperty.TargetType>
+                          <InArgument x:TypeArguments="s:Type">
+                            <mxswa:ReferenceLiteral x:TypeArguments="s:Type" Value="mxs:OptionSetValue" />
+                          </InArgument>
+                        </mxswa:SetEntityProperty.TargetType>
+                      </mxswa:SetEntityProperty>
+                      <mcwc:SetAttributeValue DisplayName="SetAttributeValueStep26" Entity="[CreatedEntities(&quot;primaryEntity#Temp&quot;)]" EntityName="msgov_businessgrantapplication" />
+                      <Assign x:TypeArguments="mxs:Entity" To="[InputEntities(&quot;primaryEntity&quot;)]" Value="[CreatedEntities(&quot;primaryEntity#Temp&quot;)]" />
+                    </Sequence>
+                    <Sequence DisplayName="SetVisibilityStep17: Show Physically located in BC">
+                      <mcwc:SetVisibility ControlId="quartech_physicallocationinbc" ControlType="standard" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" IsVisible="True" />
+                    </Sequence>
+                    <Sequence DisplayName="SetVisibilityStep18: Show Farm Class">
+                      <mcwc:SetVisibility ControlId="quartech_farmclassfnagriculturaloperation" ControlType="standard" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" IsVisible="True" />
+                    </Sequence>
+                    <Sequence DisplayName="SetVisibilityStep22: Show First Nations Agricultural Operation">
+                      <mcwc:SetVisibility ControlId="quartech_firstnationsagriculturaloperation" ControlType="standard" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" IsVisible="True" />
+                    </Sequence>
+                    <Sequence DisplayName="SetVisibilityStep19: Show Valid business registration">
+                      <mcwc:SetVisibility ControlId="quartech_registeredbusinessentity" ControlType="standard" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" IsVisible="True" />
+                    </Sequence>
+                    <Sequence DisplayName="SetVisibilityStep13: Show Primary Purpose Production &amp; Sale">
+                      <mcwc:SetVisibility ControlId="quartech_primarypurposeproductionandsale" ControlType="standard" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" IsVisible="True" />
+                    </Sequence>
+                    <Sequence DisplayName="SetVisibilityStep20: Show Aquaculture or Cannabis/hemp producer with license">
+                      <mcwc:SetVisibility ControlId="quartech_aquacultureorcannabishempproducerwithlice" ControlType="standard" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" IsVisible="True" />
+                    </Sequence>
+                    <Sequence DisplayName="SetVisibilityStep3: Show If livestock present, valid BC Premises ID?">
+                      <mcwc:SetVisibility ControlId="quartech_livestockpresentvalidbcpremisesid" ControlType="standard" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" IsVisible="True" />
+                    </Sequence>
+                    <Sequence DisplayName="SetVisibilityStep21: Show Previously Applied to EWP Program">
+                      <mcwc:SetVisibility ControlId="quartech_previouslyappliedtotheewpprogram" ControlType="standard" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" IsVisible="True" />
+                    </Sequence>
+                    <Sequence DisplayName="SetVisibilityStep22770: Show Contact, Address, Property Roll Numbers Correct">
+                      <mcwc:SetVisibility ControlId="quartech_contactaddresspropertyrollnumberscorrect" ControlType="standard" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" IsVisible="True" />
+                    </Sequence>
+                    <Sequence DisplayName="SetVisibilityStep22248: Hide Not yet received Cost-Share Funding from BMP">
+                      <mcwc:SetVisibility ControlId="quartech_notyetreceivedcostsharefundingfrombmp" ControlType="standard" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" IsVisible="False" />
+                    </Sequence>
+                    <Sequence DisplayName="SetAttributeValueStep23: Clear Not yet received Cost-Share Funding from BMP">
+                      <Sequence.Variables>
+                        <Variable x:TypeArguments="x:Object" Name="SetAttributeValueStep23_1" />
+                      </Sequence.Variables>
+                      <Assign x:TypeArguments="mxs:Entity" To="[CreatedEntities(&quot;primaryEntity#Temp&quot;)]" Value="[New Entity(&quot;msgov_businessgrantapplication&quot;)]" />
+                      <Assign x:TypeArguments="s:Guid" To="[CreatedEntities(&quot;primaryEntity#Temp&quot;).Id]" Value="[InputEntities(&quot;primaryEntity&quot;).Id]" />
+                      <mxswa:SetEntityProperty Attribute="quartech_notyetreceivedcostsharefundingfrombmp" Entity="[CreatedEntities(&quot;primaryEntity#Temp&quot;)]" EntityName="msgov_businessgrantapplication" Value="[SetAttributeValueStep23_1]">
+                        <mxswa:SetEntityProperty.TargetType>
+                          <InArgument x:TypeArguments="s:Type">
+                            <mxswa:ReferenceLiteral x:TypeArguments="s:Type" Value="mxs:OptionSetValue" />
+                          </InArgument>
+                        </mxswa:SetEntityProperty.TargetType>
+                      </mxswa:SetEntityProperty>
+                      <mcwc:SetAttributeValue DisplayName="SetAttributeValueStep23" Entity="[CreatedEntities(&quot;primaryEntity#Temp&quot;)]" EntityName="msgov_businessgrantapplication" />
+                      <Assign x:TypeArguments="mxs:Entity" To="[InputEntities(&quot;primaryEntity&quot;)]" Value="[CreatedEntities(&quot;primaryEntity#Temp&quot;)]" />
+                    </Sequence>
+                    <Sequence DisplayName="SetVisibilityStep23350: Hide Growing or Raising Fresh Food or Products">
+                      <mcwc:SetVisibility ControlId="quartech_growingorraisingfreshfoodorproducts" ControlType="standard" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" IsVisible="False" />
+                    </Sequence>
+                    <Sequence DisplayName="SetAttributeValueStep28: Clear Growing or Raising Fresh Food or Products">
+                      <Sequence.Variables>
+                        <Variable x:TypeArguments="x:Object" Name="SetAttributeValueStep28_1" />
+                      </Sequence.Variables>
+                      <Assign x:TypeArguments="mxs:Entity" To="[CreatedEntities(&quot;primaryEntity#Temp&quot;)]" Value="[New Entity(&quot;msgov_businessgrantapplication&quot;)]" />
+                      <Assign x:TypeArguments="s:Guid" To="[CreatedEntities(&quot;primaryEntity#Temp&quot;).Id]" Value="[InputEntities(&quot;primaryEntity&quot;).Id]" />
+                      <mxswa:SetEntityProperty Attribute="quartech_growingorraisingfreshfoodorproducts" Entity="[CreatedEntities(&quot;primaryEntity#Temp&quot;)]" EntityName="msgov_businessgrantapplication" Value="[SetAttributeValueStep28_1]">
+                        <mxswa:SetEntityProperty.TargetType>
+                          <InArgument x:TypeArguments="s:Type">
+                            <mxswa:ReferenceLiteral x:TypeArguments="s:Type" Value="mxs:OptionSetValue" />
+                          </InArgument>
+                        </mxswa:SetEntityProperty.TargetType>
+                      </mxswa:SetEntityProperty>
+                      <mcwc:SetAttributeValue DisplayName="SetAttributeValueStep28" Entity="[CreatedEntities(&quot;primaryEntity#Temp&quot;)]" EntityName="msgov_businessgrantapplication" />
+                      <Assign x:TypeArguments="mxs:Entity" To="[InputEntities(&quot;primaryEntity&quot;)]" Value="[CreatedEntities(&quot;primaryEntity#Temp&quot;)]" />
+                    </Sequence>
+                    <Sequence DisplayName="SetVisibilityStep24: Hide Gross Revenue less than $60k">
+                      <mcwc:SetVisibility ControlId="quartech_grossrevenuelessthan60000" ControlType="standard" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" IsVisible="False" />
+                    </Sequence>
+                    <Sequence DisplayName="SetAttributeValueStep29: Clear Gross Revenue less than $60k">
+                      <Sequence.Variables>
+                        <Variable x:TypeArguments="x:Object" Name="SetAttributeValueStep29_1" />
+                      </Sequence.Variables>
+                      <Assign x:TypeArguments="mxs:Entity" To="[CreatedEntities(&quot;primaryEntity#Temp&quot;)]" Value="[New Entity(&quot;msgov_businessgrantapplication&quot;)]" />
+                      <Assign x:TypeArguments="s:Guid" To="[CreatedEntities(&quot;primaryEntity#Temp&quot;).Id]" Value="[InputEntities(&quot;primaryEntity&quot;).Id]" />
+                      <mxswa:SetEntityProperty Attribute="quartech_grossrevenuelessthan60000" Entity="[CreatedEntities(&quot;primaryEntity#Temp&quot;)]" EntityName="msgov_businessgrantapplication" Value="[SetAttributeValueStep29_1]">
+                        <mxswa:SetEntityProperty.TargetType>
+                          <InArgument x:TypeArguments="s:Type">
+                            <mxswa:ReferenceLiteral x:TypeArguments="s:Type" Value="mxs:OptionSetValue" />
+                          </InArgument>
+                        </mxswa:SetEntityProperty.TargetType>
+                      </mxswa:SetEntityProperty>
+                      <mcwc:SetAttributeValue DisplayName="SetAttributeValueStep29" Entity="[CreatedEntities(&quot;primaryEntity#Temp&quot;)]" EntityName="msgov_businessgrantapplication" />
+                      <Assign x:TypeArguments="mxs:Entity" To="[InputEntities(&quot;primaryEntity&quot;)]" Value="[CreatedEntities(&quot;primaryEntity#Temp&quot;)]" />
+                    </Sequence>
+                    <Sequence DisplayName="SetVisibilityStep25: Hide Residents of BC">
+                      <mcwc:SetVisibility ControlId="quartech_residentsofbc" ControlType="standard" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" IsVisible="False" />
+                    </Sequence>
+                    <Sequence DisplayName="SetAttributeValueStep30: Clear Residents of BC">
+                      <Sequence.Variables>
+                        <Variable x:TypeArguments="x:Object" Name="SetAttributeValueStep30_1" />
+                      </Sequence.Variables>
+                      <Assign x:TypeArguments="mxs:Entity" To="[CreatedEntities(&quot;primaryEntity#Temp&quot;)]" Value="[New Entity(&quot;msgov_businessgrantapplication&quot;)]" />
+                      <Assign x:TypeArguments="s:Guid" To="[CreatedEntities(&quot;primaryEntity#Temp&quot;).Id]" Value="[InputEntities(&quot;primaryEntity&quot;).Id]" />
+                      <mxswa:SetEntityProperty Attribute="quartech_residentsofbc" Entity="[CreatedEntities(&quot;primaryEntity#Temp&quot;)]" EntityName="msgov_businessgrantapplication" Value="[SetAttributeValueStep30_1]">
+                        <mxswa:SetEntityProperty.TargetType>
+                          <InArgument x:TypeArguments="s:Type">
+                            <mxswa:ReferenceLiteral x:TypeArguments="s:Type" Value="mxs:OptionSetValue" />
+                          </InArgument>
+                        </mxswa:SetEntityProperty.TargetType>
+                      </mxswa:SetEntityProperty>
+                      <mcwc:SetAttributeValue DisplayName="SetAttributeValueStep30" Entity="[CreatedEntities(&quot;primaryEntity#Temp&quot;)]" EntityName="msgov_businessgrantapplication" />
+                      <Assign x:TypeArguments="mxs:Entity" To="[InputEntities(&quot;primaryEntity&quot;)]" Value="[CreatedEntities(&quot;primaryEntity#Temp&quot;)]" />
+                    </Sequence>
+                    <Sequence DisplayName="SetVisibilityStep26: Hide Received a Statement of Completion">
+                      <mcwc:SetVisibility ControlId="quartech_receivedastatementofcompletion" ControlType="standard" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" IsVisible="False" />
+                    </Sequence>
+                    <Sequence DisplayName="SetAttributeValueStep31: Clear Received a Statement of Completion">
+                      <Sequence.Variables>
+                        <Variable x:TypeArguments="x:Object" Name="SetAttributeValueStep31_1" />
+                      </Sequence.Variables>
+                      <Assign x:TypeArguments="mxs:Entity" To="[CreatedEntities(&quot;primaryEntity#Temp&quot;)]" Value="[New Entity(&quot;msgov_businessgrantapplication&quot;)]" />
+                      <Assign x:TypeArguments="s:Guid" To="[CreatedEntities(&quot;primaryEntity#Temp&quot;).Id]" Value="[InputEntities(&quot;primaryEntity&quot;).Id]" />
+                      <mxswa:SetEntityProperty Attribute="quartech_receivedastatementofcompletion" Entity="[CreatedEntities(&quot;primaryEntity#Temp&quot;)]" EntityName="msgov_businessgrantapplication" Value="[SetAttributeValueStep31_1]">
+                        <mxswa:SetEntityProperty.TargetType>
+                          <InArgument x:TypeArguments="s:Type">
+                            <mxswa:ReferenceLiteral x:TypeArguments="s:Type" Value="mxs:OptionSetValue" />
+                          </InArgument>
+                        </mxswa:SetEntityProperty.TargetType>
+                      </mxswa:SetEntityProperty>
+                      <mcwc:SetAttributeValue DisplayName="SetAttributeValueStep31" Entity="[CreatedEntities(&quot;primaryEntity#Temp&quot;)]" EntityName="msgov_businessgrantapplication" />
+                      <Assign x:TypeArguments="mxs:Entity" To="[InputEntities(&quot;primaryEntity&quot;)]" Value="[CreatedEntities(&quot;primaryEntity#Temp&quot;)]" />
+                    </Sequence>
+                    <Sequence DisplayName="SetVisibilityStep22253: Hide BRMB indicate a previous AgriRecovery application">
+                      <mcwc:SetVisibility ControlId="quartech_brmbindicatepreviousagrirecoveryapplicati" ControlType="standard" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" IsVisible="False" />
+                    </Sequence>
+                    <Sequence DisplayName="SetAttributeValueStep23840: Clear BRMB indicate a previous AgriRecovery application">
+                      <Sequence.Variables>
+                        <Variable x:TypeArguments="x:Object" Name="SetAttributeValueStep23840_1" />
+                      </Sequence.Variables>
+                      <Assign x:TypeArguments="mxs:Entity" To="[CreatedEntities(&quot;primaryEntity#Temp&quot;)]" Value="[New Entity(&quot;msgov_businessgrantapplication&quot;)]" />
+                      <Assign x:TypeArguments="s:Guid" To="[CreatedEntities(&quot;primaryEntity#Temp&quot;).Id]" Value="[InputEntities(&quot;primaryEntity&quot;).Id]" />
+                      <mxswa:SetEntityProperty Attribute="quartech_brmbindicatepreviousagrirecoveryapplicati" Entity="[CreatedEntities(&quot;primaryEntity#Temp&quot;)]" EntityName="msgov_businessgrantapplication" Value="[SetAttributeValueStep23840_1]">
+                        <mxswa:SetEntityProperty.TargetType>
+                          <InArgument x:TypeArguments="s:Type">
+                            <mxswa:ReferenceLiteral x:TypeArguments="s:Type" Value="mxs:OptionSetValue" />
+                          </InArgument>
+                        </mxswa:SetEntityProperty.TargetType>
+                      </mxswa:SetEntityProperty>
+                      <mcwc:SetAttributeValue DisplayName="SetAttributeValueStep23840" Entity="[CreatedEntities(&quot;primaryEntity#Temp&quot;)]" EntityName="msgov_businessgrantapplication" />
+                      <Assign x:TypeArguments="mxs:Entity" To="[InputEntities(&quot;primaryEntity&quot;)]" Value="[CreatedEntities(&quot;primaryEntity#Temp&quot;)]" />
+                    </Sequence>
+                    <Sequence DisplayName="SetVisibilityStep24857: Show Eligibility Comments">
+                      <mcwc:SetVisibility ControlId="quartech_eligibilitycomments" ControlType="standard" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" IsVisible="True" />
+                    </Sequence>
+                  </sco:Collection>
+                </mxswa:ActivityReference.Properties>
+              </mxswa:ActivityReference>
+              <x:Null x:Key="Else" />
+              <x:String x:Key="Description">If Program is EWP - Innovation Project</x:String>
+            </mxswa:ActivityReference.Properties>
+          </mxswa:ActivityReference>
+        </sco:Collection>
+        <x:Boolean x:Key="ContainsElseBranch">False</x:Boolean>
+      </mxswa:ActivityReference.Properties>
+    </mxswa:ActivityReference>
+  </mxswa:Workflow>
+</Activity>

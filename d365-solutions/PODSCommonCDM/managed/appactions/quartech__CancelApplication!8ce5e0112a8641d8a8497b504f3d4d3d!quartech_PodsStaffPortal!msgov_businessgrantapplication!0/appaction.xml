@@ -1,0 +1,37 @@
+<appaction uniquename="quartech__CancelApplication!8ce5e0112a8641d8a8497b504f3d4d3d!quartech_PodsStaffPortal!msgov_businessgrantapplication!0">
+  <appmoduleid>
+    <uniquename>quartech_PodsStaffPortal</uniquename>
+  </appmoduleid>
+  <buttonlabeltext default="Cancel Application">
+    <label description="Cancel Application" languagecode="1033" />
+  </buttonlabeltext>
+  <context>1</context>
+  <contextentity>
+    <logicalname>msgov_businessgrantapplication</logicalname>
+  </contextentity>
+  <contextvalue>msgov_businessgrantapplication</contextvalue>
+  <fonticon>$clientsvg:DeactivateOrders</fonticon>
+  <hidden>0</hidden>
+  <iscustomizable>1</iscustomizable>
+  <isdisabled>0</isdisabled>
+  <isgrouptitlehidden>0</isgrouptitlehidden>
+  <location>0</location>
+  <name>CancelApplication!8ce5e0112a8641d8a8497b504f3d4d3d</name>
+  <onclickeventjavascriptfunctionname>PODS.openDialog</onclickeventjavascriptfunctionname>
+  <onclickeventjavascriptparameters>[{"type":5},{"type":4},{"type":8},{"type":21,"value":"quartech_cancelapplication_2ea7b"},{"type":21,"value":"Cancel Application"}]</onclickeventjavascriptparameters>
+  <onclickeventjavascriptwebresourceid>
+    <webresourceid>e6abea67-82d2-ee11-904d-6045bd5f4613</webresourceid>
+  </onclickeventjavascriptwebresourceid>
+  <onclickeventtype>2</onclickeventtype>
+  <origin>0</origin>
+  <sequence>100100075.0000000000</sequence>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+  <type>0</type>
+  <visibilityformulacomponentlibraryid>
+    <name>quartech_podsstaffportaldefaultcommandlibrary_1b1fa</name>
+  </visibilityformulacomponentlibraryid>
+  <visibilityformulacomponentname>f8b7038859fb463f87ac0e85b33574f3</visibilityformulacomponentname>
+  <visibilityformulafunctionname>Visible</visibilityformulafunctionname>
+  <visibilitytype>1</visibilitytype>
+</appaction>

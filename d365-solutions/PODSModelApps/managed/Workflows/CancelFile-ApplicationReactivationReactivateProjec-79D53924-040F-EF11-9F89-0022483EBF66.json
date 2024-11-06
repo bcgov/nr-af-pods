@@ -1,0 +1,122 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_PodsSvcAcctDataverse"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        }
+      },
+      "triggers": {
+        "When_a_Cancelled_Application_is_REACTIVATED_": {
+          "metadata": {
+            "operationMetadataId": "eb25768c-f88e-4519-b9a3-6e2bed48fbc0"
+          },
+          "type": "OpenApiConnectionWebhook",
+          "inputs": {
+            "parameters": {
+              "subscriptionRequest/message": 3,
+              "subscriptionRequest/entityname": "msgov_businessgrantapplication",
+              "subscriptionRequest/scope": 4,
+              "subscriptionRequest/filteringattributes": "quartech_applicationstatus",
+              "subscriptionRequest/filterexpression": "quartech_statusuponcancellation ne null and (quartech_applicationstatus lt 255550011 or quartech_applicationstatus gt 255550015)",
+              "subscriptionRequest/name": "79d53924-040f-ef11-9f89-0022483ebf66"
+            },
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+              "operationId": "SubscribeWebhookTrigger",
+              "connectionName": "shared_commondataserviceforapps_1"
+            }
+          },
+          "description": "Status Upon Cancellation is not NULL (255550010)\nAND Application Status is NOT between 255550011 (Application Withdrawn) and 255550012 (Project Expired) including 255550013 (Application Expired)"
+        }
+      },
+      "actions": {
+        "Run_Reactivate_Project_Child_Flow": {
+          "runAfter": {
+            "Update_StatusUponCancellation_and_Cancel_File_to_NULL": [
+              "Succeeded"
+            ]
+          },
+          "type": "Workflow",
+          "inputs": {
+            "host": {
+              "workflowReferenceName": "4692bbaf-9d15-ef11-840a-000d3af34a87"
+            },
+            "body": {
+              "text": "@triggerBody()?['_quartech_project_value']"
+            }
+          }
+        },
+        "Application_REACTIVATION_If_Appli._Status_is_set_to_Status_Upon_Cancellation_": {
+          "actions": {},
+          "runAfter": {},
+          "else": {
+            "actions": {
+              "Terminate_by_Skipping_the_flow_with_SUCCESS": {
+                "type": "Terminate",
+                "inputs": {
+                  "runStatus": "Succeeded"
+                }
+              }
+            }
+          },
+          "expression": {
+            "and": [
+              {
+                "equals": [
+                  "@triggerBody()?['quartech_statusuponcancellation']",
+                  "@triggerBody()?['quartech_applicationstatus']"
+                ]
+              }
+            ]
+          },
+          "type": "If"
+        },
+        "Update_StatusUponCancellation_and_Cancel_File_to_NULL": {
+          "runAfter": {
+            "Application_REACTIVATION_If_Appli._Status_is_set_to_Status_Upon_Cancellation_": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "5b9fc8ac-3a41-48ee-9e10-48d2de835d64"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "parameters": {
+              "entityName": "msgov_businessgrantapplications",
+              "recordId": "@triggerOutputs()?['body/msgov_businessgrantapplicationid']",
+              "item/quartech_cancelfile": "@null",
+              "item/quartech_statusuponcancellation": "@null"
+            },
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+              "operationId": "UpdateRecord",
+              "connectionName": "shared_commondataserviceforapps_1"
+            }
+          }
+        }
+      }
+    },
+    "templateName": null
+  },
+  "schemaVersion": "1.0.0.0"
+}

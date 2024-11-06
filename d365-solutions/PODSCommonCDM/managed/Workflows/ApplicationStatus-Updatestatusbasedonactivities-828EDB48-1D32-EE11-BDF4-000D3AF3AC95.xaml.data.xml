@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Workflow WorkflowId="{828edb48-1d32-ee11-bdf4-000d3af3ac95}" Name="Application Status - Update status based on activities" Description="Click to add description" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <XamlFileName>/Workflows/ApplicationStatus-Updatestatusbasedonactivities-828EDB48-1D32-EE11-BDF4-000D3AF3AC95.xaml</XamlFileName>
+  <Type>1</Type>
+  <Subprocess>0</Subprocess>
+  <Category>2</Category>
+  <Mode>1</Mode>
+  <Scope>4</Scope>
+  <OnDemand>0</OnDemand>
+  <TriggerOnCreate>0</TriggerOnCreate>
+  <TriggerOnDelete>0</TriggerOnDelete>
+  <AsyncAutodelete>0</AsyncAutodelete>
+  <SyncWorkflowLogOnFailure>0</SyncWorkflowLogOnFailure>
+  <StateCode>0</StateCode>
+  <StatusCode>1</StatusCode>
+  <RunAs>1</RunAs>
+  <IsTransacted>1</IsTransacted>
+  <IntroducedVersion>1.0.0.0</IntroducedVersion>
+  <IsCustomizable>1</IsCustomizable>
+  <BusinessProcessType>0</BusinessProcessType>
+  <IsCustomProcessingStepAllowedForOtherPublishers>1</IsCustomProcessingStepAllowedForOtherPublishers>
+  <ProcessTriggerFormId>{8fcec025-153d-4b26-b483-15777dcb1408}</ProcessTriggerFormId>
+  <ProcessTriggerScope>1</ProcessTriggerScope>
+  <PrimaryEntity>msgov_BusinessGrantApplication</PrimaryEntity>
+  <LocalizedNames>
+    <LocalizedName languagecode="1033" description="Application Status - Update status based on activities" />
+  </LocalizedNames>
+  <Descriptions>
+    <Description languagecode="1033" description="Click to add description" />
+  </Descriptions>
+</Workflow>

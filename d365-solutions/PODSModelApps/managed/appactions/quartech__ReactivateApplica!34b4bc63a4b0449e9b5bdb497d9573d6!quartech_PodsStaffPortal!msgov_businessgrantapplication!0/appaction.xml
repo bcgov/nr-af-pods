@@ -1,0 +1,37 @@
+<appaction uniquename="quartech__ReactivateApplica!34b4bc63a4b0449e9b5bdb497d9573d6!quartech_PodsStaffPortal!msgov_businessgrantapplication!0">
+  <appmoduleid>
+    <uniquename>quartech_PodsStaffPortal</uniquename>
+  </appmoduleid>
+  <buttonlabeltext default="Reactivate Application">
+    <label description="Reactivate Application" languagecode="1033" />
+  </buttonlabeltext>
+  <context>1</context>
+  <contextentity>
+    <logicalname>msgov_businessgrantapplication</logicalname>
+  </contextentity>
+  <contextvalue>msgov_businessgrantapplication</contextvalue>
+  <fonticon>$clientsvg:ActivateOrders</fonticon>
+  <hidden>0</hidden>
+  <iscustomizable>1</iscustomizable>
+  <isdisabled>0</isdisabled>
+  <isgrouptitlehidden>0</isgrouptitlehidden>
+  <location>0</location>
+  <name>ReactivateApplica!34b4bc63a4b0449e9b5bdb497d9573d6</name>
+  <onclickeventjavascriptfunctionname>PODS.openDialog</onclickeventjavascriptfunctionname>
+  <onclickeventjavascriptparameters>[{"type":5},{"type":4},{"type":8},{"type":21,"value":"quartech_reactivatecancelledapplication_0808c"},{"type":21,"value":"Reactivate Application"}]</onclickeventjavascriptparameters>
+  <onclickeventjavascriptwebresourceid>
+    <webresourceid>e6abea67-82d2-ee11-904d-6045bd5f4613</webresourceid>
+  </onclickeventjavascriptwebresourceid>
+  <onclickeventtype>2</onclickeventtype>
+  <origin>0</origin>
+  <sequence>100100077.5000000000</sequence>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+  <type>0</type>
+  <visibilityformulacomponentlibraryid>
+    <name>quartech_podsstaffportaldefaultcommandlibrary_1b1fa</name>
+  </visibilityformulacomponentlibraryid>
+  <visibilityformulacomponentname>8b36ec85451e4b04ab6b1ca56c9a5d5a</visibilityformulacomponentname>
+  <visibilityformulafunctionname>Visible</visibilityformulafunctionname>
+  <visibilitytype>1</visibilitytype>
+</appaction>

@@ -1,0 +1,874 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{7ae217cf-9069-43b8-abeb-ba171f0cbd81}</formid>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form headerdensity="HighWithControls" shownavigationbar="true" showImage="false" maxWidth="1920">
+      <tabs>
+        <tab name="Claim_Information" id="{75e5c3ba-0d29-45cb-c930-2495a9178094}" IsUserDefined="0" locklevel="0" showlabel="true" expanded="true">
+          <labels>
+            <label description="Applicant Information" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="34%">
+              <sections>
+                <section name="applicationInfoSection" showlabel="true" showbar="false" locklevel="0" id="{7c0368b0-ee01-e5ed-e604-b9b8903cc398}" IsUserDefined="0" layout="varwidth" columns="1" labelwidth="115" celllabelalignment="Left" celllabelposition="Left">
+                  <labels>
+                    <label description="Application Information for Reimbursement" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{d606d171-d428-45a8-9bc0-06861947c7d0}" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_name" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="quartech_name" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{bd952326-4ecc-1351-e142-5354b389d838}" showlabel="true" locklevel="0" rowspan="3" colspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_businessaddress" classid="{E0DECE4B-6FC8-4a8f-A065-082708572369}" datafieldname="quartech_businessaddress" disabled="true" uniqueid="{1a409e94-6558-aace-7b30-0e51265a14a8}" />
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row>
+                      <cell id="{33d1a0bd-ad56-47e6-b211-14ce213fbb04}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_businessphonenumber" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="quartech_businessphonenumber" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{2b06f2f4-53f4-4877-b6df-c28d45ec2bec}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_businessemailaddress" classid="{ADA2203E-B4CD-49BE-9DDF-234642B43B52}" datafieldname="quartech_businessemailaddress" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{1bfe667b-ac69-44aa-91c6-dc686f154f30}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_legalbusinessororganizationname" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="quartech_legalbusinessororganizationname" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{4261d2a6-4304-464a-85c6-c3dd266de40d}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="Applicant confirmation that contact info is correct." languagecode="1033" />
+                        </labels>
+                        <control id="quartech_applicantinformationconfirmation" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="quartech_applicantinformationconfirmation" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{2a441f6b-b7c4-4e7e-b85a-775d45a32d75}" locklevel="0" colspan="1" rowspan="3">
+                        <labels>
+                          <label description="If contact info is wrong, details on what needs to be updated:" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_applicantinformationcorrections" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="quartech_applicantinformationcorrections" disabled="true" />
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row>
+                      <cell id="{8bc0f863-9351-4752-8323-5afaec50a9e5}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_filenumber" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="quartech_filenumber" disabled="true" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+            <column width="33%">
+              <sections>
+                <section name="Claim_Information_section_7" showlabel="true" showbar="false" locklevel="0" id="{40d0a440-57d0-e504-05b9-67d6777be690}" IsUserDefined="0" layout="varwidth" columns="1" labelwidth="115" celllabelalignment="Left" celllabelposition="Left">
+                  <labels>
+                    <label description="Claim Review" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{ae29d686-d9c8-d784-6e0e-228c05ab3ec4}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_approvedreimbursementamount" classid="{533B9E00-756B-4312-95A0-DC888637AC78}" datafieldname="quartech_approvedreimbursementamount" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{96b11074-a3be-49e3-c566-42c27bb9d12d}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_amountsenttocsnrforpayment" classid="{533B9E00-756B-4312-95A0-DC888637AC78}" datafieldname="quartech_amountsenttocsnrforpayment" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{54049be7-3f89-4e78-811d-a774810fe870}" locklevel="0" colspan="1" rowspan="1" visible="false">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_generatepaymenttemplate" classid="{67FAC785-CD58-4F9F-ABB3-4B7DDC6ED5ED}" datafieldname="quartech_generatepaymenttemplate" disabled="false" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+                <section name="claimInfoSection" showlabel="false" showbar="false" locklevel="0" id="{24418452-4de6-3272-d703-68b38d81946d}" IsUserDefined="0" layout="varwidth" columns="1" labelwidth="115" celllabelalignment="Left" celllabelposition="Left">
+                  <labels>
+                    <label description="Claim Information" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{e5dfa43a-2c40-4c25-a0cb-07d419d17350}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_application" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="quartech_application" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{202d1086-b923-4ed4-8541-af7c9166a29d}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_applicant" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="quartech_applicant" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{8399eb2f-adab-4cd1-a579-1c554edf1056}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_project" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="quartech_project" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{1eee3bbb-b3d0-4ea3-bd49-c00d0d2f1bd7}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_program" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="quartech_program" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{e395b2b8-4398-4f14-804c-a53621d15af0}" showlabel="true" locklevel="1" visible="true" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="ownerid" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="ownerid" uniqueid="{5391cad7-710d-3eae-7dbe-db448716ab72}" disabled="true">
+                          <parameters>
+                            <AutoResolve>true</AutoResolve>
+                            <DisableMru>false</DisableMru>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+            <column width="33%">
+              <sections>
+                <section name="Applicant_Information" showlabel="false" showbar="false" locklevel="0" id="{121316c9-63b5-6d80-2b9a-baeab2166848}" IsUserDefined="0" layout="varwidth" columns="1" labelwidth="115" celllabelalignment="Left" celllabelposition="Left">
+                  <labels>
+                    <label description="Applicant Information" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell locklevel="0" id="{7b0b11c7-88d2-4184-9a03-89eefc649f32}" colspan="1" rowspan="1" auto="false" showlabel="false">
+                        <labels>
+                          <label description="Applicant Contact Information Quick View" languagecode="1033" />
+                        </labels>
+                        <control id="ApplicantContactInformationQuickViewonClaim" classid="{5C5600E0-1D6E-4205-A272-BE80DA87FD42}" datafieldname="quartech_application">
+                          <parameters>
+                            <DisplayAsCustomer360Tile>false</DisplayAsCustomer360Tile>
+                            <QuickForms>&lt;QuickFormIds&gt;&lt;QuickFormId entityname="msgov_businessgrantapplication"&gt;2eaa2b17-b99a-ee11-be37-0022483ebed2&lt;/QuickFormId&gt;&lt;/QuickFormIds&gt;</QuickForms>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+                <section name="Claim_Information_Timeline" id="ff444a08-b474-436b-b710-698c7976906e" IsUserDefined="0" locklevel="0" showlabel="false" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115">
+                  <labels>
+                    <label description="Timeline" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{06994115-d925-40b2-acf5-4dd8442d9c42}" showlabel="false">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell locklevel="0" id="{0d3e9cc7-e3d9-4e23-8d2a-56492ed8794a}" rowspan="15" colspan="1">
+                        <labels>
+                          <label description="Note Text" languagecode="1033" />
+                        </labels>
+                        <control id="notescontrol" classid="{06375649-C143-495E-A496-C962E5B4488E}" disabled="false">
+                          <parameters>
+                            <UClientActivities>email,phonecall,task</UClientActivities>
+                            <UClientDisplayActivityUsing>defaultfields</UClientDisplayActivityUsing>
+                            <UClientActivityCardMap>appointment:4201:,campaignactivity:4402:,campaignresponse:4401:,email:4202:,fax:4204:,incidentresolution:4206:,letter:4207:,opportunityclose:4208:,orderclose:4209:,phonecall:4210:,quoteclose:4211:,recurringappointmentmaster:4251:,serviceappointment:4214:,socialactivity:4216:,task:4212:,adx_alertsubscription:10806:,adx_inviteredemption:10810:,adx_portalcomment:10843:,chat:10096:,msdyn_ocliveworkitem:10474:,msdyn_ocsession:10491:,msfp_alert:10364:,msfp_surveyinvite:10374:,msfp_surveyresponse:10376:,</UClientActivityCardMap>
+                            <UClientActivitiesConfigurationJSON>{"appointment":{"showTopDate":true,"showStatus":true,"canCreate":true,"createUsing":"default","openUsing":"default"},"campaignactivity":{"showTopDate":true,"showStatus":true,"canCreate":false,"createUsing":"default","openUsing":"default"},"incidentresolution":{"showTopDate":true,"showStatus":false,"canCreate":false,"createUsing":"default","openUsing":"default"},"opportunityclose":{"showTopDate":true,"showStatus":false,"canCreate":false,"createUsing":"default","openUsing":"default"},"orderclose":{"showTopDate":true,"showStatus":false,"canCreate":false,"createUsing":"default","openUsing":"default"},"quoteclose":{"showTopDate":true,"showStatus":false,"canCreate":false,"createUsing":"default","openUsing":"default"},"recurringappointmentmaster":{"showTopDate":true,"showStatus":true,"canCreate":false,"createUsing":"default","openUsing":"default"},"socialactivity":{"showTopDate":true,"showStatus":true,"canCreate":false,"createUsing":"default","openUsing":"default"},"adx_alertsubscription":{"showTopDate":true,"showStatus":true,"canCreate":true,"createUsing":"default","openUsing":"default"},"adx_inviteredemption":{"showTopDate":true,"showStatus":true,"canCreate":true,"createUsing":"default","openUsing":"default"},"adx_portalcomment":{"showTopDate":true,"showStatus":true,"canCreate":true,"createUsing":"default","openUsing":"default"},"chat":{"showTopDate":true,"showStatus":false,"canCreate":false,"createUsing":"default","openUsing":"default"},"msdyn_ocliveworkitem":{"showTopDate":true,"showStatus":true,"canCreate":false,"createUsing":"default","openUsing":"default"},"msdyn_ocsession":{"showTopDate":true,"showStatus":true,"canCreate":true,"createUsing":"default","openUsing":"default"},"msfp_alert":{"showTopDate":true,"showStatus":true,"canCreate":true,"createUsing":"default","openUsing":"default"},"msfp_surveyinvite":{"showTopDate":true,"showStatus":true,"canCreate":false,"createUsing":"default","openUsing":"default"},"msfp_surveyresponse":{"showTopDate":true,"showStatus":true,"canCreate":false,"createUsing":"default","openUsing":"default"}}</UClientActivitiesConfigurationJSON>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                  </rows>
+                </section>
+                <section name="Claim_Information_section_6" id="d79159c1-bb9d-4645-821c-40048368a158" IsUserDefined="0" locklevel="0" showlabel="true" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115" visible="false">
+                  <labels>
+                    <label description="New Section" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{f93beeff-7f39-4176-b90b-6d5c256f8e07}" showlabel="false">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+        <tab name="projectIndicatorsTab" id="f74a60d8-6ccc-48d4-8809-902e2cb061fb" IsUserDefined="0" locklevel="0" showlabel="true">
+          <labels>
+            <label description="Project Results" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%">
+              <sections>
+                <section name="indicatorsSection" id="1d4ea0b5-31e8-4117-9adc-0113cf65d77c" IsUserDefined="0" locklevel="0" showlabel="true" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115">
+                  <labels>
+                    <label description="Project Results" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{5c75fd8d-51a7-4d57-870d-e274254c4b03}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_projectenddate" classid="{5B773807-9FB2-42DB-97C3-7A91EFF8ADFF}" datafieldname="quartech_projectenddate" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{ef40efa4-964a-4afe-a593-afb45ab44139}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="Select the category that most closely describes the training funded by this project:" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_trainingcategoryfundedbyproject" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="quartech_trainingcategoryfundedbyproject" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{a4ba9a81-d273-4164-a3da-ef7c16d390c3}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description=" How many people participated in the training funded by" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_businessmanagementtrainingparticipants" classid="{C6D124CA-7EDA-4A60-AEA9-7FB8D318B68F}" datafieldname="quartech_businessmanagementtrainingparticipants" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{d403d60b-7df1-4e18-8886-ab46774f980c}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="If applicable, please provide the estimated number of participants who were producers/processors:" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_numberofproducersprocessorparticipants" classid="{C6D124CA-7EDA-4A60-AEA9-7FB8D318B68F}" datafieldname="quartech_numberofproducersprocessorparticipants" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{c54b4d5d-ce83-41a1-8244-c24ad331ae6d}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="Did you adopt any technologies, equipment, practices or processes as a result of this project?" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_adoptedprojectresults" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="quartech_adoptedprojectresults" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{af0e1217-b522-4a8a-92e9-641a9ce1535e}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="How many?" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_adoptednumber" classid="{C6D124CA-7EDA-4A60-AEA9-7FB8D318B68F}" datafieldname="quartech_adoptednumber" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{1dc3b6ec-22a4-4dab-873c-0ffb7b57b0de}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="Did you adopt any technologies, processes or equipment that are environmentally beneficial as a result of this project?" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_environmentallybeneficialadoptedresults" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="quartech_environmentallybeneficialadoptedresults" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{b52a4731-9dec-49c6-9150-bbd479d1e91d}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="How many?" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_environmentallybeneficialadoptednumber" classid="{C6D124CA-7EDA-4A60-AEA9-7FB8D318B68F}" datafieldname="quartech_environmentallybeneficialadoptednumber" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{3c9e1c25-a31a-43f8-8463-f3fc86cf196c}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="Is your project a group project that supports sector capacity building?" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_groupprojectsupportingsectorcapacitybuilding" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="quartech_groupprojectsupportingsectorcapacitybuilding" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{ab3a9e4d-f76f-44a2-b967-1d4d35ab583f}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="Was the student enrolled at your clinic exposed to a range of food animal practice related work?" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_studentexposedtofoodanimalpracticework" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="quartech_studentexposedtofoodanimalpracticework" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{4b191918-e98b-4a10-9593-b971d56fd9ee}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="Did your clinic build a successful relationship with your student?" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_clinicstudentsuccessfulrelationship" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="quartech_clinicstudentsuccessfulrelationship" disabled="true" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+        <tab name="claimInfoSection" id="82f552f2-5789-4287-9865-f538e38bc4f8" IsUserDefined="0" locklevel="0" showlabel="true">
+          <labels>
+            <label description="Claim Information" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%">
+              <sections>
+                <section name="section_ExpenseReport" id="ab60d93a-c701-4529-bc2a-7547b21c37c3" IsUserDefined="0" locklevel="0" showlabel="true" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115">
+                  <labels>
+                    <label description="Expense Report" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{64485e3c-02b4-4dfe-8c8d-801d8f088f62}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_eligibleexpenses" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="quartech_eligibleexpenses" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{edb47888-9b26-ea75-e686-495c7d1bb84b}" showlabel="true" colspan="1" auto="false" rowspan="6">
+                        <labels>
+                          <label description="Eligible Expenses" languagecode="1033" />
+                        </labels>
+                        <control id="WebResource_claimseligibleexpensegrid" classid="{9FDF5F91-88B1-47f4-AD53-C11EFC01A01D}">
+                          <parameters>
+                            <Url>quartech_claimseligibleexpensegrid</Url>
+                            <PassParameters>false</PassParameters>
+                            <ShowOnMobileClient>false</ShowOnMobileClient>
+                            <Security>false</Security>
+                            <Scrolling>yes</Scrolling>
+                            <Border>true</Border>
+                            <WebResourceId>{F963F0AC-6923-EF11-840A-000D3AE88259}</WebResourceId>
+                          </parameters>
+                        </control>
+                        <events>
+                          <event name="onload" application="false">
+                            <dependencies />
+                          </event>
+                        </events>
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row>
+                      <cell id="{553c70e8-c137-435a-bc82-f0d98624707b}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_totalsumofreportedexpenses" classid="{533B9E00-756B-4312-95A0-DC888637AC78}" datafieldname="quartech_totalsumofreportedexpenses" disabled="false" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+                <section name="FundingInformationSection" id="c33fe7c5-a2f8-4f06-89d6-6c9919d53ed6" IsUserDefined="0" locklevel="0" showlabel="true" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115">
+                  <labels>
+                    <label description="Funding Information" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{5999e2cc-03c0-4a7b-82c2-bce71748ebbb}" showlabel="false">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{f7f60484-c9bf-4799-9f5c-e0cc4578d9c0}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="Approved Amount as per Authorization Letter (Consultant Fee, GST, Total)" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_authorizedclaimedamount" classid="{533B9E00-756B-4312-95A0-DC888637AC78}" datafieldname="quartech_authorizedclaimedamount" disabled="true" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+                <section name="claimSection" id="9a8646ba-9f9a-4bb6-85bb-0546b3b2b5a3" IsUserDefined="0" locklevel="0" showlabel="true" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115">
+                  <labels>
+                    <label description="Claim" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{89db7209-e21f-4958-a283-79287f416008}" showlabel="false">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{d98358e2-ab27-4b5e-b82b-0ee57585250b}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="Are you requesting an interim claim or a final claim?" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_interimorfinalpayment" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="quartech_interimorfinalpayment" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{10b36e44-1687-4424-a415-fdf211698b12}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_totalprojectcost" classid="{533B9E00-756B-4312-95A0-DC888637AC78}" datafieldname="quartech_totalprojectcost" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{c3702589-9f08-44c3-9f47-c2d9571bf1d7}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="Your previously requested interim payment amount" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_requestedinterimpaymentamount" classid="{533B9E00-756B-4312-95A0-DC888637AC78}" datafieldname="quartech_requestedinterimpaymentamount" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{221f6a72-93d3-4553-a79b-99fc1c4275ee}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="How many students have completed 12 consecutive weeks or longer working in your clinic?" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_numberofstudentscompletedconsecutivework" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="quartech_numberofstudentscompletedconsecutivework" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{f87de767-1885-469c-8605-f0159057377b}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="Your requested amount in this current claim" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_totalfees" classid="{533B9E00-756B-4312-95A0-DC888637AC78}" datafieldname="quartech_totalfees" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{fc0a452b-39c1-46a5-b9e4-292dc16f7a73}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="Please provide the names of the co-applicants for the claims and the cost and a brief description of the services they are claiming" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_claimcoapplicants" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="quartech_claimcoapplicants" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{ca5e73d5-cd73-428b-8e98-f91e7072095f}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_declarationandconsent" classid="{67FAC785-CD58-4F9F-ABB3-4B7DDC6ED5ED}" datafieldname="quartech_declarationandconsent" disabled="true" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+        <tab name="tab_Documents" id="2ece7b08-ca9c-4ec6-bb95-15e2fd5b68d6" IsUserDefined="0" locklevel="0" showlabel="true" expanded="false">
+          <labels>
+            <label description="Documents" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%">
+              <sections>
+                <section name="tab_2_section_1" id="1b6f44b4-54e8-47fd-bb1f-4e65d9a7ee75" IsUserDefined="0" locklevel="0" showlabel="true" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115">
+                  <labels>
+                    <label description="Documents" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{0ed31221-ad5a-4efa-a4f3-c5dd8c8a9097}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="End of program data collection and program evaluation ID number" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_vvts_programevaluationid" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="quartech_vvts_programevaluationid" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{7a26d66b-9d10-4622-a348-92331ec49015}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_vvts_veterinaryclinicchefssubmissionid" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="quartech_vvts_veterinaryclinicchefssubmissionid" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{d72631a9-08cf-4c9a-8699-06dbbc12b272}" locklevel="0" colspan="1" rowspan="3">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_vvts_s1_foodanimalcaselog" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="quartech_vvts_s1_foodanimalcaselog" disabled="true" />
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row>
+                      <cell id="{5d2aa718-2ebd-4009-9177-bd997baeb369}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_vvts_s1_programevaluationsurveyid" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="quartech_vvts_s1_programevaluationsurveyid" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{0e40a10a-2647-4eb0-9915-b98bc69460a9}" locklevel="0" colspan="1" rowspan="3">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_vvts_s2_foodanimalcaselog" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="quartech_vvts_s2_foodanimalcaselog" disabled="true" />
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row>
+                      <cell id="{e787d242-bf81-46f4-83c2-c8ee134d4292}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_vvts_s2_programevaluationsurveyid" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="quartech_vvts_s2_programevaluationsurveyid" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{5fbda806-92fa-4d31-ac1e-65cefc002e6a}" locklevel="0" colspan="1" rowspan="3">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_vvts_s3_foodanimalcaselog" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="quartech_vvts_s3_foodanimalcaselog" disabled="true" />
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row>
+                      <cell id="{97ec1091-979d-4531-9cc3-1706adce23a6}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_vvts_s3_programevaluationsurveyid" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="quartech_vvts_s3_programevaluationsurveyid" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{be5e4966-2995-4e2f-b136-a4addf4c091a}" locklevel="0" colspan="1" rowspan="3">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_invoices" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="quartech_invoices" disabled="true" />
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row>
+                      <cell id="{7365474c-6782-4e32-b514-db2ff63199de}" locklevel="0" colspan="1" rowspan="3">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_proofofpayment" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="quartech_proofofpayment" disabled="true" />
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row>
+                      <cell id="{1d66c2d7-39a1-4e7f-ba45-97f5d12eab8f}" locklevel="0" colspan="1" rowspan="3">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_completedmeetingandserviceprovisionlog" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="quartech_completedmeetingandserviceprovisionlog" disabled="true" />
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row>
+                      <cell id="{cf47769c-944e-4a8f-bb6f-34a0ac9fc97d}" locklevel="0" colspan="1" rowspan="3">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_copyofconsultantfinalreportorbusinessplan" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="quartech_copyofconsultantfinalreportorbusinessplan" disabled="true" />
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row>
+                      <cell id="{a044f372-0c95-4980-a105-66dc17a5e081}" locklevel="0" colspan="1" rowspan="3">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_businessplan" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="quartech_businessplan" disabled="true" />
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row>
+                      <cell id="{6e04bd3a-f670-4301-94a1-a3dbdc645cff}" locklevel="0" colspan="1" rowspan="3">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_growthstrategy" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="quartech_growthstrategy" disabled="true" />
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row>
+                      <cell id="{5b315da4-6161-4ed4-80e3-8487c2c6d409}" locklevel="0" colspan="1" rowspan="3">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_activityreport" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="quartech_activityreport" disabled="true" />
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row>
+                      <cell id="{b4190af5-5a86-4396-a762-1e82f3f91af7}" locklevel="0" colspan="1" rowspan="3">
+                        <labels>
+                          <label description="Photos or Documentation of purchase and/or Installation" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_photosordocsofpurchase" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="quartech_photosordocsofpurchase" disabled="true" />
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row>
+                      <cell locklevel="0" id="{e4da247a-bddb-41ad-9c70-eb152483fc9d}" showlabel="false" rowspan="16" colspan="1" visible="true">
+                        <labels>
+                          <label description="Documents" languagecode="1033" />
+                        </labels>
+                        <control id="IFRAME_SpoDocuments" classid="{FD2A7985-3187-444E-908D-6624B21F69C0}">
+                          <parameters>
+                            <PassParameters>false</PassParameters>
+                            <Security>false</Security>
+                            <Scrolling>auto</Scrolling>
+                            <Border>false</Border>
+                            <Url>https://localhost</Url>
+                          </parameters>
+                        </control>
+                        <events>
+                          <event name="onload" application="false" active="false" />
+                        </events>
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row>
+                      <cell locklevel="0" id="{63ad3511-7efe-4516-b5f7-e7ffc1b73155}" rowspan="15" colspan="1">
+                        <labels>
+                          <label description="Note Text" languagecode="1033" />
+                        </labels>
+                        <control id="notescontrol" classid="{06375649-C143-495E-A496-C962E5B4488E}" disabled="false">
+                          <parameters>
+                            <UClientActivities>email,phonecall,task,msdyn_ocliveworkitem,fax</UClientActivities>
+                            <UClientDisplayActivityUsing>defaultfields</UClientDisplayActivityUsing>
+                            <UClientActivityCardMap>appointment:4201:,campaignactivity:4402:,campaignresponse:4401:,email:4202:,fax:4204:,incidentresolution:4206:,letter:4207:,opportunityclose:4208:,orderclose:4209:,phonecall:4210:,quoteclose:4211:,recurringappointmentmaster:4251:,serviceappointment:4214:,socialactivity:4216:,task:4212:,adx_alertsubscription:10806:,adx_inviteredemption:10810:,adx_portalcomment:10843:,chat:10096:,msdyn_ocliveworkitem:10474:,msdyn_ocsession:10491:,msfp_alert:10364:,msfp_surveyinvite:10374:,msfp_surveyresponse:10376:,</UClientActivityCardMap>
+                            <UClientActivitiesConfigurationJSON>{"appointment":{"showTopDate":true,"showStatus":true,"canCreate":true,"createUsing":"default","openUsing":"default"},"campaignactivity":{"showTopDate":true,"showStatus":true,"canCreate":false,"createUsing":"default","openUsing":"default"},"incidentresolution":{"showTopDate":true,"showStatus":false,"canCreate":false,"createUsing":"default","openUsing":"default"},"opportunityclose":{"showTopDate":true,"showStatus":false,"canCreate":false,"createUsing":"default","openUsing":"default"},"orderclose":{"showTopDate":true,"showStatus":false,"canCreate":false,"createUsing":"default","openUsing":"default"},"quoteclose":{"showTopDate":true,"showStatus":false,"canCreate":false,"createUsing":"default","openUsing":"default"},"recurringappointmentmaster":{"showTopDate":true,"showStatus":true,"canCreate":false,"createUsing":"default","openUsing":"default"},"socialactivity":{"showTopDate":true,"showStatus":true,"canCreate":false,"createUsing":"default","openUsing":"default"},"adx_alertsubscription":{"showTopDate":true,"showStatus":true,"canCreate":true,"createUsing":"default","openUsing":"default"},"adx_inviteredemption":{"showTopDate":true,"showStatus":true,"canCreate":true,"createUsing":"default","openUsing":"default"},"adx_portalcomment":{"showTopDate":true,"showStatus":true,"canCreate":true,"createUsing":"default","openUsing":"default"},"chat":{"showTopDate":true,"showStatus":false,"canCreate":false,"createUsing":"default","openUsing":"default"},"msdyn_ocsession":{"showTopDate":true,"showStatus":true,"canCreate":true,"createUsing":"default","openUsing":"default"},"msfp_alert":{"showTopDate":true,"showStatus":true,"canCreate":true,"createUsing":"default","openUsing":"default"},"msfp_surveyinvite":{"showTopDate":true,"showStatus":true,"canCreate":false,"createUsing":"default","openUsing":"default"},"msfp_surveyresponse":{"showTopDate":true,"showStatus":true,"canCreate":false,"createUsing":"default","openUsing":"default"},"fax":{"showTopDate":true,"showStatus":true,"canCreate":true,"createUsing":"default","openUsing":"default"}}</UClientActivitiesConfigurationJSON>
+                            <UClientRecordPerPage>50</UClientRecordPerPage>
+                            <UClientNotesConfigurationJSON>{"sortNotesByValue":"modifiedon"}</UClientNotesConfigurationJSON>
+                            <UClientOrderBy>descending</UClientOrderBy>
+                            <UClientHideRecentDates>false</UClientHideRecentDates>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+      <header id="{7ed93969-b5b9-43ca-872d-fc70581abeba}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{aa8a9f25-e1da-4d3d-a1c7-88ce72df458f}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{56a6489c-3be8-4b64-93c3-93db7779c5e6}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{1ad645c3-632d-42b2-95c7-d813a156dc71}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{e668dbe2-709c-467b-bd83-1a3c8beb2dee}" locklevel="0" colspan="1" rowspan="1">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+              <control id="header_quartech_claimstatus" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="quartech_claimstatus" disabled="true" />
+            </cell>
+          </row>
+        </rows>
+      </header>
+      <footer id="{e1577fb4-5ebf-4fe3-aa69-d9048bfb8015}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{8206e123-dba3-4244-ab15-3ff3a27ba7c6}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{ca57103b-28b7-40ab-a318-8ae3433eb431}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{c12da787-911c-475a-87db-394a81707f1f}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+          </row>
+        </rows>
+      </footer>
+      <Navigation>
+        <NavBar>
+          <NavBarByRelationshipItem Area="Info" Show="false" RelationshipName="quartech_claim_SharePointDocuments" Id="navSPDocuments" Sequence="9001">
+            <Titles>
+              <Title Text="Documents" LCID="1033" />
+            </Titles>
+          </NavBarByRelationshipItem>
+          <NavBarByRelationshipItem Area="ProcessCenter" Show="false" RelationshipName="hardcoded_{B7196B13-6B9D-42CD-BD58-B19A3953126F}navAsyncOperations" Id="navAsyncOperations" Sequence="9500">
+            <Titles>
+              <Title Text="Background Processes" LCID="1033" />
+            </Titles>
+          </NavBarByRelationshipItem>
+        </NavBar>
+        <NavBarAreas>
+          <NavBarArea Id="Info">
+            <Titles>
+              <Title LCID="1033" Text="Common" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="Sales">
+            <Titles>
+              <Title LCID="1033" Text="Sales" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="Service">
+            <Titles>
+              <Title LCID="1033" Text="Service" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="Marketing">
+            <Titles>
+              <Title LCID="1033" Text="Marketing" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="ProcessCenter">
+            <Titles>
+              <Title LCID="1033" Text="Process Sessions" />
+            </Titles>
+          </NavBarArea>
+        </NavBarAreas>
+      </Navigation>
+      <controlDescriptions />
+      <formLibraries>
+        <Library name="quartech_documents-management-script" libraryUniqueId="{fb69ea1a-7b64-49eb-9f47-5911008ce7f0}" />
+        <Library name="quartech_claim-form" libraryUniqueId="{ed2ff288-740d-449a-9551-a2ff3b03b37f}" />
+      </formLibraries>
+      <events>
+        <event name="onload" application="false" active="false">
+          <Handlers>
+            <Handler functionName="PODS.formOnLoad" libraryName="quartech_claim-form" handlerUniqueId="{c0a8f486-2c9f-4579-8eeb-f6e94d9c6027}" enabled="true" parameters="" passExecutionContext="true" />
+          </Handlers>
+        </event>
+      </events>
+      <DisplayConditions Order="0" FallbackForm="true">
+        <Everyone />
+      </DisplayConditions>
+    </form>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <LocalizedNames>
+      <LocalizedName description="Claim Information" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="Claim information form for the staff." languagecode="1033" />
+    </Descriptions>
+  </systemform>
+</forms>

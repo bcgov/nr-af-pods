@@ -1,0 +1,157 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_PodsSvcAcctDataverse"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      },
+      "shared_sharepointonline_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_PodsSvcAcctSharePoint"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      },
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_sharedcommondataserviceforapps_f90be"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "When_a_Project_is_created": {
+          "metadata": {
+            "operationMetadataId": "b527eb63-f420-49db-aebc-12f8a4b7bb88"
+          },
+          "type": "OpenApiConnectionWebhook",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "SubscribeWebhookTrigger",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "subscriptionRequest/message": 1,
+              "subscriptionRequest/entityname": "quartech_grantproject",
+              "subscriptionRequest/scope": 4
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        }
+      },
+      "actions": {
+        "Get_the_associated_Program_of_the_Project": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "486c9b48-1348-4887-b4c6-63b23fa989ec"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "msgov_programs",
+              "recordId": "@triggerOutputs()?['body/_quartech_program_value']"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Check_if_a_SharePoint_location_is_configured_for_the_selected_Program": {
+          "actions": {
+            "Create_new_folder_for_the_Project_using_PT_Project_ID": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "7b644e92-6599-4ca8-af1a-20ff197724a9"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline_1",
+                  "operationId": "CreateNewFolder",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@outputs('Get_the_associated_Program_of_the_Project')?['body/quartech_sharepointsiteaddress']",
+                  "table": "@outputs('Get_the_associated_Program_of_the_Project')?['body/quartech_sharepointdocumentlibraryname']",
+                  "parameters/path": "@concat(outputs('Get_the_associated_Program_of_the_Project')?['body/quartech_sharepointdocumentlibraryfolderpath'], '/', triggerOutputs()?['body/quartech_pt_projectidentifier'])"
+                },
+                "authentication": "@parameters('$authentication')"
+              }
+            },
+            "Update_The_Project's_Document_Folder_Name_and_Documents_Folder_Created_": {
+              "runAfter": {
+                "Create_new_folder_for_the_Project_using_PT_Project_ID": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "35cff264-5846-4563-9fa3-d95645195ad0"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps",
+                  "operationId": "UpdateRecord",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "entityName": "quartech_grantprojects",
+                  "recordId": "@triggerOutputs()?['body/quartech_grantprojectid']",
+                  "item/quartech_documentfoldername": "@triggerOutputs()?['body/quartech_pt_projectidentifier']",
+                  "item/quartech_documentsfoldercreated": true
+                },
+                "authentication": "@parameters('$authentication')"
+              }
+            }
+          },
+          "runAfter": {
+            "Get_the_associated_Program_of_the_Project": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "not": {
+              "equals": [
+                "@empty(outputs('Get_the_associated_Program_of_the_Project')?['body/quartech_sharepointsiteaddress'])",
+                true
+              ]
+            }
+          },
+          "metadata": {
+            "operationMetadataId": "95c36cb6-083e-4a55-b6f6-2fe56af9b03c"
+          },
+          "type": "If"
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

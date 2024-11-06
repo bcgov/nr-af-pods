@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Dashboard xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <LocalizedNames>
+    <LocalizedName description="Programs and Applicants Dashboard" languagecode="1033" />
+  </LocalizedNames>
+  <FormId>{a0bf4900-6cb6-ed11-b596-002248b219ac}</FormId>
+  <IsCustomizable>1</IsCustomizable>
+  <IsDefault>0</IsDefault>
+  <FormXml>
+    <forms type="dashboard">
+      <form>
+        <tabs>
+          <tab showlabel="true" verticallayout="true" id="{f12a511b-a2bb-488a-801b-c0444374ddeb}" name="{f12a511b-a2bb-488a-801b-c0444374ddeb}" expanded="false" locklevel="0" visible="false">
+            <labels>
+              <label description="Tab" languagecode="1033" />
+            </labels>
+            <columns>
+              <column width="100%">
+                <sections>
+                  <section showlabel="false" showbar="false" columns="111" id="{c54868ff-1331-4578-9dc0-a49bf147327a}">
+                    <labels>
+                      <label description="Section" languagecode="1033" />
+                    </labels>
+                    <rows>
+                      <row>
+                        <cell colspan="1" rowspan="12" showlabel="false" id="{3f0fcce7-c276-48d0-ba9b-429efc1eca97}" auto="false">
+                          <labels>
+                            <label description="Project" languagecode="1033" />
+                          </labels>
+                          <control id="Component425b42f" uniqueid="{d5c2a94e-74aa-9a0d-c17a-0516e5782482}" classid="{E7A81278-8635-4d9e-8D4D-59480B391C5B}" indicationOfSubgrid="true">
+                            <parameters>
+                              <TargetEntityType>quartech_grantproject</TargetEntityType>
+                              <ChartGridMode>Chart</ChartGridMode>
+                              <EnableQuickFind>false</EnableQuickFind>
+                              <EnableViewPicker>false</EnableViewPicker>
+                              <EnableJumpBar>false</EnableJumpBar>
+                              <RecordsPerPage>10</RecordsPerPage>
+                              <HeaderColorCode />
+                              <ViewId>{428236E7-6DB4-ED11-83FD-002248B219AC}</ViewId>
+                              <IsUserView>false</IsUserView>
+                              <ViewIds />
+                              <AutoExpand>Fixed</AutoExpand>
+                              <VisualizationId>{D1B978CB-6BB6-ED11-B596-002248B219AC}</VisualizationId>
+                              <IsUserChart>false</IsUserChart>
+                              <EnableChartPicker>false</EnableChartPicker>
+                              <RelationshipName />
+                            </parameters>
+                          </control>
+                        </cell>
+                        <cell colspan="1" rowspan="12" showlabel="false" id="{a39e9dcb-43ca-40cb-83f0-7619bfdd820e}" auto="false">
+                          <labels>
+                            <label description="Project" languagecode="1033" />
+                          </labels>
+                          <control id="Componenta08dee2" uniqueid="{ec028612-cba1-d43d-1607-c76a0c51c392}" classid="{E7A81278-8635-4d9e-8D4D-59480B391C5B}" indicationOfSubgrid="true">
+                            <parameters>
+                              <TargetEntityType>quartech_grantproject</TargetEntityType>
+                              <ChartGridMode>Chart</ChartGridMode>
+                              <EnableQuickFind>false</EnableQuickFind>
+                              <EnableViewPicker>false</EnableViewPicker>
+                              <EnableJumpBar>false</EnableJumpBar>
+                              <RecordsPerPage>10</RecordsPerPage>
+                              <HeaderColorCode />
+                              <ViewId>{428236E7-6DB4-ED11-83FD-002248B219AC}</ViewId>
+                              <IsUserView>false</IsUserView>
+                              <ViewIds />
+                              <AutoExpand>Fixed</AutoExpand>
+                              <VisualizationId>{F1F5263A-6BB6-ED11-B596-002248B219AC}</VisualizationId>
+                              <IsUserChart>false</IsUserChart>
+                              <EnableChartPicker>false</EnableChartPicker>
+                              <RelationshipName />
+                            </parameters>
+                          </control>
+                        </cell>
+                        <cell colspan="1" rowspan="12" showlabel="false" id="{1e5b2f26-b7bf-4099-bcb9-c5d0a723b3e3}" auto="false">
+                          <labels>
+                            <label description="Project" languagecode="1033" />
+                          </labels>
+                          <control id="Componente028e48" uniqueid="{8aede7d2-2d56-a79e-69c8-97424b3767a7}" classid="{E7A81278-8635-4d9e-8D4D-59480B391C5B}" indicationOfSubgrid="true">
+                            <parameters>
+                              <TargetEntityType>quartech_grantproject</TargetEntityType>
+                              <ChartGridMode>Chart</ChartGridMode>
+                              <EnableQuickFind>false</EnableQuickFind>
+                              <EnableViewPicker>false</EnableViewPicker>
+                              <EnableJumpBar>false</EnableJumpBar>
+                              <RecordsPerPage>12</RecordsPerPage>
+                              <HeaderColorCode>#F3F3F3</HeaderColorCode>
+                              <ViewId>{428236E7-6DB4-ED11-83FD-002248B219AC}</ViewId>
+                              <IsUserView>false</IsUserView>
+                              <ViewIds>{DD6A210B-9945-4A97-B11F-ED483D81D960}</ViewIds>
+                              <AutoExpand>Fixed</AutoExpand>
+                              <VisualizationId>{788C2798-6DB6-ED11-B596-000D3A0C2EE8}</VisualizationId>
+                              <IsUserChart>false</IsUserChart>
+                              <EnableChartPicker>false</EnableChartPicker>
+                              <RelationshipName />
+                            </parameters>
+                          </control>
+                        </cell>
+                      </row>
+                      <row />
+                      <row />
+                      <row />
+                      <row />
+                      <row />
+                      <row />
+                      <row />
+                      <row />
+                      <row />
+                      <row />
+                      <row />
+                    </rows>
+                  </section>
+                </sections>
+              </column>
+            </columns>
+          </tab>
+          <tab showlabel="true" verticallayout="true" id="{0ff28c9e-e48c-41e6-b4e3-8f0286f6b6d1}">
+            <labels>
+              <label description="Tab" languagecode="1033" />
+            </labels>
+            <columns>
+              <column width="100%">
+                <sections>
+                  <section showlabel="false" showbar="false" columns="111" id="{cce93f6f-f25b-471d-b3be-d88bab2bc9f1}">
+                    <labels>
+                      <label description="Section" languagecode="1033" />
+                    </labels>
+                    <rows>
+                      <row>
+                        <cell colspan="3" rowspan="12" showlabel="false" id="{a366ad62-9fd3-4183-a2c3-a4366c490f9b}" auto="false">
+                          <labels>
+                            <label description="Funding Committed Report (All Programs)" languagecode="1033" />
+                          </labels>
+                          <control id="Componentfe23660" uniqueid="{0c71e340-8c47-4999-e386-66d772901c43}" classid="{E7A81278-8635-4d9e-8D4D-59480B391C5B}" indicationOfSubgrid="true">
+                            <parameters>
+                              <TargetEntityType>quartech_grantproject</TargetEntityType>
+                              <ChartGridMode>Grid</ChartGridMode>
+                              <EnableQuickFind>true</EnableQuickFind>
+                              <EnableViewPicker>false</EnableViewPicker>
+                              <EnableJumpBar>false</EnableJumpBar>
+                              <RecordsPerPage>9</RecordsPerPage>
+                              <HeaderColorCode>#F3F3F3</HeaderColorCode>
+                              <ViewId>{428236E7-6DB4-ED11-83FD-002248B219AC}</ViewId>
+                              <IsUserView>false</IsUserView>
+                              <ViewIds>{DD6A210B-9945-4A97-B11F-ED483D81D960}</ViewIds>
+                              <AutoExpand>Fixed</AutoExpand>
+                              <VisualizationId>{F1F5263A-6BB6-ED11-B596-002248B219AC}</VisualizationId>
+                              <IsUserChart>false</IsUserChart>
+                              <EnableChartPicker>false</EnableChartPicker>
+                              <RelationshipName />
+                            </parameters>
+                          </control>
+                        </cell>
+                      </row>
+                      <row />
+                      <row />
+                      <row />
+                      <row />
+                      <row />
+                      <row />
+                      <row />
+                      <row />
+                      <row />
+                      <row />
+                      <row />
+                    </rows>
+                  </section>
+                </sections>
+              </column>
+            </columns>
+          </tab>
+        </tabs>
+        <controlDescriptions />
+      </form>
+    </forms>
+  </FormXml>
+  <IntroducedVersion>1.0.1.0</IntroducedVersion>
+  <IsTabletEnabled>0</IsTabletEnabled>
+</Dashboard>

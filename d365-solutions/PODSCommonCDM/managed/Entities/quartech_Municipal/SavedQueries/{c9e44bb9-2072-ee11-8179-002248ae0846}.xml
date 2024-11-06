@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>0</isdefault>
+    <savedqueryid>{c9e44bb9-2072-ee11-8179-002248ae0846}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="quartech_name" select="1" icon="1" preview="1">
+        <row name="result" id="quartech_municipalid">
+          <cell name="quartech_name" width="300" />
+          <cell name="quartech_regionaldistrict" width="300" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
+        <entity name="quartech_municipal">
+          <attribute name="quartech_name" />
+          <attribute name="quartech_regionaldistrict" />
+          <order attribute="quartech_name" descending="false" />
+          <filter type="and">
+            <condition attribute="quartech_visibleonapplicantportal" operator="eq" value="1" />
+          </filter>
+          <attribute name="quartech_municipalid" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.0.59</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Applicant Portal Municipalities View" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

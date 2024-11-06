@@ -1,0 +1,354 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_sharedcommondataserviceforapps_f90be"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "When_Project's_Status_is_Updated": {
+          "metadata": {
+            "operationMetadataId": "163c585a-3de1-48cb-b20b-c6aa9d075bc4"
+          },
+          "type": "OpenApiConnectionWebhook",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "SubscribeWebhookTrigger",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "subscriptionRequest/message": 3,
+              "subscriptionRequest/entityname": "quartech_grantproject",
+              "subscriptionRequest/scope": 4,
+              "subscriptionRequest/filteringattributes": "quartech_projectstatus",
+              "subscriptionRequest/filterexpression": "quartech_projectstatus eq 255550006"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        }
+      },
+      "actions": {
+        "Get_Project": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "af17ee95-031e-43d2-b526-3f96f8cebf6b"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "quartech_grantprojects",
+              "recordId": "@triggerOutputs()?['body/quartech_grantprojectid']"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Initialize_AF.PODS_Notification_User": {
+          "runAfter": {
+            "Get_Project": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "70740204-88b5-41c4-bb2b-05f92f0ec4e8"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "NotificationUser",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Check_AF.PODSNotification@gov.bc.ca": {
+          "runAfter": {
+            "Initialize_AF.PODS_Notification_User": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "ec3f97f5-f5b9-4052-82c1-2948d89171a0"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "systemusers",
+              "$filter": "domainname eq 'AF.PODSNotification@gov.bc.ca'",
+              "$top": 1
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Get_AF.PODSNotification@gov.bc.ca_User_GUID": {
+          "foreach": "@outputs('Check_AF.PODSNotification@gov.bc.ca')?['body/value']",
+          "actions": {
+            "Get_a_row_by_ID": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "917f4851-141a-44bf-ae98-e39c251183dd"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps",
+                  "operationId": "GetItem",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "entityName": "systemusers",
+                  "recordId": "@items('Get_AF.PODSNotification@gov.bc.ca_User_GUID')?['systemuserid']"
+                },
+                "authentication": "@parameters('$authentication')"
+              }
+            },
+            "Set_variable": {
+              "runAfter": {
+                "Get_a_row_by_ID": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "57287ab1-a423-4763-8460-b0a0797fa229"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "NotificationUser",
+                "value": "@outputs('Get_a_row_by_ID')?['body/systemuserid']"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_AF.PODSNotification@gov.bc.ca": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "c32caa2d-e519-41b7-ad2d-e704c1023042"
+          },
+          "type": "Foreach"
+        },
+        "Initialize_Status": {
+          "runAfter": {
+            "Get_AF.PODSNotification@gov.bc.ca_User_GUID": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "ae47b5b5-5c62-4b3b-a8c5-4059a888ff2f"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "StatusText",
+                "type": "string",
+                "value": "@{outputs('Get_Project')?['body/quartech_projectstatus@OData.Community.Display.V1.FormattedValue']}"
+              }
+            ]
+          }
+        },
+        "URL": {
+          "runAfter": {
+            "Initialize_Status": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "ee6cab8c-0103-416c-922f-af77543bf35f"
+          },
+          "type": "Compose",
+          "inputs": "@outputs('Get_Project')?['body/@odata.id']"
+        },
+        "Initialize_Link": {
+          "runAfter": {
+            "URL": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "30dffce0-f78e-4019-a2ef-691867cbd56e"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Link",
+                "type": "string",
+                "value": "https://@{uriHost(outputs('URL'))}/main.aspx?forceUCI=1&pagetype=entityrecord&etn=quartech_grantproject&id=@{outputs('Get_Project')?['body/quartech_grantprojectid']}"
+              }
+            ]
+          }
+        },
+        "Get_Project_Contact": {
+          "runAfter": {
+            "Initialize_Link": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "4aab6ed5-e691-4193-b053-fa1e2479ef60"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "contacts",
+              "recordId": "@outputs('Get_Project')?['body/_quartech_projectcontact_value']"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Project_Status_is_Project_Completed": {
+          "actions": {
+            "Create_Email_Message_Record": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "fdbc32a6-14f2-4c52-b734-186be785f1c4"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps",
+                  "operationId": "CreateRecord",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "entityName": "emails",
+                  "item/activitypointer_activity_parties": [
+                    {
+                      "participationtypemask": 1,
+                      "partyid@odata.bind": "systemusers(@{variables('NotificationUser')})"
+                    },
+                    {
+                      "participationtypemask": 2,
+                      "partyid@odata.bind": "contacts(@{outputs('Get_Project')?['body/_quartech_projectcontact_value']})"
+                    }
+                  ],
+                  "item/description": "Hello @{outputs('Get_Project_Contact')?['body/fullname']},<br>\n<br>\nYour Funding Project @{outputs('Get_Project')?['body/quartech_name']} with the Project ID @{outputs('Get_Project')?['body/quartech_pt_projectidentifier']} is now completed. <br>\n<br>\nIf you have any questions you can contact our program area inbox by replying to this message.",
+                  "item/quartech_program_email_address": "@outputs('Get_Program')?['body/quartech_programemailaddress']",
+                  "item/regardingobjectid_quartech_grantproject_email@odata.bind": "quartech_grantprojects(@{outputs('Get_Project')?['body/quartech_grantprojectid']})",
+                  "item/subject": "Your funding project @{outputs('Get_Project')?['body/quartech_name']} is now completed."
+                },
+                "authentication": "@parameters('$authentication')"
+              }
+            },
+            "Set_Email_Record_to_\"Pending_Sent\"": {
+              "runAfter": {
+                "Create_Email_Message_Record": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "b369cc4d-5016-4fd5-a83f-6712ee76a514"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps",
+                  "operationId": "PerformBoundAction",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "entityName": "emails",
+                  "actionName": "Microsoft.Dynamics.CRM.SendEmail",
+                  "recordId": "@outputs('Create_Email_Message_Record')?['body/activityid']",
+                  "item/IssueSend": true
+                },
+                "authentication": "@parameters('$authentication')"
+              }
+            }
+          },
+          "runAfter": {
+            "Get_Program": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Terminate": {
+                "runAfter": {},
+                "metadata": {
+                  "operationMetadataId": "05595a0c-42db-46aa-89e5-8546906ea855"
+                },
+                "type": "Terminate",
+                "inputs": {
+                  "runStatus": "Cancelled"
+                }
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+              "@triggerOutputs()?['body/quartech_projectstatus']",
+              255550006
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "dbb12eb7-4147-4203-872c-c6f40eb43fbd"
+          },
+          "type": "If"
+        },
+        "Get_Program": {
+          "runAfter": {
+            "Get_Project_Contact": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "1aa72cd0-bda3-4ecc-8f3d-39c0d30f3f24"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "msgov_programs",
+              "recordId": "@outputs('Get_Project')?['body/_quartech_program_value']"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

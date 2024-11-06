@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{ae56fe0e-9da2-48ac-b489-6a192e3abc63}</formid>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form headerdensity="HighWithControls">
+      <tabs>
+        <tab verticallayout="true" id="{6cbeea52-a255-4bc4-9e9e-ee0e69b8efe6}" IsUserDefined="1" name="tab_General">
+          <labels>
+            <label description="General" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%">
+              <sections>
+                <section showlabel="false" showbar="false" IsUserDefined="0" id="{6b62a300-a925-4aa1-a2ce-f50515d2f84c}" name="tab_General">
+                  <labels>
+                    <label description="General" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{6e739387-07b5-4029-a0d6-a71259d5a8d8}">
+                        <labels>
+                          <label description="Name" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_name" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="quartech_name" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{664a9810-eaf9-4b23-85b9-84e2e74c7ca1}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="Program" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_program" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="quartech_program" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{ae573c46-4d26-444d-a4cb-33edbd10dc11}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="Fiscal Year" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_fiscalyear" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="quartech_fiscalyear" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{de849545-4628-4e40-8b65-c357c5521c11}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="Priority Sector" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_prioritysector" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="quartech_prioritysector" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{cd234f2e-5fef-4736-8645-4f847954adbd}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="Amount" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_amount" classid="{533B9E00-756B-4312-95A0-DC888637AC78}" datafieldname="quartech_amount" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{7b2c015a-7481-40e2-8fdc-4fd5adef7d8e}">
+                        <labels>
+                          <label description="Owner" languagecode="1033" />
+                        </labels>
+                        <control id="ownerid" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="ownerid" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+      <header id="{c6c56c4d-fc3f-4f0c-bd38-11d09d39cddf}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{4ea291fb-572d-4c18-adb2-fb342e54e2c4}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{ae41fa3e-7ad2-4319-8706-5b73215ae8c2}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{74238960-3d1e-4ee5-a28d-1d8abf75c796}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+          </row>
+        </rows>
+      </header>
+      <footer id="{07aa7562-5a62-4d43-a9f1-c51617b75fdc}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{95bfc787-0b88-487e-bc3c-302944111b53}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{9067e00e-908c-47f7-bdca-c73029d56978}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{eee25804-290f-48e0-b5bd-71cf88226ca8}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+          </row>
+        </rows>
+      </footer>
+      <DisplayConditions Order="0" FallbackForm="true">
+        <Everyone />
+      </DisplayConditions>
+    </form>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <LocalizedNames>
+      <LocalizedName description="Information" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="A form for this entity." languagecode="1033" />
+    </Descriptions>
+  </systemform>
+</forms>

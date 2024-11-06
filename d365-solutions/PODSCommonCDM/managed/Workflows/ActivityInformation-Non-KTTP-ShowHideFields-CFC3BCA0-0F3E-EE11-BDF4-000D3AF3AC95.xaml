@@ -1,0 +1,482 @@
+<Activity x:Class="XrmWorkflow00000000000000000000000000000000" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mcwc="clr-namespace:Microsoft.Crm.Workflow.ClientActivities;assembly=Microsoft.Crm.Workflow, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" xmlns:mxs="clr-namespace:Microsoft.Xrm.Sdk;assembly=Microsoft.Xrm.Sdk, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" xmlns:mxsq="clr-namespace:Microsoft.Xrm.Sdk.Query;assembly=Microsoft.Xrm.Sdk, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" xmlns:mxswa="clr-namespace:Microsoft.Xrm.Sdk.Workflow.Activities;assembly=Microsoft.Xrm.Sdk.Workflow, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" xmlns:s="clr-namespace:System;assembly=mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" xmlns:srs="clr-namespace:System.Runtime.Serialization;assembly=System.Runtime.Serialization, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" xmlns:this="clr-namespace:" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="InputEntities" Type="InArgument(scg:IDictionary(x:String, mxs:Entity))" />
+    <x:Property Name="CreatedEntities" Type="InArgument(scg:IDictionary(x:String, mxs:Entity))" />
+  </x:Members>
+  <this:XrmWorkflow00000000000000000000000000000000.InputEntities>
+    <InArgument x:TypeArguments="scg:IDictionary(x:String, mxs:Entity)" />
+  </this:XrmWorkflow00000000000000000000000000000000.InputEntities>
+  <this:XrmWorkflow00000000000000000000000000000000.CreatedEntities>
+    <InArgument x:TypeArguments="scg:IDictionary(x:String, mxs:Entity)" />
+  </this:XrmWorkflow00000000000000000000000000000000.CreatedEntities>
+  <mva:VisualBasic.Settings>Assembly references and imported namespaces for internal implementation</mva:VisualBasic.Settings>
+  <mxswa:Workflow>
+    <mxswa:ActivityReference AssemblyQualifiedName="Microsoft.Crm.Workflow.Activities.ConditionSequence, Microsoft.Crm.Workflow, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" DisplayName="ConditionStep1">
+      <mxswa:ActivityReference.Arguments>
+        <InArgument x:TypeArguments="x:Boolean" x:Key="Wait">False</InArgument>
+      </mxswa:ActivityReference.Arguments>
+      <mxswa:ActivityReference.Properties>
+        <sco:Collection x:TypeArguments="Variable" x:Key="Variables">
+          <Variable x:TypeArguments="x:Boolean" Default="False" Name="ConditionBranchStep2_condition" />
+          <Variable x:TypeArguments="x:Boolean" Default="False" Name="ConditionBranchStep2_1" />
+          <Variable x:TypeArguments="x:Boolean" Default="False" Name="ConditionBranchStep2_2" />
+          <Variable x:TypeArguments="x:Boolean" Default="False" Name="ConditionBranchStep2_3" />
+          <Variable x:TypeArguments="x:Boolean" Default="False" Name="ConditionBranchStep2_4" />
+          <Variable x:TypeArguments="x:Boolean" Default="False" Name="ConditionBranchStep2_5" />
+          <Variable x:TypeArguments="x:Boolean" Default="False" Name="ConditionBranchStep2_6" />
+          <Variable x:TypeArguments="x:Object" Name="ConditionBranchStep2_7" />
+          <Variable x:TypeArguments="x:Object" Name="ConditionBranchStep2_8" />
+          <Variable x:TypeArguments="x:Object" Name="ConditionBranchStep2_9" />
+          <Variable x:TypeArguments="x:Boolean" Default="False" Name="ConditionBranchStep2_10" />
+          <Variable x:TypeArguments="x:Object" Name="ConditionBranchStep2_11" />
+          <Variable x:TypeArguments="x:Object" Name="ConditionBranchStep2_12" />
+          <Variable x:TypeArguments="x:Object" Name="ConditionBranchStep2_13" />
+          <Variable x:TypeArguments="x:Boolean" Default="False" Name="ConditionBranchStep2_14" />
+          <Variable x:TypeArguments="x:Object" Name="ConditionBranchStep2_15" />
+          <Variable x:TypeArguments="x:Object" Name="ConditionBranchStep2_16" />
+          <Variable x:TypeArguments="x:Object" Name="ConditionBranchStep2_17" />
+          <Variable x:TypeArguments="x:Boolean" Default="False" Name="ConditionBranchStep2_18" />
+          <Variable x:TypeArguments="x:Object" Name="ConditionBranchStep2_19" />
+          <Variable x:TypeArguments="x:Object" Name="ConditionBranchStep2_20" />
+          <Variable x:TypeArguments="x:Object" Name="ConditionBranchStep2_21" />
+          <Variable x:TypeArguments="x:Boolean" Default="False" Name="ConditionBranchStep2_22" />
+          <Variable x:TypeArguments="x:Object" Name="ConditionBranchStep2_23" />
+          <Variable x:TypeArguments="x:Object" Name="ConditionBranchStep2_24" />
+          <Variable x:TypeArguments="x:Object" Name="ConditionBranchStep2_25" />
+          <Variable x:TypeArguments="x:Boolean" Default="False" Name="ConditionBranchStep2_26" />
+          <Variable x:TypeArguments="x:Object" Name="ConditionBranchStep2_27" />
+          <Variable x:TypeArguments="x:Object" Name="ConditionBranchStep2_28" />
+          <Variable x:TypeArguments="x:Object" Name="ConditionBranchStep2_29" />
+          <Variable x:TypeArguments="x:Boolean" Default="False" Name="ConditionBranchStep2_30" />
+          <Variable x:TypeArguments="x:Object" Name="ConditionBranchStep2_31" />
+          <Variable x:TypeArguments="x:Object" Name="ConditionBranchStep2_32" />
+          <Variable x:TypeArguments="x:Object" Name="ConditionBranchStep2_33" />
+        </sco:Collection>
+        <sco:Collection x:TypeArguments="Activity" x:Key="Activities">
+          <mxswa:GetEntityProperty Attribute="quartech_program" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" Value="[ConditionBranchStep2_7]">
+            <mxswa:GetEntityProperty.TargetType>
+              <InArgument x:TypeArguments="s:Type">
+                <mxswa:ReferenceLiteral x:TypeArguments="s:Type">
+                  <x:Null />
+                </mxswa:ReferenceLiteral>
+              </InArgument>
+            </mxswa:GetEntityProperty.TargetType>
+          </mxswa:GetEntityProperty>
+          <mxswa:ActivityReference AssemblyQualifiedName="Microsoft.Crm.Workflow.Activities.EvaluateExpression, Microsoft.Crm.Workflow, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" DisplayName="EvaluateExpression">
+            <mxswa:ActivityReference.Arguments>
+              <InArgument x:TypeArguments="x:String" x:Key="ExpressionOperator">CreateCrmType</InArgument>
+              <InArgument x:TypeArguments="s:Object[]" x:Key="Parameters">[New Object() { Microsoft.Xrm.Sdk.Workflow.WorkflowPropertyType.Guid, "{6D59F058-C0CD-ED11-A7C6-000D3AFF121B}", "UniqueIdentifier" }]</InArgument>
+              <InArgument x:TypeArguments="s:Type" x:Key="TargetType">
+                <mxswa:ReferenceLiteral x:TypeArguments="s:Type" Value="s:Guid" />
+              </InArgument>
+              <OutArgument x:TypeArguments="x:Object" x:Key="Result">[ConditionBranchStep2_9]</OutArgument>
+            </mxswa:ActivityReference.Arguments>
+          </mxswa:ActivityReference>
+          <mxswa:ActivityReference AssemblyQualifiedName="Microsoft.Crm.Workflow.Activities.EvaluateExpression, Microsoft.Crm.Workflow, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" DisplayName="EvaluateExpression">
+            <mxswa:ActivityReference.Arguments>
+              <InArgument x:TypeArguments="x:String" x:Key="ExpressionOperator">CreateCrmType</InArgument>
+              <InArgument x:TypeArguments="s:Object[]" x:Key="Parameters">[New Object() { Microsoft.Xrm.Sdk.Workflow.WorkflowPropertyType.EntityReference, "msgov_program", "EWP&amp;#160;-&amp;#160;Flood&amp;#160;Stream", ConditionBranchStep2_9, "Lookup" }]</InArgument>
+              <InArgument x:TypeArguments="s:Type" x:Key="TargetType">
+                <mxswa:ReferenceLiteral x:TypeArguments="s:Type">
+                  <x:Null />
+                </mxswa:ReferenceLiteral>
+              </InArgument>
+              <OutArgument x:TypeArguments="x:Object" x:Key="Result">[ConditionBranchStep2_8]</OutArgument>
+            </mxswa:ActivityReference.Arguments>
+          </mxswa:ActivityReference>
+          <mxswa:ActivityReference AssemblyQualifiedName="Microsoft.Crm.Workflow.Activities.EvaluateCondition, Microsoft.Crm.Workflow, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" DisplayName="EvaluateCondition">
+            <mxswa:ActivityReference.Arguments>
+              <InArgument x:TypeArguments="mxsq:ConditionOperator" x:Key="ConditionOperator">Equal</InArgument>
+              <InArgument x:TypeArguments="s:Object[]" x:Key="Parameters">[New Object() { ConditionBranchStep2_8 }]</InArgument>
+              <InArgument x:TypeArguments="x:Object" x:Key="Operand">[ConditionBranchStep2_7]</InArgument>
+              <OutArgument x:TypeArguments="x:Boolean" x:Key="Result">[ConditionBranchStep2_6]</OutArgument>
+            </mxswa:ActivityReference.Arguments>
+          </mxswa:ActivityReference>
+          <mxswa:GetEntityProperty Attribute="quartech_program" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" Value="[ConditionBranchStep2_11]">
+            <mxswa:GetEntityProperty.TargetType>
+              <InArgument x:TypeArguments="s:Type">
+                <mxswa:ReferenceLiteral x:TypeArguments="s:Type">
+                  <x:Null />
+                </mxswa:ReferenceLiteral>
+              </InArgument>
+            </mxswa:GetEntityProperty.TargetType>
+          </mxswa:GetEntityProperty>
+          <mxswa:ActivityReference AssemblyQualifiedName="Microsoft.Crm.Workflow.Activities.EvaluateExpression, Microsoft.Crm.Workflow, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" DisplayName="EvaluateExpression">
+            <mxswa:ActivityReference.Arguments>
+              <InArgument x:TypeArguments="x:String" x:Key="ExpressionOperator">CreateCrmType</InArgument>
+              <InArgument x:TypeArguments="s:Object[]" x:Key="Parameters">[New Object() { Microsoft.Xrm.Sdk.Workflow.WorkflowPropertyType.Guid, "{FC18EC4A-C0CD-ED11-A7C6-000D3AFF121B}", "UniqueIdentifier" }]</InArgument>
+              <InArgument x:TypeArguments="s:Type" x:Key="TargetType">
+                <mxswa:ReferenceLiteral x:TypeArguments="s:Type" Value="s:Guid" />
+              </InArgument>
+              <OutArgument x:TypeArguments="x:Object" x:Key="Result">[ConditionBranchStep2_13]</OutArgument>
+            </mxswa:ActivityReference.Arguments>
+          </mxswa:ActivityReference>
+          <mxswa:ActivityReference AssemblyQualifiedName="Microsoft.Crm.Workflow.Activities.EvaluateExpression, Microsoft.Crm.Workflow, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" DisplayName="EvaluateExpression">
+            <mxswa:ActivityReference.Arguments>
+              <InArgument x:TypeArguments="x:String" x:Key="ExpressionOperator">CreateCrmType</InArgument>
+              <InArgument x:TypeArguments="s:Object[]" x:Key="Parameters">[New Object() { Microsoft.Xrm.Sdk.Workflow.WorkflowPropertyType.EntityReference, "msgov_program", "EWP&amp;#160;-&amp;#160;Heat&amp;#160;Stream", ConditionBranchStep2_13, "Lookup" }]</InArgument>
+              <InArgument x:TypeArguments="s:Type" x:Key="TargetType">
+                <mxswa:ReferenceLiteral x:TypeArguments="s:Type">
+                  <x:Null />
+                </mxswa:ReferenceLiteral>
+              </InArgument>
+              <OutArgument x:TypeArguments="x:Object" x:Key="Result">[ConditionBranchStep2_12]</OutArgument>
+            </mxswa:ActivityReference.Arguments>
+          </mxswa:ActivityReference>
+          <mxswa:ActivityReference AssemblyQualifiedName="Microsoft.Crm.Workflow.Activities.EvaluateCondition, Microsoft.Crm.Workflow, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" DisplayName="EvaluateCondition">
+            <mxswa:ActivityReference.Arguments>
+              <InArgument x:TypeArguments="mxsq:ConditionOperator" x:Key="ConditionOperator">Equal</InArgument>
+              <InArgument x:TypeArguments="s:Object[]" x:Key="Parameters">[New Object() { ConditionBranchStep2_12 }]</InArgument>
+              <InArgument x:TypeArguments="x:Object" x:Key="Operand">[ConditionBranchStep2_11]</InArgument>
+              <OutArgument x:TypeArguments="x:Boolean" x:Key="Result">[ConditionBranchStep2_10]</OutArgument>
+            </mxswa:ActivityReference.Arguments>
+          </mxswa:ActivityReference>
+          <mxswa:ActivityReference AssemblyQualifiedName="Microsoft.Crm.Workflow.Activities.EvaluateLogicalCondition, Microsoft.Crm.Workflow, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" DisplayName="EvaluateLogicalCondition">
+            <mxswa:ActivityReference.Arguments>
+              <InArgument x:TypeArguments="mxsq:LogicalOperator" x:Key="LogicalOperator">Or</InArgument>
+              <InArgument x:TypeArguments="x:Boolean" x:Key="LeftOperand">[ConditionBranchStep2_6]</InArgument>
+              <InArgument x:TypeArguments="x:Boolean" x:Key="RightOperand">[ConditionBranchStep2_10]</InArgument>
+              <OutArgument x:TypeArguments="x:Boolean" x:Key="Result">[ConditionBranchStep2_5]</OutArgument>
+            </mxswa:ActivityReference.Arguments>
+          </mxswa:ActivityReference>
+          <mxswa:GetEntityProperty Attribute="quartech_program" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" Value="[ConditionBranchStep2_15]">
+            <mxswa:GetEntityProperty.TargetType>
+              <InArgument x:TypeArguments="s:Type">
+                <mxswa:ReferenceLiteral x:TypeArguments="s:Type">
+                  <x:Null />
+                </mxswa:ReferenceLiteral>
+              </InArgument>
+            </mxswa:GetEntityProperty.TargetType>
+          </mxswa:GetEntityProperty>
+          <mxswa:ActivityReference AssemblyQualifiedName="Microsoft.Crm.Workflow.Activities.EvaluateExpression, Microsoft.Crm.Workflow, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" DisplayName="EvaluateExpression">
+            <mxswa:ActivityReference.Arguments>
+              <InArgument x:TypeArguments="x:String" x:Key="ExpressionOperator">CreateCrmType</InArgument>
+              <InArgument x:TypeArguments="s:Object[]" x:Key="Parameters">[New Object() { Microsoft.Xrm.Sdk.Workflow.WorkflowPropertyType.Guid, "{1ABAFD2A-8E06-EE11-8F6E-002248AE0846}", "UniqueIdentifier" }]</InArgument>
+              <InArgument x:TypeArguments="s:Type" x:Key="TargetType">
+                <mxswa:ReferenceLiteral x:TypeArguments="s:Type" Value="s:Guid" />
+              </InArgument>
+              <OutArgument x:TypeArguments="x:Object" x:Key="Result">[ConditionBranchStep2_17]</OutArgument>
+            </mxswa:ActivityReference.Arguments>
+          </mxswa:ActivityReference>
+          <mxswa:ActivityReference AssemblyQualifiedName="Microsoft.Crm.Workflow.Activities.EvaluateExpression, Microsoft.Crm.Workflow, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" DisplayName="EvaluateExpression">
+            <mxswa:ActivityReference.Arguments>
+              <InArgument x:TypeArguments="x:String" x:Key="ExpressionOperator">CreateCrmType</InArgument>
+              <InArgument x:TypeArguments="s:Object[]" x:Key="Parameters">[New Object() { Microsoft.Xrm.Sdk.Workflow.WorkflowPropertyType.EntityReference, "msgov_program", "EWP&amp;#160;-&amp;#160;Innovation&amp;#160;Project", ConditionBranchStep2_17, "Lookup" }]</InArgument>
+              <InArgument x:TypeArguments="s:Type" x:Key="TargetType">
+                <mxswa:ReferenceLiteral x:TypeArguments="s:Type">
+                  <x:Null />
+                </mxswa:ReferenceLiteral>
+              </InArgument>
+              <OutArgument x:TypeArguments="x:Object" x:Key="Result">[ConditionBranchStep2_16]</OutArgument>
+            </mxswa:ActivityReference.Arguments>
+          </mxswa:ActivityReference>
+          <mxswa:ActivityReference AssemblyQualifiedName="Microsoft.Crm.Workflow.Activities.EvaluateCondition, Microsoft.Crm.Workflow, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" DisplayName="EvaluateCondition">
+            <mxswa:ActivityReference.Arguments>
+              <InArgument x:TypeArguments="mxsq:ConditionOperator" x:Key="ConditionOperator">Equal</InArgument>
+              <InArgument x:TypeArguments="s:Object[]" x:Key="Parameters">[New Object() { ConditionBranchStep2_16 }]</InArgument>
+              <InArgument x:TypeArguments="x:Object" x:Key="Operand">[ConditionBranchStep2_15]</InArgument>
+              <OutArgument x:TypeArguments="x:Boolean" x:Key="Result">[ConditionBranchStep2_14]</OutArgument>
+            </mxswa:ActivityReference.Arguments>
+          </mxswa:ActivityReference>
+          <mxswa:ActivityReference AssemblyQualifiedName="Microsoft.Crm.Workflow.Activities.EvaluateLogicalCondition, Microsoft.Crm.Workflow, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" DisplayName="EvaluateLogicalCondition">
+            <mxswa:ActivityReference.Arguments>
+              <InArgument x:TypeArguments="mxsq:LogicalOperator" x:Key="LogicalOperator">Or</InArgument>
+              <InArgument x:TypeArguments="x:Boolean" x:Key="LeftOperand">[ConditionBranchStep2_5]</InArgument>
+              <InArgument x:TypeArguments="x:Boolean" x:Key="RightOperand">[ConditionBranchStep2_14]</InArgument>
+              <OutArgument x:TypeArguments="x:Boolean" x:Key="Result">[ConditionBranchStep2_4]</OutArgument>
+            </mxswa:ActivityReference.Arguments>
+          </mxswa:ActivityReference>
+          <mxswa:GetEntityProperty Attribute="quartech_program" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" Value="[ConditionBranchStep2_19]">
+            <mxswa:GetEntityProperty.TargetType>
+              <InArgument x:TypeArguments="s:Type">
+                <mxswa:ReferenceLiteral x:TypeArguments="s:Type">
+                  <x:Null />
+                </mxswa:ReferenceLiteral>
+              </InArgument>
+            </mxswa:GetEntityProperty.TargetType>
+          </mxswa:GetEntityProperty>
+          <mxswa:ActivityReference AssemblyQualifiedName="Microsoft.Crm.Workflow.Activities.EvaluateExpression, Microsoft.Crm.Workflow, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" DisplayName="EvaluateExpression">
+            <mxswa:ActivityReference.Arguments>
+              <InArgument x:TypeArguments="x:String" x:Key="ExpressionOperator">CreateCrmType</InArgument>
+              <InArgument x:TypeArguments="s:Object[]" x:Key="Parameters">[New Object() { Microsoft.Xrm.Sdk.Workflow.WorkflowPropertyType.Guid, "{22A8F867-C0CD-ED11-A7C6-000D3AFF121B}", "UniqueIdentifier" }]</InArgument>
+              <InArgument x:TypeArguments="s:Type" x:Key="TargetType">
+                <mxswa:ReferenceLiteral x:TypeArguments="s:Type" Value="s:Guid" />
+              </InArgument>
+              <OutArgument x:TypeArguments="x:Object" x:Key="Result">[ConditionBranchStep2_21]</OutArgument>
+            </mxswa:ActivityReference.Arguments>
+          </mxswa:ActivityReference>
+          <mxswa:ActivityReference AssemblyQualifiedName="Microsoft.Crm.Workflow.Activities.EvaluateExpression, Microsoft.Crm.Workflow, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" DisplayName="EvaluateExpression">
+            <mxswa:ActivityReference.Arguments>
+              <InArgument x:TypeArguments="x:String" x:Key="ExpressionOperator">CreateCrmType</InArgument>
+              <InArgument x:TypeArguments="s:Object[]" x:Key="Parameters">[New Object() { Microsoft.Xrm.Sdk.Workflow.WorkflowPropertyType.EntityReference, "msgov_program", "EWP&amp;#160;-&amp;#160;Wild&amp;#160;Fire&amp;#160;Stream", ConditionBranchStep2_21, "Lookup" }]</InArgument>
+              <InArgument x:TypeArguments="s:Type" x:Key="TargetType">
+                <mxswa:ReferenceLiteral x:TypeArguments="s:Type">
+                  <x:Null />
+                </mxswa:ReferenceLiteral>
+              </InArgument>
+              <OutArgument x:TypeArguments="x:Object" x:Key="Result">[ConditionBranchStep2_20]</OutArgument>
+            </mxswa:ActivityReference.Arguments>
+          </mxswa:ActivityReference>
+          <mxswa:ActivityReference AssemblyQualifiedName="Microsoft.Crm.Workflow.Activities.EvaluateCondition, Microsoft.Crm.Workflow, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" DisplayName="EvaluateCondition">
+            <mxswa:ActivityReference.Arguments>
+              <InArgument x:TypeArguments="mxsq:ConditionOperator" x:Key="ConditionOperator">Equal</InArgument>
+              <InArgument x:TypeArguments="s:Object[]" x:Key="Parameters">[New Object() { ConditionBranchStep2_20 }]</InArgument>
+              <InArgument x:TypeArguments="x:Object" x:Key="Operand">[ConditionBranchStep2_19]</InArgument>
+              <OutArgument x:TypeArguments="x:Boolean" x:Key="Result">[ConditionBranchStep2_18]</OutArgument>
+            </mxswa:ActivityReference.Arguments>
+          </mxswa:ActivityReference>
+          <mxswa:ActivityReference AssemblyQualifiedName="Microsoft.Crm.Workflow.Activities.EvaluateLogicalCondition, Microsoft.Crm.Workflow, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" DisplayName="EvaluateLogicalCondition">
+            <mxswa:ActivityReference.Arguments>
+              <InArgument x:TypeArguments="mxsq:LogicalOperator" x:Key="LogicalOperator">Or</InArgument>
+              <InArgument x:TypeArguments="x:Boolean" x:Key="LeftOperand">[ConditionBranchStep2_4]</InArgument>
+              <InArgument x:TypeArguments="x:Boolean" x:Key="RightOperand">[ConditionBranchStep2_18]</InArgument>
+              <OutArgument x:TypeArguments="x:Boolean" x:Key="Result">[ConditionBranchStep2_3]</OutArgument>
+            </mxswa:ActivityReference.Arguments>
+          </mxswa:ActivityReference>
+          <mxswa:GetEntityProperty Attribute="quartech_program" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" Value="[ConditionBranchStep2_23]">
+            <mxswa:GetEntityProperty.TargetType>
+              <InArgument x:TypeArguments="s:Type">
+                <mxswa:ReferenceLiteral x:TypeArguments="s:Type">
+                  <x:Null />
+                </mxswa:ReferenceLiteral>
+              </InArgument>
+            </mxswa:GetEntityProperty.TargetType>
+          </mxswa:GetEntityProperty>
+          <mxswa:ActivityReference AssemblyQualifiedName="Microsoft.Crm.Workflow.Activities.EvaluateExpression, Microsoft.Crm.Workflow, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" DisplayName="EvaluateExpression">
+            <mxswa:ActivityReference.Arguments>
+              <InArgument x:TypeArguments="x:String" x:Key="ExpressionOperator">CreateCrmType</InArgument>
+              <InArgument x:TypeArguments="s:Object[]" x:Key="Parameters">[New Object() { Microsoft.Xrm.Sdk.Workflow.WorkflowPropertyType.Guid, "{B1E017C9-BFCD-ED11-A7C6-000D3AFF121B}", "UniqueIdentifier" }]</InArgument>
+              <InArgument x:TypeArguments="s:Type" x:Key="TargetType">
+                <mxswa:ReferenceLiteral x:TypeArguments="s:Type" Value="s:Guid" />
+              </InArgument>
+              <OutArgument x:TypeArguments="x:Object" x:Key="Result">[ConditionBranchStep2_25]</OutArgument>
+            </mxswa:ActivityReference.Arguments>
+          </mxswa:ActivityReference>
+          <mxswa:ActivityReference AssemblyQualifiedName="Microsoft.Crm.Workflow.Activities.EvaluateExpression, Microsoft.Crm.Workflow, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" DisplayName="EvaluateExpression">
+            <mxswa:ActivityReference.Arguments>
+              <InArgument x:TypeArguments="x:String" x:Key="ExpressionOperator">CreateCrmType</InArgument>
+              <InArgument x:TypeArguments="s:Object[]" x:Key="Parameters">[New Object() { Microsoft.Xrm.Sdk.Workflow.WorkflowPropertyType.EntityReference, "msgov_program", "Traceability&amp;#160;Adoption&amp;#160;Program", ConditionBranchStep2_25, "Lookup" }]</InArgument>
+              <InArgument x:TypeArguments="s:Type" x:Key="TargetType">
+                <mxswa:ReferenceLiteral x:TypeArguments="s:Type">
+                  <x:Null />
+                </mxswa:ReferenceLiteral>
+              </InArgument>
+              <OutArgument x:TypeArguments="x:Object" x:Key="Result">[ConditionBranchStep2_24]</OutArgument>
+            </mxswa:ActivityReference.Arguments>
+          </mxswa:ActivityReference>
+          <mxswa:ActivityReference AssemblyQualifiedName="Microsoft.Crm.Workflow.Activities.EvaluateCondition, Microsoft.Crm.Workflow, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" DisplayName="EvaluateCondition">
+            <mxswa:ActivityReference.Arguments>
+              <InArgument x:TypeArguments="mxsq:ConditionOperator" x:Key="ConditionOperator">Equal</InArgument>
+              <InArgument x:TypeArguments="s:Object[]" x:Key="Parameters">[New Object() { ConditionBranchStep2_24 }]</InArgument>
+              <InArgument x:TypeArguments="x:Object" x:Key="Operand">[ConditionBranchStep2_23]</InArgument>
+              <OutArgument x:TypeArguments="x:Boolean" x:Key="Result">[ConditionBranchStep2_22]</OutArgument>
+            </mxswa:ActivityReference.Arguments>
+          </mxswa:ActivityReference>
+          <mxswa:ActivityReference AssemblyQualifiedName="Microsoft.Crm.Workflow.Activities.EvaluateLogicalCondition, Microsoft.Crm.Workflow, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" DisplayName="EvaluateLogicalCondition">
+            <mxswa:ActivityReference.Arguments>
+              <InArgument x:TypeArguments="mxsq:LogicalOperator" x:Key="LogicalOperator">Or</InArgument>
+              <InArgument x:TypeArguments="x:Boolean" x:Key="LeftOperand">[ConditionBranchStep2_3]</InArgument>
+              <InArgument x:TypeArguments="x:Boolean" x:Key="RightOperand">[ConditionBranchStep2_22]</InArgument>
+              <OutArgument x:TypeArguments="x:Boolean" x:Key="Result">[ConditionBranchStep2_2]</OutArgument>
+            </mxswa:ActivityReference.Arguments>
+          </mxswa:ActivityReference>
+          <mxswa:GetEntityProperty Attribute="quartech_program" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" Value="[ConditionBranchStep2_27]">
+            <mxswa:GetEntityProperty.TargetType>
+              <InArgument x:TypeArguments="s:Type">
+                <mxswa:ReferenceLiteral x:TypeArguments="s:Type">
+                  <x:Null />
+                </mxswa:ReferenceLiteral>
+              </InArgument>
+            </mxswa:GetEntityProperty.TargetType>
+          </mxswa:GetEntityProperty>
+          <mxswa:ActivityReference AssemblyQualifiedName="Microsoft.Crm.Workflow.Activities.EvaluateExpression, Microsoft.Crm.Workflow, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" DisplayName="EvaluateExpression">
+            <mxswa:ActivityReference.Arguments>
+              <InArgument x:TypeArguments="x:String" x:Key="ExpressionOperator">CreateCrmType</InArgument>
+              <InArgument x:TypeArguments="s:Object[]" x:Key="Parameters">[New Object() { Microsoft.Xrm.Sdk.Workflow.WorkflowPropertyType.Guid, "{435BC58C-B8D4-ED11-A7C7-000D3AFF121B}", "UniqueIdentifier" }]</InArgument>
+              <InArgument x:TypeArguments="s:Type" x:Key="TargetType">
+                <mxswa:ReferenceLiteral x:TypeArguments="s:Type" Value="s:Guid" />
+              </InArgument>
+              <OutArgument x:TypeArguments="x:Object" x:Key="Result">[ConditionBranchStep2_29]</OutArgument>
+            </mxswa:ActivityReference.Arguments>
+          </mxswa:ActivityReference>
+          <mxswa:ActivityReference AssemblyQualifiedName="Microsoft.Crm.Workflow.Activities.EvaluateExpression, Microsoft.Crm.Workflow, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" DisplayName="EvaluateExpression">
+            <mxswa:ActivityReference.Arguments>
+              <InArgument x:TypeArguments="x:String" x:Key="ExpressionOperator">CreateCrmType</InArgument>
+              <InArgument x:TypeArguments="s:Object[]" x:Key="Parameters">[New Object() { Microsoft.Xrm.Sdk.Workflow.WorkflowPropertyType.EntityReference, "msgov_program", "Traceability&amp;#160;Program", ConditionBranchStep2_29, "Lookup" }]</InArgument>
+              <InArgument x:TypeArguments="s:Type" x:Key="TargetType">
+                <mxswa:ReferenceLiteral x:TypeArguments="s:Type">
+                  <x:Null />
+                </mxswa:ReferenceLiteral>
+              </InArgument>
+              <OutArgument x:TypeArguments="x:Object" x:Key="Result">[ConditionBranchStep2_28]</OutArgument>
+            </mxswa:ActivityReference.Arguments>
+          </mxswa:ActivityReference>
+          <mxswa:ActivityReference AssemblyQualifiedName="Microsoft.Crm.Workflow.Activities.EvaluateCondition, Microsoft.Crm.Workflow, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" DisplayName="EvaluateCondition">
+            <mxswa:ActivityReference.Arguments>
+              <InArgument x:TypeArguments="mxsq:ConditionOperator" x:Key="ConditionOperator">Equal</InArgument>
+              <InArgument x:TypeArguments="s:Object[]" x:Key="Parameters">[New Object() { ConditionBranchStep2_28 }]</InArgument>
+              <InArgument x:TypeArguments="x:Object" x:Key="Operand">[ConditionBranchStep2_27]</InArgument>
+              <OutArgument x:TypeArguments="x:Boolean" x:Key="Result">[ConditionBranchStep2_26]</OutArgument>
+            </mxswa:ActivityReference.Arguments>
+          </mxswa:ActivityReference>
+          <mxswa:ActivityReference AssemblyQualifiedName="Microsoft.Crm.Workflow.Activities.EvaluateLogicalCondition, Microsoft.Crm.Workflow, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" DisplayName="EvaluateLogicalCondition">
+            <mxswa:ActivityReference.Arguments>
+              <InArgument x:TypeArguments="mxsq:LogicalOperator" x:Key="LogicalOperator">Or</InArgument>
+              <InArgument x:TypeArguments="x:Boolean" x:Key="LeftOperand">[ConditionBranchStep2_2]</InArgument>
+              <InArgument x:TypeArguments="x:Boolean" x:Key="RightOperand">[ConditionBranchStep2_26]</InArgument>
+              <OutArgument x:TypeArguments="x:Boolean" x:Key="Result">[ConditionBranchStep2_1]</OutArgument>
+            </mxswa:ActivityReference.Arguments>
+          </mxswa:ActivityReference>
+          <mxswa:GetEntityProperty Attribute="quartech_program" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" Value="[ConditionBranchStep2_31]">
+            <mxswa:GetEntityProperty.TargetType>
+              <InArgument x:TypeArguments="s:Type">
+                <mxswa:ReferenceLiteral x:TypeArguments="s:Type">
+                  <x:Null />
+                </mxswa:ReferenceLiteral>
+              </InArgument>
+            </mxswa:GetEntityProperty.TargetType>
+          </mxswa:GetEntityProperty>
+          <mxswa:ActivityReference AssemblyQualifiedName="Microsoft.Crm.Workflow.Activities.EvaluateExpression, Microsoft.Crm.Workflow, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" DisplayName="EvaluateExpression">
+            <mxswa:ActivityReference.Arguments>
+              <InArgument x:TypeArguments="x:String" x:Key="ExpressionOperator">CreateCrmType</InArgument>
+              <InArgument x:TypeArguments="s:Object[]" x:Key="Parameters">[New Object() { Microsoft.Xrm.Sdk.Workflow.WorkflowPropertyType.Guid, "{66E45B15-C0CD-ED11-A7C6-000D3AFF121B}", "UniqueIdentifier" }]</InArgument>
+              <InArgument x:TypeArguments="s:Type" x:Key="TargetType">
+                <mxswa:ReferenceLiteral x:TypeArguments="s:Type" Value="s:Guid" />
+              </InArgument>
+              <OutArgument x:TypeArguments="x:Object" x:Key="Result">[ConditionBranchStep2_33]</OutArgument>
+            </mxswa:ActivityReference.Arguments>
+          </mxswa:ActivityReference>
+          <mxswa:ActivityReference AssemblyQualifiedName="Microsoft.Crm.Workflow.Activities.EvaluateExpression, Microsoft.Crm.Workflow, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" DisplayName="EvaluateExpression">
+            <mxswa:ActivityReference.Arguments>
+              <InArgument x:TypeArguments="x:String" x:Key="ExpressionOperator">CreateCrmType</InArgument>
+              <InArgument x:TypeArguments="s:Object[]" x:Key="Parameters">[New Object() { Microsoft.Xrm.Sdk.Workflow.WorkflowPropertyType.EntityReference, "msgov_program", "Traceability&amp;#160;Value&amp;#160;Chain&amp;#160;Program", ConditionBranchStep2_33, "Lookup" }]</InArgument>
+              <InArgument x:TypeArguments="s:Type" x:Key="TargetType">
+                <mxswa:ReferenceLiteral x:TypeArguments="s:Type">
+                  <x:Null />
+                </mxswa:ReferenceLiteral>
+              </InArgument>
+              <OutArgument x:TypeArguments="x:Object" x:Key="Result">[ConditionBranchStep2_32]</OutArgument>
+            </mxswa:ActivityReference.Arguments>
+          </mxswa:ActivityReference>
+          <mxswa:ActivityReference AssemblyQualifiedName="Microsoft.Crm.Workflow.Activities.EvaluateCondition, Microsoft.Crm.Workflow, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" DisplayName="EvaluateCondition">
+            <mxswa:ActivityReference.Arguments>
+              <InArgument x:TypeArguments="mxsq:ConditionOperator" x:Key="ConditionOperator">Equal</InArgument>
+              <InArgument x:TypeArguments="s:Object[]" x:Key="Parameters">[New Object() { ConditionBranchStep2_32 }]</InArgument>
+              <InArgument x:TypeArguments="x:Object" x:Key="Operand">[ConditionBranchStep2_31]</InArgument>
+              <OutArgument x:TypeArguments="x:Boolean" x:Key="Result">[ConditionBranchStep2_30]</OutArgument>
+            </mxswa:ActivityReference.Arguments>
+          </mxswa:ActivityReference>
+          <mxswa:ActivityReference AssemblyQualifiedName="Microsoft.Crm.Workflow.Activities.EvaluateLogicalCondition, Microsoft.Crm.Workflow, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" DisplayName="EvaluateLogicalCondition">
+            <mxswa:ActivityReference.Arguments>
+              <InArgument x:TypeArguments="mxsq:LogicalOperator" x:Key="LogicalOperator">Or</InArgument>
+              <InArgument x:TypeArguments="x:Boolean" x:Key="LeftOperand">[ConditionBranchStep2_1]</InArgument>
+              <InArgument x:TypeArguments="x:Boolean" x:Key="RightOperand">[ConditionBranchStep2_30]</InArgument>
+              <OutArgument x:TypeArguments="x:Boolean" x:Key="Result">[ConditionBranchStep2_condition]</OutArgument>
+            </mxswa:ActivityReference.Arguments>
+          </mxswa:ActivityReference>
+          <mxswa:ActivityReference AssemblyQualifiedName="Microsoft.Crm.Workflow.Activities.ConditionBranch, Microsoft.Crm.Workflow, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" DisplayName="ConditionBranchStep2">
+            <mxswa:ActivityReference.Arguments>
+              <InArgument x:TypeArguments="x:Boolean" x:Key="Condition">[ConditionBranchStep2_condition]</InArgument>
+            </mxswa:ActivityReference.Arguments>
+            <mxswa:ActivityReference.Properties>
+              <mxswa:ActivityReference x:Key="Then" AssemblyQualifiedName="Microsoft.Crm.Workflow.Activities.Composite, Microsoft.Crm.Workflow, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" DisplayName="ConditionBranchStep2">
+                <mxswa:ActivityReference.Properties>
+                  <sco:Collection x:TypeArguments="Variable" x:Key="Variables" />
+                  <sco:Collection x:TypeArguments="Activity" x:Key="Activities">
+                    <Sequence DisplayName="SetVisibilityStep_ConditionBranchStep2_1: Hide Are you applying for a Traceability Knowledge Transfer Activity? *">
+                      <mcwc:SetVisibility ControlId="quartech_areyouapplyingforatraceabilityknowledget" ControlType="standard" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" IsVisible="False" />
+                    </Sequence>
+                    <Sequence DisplayName="SetVisibilityStep_ConditionBranchStep2_1_2: Hide If yes, please explain the Traceability activity that will be included in your event/activity.">
+                      <mcwc:SetVisibility ControlId="quartech_ifyespleaseexplainthetraceabilityactivityt" ControlType="standard" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" IsVisible="False" />
+                    </Sequence>
+                    <Sequence DisplayName="SetVisibilityStep_ConditionBranchStep2_1_2_3: Hide Activity Name:">
+                      <mcwc:SetVisibility ControlId="quartech_activityname" ControlType="standard" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" IsVisible="False" />
+                    </Sequence>
+                    <Sequence DisplayName="SetVisibilityStep_ConditionBranchStep2_1_2_3_4: Hide Subject Matter Expert (SME) Name:">
+                      <mcwc:SetVisibility ControlId="quartech_subjectmatterexpertsmename" ControlType="standard" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" IsVisible="False" />
+                    </Sequence>
+                    <Sequence DisplayName="SetVisibilityStep_ConditionBranchStep2_1_2_3_4_5: Hide SME Phone Number">
+                      <mcwc:SetVisibility ControlId="quartech_smephonenumber" ControlType="standard" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" IsVisible="False" />
+                    </Sequence>
+                    <Sequence DisplayName="SetVisibilityStep_ConditionBranchStep2_1_2_3_4_5_6: Hide SME Email">
+                      <mcwc:SetVisibility ControlId="quartech_smeemail" ControlType="standard" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" IsVisible="False" />
+                    </Sequence>
+                    <Sequence DisplayName="SetVisibilityStep_ConditionBranchStep2_1_2_3_4_5_6_7: Hide SME Website">
+                      <mcwc:SetVisibility ControlId="quartech_smewebsite" ControlType="standard" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" IsVisible="False" />
+                    </Sequence>
+                    <Sequence DisplayName="SetVisibilityStep_ConditionBranchStep2_1_2_3_4_5_6_7_8: Hide Activity Start Date">
+                      <mcwc:SetVisibility ControlId="quartech_activitystartdate" ControlType="standard" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" IsVisible="False" />
+                    </Sequence>
+                    <Sequence DisplayName="SetVisibilityStep_ConditionBranchStep2_1_2_3_4_5_6_7_8_9: Hide Does the activity take place over multiple days?">
+                      <mcwc:SetVisibility ControlId="quartech_doestheactivitytakeplaceovermultipleday" ControlType="standard" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" IsVisible="False" />
+                    </Sequence>
+                    <Sequence DisplayName="SetVisibilityStep_ConditionBranchStep2_1_2_3_4_5_6_7_8_9_10: Hide If Yes, please provide the additional dates">
+                      <mcwc:SetVisibility ControlId="quartech_ifyespleaseprovidetheadditionaldates" ControlType="standard" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" IsVisible="False" />
+                    </Sequence>
+                    <Sequence DisplayName="SetVisibilityStep_ConditionBranchStep2_1_2_3_4_5_6_7_8_9_10_11: Hide Venue, Location (city/town etc), or Online Software:">
+                      <mcwc:SetVisibility ControlId="quartech_venuelocationcitytownetcoronlinesoftwar" ControlType="standard" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" IsVisible="False" />
+                    </Sequence>
+                    <Sequence DisplayName="SetVisibilityStep_ConditionBranchStep2_1_2_3_4_5_6_7_8_9_10_11_12: Hide Will this activity be open to the public?">
+                      <mcwc:SetVisibility ControlId="quartech_willthisactivitybeopentotheentirepublic" ControlType="standard" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" IsVisible="False" />
+                    </Sequence>
+                    <Sequence DisplayName="SetVisibilityStep_ConditionBranchStep2_1_2_3_4_5_6_7_8_9_10_11_12_13: Hide All activities must be open to the public, please explain why this event will not be open to the public.">
+                      <mcwc:SetVisibility ControlId="quartech_allactivitiesmustbeopentothepublicplease" ControlType="standard" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" IsVisible="False" />
+                    </Sequence>
+                    <Sequence DisplayName="SetVisibilityStep_ConditionBranchStep2_1_2_3_4_5_6_7_8_9_10_11_12_13_14: Hide Number of B.C. agriculture producers/ processors/ businesses expected to attend this activity:">
+                      <mcwc:SetVisibility ControlId="quartech_numberofbcagricultureproducersprocessors" ControlType="standard" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" IsVisible="False" />
+                    </Sequence>
+                    <Sequence DisplayName="SetVisibilityStep_ConditionBranchStep2_1_2_3_4_5_6_7_8_9_10_11_12_13_14_15: Hide Number of overall attendees expected to attend this activity:">
+                      <mcwc:SetVisibility ControlId="quartech_numberofoverallattendeesexpectedtoattendthi" ControlType="standard" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" IsVisible="False" />
+                    </Sequence>
+                    <Sequence DisplayName="SetVisibilityStep_ConditionBranchStep2_1_2_3_4_5_6_7_8_9_10_11_12_13_14_15_16: Hide Please select the most applicable activity type:">
+                      <mcwc:SetVisibility ControlId="quartech_pleaseselectthemostapplicableactivitytype" ControlType="standard" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" IsVisible="False" />
+                    </Sequence>
+                    <Sequence DisplayName="SetVisibilityStep_ConditionBranchStep2_1_2_3_4_5_6_7_8_9_10_11_12_13_14_15_16_17: Hide if Other, please describe your activity type">
+                      <mcwc:SetVisibility ControlId="quartech_ifotherpleasedescribeyouractivitytype" ControlType="standard" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" IsVisible="False" />
+                    </Sequence>
+                    <Sequence DisplayName="SetVisibilityStep_ConditionBranchStep2_1_2_3_4_5_6_7_8_9_10_11_12_13_14_15_16_17_18: Hide Other Regenerative Practices">
+                      <mcwc:SetVisibility ControlId="quartech_otherregenerativepractices" ControlType="standard" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" IsVisible="False" />
+                    </Sequence>
+                    <Sequence DisplayName="SetVisibilityStep_ConditionBranchStep2_1_2_3_4_5_6_7_8_9_10_11_12_13_14_15_16_17_18_19: Hide Please explain how your proposed activity will address the topic(s) chosen above">
+                      <mcwc:SetVisibility ControlId="quartech_proposedactivityaddresstopic" ControlType="standard" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" IsVisible="False" />
+                    </Sequence>
+                    <Sequence DisplayName="SetVisibilityStep_ConditionBranchStep2_1_2_3_4_5_6_7_8_9_10_11_12_13_14_15_16_17_18_19_20: Hide Purpose of the Project">
+                      <mcwc:SetVisibility ControlId="quartech_activitypurpose" ControlType="standard" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" IsVisible="False" />
+                    </Sequence>
+                    <Sequence DisplayName="SetVisibilityStep_ConditionBranchStep2_1_2_3_4_5_6_7_8_9_10_11_12_13_14_15_16_17_18_19_20_21: Hide If Other, please describe the activity purpose:">
+                      <mcwc:SetVisibility ControlId="quartech_ifotherpleasedescribetheactivitypurpose" ControlType="standard" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" IsVisible="False" />
+                    </Sequence>
+                    <Sequence DisplayName="SetVisibilityStep_ConditionBranchStep2_1_2_3_4_5_6_7_8_9_10_11_12_13_14_15_16_17_18_19_20_21_22: Hide How will the proposed activity address the purpose">
+                      <mcwc:SetVisibility ControlId="quartech_proposedactivityaddresspurpose" ControlType="standard" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" IsVisible="False" />
+                    </Sequence>
+                    <Sequence DisplayName="SetVisibilityStep_ConditionBranchStep2_1_2_3_4_5_6_7_8_9_10_11_12_13_14_15_16_17_18_19_20_21_22_23: Hide Please describe your proposed activity's topic, purpose and intended outcome(s)">
+                      <mcwc:SetVisibility ControlId="quartech_pleasedescribeyourproposedactivitystopicpu" ControlType="standard" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" IsVisible="False" />
+                    </Sequence>
+                    <Sequence DisplayName="SetVisibilityStep_ConditionBranchStep2_1_2_3_4_5_6_7_8_9_10_11_12_13_14_15_16_17_18_19_20_21_22_23_24: Hide Please describe the activities you will undertake to achieve your outcomes">
+                      <mcwc:SetVisibility ControlId="quartech_pleasedescribetheactivitiesyouwillundertake" ControlType="standard" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" IsVisible="False" />
+                    </Sequence>
+                    <Sequence DisplayName="SetVisibilityStep_ConditionBranchStep2_1_2_3_4_5_6_7_8_9_10_11_12_13_14_15_16_17_18_19_20_21_22_23_24_25: Hide Please describe the expertise of the Subject Matter Expert (SME) and what experience do they have in transferring knowledge?">
+                      <mcwc:SetVisibility ControlId="quartech_pleasedescribetheexpertiseofthesubjectmatte" ControlType="standard" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" IsVisible="False" />
+                    </Sequence>
+                    <Sequence DisplayName="SetVisibilityStep_ConditionBranchStep2_1_2_3_4_5_6_7_8_9_10_11_12_13_14_15_16_17_18_19_20_21_22_23_24_25_26: Hide The Province supports inclusiveness">
+                      <mcwc:SetVisibility ControlId="quartech_theprovincesupportsinclusivenessandincreased" ControlType="standard" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" IsVisible="False" />
+                    </Sequence>
+                    <Sequence DisplayName="SetVisibilityStep_ConditionBranchStep2_1_2_3_4_5_6_7_8_9_10_11_12_13_14_15_16_17_18_19_20_21_22_23_24_25_26_27: Hide The process of learning and processing knowledge changes from children to adults. Will your event be adapted for adult learning?">
+                      <mcwc:SetVisibility ControlId="quartech_theprocessoflearningandprocessingknowledge" ControlType="standard" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" IsVisible="False" />
+                    </Sequence>
+                    <Sequence DisplayName="SetVisibilityStep_ConditionBranchStep2_1_2_3_4_5_6_7_8_9_10_11_12_13_14_15_16_17_18_19_20_21_22_23_24_25_26_27_28: Hide If Yes, please describe how the proposed activities will use best practices in adult education and knowledge transfer. How will you evaluate if you have been successful?">
+                      <mcwc:SetVisibility ControlId="quartech_ifyespleasedescribehowtheproposedactivitie" ControlType="standard" Entity="[InputEntities(&quot;primaryEntity&quot;)]" EntityName="msgov_businessgrantapplication" IsVisible="False" />
+                    </Sequence>
+                  </sco:Collection>
+                </mxswa:ActivityReference.Properties>
+              </mxswa:ActivityReference>
+              <x:Null x:Key="Else" />
+              <x:String x:Key="Description">Program is EWP or Traceability</x:String>
+            </mxswa:ActivityReference.Properties>
+          </mxswa:ActivityReference>
+        </sco:Collection>
+        <x:Boolean x:Key="ContainsElseBranch">False</x:Boolean>
+      </mxswa:ActivityReference.Properties>
+    </mxswa:ActivityReference>
+  </mxswa:Workflow>
+</Activity>

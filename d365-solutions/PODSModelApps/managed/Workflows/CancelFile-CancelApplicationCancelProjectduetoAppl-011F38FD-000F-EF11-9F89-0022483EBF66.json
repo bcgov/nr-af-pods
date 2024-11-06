@@ -1,0 +1,70 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_PodsSvcAcctDataverse"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        }
+      },
+      "triggers": {
+        "When_an_Application's_status_is_set_to_WITHDRAWN,_EXPIRED_or_ERROR": {
+          "metadata": {
+            "operationMetadataId": "792bb6a7-6d15-4b85-a57c-d6c050c4779e"
+          },
+          "type": "OpenApiConnectionWebhook",
+          "inputs": {
+            "parameters": {
+              "subscriptionRequest/message": 3,
+              "subscriptionRequest/entityname": "msgov_businessgrantapplication",
+              "subscriptionRequest/scope": 4,
+              "subscriptionRequest/filteringattributes": "quartech_applicationstatus",
+              "subscriptionRequest/filterexpression": "quartech_applicationstatus eq 255550011 or quartech_applicationstatus eq 255550012  or quartech_applicationstatus eq 255550013",
+              "subscriptionRequest/name": "011f38fd-000f-ef11-9f89-0022483ebf66"
+            },
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+              "operationId": "SubscribeWebhookTrigger",
+              "connectionName": "shared_commondataserviceforapps_1"
+            }
+          },
+          "description": "Application Status: Withdrawn 255550011 | Expired 255550012 | Error 255550013"
+        }
+      },
+      "actions": {
+        "Run_Cancel_Project_due_to_Application_Cancellation_Child_Flow": {
+          "runAfter": {},
+          "type": "Workflow",
+          "inputs": {
+            "host": {
+              "workflowReferenceName": "d43ae09d-9b15-ef11-840a-000d3ae88259"
+            },
+            "body": {
+              "text": "@triggerBody()?['_quartech_project_value']",
+              "number": "@triggerBody()?['quartech_applicationstatus']"
+            }
+          }
+        }
+      }
+    },
+    "templateName": null
+  },
+  "schemaVersion": "1.0.0.0"
+}

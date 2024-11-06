@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Workflow WorkflowId="{f3f893aa-915e-ee11-8df0-002248ae0846}" Name="Display Stream Sort Order field" Description="Sort Order field will display in Stream records (when Parent Program has a value)" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <XamlFileName>/Workflows/DisplayStreamSortOrderfield-F3F893AA-915E-EE11-8DF0-002248AE0846.xaml</XamlFileName>
+  <Type>1</Type>
+  <Subprocess>0</Subprocess>
+  <Category>2</Category>
+  <Mode>1</Mode>
+  <Scope>4</Scope>
+  <OnDemand>0</OnDemand>
+  <TriggerOnCreate>0</TriggerOnCreate>
+  <TriggerOnDelete>0</TriggerOnDelete>
+  <AsyncAutodelete>0</AsyncAutodelete>
+  <SyncWorkflowLogOnFailure>0</SyncWorkflowLogOnFailure>
+  <StateCode>1</StateCode>
+  <StatusCode>2</StatusCode>
+  <RunAs>1</RunAs>
+  <IsTransacted>1</IsTransacted>
+  <IntroducedVersion>1.0.0.0</IntroducedVersion>
+  <IsCustomizable>1</IsCustomizable>
+  <BusinessProcessType>0</BusinessProcessType>
+  <IsCustomProcessingStepAllowedForOtherPublishers>1</IsCustomProcessingStepAllowedForOtherPublishers>
+  <ProcessTriggerFormId>{bab2715a-b633-4fa5-bad8-fad20081bbf6}</ProcessTriggerFormId>
+  <ProcessTriggerScope>1</ProcessTriggerScope>
+  <PrimaryEntity>msgov_Program</PrimaryEntity>
+  <LocalizedNames>
+    <LocalizedName languagecode="1033" description="Display Stream Sort Order field" />
+  </LocalizedNames>
+  <Descriptions>
+    <Description languagecode="1033" description="Sort Order field will display in Stream records (when Parent Program has a value)" />
+  </Descriptions>
+</Workflow>

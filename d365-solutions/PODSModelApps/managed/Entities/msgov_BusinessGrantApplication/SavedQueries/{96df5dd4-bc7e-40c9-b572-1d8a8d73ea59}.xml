@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <isquickfindquery>1</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{96df5dd4-bc7e-40c9-b572-1d8a8d73ea59}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="msgov_name" select="1" icon="1" preview="1">
+        <row name="result" id="msgov_businessgrantapplicationid">
+          <cell name="quartech_applicationid" width="150" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="msgov_name" width="150" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="quartech_account" width="125" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="quartech_program" width="150" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="quartech_applicationstatus" width="100" />
+          <cell name="quartech_submittedon" width="100" />
+          <cell name="quartech_applicationapproveddate" width="100" />
+          <cell name="createdon" width="100" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>4</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="msgov_businessgrantapplication">
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <filter type="or" isquickfindfields="1">
+            <condition attribute="msgov_name" operator="like" value="{0}" />
+            <condition attribute="quartech_applicationid" operator="like" value="{0}" />
+          </filter>
+          <attribute name="quartech_submittedon" />
+          <attribute name="quartech_program" />
+          <attribute name="createdon" />
+          <attribute name="quartech_applicationstatus" />
+          <attribute name="msgov_name" />
+          <attribute name="quartech_applicationapproveddate" />
+          <attribute name="quartech_account" />
+          <attribute name="quartech_applicationid" />
+          <attribute name="msgov_businessgrantapplicationid" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Quick Find Active Business Grant Applications" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

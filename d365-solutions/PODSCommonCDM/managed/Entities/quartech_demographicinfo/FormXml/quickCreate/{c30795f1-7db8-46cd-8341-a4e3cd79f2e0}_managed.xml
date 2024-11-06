@@ -1,0 +1,310 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{c30795f1-7db8-46cd-8341-a4e3cd79f2e0}</formid>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form maxWidth="1920">
+      <tabs>
+        <tab id="{a631acd9-b6c0-44b9-9c57-40657db8682e}" name="tab_1" showlabel="false">
+          <labels>
+            <label description="Tab" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="33%">
+              <sections>
+                <section id="{878cd997-8297-4254-9b2d-1ba3915aa504}" name="tab_1_column_1_section_1" columns="1" showlabel="false" showbar="false" IsUserDefined="0">
+                  <labels>
+                    <label description="section" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{486d5c3e-7de5-a8c2-cb04-19d482c3bb49}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="Name" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_name" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="quartech_name" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{116eae12-7b48-7020-39bd-c518d5855bc4}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="Application" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_application" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="quartech_application" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{811252ee-0ac9-237e-b6a1-ca40478a31e7}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="Project" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_project" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="quartech_project" disabled="false" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+            <column width="33%">
+              <sections>
+                <section id="{e32169ad-8431-4651-addf-2c1f5c48831e}" name="tab_1_column_2_section_1" columns="1" showlabel="false" showbar="false" IsUserDefined="0">
+                  <labels>
+                    <label description="section" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{6463ab41-9419-ec74-5647-ec4b5e64b15d}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_firstnationssharepercentage" classid="{C3EFE0C3-0EC6-42be-8349-CBD9079DFD8E}" datafieldname="quartech_firstnationssharepercentage" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{727c7b2e-c7ca-9980-d2c5-ca5b30d42eb5}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_inukinuitsharepercentage" classid="{C3EFE0C3-0EC6-42be-8349-CBD9079DFD8E}" datafieldname="quartech_inukinuitsharepercentage" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{e2899b22-0575-a1a5-e17d-e5153353ccb6}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_mtissharepercentage" classid="{C3EFE0C3-0EC6-42be-8349-CBD9079DFD8E}" datafieldname="quartech_mtissharepercentage" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{5194db4a-2353-4632-1eed-ae77d6dce706}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_indigenoussharepercentage" classid="{C3EFE0C3-0EC6-42be-8349-CBD9079DFD8E}" datafieldname="quartech_indigenoussharepercentage" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{0e499316-8736-e4d4-61ea-6d3dc020c9ca}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_womensharepercentage" classid="{C3EFE0C3-0EC6-42be-8349-CBD9079DFD8E}" datafieldname="quartech_womensharepercentage" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{d08363a6-1b73-9143-e007-27c57a3cc3d5}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_youth40orundersharepercentage" classid="{C3EFE0C3-0EC6-42be-8349-CBD9079DFD8E}" datafieldname="quartech_youth40orundersharepercentage" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{7685e234-735b-2be4-63c3-6e349a27883e}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_nonindiginousnonwomennonyouthshare" classid="{C3EFE0C3-0EC6-42be-8349-CBD9079DFD8E}" datafieldname="quartech_nonindiginousnonwomennonyouthshare" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{77b434b6-4924-a0e8-9403-6801d5489511}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_unabletoansweridentifysharepercentage" classid="{C3EFE0C3-0EC6-42be-8349-CBD9079DFD8E}" datafieldname="quartech_unabletoansweridentifysharepercentage" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{70e8ea6e-d369-6a62-5eb2-1cadc50c39e2}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_declinetoidentifysharepercentage" classid="{C3EFE0C3-0EC6-42be-8349-CBD9079DFD8E}" datafieldname="quartech_declinetoidentifysharepercentage" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{e63a530e-0098-77e3-ac9b-100b8249ed0a}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_newagricultureentrantssharepercentage" classid="{C3EFE0C3-0EC6-42be-8349-CBD9079DFD8E}" datafieldname="quartech_newagricultureentrantssharepercentage" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{3797d2e3-53e7-69e9-b15e-80e667d87962}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_commentsondemographicsofbusinessowners" classid="{E0DECE4B-6FC8-4a8f-A065-082708572369}" datafieldname="quartech_commentsondemographicsofbusinessowners" disabled="false" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+            <column width="33%">
+              <sections>
+                <section id="{c58cd8a5-5398-4f9e-ba64-c050a1a6ddf6}" name="tab_1_column_3_section_1" columns="1" showlabel="false" showbar="false" IsUserDefined="0">
+                  <labels>
+                    <label description="section" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{511784aa-5831-44e6-82b0-9c75358226b0}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_doestheorganizationhaveagoverningboard" classid="{67FAC785-CD58-4f9f-ABB3-4B7DDC6ED5ED}" datafieldname="quartech_doestheorganizationhaveagoverningboard" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{e9976b7b-6c06-158c-cbeb-083396c93980}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_govtpostsecondaryorindigenousgovbody" classid="{67FAC785-CD58-4f9f-ABB3-4B7DDC6ED5ED}" datafieldname="quartech_govtpostsecondaryorindigenousgovbody" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{0d7e6710-017b-2098-9804-b00aa5a0d110}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_numberofmembersofthegoverningbody" classid="{C6D124CA-7EDA-4a60-AEA9-7FB8D318B68F}" datafieldname="quartech_numberofmembersofthegoverningbody" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{c7b3d54a-78b6-ec08-7d48-be45b2b43c5d}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_firstnationsgoverningbodymembers" classid="{C6D124CA-7EDA-4a60-AEA9-7FB8D318B68F}" datafieldname="quartech_firstnationsgoverningbodymembers" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{33b34773-6692-3593-b867-81b95978005b}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_inukinuitgoverningbodymembers" classid="{C6D124CA-7EDA-4a60-AEA9-7FB8D318B68F}" datafieldname="quartech_inukinuitgoverningbodymembers" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{7be724c3-523e-96a0-d614-230b92db83a3}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_mtisgoverningbodymembers" classid="{C6D124CA-7EDA-4a60-AEA9-7FB8D318B68F}" datafieldname="quartech_mtisgoverningbodymembers" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{8e3c554a-5eeb-a96e-8d43-e3974a5b6940}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_indigenousnotspecifiedgoverningbodymember" classid="{C6D124CA-7EDA-4a60-AEA9-7FB8D318B68F}" datafieldname="quartech_indigenousnotspecifiedgoverningbodymember" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{3139d8ad-0d3e-2dac-1261-52b842453e28}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_womengoverningbodymembers" classid="{C6D124CA-7EDA-4a60-AEA9-7FB8D318B68F}" datafieldname="quartech_womengoverningbodymembers" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{5e7b565b-6d4c-5c4d-e72d-688cb588c6da}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_youthgoverningbodymembers" classid="{C6D124CA-7EDA-4a60-AEA9-7FB8D318B68F}" datafieldname="quartech_youthgoverningbodymembers" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{6dd5a851-b575-88e3-b677-4816ec4e792e}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_nonindiginousnonwomennonyouthgovbodymbrs" classid="{C6D124CA-7EDA-4a60-AEA9-7FB8D318B68F}" datafieldname="quartech_nonindiginousnonwomennonyouthgovbodymbrs" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{6871048a-3d89-675b-8ce6-5b0dd24c98cb}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_unabletoansweridentifygoverningbodymember" classid="{C6D124CA-7EDA-4a60-AEA9-7FB8D318B68F}" datafieldname="quartech_unabletoansweridentifygoverningbodymember" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{b0b62a39-236a-a4e7-a6d2-a186c52d6bc2}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_declinetoidentifygoverningbodymembers" classid="{C6D124CA-7EDA-4a60-AEA9-7FB8D318B68F}" datafieldname="quartech_declinetoidentifygoverningbodymembers" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{9b8ca681-c18c-c03e-145b-ddec7e080dd3}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_firstnationsgroupstargetedbeneficiaries" classid="{67FAC785-CD58-4f9f-ABB3-4B7DDC6ED5ED}" datafieldname="quartech_firstnationsgroupstargetedbeneficiaries" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{c61125e1-3ed2-18d1-368c-0e9cced48e16}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_inukinuitgroupstargetedbeneficiaries" classid="{67FAC785-CD58-4f9f-ABB3-4B7DDC6ED5ED}" datafieldname="quartech_inukinuitgroupstargetedbeneficiaries" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{a7c8b00d-a80a-7e95-137d-2046aa6d40c7}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_mtisgroupstargetedbeneficiaries" classid="{67FAC785-CD58-4f9f-ABB3-4B7DDC6ED5ED}" datafieldname="quartech_mtisgroupstargetedbeneficiaries" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{98966495-20b9-e8e4-2bc0-476b346201b6}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_womengroupstargetedbeneficiaries" classid="{67FAC785-CD58-4f9f-ABB3-4B7DDC6ED5ED}" datafieldname="quartech_womengroupstargetedbeneficiaries" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{4321b08a-ecc4-0b7b-3524-b8839ed31410}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_youthgroupstargetedbeneficiaries" classid="{67FAC785-CD58-4f9f-ABB3-4B7DDC6ED5ED}" datafieldname="quartech_youthgroupstargetedbeneficiaries" disabled="false" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+      <DisplayConditions Order="1">
+        <Role Id="{627090ff-40a3-4053-8790-584edc5be201}" />
+        <Role Id="{119f245c-3cc8-4b62-b31c-d1a046ced15d}" />
+      </DisplayConditions>
+    </form>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <LocalizedNames>
+      <LocalizedName description="Demographic Info Quick Create" languagecode="1033" />
+    </LocalizedNames>
+  </systemform>
+</forms>

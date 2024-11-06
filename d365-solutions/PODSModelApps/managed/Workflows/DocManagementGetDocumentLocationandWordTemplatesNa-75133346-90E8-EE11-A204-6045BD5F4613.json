@@ -1,0 +1,146 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_sharedcommondataserviceforapps_f90be"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "be301eda-444f-4e32-ad33-5c4987e20ce4"
+          },
+          "type": "Request",
+          "kind": "Button",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "title": "Program Record GUID",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                }
+              },
+              "required": [
+                "text"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Get_the_Program_record_by_ID": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "673165cd-1dbc-41f5-b6ae-2ef97f153aa6"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "msgov_programs",
+              "recordId": "@triggerBody()['text']",
+              "$select": "quartech_sharepointsiteaddress, quartech_sharepointdocumentlibraryrelativeurl, quartech_sharepointdocumentlibraryname, quartech_sharepointdocumentlibraryfolderpath, quartech_wordtemplateforprinting, quartech_claimwordtemplateforpdfgeneration, msgov_programid, msgov_programname"
+            },
+            "authentication": {
+              "type": "Raw",
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+            }
+          }
+        },
+        "Compose:_Document_Location_-_SharePoint_Site_Address": {
+          "runAfter": {
+            "Get_the_Program_record_by_ID": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "91fc70c8-edc5-4d62-a064-a1f8f2b1d189"
+          },
+          "type": "Compose",
+          "inputs": "@outputs('Get_the_Program_record_by_ID')?['body/quartech_sharepointsiteaddress']",
+          "description": "if(empty(outputs('Get_the_Program_record_by_ID')?['body/quartech_sharepointsiteaddress']), parameters('Pods SharePoint - Site Address (quartech_PodsSharePointSiteAddress)'), outputs('Get_the_Program_record_by_ID')?['body/quartech_sharepointsiteaddres"
+        },
+        "Compose:_Document_Location_-_Program's_Relative_Folder_Path": {
+          "runAfter": {
+            "Compose:_Document_Location_-_SharePoint_Site_Address": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "06ddd9ef-8364-47b4-952e-431c2209a570"
+          },
+          "type": "Compose",
+          "inputs": "@concat('/', outputs('Get_the_Program_record_by_ID')?['body/quartech_sharepointdocumentlibraryrelativeurl'], '/', outputs('Get_the_Program_record_by_ID')?['body/quartech_sharepointdocumentlibraryfolderpath'], '/')",
+          "description": "Construct the folder path using the SharePoint Document Library Relative URL and Folder Path on the Program record, it the  Relative URL is not configured, use the Word Online - File Folder For Generated Docs env. var."
+        },
+        "Response": {
+          "runAfter": {
+            "Compose:_Document_Location_-_Program's_Relative_Folder_Path": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "13a8e043-10df-44ed-adc8-56fdd6c65709"
+          },
+          "type": "Response",
+          "kind": "Http",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+              "errorMessage": "",
+              "spSiteAddress": "@outputs('Compose:_Document_Location_-_SharePoint_Site_Address')",
+              "folderRelativePath": "@outputs('Compose:_Document_Location_-_Program''s_Relative_Folder_Path')",
+              "applicationWordTemplateFileName": "@outputs('Get_the_Program_record_by_ID')?['body/quartech_wordtemplateforprinting']",
+              "claimWordTemplateFileName": "@outputs('Get_the_Program_record_by_ID')?['body/quartech_claimwordtemplateforpdfgeneration']",
+              "programGuid": "@outputs('Get_the_Program_record_by_ID')?['body/msgov_programid']",
+              "programName": "@outputs('Get_the_Program_record_by_ID')?['body/msgov_programname']"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errorMessage": {
+                  "type": "string"
+                },
+                "spSiteAddress": {
+                  "type": "string"
+                },
+                "folderRelativePath": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

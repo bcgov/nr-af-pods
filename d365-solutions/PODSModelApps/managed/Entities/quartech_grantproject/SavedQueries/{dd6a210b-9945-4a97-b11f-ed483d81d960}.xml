@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{dd6a210b-9945-4a97-b11f-ed483d81d960}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="quartech_name" select="1" icon="1" preview="1">
+        <row name="result" id="quartech_grantprojectid">
+          <cell name="quartech_name" width="200" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="quartech_recipient" width="150" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="quartech_projectstatus" width="200" />
+          <cell name="quartech_program" width="159" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="quartech_pt_projectidentifier" width="150" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="quartech_application" width="192" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="quartech_activitytype" width="150" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="quartech_startdate" width="156" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="quartech_location" width="125" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="quartech_estimatedprojectcost" width="181" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="quartech_requestedfunding" width="168" />
+          <cell name="quartech_fundingsource" width="177" />
+          <cell name="quartech_approvedamount" width="171" />
+          <cell name="quartech_actualamount" width="158" />
+          <cell name="quartech_recipientmonitorycontributionplanned" width="300" />
+          <cell name="quartech_recipientmonitorycontributionactual" width="300" />
+          <cell name="quartech_recipientinkindcontributionplanned" width="291" />
+          <cell name="quartech_recipientinkindcontributionactual" width="281" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="createdon" width="125" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="quartech_grantproject">
+          <attribute name="quartech_name" />
+          <attribute name="createdon" />
+          <order attribute="quartech_startdate" descending="true" />
+          <order attribute="quartech_name" descending="false" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="quartech_recipient" />
+          <attribute name="quartech_pt_projectidentifier" />
+          <attribute name="quartech_location" />
+          <attribute name="quartech_program" />
+          <attribute name="quartech_application" />
+          <attribute name="quartech_activitytype" />
+          <attribute name="quartech_startdate" />
+          <attribute name="quartech_recipientinkindcontributionactual" />
+          <attribute name="quartech_recipientinkindcontributionplanned" />
+          <attribute name="quartech_recipientmonitorycontributionplanned" />
+          <attribute name="quartech_recipientmonitorycontributionactual" />
+          <attribute name="quartech_projectstatus" />
+          <attribute name="quartech_estimatedprojectcost" />
+          <attribute name="quartech_requestedfunding" />
+          <attribute name="quartech_fundingsource" />
+          <attribute name="quartech_approvedamount" />
+          <attribute name="quartech_actualamount" />
+          <attribute name="quartech_grantprojectid" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.1.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active Projects" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

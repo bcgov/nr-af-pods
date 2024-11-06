@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{0bd832d5-9d6a-456d-bdc1-21129e82cc0f}</formid>
+    <IntroducedVersion>7.0.0003</IntroducedVersion>
+    <FormPresentation>0</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form shownavigationbar="true" headerdensity="HighWithControls" solutionaction="Modified">
+      <tabs>
+        <tab verticallayout="true" id="{9748ec98-3746-40cc-83bf-d15c7363166f}" IsUserDefined="0" labelid="{1bd42238-ddcc-4029-9eff-256aa3c887c9}" ordinalvalue="0">
+          <columns>
+            <column width="100%" id="0">
+              <sections>
+                <section showlabel="false" showbar="false" id="{90b0776f-2977-4695-9cd4-73bb6c820f88}" IsUserDefined="0" labelid="{3127edf7-a176-4d80-b734-6be963ceafb4}" ordinalvalue="0">
+                  <rows>
+                    <row>
+                      <cell id="{f3eec8ff-7b5a-43af-92c4-1a41adaf4b50}" labelid="{1409682e-cb37-4c1a-813b-59ce76da79c2}" showlabel="true" locklevel="0" colspan="1" rowspan="1" ordinalvalue="10004" solutionaction="Modified" />
+                    </row>
+                    <row>
+                      <cell id="{a08b0699-7229-73e2-ee70-d55ee21049a7}" showlabel="true" locklevel="0" colspan="1" rowspan="1" ordinalvalue="20005" solutionaction="Modified" />
+                      <cell id="{d173e5b2-7472-0652-2dd4-e54522b6aeaa}" showlabel="true" locklevel="0" colspan="1" rowspan="1" ordinalvalue="20003" solutionaction="Modified" />
+                    </row>
+                    <row>
+                      <cell id="{7889d8c9-7452-47cd-ba11-1030312b213b}" showlabel="true" locklevel="0" ordinalvalue="10006" solutionaction="Removed" />
+                      <cell id="{5c4c8992-0d63-95ec-dace-59c0dccd76d5}" showlabel="true" locklevel="0" colspan="2" rowspan="1" ordinalvalue="10006" solutionaction="Modified" />
+                    </row>
+                    <row>
+                      <cell id="{a2e86e7e-cc54-b8b3-1812-db7aec67d7d7}" showlabel="true" locklevel="0" colspan="2" rowspan="4" ordinalvalue="10008" solutionaction="Removed" />
+                    </row>
+                    <row>
+                      <cell id="{2329843a-6ab4-4431-8a2b-101f3272e104}" showlabel="true" locklevel="1" labelid="{0e9a6300-1e04-4a2d-af5c-b468b4708830}" ordinalvalue="10007" solutionaction="Modified" />
+                      <cell id="{9c166be2-5923-a61c-5434-4d4a60bbbe39}" showlabel="false" ordinalvalue="20010" solutionaction="Removed" />
+                    </row>
+                    <row>
+                      <cell id="{4ec06488-5d91-5364-1c7e-31c2367614d5}" showlabel="true" locklevel="0" colspan="2" ordinalvalue="10011" solutionaction="Removed" />
+                    </row>
+                    <row>
+                      <cell locklevel="0" id="{fb83f56b-e7c1-4fba-8636-83e19bfadd00}" showlabel="false" ordinalvalue="20008" solutionaction="Added">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+                <section name="null_section_3" id="6baefb73-4ee5-41d3-88dc-9b05e32a61a5" IsUserDefined="0" locklevel="0" showlabel="true" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115" ordinalvalue="1" solutionaction="Added">
+                  <labels>
+                    <label description="Business or organization profile" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{a6b4c73e-8fdc-4b77-b532-8aa26c40baa1}" locklevel="0" colspan="1" rowspan="1" ordinalvalue="10000">
+                        <labels>
+                          <label description="Select what best describes the nature of your company/ organization " languagecode="1033" />
+                        </labels>
+                        <control id="quartech_selectwhatbestdescribesthenatureofyourcom" classid="{4AA28AB7-9C13-4F57-A73D-AD894D048B5F}" datafieldname="quartech_selectwhatbestdescribesthenatureofyourcom" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{13cb8389-c85d-7062-3750-20c9b98b918d}" showlabel="true" locklevel="0" ordinalvalue="10001">
+                        <labels>
+                          <label description="I do not have a company or organization affiliation" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_idonothaveacompanyororganizationaffiliatio" classid="{B0C6723A-8503-4fd7-BB28-C8A06AC933C2}" datafieldname="quartech_idonothaveacompanyororganizationaffiliatio" disabled="false" uniqueid="{3bbb4023-356c-757b-ad87-b50aed464c78}" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+                <section name="null_section_4" id="94cf52f7-1859-464b-a60f-0c39eec42025" IsUserDefined="0" locklevel="0" showlabel="false" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115" ordinalvalue="2" solutionaction="Added">
+                  <labels>
+                    <label description="New Section" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{0db78300-2772-5c70-5c94-d10b728021ec}" showlabel="true" locklevel="0" ordinalvalue="10000">
+                        <labels>
+                          <label description="I consent to allow the Ministry of Agriculture and Food to use my contact information to send me information about ministry programs and resources " languagecode="1033" />
+                        </labels>
+                        <control id="quartech_iconsenttoallowtheministryofagricultureand" classid="{B0C6723A-8503-4fd7-BB28-C8A06AC933C2}" datafieldname="quartech_iconsenttoallowtheministryofagricultureand" disabled="false" uniqueid="{a892c9e2-ca41-41eb-1405-173594c7e268}" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+                <section name="null_section_5" id="65254a43-0842-4bbb-b7ba-8c70daadb998" IsUserDefined="0" locklevel="0" showlabel="false" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115" ordinalvalue="3" solutionaction="Added">
+                  <labels>
+                    <label description="New Section" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell showlabel="false" locklevel="0" id="{47e02b69-2628-4811-be31-d0980a8595c5}" ordinalvalue="10000">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{039ddbd2-063d-7de3-b67a-74351e355212}" showlabel="true" locklevel="0" colspan="1" rowspan="1" ordinalvalue="10001">
+                        <labels>
+                          <label description="I consent to allow the Ministry of Agriculture and Food to use my contact information to seek my input or opinion on ministry programs and resources, including surveys " languagecode="1033" />
+                        </labels>
+                        <control id="quartech_iconsenttoallowtheministryseekmyinputor" classid="{B0C6723A-8503-4fd7-BB28-C8A06AC933C2}" datafieldname="quartech_iconsenttoallowtheministryseekmyinputor" disabled="false" uniqueid="{acbaa123-6c7c-2e88-d1d7-9ed8e6176a1b}" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+      <header id="{7f005a17-511a-4051-8a09-c56332f78bb4}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left" solutionaction="Added">
+        <rows>
+          <row>
+            <cell id="{40cda171-5624-4569-a411-3e11299e7e41}" showlabel="false" ordinalvalue="10000">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{b6fe1b7e-fe57-47f9-8784-b2170a2e31f2}" showlabel="false" ordinalvalue="20001">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{55416e32-d92f-4167-b6f4-1fff6a536abb}" showlabel="false" ordinalvalue="30002">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+          </row>
+        </rows>
+      </header>
+      <controlDescriptions solutionaction="Added" />
+    </form>
+    <LocalizedNames>
+      <LocalizedName description="Profile Web Form" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="This form is used by the portal for the user to update their contact info" languagecode="1033" />
+    </Descriptions>
+  </systemform>
+</forms>

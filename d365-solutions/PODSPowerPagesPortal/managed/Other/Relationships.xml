@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<EntityRelationships xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <EntityRelationship Name="lk_quartech_applicationprojectbudgetform_createdby" />
+  <EntityRelationship Name="lk_quartech_applicationprojectbudgetform_modifiedby" />
+  <EntityRelationship Name="lk_quartech_applicationsupportingdocument_createdby" />
+  <EntityRelationship Name="lk_quartech_applicationsupportingdocument_modifiedby" />
+  <EntityRelationship Name="lk_quartech_projectbudgetform_createdby" />
+  <EntityRelationship Name="lk_quartech_projectbudgetform_modifiedby" />
+  <EntityRelationship Name="lk_quartech_supportingdocument_createdby" />
+  <EntityRelationship Name="lk_quartech_supportingdocument_modifiedby" />
+  <EntityRelationship Name="organization_quartech_applicationprojectbudgetform" />
+  <EntityRelationship Name="organization_quartech_applicationsupportingdocument" />
+  <EntityRelationship Name="organization_quartech_projectbudgetform" />
+  <EntityRelationship Name="organization_quartech_supportingdocument" />
+  <EntityRelationship Name="quartech_applicationprojectbudgetform_App" />
+  <EntityRelationship Name="quartech_applicationsupportingdocument_Ap" />
+  <EntityRelationship Name="quartech_quartech_applicationprojectbudgetform_App" />
+  <EntityRelationship Name="quartech_quartech_applicationprojectbudgetform_Pro" />
+  <EntityRelationship Name="quartech_quartech_applicationsupportingdocument_Ap" />
+  <EntityRelationship Name="quartech_quartech_applicationsupportingdocument_Su" />
+</EntityRelationships>

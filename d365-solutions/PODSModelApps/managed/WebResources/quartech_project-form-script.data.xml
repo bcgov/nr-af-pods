@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WebResource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <WebResourceId>{f3d4e499-7dfe-ed11-8f6d-002248ae057e}</WebResourceId>
+  <Name>quartech_project-form-script</Name>
+  <DisplayName>quartech_project-form-script</DisplayName>
+  <LanguageCode>0</LanguageCode>
+  <WebResourceType>3</WebResourceType>
+  <IntroducedVersion>1.0.0.24</IntroducedVersion>
+  <IsEnabledForMobileClient>0</IsEnabledForMobileClient>
+  <IsAvailableForMobileOffline>0</IsAvailableForMobileOffline>
+  <IsCustomizable>1</IsCustomizable>
+  <CanBeDeleted>1</CanBeDeleted>
+  <IsHidden>0</IsHidden>
+  <FileName>/WebResources/quartech_project-form-scriptF3D4E499-7DFE-ED11-8F6D-002248AE057E</FileName>
+</WebResource>

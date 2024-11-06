@@ -1,0 +1,502 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{16c13625-7d26-ee11-9965-000d3af3ac95}</formid>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form shownavigationbar="false" showImage="false" maxWidth="1920" headerdensity="HighWithControls">
+      <tabs>
+        <tab verticallayout="true" id="{d27278c6-ce99-4b53-bf08-8c5baf97e3bf}" IsUserDefined="1" name="DemographicData_Tab1" labelid="{653ee7f4-993a-415d-a83b-3ac9aef5a58c}">
+          <labels>
+            <label description="DemographicData_Tab1" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%">
+              <sections>
+                <section name="DemographicInfoChefsSubmissionSection" id="b47f2266-3522-4a96-90b1-4f116c2e03d9" IsUserDefined="0" locklevel="0" showlabel="false" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115">
+                  <labels>
+                    <label description="CHEFS Demographic Info" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row />
+                    <row>
+                      <cell id="{bbaf9259-3fc2-4343-af9b-95271ec75f72}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="Demographic Data Collection Survey ID number 🔒" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_chefsconfirmationid" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="quartech_chefsconfirmationid" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{3455ae1a-c4f8-4fbd-8f9f-c68122ac17ad}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_chefssubmissionid" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="quartech_chefssubmissionid" disabled="false" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+                <section name="Q1_Section" showlabel="false" showbar="false" locklevel="0" id="{d16165c4-e3e6-2a20-6b39-24617a402747}" IsUserDefined="0" layout="varwidth" columns="1" labelwidth="115" celllabelalignment="Left" celllabelposition="Left" labelid="{f96f32d0-c4ff-4cf8-8391-8089f90d68d7}">
+                  <labels>
+                    <label description="Question 1" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{97ea133c-27e6-472c-b338-70562bf8a628}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="Is the applicant a business owner of either a sole proprietorship or a general partnership? If you are filling out the application form on behalf of a business owner or owners of a sole proprietorship or general partnership, please answer 'yes' and seek the response to the following demographic questions from the business owners." languagecode="1033" />
+                        </labels>
+                        <control id="quartech_question1reownerproprietorshiporparnership" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="quartech_question1reownerproprietorshiporparnership" disabled="false" uniqueid="{b2a6293d-c316-1374-71a3-5747144b6677}" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+                <section name="Q1a_Section" showlabel="true" showbar="false" locklevel="0" id="{11a2e972-e554-7b1d-7c80-d9264e150ed1}" IsUserDefined="0" layout="varwidth" columns="1" labelwidth="115" celllabelalignment="Left" celllabelposition="Left" labelid="{7ae2ca28-76ef-4e48-912c-9b21474e1bbc}">
+                  <labels>
+                    <label description="Please indicate the proportion (% of shares) of the business that is owned by people who identify with each of the following groups. If an individual identifies with more than one group, please count them in each group that they identify with. For any owners who do not identify with any of the groups listed, please count them as 'Non-Indigenous, non-women, non-youth'." languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{a8d2e679-d469-9e40-a493-a79344d2593c}" showlabel="true" locklevel="0" labelid="{46ee0982-8f6d-4ef7-af67-251c2617613d}">
+                        <labels>
+                          <label description="First Nations (including status and non-status)" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_firstnationssharepercentage" classid="{C3EFE0C3-0EC6-42be-8349-CBD9079DFD8E}" datafieldname="quartech_firstnationssharepercentage" disabled="false" uniqueid="{24dd646b-72e1-834a-b21c-09e9807ceeda}" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{d457aba7-5411-39b1-b288-810d4ba6e50b}" showlabel="true" locklevel="0" labelid="{fb993a9d-2d58-4434-a0a8-dd6c04e23112}">
+                        <labels>
+                          <label description="Inuk (Inuit)" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_inukinuitsharepercentage" classid="{C3EFE0C3-0EC6-42be-8349-CBD9079DFD8E}" datafieldname="quartech_inukinuitsharepercentage" disabled="false" uniqueid="{75d8c62b-e826-d441-9689-4ea098b7c124}" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{7e13ce41-c971-c8e7-4811-160d7728050a}" showlabel="true" locklevel="0" labelid="{8d6e4c3e-de0d-4558-bc19-393f302d86f9}">
+                        <labels>
+                          <label description="Métis" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_mtissharepercentage" classid="{C3EFE0C3-0EC6-42be-8349-CBD9079DFD8E}" datafieldname="quartech_mtissharepercentage" disabled="false" uniqueid="{247280d5-43a6-5e95-d7d0-4ccd21a6c923}" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{65328e45-c841-72ca-65a6-8c628e664bd8}" showlabel="true" locklevel="0" labelid="{b142d049-c87e-4e5a-82d7-f34cdf86652a}">
+                        <labels>
+                          <label description="Indigenous - Not Specified" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_indigenoussharepercentage" classid="{C3EFE0C3-0EC6-42be-8349-CBD9079DFD8E}" datafieldname="quartech_indigenoussharepercentage" disabled="false" uniqueid="{51e2eabb-3745-e36c-5107-b52bbaa5563a}" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{c780405d-c88e-579a-9b04-7783ccac7ebc}" showlabel="true" locklevel="0" labelid="{e7846ffd-4734-453a-9bca-b8d0da313a7b}">
+                        <labels>
+                          <label description="Women" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_womensharepercentage" classid="{C3EFE0C3-0EC6-42be-8349-CBD9079DFD8E}" datafieldname="quartech_womensharepercentage" disabled="false" uniqueid="{36ac7ed6-8356-1579-a81e-987d4e72c311}" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{50d2ea58-a713-c443-e544-3cac8727ecc3}" showlabel="true" locklevel="0" labelid="{1ec1f08c-cfc2-46d5-8407-3db040b5cc5d}">
+                        <labels>
+                          <label description="Youth (40 or under)" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_youth40orundersharepercentage" classid="{C3EFE0C3-0EC6-42be-8349-CBD9079DFD8E}" datafieldname="quartech_youth40orundersharepercentage" disabled="false" uniqueid="{858eee46-d9b8-9d7a-2dce-9dd9a4722797}" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{bd00e20b-7601-6869-95db-c86e6c539788}" showlabel="true" locklevel="0" labelid="{d1415dc1-2e19-4046-851f-2bfcb7145023}">
+                        <labels>
+                          <label description="Non-Indigenous, Non-Women, Non-Youth" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_nonindiginousnonwomennonyouthshare" classid="{C3EFE0C3-0EC6-42be-8349-CBD9079DFD8E}" datafieldname="quartech_nonindiginousnonwomennonyouthshare" disabled="false" uniqueid="{d8227446-a819-dc91-981c-ebadd788cbdb}" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{bd38e071-b11b-4d4e-c368-2c6e58c08802}" showlabel="true" locklevel="0" labelid="{ee246abb-5461-4392-9df0-c827f5c9b0fe}">
+                        <labels>
+                          <label description="Unable to answer/identify" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_unabletoansweridentifysharepercentage" classid="{C3EFE0C3-0EC6-42be-8349-CBD9079DFD8E}" datafieldname="quartech_unabletoansweridentifysharepercentage" disabled="false" uniqueid="{71199dca-1e89-2d0b-6b85-c0681d69856e}" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{45d4d836-055d-4bdb-a371-06bb5e3eab64}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_declinetoidentifypercentageshares" classid="{F9A8A302-114E-466A-B582-6771B2AE0D92}" datafieldname="quartech_declinetoidentifypercentageshares" disabled="false" uniqueid="{74073793-f343-45ae-bc70-d5d29dfaec11}" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+                <section name="Q1b_Q1c_Section" id="3820f034-7e8a-4af0-9154-512ce3e9f659" IsUserDefined="0" locklevel="0" showlabel="false" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115" labelid="{d53d7102-3fbf-468b-b180-4d61b7528642}">
+                  <labels>
+                    <label description="Q1b_Q1c_Section" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{30c3b6bb-6ff4-4ec3-9915-3f791be2a6b1}" locklevel="0" colspan="1" rowspan="1" labelid="{742bdc1e-74db-4b6c-89fc-b1df59e799a2}">
+                        <labels>
+                          <label description="What proportion (% of shares) of this business is owned by new entrants into agriculture? New entrants are those who have less than 5 years of agricultural management experience." languagecode="1033" />
+                        </labels>
+                        <control id="quartech_percentagesharesownedbynewentrants" classid="{C3EFE0C3-0EC6-42BE-8349-CBD9079DFD8E}" datafieldname="quartech_percentagesharesownedbynewentrants" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{116e20c8-9066-b929-6a03-39e00539dd0e}" showlabel="true" locklevel="0" colspan="1" rowspan="3" labelid="{0162a568-a615-4ec7-b922-5cea95071684}">
+                        <labels>
+                          <label description="If you wish to share any comments on the demographics of the business owners, please provide them here. (Optional)" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_commentsondemographicsofbusinessowners" classid="{E0DECE4B-6FC8-4a8f-A065-082708572369}" datafieldname="quartech_commentsondemographicsofbusinessowners" disabled="false" uniqueid="{b810e494-9b89-54ad-625c-4a37bdde8a50}" />
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                  </rows>
+                </section>
+                <section name="Q2_Section" id="0c50c6cb-bf9e-4332-bc9e-6d1450266372" IsUserDefined="0" locklevel="0" showlabel="false" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115" labelid="{5267e9e2-a293-44e5-9fee-feb55f6f7416}">
+                  <labels>
+                    <label description="Question 2" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{30337167-c62b-48d3-9546-86a090993283}" showlabel="false">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{c1aac8ff-bca0-4295-a3d8-c7d19bfe2295}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="Does the applicant's organization have a governing board (for example, a Board of Directors)?" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_question2regoverningboard" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="quartech_question2regoverningboard" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{c48ec8d3-8ac5-49f3-bcaa-f05b3ea56165}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="Is the applicant's organization a post-secondary institution, local government, provincial government, or Indigenous governing body?" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_question2breorganizationtype" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="quartech_question2breorganizationtype" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{0d281255-2bc0-44bb-b1f6-4e346fb81d4b}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="How many members does the organization’s governing body have?" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_numberofmembersofthegoverningbody" classid="{C6D124CA-7EDA-4A60-AEA9-7FB8D318B68F}" datafieldname="quartech_numberofmembersofthegoverningbody" disabled="false" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+                <section name="Q2c_Section" showlabel="true" showbar="false" locklevel="0" id="{75a20079-759a-b662-47c5-0cd916ab8cc2}" IsUserDefined="0" layout="varwidth" columns="1" labelwidth="115" celllabelalignment="Left" celllabelposition="Left" labelid="{cb255624-5951-4cde-aa56-61ab4d6e471d}">
+                  <labels>
+                    <label description="How many members of the governing body of the applicant's organization identify as the following groups? If a member of the governing body identifies with more than one identity, count them in the number for all relevant identity groups." languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell locklevel="0" id="{fae4742e-a4b4-4342-8e5c-1bc80eccfa4a}" showlabel="false">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{db4224e5-bace-97c0-32cd-d60c73770970}" showlabel="true" locklevel="0" labelid="{5b116256-bd4c-4d2f-bf86-9af8d6a42f25}">
+                        <labels>
+                          <label description="Indigenous - First Nations (including status and non-status)" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_firstnationsgoverningbodymembers" classid="{C6D124CA-7EDA-4a60-AEA9-7FB8D318B68F}" datafieldname="quartech_firstnationsgoverningbodymembers" disabled="false" uniqueid="{e9c54909-9b7b-45a6-1ed6-a694a827bd41}" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{3437b392-14c6-5717-ce8a-34286b05ab45}" showlabel="true" locklevel="0" labelid="{ee8855a5-af5a-445c-b39e-d1b40a1f1bb7}">
+                        <labels>
+                          <label description="Indigenous - Inuk (Inuit)" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_inukinuitgoverningbodymembers" classid="{C6D124CA-7EDA-4a60-AEA9-7FB8D318B68F}" datafieldname="quartech_inukinuitgoverningbodymembers" disabled="false" uniqueid="{70c6610d-0145-d323-2d5e-165439328a8a}" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{d282c855-93c2-6110-9158-0e0ec3c0d957}" showlabel="true" locklevel="0" labelid="{39ad256f-31cd-47dc-b645-91b6bb5d77db}">
+                        <labels>
+                          <label description="Indigenous - Métis" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_mtisgoverningbodymembers" classid="{C6D124CA-7EDA-4a60-AEA9-7FB8D318B68F}" datafieldname="quartech_mtisgoverningbodymembers" disabled="false" uniqueid="{8bb3553a-6937-94a8-0e5d-ddd9389d87ed}" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{61a4ee9d-4e8b-cd75-8500-989177d0ac03}" showlabel="true" locklevel="0" labelid="{6921af1e-ba8e-4728-8b2f-eba278d7931b}">
+                        <labels>
+                          <label description="Indigenous - Not Specified. (Only select this option if you are not able, or prefer not to select a specific Indigenous identity. Do not double count with other Indigenous identities above.)" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_indigenousnotspecifiedgoverningbodymember" classid="{C6D124CA-7EDA-4a60-AEA9-7FB8D318B68F}" datafieldname="quartech_indigenousnotspecifiedgoverningbodymember" disabled="false" uniqueid="{ba27415b-9e18-7e10-ce6c-3624228b4e31}" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{dc63343b-241c-d390-c394-2a44448d5e3e}" showlabel="true" locklevel="0" labelid="{20b808ca-7011-4212-a94a-651c76a614c9}">
+                        <labels>
+                          <label description="Women" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_womengoverningbodymembers" classid="{C6D124CA-7EDA-4a60-AEA9-7FB8D318B68F}" datafieldname="quartech_womengoverningbodymembers" disabled="false" uniqueid="{4c2d3d91-8968-c0b9-e978-89d9ee63a844}" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{816c5011-ad6e-6141-8e41-778541b5a119}" showlabel="true" locklevel="0" labelid="{ffec1e83-85b8-441d-a7b2-65e52fa74176}">
+                        <labels>
+                          <label description="Youth (40 years of age and under)" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_youthgoverningbodymembers" classid="{C6D124CA-7EDA-4a60-AEA9-7FB8D318B68F}" datafieldname="quartech_youthgoverningbodymembers" disabled="false" uniqueid="{092bdb93-503a-2a80-4580-a6b7b75520a1}" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{4c856a5a-051b-e174-9d96-77ea1e040a77}" showlabel="true" locklevel="0" labelid="{ff320a92-5801-4907-be92-b9b1ce3e0594}">
+                        <labels>
+                          <label description="None of the specified groups (i.e., non-Indigenous, not women, not youth)" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_nonindiginousnonwomennonyouthgovbodymbrs" classid="{C6D124CA-7EDA-4a60-AEA9-7FB8D318B68F}" datafieldname="quartech_nonindiginousnonwomennonyouthgovbodymbrs" disabled="false" uniqueid="{56786042-7ba5-4694-530a-9ac5210514b3}" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{1ca3b405-8dff-4ac3-93f3-6af23d85f9d7}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="Unable to answer" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_question2dgoverningbodymembersunabletoanswer" classid="{C3EFE0C3-0EC6-42BE-8349-CBD9079DFD8E}" datafieldname="quartech_question2dgoverningbodymembersunabletoanswer" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{74344867-5484-4a7f-a5e9-e7e9733c9c00}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="Decline to identify" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_declinetoidentifygoverningbodymember" classid="{F9A8A302-114E-466A-B582-6771B2AE0D92}" datafieldname="quartech_declinetoidentifygoverningbodymember" disabled="false" uniqueid="{a5f657db-1707-46d0-8a88-545bf465c445}" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+                <section name="Q3_section" showlabel="false" showbar="false" locklevel="0" id="{a72261dc-46b4-9629-069d-b253cc1605c8}" IsUserDefined="0" layout="varwidth" columns="1" labelwidth="115" celllabelalignment="Left" celllabelposition="Left" labelid="{8aa12a22-6878-49c6-b4df-22c6948be623}">
+                  <labels>
+                    <label description="Question 3" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{6cf0f977-13bc-478c-a48f-00a17be68110}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="Indicate any of the following groups who are specifically targeted beneficiaries of the project's activities. Select all that apply." languagecode="1033" />
+                        </labels>
+                        <control id="quartech_doesyourorganizationtargetanyofthegroups" classid="{4AA28AB7-9C13-4F57-A73D-AD894D048B5F}" datafieldname="quartech_doesyourorganizationtargetanyofthegroups" disabled="false" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+                <section name="section_Coding" id="5436de59-aaa3-475a-b750-57d9c22405fa" IsUserDefined="0" locklevel="0" showlabel="true" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115">
+                  <labels>
+                    <label description="Coding Section (DO NOT REMOVE)" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell showlabel="false" locklevel="0" id="{ff35617b-52e0-41e2-ba9e-5f86f6def809}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{c43ad78a-d5e5-cb78-2797-bb3b01905d2d}" showlabel="true" locklevel="0" labelid="{12459f95-9aa8-4d93-b071-b6feb62bcd5c}" visible="true" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="Application" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_application" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="quartech_application" disabled="false" uniqueid="{84403887-365c-ac8d-2c91-9d976dce346c}">
+                          <parameters>
+                            <AutoResolve>true</AutoResolve>
+                            <DisableMru>false</DisableMru>
+                            <DisableQuickFind>false</DisableQuickFind>
+                            <DisableViewPicker>false</DisableViewPicker>
+                            <DefaultViewId>{07D01AFC-B667-473C-8346-B6B5461563EF}</DefaultViewId>
+                            <AllowFilterOff>false</AllowFilterOff>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell locklevel="0" id="{2e7b5e62-5e1e-4809-b9a3-518ee5501f62}" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="Application's Demographic Info Step quickview form" languagecode="1033" />
+                        </labels>
+                        <control id="ApplicationDemographicInfoStepQuickViewForm" classid="{5C5600E0-1D6E-4205-A272-BE80DA87FD42}" datafieldname="quartech_application">
+                          <parameters>
+                            <DisplayAsCustomer360Tile>false</DisplayAsCustomer360Tile>
+                            <QuickForms>&lt;QuickFormIds&gt;&lt;QuickFormId entityname="msgov_businessgrantapplication"&gt;2c85daf4-c1b0-ee11-a568-6045bd5f4328&lt;/QuickFormId&gt;&lt;/QuickFormIds&gt;</QuickForms>
+                            <HideQuickFormBorder>true</HideQuickFormBorder>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+                <section name="Hidden" showlabel="false" showbar="false" locklevel="0" id="{3b149854-9395-9089-c281-0b2048d239ed}" IsUserDefined="0" layout="varwidth" columns="1" labelwidth="115" celllabelalignment="Left" celllabelposition="Left" visible="false" labelid="{7ac18db1-84f8-481b-9d9b-736110a5d9c7}">
+                  <labels>
+                    <label description="Hidden" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{36cd9366-1955-0e56-5158-ba91742e8854}" showlabel="true" locklevel="1" visible="false" labelid="{6f97cfb6-19ee-4bf1-b641-f86e3f19956d}">
+                        <labels>
+                          <label description="Program Area" languagecode="1033" />
+                        </labels>
+                        <control id="ownerid" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="ownerid" disabled="false" uniqueid="{96662bce-5c4d-3a24-1e09-e5a3cd9e166c}">
+                          <parameters>
+                            <AutoResolve>true</AutoResolve>
+                            <DisableMru>false</DisableMru>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+      <header id="{b324f3fe-6159-464d-9eb2-c72bdf48c262}" columns="111">
+        <rows>
+          <row>
+            <cell id="{5ac248b1-374b-482b-9d93-c03ae146617c}" showlabel="false" labelid="{7d09afca-cf0e-4aa6-81a4-e54160f2ee46}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{073a529a-e826-4795-91ed-63c684da91d0}" showlabel="false" labelid="{3480b7ad-a4dd-44f8-b0cd-fb011da09452}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{90e8eacb-18a0-30d3-ae24-9a36e48d73a5}" showlabel="false" labelid="{38dea1c2-cb8e-45bf-9808-3eee48fe57cf}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+          </row>
+        </rows>
+      </header>
+      <Navigation>
+        <NavBar />
+        <NavBarAreas>
+          <NavBarArea Id="Info">
+            <Titles>
+              <Title LCID="1033" Text="Common" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="Sales">
+            <Titles>
+              <Title LCID="1033" Text="Sales" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="Service">
+            <Titles>
+              <Title LCID="1033" Text="Service" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="Marketing">
+            <Titles>
+              <Title LCID="1033" Text="Marketing" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="ProcessCenter">
+            <Titles>
+              <Title LCID="1033" Text="Process Sessions" />
+            </Titles>
+          </NavBarArea>
+        </NavBarAreas>
+      </Navigation>
+      <controlDescriptions>
+        <controlDescription forControl="{74073793-f343-45ae-bc70-d5d29dfaec11}">
+          <customControl id="{67FAC785-CD58-4F9F-ABB3-4B7DDC6ED5ED}">
+            <parameters>
+              <datafieldname>quartech_declinetoidentifypercentageshares</datafieldname>
+            </parameters>
+          </customControl>
+          <customControl formFactor="0" name="MscrmControls.FieldControls.ToggleControl">
+            <parameters>
+              <value type="TwoOptions">quartech_declinetoidentifypercentageshares</value>
+            </parameters>
+          </customControl>
+          <customControl formFactor="2" name="MscrmControls.FieldControls.ToggleControl">
+            <parameters>
+              <value type="TwoOptions">quartech_declinetoidentifypercentageshares</value>
+            </parameters>
+          </customControl>
+          <customControl formFactor="1" name="MscrmControls.FieldControls.ToggleControl">
+            <parameters>
+              <value type="TwoOptions">quartech_declinetoidentifypercentageshares</value>
+            </parameters>
+          </customControl>
+        </controlDescription>
+        <controlDescription forControl="{a5f657db-1707-46d0-8a88-545bf465c445}">
+          <customControl id="{67FAC785-CD58-4F9F-ABB3-4B7DDC6ED5ED}">
+            <parameters>
+              <datafieldname>quartech_declinetoidentifygoverningbodymember</datafieldname>
+            </parameters>
+          </customControl>
+          <customControl formFactor="0" name="MscrmControls.FieldControls.ToggleControl">
+            <parameters>
+              <value type="TwoOptions">quartech_declinetoidentifygoverningbodymember</value>
+            </parameters>
+          </customControl>
+          <customControl formFactor="2" name="MscrmControls.FieldControls.ToggleControl">
+            <parameters>
+              <value type="TwoOptions">quartech_declinetoidentifygoverningbodymember</value>
+            </parameters>
+          </customControl>
+          <customControl formFactor="1" name="MscrmControls.FieldControls.ToggleControl">
+            <parameters>
+              <value type="TwoOptions">quartech_declinetoidentifygoverningbodymember</value>
+            </parameters>
+          </customControl>
+        </controlDescription>
+      </controlDescriptions>
+      <footer id="{f98929ab-63c2-42de-96b9-bea570c02d2f}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{35b2aebe-19d4-47bc-b892-a11f738b8eef}" showlabel="false" labelid="{0515e09c-a62f-4c07-8cdf-a0387af73ed6}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{bc1bbdce-3037-4147-89e3-274e222787d6}" showlabel="false" labelid="{57b938e6-33b6-444f-b429-c83aed0beb4a}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{590434c4-9ac6-442d-ae22-9b5f71db2faf}" showlabel="false" labelid="{3ead8685-e719-414a-ba6c-a5d60d941c2c}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+          </row>
+        </rows>
+      </footer>
+      <DisplayConditions Order="1" FallbackForm="true">
+        <Role Id="{A75A6D67-1730-4298-8FC7-AF7E93064FA1}" />
+        <Role Id="{627090ff-40a3-4053-8790-584edc5be201}" />
+        <Role Id="{119f245c-3cc8-4b62-b31c-d1a046ced15d}" />
+      </DisplayConditions>
+    </form>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <LocalizedNames>
+      <LocalizedName description="Applicant Portal" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="A form which is exposed to the Applicant Portal" languagecode="1033" />
+    </Descriptions>
+  </systemform>
+</forms>

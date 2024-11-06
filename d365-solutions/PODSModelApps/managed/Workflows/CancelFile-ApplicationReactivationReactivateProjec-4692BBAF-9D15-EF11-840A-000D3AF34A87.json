@@ -1,0 +1,154 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_sharedcommondataserviceforapps_f90be"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "086e51de-a5f3-46e3-8bce-ac41e72f86c4"
+          },
+          "type": "Request",
+          "kind": "Button",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "title": "ProjectGUID",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                }
+              },
+              "required": [
+                "text"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Get_Project:_Status_Upon_Cancellation": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "1f60ac46-f1f6-4720-be9e-bd4f7e02b768"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "parameters": {
+              "entityName": "quartech_grantprojects",
+              "recordId": "@triggerBody()['text']",
+              "$select": "quartech_statusuponcancellation,quartech_projectstatus"
+            },
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+              "operationId": "GetItem",
+              "connectionName": "shared_commondataserviceforapps"
+            }
+          }
+        },
+        "Check_if_Status_Upon_Cancellation_contains_data": {
+          "actions": {
+            "Update_Project_-_Project_Status_to_Status_Upon_Cancellation": {
+              "metadata": {
+                "operationMetadataId": "c665b0ba-6f63-48c5-a2e6-6ecc95a0268d"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "parameters": {
+                  "entityName": "quartech_grantprojects",
+                  "recordId": "@triggerBody()['text']",
+                  "item/quartech_projectstatus": "@body('Get_Project:_Status_Upon_Cancellation')?['quartech_statusuponcancellation']",
+                  "item/quartech_statusuponcancellation": "@null"
+                },
+                "host": {
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+                  "operationId": "UpdateRecord",
+                  "connectionName": "shared_commondataserviceforapps"
+                }
+              }
+            },
+            "Response": {
+              "runAfter": {
+                "Update_Project_-_Project_Status_to_Status_Upon_Cancellation": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "58597939-f813-4480-8aa4-bf4d88e5e802"
+              },
+              "type": "Response",
+              "kind": "Http",
+              "inputs": {
+                "statusCode": 200,
+                "body": {
+                  "errorMessage": ""
+                }
+              }
+            }
+          },
+          "runAfter": {
+            "Get_Project:_Status_Upon_Cancellation": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {}
+          },
+          "expression": {
+            "and": [
+              {
+                "greater": [
+                  "@body('Get_Project:_Status_Upon_Cancellation')?['quartech_statusuponcancellation']",
+                  0
+                ]
+              },
+              {
+                "greaterOrEquals": [
+                  "@body('Get_Project:_Status_Upon_Cancellation')?['quartech_projectstatus']",
+                  255550011
+                ]
+              },
+              {
+                "lessOrEquals": [
+                  "@body('Get_Project:_Status_Upon_Cancellation')?['quartech_projectstatus']",
+                  255550013
+                ]
+              }
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "70c58963-3e27-4b28-a0aa-a9f6c78e0f62"
+          },
+          "type": "If",
+          "description": "StatusUponCancellation must contain data\nAND Project Status must be in Application Withdrawn (255550011), Application Expired (255550012) or Application Error (255550013), "
+        }
+      }
+    },
+    "templateName": null
+  },
+  "schemaVersion": "1.0.0.0"
+}

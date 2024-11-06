@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>0</isdefault>
+    <savedqueryid>{9ce113c7-b88f-ee11-8179-002248ae057e}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="quartech_name" select="1" icon="1" preview="1">
+        <row name="result" id="quartech_claimid">
+          <cell name="quartech_name" width="300" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="quartech_applicant" width="150" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="quartech_program" width="200" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="quartech_application" width="150" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="quartech_interimorfinalpayment" width="130" />
+          <cell name="quartech_claimstatus" width="125" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="createdon" width="200" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
+        <entity name="quartech_claim">
+          <attribute name="quartech_name" />
+          <attribute name="quartech_application" />
+          <attribute name="quartech_program" />
+          <attribute name="quartech_claimstatus" />
+          <attribute name="quartech_applicant" />
+          <attribute name="quartech_interimorfinalpayment" />
+          <attribute name="createdon" />
+          <order attribute="createdon" descending="true" />
+          <order attribute="quartech_name" descending="false" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="quartech_claimid" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.0.64</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Applicant Portal - My Claims" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

@@ -1,0 +1,384 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_sharedcommondataserviceforapps_f90be"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "When_The_Application_is_Submitted_via_the_Applicant_Portal:_Application_entity": {
+          "metadata": {
+            "operationMetadataId": "29011ede-a3a4-4213-a17c-6e64b5c7fde4"
+          },
+          "type": "OpenApiConnectionWebhook",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "SubscribeWebhookTrigger",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "subscriptionRequest/message": 3,
+              "subscriptionRequest/entityname": "msgov_businessgrantapplication",
+              "subscriptionRequest/scope": 4,
+              "subscriptionRequest/filteringattributes": "quartech_applicationstatus",
+              "subscriptionRequest/filterexpression": "quartech_applicationstatus eq 919830000 and quartech_originalsource eq 255550002"
+            },
+            "authentication": "@parameters('$authentication')"
+          },
+          "description": "OSV definition: Submitted Application Status: 919830000 | Applicant Portal Original Source: 255550002"
+        }
+      },
+      "actions": {
+        "Initialize_variable_-_vOrganization": {
+          "runAfter": {
+            "Initialize_variable_-_Update_Branch_Indicator": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "1a94086c-62bf-4bab-b438-08068f9d4368"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "vOrganization",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Check_whether_identical_Business_Name_exists": {
+          "runAfter": {
+            "Initialize_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "5b18fc5c-6b24-4a66-bd5d-a869bc09cb29"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "accounts",
+              "$filter": "name eq '@{replace(variables('vNameCharacterCheck'),'''','''''')}'",
+              "$top": 1
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Check_whether_Account_with_same_Legal_Business_Name_found": {
+          "actions": {
+            "Flag_same_business_name_found": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "4bb45553-9bc8-44bc-b9f2-efb46d10ab9d"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "vBranchIndicator",
+                "value": "SameBusinessName"
+              }
+            }
+          },
+          "runAfter": {
+            "Set_vOrganization_with_match_Business_Name": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Condition": {
+                "actions": {
+                  "Flag_same_registration_number_found": {
+                    "runAfter": {},
+                    "metadata": {
+                      "operationMetadataId": "1a1ca97e-f3ac-4b9e-b602-e80acaa137fa"
+                    },
+                    "type": "SetVariable",
+                    "inputs": {
+                      "name": "vBranchIndicator",
+                      "value": "SameRegistrationNumber"
+                    }
+                  }
+                },
+                "runAfter": {
+                  "Set_vOrganization_with_match_Registration_Number": [
+                    "Succeeded"
+                  ]
+                },
+                "else": {
+                  "actions": {
+                    "Create_new_Account": {
+                      "runAfter": {},
+                      "metadata": {
+                        "operationMetadataId": "dc73ced5-b2c4-4cca-b24c-1b56c8f89989"
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_commondataserviceforapps_1",
+                          "operationId": "CreateRecord",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                        },
+                        "parameters": {
+                          "entityName": "accounts",
+                          "item/quartech_businessnumber": "@triggerOutputs()?['body/quartech_businessregistrationnumber']",
+                          "item/name": "@triggerOutputs()?['body/quartech_legalbusinessororganizationname']",
+                          "item/address1_city": "@triggerOutputs()?['body/quartech_businesscity']",
+                          "item/address1_line3": "@triggerOutputs()?['body/quartech_businessstreet']",
+                          "item/address1_line2": "@triggerOutputs()?['body/quartech_businessstreetnumber']",
+                          "item/address1_line1": "@triggerOutputs()?['body/quartech_businesssuitenumberoptional']",
+                          "item/address1_postalcode": "@triggerOutputs()?['body/quartech_businesspostalcode']",
+                          "item/emailaddress1": "@triggerOutputs()?['body/quartech_businessemailaddress']",
+                          "item/telephone1": "@triggerOutputs()?['body/quartech_businessphonenumber']"
+                        },
+                        "authentication": "@parameters('$authentication')"
+                      }
+                    },
+                    "Update_vOrganization_with_new_account_id": {
+                      "runAfter": {
+                        "Create_new_Account": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "e50d7e8b-20c9-4f06-901d-274bf5ae4743"
+                      },
+                      "type": "SetVariable",
+                      "inputs": {
+                        "name": "vOrganization",
+                        "value": "@outputs('Create_new_Account')?['body/@odata.id']"
+                      }
+                    },
+                    "Flag_new_account_added": {
+                      "runAfter": {
+                        "Update_vOrganization_with_new_account_id": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "4f03dc32-ef69-4de3-ab28-dff369b9e444"
+                      },
+                      "type": "SetVariable",
+                      "inputs": {
+                        "name": "vBranchIndicator",
+                        "value": "NewAccount"
+                      }
+                    }
+                  }
+                },
+                "expression": {
+                  "not": {
+                    "equals": [
+                      "@variables('vBranchIndicator')",
+                      "RegistrationNumber"
+                    ]
+                  }
+                },
+                "metadata": {
+                  "operationMetadataId": "433a6a30-43b1-42fa-a7e9-3b3af772e688"
+                },
+                "type": "If"
+              },
+              "Reset_Branch_Indicator": {
+                "runAfter": {},
+                "metadata": {
+                  "operationMetadataId": "0facde60-8c80-46ca-8088-3e98dcc473c5"
+                },
+                "type": "SetVariable",
+                "inputs": {
+                  "name": "vBranchIndicator",
+                  "value": "RegistrationNumber"
+                }
+              },
+              "Check_whether_identical_CRA_or_Registration_Number_exists": {
+                "runAfter": {
+                  "Reset_Branch_Indicator": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "74c084ce-b133-4745-84a2-1a47a83dfeec"
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "host": {
+                    "connectionName": "shared_commondataserviceforapps_1",
+                    "operationId": "ListRecords",
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                  },
+                  "parameters": {
+                    "entityName": "accounts",
+                    "$filter": "quartech_businessnumber eq '@{triggerOutputs()?['body/quartech_businessregistrationnumber']}'",
+                    "$top": 1
+                  },
+                  "authentication": "@parameters('$authentication')"
+                }
+              },
+              "Append_to_vBranchIndicator_with_match_Registration_Number": {
+                "runAfter": {
+                  "Check_whether_identical_CRA_or_Registration_Number_exists": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "1bf065e2-4664-4e46-b953-ba8654e3960d"
+                },
+                "type": "AppendToStringVariable",
+                "inputs": {
+                  "name": "vBranchIndicator",
+                  "value": "@first(body('Check_whether_identical_CRA_or_Registration_Number_exists')?['value'])?['@odata.id']"
+                }
+              },
+              "Set_vOrganization_with_match_Registration_Number": {
+                "runAfter": {
+                  "Append_to_vBranchIndicator_with_match_Registration_Number": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "4ff8f989-8f36-4276-b69d-8a7ededa2b3f"
+                },
+                "type": "SetVariable",
+                "inputs": {
+                  "name": "vOrganization",
+                  "value": "@{first(body('Check_whether_identical_CRA_or_Registration_Number_exists')?['value'])?['@odata.id']}"
+                }
+              }
+            }
+          },
+          "expression": {
+            "not": {
+              "equals": [
+                "@variables('vBranchIndicator')",
+                "LegalName"
+              ]
+            }
+          },
+          "metadata": {
+            "operationMetadataId": "947caec3-0299-40f1-8498-e065d773c903"
+          },
+          "type": "If"
+        },
+        "Update_the_Application_with_the_Organization_found_or_newly_created": {
+          "runAfter": {
+            "Check_whether_Account_with_same_Legal_Business_Name_found": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "cba47ab1-86de-4592-96d0-a79516f151fc"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "UpdateRecord",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "msgov_businessgrantapplications",
+              "recordId": "@triggerOutputs()?['body/msgov_businessgrantapplicationid']",
+              "item/quartech_account@odata.bind": "@variables('vOrganization')"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Initialize_variable_-_Update_Branch_Indicator": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "f139584b-a90a-42de-aacc-6f8a497b203e"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "vBranchIndicator",
+                "type": "string",
+                "value": "LegalName"
+              }
+            ]
+          }
+        },
+        "Set_vOrganization_with_match_Business_Name": {
+          "runAfter": {
+            "Append_to_vBranchIndicator_with_match_Business_Name": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "fb951b3f-15a0-4cbb-81a0-976753891f67"
+          },
+          "type": "SetVariable",
+          "inputs": {
+            "name": "vOrganization",
+            "value": "@{first(body('Check_whether_identical_Business_Name_exists')?['value'])?['@odata.id']}"
+          }
+        },
+        "Append_to_vBranchIndicator_with_match_Business_Name": {
+          "runAfter": {
+            "Check_whether_identical_Business_Name_exists": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "9cbea2f1-0c0e-44f0-9fbc-2e4a0d3334b3"
+          },
+          "type": "AppendToStringVariable",
+          "inputs": {
+            "name": "vBranchIndicator",
+            "value": "@first(body('Check_whether_identical_Business_Name_exists')?['value'])?['@odata.id']"
+          }
+        },
+        "Initialize_variable": {
+          "runAfter": {
+            "Initialize_variable_-_vOrganization": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "6815d8de-732f-4bdc-8994-d342af82fd58"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "vNameCharacterCheck",
+                "type": "string",
+                "value": "@triggerOutputs()?['body/quartech_legalbusinessororganizationname']"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}
