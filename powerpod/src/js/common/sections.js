@@ -3,17 +3,35 @@ import { addTextBelowSection, addTextAboveSection } from './html.js';
 import { Logger } from './logger.js';
 import { getCurrentStep } from './program.js';
 import { setTabName, setHeadings } from './tabs.js';
+import { mergeObjects } from './utils.js';
 
 const logger = Logger('common/sections');
 
-export function configureSections(sections) {
-  if (!sections || !sections.length) {
+export function configureSections(appSections, globalSections) {
+  if (!appSections || !appSections.length) {
     logger.warn({
       fn: configureSections,
       message: 'Configure sections called with empty data',
     });
   }
-  sections.forEach((section) => {
+  appSections.forEach((section) => {
+    const matchingGlobalSection = globalSections.find(
+      (val) => val.name === section.name
+    );
+
+    if (matchingGlobalSection) {
+      logger.info({
+        fn: configureSubsections,
+        message: `Found matching global section for section.name: ${section.name}, merging section data...`,
+        data: { section, matchingGlobalSection },
+      });
+      section = mergeObjects(section, matchingGlobalSection);
+      logger.info({
+        fn: configureSubsections,
+        message: `Done merging section + global data for section.name: ${section.name}`,
+        data: { section },
+      });
+    }
     logger.info({
       fn: configureSubsections,
       message: `Start configuring section for section.name: ${section.name}...`,

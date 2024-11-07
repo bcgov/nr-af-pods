@@ -74,10 +74,21 @@ export function getFieldsBySectionApplication(stepName, forceRefresh = false) {
   });
 
   const globalSections = globalConfigData?.sections;
+  logger.info({
+    fn: getFieldsBySectionApplication,
+    message: `globalSections data:`,
+    data: { globalSections },
+  });
+
   const applicationSections = applicationConfigData?.sections;
+  logger.info({
+    fn: getFieldsBySectionApplication,
+    message: `applicationSections data:`,
+    data: { applicationSections },
+  });
 
   // only supports configuration from application json level
-  configureSections(applicationSections);
+  configureSections(applicationSections, globalSections);
 
   // hide tabs if 'hiddenSteps' is passed in JSON config
   const hiddenSteps = applicationConfigData.hiddenSteps;
