@@ -23,6 +23,7 @@ POWERPOD.utils = {
   disableDebugging,
   enableCanadaPostIntegration,
   disableCanadaPostIntegration,
+  mergeFieldArrays,
 };
 
 export function enableDebugging() {
