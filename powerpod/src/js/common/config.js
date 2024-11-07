@@ -2,7 +2,7 @@ import { POWERPOD } from './constants.js';
 import { Logger } from './logger.js';
 // UNCOMMENT THIS IF YOU WANT TO FORCE TO USE LOCAL JSON CONFIG:
 
-import globalConfigJson from '../../../../assets/global/json/quartech_applicantportalconfig.json';
+// import globalConfigJson from '../../../../assets/global/json/quartech_applicantportalconfig.json';
 /*
  * APPLICATION FORMS
  */
@@ -19,7 +19,7 @@ import globalConfigJson from '../../../../assets/global/json/quartech_applicantp
 // NEFBA:
 // import localConfigJson from '../../../../assets/application/json/quartech_applicantportalapplicationformconfigjson_nefba.json';
 // VVTS:
-import localConfigJson from '../../../../assets/application/json/quartech_applicantportalapplicationformconfigjson_vvts.json';
+// import localConfigJson from '../../../../assets/application/json/quartech_applicantportalapplicationformconfigjson_vvts.json';
 
 /*
  * CLAIM FORMS
@@ -50,17 +50,17 @@ export function getGlobalConfigData() {
     data: { path },
   });
   // UNCOMMENT THIS IF YOU WANT TO FORCE TO USE LOCAL JSON CONFIG
-  if (
-    (path.includes('application-dev') || path.includes('application-dev')) &&
-    globalConfigJson
-  ) {
-    logger.info({
-      fn: getGlobalConfigData,
-      message: 'successfully fetched global config data from localhost',
-      data: { globalConfigJson },
-    });
-    return globalConfigJson;
-  }
+  // if (
+  //   (path.includes('application-dev') || path.includes('application-dev')) &&
+  //   globalConfigJson
+  // ) {
+  //   logger.info({
+  //     fn: getGlobalConfigData,
+  //     message: 'successfully fetched global config data from localhost',
+  //     data: { globalConfigJson },
+  //   });
+  //   return globalConfigJson;
+  // }
   // UNCOMMENT THIS IF YOU WANT TO FORCE TO USE LOCAL JSON CONFIG
 
   const programData = localStorage.getItem('programData');
@@ -142,14 +142,14 @@ export function getApplicationConfigData(programId) {
   });
 
   // UNCOMMENT THIS IF YOU WANT TO FORCE TO USE LOCAL JSON CONFIG
-  if (path.includes('application-dev') && localConfigJson) {
-    logger.info({
-      fn: getApplicationConfigData,
-      message: 'successfully fetched application config data from localhost',
-      data: { localConfigJson },
-    });
-    return localConfigJson;
-  }
+  // if (path.includes('application-dev') && localConfigJson) {
+  //   logger.info({
+  //     fn: getApplicationConfigData,
+  //     message: 'successfully fetched application config data from localhost',
+  //     data: { localConfigJson },
+  //   });
+  //   return localConfigJson;
+  // }
   // UNCOMMENT THIS IF YOU WANT TO FORCE TO USE LOCAL JSON CONFIG
 
   const programData = localStorage.getItem('programData');
