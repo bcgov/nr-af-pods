@@ -42,7 +42,7 @@ class PercentageInput extends LitElement {
         message: 'Percentage input value has changed',
         // @ts-ignore
         id: this.id,
-        value: this.inputValue,
+        value: this.inputValue.replace('%', ''),
       },
       bubbles: true,
       composed: true,
