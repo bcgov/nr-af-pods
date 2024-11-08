@@ -9,7 +9,7 @@ import {
   isHiddenRow,
 } from './html.js';
 import { getFormType } from './applicationUtils.js';
-import { getProgramData } from './program.js';
+import { getProgramData } from './program.ts';
 import { Logger } from './logger.js';
 import store from '../store/index.js';
 import { saveBrowserInfo } from './utils.js';

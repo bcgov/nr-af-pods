@@ -1,5 +1,5 @@
 import { NO_VALUE, YES_VALUE } from '../../common/constants.js';
-import { getEnvVars } from '../../common/env.js';
+import { getEnvVars } from '../../common/env.ts';
 import {
   addHtmlToSection,
   addTextAboveField,

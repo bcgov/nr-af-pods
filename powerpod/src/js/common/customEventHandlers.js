@@ -4,10 +4,32 @@ import { HtmlElementType } from './constants.js';
 import { setFieldValue } from './html.js';
 
 POWERPOD.customEventHandlers = {
+  genericEventHandler,
   hasCraNumberCheckboxEventHandler,
 };
 
 const logger = Logger('common/customEventHandlers');
+
+export function genericEventHandler(name) {
+  return (event, customElement) => {
+    logger.info({
+      fn: genericEventHandler,
+      message: `Detected generic event handler for name: ${name}`,
+      data: { name, event, customElement },
+    });
+    const value = event.detail.value;
+    logger.info({
+      fn: hasCraNumberCheckboxEventHandler,
+      message: `Setting attribute for name: ${name}, inputvalue: ${value}`,
+      data: { name, event, customElement },
+    });
+    // @ts-ignore
+    setFieldValue({
+      name,
+      value: `${value}`,
+    });
+  };
+}
 
 export function hasCraNumberCheckboxEventHandler(name) {
   return (event, customElement) => {

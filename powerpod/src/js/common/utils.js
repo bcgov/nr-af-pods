@@ -14,7 +14,7 @@ import {
   patchClaimData,
   postBrowserInformationData,
 } from './fetch.js';
-import { getCurrentUser } from './dynamics.js';
+import { getCurrentUser } from './dynamics.ts';
 
 const logger = Logger('common/utils');
 

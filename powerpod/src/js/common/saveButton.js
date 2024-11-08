@@ -4,7 +4,7 @@ import { Form, FormStep, HtmlElementType, POWERPOD } from './constants.js';
 import { patchApplicationData, patchClaimData } from './fetch.js';
 import { generateFormJson, getFormId } from './form.js';
 import { Logger } from './logger.js';
-import { getCurrentStep } from './program.js';
+import { getCurrentStep } from './program.ts';
 import { PropertyReferences, PropertyReferenceValues } from './propertyRefs.js';
 import { isObjectEmpty } from './utils.js';
 

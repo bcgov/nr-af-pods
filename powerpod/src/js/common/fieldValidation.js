@@ -459,8 +459,12 @@ export function validateNumericFieldValue({
 
   const value = parseFloat(
     // @ts-ignore
-    element.value.replace(/,/g, '').replace('$', '')
+    element.value.replace(/,/g, '').replace('$', '').replace('%', '')
   );
+  logger.info({
+    fn: validateNumericFieldValue,
+    message: `After cleaning value: ${value}`,
+  });
   let finalMessage = '';
   const genericErrorMsg = `Please enter a valid number`;
   switch (operator) {

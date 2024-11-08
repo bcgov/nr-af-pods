@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { addTextBelowSection, addTextAboveSection } from './html.js';
 import { Logger } from './logger.js';
-import { getCurrentStep } from './program.js';
+import { getCurrentStep } from './program.ts';
 import { setTabName, setHeadings } from './tabs.js';
 import { mergeObjects } from './utils.js';
 

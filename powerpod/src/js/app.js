@@ -1,6 +1,6 @@
 export { default } from './powerpod.js';
 import { Environment, Form, doc, win } from './common/constants.js';
-import { getEnv } from './common/env.js';
+import { getEnv } from './common/env.ts';
 import { Logger } from './common/logger.js';
 import { ENV_LOG_LEVEL, getOptions } from './common/options.js';
 import { initJQueryAdapter } from './jquery-adapter.js';
