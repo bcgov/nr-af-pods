@@ -26,7 +26,7 @@ import {
 import { Logger } from './logger.js';
 import { FieldMaskType, maskInput } from './masking.js';
 import { getOptions } from './options.js';
-import { getCurrentStep } from './program.js';
+import { getCurrentStep } from './program.ts';
 import { setupTooltip } from './tooltip.js';
 import { hasUpperCase } from './utils.js';
 import {
@@ -37,12 +37,13 @@ import {
 } from './fieldValidation.js';
 import { setFieldVisibility } from './fieldConditionalLogic.js';
 import { useScript } from './scripts.js';
-import { renderCustomComponent } from './components.js';
-import '../components/FileUpload.js';
-import '../components/Checkbox.js';
+import { renderCustomComponent } from './components.ts';
+import '../components/FileUpload.ts';
+import '../components/Checkbox.ts';
+import '../components/PercentageInput.ts';
 import store from '../store/index.js';
 import { getFormType } from './applicationUtils.js';
-import { getEnv } from './env.js';
+import { getEnv } from './env.ts';
 import { setOnChangeHandler } from './onChangeHandlers.js';
 import { generateFormJson } from './form.js';
 
@@ -268,6 +269,7 @@ export function configureField(field) {
       mappedValueKey: 'inputvalue',
       customEvent: customEventName,
       initValuesFn: customInitValuesFn,
+      attributes: customComponent.attributes,
     };
 
     logger.info({

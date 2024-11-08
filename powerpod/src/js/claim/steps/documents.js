@@ -3,7 +3,7 @@ import {
   hideQuestion,
   observeIframeChanges,
 } from '../../common/html.js';
-import { getEnv, getEnvVars } from '../../common/env.js';
+import { getEnv, getEnvVars } from '../../common/env.ts';
 import { getProgramAbbreviation } from '../../common/program.ts';
 import { configureFields } from '../../common/fieldConfiguration.js';
 import { setFieldValue } from '../../common/html.js';

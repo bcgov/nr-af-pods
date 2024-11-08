@@ -1,5 +1,6 @@
 import store from '../store/index.js';
 import { HtmlElementType, POWERPOD } from './constants.js';
+import { getFieldConfig } from './fields.js';
 import {
   copyFromFieldAToFieldB,
   hideFieldRow,
@@ -17,6 +18,7 @@ POWERPOD.onChangeHandlers = {
   setBusinessOrPersonalStateForVLB,
   populatePhoneNumberEmailAndCityOnChangeVLB,
   setBusinessOrPersonalAddressLabels,
+  populateTotalPercent,
 };
 
 const logger = Logger('common/onChangeHandlers');
@@ -335,6 +337,73 @@ export function populatePhoneNumberEmailAndCityOnChangeVLB() {
     fn: populatePhoneNumberEmailAndCityOnChangeVLB,
     message: `Successfully ran onChangeHandler populateBusinessPhoneNumberOnChange, isIndividual: ${isIndividual},`,
   });
+}
+
+export function populateTotalPercent() {
+  const fieldsToSum = [
+    'quartech_animalspeciestypesserved_beefcattle',
+    'quartech_animalspeciestypesserved_dairycattle',
+    'quartech_animalspeciestypesserved_farmedfish',
+    'quartech_animalspeciestypesservedpoultrycommercial',
+    'quartech_animalspeciestypesserved_poultrysmalllot',
+    'quartech_animalspeciestypesserved_sheepandgoats',
+    'quartech_animalspeciestypesserved_swinecommercial',
+    'quartech_animalspeciestypesserved_swinesmalllot',
+    'quartech_animalspeciestypesserved_companionanimals',
+    'quartech_animalspeciestypesserved_horses',
+    'quartech_animalspeciestypesserved_other',
+  ];
+
+  let total = 0;
+
+  fieldsToSum.forEach((field) => {
+    // Get the field value by ID using jQuery
+    const fieldValue = $(`#${field}`).val();
+
+    // Remove the '%' symbol, parse the remaining number, and add to total
+    if (fieldValue) {
+      const numericValue = parseInt(fieldValue.replace('%', ''), 10);
+      if (!isNaN(numericValue)) {
+        total += numericValue;
+      }
+    }
+  });
+
+  logger.info({
+    fn: populateTotalPercent,
+    message: `Setting total percent to total: ${total}%`,
+  });
+  // @ts-ignore
+  setFieldValue({
+    name: 'quartech_totalpercentageofpracticeserved',
+    value: `${total}%`,
+  });
+
+  const fieldConfig = getFieldConfig(
+    'quartech_totalpercentageofpracticeserved'
+  );
+
+  logger.info({
+    fn: populateTotalPercent,
+    message: `Got fieldConfig for quartech_totalpercentageofpracticeserved:`,
+    data: { fieldConfig },
+  });
+
+  if (
+    fieldConfig?.id &&
+    document.getElementById(fieldConfig.id) &&
+    // @ts-ignore
+    document.getElementById(fieldConfig.id)?.getAttribute('inputvalue')
+  ) {
+    // @ts-ignore
+    document
+      .getElementById(fieldConfig.id)
+      ?.setAttribute('inputvalue', `${total}%`);
+    document.getElementById(fieldConfig.id)?.dispatchEvent(new Event('change'));
+  }
+  // Log or use the total value as needed
+  console.log(`Test: Total Percentage: ${total}%`);
+  // Optionally, you could return total or set it somewhere in your DOM
 }
 
 export function populateBusinessNameOnChangeFirstOrLastNameVLB() {

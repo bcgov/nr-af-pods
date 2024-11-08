@@ -1,3 +1,4 @@
+import store from '../store';
 import { doc, POWERPOD } from './constants';
 import { getControlType, getControlValue } from './html';
 import { Logger } from './logger';
@@ -15,7 +16,7 @@ POWERPOD.components = {
 // 1. Hide existing field
 // 2. Insert custom component (reading initial value from existing field)
 // 3. Configure event listener to set existing field value
-export function renderCustomComponent(params) {
+export function renderCustomComponent(params, element = null) {
   const {
     fieldId,
     customElementTag,
@@ -39,16 +40,20 @@ export function renderCustomComponent(params) {
     return;
   }
 
-  const fieldControlDiv = $(`#${fieldId}`).closest('div');
-
   const customElement = doc.createElement(customElementTag);
+  customElement.setAttribute('mappedFieldId', fieldId);
 
   Object.keys(attributes).forEach((key) => {
     const val = attributes[key];
     customElement.setAttribute(key, val);
   });
 
-  $(fieldControlDiv)?.before(customElement);
+  if (!element) {
+    const fieldControlDiv = $(`#${fieldId}`).closest('div');
+    $(fieldControlDiv)?.before(customElement);
+  } else {
+    $(element)?.append(customElement);
+  }
 
   // hide dynamics field
   $(`#${fieldId}`).css({ display: 'none' });
@@ -96,6 +101,19 @@ export function renderCustomComponent(params) {
 
   if (customSetupFn) {
     customSetupFn();
+  }
+
+  const id = customElement.getAttribute('id');
+  logger.info({
+    fn: renderCustomComponent,
+    message: `Looking for id for fieldId: ${fieldId}`,
+    data: { customElement, id },
+  });
+  if (id) {
+    store.dispatch('addFieldData', {
+      name: fieldId,
+      id,
+    });
   }
 
   return customElement;

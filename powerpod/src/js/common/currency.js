@@ -19,6 +19,19 @@ export function customizeCurrencyInput({
   emptyInitialValue = false,
   allowNegatives = false,
 }) {
+  logger.info({
+    fn: customizeCurrencyInput,
+    message: `customizeCurrencyInput called with the following params`,
+    data: {
+      inputId,
+      skipCalculatingBudget,
+      maxDigits,
+      limitInputValue,
+      hideDollarSign,
+      emptyInitialValue,
+      allowNegatives,
+    },
+  });
   let inputCtr = $(`#${inputId}`);
   const existingLabel = document.querySelector(
     `#${inputId}_span_currency_label`

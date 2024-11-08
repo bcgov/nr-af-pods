@@ -3,6 +3,8 @@ import { initOnChange_DependentRequiredField } from '../../common/fieldCondition
 import {
   addTextAboveField,
   addHtmlToSection,
+  getFieldRow,
+  addHtmlToField,
 } from '../../common/html.js';
 import { getProgramAbbreviation } from '../../common/program.ts';
 import { configureFields } from '../../common/fieldConfiguration.js';
@@ -24,7 +26,12 @@ function setupEligibilityStepFields() {
     customizeEligibilityStepForABPP();
   } else if (programAbbreviation === 'VLB') {
     customizeEligibilityStepForVLB();
+  } else if (programAbbreviation === 'VVTS') {
+    customizeEligbilityStepForVVTS();
   }
+}
+
+function customizeEligbilityStepForVVTS() {
 }
 
 function customizeEligibilityStepForVLB() {

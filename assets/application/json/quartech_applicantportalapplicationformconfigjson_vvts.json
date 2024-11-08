@@ -1,5 +1,5 @@
 {
-  "version": "1.0.3",
+  "version": "1.0.5",
   "tags": ["Application", "StaffPortal", "VVTS"],
   "name": "Veterinary and Veterinary Technologists Locums Working in BC Food Animal Practices Pilot Program",
   "abbreviation": "VVTS",
@@ -43,91 +43,262 @@
       "displayName": "Practice",
       "fields": [
         {
-          "name": "quartech_vlb_vetservices",
-          "label": "I am willing to provide",
-          "elementType": "DropdownSelect",
-          "required": true
+          "name": "quartech_vetpracticeaccreditedbycvbc",
+          "label": "Does your veterinary practice offer food animal services?",
+          "required": true,
+          "additionalTextAboveField": "<p>To be eligible for the program, applicants must meet the following eligibility requirements:<ul><li>Veterinary practice accredited by the College of Veterinarians of BC (CVBC) to provide food animal services.</li><li>Actively offering food animal services to clients during the work placement period. For this program, food animals are defined as animals raised to produce food or fiber, and include cattle, swine, sheep, goats, poultry, bison, and fish.</li><li>Practices that provide services to clients at any production scale (e.g. large-scale, small lot) are eligible.</li></ul></p>"
         },
         {
-          "name": "quartech_vlb_servicecoverageinbc",
-          "label": "I am willing to work in the following areas of the province (choose all that apply)",
+          "name": "quartech_numberoffulltimeveterinarians",
+          "label": "Number of full-time (equivalent) veterinarians",
+          "format": "number",
           "required": true,
-          "elementType": "MultiOptionSet",
-          "disableSingleLine": false,
-          "visibleIf": {
-            "fieldName": "quartech_vlb_vetservices",
-            "selectedValueIn": [255550000, 255550001],
-            "techComment": "In-person only OR Both in-person and telemedicine services"
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
           }
         },
         {
-          "name": "quartech_validbcdriverslicense",
-          "label": "I have a valid BC drivers license",
+          "name": "quartech_numberofregisteredvettechnologists",
+          "label": "Number of full-time (equivalent) registered veterinary technologists (RVTs)",
+          "format": "number",
           "required": true,
-          "elementType": "DropdownSelect",
-          "visibleIf": {
-            "fieldName": "quartech_vlb_vetservices",
-            "selectedValueIn": [255550000, 255550001],
-            "techComment": "In-person only OR Both in-person and telemedicine services"
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
           }
         },
         {
-          "name": "quartech_workingdrivinginremotelocations",
-          "label": "I am comfortable working and driving in remote locations",
+          "name": "quartech_numberofvetclientpatientrelationships",
+          "label": "Number of Veterinary-client-patient relationships (VCPR) - food animals",
+          "format": "number",
           "required": true,
-          "elementType": "DropdownSelect",
-          "visibleIf": {
-            "fieldName": "quartech_vlb_vetservices",
-            "selectedValueIn": [255550000, 255550001],
-            "techComment": "In-person only OR Both in-person and telemedicine services"
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
           }
         },
         {
-          "name": "quartech_workingdrivinginwinterweather",
-          "label": "I am comfortable working and driving in winter weather",
+          "name": "quartech_animalspeciestypesserved_beefcattle",
+          "label": "Beef Cattle",
           "required": true,
-          "elementType": "DropdownSelect",
-          "visibleIf": {
-            "fieldName": "quartech_vlb_vetservices",
-            "selectedValueIn": [255550000, 255550001],
-            "techComment": "In-person only OR Both in-person and telemedicine services"
+          "initialValue": "0",
+          "onChangeHandler": "populateTotalPercent",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          },
+          "customComponent": {
+            "customElementTag": "percentage-input",
+            "mappedValueKey": "inputvalue",
+            "customEventHandler": "genericEventHandler",
+            "customEventName": "onChangePercentageInput"
           }
         },
         {
-          "name": "quartech_numberofdaysofservice",
-          "label": "I am willing to provide approximately the following number of days of service per year",
-          "elementType": "DropdownSelect",
-          "required": true
+          "name": "quartech_animalspeciestypesserved_dairycattle",
+          "label": "Dairy Cattle",
+          "required": true,
+          "initialValue": "0",
+          "onChangeHandler": "populateTotalPercent",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          },
+          "customComponent": {
+            "customElementTag": "percentage-input",
+            "mappedValueKey": "inputvalue",
+            "customEventHandler": "genericEventHandler",
+            "customEventName": "onChangePercentageInput"
+          }
         },
         {
-          "name": "quartech_vlb_availability_septodec",
-          "label": "September to December 2024",
-          "elementType": "DropdownSelect",
-          "required": true
+          "name": "quartech_animalspeciestypesserved_farmedfish",
+          "label": "Farmed Fish",
+          "required": true,
+          "initialValue": "0",
+          "onChangeHandler": "populateTotalPercent",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          },
+          "customComponent": {
+            "customElementTag": "percentage-input",
+            "mappedValueKey": "inputvalue",
+            "customEventHandler": "genericEventHandler",
+            "customEventName": "onChangePercentageInput"
+          }
         },
         {
-          "name": "quartech_vlb_availability_jantomar",
-          "label": "January to March 2025",
-          "elementType": "DropdownSelect",
-          "required": true
+          "name": "quartech_animalspeciestypesservedpoultrycommercial",
+          "label": "Poultry (commercial)",
+          "required": true,
+          "initialValue": "0",
+          "onChangeHandler": "populateTotalPercent",
+          "validation": { 
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          },
+          "customComponent": {
+            "customElementTag": "percentage-input",
+            "mappedValueKey": "inputvalue",
+            "customEventHandler": "genericEventHandler",
+            "customEventName": "onChangePercentageInput"
+          }
         },
         {
-          "name": "quartech_vlb_availability_aprtojun",
-          "label": "April to Jun 2025",
-          "elementType": "DropdownSelect",
-          "required": true
+          "name": "quartech_animalspeciestypesserved_poultrysmalllot",
+          "label": "Poultry (small lot)",
+          "required": true,
+          "initialValue": "0",
+          "onChangeHandler": "populateTotalPercent",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          },
+          "customComponent": {
+            "customElementTag": "percentage-input",
+            "mappedValueKey": "inputvalue",
+            "customEventHandler": "genericEventHandler",
+            "customEventName": "onChangePercentageInput"
+          }
         },
         {
-          "name": "quartech_vlb_availability_jultosep",
-          "label": "July to September 2025",
-          "elementType": "DropdownSelect",
-          "required": true
+          "name": "quartech_animalspeciestypesserved_sheepandgoats",
+          "label": "Sheep and goats",
+          "required": true,
+          "initialValue": "0",
+          "onChangeHandler": "populateTotalPercent",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          },
+          "customComponent": {
+            "customElementTag": "percentage-input",
+            "mappedValueKey": "inputvalue",
+            "customEventHandler": "genericEventHandler",
+            "customEventName": "onChangePercentageInput"
+          }
         },
         {
-          "name": "quartech_vlb_availability_octtodec",
-          "label": "October to December 2025",
-          "elementType": "DropdownSelect",
-          "required": true
+          "name": "quartech_animalspeciestypesserved_swinecommercial",
+          "label": "Swine (commercial)",
+          "required": true,
+          "initialValue": "0",
+          "onChangeHandler": "populateTotalPercent",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          },
+          "customComponent": {
+            "customElementTag": "percentage-input",
+            "mappedValueKey": "inputvalue",
+            "customEventHandler": "genericEventHandler",
+            "customEventName": "onChangePercentageInput"
+          }
+        },
+        {
+          "name": "quartech_animalspeciestypesserved_swinesmalllot",
+          "label": "Swine (small lot)",
+          "required": true,
+          "initialValue": "0",
+          "onChangeHandler": "populateTotalPercent",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          },
+          "customComponent": {
+            "customElementTag": "percentage-input",
+            "mappedValueKey": "inputvalue",
+            "customEventHandler": "genericEventHandler",
+            "customEventName": "onChangePercentageInput"
+          }
+        },
+        {
+          "name": "quartech_animalspeciestypesserved_companionanimals",
+          "label": "Companion animals",
+          "required": true,
+          "initialValue": "0",
+          "onChangeHandler": "populateTotalPercent",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          },
+          "customComponent": {
+            "customElementTag": "percentage-input",
+            "mappedValueKey": "inputvalue",
+            "customEventHandler": "genericEventHandler",
+            "customEventName": "onChangePercentageInput"
+          }
+        },
+        {
+          "name": "quartech_animalspeciestypesserved_horses",
+          "label": "Horses",
+          "required": true,
+          "initialValue": "0",
+          "onChangeHandler": "populateTotalPercent",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          },
+          "customComponent": {
+            "customElementTag": "percentage-input",
+            "mappedValueKey": "inputvalue",
+            "customEventHandler": "genericEventHandler",
+            "customEventName": "onChangePercentageInput"
+          }
+        },
+        {
+          "name": "quartech_animalspeciestypesserved_other",
+          "label": "Other",
+          "required": true,
+          "initialValue": "0",
+          "onChangeHandler": "populateTotalPercent",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          },
+          "customComponent": {
+            "customElementTag": "percentage-input",
+            "mappedValueKey": "inputvalue",
+            "customEventHandler": "genericEventHandler",
+            "customEventName": "onChangePercentageInput"
+          }
+        },
+        {
+          "name": "quartech_totalpercentageofpracticeserved",
+          "label": "Total Percent",
+          "required": true,
+          "initialValue": "0",
+          "validation": {
+            "type": "numeric",
+            "value": 100,
+            "comparison": "equalTo"
+          },
+          "customComponent": {
+            "customElementTag": "percentage-input",
+            "mappedValueKey": "inputvalue",
+            "customEventHandler": "genericEventHandler",
+            "customEventName": "onChangePercentageInput",
+            "attributes": {
+              "readOnly": true,
+              "maxValue": 999999999
+            }
+          }
         }
       ]
     },

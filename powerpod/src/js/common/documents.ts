@@ -13,7 +13,7 @@ import { readFileAsBase64 } from './file.js';
 import { getFormId } from './form.js';
 import { getFormType } from './applicationUtils.js';
 import { getGlobalConfigData } from './config.js';
-import { getProgramAbbreviation } from './program.js';
+import { getProgramAbbreviation } from './program.ts';
 
 const logger = Logger('common/documents');
 
