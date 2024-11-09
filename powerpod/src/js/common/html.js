@@ -1455,7 +1455,6 @@ export function renameSectionLabel(name, newLabel) {
     return;
   }
 
-  console.log('Found <h3>:', matchingElement);
   logger.info({
     fn: renameSectionLabel,
     message: `Succesfully renamed section name: ${name}, to newLabel: ${newLabel}`,

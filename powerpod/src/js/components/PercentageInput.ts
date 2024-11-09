@@ -42,7 +42,7 @@ class PercentageInput extends LitElement {
         message: 'Percentage input value has changed',
         // @ts-ignore
         id: this.id,
-        value: this.inputValue.replace('%', ''),
+        value: this.inputValue,
       },
       bubbles: true,
       composed: true,
@@ -52,60 +52,18 @@ class PercentageInput extends LitElement {
 
   handleInputChange(event: InputEvent) {
     let value = this.inputElement?.value;
-    if (
-      (event.inputType === 'deleteContentBackward' ||
-        event.inputType === 'deleteContentForward') &&
-      value === '%'
-    ) {
-      console.log('handleInputChange');
-      if (this.inputElement) this.inputElement.value = '0%';
-      this.inputValue = '0%';
-      this.emitEvent();
-      this.inputElement?.setSelectionRange(1, 1);
-      return;
-    }
     value = value?.replace(/[^\d]/g, '');
     if (value && parseInt(value) > this.maxValue) {
       value = '100';
     }
-    console.log(`value: ${value}`);
-    if (value) {
-      value = `${parseInt(value)}%`;
-      this.inputValue = value;
-      if (this.inputElement) this.inputElement.value = value;
-      this.inputElement?.setSelectionRange(value.length - 1, value.length - 1);
-    }
+    if (this.inputElement) this.inputElement.value = value ?? '';
+    this.inputValue = value ?? '';
     this.emitEvent();
   }
 
   // Add this function to handle the `beforeinput` event
   handleBeforeInput(event: InputEvent) {
-    const inputElement = event.target as HTMLInputElement;
     const keyPressed = event.data;
-
-    // Get the current value and cursor position
-    const cursorPosition = inputElement.selectionStart ?? 0;
-    console.log(`cursorPosition: ${cursorPosition}`);
-    const percentIndex = inputElement.value.indexOf('%');
-    console.log(`percentIndex: ${percentIndex}`);
-    console.log(`event.inputType: ${event.inputType}`);
-
-    if (
-      event.inputType === 'deleteContentBackward' &&
-      cursorPosition > percentIndex
-    ) {
-      console.log('handleBeforeInput');
-      this.inputElement?.setSelectionRange(percentIndex, percentIndex);
-    }
-
-    // 1. Block Delete key only if the cursor is to the left of the '%' symbol
-    if (
-      event.inputType === 'deleteContentForward' &&
-      cursorPosition >= percentIndex
-    ) {
-      event.preventDefault();
-      return false;
-    }
 
     // 2. Allow only numeric characters (0-9)
     const allowedCharacters = '0123456789';
@@ -121,42 +79,14 @@ class PercentageInput extends LitElement {
     return true;
   }
 
-  // Add this function to handle the `input` event
-  handleInput(event: Event) {
-    const inputElement = event.target as HTMLInputElement;
-    const cursorPosition = inputElement.selectionStart ?? 0;
-    const percentIndex = inputElement.value.indexOf('%');
-
-    // Ensure the cursor never moves past the '%' symbol
-    if (percentIndex !== -1 && cursorPosition > percentIndex) {
-      inputElement.setSelectionRange(percentIndex, percentIndex);
-    }
-  }
-
-  handleInputFocus(event: Event) {
-    if (this.inputElement?.value) {
-      // Use setTimeout to ensure cursor placement occurs after focus event handling
-      setTimeout(() => {
-        // Remove % temporarily for correct length calculation
-        const valueWithoutSymbol = this.inputElement.value.replace('%', '');
-
-        // Restore % symbol to the end and set the cursor just before it
-        this.inputElement.value = valueWithoutSymbol + '%';
-        this.inputElement.setSelectionRange(
-          valueWithoutSymbol.length,
-          valueWithoutSymbol.length
-        );
-      }, 0); // Delay by 0ms to execute after focus processing
-    }
-  }
-
   render() {
     return html`
       <style>
         .percentage-input {
           position: relative;
-          display: inline-block;
-          width: 98%;
+          display: inline-flex;
+          align-items: stretch;
+          width: 100%;
           ${!this.readOnly
           ? css``
           : css`
@@ -164,13 +94,32 @@ class PercentageInput extends LitElement {
             `}
         }
 
+        .percentage-input input {
+          padding-right: 5px; /* Remove extra padding for % */
+          height: 100%; /* Ensure input height matches the container */
+        }
+
+        .percentage-input:after {
+          content: "%";
+          color: #000;
+          background-color: whitesmoke; /* Add background color */
+          height: auto; /* Allow :after to stretch to the parent's height */
+          display: flex;
+          align-items: center; /* Center the % symbol vertically */
+          border: 1px solid #949494; /* Border around the % symbol */
+          padding: 0 8px; /* Adjust padding for better alignment */
+          box-sizing: border-box; /* Ensure padding doesn’t affect size */
+          pointer-events: none;
+          border-left: 0px;
+        }
+
         .form-control {
-          width: 97%;
+          width: 100%;
           line-height: 1.42857;
           padding: 6px 12px;
           background-color: #fff;
-          border: 1px solid #caced1;
-          border-radius: 0.25rem;
+          border: 1px solid #949494;
+          border-radius: 0px;
           color: #000;
           font-size: 15px;
           ${!this.readOnly
@@ -185,13 +134,12 @@ class PercentageInput extends LitElement {
         <input
           id="inputElement"
           type="text"
-          placeholder="0%"
+          placeholder="0"
           class="form-control"
+          ?disabled=${this.readOnly}
           .value=${this.inputValue}
           @input=${this.handleInputChange}
           @beforeinput=${this.handleBeforeInput}
-          @focus=${this.handleInputFocus}
-          @blur=${this.handleInputChange}
         />
       </div>
     `;

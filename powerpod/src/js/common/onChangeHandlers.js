@@ -360,9 +360,8 @@ export function populateTotalPercent() {
     // Get the field value by ID using jQuery
     const fieldValue = $(`#${field}`).val();
 
-    // Remove the '%' symbol, parse the remaining number, and add to total
     if (fieldValue) {
-      const numericValue = parseInt(fieldValue.replace('%', ''), 10);
+      const numericValue = parseInt(fieldValue, 10);
       if (!isNaN(numericValue)) {
         total += numericValue;
       }
@@ -371,12 +370,12 @@ export function populateTotalPercent() {
 
   logger.info({
     fn: populateTotalPercent,
-    message: `Setting total percent to total: ${total}%`,
+    message: `Setting total percent to total: ${total}`,
   });
   // @ts-ignore
   setFieldValue({
     name: 'quartech_totalpercentageofpracticeserved',
-    value: `${total}%`,
+    value: `${total}`,
   });
 
   const fieldConfig = getFieldConfig(
@@ -398,12 +397,9 @@ export function populateTotalPercent() {
     // @ts-ignore
     document
       .getElementById(fieldConfig.id)
-      ?.setAttribute('inputvalue', `${total}%`);
+      ?.setAttribute('inputvalue', `${total}`);
     document.getElementById(fieldConfig.id)?.dispatchEvent(new Event('change'));
   }
-  // Log or use the total value as needed
-  console.log(`Test: Total Percentage: ${total}%`);
-  // Optionally, you could return total or set it somewhere in your DOM
 }
 
 export function populateBusinessNameOnChangeFirstOrLastNameVLB() {
