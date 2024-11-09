@@ -400,9 +400,6 @@ export function populateTotalPercent() {
       ?.setAttribute('inputvalue', `${total}`);
     document.getElementById(fieldConfig.id)?.dispatchEvent(new Event('change'));
   }
-  // Log or use the total value as needed
-  console.log(`Test: Total Percentage: ${total}`);
-  // Optionally, you could return total or set it somewhere in your DOM
 }
 
 export function populateBusinessNameOnChangeFirstOrLastNameVLB() {
