@@ -1,11 +1,13 @@
 {
   "tags": ["Application", "StaffPortal", "ABPP2", "Fall 2024"],
-  "version": "1.2.1",
+  "version": "1.2.2",
   "name": "ABPP - Business Planning, Preparedness, and Disaster Recovery",
   "abbreviation": "ABPP2",
   "sections": [
     {
       "name": "ApplicantInfoStep",
+      "additionalTextAboveSection": "<p>Your personal information is collected under section 26(c) and 26(e) of the Freedom of Information and Protection of Privacy Act for the purposes of evaluating applications and for the planning and evaluating of the S-CAP Ministry Program. The information you provide will be shared with the federal government to fulfill the provincial obligations under the Sustainable Canadian Agricultural Partnership (S-CAP) bilateral agreement. It may be combined with other survey or administrative data sources and used for statistical, research and evaluation purposes.</p>",
+      "dataName": "tab_ApplicantInfo",
       "fields": [
         {
           "name": "quartech_indigenousapplicant",

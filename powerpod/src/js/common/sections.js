@@ -7,31 +7,36 @@ import { mergeObjects } from './utils.js';
 
 const logger = Logger('common/sections');
 
-export function configureSections(appSections, globalSections) {
-  if (!appSections || !appSections.length) {
+export function configureSections(sections, globalSections) {
+  logger.info({
+    fn: configureSections,
+    message: `configureSections called with:`,
+    data: { appSections: sections, globalSections },
+  });
+  if (!sections || !sections.length) {
     logger.warn({
       fn: configureSections,
       message: 'Configure sections called with empty data',
     });
   }
-  appSections.forEach((section) => {
-    const matchingGlobalSection = globalSections.find(
-      (val) => val.name === section.name
-    );
+  sections.forEach((section) => {
+    // const matchingGlobalSection = globalSections.find(
+    //   (val) => val.name === section.name
+    // );
 
-    if (matchingGlobalSection) {
-      logger.info({
-        fn: configureSubsections,
-        message: `Found matching global section for section.name: ${section.name}, merging section data...`,
-        data: { section, matchingGlobalSection },
-      });
-      section = mergeObjects(section, matchingGlobalSection);
-      logger.info({
-        fn: configureSubsections,
-        message: `Done merging section + global data for section.name: ${section.name}`,
-        data: { section },
-      });
-    }
+    // if (matchingGlobalSection) {
+    //   logger.info({
+    //     fn: configureSubsections,
+    //     message: `Found matching global section for section.name: ${section.name}, merging section data...`,
+    //     data: { section, matchingGlobalSection },
+    //   });
+    //   section = mergeObjects(section, matchingGlobalSection);
+    //   logger.info({
+    //     fn: configureSubsections,
+    //     message: `Done merging section + global data for section.name: ${section.name}`,
+    //     data: { section },
+    //   });
+    // }
     logger.info({
       fn: configureSubsections,
       message: `Start configuring section for section.name: ${section.name}...`,

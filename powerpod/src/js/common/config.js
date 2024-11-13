@@ -154,9 +154,33 @@ export function getApplicationConfigData(programId) {
 
   const programData = localStorage.getItem('programData');
 
+  logger.info({
+    fn: getApplicationConfigData,
+    message: `got applicationConfigData from storage, programData`,
+    data: { programData },
+  });
+
   const configDataJSON =
     JSON.parse(programData)?.quartech_applicantportalapplicationformconfigjson;
+
+  logger.info({
+    fn: getApplicationConfigData,
+    message: `got applicationConfigData from storage, configDataJSON`,
+    data: {
+      programData: JSON.parse(programData),
+      configDataJSON: JSON.parse(configDataJSON),
+    },
+  });
   const podsConfigData = JSON.parse(configDataJSON);
+  logger.info({
+    fn: getApplicationConfigData,
+    message: `got applicationConfigData from storage, podsConfigData`,
+    data: {
+      programData: JSON.parse(programData),
+      configDataJSON: JSON.parse(configDataJSON),
+      podsConfigData,
+    },
+  });
 
   logger.info({
     fn: getApplicationConfigData,

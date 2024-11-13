@@ -114,6 +114,11 @@ export function mergeObjects(a, b) {
 
 // Merges two arrays of objects joining on a given prop, e.g. "name"
 export function mergeFieldArrays(a, b, prop) {
+  logger.info({
+    fn: mergeFieldArrays,
+    message: `mergeFieldArrays with the following data:`,
+    data: { a, b, prop },
+  });
   const mergedObj = {};
 
   // Merge objects from ArrayB and ArrayA into the object
@@ -129,8 +134,14 @@ export function mergeFieldArrays(a, b, prop) {
     }
   }
 
+  const result = prop ? Object.values(mergedObj) : mergedObj;
   // Check if the result should be an array or object
-  return prop ? Object.values(mergedObj) : mergedObj;
+  logger.info({
+    fn: mergeFieldArrays,
+    message: `mergeFieldArrays done with result:`,
+    data: { a, b, prop, result },
+  });
+  return result;
 }
 
 // Sorts an array of objects by a given property
