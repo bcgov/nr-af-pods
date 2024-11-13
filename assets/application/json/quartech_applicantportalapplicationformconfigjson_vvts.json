@@ -1,7 +1,7 @@
 {
-  "version": "1.0.5",
+  "version": "1.1.4",
   "tags": ["Application", "StaffPortal", "VVTS"],
-  "name": "Veterinary and Veterinary Technologists Locums Working in BC Food Animal Practices Pilot Program",
+  "name": "Veterinary and Veterinary Technologist Students Working in BC Food Animal Practices",
   "abbreviation": "VVTS",
   "programId": "49dbba6b-21dc-ee11-904d-6045bd5f4613",
   "hiddenSteps": [
@@ -11,6 +11,8 @@
   "sections": [
     {
       "name": "ApplicantInfoStep",
+      "additionalTextAboveSection": "<p>Your personal information is collected under section 26(c) and 26(e) of the Freedom of Information and Protection of Privacy Act for the purposes of evaluating applications and for the planning and evaluating of the S-CAP Ministry Program. The information you provide will be shared with the federal government to fulfill the provincial obligations under the Sustainable Canadian Agricultural Partnership (S-CAP) bilateral agreement. It may be combined with other survey or administrative data sources and used for statistical, research and evaluation purposes.</p>",
+      "dataName": "tab_ApplicantInfo",
       "fields": [
         {
           "name": "quartech_designatedregistrantname",
@@ -97,7 +99,8 @@
             "mappedValueKey": "inputvalue",
             "customEventHandler": "genericEventHandler",
             "customEventName": "onChangePercentageInput"
-          }
+          },
+          "additionalTextAboveField": "<p>Animal species/types served (please indicate approximate proportion of annual Veterinary practice caseload):</p>"
         },
         {
           "name": "quartech_animalspeciestypesserved_dairycattle",
@@ -141,7 +144,7 @@
           "required": true,
           "initialValue": "0",
           "onChangeHandler": "populateTotalPercent",
-          "validation": { 
+          "validation": {
             "type": "numeric",
             "value": "0",
             "comparison": "greaterThanOrEqualTo"
@@ -307,133 +310,288 @@
       "displayName": "Student Candidates",
       "fields": [
         {
-          "name": "quartech_vlb_cap_beefcattleherdhealth",
-          "label": "Beef cattle herd health (vaccination protocols, pregnancy and semen testing)",
-          "elementType": "DropdownSelect",
-          "required": true
-        },
-        {
-          "name": "quartech_vlb_cap_beefcattlesickanimalcare",
-          "label": "Beef cattle sick animal care (e.g. diagnosis, treatment plans, post mortems)",
-          "elementType": "DropdownSelect",
-          "required": true
-        },
-        {
-          "name": "quartech_vlb_cap_beefcattleemergencycare",
-          "label": "Beef cattle emergency care (e.g. calving, C-section, prolapses)",
-          "elementType": "DropdownSelect",
-          "required": true
-        },
-        {
-          "name": "quartech_vlb_cap_dairycattleherdhealth",
-          "label": "Dairy cattle herd health (e.g. pregnancy testing)",
-          "elementType": "DropdownSelect",
-          "required": true
-        },
-        {
-          "name": "quartech_vlb_cap_dairycattlesickanimalcare",
-          "label": "Dairy cattle sick animal care (e.g. make diagnosis, treatment plans)",
-          "elementType": "DropdownSelect",
-          "required": true
-        },
-        {
-          "name": "quartech_vlb_cap_dairycattleemergencycare",
-          "label": "Dairy cattle emergency care (e.g. calving, C-section, DA’s)",
-          "elementType": "DropdownSelect",
-          "required": true
-        },
-        {
-          "name": "quartech_vlb_cap_smallruminantservices",
-          "label": "Small ruminant services",
-          "elementType": "DropdownSelect",
-          "required": true
-        },
-        {
-          "name": "quartech_vlb_cap_commercialswineservices",
-          "label": "Commercial swine services",
-          "elementType": "DropdownSelect",
-          "required": true
-        },
-        {
-          "name": "quartech_vlb_cap_smallholderswineservices",
-          "label": "Smallholder swine services",
-          "elementType": "DropdownSelect",
-          "required": true
-        },
-        {
-          "name": "quartech_vlb_cap_commercialpoultryservices",
-          "label": "Commercial poultry services",
-          "elementType": "DropdownSelect",
-          "required": true
-        },
-        {
-          "name": "quartech_vlb_cap_smallholderpoultryservices",
-          "label": "Smallholder poultry services",
-          "elementType": "DropdownSelect",
-          "required": true
-        },
-        {
-          "name": "quartech_vlb_cap_equinepreventativecare",
-          "label": "Equine preventative care (e.g. vaccines)",
-          "elementType": "DropdownSelect",
-          "required": true
-        },
-        {
-          "name": "quartech_vlb_cap_equinedentistry",
-          "label": "Equine dentistry",
-          "elementType": "DropdownSelect",
-          "required": true
-        },
-        {
-          "name": "quartech_vlb_cap_equineurgentcare",
-          "label": "Equine urgent care\n(e.g. colics, lacerations, foot abscesses, laminitis, euthanasia)",
-          "elementType": "DropdownSelect",
-          "required": true
-        },
-        {
-          "name": "quartech_vlb_cap_companionanimalpreventativecare",
-          "label": "Companion animal preventative care",
-          "elementType": "DropdownSelect",
-          "required": true
-        },
-        {
-          "name": "quartech_vlb_cap_companionanimalspayandneuter",
-          "label": "Companion animal spay and neuter",
-          "elementType": "DropdownSelect",
-          "required": true
-        },
-        {
-          "name": "quartech_vlb_cap_companionanimaldentistry",
-          "label": "Companion animal dentistry",
-          "elementType": "DropdownSelect",
-          "required": true
-        },
-        {
-          "name": "quartech_vlb_cap_companionanimalsickanimalcare",
-          "label": "Companion animal sick animal care",
-          "elementType": "DropdownSelect",
-          "required": true
-        },
-        {
-          "name": "quartech_vlb_cap_companionanimalemergencysurgery",
-          "label": "Companion animal emergency surgery (e.g. GDV, C-section, enterotomy, lacerations, enucleations)",
-          "elementType": "DropdownSelect",
-          "required": true
-        },
-        {
-          "name": "quartech_vlb_oncallafterhoursservices",
-          "label": "Willingness to provide on call/after hours services during locums",
-          "elementType": "DropdownSelect",
-          "required": true
-        },
-        {
-          "name": "quartech_vlb_otherinformationforpracticestoknow",
-          "label": "Other information that you would like practices to know"
+          "name": "quartech_numberofrvtstudentsintendtohire",
+          "label": "How many veterinary and registered veterinary technologist (RVT) students do you intend to hire?",
+          "required": true,
+          "additionalTextAboveField": "<div><p>Please note, AF program staff may contact students throughout the work period to check in, and offer online educational opportunities. For a participating practice to be eligible for reimbursement at the end of the work placement, the student must complete at 12 full weeks working at the practice, and the following documents must be received by the AF program administrator from each student:<ul><li>food-animal case log,</li><li>program evaluation form.</li></ul>It is the practice’s responsibility to make sure these criteria are met.</p><p>Please list students in order of preference for hiring (1 through 3). Initially, funding will be allocated on a one-student-per-clinic basis. If funding is not fully allocated, additional student work placements per clinic may be funded.</p></div>"
         },
         {
           "name": "quartech_inordertocontinuouslyimprovecommunications",
-          "hidden": true,
-          "techComment": "This is NEEDED to override default global json config, please leave this here."
+          "hidden": true
+        },
+        {
+          "name": "quartech_ifotherpleasedescribe",
+          "hidden": true
+        },
+        {
+          "name": "quartech_1ststudentname",
+          "label": "1st Student | Name",
+          "required": true,
+          "additionalTextAboveField": "<strong>Student 1 (please list the 1st choice for hiring)</strong>",
+          "visibleIf": {
+            "fieldName": "quartech_numberofrvtstudentsintendtohire",
+            "selectedValueIn": [255550001, 255550002, 255550003],
+            "techComment": "1, 2, or 3 Student(s) Selected"
+          }
+        },
+        {
+          "name": "quartech_1ststudentemail",
+          "label": "1st Student | Email",
+          "required": true,
+          "format": "email",
+          "visibleIf": {
+            "fieldName": "quartech_numberofrvtstudentsintendtohire",
+            "selectedValueIn": [255550001, 255550002, 255550003],
+            "techComment": "1, 2, or 3 Student(s) Selected"
+          }
+        },
+        {
+          "name": "quartech_1ststudentphonenumber",
+          "label": "1st Student | Phone Number",
+          "format": "phoneNumber",
+          "required": true,
+          "validation": {
+            "type": "length",
+            "value": 14,
+            "comparison": "equalTo",
+            "postfix": "digits",
+            "overrideDisplayValue": 10
+          },
+          "visibleIf": {
+            "fieldName": "quartech_numberofrvtstudentsintendtohire",
+            "selectedValueIn": [255550001, 255550002, 255550003],
+            "techComment": "1, 2, or 3 Student(s) Selected"
+          }
+        },
+        {
+          "name": "quartech_1ststudentenrolledin",
+          "label": "1st Student | Enrolled in",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_numberofrvtstudentsintendtohire",
+            "selectedValueIn": [255550001, 255550002, 255550003],
+            "techComment": "1, 2, or 3 Student(s) Selected"
+          }
+        },
+        {
+          "name": "quartech_1ststudent_nameofeducationalinstitute",
+          "label": "1st Student | Name of educational institute",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_numberofrvtstudentsintendtohire",
+            "selectedValueIn": [255550001, 255550002, 255550003],
+            "techComment": "1, 2, or 3 Student(s) Selected"
+          }
+        },
+        {
+          "name": "quartech_1ststudent_yearofstudiescompleted",
+          "label": "1st Student | Year of studies completed",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_numberofrvtstudentsintendtohire",
+            "selectedValueIn": [255550001, 255550002, 255550003],
+            "techComment": "1, 2, or 3 Student(s) Selected"
+          }
+        },
+        {
+          "name": "quartech_1ststudent_workplacementstartdate",
+          "label": "1st Student | Work placement start date",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_numberofrvtstudentsintendtohire",
+            "selectedValueIn": [255550001, 255550002, 255550003],
+            "techComment": "1, 2, or 3 Student(s) Selected"
+          }
+        },
+        {
+          "name": "quartech_1ststudent_workplacementenddate",
+          "label": "1st Student | Work placement end date",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_numberofrvtstudentsintendtohire",
+            "selectedValueIn": [255550001, 255550002, 255550003],
+            "techComment": "1, 2, or 3 Student(s) Selected"
+          }
+        },
+        {
+          "name": "quartech_2ndstudentname",
+          "label": "2nd Student | Name",
+          "additionalTextAboveField": "<strong>Student 2 (please list the 2nd choice for hiring)</strong>",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_numberofrvtstudentsintendtohire",
+            "selectedValueIn": [255550002, 255550003],
+            "techComment": "2, or 3 Students Selected"
+          }
+        },
+        {
+          "name": "quartech_2ndstudentemail",
+          "label": "2nd Student | Email",
+          "required": true,
+          "format": "email",
+          "visibleIf": {
+            "fieldName": "quartech_numberofrvtstudentsintendtohire",
+            "selectedValueIn": [255550002, 255550003],
+            "techComment": "2, or 3 Students Selected"
+          }
+        },
+        {
+          "name": "quartech_2ndstudentphonenumber",
+          "label": "2nd Student | Phone Number",
+          "format": "phoneNumber",
+          "required": true,
+          "validation": {
+            "type": "length",
+            "value": 14,
+            "comparison": "equalTo",
+            "postfix": "digits",
+            "overrideDisplayValue": 10
+          },
+          "visibleIf": {
+            "fieldName": "quartech_numberofrvtstudentsintendtohire",
+            "selectedValueIn": [255550002, 255550003],
+            "techComment": "2, or 3 Students Selected"
+          }
+        },
+        {
+          "name": "quartech_2ndstudentenrolledin",
+          "label": "2nd Student | Enrolled in",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_numberofrvtstudentsintendtohire",
+            "selectedValueIn": [255550002, 255550003],
+            "techComment": "2, or 3 Students Selected"
+          }
+        },
+        {
+          "name": "quartech_2ndstudent_nameofeducationalinstitute",
+          "label": "2nd Student | Name of educational institute",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_numberofrvtstudentsintendtohire",
+            "selectedValueIn": [255550002, 255550003],
+            "techComment": "2, or 3 Students Selected"
+          }
+        },
+        {
+          "name": "quartech_2ndstudent_yearofstudiescompleted",
+          "label": "2nd Student | Year of studies completed",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_numberofrvtstudentsintendtohire",
+            "selectedValueIn": [255550002, 255550003],
+            "techComment": "2, or 3 Students Selected"
+          }
+        },
+        {
+          "name": "quartech_2ndstudent_workplacementstartdate",
+          "label": "2nd Student | Work placement start date",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_numberofrvtstudentsintendtohire",
+            "selectedValueIn": [255550002, 255550003],
+            "techComment": "2, or 3 Students Selected"
+          }
+        },
+        {
+          "name": "quartech_2ndstudent_workplacementenddate",
+          "label": "2nd Student | Work placement end date",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_numberofrvtstudentsintendtohire",
+            "selectedValueIn": [255550002, 255550003],
+            "techComment": "2, or 3 Students Selected"
+          }
+        },
+        {
+          "name": "quartech_3rdstudentname",
+          "label": "3rd Student Name",
+          "additionalTextAboveField": "<strong>Student 3 (please list the 3rd choice for hiring)</strong>",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_numberofrvtstudentsintendtohire",
+            "selectedValueIn": [255550003],
+            "techComment": "3 Students Selected"
+          }
+        },
+        {
+          "name": "quartech_3rdstudentemail",
+          "label": "3rd Student | Email",
+          "required": true,
+          "format": "email",
+          "visibleIf": {
+            "fieldName": "quartech_numberofrvtstudentsintendtohire",
+            "selectedValueIn": [255550003],
+            "techComment": "3 Students Selected"
+          }
+        },
+        {
+          "name": "quartech_3rdstudentphonenumber",
+          "label": "3rd Student | Phone Number",
+          "format": "phoneNumber",
+          "required": true,
+          "validation": {
+            "type": "length",
+            "value": 14,
+            "comparison": "equalTo",
+            "postfix": "digits",
+            "overrideDisplayValue": 10
+          },
+          "visibleIf": {
+            "fieldName": "quartech_numberofrvtstudentsintendtohire",
+            "selectedValueIn": [255550003],
+            "techComment": "3 Students Selected"
+          }
+        },
+        {
+          "name": "quartech_3rdstudentenrolledin",
+          "label": "3rd Student | Enrolled in",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_numberofrvtstudentsintendtohire",
+            "selectedValueIn": [255550003],
+            "techComment": "3 Students Selected"
+          }
+        },
+        {
+          "name": "quartech_3rdstudent_nameofeducationalinstitute",
+          "label": "3rd Student | Name of educational institute",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_numberofrvtstudentsintendtohire",
+            "selectedValueIn": [255550003],
+            "techComment": "3 Students Selected"
+          }
+        },
+        {
+          "name": "quartech_3rdstudent_yearofstudiescompleted",
+          "label": "3rd Student | Year of studies completed",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_numberofrvtstudentsintendtohire",
+            "selectedValueIn": [255550003],
+            "techComment": "3 Students Selected"
+          }
+        },
+        {
+          "name": "quartech_3rdstudent_workplacementstartdate",
+          "label": "3rd Student | Work placement start date",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_numberofrvtstudentsintendtohire",
+            "selectedValueIn": [255550003],
+            "techComment": "3 Students Selected"
+          }
+        },
+        {
+          "name": "quartech_3rdstudent_workplacementenddate",
+          "label": "3rd Student | Work placement end date",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_numberofrvtstudentsintendtohire",
+            "selectedValueIn": [255550003],
+            "techComment": "3 Students Selected"
+          }
         }
       ]
     },

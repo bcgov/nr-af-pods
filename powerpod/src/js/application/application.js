@@ -169,6 +169,7 @@ async function updatePageForSelectedProgram(programId = undefined) {
         logger.info({
           fn: updatePageForSelectedProgram,
           message: 'Update application page with the program data.',
+          data: { programData },
         });
         updateFormStepForSelectedProgram(programData);
         hideLoadingAnimation();

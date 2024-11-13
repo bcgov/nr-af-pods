@@ -88,7 +88,8 @@ export function getFieldsBySectionApplication(stepName, forceRefresh = false) {
   });
 
   // only supports configuration from application json level
-  configureSections(applicationSections, globalSections);
+  // configureSections(applicationSections, globalSections);
+  configureSections(applicationSections);
 
   // hide tabs if 'hiddenSteps' is passed in JSON config
   const hiddenSteps = applicationConfigData.hiddenSteps;
@@ -97,7 +98,17 @@ export function getFieldsBySectionApplication(stepName, forceRefresh = false) {
   const applicationSection = applicationSections?.find(
     (s) => s.name === stepName
   );
+  logger.info({
+    fn: getFieldsBySectionApplication,
+    message: `found applicationSection data for stepName: ${stepName}`,
+    data: { applicationSection, stepName },
+  });
   const globalSection = globalSections.find((s) => s.name === stepName);
+  logger.info({
+    fn: getFieldsBySectionApplication,
+    message: `found globalSection data for stepName: ${stepName}`,
+    data: { globalSection, stepName },
+  });
 
   let fields = [];
 
@@ -163,6 +174,12 @@ export function getFieldsBySectionApplication(stepName, forceRefresh = false) {
     `fieldsData-${programName}-${stepName}`,
     JSON.stringify(fields)
   );
+
+  logger.info({
+    fn: getFieldsBySectionApplication,
+    message: `Start configuring fields for ${programName}-${stepName} with data:`,
+    data: { fields },
+  });
 
   fields.forEach((s) => {
     if (document.getElementById(s.name) === null) {

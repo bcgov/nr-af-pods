@@ -1,6 +1,8 @@
+import { configureFields } from '../../common/fieldConfiguration.js';
 import { hideFieldsAndSections } from '../../common/html.js';
 
 export function customizeDeclarationConsentStep(programData) {
+  configureFields();
   hideFieldsAndSections(false);
   addConsent(programData?.quartech_applicantportalprogramname);
 }

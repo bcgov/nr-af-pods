@@ -720,9 +720,9 @@ export function addHtmlToSection(
   );
 
   if (!sectionTable) {
-    logger.error({
+    logger.warn({
       fn: addHtmlToSection,
-      message: `Unable to add to section of tableDataName: ${tableDataName}, could not find section`,
+      message: `Unable to add to section of tableDataName: ${tableDataName}, could not find section. Could be configuring non-active section.`,
     });
     return;
   }
