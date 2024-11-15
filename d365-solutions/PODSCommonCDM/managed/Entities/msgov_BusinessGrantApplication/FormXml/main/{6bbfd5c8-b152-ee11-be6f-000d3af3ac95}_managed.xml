@@ -140,6 +140,22 @@
                       </cell>
                     </row>
                     <row>
+                      <cell id="{cc3f54d6-a0f8-41e5-a4c5-4f755ff1c396}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_designatedregistrantname" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="quartech_designatedregistrantname" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{ddcf73ec-2ddb-4cac-9adb-bd9eba4d72b3}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_designatedregistrantphonenumber" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="quartech_designatedregistrantphonenumber" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
                       <cell id="{fd1c722c-8dab-4982-b441-145009a677d7}" locklevel="0" colspan="1" rowspan="1">
                         <labels>
                           <label description="" languagecode="1033" />
@@ -653,6 +669,14 @@
                   </labels>
                   <rows>
                     <row>
+                      <cell id="{be270110-660d-45d0-a224-be3d3298e04c}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="Does your veterinary practice offer food animal services?" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_vetpracticeaccreditedbycvbc" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="quartech_vetpracticeaccreditedbycvbc" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
                       <cell id="{ca0ba674-3170-e435-a130-20e8d3edc961}" showlabel="true" locklevel="0">
                         <labels>
                           <label description="Are you a New Entrant to Agriculture as defined by the Ministry of Agriculture and Food's New Entrants Agriculture Strategy?" languagecode="1033" />
@@ -819,6 +843,134 @@
                     </row>
                   </rows>
                 </section>
+                <section name="sectionPracticeInformation" id="0b6bc94a-4bb8-4793-a227-b69cccff9404" IsUserDefined="0" locklevel="0" showlabel="true" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115">
+                  <labels>
+                    <label description="Information about the Practice" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row />
+                    <row>
+                      <cell id="{375dd0e6-4cf2-451d-b1e9-c0ec223066c4}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_numberoffulltimeveterinarians" classid="{C6D124CA-7EDA-4A60-AEA9-7FB8D318B68F}" datafieldname="quartech_numberoffulltimeveterinarians" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{e1060505-927a-48cc-8b2d-6ca6dfdc75cc}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_numberofregisteredvettechnologists" classid="{C6D124CA-7EDA-4A60-AEA9-7FB8D318B68F}" datafieldname="quartech_numberofregisteredvettechnologists" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{85c4a09f-5763-4fc4-b4dd-181653771406}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="Number of Veterinary-client-patient relationships (VCPR) - food animals" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_numberofvetclientpatientrelationships" classid="{C6D124CA-7EDA-4A60-AEA9-7FB8D318B68F}" datafieldname="quartech_numberofvetclientpatientrelationships" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{bcdb18d5-6a67-4022-bcaf-7eeb90ff2ff2}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_animalspeciestypesserved_beefcattle" classid="{C6D124CA-7EDA-4A60-AEA9-7FB8D318B68F}" datafieldname="quartech_animalspeciestypesserved_beefcattle" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{0f28d107-f6d9-4347-a709-57a840f183bd}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_animalspeciestypesserved_dairycattle" classid="{C6D124CA-7EDA-4A60-AEA9-7FB8D318B68F}" datafieldname="quartech_animalspeciestypesserved_dairycattle" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{82db068e-896e-4a60-8226-0c66b6f31493}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_animalspeciestypesserved_farmedfish" classid="{C6D124CA-7EDA-4A60-AEA9-7FB8D318B68F}" datafieldname="quartech_animalspeciestypesserved_farmedfish" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{d86e1d09-0d05-44a7-ba88-735a63d7f6a4}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_animalspeciestypesservedpoultrycommercial" classid="{C6D124CA-7EDA-4A60-AEA9-7FB8D318B68F}" datafieldname="quartech_animalspeciestypesservedpoultrycommercial" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{c4f31cb0-3ac4-43b8-bef8-66c8aa5959a7}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_animalspeciestypesserved_poultrysmalllot" classid="{C6D124CA-7EDA-4A60-AEA9-7FB8D318B68F}" datafieldname="quartech_animalspeciestypesserved_poultrysmalllot" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{27c4e637-9f98-445e-8626-9c410add4207}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_animalspeciestypesserved_sheepandgoats" classid="{C6D124CA-7EDA-4A60-AEA9-7FB8D318B68F}" datafieldname="quartech_animalspeciestypesserved_sheepandgoats" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{e4798f17-fb88-43f6-b31d-3b9a75606c5f}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_animalspeciestypesserved_swinecommercial" classid="{C6D124CA-7EDA-4A60-AEA9-7FB8D318B68F}" datafieldname="quartech_animalspeciestypesserved_swinecommercial" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{db3a7b18-deff-4be1-8a0d-d67af7eb5d39}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_animalspeciestypesserved_swinesmalllot" classid="{C6D124CA-7EDA-4A60-AEA9-7FB8D318B68F}" datafieldname="quartech_animalspeciestypesserved_swinesmalllot" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{32e445d2-b9d0-4174-912f-6e4d4fa12029}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_animalspeciestypesserved_companionanimals" classid="{C6D124CA-7EDA-4A60-AEA9-7FB8D318B68F}" datafieldname="quartech_animalspeciestypesserved_companionanimals" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{074b8804-1482-4d32-bc5a-ae35a511341b}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_animalspeciestypesserved_horses" classid="{C6D124CA-7EDA-4A60-AEA9-7FB8D318B68F}" datafieldname="quartech_animalspeciestypesserved_horses" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{f8a71742-5a45-4a6e-8dea-4b5665b01abe}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="Other" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_animalspeciestypesserved_other" classid="{C6D124CA-7EDA-4A60-AEA9-7FB8D318B68F}" datafieldname="quartech_animalspeciestypesserved_other" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{8c4c1ae6-deb8-4253-b4f5-ddc77cad4ef1}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="Total Percentage" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_totalpercentageofpracticeserved" classid="{C6D124CA-7EDA-4A60-AEA9-7FB8D318B68F}" datafieldname="quartech_totalpercentageofpracticeserved" disabled="false" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
                 <section name="otherCostShareProgramsSection" showlabel="true" showbar="false" locklevel="0" id="{ed065ae8-1780-b48b-839d-07d4b0bb2603}" IsUserDefined="0" layout="varwidth" columns="1" labelwidth="115" celllabelalignment="Left" celllabelposition="Left">
                   <labels>
                     <label description="Other Cost Share Programs" languagecode="1033" />
@@ -899,6 +1051,214 @@
           <columns>
             <column width="100%">
               <sections>
+                <section name="sectionStudentInformation" id="49831087-e994-4680-8d8f-b8486cd88e03" IsUserDefined="0" locklevel="0" showlabel="true" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115">
+                  <labels>
+                    <label description="Student Information" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row />
+                    <row>
+                      <cell id="{64cd6421-cdba-447c-967b-d6295fb69e77}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="How many veterinary and registered veterinary technologist (RVT) students do you intend to hire?" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_numberofrvtstudentsintendtohire" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="quartech_numberofrvtstudentsintendtohire" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{eae5c192-e0e0-46e2-bc81-263f0b884723}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_1ststudentname" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="quartech_1ststudentname" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{b4d076f4-2ba4-4d2d-94d8-18cd66688f2a}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_1ststudentemail" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="quartech_1ststudentemail" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{aec8b641-ca1c-418e-b862-6fd7040d5d36}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_1ststudentphonenumber" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="quartech_1ststudentphonenumber" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{6096de99-a92a-4943-8cd7-bba544a45c1a}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_1ststudentenrolledin" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="quartech_1ststudentenrolledin" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{f916758e-647d-4d20-b942-7a464d3be2d0}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_1ststudent_nameofeducationalinstitute" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="quartech_1ststudent_nameofeducationalinstitute" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{d93cf494-d815-46de-b99b-fd7715fc4773}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_1ststudent_yearofstudiescompleted" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="quartech_1ststudent_yearofstudiescompleted" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{d61d6ef2-d90d-4ec5-ba52-e6e8c06db455}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_1ststudent_workplacementstartdate" classid="{5B773807-9FB2-42DB-97C3-7A91EFF8ADFF}" datafieldname="quartech_1ststudent_workplacementstartdate" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{2007a6a2-b569-416d-811f-a66384240a7c}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_1ststudent_workplacementenddate" classid="{5B773807-9FB2-42DB-97C3-7A91EFF8ADFF}" datafieldname="quartech_1ststudent_workplacementenddate" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{cef5e0a1-01ac-437a-aaa3-6f035a829f02}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_2ndstudentname" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="quartech_2ndstudentname" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{fdbd197f-df1d-42d2-ae8b-9caf8bb1d779}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_2ndstudentemail" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="quartech_2ndstudentemail" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{4f5e0e64-0ba7-479a-ab40-030ec7a6db7e}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_2ndstudentphonenumber" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="quartech_2ndstudentphonenumber" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{7019aae6-7ddb-4ad2-addf-18df41664101}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_2ndstudentenrolledin" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="quartech_2ndstudentenrolledin" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{4fa578bc-f4a0-4027-b66f-9236a4a9bb97}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_2ndstudent_nameofeducationalinstitute" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="quartech_2ndstudent_nameofeducationalinstitute" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{b4708bbf-6743-41a8-ac4c-a602e090e90d}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_2ndstudent_yearofstudiescompleted" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="quartech_2ndstudent_yearofstudiescompleted" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{af4ffffe-08b5-43bc-9f92-8d40623671c2}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_2ndstudent_workplacementstartdate" classid="{5B773807-9FB2-42DB-97C3-7A91EFF8ADFF}" datafieldname="quartech_2ndstudent_workplacementstartdate" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{5aab47d3-55cc-46bd-abf4-946d6ebfd206}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_2ndstudent_workplacementenddate" classid="{5B773807-9FB2-42DB-97C3-7A91EFF8ADFF}" datafieldname="quartech_2ndstudent_workplacementenddate" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{90266ea9-2e33-4068-b84f-e2161a3d5b70}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_3rdstudentname" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="quartech_3rdstudentname" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{6abe22be-2606-4d2a-991b-019029717cdd}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_3rdstudentemail" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="quartech_3rdstudentemail" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{861a2577-978b-40f2-b59f-84f7f7ae0a94}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_3rdstudentphonenumber" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="quartech_3rdstudentphonenumber" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{f2788a9a-b2c6-4c99-8df2-404a8a481316}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_3rdstudentenrolledin" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="quartech_3rdstudentenrolledin" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{1d750156-229e-42fb-b5c5-c41c1d2b21c6}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_3rdstudent_nameofeducationalinstitute" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="quartech_3rdstudent_nameofeducationalinstitute" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{23a53a5c-8bfb-4cec-9380-61cc4b2cb72c}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_3rdstudent_yearofstudiescompleted" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="quartech_3rdstudent_yearofstudiescompleted" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{720ea5c5-a181-47eb-8248-ca0bdb81c7dc}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_3rdstudent_workplacementstartdate" classid="{5B773807-9FB2-42DB-97C3-7A91EFF8ADFF}" datafieldname="quartech_3rdstudent_workplacementstartdate" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{bbd8c6ab-988c-4981-b56c-93887c03c564}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_3rdstudent_workplacementenddate" classid="{5B773807-9FB2-42DB-97C3-7A91EFF8ADFF}" datafieldname="quartech_3rdstudent_workplacementenddate" disabled="false" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
                 <section name="sectionFoodAnimal" id="32383aa8-8b19-4b4a-bc1a-670cc3f54435" IsUserDefined="0" locklevel="0" showlabel="true" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115">
                   <labels>
                     <label description="Food Animal" languagecode="1033" />
