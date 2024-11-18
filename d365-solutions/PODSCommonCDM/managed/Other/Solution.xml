@@ -95,6 +95,7 @@
       <RootComponent type="1" schemaName="quartech_browserinformation" behavior="0" />
       <RootComponent type="1" schemaName="quartech_budgetplan" behavior="0" />
       <RootComponent type="1" schemaName="quartech_claim" behavior="0" />
+      <RootComponent type="1" schemaName="quartech_claimperiod" behavior="0" />
       <RootComponent type="1" schemaName="quartech_commodity" behavior="0" />
       <RootComponent type="1" schemaName="quartech_demographicinfo" behavior="0" />
       <RootComponent type="1" schemaName="quartech_expensetype" behavior="0" />
@@ -198,26 +199,10 @@
         <Dependent type="1" schemaName="msgov_program" displayName="Program" />
       </MissingDependency>
       <MissingDependency>
-        <Required type="1" schemaName="quartech_claimperiod" displayName="Claim Period" solution="Active" />
-        <Dependent type="1" schemaName="msgov_program" displayName="Program" />
-      </MissingDependency>
-      <MissingDependency>
-        <Required type="1" schemaName="quartech_claimperiod" displayName="Claim Period" solution="Active" />
-        <Dependent type="1" schemaName="quartech_programintake" displayName="Program Intake" />
-      </MissingDependency>
-      <MissingDependency>
-        <Required type="1" schemaName="quartech_claimperiod" displayName="Claim Period" solution="Active" />
-        <Dependent type="60" displayName="Information" parentDisplayName="Program Intake" id="{5c7e105f-30bf-4c8d-9f49-f5932dd35603}" />
-      </MissingDependency>
-      <MissingDependency>
         <Required type="10" schemaName="msgov_Application_msgov_Program" displayName="msgov_Application_msgov_Program" parentSchemaName="msgov_application" parentDisplayName="oob Application (msgov_application)" solution="GovernmentCommonCDM (1.0.3.1)">
           <package>GovernmentPortalAnchor (1.0.3.5)</package>
         </Required>
         <Dependent type="10" schemaName="msgov_Application_msgov_Program" displayName="msgov_Application_msgov_Program" parentSchemaName="msgov_application" parentDisplayName="oob Application (msgov_application)" />
-      </MissingDependency>
-      <MissingDependency>
-        <Required type="10" schemaName="quartech_claimperiod_programintake_quartech_programintake" displayName="quartech_claimperiod_programintake_quartech_programintake" parentSchemaName="quartech_programintake" parentDisplayName="Program Intake" solution="Active" />
-        <Dependent type="60" displayName="Information" parentDisplayName="Program Intake" id="{5c7e105f-30bf-4c8d-9f49-f5932dd35603}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="10" schemaName="quartech_quartech_naicscode_account_NAICSIndustry" displayName="quartech_quartech_naicscode_account_NAICSIndustry" parentSchemaName="quartech_naicscode" parentDisplayName="NAICS Code" solution="Active" />
@@ -998,10 +983,6 @@
           <package>GovernmentPortalAnchor (1.0.3.5)</package>
         </Required>
         <Dependent type="26" schemaName="Active Applications" displayName="Active Applications" parentSchemaName="msgov_businessgrantapplication" parentDisplayName="Application" id="{841927e1-f445-481a-8340-9010c1962092}" />
-      </MissingDependency>
-      <MissingDependency>
-        <Required type="26" schemaName="Active Claim Periods" displayName="Active Claim Periods" parentSchemaName="quartech_claimperiod" parentDisplayName="Claim Period" solution="Active" id="{84100faa-badb-44d9-a5ce-301166ed8704}" />
-        <Dependent type="60" displayName="Information" parentDisplayName="Program Intake" id="{5c7e105f-30bf-4c8d-9f49-f5932dd35603}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="26" schemaName="Active Programs" displayName="Active Programs" parentSchemaName="msgov_program" parentDisplayName="Program" solution="GovernmentCommonCDM (1.0.3.1)" id="{f86b3e13-6b68-41d5-85c5-00ff793e6299}">
