@@ -1,0 +1,11 @@
+{
+	"name": "Application - KTTP - Test Script - Demographic Info Step",
+	"testSteps" : [
+		{   "action" : "open-new-tab", "url": "https://af-pods-dev.powerappsportals.com/application/?programid=25493093-9d2b-ee11-bdf4-000d3af3ac95" }
+
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : true } }
+
+		, { "action" : "Expect", "field" : { "label": "Demographic Data Collection Survey ID number", "visible" : true, "required" : true } }		
+	]
+}
+

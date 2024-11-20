@@ -1,0 +1,9 @@
+{
+	"name": "Application - ABPP - Test Script - Declaration & Consent Step",
+	"testSteps" : [
+		{   "action" : "open-new-tab", "url": "https://af-pods-dev.powerappsportals.com/application/?programid=188a5355-bf58-ee11-be6f-000d3af3ac95" }
+
+		, { "action" : "Expect", "field" : { "label": "I / We agree to the above statement.", "visible" : true, "required" : true } }
+		, { "action" : "Enter", "field" : { "label": "I / We agree to the above statement.", "value" : "checked" } }
+	]
+}

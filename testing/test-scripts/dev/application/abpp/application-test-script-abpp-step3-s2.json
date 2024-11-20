@@ -1,0 +1,76 @@
+{
+	"name": "Application - ABPP S2 - Project Step - Test Script",
+	"testSteps" : [
+		{   "action" : "open-new-tab", "url": "https://af-pods-dev.powerappsportals.com/application/?programid=188a5355-bf58-ee11-be6f-000d3af3ac95" }
+		
+		, { "action" : "Expect", "field" : { "label": "Select the category you are applying in", "visible" : true, "required" : true } }
+
+		, { "action" : "Expect", "field" : { "label": "Is this a single applicant or part of a group application?", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Please provide the names of the co-applicants to your group application", "visible" : false } }
+		, { "action" : "Select", "field" : { "label": "Is this a single applicant or part of a group application?", "value" : "Group application" } }
+		, { "action" : "Expect", "field" : { "label": "Please provide the names of the co-applicants to your group application", "visible" : true, "required" : true } }
+		, { "action" : "Select", "field" : { "label": "Is this a single applicant or part of a group application?", "value" : "Single applicant" } }
+		, { "action" : "Expect", "field" : { "label": "Please provide the names of the co-applicants to your group application", "visible" : false } }
+
+		, { "action" : "Expect", "field" : { "label": "Project Title", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Project Description", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Project Location", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Start Date", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "End Date", "visible" : true, "required" : true } }
+		
+		, { "action" : "Expect", "field" : { "label": "In order to continuously improve communications, we are interested in learning how you heard about this program, please select all options that apply", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Please describe", "visible" : false } }
+		, { "action" : "Select", "field" : { "label": "In order to continuously improve communications, we are interested in learning how you heard about this program, please select all options that apply", "value" : "Other" } }
+		, { "action" : "Expect", "field" : { "label": "Please describe", "visible" : true, "required" : true } }
+		, { "action" : "Select", "field" : { "label": "In order to continuously improve communications, we are interested in learning how you heard about this program, please select all options that apply", "value" : "Word of Mouth" } }
+		, { "action" : "Expect", "field" : { "label": "Please describe", "visible" : false } }
+
+		, { "action" : "Expect", "field" : { "label": "Consultant's Business Name", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Consultant's Full Name", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Consultant's Position/Title", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Consultant's Canada Revenue Agency (CRA) Business Number or the first 9 digits of the Goods and Services Tax/Harmonized Sales Tax (GST/HST) number", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Please provide an overview of relevant knowledge and expertise required for the proposed project (500 words appropriate)", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Consultant's Phone Number", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Consultant's Business Email Address", "visible" : true, "required" : true } }
+		
+		, { "action" : "Expect", "field" : { "label": "Use of Supporting Consultant", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Will the Supporting Consultant complete more than 10% of the project?", "visible" : false } }
+		, { "action" : "Expect", "field" : { "label": "Supporting Consultant's Business Name", "visible" : false } }
+		, { "action" : "Expect", "field" : { "label": "Supporting Consultant's Full Name", "visible" : false } }
+		, { "action" : "Expect", "field" : { "label": "Supporting Consultant's Position/Title", "visible" : false } }
+		, { "action" : "Expect", "field" : { "label": "Rationale for inclusion in project (250 words)", "visible" : false } }
+		, { "action" : "Select", "field" : { "label": "Use of Supporting Consultant", "value" : "Yes" } }
+		, { "action" : "Expect", "field" : { "label": "Will the Supporting Consultant complete more than 10% of the project?", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Supporting Consultant's Business Name", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Supporting Consultant's Full Name", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Supporting Consultant's Position/Title", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Rationale for inclusion in project (250 words)", "visible" : true, "required" : true } }
+		, { "action" : "Select", "field" : { "label": "Use of Supporting Consultant", "value" : "No" } }
+		, { "action" : "Expect", "field" : { "label": "Will the Supporting Consultant complete more than 10% of the project?", "visible" : false } }
+		, { "action" : "Expect", "field" : { "label": "Supporting Consultant's Business Name", "visible" : false } }
+		, { "action" : "Expect", "field" : { "label": "Supporting Consultant's Full Name", "visible" : false } }
+		, { "action" : "Expect", "field" : { "label": "Supporting Consultant's Position/Title", "visible" : false } }
+		, { "action" : "Expect", "field" : { "label": "Rationale for inclusion in project (250 words)", "visible" : false } }
+		
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : true } }
+    
+		, { "action" : "Select", "field" : { "label": "Select the category you are applying in", "value" : "Business strategy" } }
+		
+		, { "action" : "Enter", "field" : { "label": "Project Title", "value" : "Automated Testing" } }
+		, { "action" : "Enter", "field" : { "label": "Project Description", "value" : "Automated Testing" } }
+		, { "action" : "Enter", "field" : { "label": "Project Location", "value" : "Victoria" } }
+		, { "action" : "Enter", "field" : { "label": "Start Date", "value" : "3/25/1908" } }
+		, { "action" : "Enter", "field" : { "label": "End Date", "value" : "7/24/2013" } }
+
+		, { "action" : "Enter", "field" : { "label": "Consultant's Business Name", "value" : "Galo Doido" } }
+		, { "action" : "Enter", "field" : { "label": "Consultant's Full Name", "value" : "Automated Testing" } }
+		, { "action" : "Enter", "field" : { "label": "Consultant's Position/Title", "value" : "Automated Testing" } }
+		, { "action" : "Enter", "field" : { "label": "Consultant's Canada Revenue Agency (CRA) Business Number or the first 9 digits of the Goods and Services Tax/Harmonized Sales Tax (GST/HST) number", "value" : "999999999" } }
+		, { "action" : "Enter", "field" : { "label": "Please provide an overview of relevant knowledge and expertise required for the proposed project (500 words appropriate)", "value" : "Automated Testing" } }
+		, { "action" : "Enter", "field" : { "label": "Consultant's Phone Number", "value" : "(555) 555-5555" } }
+		, { "action" : "Enter", "field" : { "label": "Consultant's Business Email Address", "value" : "quartech@quartech.com" } }
+		
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : false } }
+
+	]
+}
