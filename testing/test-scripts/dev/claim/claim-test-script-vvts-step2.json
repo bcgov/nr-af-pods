@@ -1,0 +1,24 @@
+{
+	"name": "Claim - Test Script - VVTS - Step 2",
+	"testSteps" : [
+		{   "action" : "open-new-tab", "url": "https://af-pods-dev.powerappsportals.com/my-claims" }
+		, {   "action" : "find-list-item",
+				"techNotes" : "labels the fields element below indicate the headers of the list/table",
+				"fields" : [ 
+					{ "label" : "Program", "value" : "Veterinary and veterinary technologist students working in BC food animal practices", "visible" : true}, 
+					{ "label" : "Claim Status", "value" : "Draft", "visible" : true}, 
+					{ "label" : "Actions", "type" : "action menu", "value" : "Edit / Submit Claim", "action" : "Click the link"} 
+				],
+				"description" : "My Claims list should display a DRAFT VVTS Claim with a link to EDIT it." }
+		
+		, { "action" : "Expect", "field" : { "label": "Was the student enrolled at your clinic exposed to a range of food animal practice related work?", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Did your clinic build a successful relationship with your student?", "visible" : true, "required" : true } }
+		
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : true } }
+		
+		, { "action" : "Select", "field" : { "label": "Was the student enrolled at your clinic exposed to a range of food animal practice related work?", "value" : "Yes" } }
+		, { "action" : "Select", "field" : { "label": "Did your clinic build a successful relationship with your student?", "value" : "Yes" } }
+				
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : false } }
+	]
+}

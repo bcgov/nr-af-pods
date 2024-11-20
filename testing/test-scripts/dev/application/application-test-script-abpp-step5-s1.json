@@ -1,0 +1,16 @@
+{
+	"name": "Application - ABPP S1 - Test Script - Documents Step",
+	"testSteps" : [
+		{   "action" : "open-new-tab", "url": "https://af-pods-dev.powerappsportals.com/application/?programid=bae19fa1-4d52-ee11-be6f-000d3af3ac95" }
+		
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : true } }
+
+		, { "action" : "Expect", "field" : { "label": "Event/training budget", "visible" : true, "required" : true } }		
+		, { "action" : "Expect", "field" : { "label": "Learning Action Plan", "visible" : true, "required" : true } }		
+		, { "action" : "Expect", "field" : { "label": "Verification of farming income - Canada Revenue Agency (CRA) Summary/Proof of Gross Income as last reported to the CRA", "visible" : true, "required" : true } }		
+		, { "action" : "Expect", "field" : { "label": "Direct Deposit Application", "visible" : true, "required" : true } }		
+		, { "action" : "Expect", "field" : { "label": "Copy of Void Cheque and/or Bank Confirmation Letter confirming bank account information of the business", "visible" : true, "required" : true } }		
+		
+	]
+}
+

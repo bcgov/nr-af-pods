@@ -1,0 +1,40 @@
+{
+	"name": "Application - ABPP - Eligibility Step - Test Script",
+	"testSteps" : [
+		{   "action" : "open-new-tab", "url": "https://af-pods-dev.powerappsportals.com/application/?programid=188a5355-bf58-ee11-be6f-000d3af3ac95" }
+		
+		, { "action" : "Expect", "field" : { "label": "Are you either a\n1) Primary Agriculture Producer growing or raising fresh food or agricultural products which are 100% grown or raised in British Columbia and are intended for sale.\n\nOR\n\n2) Agriculture, Food and Beverage Processor processing food, beverage, or agricultural products which are processed and packaged in B.C. with 51% or more of the direct cost of producing the product in its final form (i.e., the sum of raw materials, direct labour, variable processing, and packaging) originating in B.C. When the main raw materials are available in sufficient quantities from B.C. producers, they must be used?", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Are you a B.C. registered business entity (including sole proprietor, partnership, corporation, cooperative, Indigenous economic development corporation or band-owned business, or other association of persons)? - This eligibility requirement may not be applicable to Indigenous applicants.", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Is your farm business a taxable entity (e.g., individual, corporation or trust, limited partnership, commune, cooperative with a GST and business number)? - This eligibility requirement may not be applicable to Indigenous applicants.", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Are all proprietors, partners, members, or shareholders residents of British Columbia and file income tax under the Income Tax Act in British Columbia? - This eligibility requirement may not be applicable to Indigenous applicants.", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Please list all partners or shareholders including their first name and last name", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Did you report total annual gross revenues greater than $50,000/year in the previous year to Canada Revenue Agency? - This eligibility requirement may not be applicable to Indigenous applicants.", "visible" : true, "required" : true } }
+
+		, { "action" : "Expect", "field" : { "label": "Have you, or any proprietors, partners or shareholders received support that exceeds the annual maximum funding contribution of $15,000 per fiscal year (April to March), through the B.C. Agri-Business Planning Program?", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Please provide further detail", "displayOrder" : "1", "visible" : false } }
+		, { "action" : "Select", "field" : { "label": "Have you, or any proprietors, partners or shareholders received support that exceeds the annual maximum funding contribution of $15,000 per fiscal year (April to March), through the B.C. Agri-Business Planning Program?", "value" : "Yes" } }
+		, { "action" : "Expect", "field" : { "label": "Please provide further detail", "displayOrder" : "1", "visible" : true, "required" : true } }
+		, { "action" : "Select", "field" : { "label": "Have you, or any proprietors, partners or shareholders received support that exceeds the annual maximum funding contribution of $15,000 per fiscal year (April to March), through the B.C. Agri-Business Planning Program?", "value" : "No" } }
+		, { "action" : "Expect", "field" : { "label": "Please provide further detail", "displayOrder" : "1", "visible" : false } }
+		
+		, { "action" : "Expect", "field" : { "label": "Have you or any proprietors, partners or shareholders received support from any other B.C Ministry of Agriculture and Food Program(s) or any other B.C. Government Program(s) during the Sustainable Canadian Agricultural Partnership (S-CAP) Agreement (the Partnership), which is in effect from April 1, 2023, to March 31, 2028? Please note that you cannot receive support for the same eligible activities under these programs more than once during the Partnership?", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Please provide further detail", "displayOrder" : "2", "visible" : false } }
+		, { "action" : "Select", "field" : { "label": "Have you or any proprietors, partners or shareholders received support from any other B.C Ministry of Agriculture and Food Program(s) or any other B.C. Government Program(s) during the Sustainable Canadian Agricultural Partnership (S-CAP) Agreement (the Partnership), which is in effect from April 1, 2023, to March 31, 2028? Please note that you cannot receive support for the same eligible activities under these programs more than once during the Partnership?", "value" : "Yes" } }
+		, { "action" : "Expect", "field" : { "label": "Please provide further detail", "displayOrder" : "2", "visible" : true, "required" : true } }
+		, { "action" : "Select", "field" : { "label": "Have you or any proprietors, partners or shareholders received support from any other B.C Ministry of Agriculture and Food Program(s) or any other B.C. Government Program(s) during the Sustainable Canadian Agricultural Partnership (S-CAP) Agreement (the Partnership), which is in effect from April 1, 2023, to March 31, 2028? Please note that you cannot receive support for the same eligible activities under these programs more than once during the Partnership?", "value" : "No" } }
+		, { "action" : "Expect", "field" : { "label": "Please provide further detail", "displayOrder" : "2", "visible" : false } }
+		
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : true } }
+    
+		, { "action" : "Select", "field" : { "label": "Are you either a\n1) Primary Agriculture Producer growing or raising fresh food or agricultural products which are 100% grown or raised in British Columbia and are intended for sale.\n\nOR\n\n2) Agriculture, Food and Beverage Processor processing food, beverage, or agricultural products which are processed and packaged in B.C. with 51% or more of the direct cost of producing the product in its final form (i.e., the sum of raw materials, direct labour, variable processing, and packaging) originating in B.C. When the main raw materials are available in sufficient quantities from B.C. producers, they must be used?", "value" : "No" } }
+		, { "action" : "Select", "field" : { "label": "Are you a B.C. registered business entity (including sole proprietor, partnership, corporation, cooperative, Indigenous economic development corporation or band-owned business, or other association of persons)? - This eligibility requirement may not be applicable to Indigenous applicants.", "value" : "No" } }
+		, { "action" : "Select", "field" : { "label": "Is your farm business a taxable entity (e.g., individual, corporation or trust, limited partnership, commune, cooperative with a GST and business number)? - This eligibility requirement may not be applicable to Indigenous applicants.", "value" : "No" } }
+		, { "action" : "Select", "field" : { "label": "Are all proprietors, partners, members, or shareholders residents of British Columbia and file income tax under the Income Tax Act in British Columbia? - This eligibility requirement may not be applicable to Indigenous applicants.", "value" : "No" } }
+		, { "action" : "Enter", "field" : { "label": "Please list all partners or shareholders including their first name and last name", "value" : "Automated Testing" } }
+		, { "action" : "Select", "field" : { "label": "Did you report total annual gross revenues greater than $50,000/year in the previous year to Canada Revenue Agency? - This eligibility requirement may not be applicable to Indigenous applicants.", "value" : "No" } }
+
+		
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : false } }
+
+	]
+}

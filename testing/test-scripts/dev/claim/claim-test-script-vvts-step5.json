@@ -1,0 +1,22 @@
+{
+	"name": "Claim - Test Script - VVTS - Step 5",
+	"testSteps" : [
+		{   "action" : "open-new-tab", "url": "https://af-pods-dev.powerappsportals.com/my-claims" }
+		, {   "action" : "find-list-item",
+				"techNotes" : "labels the fields element below indicate the headers of the list/table",
+				"fields" : [ 
+					{ "label" : "Program", "value" : "Veterinary and veterinary technologist students working in BC food animal practices", "visible" : true}, 
+					{ "label" : "Claim Status", "value" : "Draft", "visible" : true}, 
+					{ "label" : "Actions", "type" : "action menu", "value" : "Edit / Submit Claim", "action" : "Click the link"} 
+				],
+				"description" : "My Claims list should display a DRAFT VVTS Claim with a link to EDIT it." }
+		
+				, { "action" : "Expect", "field" : { "label": "I / We agree to the above statement.", "visible" : true, "required" : true } }
+
+				, { "action" : "Expect", "button" : { "label": "Submit", "disabled" : true } }
+				
+				, { "action" : "Enter", "field" : { "label": "I / We agree to the above statement.", "value" : "checked" } }
+
+				, { "action" : "Expect", "button" : { "label": "Submit", "disabled" : false } }		
+	]
+}

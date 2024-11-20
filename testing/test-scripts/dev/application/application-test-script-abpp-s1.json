@@ -1,0 +1,194 @@
+{
+	"name": "Application - ABPP - Applicant Information Step - Test Script",
+	"testSteps" : [
+		{   "action" : "open-new-tab", "url": "https://af-pods-test.powerappsportals.com/application/?programid=bae19fa1-4d52-ee11-be6f-000d3af3ac95" }
+		
+		, { "action" : "Expect", "field" : { "label": "Legal Business or Organization Name", "visible" : true, "required" : true } }
+
+		, { "action" : "Expect", "field" : { "label": "My / Our business/organization DOES NOT have a Canada Revenue Agency (CRA) or GST Number", "visible" : true, "required" : false} }
+		, { "action" : "Enter", "field" : { "label": "My / Our business/organization DOES NOT have a Canada Revenue Agency (CRA) or GST Number", "value": "unchecked"} }
+		, { "action" : "Expect", "field" : { "label": "Canada Revenue Agency (CRA) Business Number or the first 9 digits of the Goods and Services Tax/Harmonized Sales Tax (GST/HST) number", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Please explain why your organization doesn't have a CRA Business Number or GST number", "visible" : false } }
+
+		, { "action" : "Enter", "field" : { "label": "My / Our business/organization DOES NOT have a Canada Revenue Agency (CRA) or GST Number", "value": "checked"} }
+		, { "action" : "Expect", "field" : { "label": "Canada Revenue Agency (CRA) Business Number or the first 9 digits of the Goods and Services Tax/Harmonized Sales Tax (GST/HST) number", "visible" : false } }
+		, { "action" : "Expect", "field" : { "label": "Please explain why your organization doesn't have a CRA Business Number or GST number", "visible" : true, "required" : true } }
+
+		, { "action" : "Expect", "field" : { "label": "Doing Business As (if different from Legal Business/Organization Name)", "visible" : true, "required" : false } }
+		, { "action" : "Expect", "field" : { "label": "Business - Suite Number (optional)", "visible" : true, "required" : false } }
+		, { "action" : "Expect", "field" : { "label": "Business - Street Number", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Business - Street", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Business City", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Business Province/Territory", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Business Postal Code", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Business Phone Number", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Business Email Address", "visible" : true, "required" : true } }
+
+		, { "action" : "Expect", "field" : { "label": "First Name", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Last Name", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Position or Job Title", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "City", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Telephone", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Email to be used for correspondence on this application", "visible" : true, "required" : true } }
+
+		, { "action" : "Expect", "field" : { "label": "Are you an Indigenous Applicant?", "visible" : true, "required" : true } }
+
+		, { "action" : "Expect", "field" : { "label": "Applicant Type", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Year Business Established", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "How many full-time employees do you employ?", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "How many part-time employees do you employ (including seasonal)?", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "What was your estimated total gross income in the previous year?", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "What was your estimated total net income in the previous year?", "visible" : true, "required" : true } }
+		
+		, { "action" : "Expect", "field" : { "label": "Type of Business / Organization. If your operation does both processing and primary production, please select the one that will primarily benefit from this program.", "visible" : true, "required" : true, "value" : "255550001" } }
+		, { "action" : "Expect", "field" : { "label": "What is your primary production?", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "If you are a multi-commodity producer, please list any other commodities you produce/harvest", "visible" : true, "required" : false } }
+		, { "action" : "Expect", "field" : { "label": "What do you primarily process?", "visible" : false } }
+		, { "action" : "Expect", "field" : { "label": "If you process multiple products, please list any other products you produce", "visible" : false } }
+		, { "action" : "Select", "field" : { "label": "Type of Business / Organization. If your operation does both processing and primary production, please select the one that will primarily benefit from this program.", "value" : "Processor" } }
+		, { "action" : "Expect", "field" : { "label": "What is your primary production?", "visible" : false } }
+		, { "action" : "Expect", "field" : { "label": "If you are a multi-commodity producer, please list any other commodities you produce/harvest", "visible" : false } }
+		, { "action" : "Expect", "field" : { "label": "What do you primarily process?", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "If you process multiple products, please list any other products you produce", "visible" : true, "required" : false } }
+		
+		, { "action" : "Expect", "field" : { "label": "Does your operation do both processing and primary production", "visible" : true, "required" : true } }
+		
+		, { "action" : "Expect", "field" : { "label": "Business Description (Maximum 100 words)", "visible" : true, "required" : true } }
+		
+		
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : true } }
+    
+		, { "action" : "Enter", "field" : { "label": "Legal Business or Organization Name", "value": "QUARTECH SYSTEMS LIMITED" } }
+		, { "action" : "Enter", "field" : { "label": "Please explain why your organization doesn't have a CRA Business Number or GST number", "value": "Generated by Test Automation" } }
+
+		, { "action" : "Enter", "field" : { "label": "Business - Suite Number (optional)", "value": "#200" } }
+		, { "action" : "Enter", "field" : { "label": "Business - Street Number", "value": "1012" } }
+		, { "action" : "Enter", "field" : { "label": "Business - Street", "value": "Douglas" } }
+		, { "action" : "Enter", "field" : { "label": "Business City", "value": "Victoria" } }
+		, { "action" : "Select", "field" : { "label": "Business Province/Territory", "value": "British Columbia" } }
+		, { "action" : "Enter", "field" : { "label": "Business Postal Code", "value": "V8W2C3" } }
+		, { "action" : "Enter", "field" : { "label": "Business Phone Number", "value": "(250) 380-9686" } }
+		, { "action" : "Enter", "field" : { "label": "Business Email Address", "value": "quartech@quartech.com" } }
+
+		, { "action" : "Enter", "field" : { "label": "First Name", "value": "Galo" } }
+		, { "action" : "Enter", "field" : { "label": "Last Name", "value": "Doido" } }
+		, { "action" : "Enter", "field" : { "label": "Position or Job Title", "value": "Champion" } }
+		, { "action" : "Enter", "field" : { "label": "City", "value": "Victoria" } }
+		, { "action" : "Enter", "field" : { "label": "Telephone", "value": "(250) 380-9686" } }
+		, { "action" : "Enter", "field" : { "label": "Email to be used for correspondence on this application", "value": "quartech@quartech.com" } }
+
+		, { "action" : "Select", "field" : { "label": "Are you an Indigenous Applicant?", "value" : "Prefer not to say" } }
+
+		, { "action" : "Select", "field" : { "label": "Applicant Type", "value" : "Partnership" } }
+		, { "action" : "Enter", "field" : { "label": "Year Business Established", "value" : "1908" } }
+		, { "action" : "Enter", "field" : { "label": "How many full-time employees do you employ?", "value" : "13" } }
+		, { "action" : "Enter", "field" : { "label": "How many part-time employees do you employ (including seasonal)?", "value" : "13" } }
+		, { "action" : "Enter", "field" : { "label": "What was your estimated total gross income in the previous year?", "value" : "250319.08" } }
+		, { "action" : "Enter", "field" : { "label": "What was your estimated total net income in the previous year?", "value" : "250319.08" } }
+		
+		, { "action" : "Select", "field" : { "label": "What do you primarily process?", "value": "Tortilla manufacturing" } }
+		, { "action" : "Select", "field" : { "label": "Does your operation do both processing and primary production", "value": "Yes" } }
+				
+		, { "action" : "Enter", "field" : { "label": "Business Description (Maximum 100 words)", "value" : "Several years in the business" } }
+		
+		, { "action" : "Enable the Next button.", "description" : "Enable Next button to skip testing the multi-select control for 'What do you primarily process?'." }
+		, { "action" : "Click on the Next button.", "description" : "Go to the Eligibility step by clicking Next button." }
+
+		
+		, { "action" : "Expect", "field" : { "label": "Are you either a\n1) Primary Agriculture Producer growing or raising fresh food or agricultural products which are 100% grown or raised in British Columbia and are intended for sale.\n\nOR\n\n2) Agriculture, Food and Beverage Processor processing food, beverage, or agricultural products which are processed and packaged in B.C. with 51% or more of the direct cost of producing the product in its final form (i.e., the sum of raw materials, direct labour, variable processing, and packaging) originating in B.C. When the main raw materials are available in sufficient quantities from B.C. producers, they must be used?", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Are you a B.C. registered business entity (including sole proprietor, partnership, corporation, cooperative, Indigenous economic development corporation or band-owned business, or other association of persons)? - This eligibility requirement may not be applicable to Indigenous applicants.", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Is your farm business a taxable entity (e.g., individual, corporation or trust, limited partnership, commune, cooperative with a GST and business number)? - This eligibility requirement may not be applicable to Indigenous applicants.", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Are all proprietors, partners, members, or shareholders residents of British Columbia and file income tax under the Income Tax Act in British Columbia? - This eligibility requirement may not be applicable to Indigenous applicants.", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Please list all partners or shareholders including their first name and last name", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Did you report total annual gross revenues greater than $50,000/year in the previous year to Canada Revenue Agency? - This eligibility requirement may not be applicable to Indigenous applicants.", "visible" : true, "required" : true } }
+
+		, { "action" : "Expect", "field" : { "label": "Have you, or any proprietors, partners or shareholders received support that exceeds the annual maximum funding contribution of $15,000 per fiscal year (April to March), through the B.C. Agri-Business Planning Program?", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Please provide further detail", "displayOrder" : "1", "visible" : false } }
+		, { "action" : "Select", "field" : { "label": "Have you, or any proprietors, partners or shareholders received support that exceeds the annual maximum funding contribution of $15,000 per fiscal year (April to March), through the B.C. Agri-Business Planning Program?", "value" : "Yes" } }
+		, { "action" : "Expect", "field" : { "label": "Please provide further detail", "displayOrder" : "1", "visible" : true, "required" : true } }
+		, { "action" : "Select", "field" : { "label": "Have you, or any proprietors, partners or shareholders received support that exceeds the annual maximum funding contribution of $15,000 per fiscal year (April to March), through the B.C. Agri-Business Planning Program?", "value" : "No" } }
+		, { "action" : "Expect", "field" : { "label": "Please provide further detail", "displayOrder" : "1", "visible" : false } }
+		
+		, { "action" : "Expect", "field" : { "label": "Have you or any proprietors, partners or shareholders received support from any other B.C Ministry of Agriculture and Food Program(s) or any other B.C. Government Program(s) during the Sustainable Canadian Agricultural Partnership (S-CAP) Agreement (the Partnership), which is in effect from April 1, 2023, to March 31, 2028? Please note that you cannot receive support for the same eligible activities under these programs more than once during the Partnership?", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Please provide further detail", "displayOrder" : "2", "visible" : false } }
+		, { "action" : "Select", "field" : { "label": "Have you or any proprietors, partners or shareholders received support from any other B.C Ministry of Agriculture and Food Program(s) or any other B.C. Government Program(s) during the Sustainable Canadian Agricultural Partnership (S-CAP) Agreement (the Partnership), which is in effect from April 1, 2023, to March 31, 2028? Please note that you cannot receive support for the same eligible activities under these programs more than once during the Partnership?", "value" : "Yes" } }
+		, { "action" : "Expect", "field" : { "label": "Please provide further detail", "displayOrder" : "2", "visible" : true, "required" : true } }
+		, { "action" : "Select", "field" : { "label": "Have you or any proprietors, partners or shareholders received support from any other B.C Ministry of Agriculture and Food Program(s) or any other B.C. Government Program(s) during the Sustainable Canadian Agricultural Partnership (S-CAP) Agreement (the Partnership), which is in effect from April 1, 2023, to March 31, 2028? Please note that you cannot receive support for the same eligible activities under these programs more than once during the Partnership?", "value" : "No" } }
+		, { "action" : "Expect", "field" : { "label": "Please provide further detail", "displayOrder" : "2", "visible" : false } }
+		
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : true } }
+    
+		, { "action" : "Select", "field" : { "label": "Are you either a\n1) Primary Agriculture Producer growing or raising fresh food or agricultural products which are 100% grown or raised in British Columbia and are intended for sale.\n\nOR\n\n2) Agriculture, Food and Beverage Processor processing food, beverage, or agricultural products which are processed and packaged in B.C. with 51% or more of the direct cost of producing the product in its final form (i.e., the sum of raw materials, direct labour, variable processing, and packaging) originating in B.C. When the main raw materials are available in sufficient quantities from B.C. producers, they must be used?", "value" : "No" } }
+		, { "action" : "Select", "field" : { "label": "Are you a B.C. registered business entity (including sole proprietor, partnership, corporation, cooperative, Indigenous economic development corporation or band-owned business, or other association of persons)? - This eligibility requirement may not be applicable to Indigenous applicants.", "value" : "No" } }
+		, { "action" : "Select", "field" : { "label": "Is your farm business a taxable entity (e.g., individual, corporation or trust, limited partnership, commune, cooperative with a GST and business number)? - This eligibility requirement may not be applicable to Indigenous applicants.", "value" : "No" } }
+		, { "action" : "Select", "field" : { "label": "Are all proprietors, partners, members, or shareholders residents of British Columbia and file income tax under the Income Tax Act in British Columbia? - This eligibility requirement may not be applicable to Indigenous applicants.", "value" : "No" } }
+		, { "action" : "Enter", "field" : { "label": "Please list all partners or shareholders including their first name and last name", "value" : "Automated Testing" } }
+		, { "action" : "Select", "field" : { "label": "Did you report total annual gross revenues greater than $50,000/year in the previous year to Canada Revenue Agency? - This eligibility requirement may not be applicable to Indigenous applicants.", "value" : "No" } }
+
+		
+		, { "action" : "Enable the Next button.", "description" : "Enable Next button to skip testing the extense label '1) Primary Agriculture Producer growing or raising fresh food or agricultural products which are 100% grown or raised in British Columbia and are intended for sale.\n\nOR\n\n2) Agriculture, Food and Beverage Processor processing food, beverage, or agricultural products which are processed and packaged in B.C. with 51% or more of the direct cost of producing the product in its final form (i.e., the sum of raw materials, direct labour, variable processing, and packaging) originating in B.C. When the main raw materials are available in sufficient quantities from B.C. producers, they must be used?'." }
+		, { "action" : "Click on the Next button.", "description" : "Go to the Project step by clicking Next button." }
+
+
+		, { "action" : "Expect", "field" : { "label": "Event/Training Title", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Event/Training Description", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Start Date", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "End Date", "visible" : true, "required" : true } }
+		
+		, { "action" : "Expect", "field" : { "label": "In order to continuously improve communications, we are interested in learning how you heard about this program, please select all options that apply", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Please describe", "visible" : false } }
+		, { "action" : "Select", "field" : { "label": "In order to continuously improve communications, we are interested in learning how you heard about this program, please select all options that apply", "value" : "Other" } }
+		, { "action" : "Expect", "field" : { "label": "Please describe", "visible" : true, "required" : true } }
+		, { "action" : "Select", "field" : { "label": "In order to continuously improve communications, we are interested in learning how you heard about this program, please select all options that apply", "value" : "Word of Mouth" } }
+		, { "action" : "Expect", "field" : { "label": "Please describe", "visible" : false } }
+		
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : true } }
+    
+		, { "action" : "Enter", "field" : { "label": "Event/Training Title", "value" : "Automated Testing" } }
+		, { "action" : "Enter", "field" : { "label": "Event/Training Description", "value" : "Automated Testing" } }
+		, { "action" : "Enter", "field" : { "label": "Start Date", "value" : "3/25/1908" } }
+		, { "action" : "Enter", "field" : { "label": "End Date", "value" : "7/24/2013" } }
+
+		, { "action" : "Enable the Next button.", "description" : "Enable Next button to skip the multi-select control for 'In order to continuously improve communications, we are interested in learning how you heard about this program, please select all options that apply'." }
+		, { "action" : "Click on the Next button.", "description" : "Go to the Deliverables & Budget step by clicking Next button." }
+
+
+		, { "action" : "Expect", "field" : { "label": "Training(s)/course(s)/business management conference(s)", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Why you are taking this training(s)/course(s)/business management conference(s)", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Please describe how will this improve your business", "visible" : true, "required" : true } }
+		
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : true } }
+    
+		, { "action" : "Enter", "field" : { "label": "Training(s)/course(s)/business management conference(s)", "value" : "Automated Testing" } }
+		, { "action" : "Enter", "field" : { "label": "Why you are taking this training(s)/course(s)/business management conference(s)", "value" : "Automated Testing" } }
+		, { "action" : "Enter", "field" : { "label": "Please describe how will this improve your business", "value" : "Automated Testing" } }
+		
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : false } }
+		, { "action" : "Click on the Next button.", "description" : "Go to the Documents step by clicking Next button." }
+
+
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : true } }
+
+		, { "action" : "Expect", "field" : { "label": "Event/training budget", "visible" : true, "required" : true } }		
+		, { "action" : "Expect", "field" : { "label": "Learning Action Plan", "visible" : true, "required" : true } }		
+		, { "action" : "Expect", "field" : { "label": "Verification of farming income - Canada Revenue Agency (CRA) Summary/Proof of Gross Income as last reported to the CRA", "visible" : true, "required" : true } }		
+		, { "action" : "Expect", "field" : { "label": "Direct Deposit Application", "visible" : true, "required" : true } }		
+		, { "action" : "Expect", "field" : { "label": "Copy of Void Cheque and/or Bank Confirmation Letter confirming bank account information of the business", "visible" : true, "required" : true } }		
+		
+		, { "action" : "Enable the Next button.", "description" : "Enable Next button. Skip the docs upload." }
+		, { "action" : "Click on the Next button.", "description" : "Go to the Demographic Info step by clicking Next button." }
+
+
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : true } }
+		, { "action" : "Expect", "field" : { "label": "Demographic Data Collection Survey ID number", "visible" : true, "required" : true } }		
+
+		, { "action" : "Enable the Next button.", "description" : "Enable Next button. Skip the Demographic Info integration tests." }
+		, { "action" : "Click on the Next button.", "description" : "Go to the Declaration and Consent step by clicking Next button." }
+
+
+		, { "action" : "Expect", "field" : { "label": "I / We agree to the above statement.", "visible" : true, "required" : true } }
+		, { "action" : "Enter", "field" : { "label": "I / We agree to the above statement.", "value" : "checked" } }
+
+
+	]
+}

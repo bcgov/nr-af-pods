@@ -1,0 +1,85 @@
+{
+	"name": "Application - KTTP - Test Script - Project Step",
+	"testSteps" : [
+		{   "action" : "open-new-tab", "url": "https://af-pods-dev.powerappsportals.com/application/?programid=25493093-9d2b-ee11-bdf4-000d3af3ac95" }
+
+		
+		, { "action" : "Expect", "field" : { "label": "Project Title", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Project Description", "visible" : true, "required" : true } }
+		
+		, { "action" : "Expect", "field" : { "label": "Please select the primary Commodity/Sector that will benefit from this project", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Please explain if you selected Sector-Wide, or if you have additional information to share on the Commodity/Sector", "visible" : false } }
+		, { "action" : "Select", "field" : { "label": "Please select the primary Commodity/Sector that will benefit from this project", "value" : "* Sector Wide" } }
+		, { "action" : "Expect", "field" : { "label": "Please explain if you selected Sector-Wide, or if you have additional information to share on the Commodity/Sector", "visible" : true, "required" : true } }
+		, { "action" : "Select", "field" : { "label": "Please select the primary Commodity/Sector that will benefit from this project", "value" : "Apiculture" } }
+		, { "action" : "Expect", "field" : { "label": "Please explain if you selected Sector-Wide, or if you have additional information to share on the Commodity/Sector", "visible" : false } }
+
+		, { "action" : "Expect", "field" : { "label": "Will the event be virtual, in-person, or hybrid?", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Primary Location", "visible" : false } }
+		, { "action" : "Select", "field" : { "label": "Will the event be virtual, in-person, or hybrid?", "value" : "In-person" } }
+		, { "action" : "Expect", "field" : { "label": "Primary Location", "visible" : true, "required" : true } }
+		, { "action" : "Select", "field" : { "label": "Will the event be virtual, in-person, or hybrid?", "value" : "Hybrid" } }
+		, { "action" : "Expect", "field" : { "label": "Primary Location", "visible" : true, "required" : true } }
+		, { "action" : "Select", "field" : { "label": "Will the event be virtual, in-person, or hybrid?", "value" : "Virtual" } }
+		, { "action" : "Expect", "field" : { "label": "Primary Location", "visible" : false } }
+		
+		, { "action" : "Expect", "field" : { "label": "Will your project take place in more than one place?", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Additional Project Locations", "visible" : false } }
+		, { "action" : "Select", "field" : { "label": "Will your project take place in more than one place?", "value" : "Yes" } }
+		, { "action" : "Expect", "field" : { "label": "Additional Project Locations", "visible" : true, "required" : true } }
+		, { "action" : "Select", "field" : { "label": "Will your project take place in more than one place?", "value" : "No" } }
+		, { "action" : "Expect", "field" : { "label": "Additional Project Locations", "visible" : false } }
+		
+		, { "action" : "Expect", "field" : { "label": "Please select the most applicable activity type", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Please describe your activity type", "visible" : false } }
+		, { "action" : "Select", "field" : { "label": "Please select the most applicable activity type", "value" : "Other" } }
+		, { "action" : "Expect", "field" : { "label": "Please describe your activity type", "visible" : true, "required" : true } }
+		, { "action" : "Select", "field" : { "label": "Please select the most applicable activity type", "value" : "Conference" } }
+		, { "action" : "Expect", "field" : { "label": "Please describe your activity type", "visible" : false } }
+
+		, { "action" : "Expect", "field" : { "label": "Priority Topic(s). Please select the most applicable topic that your project will focus on", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "If applicable, select a secondary priority topic that you project will focus on", "visible" : true, "required" : false } }
+		
+		, { "action" : "Expect", "field" : { "label": "Explain what your activity will be about, why you're doing it, and what you hope to achieve. Make sure the things you hope to achieve can be measured, and explain how they will make a difference.", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "The Province supports inclusiveness and increased representation of target and underrepresented groups. Please describe how you will work towards increasing access and inclusiveness of your activity?", "visible" : true, "required" : true } }
+		
+		, { "action" : "Expect", "field" : { "label": "Subject Matter Expert (SME) Name", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "SME Email", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "SME Website", "visible" : true, "required" : false } }
+		, { "action" : "Expect", "field" : { "label": "Describe the expertise of the Subject Matter Expert (SME) and what experience they have in transferring knowledge", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Activity Start Date", "visible" : true, "required" : true } }
+		
+		, { "action" : "Expect", "field" : { "label": "Does the activity take place over multiple days?", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Please provide the additional dates", "visible" : false } }
+		, { "action" : "Select", "field" : { "label": "Does the activity take place over multiple days?", "value" : "Yes" } }
+		, { "action" : "Expect", "field" : { "label": "Please provide the additional dates", "visible" : true, "required" : true } }
+		, { "action" : "Select", "field" : { "label": "Does the activity take place over multiple days?", "value" : "No" } }
+		, { "action" : "Expect", "field" : { "label": "Please provide the additional dates", "visible" : false } }
+				
+		, { "action" : "Expect", "field" : { "label": "Will this activity be open to any agriculture and seafood producers/ processors that wish to attend?", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Please explain why this event will not be open to other producers/processors", "visible" : false } }
+		, { "action" : "Select", "field" : { "label": "Will this activity be open to any agriculture and seafood producers/ processors that wish to attend?", "value" : "No" } }
+		, { "action" : "Expect", "field" : { "label": "Please explain why this event will not be open to other producers/processors", "visible" : true, "required" : true } }
+		, { "action" : "Select", "field" : { "label": "Will this activity be open to any agriculture and seafood producers/ processors that wish to attend?", "value" : "Yes" } }
+		, { "action" : "Expect", "field" : { "label": "Please explain why this event will not be open to other producers/processors", "visible" : false } }
+		
+		, { "action" : "Expect", "field" : { "label": "Number of B.C. agriculture and seafood producers/ processors/ businesses expected to attend this activity", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Number of overall attendees expected to attend this activity", "visible" : true, "required" : true } }
+		
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : true } }
+
+		, { "action" : "Enter", "field" : { "label": "Project Title", "value" : "Quartech Testing" } }
+		, { "action" : "Enter", "field" : { "label": "Project Description", "value" : "Automated Tests." } }
+		, { "action" : "Select", "field" : { "label": "Priority Topic(s). Please select the most applicable topic that your project will focus on", "value" : "Traceability" } }
+		, { "action" : "Enter", "field" : { "label": "Explain what your activity will be about, why you're doing it, and what you hope to achieve. Make sure the things you hope to achieve can be measured, and explain how they will make a difference.", "value" : "Automated Tests." } }
+		, { "action" : "Enter", "field" : { "label": "The Province supports inclusiveness and increased representation of target and underrepresented groups. Please describe how you will work towards increasing access and inclusiveness of your activity?", "value" : "Automated Tests." } }
+		, { "action" : "Enter", "field" : { "label": "Subject Matter Expert (SME) Name", "value" : "Quartech" } }
+		, { "action" : "Enter", "field" : { "label": "SME Email", "value" : "quartech@quartech.com" } }
+		, { "action" : "Enter", "field" : { "label": "Describe the expertise of the Subject Matter Expert (SME) and what experience they have in transferring knowledge", "value" : "Automated Tests." } }
+		, { "action" : "Enter", "field" : { "label": "Activity Start Date", "value" : "03/25/1908" } }
+		, { "action" : "Select", "field" : { "label": "Number of B.C. agriculture and seafood producers/ processors/ businesses expected to attend this activity", "value" : "11 - 25" } }
+		, { "action" : "Select", "field" : { "label": "Number of overall attendees expected to attend this activity", "value" : "51 - 100" } }
+
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : false } }
+	]
+}
