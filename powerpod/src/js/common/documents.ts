@@ -5,7 +5,7 @@ import {
   getDocumentsData,
   postDocumentData,
 } from './fetch.js';
-import { getCurrentUser } from './dynamics.js';
+import { getCurrentUser } from './dynamics.ts';
 import { getCurrentTimeUTC } from './date.js';
 import { getContactName } from './contacts.js';
 import { getFieldLabel } from './html.js';

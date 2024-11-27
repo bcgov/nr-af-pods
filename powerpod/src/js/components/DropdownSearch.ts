@@ -7,6 +7,8 @@ class DropdownSearch extends LitElement {
   @property({ type: String, reflect: true }) id: string = crypto.randomUUID();
   @property({ type: Array }) options: string[] = [];
   @property({ type: String }) selectedValue: string = '';
+  @property({ type: String }) additionalTextBelowField: string = '';
+  @property({ type: String }) fieldLabel: string = '';
 
   static styles = css`
     .dropdown-search {
@@ -51,11 +53,6 @@ class DropdownSearch extends LitElement {
       border-top: var(--size) solid black;
       top: 55%;
     }
-
-    span {
-      position: absolute;
-      padding-top: 2px;
-    }
   `;
 
   generateOption(value: string) {
@@ -85,27 +82,38 @@ class DropdownSearch extends LitElement {
 
   render() {
     return html`
-      <div class="dropdown-search">
-        <select
-          id="selectElement"
-          .value=${this.selectedValue}
-          @change=${(event: Event) => {
-            const { target } = event;
-            if (target)
-              this.selectedValue = (target as HTMLSelectElement).value ?? '';
-            this.emitEvent();
-          }}
-        >
-          ${this.options
-            ?.sort((a, b) => {
-              if (a === 'Other Costs') return 1; // Push "Other Costs" to the end
-              if (b === 'Other Costs') return -1; // Push "Other Costs" to the end
-              return a.localeCompare(b); // Sort alphabetically
-            })
-            .map((option) => this.generateOption(option))}
-        </select>
+      <div style="display:flex; flex-direction:column;">
+        <div>
+          ${this.fieldLabel?.length
+            ? html`<span>${this.fieldLabel}</span>`
+            : html``}
+        </div>
+        <div class="dropdown-search">
+          <select
+            id="selectElement"
+            .value=${this.selectedValue}
+            @change=${(event: Event) => {
+              const { target } = event;
+              if (target)
+                this.selectedValue = (target as HTMLSelectElement).value ?? '';
+              this.emitEvent();
+            }}
+          >
+            ${this.options
+              ?.sort((a, b) => {
+                if (a === 'Other Costs') return 1; // Push "Other Costs" to the end
+                if (b === 'Other Costs') return -1; // Push "Other Costs" to the end
+                return a.localeCompare(b); // Sort alphabetically
+              })
+              .map((option) => this.generateOption(option))}
+          </select>
+        </div>
+        <div>
+          ${this.additionalTextBelowField?.length
+            ? html`<span>${this.additionalTextBelowField}</span>`
+            : html``}
+        </div>
       </div>
-      <span>See program guide for eligible expenses</span>
     `;
   }
 }

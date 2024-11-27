@@ -12,8 +12,8 @@ const EXPECTED_RESULT = [
   'Other Costs',
 ];
 
-describe('env - getEnvVars', () => {
-  it('should return environment variables map', async () => {
+describe('expenseTypes - getExpenseTypes', () => {
+  it('should return expense types array', async () => {
     fetch.getExpenseTypeData = jest.fn(() => getExpenseTypeDataJson);
 
     const result = getExpenseTypes();

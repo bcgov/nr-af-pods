@@ -224,6 +224,7 @@ class ExpenseReportTable extends LitElement {
                             <dropdown-search
                               .options=${this.expenseTypes}
                               .selectedValue=${cellValue}
+                              additionalTextBelowField="See program guide for eligible expenses"
                               @onChangeDropdownValue=${(e: CustomEvent) => {
                                 this.handleUpdateCell(
                                   rowIndex,

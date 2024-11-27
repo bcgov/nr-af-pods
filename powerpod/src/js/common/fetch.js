@@ -41,6 +41,7 @@ export const ENDPOINT_URL = {
   patch_demographic_info_data: (demographicInfoId) =>
     `/_api/quartech_demographicinfos(${demographicInfoId})`,
   post_browserinformation_data: '/_api/quartech_browserinformations',
+  get_types_of_food_data: `/_api/quartech_typeoffoods?$select=quartech_name`,
 };
 
 POWERPOD.fetch = {
@@ -67,6 +68,7 @@ POWERPOD.fetch = {
   getDemographicInfoData,
   patchDemographicInfoData,
   postBrowserInformationData,
+  getTypesOfFoodData,
 };
 
 const CONTENT_TYPE = {
@@ -580,6 +582,18 @@ export async function patchDemographicInfoData({ id, fieldData, ...options }) {
     data: JSON.stringify({
       ...fieldData,
     }),
+    ...options,
+  });
+}
+
+export async function getTypesOfFoodData({ ...options } = {}) {
+  return fetch({
+    url: ENDPOINT_URL.get_types_of_food_data,
+    contentType: CONTENT_TYPE.json,
+    datatype: DATATYPE.json,
+    includeODataHeaders: true,
+    async: false,
+    returnData: true,
     ...options,
   });
 }

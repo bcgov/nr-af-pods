@@ -6,6 +6,7 @@ import getDocumentsDataJson from '../../src/test/mock/api/get_documents_data.jso
 import postDocumentDataJson from '../../src/test/mock/api/post_document_data.json';
 import getContactDataJson from '../../src/test/mock/api/get_contact_data.json';
 import deleteDocumentDataJson from '../../src/test/mock/api/delete_document_data.json';
+import getTypesOfFoodDataJson from '../../src/test/mock/api/get_types_of_food_data.json';
 
 export function getMunicipalData() {
   return getMunicipalDataJson;
@@ -30,4 +31,8 @@ export function getContactData() {
 
 export function deleteDocumentData() {
   return deleteDocumentDataJson;
+}
+
+export function getTypesOfFoodData() {
+  return getTypesOfFoodDataJson;
 }
