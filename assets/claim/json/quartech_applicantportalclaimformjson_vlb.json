@@ -1,6 +1,6 @@
 {
   "tags": ["Claim", "VLB"],
-  "version": "1.0.0",
+  "version": "1.0.1",
   "name": "Veterinary and Veterinary Technologists Locums Working in BC Food Animal Practices Pilot Program",
   "abbreviation": "VLB",
   "sections": [
@@ -9,11 +9,11 @@
       "fields": [
         {
           "name": "quartech_legalbusinessororganizationname",
-          "label": "Legal Business or Organization Name"
+          "label": "Business or Individual's Name"
         },
         {
           "name": "quartech_businessaddress",
-          "label": "Business Address"
+          "label": "Locum's Address"
         },
         {
           "name": "quartech_businessphonenumber",
