@@ -7,6 +7,7 @@ class TextField extends LitElement {
   @property({ type: String }) inputValue: string = '';
   @property() customStyle = '';
   @property({ type: Boolean }) readOnly = false;
+  @property({ type: String }) fieldLabel: string = '';
 
   emitEvent() {
     let event = new CustomEvent('onChangeTextField', {
@@ -47,6 +48,9 @@ class TextField extends LitElement {
             `}
         }
       </style>
+      ${this.fieldLabel?.length
+        ? html`<span>${this.fieldLabel}</span>`
+        : html``}
       <input
         class="text-field"
         style=${unsafeCSS(this.customStyle)}
