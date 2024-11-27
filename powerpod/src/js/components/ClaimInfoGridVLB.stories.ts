@@ -21,17 +21,17 @@ export const Primary: Story = {
       {
         id: 'name',
         name: 'Name',
-        width: '33%',
+        width: '20%',
       },
       {
         id: 'city',
         name: 'Location City',
-        width: '33%',
+        width: '60%',
       },
       {
         id: 'email',
         name: 'Email',
-        width: '33%',
+        width: '20%',
       },
       {
         id: 'staffNumber',
@@ -55,7 +55,7 @@ export const Primary: Story = {
         city: 'Victoria',
         email: 'rauber@farm.ca',
         staffNumber: '2',
-        typeOfFood: 'Beef Cattle',
+        typeOfFood: ['beef-cattle'],
         dates: '12/13/24,23/5/24',
       },
       {
@@ -63,7 +63,7 @@ export const Primary: Story = {
         city: 'Vancouver',
         email: 'rauber@gov.bc.ca',
         staffNumber: '2',
-        typeOfFood: 'Beef Cattle',
+        typeOfFood: ['beef-cattle'],
         dates: '12/13/24,05/23/24',
       },
       {
@@ -71,7 +71,7 @@ export const Primary: Story = {
         city: 'Kelowna',
         email: 'rauber@gov.bc.ca',
         staffNumber: '1',
-        typeOfFood: 'Beef Cattle',
+        typeOfFood: ['beef-cattle'],
         dates: '12/13/24,05/23/24',
       },
     ],

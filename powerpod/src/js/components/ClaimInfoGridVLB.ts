@@ -2,7 +2,7 @@ import bootstrap from '../../assets/css/bootstrap.css';
 import { LitElement, css, html, unsafeCSS } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import './CurrencyInput';
-import './DropdownSearch';
+import './DropdownMultiSelect';
 import './TextField';
 import { processTypesOfFoodData } from '../common/typesOfFood';
 import { getTypesOfFoodData } from '../common/fetch';
@@ -118,16 +118,16 @@ class ClaimInfoGridVLB extends LitElement {
   private renderColumnItem(row, col, rowIndex) {
     const cellValue = row[col.id];
     if (!this.readOnly && col.id === 'typeOfFood' && this.typesOfFood?.length) {
-      return html` <td>
-        <dropdown-search
+      return html` <td style="padding-right:1.5vw;">
+        <dropdown-multiselect
           fieldLabel=${col.name}
           .options=${this.typesOfFood}
-          .selectedValue=${cellValue}
-          @onChangeDropdownValue=${(e: CustomEvent) => {
-            this.handleUpdateCell(rowIndex, col.id, e.detail.value);
+          .selectedOptions=${cellValue}
+          @onChangeDropdownMultiselectValues=${(e: CustomEvent) => {
+            this.handleUpdateCell(rowIndex, col.id, e.detail.selectedOptions);
             e.stopImmediatePropagation();
           }}
-        ></dropdown-search>
+        ></dropdown-multiselect>
       </td>`;
     } else if (this.readOnly && col.id === 'typeOfFood') {
       return html` <td>

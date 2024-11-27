@@ -1,8 +1,8 @@
 import shoelace from '../../assets/css/shoelace.css';
 import '@shoelace-style/shoelace/dist/components/select/select.js';
+import '@shoelace-style/shoelace/dist/components/option/option.js';
 import { LitElement, css, html, unsafeCSS } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
-import { useScript } from '../common/scripts';
 
 @customElement('dropdown-multiselect')
 class DropdownMultiselect extends LitElement {
@@ -12,36 +12,62 @@ class DropdownMultiselect extends LitElement {
   @property({ type: String }) selectedValues: string = '';
   @property({ type: String }) additionalTextBelowField: string = '';
   @property({ type: String }) fieldLabel: string = '';
+  @property({ type: Array }) slimmedOptions: string[] = [];
+  @property({ type: Object }) lookupMap: Map<string, string> = new Map();
+  @property({ type: String }) selectedOptions: string[] = [];
 
   static styles = css`
+    sl-select::part(tag__base) {
+      font-size: 15px;
+    }
+    sl-option::part(base) {
+      font-size: 15px;
+    }
     ${unsafeCSS(shoelace)}
   `;
 
-  // make fetch call as soon as component is mounted
-  connectedCallback(): void {
-    super.connectedCallback();
-    useScript('shoelace');
+  private slimOption(option: string): string {
+    // Normalize option by:
+    // - Removing non-alpha characters, except for hyphens and spaces.
+    // - Replacing spaces with hyphens.
+    return option
+      .toLowerCase()
+      .replace(/[^a-z-\s]/g, '') // Remove non-alphabetic characters, except hyphens and spaces
+      .replace(/\s+/g, '-') // Replace spaces with hyphens
+      .replace(/,/g, ''); // Remove commas completely (or replace if needed)
   }
 
-  private formatSlOptionValueStr(input) {
-    return input
-      .toLowerCase() // Convert to lowercase
-      .replace(/[^a-z0-9\s]/g, '') // Remove non-alphanumeric characters except spaces
-      .replace(/\s+/g, '-') // Replace spaces with hyphens
-      .trim(); // Trim leading/trailing spaces for safety
+  private createLookupMap(options: string[]): Map<string, string> {
+    const lookupMap = new Map<string, string>();
+    options.forEach((option) => {
+      lookupMap.set(this.slimOption(option), option);
+    });
+    return lookupMap;
+  }
+
+  private restoreOption(slimmedOption: string): string | null {
+    return this.lookupMap.get(slimmedOption) || null;
+  }
+
+  private mapToOriginalString(slimmedArray: string[]): string {
+    return slimmedArray
+      .map((slimmedOption) => this.restoreOption(slimmedOption)) // Call restoreOption with each slimmed option
+      .filter((option) => option !== null) // Remove any null values
+      .join(', '); // Join the original values back into a single string
   }
 
   generateOption(value: string) {
-    return html` <sl-option value="${this.formatSlOptionValueStr(
-      value
-    )}">${value}</option> `;
+    return html` <sl-option value=${this.slimOption(value)}>${value}</option> `;
   }
 
   // select elements behave funny, so we have to set the value ourselves
   // on the very first load of the component
   firstUpdated(props: Map<string, string>) {
-    if (props.has('selectedValues') && this.selectElement) {
-      this.selectElement.value = this.selectedValues || '';
+    if (props.has('selectedOptions') && this.selectElement) {
+      // this.selectElement.value = this.selectedOptions;
+    }
+    if (props.has('options') && this.selectElement) {
+      this.lookupMap = this.createLookupMap(this.options);
     }
   }
 
@@ -49,8 +75,9 @@ class DropdownMultiselect extends LitElement {
     const customEvent = new CustomEvent('onChangeDropdownMultiselectValues', {
       detail: {
         id: this.id,
-        message: 'Dropdown value has changed',
-        value: this.selectedValues,
+        message: 'Dropdown multiselect value has changed',
+        value: this.mapToOriginalString(this.selectedOptions),
+        selectedOptions: this.selectedOptions,
       },
       bubbles: true,
       composed: true,
@@ -58,33 +85,49 @@ class DropdownMultiselect extends LitElement {
     this.dispatchEvent(customEvent);
   }
 
-  private toggleSubstring(mainString, substring) {
-    // Convert to an array of words
-    let parts = mainString.split(' ');
-
-    if (parts.includes(substring)) {
-      // Remove the substring if it exists
-      parts = parts.filter((word) => word !== substring);
-    } else {
-      // Add the substring if it doesn't exist
-      parts.push(substring);
-    }
-
-    // Return the updated string
-    return parts.join(' ');
-  }
-
   render() {
     return html`
-      <sl-select
-        label="Select a Few"
-        size="large"
-        value=${this.selectedValues}
-        multiple
-        clearable
-      >
-        ${this.options?.map((option) => this.generateOption(option))}
-      </sl-select>
+      <div style="display:flex; flex-direction:column;">
+        <div>
+          ${this.fieldLabel?.length
+            ? html`<span>${this.fieldLabel}</span>`
+            : html``}
+        </div>
+        <sl-select
+          id="selectElement"
+          size="large"
+          style="flex-grow: 0;"
+          .value=${this.selectedOptions}
+          @sl-change=${(event: Event) => {
+            const { target } = event;
+            if (target) {
+              const val = Array.isArray((target as HTMLSelectElement).value)
+                ? (target as HTMLSelectElement).value
+                : ((target as HTMLSelectElement).value as string)?.split(',') ??
+                  [];
+              if (Array.isArray(val)) {
+                this.selectedOptions = val;
+              }
+            }
+            this.emitEvent();
+          }}
+          multiple
+          clearable
+        >
+          ${this.options
+            ?.sort((a, b) => {
+              if (a === 'Other Costs') return 1; // Push "Other Costs" to the end
+              if (b === 'Other Costs') return -1; // Push "Other Costs" to the end
+              return a.localeCompare(b); // Sort alphabetically
+            })
+            .map((option) => this.generateOption(option))}
+        </sl-select>
+        <div>
+          ${this.additionalTextBelowField?.length
+            ? html`<span>${this.additionalTextBelowField}</span>`
+            : html``}
+        </div>
+      </div>
     `;
   }
 }
