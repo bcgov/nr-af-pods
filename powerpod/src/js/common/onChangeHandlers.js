@@ -19,6 +19,7 @@ POWERPOD.onChangeHandlers = {
   populatePhoneNumberEmailAndCityOnChangeVLB,
   setBusinessOrPersonalAddressLabels,
   populateTotalPercent,
+  calculateAndPopulateRequestedClaimAmountForVLB,
 };
 
 const logger = Logger('common/onChangeHandlers');
@@ -40,7 +41,7 @@ export function setOnChangeHandler(fieldName, elemType, onChangeHandlerName) {
       const attachFileField = $(`input[id=${fieldName}_AttachFile]`);
       logger.info({
         fn: setOnChangeHandler,
-        message: 'observe changes on file input element',
+        message: `observe changes on file input element, setOnChangeHandler: ${fieldName}`,
         data: { attachFileField, textareaField, fieldName },
       });
       observeChanges(attachFileField);
@@ -54,14 +55,14 @@ export function setOnChangeHandler(fieldName, elemType, onChangeHandlerName) {
     case HtmlElementType.DatePicker:
       logger.info({
         fn: setOnChangeHandler,
-        message: `Configuring onChangeHandler for datepicker element with fieldName: ${fieldName}`,
+        message: `Configuring onChangeHandler for datepicker element, setOnChangeHandler: ${fieldName}`,
       });
       const datePickerElement = $(
         `input[id=${fieldName}_datepicker_description]`
       ).parent()[0];
       logger.info({
         fn: setOnChangeHandler,
-        message: 'observe changes on datepicker element',
+        message: `observe changes on datepicker element, setOnChangeHandler: ${fieldName}`,
         data: { datePickerElement },
       });
       observeChanges(datePickerElement);
@@ -71,6 +72,10 @@ export function setOnChangeHandler(fieldName, elemType, onChangeHandlerName) {
       break;
     case HtmlElementType.SingleOptionSet:
     case HtmlElementType.MultiOptionSet:
+      logger.info({
+        fn: setOnChangeHandler,
+        message: `Configuring onChangeHandler for Single/MultiOptionSet, setOnChangeHandler: ${fieldName}`,
+      });
       $(`input[id*='${fieldName}']`).on('change', function () {
         onChangeHandler();
         logger.info({
@@ -80,11 +85,19 @@ export function setOnChangeHandler(fieldName, elemType, onChangeHandlerName) {
       });
       break;
     case HtmlElementType.DropdownSelect:
+      logger.info({
+        fn: setOnChangeHandler,
+        message: `Configuring onChangeHandler for DropdownSelect, setOnChangeHandler: ${fieldName}`,
+      });
       $(`select[id*='${fieldName}']`).on('change', function () {
         onChangeHandler();
       });
       break;
     default: // HtmlElementTypeEnum.Input
+      logger.info({
+        fn: setOnChangeHandler,
+        message: `Configuring onChangeHandler for default input, setOnChangeHandler: ${fieldName}`,
+      });
       $(`#${fieldName}`).on('change keyup', function (event) {
         onChangeHandler();
       });
@@ -98,6 +111,42 @@ export function setOnChangeHandler(fieldName, elemType, onChangeHandlerName) {
   store.dispatch('addFieldData', {
     name: fieldName,
     onChangeHandlerSet: true,
+  });
+}
+
+export function calculateAndPopulateRequestedClaimAmountForVLB() {
+  logger.info({
+    fn: calculateAndPopulateRequestedClaimAmountForVLB,
+    message: `calculateAndPopulateRequestedClaimAmountForVLB called, start calculating...`,
+  });
+  // Get input values from the elements
+  const totalDaysAsAVet =
+    document.getElementById('quartech_numberoffulldaysworkedasaveterinarian')
+      ?.value || 0;
+  const totalDaysAsAnRVT =
+    document.getElementById('quartech_numberoffulldaysworkedasanrvt')?.value ||
+    0;
+  const totalDaysAsTelemedicineSupport =
+    document.getElementById('quartech_numberofdaysprovidingtelemedicinesupport')
+      ?.value || 0;
+  const totalExpensesForCVBCAndBCVTA =
+    document.getElementById('quartech_totalsumofreportedexpenses')?.value || 0;
+
+  // Convert input values to numbers (fallback to 0 if invalid)
+  const vetDays = parseFloat(totalDaysAsAVet) || 0;
+  const rvtDays = parseFloat(totalDaysAsAnRVT) || 0;
+  const telemedicineDays = parseFloat(totalDaysAsTelemedicineSupport) || 0;
+  const expenses = parseFloat(totalExpensesForCVBCAndBCVTA) || 0;
+
+  // Perform the calculation
+  const result =
+    300 * vetDays + 150 * rvtDays + 50 * telemedicineDays + expenses;
+
+  // @ts-ignore
+  setFieldValue({ name: 'quartech_totalfees', value: result });
+  logger.info({
+    fn: calculateAndPopulateRequestedClaimAmountForVLB,
+    message: `Successfuly set field tag: quartech_totalfees to value: ${result}`,
   });
 }
 

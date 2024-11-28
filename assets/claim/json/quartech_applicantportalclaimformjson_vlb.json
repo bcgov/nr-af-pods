@@ -1,6 +1,6 @@
 {
   "tags": ["Claim", "VLB"],
-  "version": "1.0.2",
+  "version": "1.0.8",
   "name": "Veterinary and Veterinary Technologists Locums Working in BC Food Animal Practices Pilot Program",
   "abbreviation": "VLB",
   "sections": [
@@ -75,33 +75,76 @@
       "fields": [
         {
           "name": "quartech_totalsumofreportedexpenses",
-          "label": "Student wages / travel / housing",
-          "required": true,
+          "label": "CVBC and SBCV or BCVTA annual fees",
           "format": "currency",
+          "required": true,
           "validation": {
             "type": "numeric",
             "value": "0",
             "comparison": "greaterThan"
           },
-          "emptyInitialValue": true
+          "emptyInitialValue": true,
+          "onChangeHandler": "calculateAndPopulateRequestedClaimAmountForVLB"
         },
         {
-          "name": "quartech_numberofstudentscompletedconsecutivework",
+          "name": "quartech_numberoffulldaysworkedasaveterinarian",
+          "label": "Total number of full days worked as a veterinarian",
           "required": true,
-          "elementType": "DropdownSelect"
+          "dataFormat": "number",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          },
+          "additionalTextAboveField": "<p>Instructions:<ul><li>Claims can only be submitted once per quarter.</li><li>Claim forms can be accessed through My Claims.</li><li>Multiple entries can be made to each claim form. However, once the claim form is submitted no further edits will be allowed. Be sure that all entries for the quarter have been made prior to clicking \"SUBMIT.\"</li></ul></p>",
+          "onChangeHandler": "calculateAndPopulateRequestedClaimAmountForVLB"
+        },
+        {
+          "name": "quartech_numberoffulldaysworkedasanrvt",
+          "label": "Total number of full days worked as an RVT",
+          "required": true,
+          "dataFormat": "number",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          },
+          "onChangeHandler": "calculateAndPopulateRequestedClaimAmountForVLB"
+        },
+        {
+          "name": "quartech_numberofdaysprovidingtelemedicinesupport",
+          "label": "Total number of days worked providing telemedicine support as a veterinarian or an RVT",
+          "required": true,
+          "dataFormat": "number",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          },
+          "onChangeHandler": "calculateAndPopulateRequestedClaimAmountForVLB"
+        },
+        {
+          "name": "quartech_practiceswherelocumservicesweredelivered",
+          "hidden": true,
+          "techComment": "This is used to generate the PDF for the practice grid"
+        },
+        {
+          "name": "quartech_locumservicespracticegrid",
+          "label": " ",
+          "disableSingleLine": true,
+          "techComment": "This custom component is too complex for JSON, so it's defined in claimInfoStep.js"
         },
         {
           "name": "quartech_totalfees",
           "label": "Your requested amount in this claim ($CAD)",
           "tooltipText": "Enter the amount you are requesting reimbursement for in this claim",
-          "format": "currency",
+          "readOnly": true,
           "required": true,
           "validation": {
             "type": "numeric",
             "value": "0",
             "comparison": "greaterThan"
-          },
-          "emptyInitialValue": true
+          }
         }
       ]
     },

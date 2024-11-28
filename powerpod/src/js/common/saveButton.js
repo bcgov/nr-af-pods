@@ -110,7 +110,7 @@ export async function saveFormData({ customPayload = {} }) {
         fieldData
       )}`,
     });
-    const { value = undefined, error, touched, elementType } = fieldData;
+    const { value = undefined, error, touched, elementType, dataFormat } = fieldData;
 
     if (elementType === HtmlElementType.MultiSelectPicklist && (!value || !value.length)) {
       logger.warn({
@@ -128,6 +128,11 @@ export async function saveFormData({ customPayload = {} }) {
       return;
     }
 
+    let formattedValue = undefined;
+    if (value && dataFormat === 'number') {
+      formattedValue = parseFloat(value);
+    }
+
     // @ts-ignore
     if (PropertyReferences[field]) {
       payload = {
@@ -143,7 +148,8 @@ export async function saveFormData({ customPayload = {} }) {
       };
     } else {
       payload = {
-        ...(value !== undefined && { [field]: value }),
+        ...(value !== undefined && formattedValue === undefined && { [field]: value }),
+        ...(value !== undefined && formattedValue !== undefined && { [field]: formattedValue }),
         ...payload,
         ...(Object.keys(customPayload)?.length && customPayload),
       };

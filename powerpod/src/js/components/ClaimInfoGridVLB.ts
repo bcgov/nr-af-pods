@@ -118,7 +118,7 @@ class ClaimInfoGridVLB extends LitElement {
   private renderColumnItem(row, col, rowIndex) {
     const cellValue = row[col.id];
     if (!this.readOnly && col.id === 'typeOfFood' && this.typesOfFood?.length) {
-      return html` <td style="padding-right:1.5vw;">
+      return html` <td>
         <dropdown-multiselect
           fieldLabel=${col.name}
           .options=${this.typesOfFood}
