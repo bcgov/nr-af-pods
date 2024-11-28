@@ -32,6 +32,8 @@ import { Logger } from './logger.js';
 // import localConfigJson from '../../../../assets/claim/json/quartech_applicantportalclaimformjson_kttp.json';
 // Claim NEFBA2:
 // import localConfigJson from '../../../../assets/claim/json/quartech_applicantportalclaimformjson_nefba2.json';
+// Claim VLB:
+// import localConfigJson from '../../../../assets/claim/json/quartech_applicantportalclaimformjson_vlb.json';
 
 const logger = Logger('common/config');
 

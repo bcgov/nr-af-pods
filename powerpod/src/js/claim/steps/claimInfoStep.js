@@ -175,6 +175,10 @@ export function customizeClaimInfoStep() {
     // });
   }
 
+  if (programAbbreviation === 'VLB') {
+    addClaimInfoGrid();
+  }
+
   if (programAbbreviation.includes('KTTP')) {
     // addInstructions();
     addExpenseReportGrid();
@@ -378,6 +382,120 @@ function verifyTotalSumEqualsRequestedAmount() {
   } else {
     showSumNotEqualWarning(false);
   }
+}
+
+function addClaimInfoGrid() {
+  const header = {
+    title: 'Practice(s) Where Locum Services Were Delivered',
+  };
+  const columns = [
+    {
+      id: 'name',
+      name: 'Name',
+      width: '20%',
+    },
+    {
+      id: 'city',
+      name: 'Location City',
+      width: '60%',
+    },
+    {
+      id: 'email',
+      name: 'Email',
+      width: '20%',
+    },
+    {
+      id: 'staffNumber',
+      name: 'Staff Number(s)',
+      width: '0%',
+    },
+    {
+      id: 'typeOfFood',
+      name: 'Types of food animals serviced',
+      width: '0%',
+    },
+    {
+      id: 'dates',
+      name: 'Date(s)',
+      width: '0%',
+    },
+  ];
+
+  let rows = [
+    {
+      name: '',
+      city: '',
+      email: '',
+      staffNumber: '',
+      typeOfFood: [],
+      dates: '',
+    },
+  ];
+
+  const claimInfoGridElement = renderCustomComponent({
+    fieldId: 'quartech_locumservicespracticegrid',
+    customElementTag: 'claim-info-grid-vlb',
+    attributes: {
+      primary: true,
+      columns: JSON.stringify(columns),
+      rows: JSON.stringify(rows),
+      header: JSON.stringify(header),
+    },
+    customEvent: 'onChangeClaimInfoGridVLBData',
+    customEventHandler: (event, customElement) => {
+      logger.info({
+        fn: addClaimInfoGrid,
+        message: 'onChangeClaimInfoGridVLBData event listener triggered',
+        data: { event, customElement },
+      });
+      // @ts-ignore
+      rows = JSON.parse(event.detail.value);
+      customElement.setAttribute('rows', JSON.stringify(rows));
+      // @ts-ignore
+      setFieldValue({
+        name: 'quartech_locumservicespracticegrid',
+        value: JSON.stringify(filterEmptyRows(rows)),
+      });
+      // @ts-ignore
+      setFieldValue({
+        name: 'quartech_practiceswherelocumservicesweredelivered',
+        value: event.detail.pdfJson,
+      });
+    },
+    mappedValueKey: 'rows',
+    initFn: (existingValue) => {
+      // @ts-ignore
+      setFieldValue({
+        name: 'quartech_locumservicespracticegrid',
+        value: existingValue,
+      });
+    },
+    initValuesFn: (mappedValueKey, existingValue, customElement) => {
+      logger.info({
+        fn: addExpenseReportGrid,
+        message: `Running initValuesFn for Expense Report Grid...`,
+        data: { mappedValueKey, existingValue, customElement },
+      });
+      if (
+        mappedValueKey === 'rows' &&
+        existingValue &&
+        existingValue.length &&
+        isValidJSON(existingValue)
+      ) {
+        const arr = JSON.parse(existingValue);
+        if (!Array.isArray(arr)) {
+          customElement.setAttribute(`${mappedValueKey}`, JSON.stringify(rows));
+        }
+      } else if (!existingValue || existingValue.length === 0) {
+        customElement.setAttribute(`${mappedValueKey}`, JSON.stringify(rows));
+      }
+    },
+  });
+
+  logger.info({
+    fn: addClaimInfoGrid,
+    message: 'Successfully added VLB claim info grid',
+  });
 }
 
 function addExpenseReportGrid() {
