@@ -22,7 +22,8 @@ export async function customizeDocumentsStep() {
     programAbbreviation.includes('ABPP') ||
     programAbbreviation === 'NEFBA' ||
     programAbbreviation === 'NEFBA2' ||
-    programAbbreviation.includes('KTTP')
+    programAbbreviation.includes('KTTP') ||
+    programAbbreviation === 'VLB'
   ) {
     addDocumentsStepText();
   }
