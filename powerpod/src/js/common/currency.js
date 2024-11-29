@@ -4,6 +4,25 @@ import { Logger } from './logger.js';
 
 const logger = Logger('common/currency');
 
+export function formatCurrencyOnBlur(inputValue, allowNegatives) {
+  // Remove any non-numeric characters except for decimals and negative signs
+  let cleanedValue = inputValue.replace(/[^0-9.-]/g, '');
+
+  // If negative values are not allowed, remove all negative signs
+  if (!allowNegatives) {
+    cleanedValue = cleanedValue.replace(/-/g, '');
+  }
+
+  // Convert to float and format with 2 decimal places
+  const floatValue = parseFloat(cleanedValue || '0');
+  const formattedValue = floatValue.toLocaleString('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+
+  return formattedValue;
+}
+
 export const CURRENCY_FORMAT = new Intl.NumberFormat('en-US', {
   style: 'currency',
   currency: 'CAD',

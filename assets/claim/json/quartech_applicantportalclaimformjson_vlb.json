@@ -1,6 +1,6 @@
 {
   "tags": ["Claim", "VLB"],
-  "version": "1.0.9",
+  "version": "1.1.1",
   "name": "Veterinary and Veterinary Technologists Locums Working in BC Food Animal Practices Pilot Program",
   "abbreviation": "VLB",
   "sections": [
@@ -125,12 +125,15 @@
         },
         {
           "name": "quartech_practiceswherelocumservicesweredelivered",
+          "label": "Practice(s) where locum services were delivered",
+          "forceGenerateWordTemplateData": true,
           "hidden": true,
           "techComment": "This is used to generate the PDF for the practice grid"
         },
         {
           "name": "quartech_locumservicespracticegrid",
           "label": " ",
+          "omitForWordTemplateGeneration": true,
           "disableSingleLine": true,
           "techComment": "This custom component is too complex for JSON, so it's defined in claimInfoStep.js"
         },
@@ -140,6 +143,7 @@
           "tooltipText": "Enter the amount you are requesting reimbursement for in this claim",
           "readOnly": true,
           "required": true,
+          "format": "currency",
           "validation": {
             "type": "numeric",
             "value": "0",

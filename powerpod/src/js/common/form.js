@@ -1,5 +1,11 @@
 // @ts-nocheck
-import { HtmlElementType, POWERPOD, doc, Form, BrowserInformationAction } from './constants.js';
+import {
+  HtmlElementType,
+  POWERPOD,
+  doc,
+  Form,
+  BrowserInformationAction,
+} from './constants.js';
 import {
   getControlType,
   getControlValue,
@@ -317,6 +323,14 @@ export function generateFormJson(setFieldOrder = false) {
         return;
       }
       const controlId = getControlId(tr, controlType);
+
+      let fieldConfig = {};
+      if (POWERPOD.state?.fields?.[controlId]) {
+        fieldConfig = POWERPOD.state?.fields?.[controlId];
+      }
+
+      const { forceGenerateWordTemplateData = false } = fieldConfig;
+
       // exit early if the intention is just to set the field order
       if (controlId && setFieldOrder) {
         logger.info({
@@ -327,14 +341,23 @@ export function generateFormJson(setFieldOrder = false) {
         return;
       }
       if (isHiddenRow(tr)) {
+        if (!forceGenerateWordTemplateData) {
+          logger.info({
+            fn: generateFormJson,
+            message: `Skipping hidden row, controlId: ${controlId}`,
+            data: {
+              tr,
+            },
+          });
+          return;
+        }
         logger.info({
           fn: generateFormJson,
-          message: `Skipping hidden row, controlId: ${controlId}`,
+          message: `Hidden row, but forceGenerateWordTemplateData set to true for controlId: ${controlId}`,
           data: {
             tr,
           },
         });
-        return;
       }
       if (isEmptyRow(tr)) {
         logger.info({
@@ -383,7 +406,7 @@ export function generateFormJson(setFieldOrder = false) {
         questionText = POWERPOD.state?.fields?.[controlId]?.label;
       }
 
-      if (!questionText) {
+      if (!questionText || questionText === ' ') {
         logger.warn({
           fn: generateFormJson,
           message: `Could not find question text for controlId: ${controlId}, controlType: ${controlType}`,

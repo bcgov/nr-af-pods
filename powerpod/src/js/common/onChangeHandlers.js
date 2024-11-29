@@ -1,5 +1,6 @@
 import store from '../store/index.js';
 import { HtmlElementType, POWERPOD } from './constants.js';
+import { formatCurrencyOnBlur } from './currency.js';
 import { getFieldConfig } from './fields.js';
 import {
   copyFromFieldAToFieldB,
@@ -132,18 +133,31 @@ export function calculateAndPopulateRequestedClaimAmountForVLB() {
   const totalExpensesForCVBCAndBCVTA =
     document.getElementById('quartech_totalsumofreportedexpenses')?.value || 0;
 
+  logger.info({
+    fn: calculateAndPopulateRequestedClaimAmountForVLB,
+    message: `calculateAndPopulateRequestedClaimAmountForVLB returned ${totalExpensesForCVBCAndBCVTA} for totalExpensesForCVBCAndBCVTA`,
+  });
+
   // Convert input values to numbers (fallback to 0 if invalid)
   const vetDays = parseFloat(totalDaysAsAVet) || 0;
   const rvtDays = parseFloat(totalDaysAsAnRVT) || 0;
   const telemedicineDays = parseFloat(totalDaysAsTelemedicineSupport) || 0;
-  const expenses = parseFloat(totalExpensesForCVBCAndBCVTA) || 0;
+  const expenses =
+    parseFloat(totalExpensesForCVBCAndBCVTA.replace(',', '')) || 0;
+
+  logger.info({
+    fn: calculateAndPopulateRequestedClaimAmountForVLB,
+    message: `calculateAndPopulateRequestedClaimAmountForVLB returned ${expenses} for expenses`,
+  });
 
   // Perform the calculation
   const result =
     300 * vetDays + 150 * rvtDays + 50 * telemedicineDays + expenses;
 
+  const formattedResult = formatCurrencyOnBlur(`${result}`);
+
   // @ts-ignore
-  setFieldValue({ name: 'quartech_totalfees', value: result });
+  setFieldValue({ name: 'quartech_totalfees', value: formattedResult });
   logger.info({
     fn: calculateAndPopulateRequestedClaimAmountForVLB,
     message: `Successfuly set field tag: quartech_totalfees to value: ${result}`,
