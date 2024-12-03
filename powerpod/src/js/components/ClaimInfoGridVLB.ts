@@ -330,7 +330,10 @@ class ClaimInfoGridVLB extends LitElement {
                   colspan="${this.columns?.length || 1}"
                   style="text-align: center;"
                 >
-                  ${this.header.title}
+                  ${this.header.title}<span
+                    style="color: red;"
+                    >*</span
+                  >
                 </th>
               </tr>`
             : html``
