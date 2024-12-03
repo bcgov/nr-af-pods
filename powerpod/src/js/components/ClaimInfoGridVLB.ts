@@ -121,6 +121,7 @@ class ClaimInfoGridVLB extends LitElement {
       return html` <td>
         <dropdown-multiselect
           fieldLabel=${col.name}
+          required
           .options=${this.typesOfFood}
           .selectedOptions=${cellValue}
           @onChangeDropdownMultiselectValues=${(e: CustomEvent) => {
@@ -132,6 +133,7 @@ class ClaimInfoGridVLB extends LitElement {
     } else if (this.readOnly && col.id === 'typeOfFood') {
       return html` <td>
         <text-field
+          required
           fieldLabel=${col.name}
           customStyle="width: 95%"
           .inputValue=${cellValue}
@@ -147,6 +149,7 @@ class ClaimInfoGridVLB extends LitElement {
     ) {
       return html` <td>
         <text-field
+          required
           fieldLabel=${col.name}
           customStyle="width: 95%"
           .inputValue=${cellValue}

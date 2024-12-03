@@ -4,6 +4,7 @@ import { customElement, property, query } from 'lit/decorators.js';
 @customElement('text-field')
 class TextField extends LitElement {
   @query('#inputElement') inputElement: HTMLInputElement | undefined;
+  @property({ type: Boolean }) required: boolean = false;
   @property({ type: String }) inputValue: string = '';
   @property() customStyle = '';
   @property({ type: Boolean }) readOnly = false;
@@ -48,9 +49,15 @@ class TextField extends LitElement {
             `}
         }
       </style>
-      ${this.fieldLabel?.length
-        ? html`<span>${this.fieldLabel}</span>`
-        : html``}
+      <div>
+        ${this.fieldLabel?.length
+          ? html`<span>
+              ${this.fieldLabel}${this.required
+                ? html`<span style="color: red;">*</span>`
+                : ''}
+            </span>`
+          : html``}
+      </div>
       <input
         class="text-field"
         style=${unsafeCSS(this.customStyle)}

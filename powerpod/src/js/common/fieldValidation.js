@@ -346,7 +346,7 @@ export function validateStepFields(stepName, returnString) {
   // store.dispatch('setValidationError', validationErrorHtml);
 }
 
-export function isEmpty(value) {
+export function isValueEmpty(value) {
   // Check if the value is undefined
   if (value === undefined) {
     return true;
@@ -390,6 +390,11 @@ export function validateRequiredField({
     raw: true,
   });
 
+  let fieldConfig;
+  if (POWERPOD.state?.fields?.[fieldName]) {
+    fieldConfig = POWERPOD.state?.fields?.[fieldName];
+  }
+
   logger.info({
     fn: validateRequiredField,
     message: `Required field fieldName: ${fieldName}, elemType: ${elemType} isEmptyField: ${
@@ -397,7 +402,20 @@ export function validateRequiredField({
     }, value: ${value}`,
   });
 
-  if (isEmpty(value)) {
+  let isEmpty = false;
+  if (
+    (fieldConfig &&
+      fieldConfig.checkForEmptyValues &&
+      JSON.parse(value) &&
+      Array.isArray(JSON.parse(value))) ||
+    value === '[]'
+  ) {
+    isEmpty = checkForEmptyValues(value);
+  } else if (isValueEmpty(value)) {
+    isEmpty = isValueEmpty(value);
+  }
+
+  if (isEmpty) {
     logger.info({
       fn: validateRequiredField,
       message: `Required field fieldName: ${fieldName} is empty! Set validation error message`,
@@ -405,21 +423,43 @@ export function validateRequiredField({
     if (elemType === HtmlElementType.FileInput) {
       errorMessage = 'Please upload the required documents before continuing.';
     }
-    // const fieldLabelText = $(`#${fieldName}_label`).text();
     validationErrorHtml = errorMessage;
-    // $(`#${fieldName}`).on("focusout", function () {
-    //   $(`#${fieldName}_error_message`).css({ display: "" });
-    //   $(`#${fieldName}`).css({ border: "1px solid #e5636c" });
-    // });
-    // Display the field's validation error div here?
   }
-  // else {
-  //   $(`#${fieldName}`).off("focusout");
-  //   $(`#${fieldName}_error_message`).css({ display: "none" });
-  //   $(`#${fieldName}`).css({ border: "" });
-  // }
-
   return validationErrorHtml;
+}
+
+function checkForEmptyValues(jsonString) {
+  let emptyObjectValues = false;
+
+  if (jsonString === '[]') {
+    return true;
+  }
+  
+  try {
+    // Parse the JSON string into an array
+    const dataArray = JSON.parse(jsonString);
+
+    // Check if it's an array
+    if (!Array.isArray(dataArray)) {
+      throw new Error('Input is not a valid array');
+    }
+
+    // Iterate through the array
+    for (const obj of dataArray) {
+      for (const key in obj) {
+        if (obj[key] === '') {
+          emptyObjectValues = true;
+          break; // Exit the inner loop
+        }
+      }
+      if (emptyObjectValues) break; // Exit the outer loop
+    }
+  } catch (error) {
+    console.error('Error parsing JSON or processing data:', error.message);
+    emptyObjectValues = true; // Handle invalid input as having empty values
+  }
+
+  return emptyObjectValues;
 }
 
 export function validateNumericFieldValue({
