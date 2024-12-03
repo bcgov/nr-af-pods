@@ -1,6 +1,6 @@
 {
   "tags": ["Claim", "VLB"],
-  "version": "1.1.1",
+  "version": "1.1.4",
   "name": "Veterinary and Veterinary Technologists Locums Working in BC Food Animal Practices Pilot Program",
   "abbreviation": "VLB",
   "sections": [
@@ -132,7 +132,11 @@
         },
         {
           "name": "quartech_locumservicespracticegrid",
-          "label": " ",
+          "label": "Practice(s) Where Locum Services Were Delivered",
+          "errorMessage": "Please fill out each requested field for each Practice.",
+          "required": true,
+          "hideLabel": true,
+          "checkForEmptyValues": true,
           "omitForWordTemplateGeneration": true,
           "disableSingleLine": true,
           "techComment": "This custom component is too complex for JSON, so it's defined in claimInfoStep.js"

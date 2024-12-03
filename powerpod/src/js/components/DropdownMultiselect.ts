@@ -8,6 +8,7 @@ import { customElement, property, query } from 'lit/decorators.js';
 class DropdownMultiselect extends LitElement {
   @query('#selectElement') selectElement: HTMLSelectElement | undefined;
   @property({ type: String, reflect: true }) id: string = crypto.randomUUID();
+  @property({ type: Boolean }) required: boolean = false;
   @property({ type: Array }) options: string[] = [];
   @property({ type: String }) selectedValues: string = '';
   @property({ type: String }) additionalTextBelowField: string = '';
@@ -90,7 +91,11 @@ class DropdownMultiselect extends LitElement {
       <div style="display:flex; flex-direction:column;">
         <div>
           ${this.fieldLabel?.length
-            ? html`<span>${this.fieldLabel}</span>`
+            ? html`<span>
+                ${this.fieldLabel}${this.required
+                  ? html`<span style="color: red;">*</span>`
+                  : ''}
+              </span>`
             : html``}
         </div>
         <sl-select
