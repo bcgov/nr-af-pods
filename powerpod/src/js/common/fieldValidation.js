@@ -403,15 +403,9 @@ export function validateRequiredField({
   });
 
   let isEmpty = false;
-  if (
-    (fieldConfig &&
-      fieldConfig.checkForEmptyValues &&
-      JSON.parse(value) &&
-      Array.isArray(JSON.parse(value))) ||
-    value === '[]'
-  ) {
+  if (fieldConfig && fieldConfig.checkForEmptyValues) {
     isEmpty = checkForEmptyValues(value);
-  } else if (isValueEmpty(value)) {
+  } else {
     isEmpty = isValueEmpty(value);
   }
 
@@ -431,10 +425,15 @@ export function validateRequiredField({
 function checkForEmptyValues(jsonString) {
   let emptyObjectValues = false;
 
-  if (jsonString === '[]') {
+  if (
+    !jsonString ||
+    !jsonString.length ||
+    jsonString === '[]' ||
+    jsonString === ''
+  ) {
     return true;
   }
-  
+
   try {
     // Parse the JSON string into an array
     const dataArray = JSON.parse(jsonString);
