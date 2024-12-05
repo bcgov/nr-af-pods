@@ -1,6 +1,6 @@
 {
   "tags": ["Claim", "VLB"],
-  "version": "1.1.5",
+  "version": "1.1.6",
   "name": "Veterinary and Veterinary Technologists Locums Working in BC Food Animal Practices Pilot Program",
   "abbreviation": "VLB",
   "sections": [
@@ -146,6 +146,11 @@
           "name": "quartech_totalfees",
           "label": "Your requested amount in this claim ($CAD)",
           "tooltipText": "Enter the amount you are requesting reimbursement for in this claim",
+          "relocateField": {
+            "originFieldName": "quartech_totalfees",
+            "destinationFieldName": "quartech_numberofdaysprovidingtelemedicinesupport",
+            "relativePosition": "below"
+          },
           "readOnly": true,
           "required": true,
           "format": "currency",
