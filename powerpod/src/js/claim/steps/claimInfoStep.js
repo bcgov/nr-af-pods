@@ -463,13 +463,13 @@ function addClaimInfoGrid() {
       });
     },
     mappedValueKey: 'rows',
-    initFn: (existingValue) => {
-      // @ts-ignore
-      setFieldValue({
-        name: 'quartech_locumservicespracticegrid',
-        value: existingValue,
-      });
-    },
+    // initFn: (existingValue) => {
+    //   // @ts-ignore
+    //   setFieldValue({
+    //     name: 'quartech_locumservicespracticegrid',
+    //     value: existingValue,
+    //   });
+    // },
     initValuesFn: (mappedValueKey, existingValue, customElement) => {
       logger.info({
         fn: addExpenseReportGrid,

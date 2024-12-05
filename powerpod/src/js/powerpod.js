@@ -90,7 +90,7 @@ function setAPI() {
     };
   };
   // @ts-ignore
-  POWERPOD.version = '2.8.7';
+  POWERPOD.version = '2.8.9';
   // @ts-ignore
   window.powerpod = POWERPOD;
 }
