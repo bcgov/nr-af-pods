@@ -84,10 +84,14 @@ class ClaimInfoGridVLB extends LitElement {
   private handleUpdateCell(
     rowIndex: number,
     columnKey: string,
-    newValue: string
+    newValue: string,
+    typeOfFoodVerbose?: string
   ) {
     const rowData = this.rows;
     rowData[rowIndex][columnKey] = newValue ?? '';
+    if (typeOfFoodVerbose) {
+      rowData[rowIndex]['typeOfFoodVerbose'] = typeOfFoodVerbose;
+    }
     this.rows = rowData;
     this.emitEvent();
   }
@@ -125,7 +129,21 @@ class ClaimInfoGridVLB extends LitElement {
           .options=${this.typesOfFood}
           .selectedOptions=${cellValue}
           @onChangeDropdownMultiselectValues=${(e: CustomEvent) => {
-            this.handleUpdateCell(rowIndex, col.id, e.detail.selectedOptions);
+            logger.info({
+              fn: 'ClaimInfoGridVLB',
+              message: `onChangeDropdownMultiselectValues called`,
+              data: {
+                value: e.detail.value,
+                selectedOptions: e.detail.selectedOptions,
+              },
+            });
+            const typeOfFoodVerbose = e.detail.value;
+            this.handleUpdateCell(
+              rowIndex,
+              col.id,
+              e.detail.selectedOptions,
+              typeOfFoodVerbose
+            );
             e.stopImmediatePropagation();
           }}
         ></dropdown-multiselect>
@@ -212,7 +230,7 @@ class ClaimInfoGridVLB extends LitElement {
             {
               locumServicePracticesSectionQuestion:
                 'Types of food animals services',
-              locumServicePracticesSectionAnswer: practice.typeOfFood,
+              locumServicePracticesSectionAnswer: practice.typeOfFoodVerbose,
             },
             {
               locumServicePracticesSectionQuestion: 'Email',
@@ -330,10 +348,7 @@ class ClaimInfoGridVLB extends LitElement {
                   colspan="${this.columns?.length || 1}"
                   style="text-align: center;"
                 >
-                  ${this.header.title}<span
-                    style="color: red;"
-                    >*</span
-                  >
+                  ${this.header.title}<span style="color: red;">*</span>
                 </th>
               </tr>`
             : html``

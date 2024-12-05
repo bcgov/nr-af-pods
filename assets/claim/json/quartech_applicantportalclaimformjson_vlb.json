@@ -1,6 +1,6 @@
 {
   "tags": ["Claim", "VLB"],
-  "version": "1.1.4",
+  "version": "1.1.5",
   "name": "Veterinary and Veterinary Technologists Locums Working in BC Food Animal Practices Pilot Program",
   "abbreviation": "VLB",
   "sections": [
@@ -128,7 +128,8 @@
           "label": "Practice(s) where locum services were delivered",
           "forceGenerateWordTemplateData": true,
           "hidden": true,
-          "techComment": "This is used to generate the PDF for the practice grid"
+          "doNotBlank": true,
+          "techComment": "This is the JSON used to generate the PDF for the practice grid"
         },
         {
           "name": "quartech_locumservicespracticegrid",
@@ -137,7 +138,7 @@
           "required": true,
           "hideLabel": true,
           "checkForEmptyValues": true,
-          "omitForWordTemplateGeneration": true,
+          "skipWordTemplateGeneration": true,
           "disableSingleLine": true,
           "techComment": "This custom component is too complex for JSON, so it's defined in claimInfoStep.js"
         },

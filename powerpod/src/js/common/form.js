@@ -18,7 +18,7 @@ import { getFormType } from './applicationUtils.js';
 import { getProgramData } from './program.ts';
 import { Logger } from './logger.js';
 import store from '../store/index.js';
-import { saveBrowserInfo } from './utils.js';
+import { convertObjectToString, isObject, saveBrowserInfo } from './utils.js';
 
 const logger = Logger('common/form');
 
@@ -246,13 +246,18 @@ export function generateFormJson(setFieldOrder = false) {
     message: `Processing fieldSet array for tabDataName: ${tabDataName}`,
   });
 
-  const formJsonObj = {};
+  let formJsonObj = {};
+
+  // these are used for appending an extra section post-processing:
+  let appendSection = false;
+  let sectionToAppend = {};
 
   fieldsetArr.forEach((fieldset) => {
     const displayName = fieldset.querySelector('h3')?.textContent; // e.g. "Application Information for Reimbursement"
 
     const tableElement = fieldset.querySelector('table');
     const sectionId = tableElement?.getAttribute('data-name'); // e.g. "applicationInfoSection"
+
     if (sectionId && sectionId.toLowerCase().includes('codingsection')) {
       logger.info({
         fn: generateFormJson,
@@ -329,7 +334,10 @@ export function generateFormJson(setFieldOrder = false) {
         fieldConfig = POWERPOD.state?.fields?.[controlId];
       }
 
-      const { forceGenerateWordTemplateData = false } = fieldConfig;
+      const {
+        forceGenerateWordTemplateData = false,
+        skipWordTemplateGeneration = false,
+      } = fieldConfig;
 
       // exit early if the intention is just to set the field order
       if (controlId && setFieldOrder) {
@@ -338,6 +346,16 @@ export function generateFormJson(setFieldOrder = false) {
           message: `addToFieldOrder controlId: ${controlId}`,
         });
         store.dispatch('addToFieldOrder', controlId);
+        return;
+      }
+      if (skipWordTemplateGeneration) {
+        logger.info({
+          fn: generateFormJson,
+          message: `Skipping row since skipWordTemplateGeneration is set for controlId: ${controlId}`,
+          data: {
+            tr,
+          },
+        });
         return;
       }
       if (isHiddenRow(tr)) {
@@ -430,12 +448,53 @@ export function generateFormJson(setFieldOrder = false) {
         return; // skip this forEach loop
       }
 
+      // Special case for Claim VLB form / Practice(s) Grid PDF JSON Generation
+      if (controlId === 'quartech_practiceswherelocumservicesweredelivered') {
+        const answerObj = JSON.parse(answerText);
+        sectionToAppend = answerObj;
+        appendSection = true;
+        logger.info({
+          fn: generateFormJson,
+          message: `For quartech_practiceswherelocumservicesweredelivered skipping adding to original object, instead append at the end`,
+          data: {
+            answerText,
+            answerObj,
+          },
+        });
+        return;
+      }
+
       formJsonObj[sectionId][questionAnswerListKey].push({
         [questionKey]: questionText,
         [answerKey]: answerText,
       });
     });
   });
+
+  if (appendSection && sectionToAppend) {
+    logger.info({
+      fn: generateFormJson,
+      message: `attempting to appendSection...`,
+      data: {
+        appendSection,
+        sectionToAppend,
+        formJsonObj,
+      },
+    });
+    formJsonObj = {
+      ...formJsonObj,
+      ...sectionToAppend,
+    };
+    logger.info({
+      fn: generateFormJson,
+      message: `successfully appended Section to formJsonObj...`,
+      data: {
+        appendSection,
+        sectionToAppend,
+        formJsonObj,
+      },
+    });
+  }
 
   if (setFieldOrder) {
     logger.info({

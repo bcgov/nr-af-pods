@@ -48,6 +48,19 @@ export function disableCanadaPostIntegration() {
   location.reload();
 }
 
+// Function to check if a value is an object
+export function isObject(value) {
+  return value && typeof value === 'object' && !Array.isArray(value);
+}
+
+// Function to convert an object to a string
+export function convertObjectToString(value) {
+  if (isObject(value)) {
+    return JSON.stringify(value);
+  }
+  return value;
+}
+
 export function isValidJSON(jsonString) {
   try {
     JSON.parse(jsonString);
