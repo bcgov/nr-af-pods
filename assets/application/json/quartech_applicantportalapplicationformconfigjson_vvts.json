@@ -1,5 +1,5 @@
 {
-  "version": "1.1.8",
+  "version": "1.2.0",
   "tags": ["Application", "StaffPortal", "VVTS"],
   "name": "Veterinary and Veterinary Technologist Students Working in BC Food Animal Practices",
   "abbreviation": "VVTS",
@@ -407,7 +407,13 @@
             "fieldName": "quartech_numberofrvtstudentsintendtohire",
             "selectedValueIn": [255550001, 255550002, 255550003],
             "techComment": "1, 2, or 3 Student(s) Selected"
-          }
+          },
+          "validation": {
+            "comparison": "lessThan",
+            "fieldName": "quartech_1ststudent_workplacementenddate",
+            "type": "date"
+          },
+          "forceRevalidate": true
         },
         {
           "name": "quartech_1ststudent_workplacementenddate",
@@ -417,7 +423,13 @@
             "fieldName": "quartech_numberofrvtstudentsintendtohire",
             "selectedValueIn": [255550001, 255550002, 255550003],
             "techComment": "1, 2, or 3 Student(s) Selected"
-          }
+          },
+          "validation": {
+            "comparison": "greaterThan",
+            "fieldName": "quartech_1ststudent_workplacementstartdate",
+            "type": "date"
+          },
+          "forceRevalidate": true
         },
         {
           "name": "quartech_2ndstudentname",
@@ -497,7 +509,13 @@
             "fieldName": "quartech_numberofrvtstudentsintendtohire",
             "selectedValueIn": [255550002, 255550003],
             "techComment": "2, or 3 Students Selected"
-          }
+          },
+          "validation": {
+            "comparison": "lessThan",
+            "fieldName": "quartech_2ndstudent_workplacementenddate",
+            "type": "date"
+          },
+          "forceRevalidate": true
         },
         {
           "name": "quartech_2ndstudent_workplacementenddate",
@@ -507,7 +525,13 @@
             "fieldName": "quartech_numberofrvtstudentsintendtohire",
             "selectedValueIn": [255550002, 255550003],
             "techComment": "2, or 3 Students Selected"
-          }
+          },
+          "validation": {
+            "comparison": "greaterThan",
+            "fieldName": "quartech_2ndstudent_workplacementstartdate",
+            "type": "date"
+          },
+          "forceRevalidate": true
         },
         {
           "name": "quartech_3rdstudentname",
@@ -587,7 +611,13 @@
             "fieldName": "quartech_numberofrvtstudentsintendtohire",
             "selectedValueIn": [255550003],
             "techComment": "3 Students Selected"
-          }
+          },
+          "validation": {
+            "comparison": "lessThan",
+            "fieldName": "quartech_3rdstudent_workplacementenddate",
+            "type": "date"
+          },
+          "forceRevalidate": true
         },
         {
           "name": "quartech_3rdstudent_workplacementenddate",
@@ -597,7 +627,13 @@
             "fieldName": "quartech_numberofrvtstudentsintendtohire",
             "selectedValueIn": [255550003],
             "techComment": "3 Students Selected"
-          }
+          },
+          "validation": {
+            "comparison": "greaterThan",
+            "fieldName": "quartech_3rdstudent_workplacementstartdate",
+            "type": "date"
+          },
+          "forceRevalidate": true
         }
       ]
     },

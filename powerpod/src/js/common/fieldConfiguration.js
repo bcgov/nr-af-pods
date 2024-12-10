@@ -648,7 +648,7 @@ export function validateNeededFields({ name, origin = '' }) {
   resultArray.push(name);
   const fields = POWERPOD.state.fields;
   const fieldsToSetDirty = Object.values(fields).filter(
-    (f) => resultArray.includes(f.name) && !f.hidden
+    (f) => (resultArray.includes(f.name) && !f.hidden) || f.forceRevalidate
   );
   const fieldsToRevalidate = Object.keys(fieldsToSetDirty).map(
     (key) => fieldsToSetDirty[key].name

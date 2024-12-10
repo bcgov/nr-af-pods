@@ -108,6 +108,21 @@ export function validateStepField(fieldName) {
       errorMsgs.push(errorMsg);
     }
   }
+  if (validation?.type === 'date') {
+    const { fieldName, comparison } = validation;
+    const errorMsg =
+      // @ts-ignore
+      validateDateFieldValue({
+        fieldName: name,
+        comparisonFieldName: fieldName,
+        operator: comparison,
+        errorMessage,
+      });
+    // @ts-ignore
+    if (errorMsg && errorMsg.length) {
+      errorMsgs.push(errorMsg);
+    }
+  }
   if (validation?.type === 'length') {
     const { value, comparison, forceRequired, postfix, overrideDisplayValue } =
       validation;
@@ -459,6 +474,119 @@ function checkForEmptyValues(jsonString) {
   }
 
   return emptyObjectValues;
+}
+
+export function validateDateFieldValue({
+  fieldName,
+  comparisonFieldName,
+  operator,
+  errorMessage = '',
+}) {
+  const params = {
+    fieldName,
+    comparisonFieldName,
+    operator,
+    errorMessage,
+  };
+
+  const element = document.querySelector(`#${fieldName}`);
+  const comparisonElement = document.querySelector(`#${comparisonFieldName}`);
+
+  if (!element || !comparisonElement) {
+    logger.error({
+      fn: validateDateFieldValue,
+      message: `Failed to find element for date field validation`,
+      data: params,
+    });
+    return;
+  }
+
+  // Extract values from the elements
+  const fieldValue = element.value;
+  const comparisonValue = comparisonElement.value;
+
+  // Ensure the values are present
+  if (!fieldValue || !comparisonValue) {
+    console.error('One or both date fields are empty');
+    return false;
+  }
+
+  // Parse the dates
+  const fieldDate = new Date(fieldValue);
+  const comparisonDate = new Date(comparisonValue);
+
+  // Check if the parsed dates are valid
+  if (isNaN(fieldDate.getTime()) || isNaN(comparisonDate.getTime())) {
+    console.error('Invalid date format');
+    return false;
+  }
+
+  logger.info({
+    fn: validateDateFieldValue,
+    message: `After cleaning values:`,
+    data: { fieldDate, comparisonDate },
+  });
+
+  // Format dates to MM/dd/yyyy
+  const formatDate = (date) =>
+    `${String(date.getMonth() + 1).padStart(2, '0')}/${String(
+      date.getDate()
+    ).padStart(2, '0')}/${date.getFullYear()}`;
+
+  const formattedFieldDate = formatDate(fieldDate);
+  const formattedComparisonDate = formatDate(comparisonDate);
+
+  let finalMessage = '';
+  const genericErrorMsg = `Please enter a valid date.`;
+
+  switch (operator) {
+    case 'greaterThan':
+      if (!(fieldDate > comparisonDate)) {
+        finalMessage = `${genericErrorMsg} The value must be greater than ${formattedComparisonDate}.`;
+      }
+      break;
+    case 'lessThan':
+      if (!(fieldDate < comparisonDate)) {
+        finalMessage = `${genericErrorMsg} The value must be less than ${formattedComparisonDate}.`;
+      }
+      break;
+    case 'equalTo':
+      if (!(fieldDate.getTime() === comparisonDate.getTime())) {
+        finalMessage = `${genericErrorMsg} The value must be equal to ${formattedComparisonDate}.`;
+      }
+      break;
+    case 'greaterThanOrEqualTo':
+      if (!(fieldDate >= comparisonDate)) {
+        finalMessage = `${genericErrorMsg} The value must be greater than or equal to ${formattedComparisonDate}.`;
+      }
+      break;
+    case 'lessThanOrEqualTo':
+      if (!(fieldDate <= comparisonDate)) {
+        finalMessage = `${genericErrorMsg} The value must be less than or equal to ${formattedComparisonDate}.`;
+      }
+      break;
+    default:
+      finalMessage = 'Invalid operator';
+      logger.error({
+        fn: validateDateFieldValue,
+        message: `Invalid operator`,
+      });
+      break;
+  }
+
+  if (errorMessage?.length > 0 && finalMessage?.length > 0) {
+    finalMessage = errorMessage;
+  }
+
+  logger.info({
+    fn: validateDateFieldValue,
+    message: `Returning error message: ${
+      finalMessage?.length > 0 ? finalMessage : 'VALIDATION PASSED'
+    }`,
+    data: { params, finalMessage },
+  });
+
+  return finalMessage;
 }
 
 export function validateNumericFieldValue({
