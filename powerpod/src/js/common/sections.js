@@ -52,6 +52,7 @@ export function configureSections(sections, globalSections) {
       dataName,
       additionalTextAboveSection,
       additionalTextBelowSection,
+      hideHeaderDescription = false,
     } = section;
 
     if (!sectionName) {
@@ -82,12 +83,44 @@ export function configureSections(sections, globalSections) {
       configureSubsections(sectionName, subsections);
     }
 
+    if (hideHeaderDescription) {
+      hidePageDescription(hideHeaderDescription, sectionName);
+    }
+
     logger.info({
       fn: configureSections,
       message: `Successfully configured section for sectionName: ${sectionName}`,
       data: { section },
     });
   });
+}
+
+export function hidePageDescription(hideHeaderDescription, sectionName = null) {
+  const currentStep = getCurrentStep();
+  const pageDescriptionElement = document.querySelector('p#page-description');
+  if (sectionName && currentStep !== sectionName) {
+    logger.warn({
+      fn: hidePageDescription,
+      message: `Skip setting pageDescriptionElement for nonactive step sectionName: ${sectionName}`,
+    });
+    return;
+  }
+  if (pageDescriptionElement) {
+    if (hideHeaderDescription) {
+      pageDescriptionElement.style.display = 'none';
+    } else {
+      pageDescriptionElement.style.display = '';
+    }
+    logger.info({
+      fn: hidePageDescription,
+      message: `Successfully set pageDescriptionElement to hideHeaderDescription: ${hideHeaderDescription} for sectionName: ${sectionName}`,
+    });
+  } else {
+    logger.error({
+      fn: hidePageDescription,
+      message: `Failed to find pageDescriptionElement for configuring visibility`
+    })
+  }
 }
 
 export function configureSubsections(sectionName, subsections) {

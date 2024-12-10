@@ -1,5 +1,5 @@
 {
-  "version": "1.1.5",
+  "version": "1.1.7",
   "tags": ["Application", "StaffPortal", "VVTS"],
   "name": "Veterinary and Veterinary Technologist Students Working in BC Food Animal Practices",
   "abbreviation": "VVTS",
@@ -47,6 +47,7 @@
     {
       "name": "EligibilityStep",
       "displayName": "Practice",
+      "hideHeaderDescription": true,
       "fields": [
         {
           "name": "quartech_vetpracticeaccreditedbycvbc",
@@ -312,6 +313,7 @@
     {
       "name": "ProjectStep",
       "displayName": "Student Candidates",
+      "hideHeaderDescription": true,
       "fields": [
         {
           "name": "quartech_numberofrvtstudentsintendtohire",
@@ -601,6 +603,7 @@
     },
     {
       "name": "DocumentsStep",
+      "hideHeaderDescription": true,
       "fields": [
         {
           "name": "quartech_vlb_proofofvetlicense",
@@ -612,6 +615,7 @@
     },
     {
       "name": "DemographicInfoStep",
+      "hideHeaderDescription": true,
       "fields": [
         {
           "name": "quartech_chefsid",

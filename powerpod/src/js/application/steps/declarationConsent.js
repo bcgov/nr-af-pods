@@ -1,9 +1,15 @@
 import { configureFields } from '../../common/fieldConfiguration.js';
 import { hideFieldsAndSections } from '../../common/html.js';
+import { getProgramAbbreviation } from '../../common/program.ts';
+import { hidePageDescription } from '../../common/sections.js';
 
 export function customizeDeclarationConsentStep(programData) {
   configureFields();
   hideFieldsAndSections(false);
+  const programAbbreviation = getProgramAbbreviation();
+  if (programAbbreviation === 'VVTS') {
+    hidePageDescription(true);
+  }
   addConsent(programData?.quartech_applicantportalprogramname);
 }
 

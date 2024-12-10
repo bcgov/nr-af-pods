@@ -217,7 +217,7 @@ export function getProgramAbbreviation() {
 }
 
 export function getCurrentStep() {
-  let activeStep: string = FormStep.Unknown;
+  let activeStep = FormStep.Unknown;
 
   const activeTabName = htmlDecode(
     $('div > ol > li.list-group-item.active').html()
