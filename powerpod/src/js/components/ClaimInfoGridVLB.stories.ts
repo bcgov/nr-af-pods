@@ -14,6 +14,7 @@ type Story = StoryObj;
 
 export const Primary: Story = {
   args: {
+    readOnly: true,
     header: {
       title: 'Practice(s) Where Locum Services Were Delivered',
     },
@@ -77,10 +78,12 @@ export const Primary: Story = {
     ],
   },
   render: function Render(args) {
-    const [{ rows, header, columns }, updateArgs] = useArgs();
+    const [{ readOnly, rows, header, columns }, updateArgs] = useArgs();
+    console.log(`readOnly: ${readOnly}`);
     return html`<claim-info-grid-vlb
       columns=${JSON.stringify(columns)}
       rows=${JSON.stringify(rows)}
+      .readOnly=${readOnly ?? false}
       header=${JSON.stringify(header)}
       @onChangeClaimInfoGridVLBData=${(e: CustomEvent) => {
         action('onChangeClaimInfoGridVLBData')(e);

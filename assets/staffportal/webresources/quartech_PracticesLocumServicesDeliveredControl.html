@@ -1,0 +1,159 @@
+<!--
+  -------------------
+  FILE INFO
+  -------------------
+  version: 1.0.0
+  name: VLB Claim Practices Locums Services Delivered Control Grid (ClaimInfoGridVLB)
+  type: Web Resource (HTML Content)
+  description: This is the HTML content used to render the Practice(s) grid on Staff Portal.
+-->
+<html>
+  <head>
+    <script
+      source="ClientGlobalContext.js.aspx"
+      type="text/javascript"
+    ></script>
+
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+      integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
+      crossorigin="anonymous"
+    />
+
+    <script type="text/javascript">
+      function onLoad() {
+        console.log('WebResource version: 1.0.0');
+        loadjQuery(() => {
+          loadPowerpod(() => {
+            let rows = JSON.stringify([
+              {
+                name: '',
+                city: '',
+                email: '',
+                staffNumber: '',
+                typeOfFood: [],
+                dates: '',
+              },
+            ]);
+
+            if (
+              parent?.Xrm?.Page &&
+              parent?.Xrm?.Page.getControl('quartech_locumservicespracticegrid')
+            ) {
+              // Get the form context
+              var formContext = parent.Xrm.Page;
+              const fetchedRowValues = formContext
+                .getControl('quartech_locumservicespracticegrid')
+                .getAttribute()
+                .getValue();
+
+              if (fetchedRowValues && fetchedRowValues !== '[]') {
+                rows = fetchedRowValues;
+              }
+
+              formContext
+                .getControl('quartech_locumservicespracticegrid')
+                .setVisible(false);
+            }
+
+            const customElement = document.getElementsByTagName(
+              'claim-info-grid-vlb'
+            )?.[0];
+
+            const columns = JSON.stringify([
+              {
+                id: 'name',
+                name: 'Name',
+                width: '20%',
+              },
+              {
+                id: 'city',
+                name: 'Location City',
+                width: '60%',
+              },
+              {
+                id: 'email',
+                name: 'Email',
+                width: '20%',
+              },
+              {
+                id: 'staffNumber',
+                name: 'Staff Number(s)',
+                width: '0%',
+              },
+              {
+                id: 'typeOfFood',
+                name: 'Types of food animals serviced',
+                width: '0%',
+              },
+              {
+                id: 'dates',
+                name: 'Date(s)',
+                width: '0%',
+              },
+            ]);
+            const header = JSON.stringify({
+              title: 'Practice(s) Where Locum Services Were Delivered',
+            });
+            customElement.setAttribute('columns', columns);
+            customElement.setAttribute('rows', rows);
+            customElement.setAttribute('header', header);
+          });
+        });
+      }
+
+      function loadPowerpod(callback) {
+        const src =
+          'https://cdn.jsdelivr.net/gh/bcgov/nr-af-pods@dev/powerpod/releases/powerpod-2.9.2.min.js';
+        const script = document.createElement('script');
+        script.setAttribute('async', '');
+        script.src = src;
+        document.head.appendChild(script);
+
+        // Check if Powerpod is loaded
+        script.onload = function () {
+          if (typeof window.powerpod !== 'undefined') {
+            console.log('Powerpod loaded successfully');
+            if (callback && typeof callback === 'function') {
+              callback();
+            }
+          } else {
+            console.error('Failed to load Powerpod');
+          }
+        };
+      }
+
+      function loadjQuery(callback) {
+        // Create a script element
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = 'https://code.jquery.com/jquery-3.6.2.min.js';
+        script.async = false; // This ensures the script is loaded synchronously
+
+        // Append the script to the head
+        document.head.appendChild(script);
+
+        // Check if jQuery is loaded
+        script.onload = function () {
+          if (typeof jQuery !== 'undefined') {
+            console.log('jQuery loaded successfully');
+            if (callback && typeof callback === 'function') {
+              callback();
+            }
+          } else {
+            console.error('Failed to load jQuery');
+          }
+        };
+      }
+    </script>
+  </head>
+
+  <body
+    onload="onLoad()"
+    onfocusout="parent.setEmailRange();"
+    style="overflow-wrap: break-word"
+  >
+    <claim-info-grid-vlb readOnly="true"></claim-info-grid-vlb>
+  </body>
+</html>

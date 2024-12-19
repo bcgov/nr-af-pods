@@ -45,9 +45,7 @@ class ClaimInfoGridVLB extends LitElement {
   connectedCallback(): void {
     super.connectedCallback();
 
-    if (!this.readOnly) {
-      this.getTypesOfFood();
-    }
+    this.getTypesOfFood();
 
     if (!Array.isArray(this.rows)) {
       this.rows = [];
@@ -121,11 +119,15 @@ class ClaimInfoGridVLB extends LitElement {
 
   private renderColumnItem(row, col, rowIndex) {
     const cellValue = row[col.id];
-    if (!this.readOnly && col.id === 'typeOfFood' && this.typesOfFood?.length) {
+    if (
+      // !this.readOnly && 
+      col.id === 'typeOfFood' && 
+      this.typesOfFood?.length) {
       return html` <td>
         <dropdown-multiselect
           fieldLabel=${col.name}
           required
+          .readOnly=${this.readOnly}
           .options=${this.typesOfFood}
           .selectedOptions=${cellValue}
           @onChangeDropdownMultiselectValues=${(e: CustomEvent) => {
@@ -148,17 +150,19 @@ class ClaimInfoGridVLB extends LitElement {
           }}
         ></dropdown-multiselect>
       </td>`;
-    } else if (this.readOnly && col.id === 'typeOfFood') {
-      return html` <td>
-        <text-field
-          required
-          fieldLabel=${col.name}
-          customStyle="width: 95%"
-          .inputValue=${cellValue}
-          .readOnly=${this.readOnly}
-        ></text-field>
-      </td>`;
-    } else if (
+    } 
+    // else if (this.readOnly && col.id === 'typeOfFood') {
+    //   return html` <td>
+    //     <text-field
+    //       required
+    //       fieldLabel=${col.name}
+    //       customStyle="width: 95%"
+    //       .inputValue=${cellValue}
+    //       .readOnly=${this.readOnly}
+    //     ></text-field>
+    //   </td>`;
+    // } 
+    else if (
       col.id === 'name' ||
       col.id === 'city' ||
       col.id === 'email' ||

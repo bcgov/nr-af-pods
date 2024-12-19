@@ -1,5 +1,5 @@
 {
-  "version": "1.2.2",
+  "version": "1.2.3",
   "tags": ["Application", "StaffPortal", "VVTS"],
   "name": "Veterinary and Veterinary Technologist Students Working in BC Food Animal Practices",
   "abbreviation": "VVTS",
@@ -319,7 +319,7 @@
           "name": "quartech_numberofrvtstudentsintendtohire",
           "label": "How many veterinary and registered veterinary technologist (RVT) students do you intend to hire?",
           "required": true,
-          "additionalTextAboveField": "<div><p>Please note, AF program staff may contact students throughout the work period to check in and offer online educational opportunities. For a participating practice to be eligible for reimbursement at the end of the work placement, the student must complete 12 full consecutive weeks working at the practice, and the following documents must be received by the AF program administrator from each student:<ul><li>food-animal case log,</li><li>program evaluation form.</li></ul>It is the practice’s responsibility to make sure these criteria are met.</p><p>Please list students in order of preference for hiring (1 through 3). Initially, funding will be allocated on a one-student-per-clinic basis. If funding is not fully allocated, additional student work placements per clinic may be funded.</p></div>"
+          "additionalTextAboveField": "<div><p>Please note, AF program staff may contact students throughout the work period to check in and offer online educational opportunities. For a participating practice to be eligible for reimbursement at the end of the work placement, the student must complete 12 full consecutive weeks working at the practice, and the following documents must be received by the AF program administrator from each student:</p><ul><li>food-animal case log,</li><li>program evaluation form.</li></ul><p>It is the practice’s responsibility to make sure these criteria are met.</p><p>Please list students in order of preference for hiring (1 through 3). Initially, funding will be allocated on a one-student-per-clinic basis. If funding is not fully allocated, additional student work placements per clinic may be funded.</p></div>"
         },
         {
           "name": "quartech_inordertocontinuouslyimprovecommunications",

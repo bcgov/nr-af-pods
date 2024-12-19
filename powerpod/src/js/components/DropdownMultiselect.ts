@@ -1,4 +1,4 @@
-import shoelace from '../../assets/css/shoelace.css';
+import shoelace from '../../assets/css/shoelace.css?inline';
 import '@shoelace-style/shoelace/dist/components/select/select.js';
 import '@shoelace-style/shoelace/dist/components/option/option.js';
 import { LitElement, css, html, unsafeCSS } from 'lit';
@@ -16,6 +16,7 @@ class DropdownMultiselect extends LitElement {
   @property({ type: Array }) slimmedOptions: string[] = [];
   @property({ type: Object }) lookupMap: Map<string, string> = new Map();
   @property({ type: String }) selectedOptions: string[] = [];
+  @property({ type: Boolean }) readOnly = false;
 
   static styles = css`
     sl-select::part(tag__base) {
@@ -98,35 +99,58 @@ class DropdownMultiselect extends LitElement {
               </span>`
             : html``}
         </div>
-        <sl-select
-          id="selectElement"
-          size="large"
-          style="flex-grow: 0;"
-          .value=${this.selectedOptions}
-          @sl-change=${(event: Event) => {
-            const { target } = event;
-            if (target) {
-              const val = Array.isArray((target as HTMLSelectElement).value)
-                ? (target as HTMLSelectElement).value
-                : ((target as HTMLSelectElement).value as string)?.split(',') ??
-                  [];
-              if (Array.isArray(val)) {
-                this.selectedOptions = val;
-              }
-            }
-            this.emitEvent();
-          }}
-          multiple
-          clearable
-        >
-          ${this.options
-            ?.sort((a, b) => {
-              if (a === 'Other Costs') return 1; // Push "Other Costs" to the end
-              if (b === 'Other Costs') return -1; // Push "Other Costs" to the end
-              return a.localeCompare(b); // Sort alphabetically
-            })
-            .map((option) => this.generateOption(option))}
-        </sl-select>
+        ${
+          !this.readOnly ?
+          html`
+            <sl-select
+              id="selectElement"
+              size="large"
+              style="flex-grow: 0;"
+              .value=${this.selectedOptions}
+              @sl-change=${(event: Event) => {
+                const { target } = event;
+                if (target) {
+                  const val = Array.isArray((target as HTMLSelectElement).value)
+                    ? (target as HTMLSelectElement).value
+                    : ((target as HTMLSelectElement).value as string)?.split(',') ??
+                      [];
+                  if (Array.isArray(val)) {
+                    this.selectedOptions = val;
+                  }
+                }
+                this.emitEvent();
+              }}
+              multiple
+              clearable
+            >
+              ${this.options
+                ?.sort((a, b) => {
+                  if (a === 'Other Costs') return 1; // Push "Other Costs" to the end
+                  if (b === 'Other Costs') return -1; // Push "Other Costs" to the end
+                  return a.localeCompare(b); // Sort alphabetically
+                })
+                .map((option) => this.generateOption(option))}
+            </sl-select>
+          ` : html`
+            <sl-select
+              disabled
+              id="selectElement"
+              size="large"
+              style="flex-grow: 0;"
+              .value=${this.selectedOptions}
+              multiple
+              clearable
+            >
+              ${this.options
+                ?.sort((a, b) => {
+                  if (a === 'Other Costs') return 1; // Push "Other Costs" to the end
+                  if (b === 'Other Costs') return -1; // Push "Other Costs" to the end
+                  return a.localeCompare(b); // Sort alphabetically
+                })
+                .map((option) => this.generateOption(option))}
+            </sl-select>
+          `
+        }
         <div>
           ${this.additionalTextBelowField?.length
             ? html`<span>${this.additionalTextBelowField}</span>`
