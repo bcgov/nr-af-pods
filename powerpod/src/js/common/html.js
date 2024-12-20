@@ -835,7 +835,7 @@ export function observeChanges(
   var observer = new MutationObserver(function (mutations, observer) {
     logger.info({
       fn: observeChanges,
-      message: 'Change observed',
+      message: 'Change observed... testing',
       data: { id, element, disableInitialCall, customFunc },
     });
     if (customFunc) {

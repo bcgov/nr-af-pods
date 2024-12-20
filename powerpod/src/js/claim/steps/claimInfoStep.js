@@ -275,9 +275,10 @@ export function customizeClaimInfoStep() {
       );
     }
 
-    observeChanges($('#quartech_requestedinterimpaymentamount')[0], () =>
-      customizeInterimPaymentAmountField()
-    );
+    customizeInterimPaymentAmountField()
+    // observeChanges($('#quartech_requestedinterimpaymentamount')[0], () =>
+    //   customizeInterimPaymentAmountField()
+    // );
 
     observeIframeChanges(
       customizeSingleOrGroupApplicantQuestions,

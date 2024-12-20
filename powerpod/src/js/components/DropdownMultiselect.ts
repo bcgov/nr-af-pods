@@ -1,4 +1,4 @@
-import shoelace from '../../assets/css/shoelace.css?inline';
+import shoelace from '../../assets/css/shoelace.css';
 import '@shoelace-style/shoelace/dist/components/select/select.js';
 import '@shoelace-style/shoelace/dist/components/option/option.js';
 import { LitElement, css, html, unsafeCSS } from 'lit';
