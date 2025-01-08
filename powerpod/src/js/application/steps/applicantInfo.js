@@ -521,17 +521,15 @@ function hideTypesOfBusinessOrganization() {
   );
   if (!typesOfBusinessToDisplayDictionary) return;
 
-  // @ts-ignore
   $('#quartech_recipienttype option').each(function () {
-    // @ts-ignore
     const typeOfBusinessValue = this.value;
-    if (typeOfBusinessValue != '') {
-      // Hide/Show option
-      const isOptionToBeHidden =
-        typesOfBusinessToDisplayDictionary[typeOfBusinessValue] == undefined;
+    if (typeOfBusinessValue !== '') {
+      // Determine if the option should be deleted
+      const isOptionToBeDeleted =
+        typesOfBusinessToDisplayDictionary[typeOfBusinessValue] === undefined;
 
-      if (isOptionToBeHidden) {
-        this.hidden = true;
+      if (isOptionToBeDeleted) {
+        $(this).remove(); // Delete the option
       }
     }
   });
