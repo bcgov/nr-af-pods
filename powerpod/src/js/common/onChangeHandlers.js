@@ -163,7 +163,8 @@ export function checkAndSetTFCREligbilityNotice() {
     fileFarmIncomeTaxUnderTaxActInBC === '0' ||
     commitToMaintainingTheProperty === '0';
 
-  const areAllValuesYes = existingTreeFruit === '1' &&
+  const areAllValuesYes =
+    existingTreeFruit === '1' &&
     ownerOrLesseeOfTheLand === '1' &&
     taxableEntity === '1' &&
     fileFarmIncomeTaxUnderTaxActInBC === '1' &&
@@ -185,13 +186,29 @@ export function checkAndSetTFCREligbilityNotice() {
   } else if (areAllValuesYes && noticeElement) {
     noticeElement.style.display = 'none';
     $('fieldset[aria-label="Eligibility"] > table').parent().css('display', '');
-    $('fieldset[aria-label="Business Information"] > table').parent().css('display', '');
-    $('fieldset[aria-label="Indigenous Applicants"] > table').parent().css('display', '');
-    $('fieldset[aria-label="Application Contact"] > table').parent().css('display', '');
-    $('fieldset[aria-label="Applicant Information"] > table').parent().css('display', '');
+    $('fieldset[aria-label="Business Information"] > table')
+      .parent()
+      .css('display', '');
+    $('fieldset[aria-label="Indigenous Applicants"] > table')
+      .parent()
+      .css('display', '');
+    $('fieldset[aria-label="Application Contact"] > table')
+      .parent()
+      .css('display', '');
+    $('fieldset[aria-label="Applicant Information"] > table')
+      .parent()
+      .css('display', '');
     const errMsgDiv = document.getElementById('error_messages_div');
     if (errMsgDiv) {
       errMsgDiv.style.display = 'block';
+    }
+    let validationErrorHtml = POWERPOD.state.validationError;
+    if (
+      !validationErrorHtml ||
+      validationErrorHtml?.length === 0 ||
+      validationErrorHtml === ''
+    ) {
+      $('#NextButton').prop('disabled', false);
     }
   }
 }
