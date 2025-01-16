@@ -4,12 +4,15 @@ import { formatCurrencyOnBlur } from './currency.js';
 import { getFieldConfig } from './fields.js';
 import {
   copyFromFieldAToFieldB,
+  hideAllStepSections,
   hideFieldRow,
   isHiddenRow,
   observeChanges,
   setFieldNameLabel,
   setFieldValue,
+  showAllStepSections,
   showFieldRow,
+  showSection,
 } from './html.js';
 import { Logger } from './logger.js';
 import { isScriptFullyLoaded } from './scripts.js';
@@ -21,6 +24,7 @@ POWERPOD.onChangeHandlers = {
   setBusinessOrPersonalAddressLabels,
   populateTotalPercent,
   calculateAndPopulateRequestedClaimAmountForVLB,
+  checkAndSetTFCREligbilityNotice,
 };
 
 const logger = Logger('common/onChangeHandlers');
@@ -113,6 +117,84 @@ export function setOnChangeHandler(fieldName, elemType, onChangeHandlerName) {
     name: fieldName,
     onChangeHandlerSet: true,
   });
+}
+
+export function checkAndSetTFCREligbilityNotice() {
+  logger.info({
+    fn: checkAndSetTFCREligbilityNotice,
+    message: `checkAndSetTFCREligbilityNotice called, start calculating...`,
+  });
+  const existingTreeFruit = document.getElementById(
+    'quartech_areyouanexistingtreefruit'
+  )?.value;
+
+  const ownerOrLesseeOfTheLand = document.getElementById(
+    'quartech_areyouanownerorlesseeoftheland'
+  )?.value;
+
+  const taxableEntity = document.getElementById(
+    'quartech_areyouataxableentity'
+  )?.value;
+
+  const fileFarmIncomeTaxUnderTaxActInBC = document.getElementById(
+    'quartech_doyoufilefarmincometaxundertaxactinbc'
+  )?.value;
+
+  const commitToMaintainingTheProperty = document.getElementById(
+    'quartech_doyoucommittomaintainingtheproperty'
+  )?.value;
+
+  logger.info({
+    fn: checkAndSetTFCREligbilityNotice,
+    message: `founds the following values...`,
+    data: {
+      existingTreeFruit,
+      ownerOrLesseeOfTheLand,
+      taxableEntity,
+      fileFarmIncomeTaxUnderTaxActInBC,
+      commitToMaintainingTheProperty,
+    },
+  });
+
+  const areAnyValuesNo =
+    existingTreeFruit === '0' ||
+    ownerOrLesseeOfTheLand === '0' ||
+    taxableEntity === '0' ||
+    fileFarmIncomeTaxUnderTaxActInBC === '0' ||
+    commitToMaintainingTheProperty === '0';
+
+  const areAllValuesYes = existingTreeFruit === '1' &&
+    ownerOrLesseeOfTheLand === '1' &&
+    taxableEntity === '1' &&
+    fileFarmIncomeTaxUnderTaxActInBC === '1' &&
+    commitToMaintainingTheProperty === '1';
+
+  const noticeElement = document.getElementById(
+    'doesNotMeetTFCREligibilityRequirements'
+  );
+  // this means that one value is NO
+  if (areAnyValuesNo && noticeElement?.style?.display) {
+    noticeElement.style.display = '';
+    hideAllStepSections();
+    $('fieldset[aria-label="Eligibility"] > table').parent().css('display', '');
+    const errMsgDiv = document.getElementById('error_messages_div');
+    if (errMsgDiv) {
+      errMsgDiv.style.display = 'none';
+    }
+    $('#NextButton').prop('disabled', true);
+  } else if (areAllValuesYes && noticeElement) {
+    noticeElement.style.display = 'none';
+    $('fieldset[aria-label="Eligibility"] > table').parent().css('display', '');
+    $('fieldset[aria-label="Business Information"] > table').parent().css('display', '');
+    $('fieldset[aria-label="Indigenous Applicants"] > table').parent().css('display', '');
+    $('fieldset[aria-label="Application Contact"] > table').parent().css('display', '');
+    $('fieldset[aria-label="Applicant Information"] > table').parent().css('display', '');
+    const errMsgDiv = document.getElementById('error_messages_div');
+    if (errMsgDiv) {
+      errMsgDiv.style.display = 'block';
+    }
+    $('#NextButton').prop('disabled', false);
+  }
 }
 
 export function calculateAndPopulateRequestedClaimAmountForVLB() {

@@ -80,7 +80,11 @@ export function redirectToFormId(id) {
 }
 
 export function getControlType({ tr, controlId = '', skipState = false }) {
-  if (controlId && POWERPOD.state?.fields?.[controlId]?.elementType) {
+  if (
+    controlId &&
+    POWERPOD.state?.fields?.[controlId]?.elementType &&
+    POWERPOD.state?.fields?.[controlId]?.elementType !== 'Unknown'
+  ) {
     return POWERPOD.state.fields[controlId].elementType;
   }
 
@@ -126,7 +130,8 @@ export function getControlType({ tr, controlId = '', skipState = false }) {
   if (
     !skipState &&
     control?.id &&
-    POWERPOD.state?.fields[controlId]?.elementType
+    POWERPOD.state?.fields[controlId]?.elementType &&
+    POWERPOD.state?.fields[controlId]?.elementType !== 'Unknown'
   ) {
     controlType = POWERPOD.state?.fields[controlId]?.elementType;
     logger.info({
@@ -156,7 +161,10 @@ export function getControlType({ tr, controlId = '', skipState = false }) {
     controlType = HtmlElementType.DatePicker;
   } else if (tag === 'textarea' && classes?.includes('textarea')) {
     controlType = HtmlElementType.TextArea;
-  } else if (tag === 'select' && classes?.includes('picklist')) {
+  } else if (
+    tag === 'select' &&
+    (classes?.includes('picklist') || classes?.includes('boolean-dropdown'))
+  ) {
     controlType = HtmlElementType.DropdownSelect;
   } else if (tag === 'input' && control.type === 'checkbox') {
     controlType = HtmlElementType.Checkbox;
@@ -1192,6 +1200,10 @@ export function combineElementsIntoOneRow(
 
 export function hideAllStepSections() {
   $('fieldset > table').parent().css('display', 'none');
+}
+
+export function showAllStepSections() {
+  $('fieldset > table').parent().css('display', '');
 }
 
 export function hideFields(hidden = true) {

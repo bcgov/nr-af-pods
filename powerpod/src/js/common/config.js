@@ -20,6 +20,8 @@ import { Logger } from './logger.js';
 // import localConfigJson from '../../../../assets/application/json/quartech_applicantportalapplicationformconfigjson_nefba.json';
 // VVTS:
 // import localConfigJson from '../../../../assets/application/json/quartech_applicantportalapplicationformconfigjson_vvts.json';
+// TFCR:
+// import localConfigJson from '../../../../assets/application/json/quartech_applicantportalapplicationformconfigjson_tfcr.json';
 
 /*
  * CLAIM FORMS

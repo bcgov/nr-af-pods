@@ -94,7 +94,14 @@ function getTabElement({ displayName, name }) {
     });
   } else {
     tabElement = $('ol.progress li').filter(function () {
-      return $(this).text().includes(displayName);
+      const $this = $(this);
+      const originalDisplayName = $this.attr('originalDisplayName');
+
+      if (originalDisplayName) {
+        return originalDisplayName.includes(displayName); // Prioritize originalDisplayName
+      }
+
+      return $this.text().includes(displayName); // Fallback to checking the text content
     });
   }
 
@@ -156,6 +163,7 @@ export function setTabName(name, displayName) {
 
   if (tabElement) {
     tabElement.firstChild.nodeValue = displayName; // Replace 'New Text' with your desired text
+    tabElement.setAttribute('originalDisplayName', initialTabDisplayName);
     logger.info({
       fn: setTabName,
       message: `Successfully updated tab name from ${name} to ${displayName}`,

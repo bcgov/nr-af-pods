@@ -79,7 +79,7 @@ export async function saveFormData({ customPayload = {} }) {
   if (!formJsonRes) {
     logger.error({
       fn: saveButton,
-      message: `Failed to generateFormJson`
+      message: `Failed to generateFormJson`,
     });
   }
 
@@ -110,9 +110,19 @@ export async function saveFormData({ customPayload = {} }) {
         fieldData
       )}`,
     });
-    const { value = undefined, error, touched, elementType, dataFormat } = fieldData;
+    const {
+      value = undefined,
+      error,
+      touched,
+      elementType,
+      dataFormat,
+      forceSave,
+    } = fieldData;
 
-    if (elementType === HtmlElementType.MultiSelectPicklist && (!value || !value.length)) {
+    if (
+      elementType === HtmlElementType.MultiSelectPicklist &&
+      (!value || !value.length)
+    ) {
       logger.warn({
         fn: saveFormData,
         message: `skipping saving EMPTY data for elementType: ${HtmlElementType.MultiSelectPicklist} field name: ${field}`,
@@ -120,7 +130,7 @@ export async function saveFormData({ customPayload = {} }) {
       return;
     }
 
-    if ((error && error.length) || !touched) {
+    if (!forceSave && ((error && error.length) || !touched)) {
       logger.warn({
         fn: saveFormData,
         message: `skipping saving data for field name: ${field}`,
@@ -131,6 +141,9 @@ export async function saveFormData({ customPayload = {} }) {
     let formattedValue = undefined;
     if (value && dataFormat === 'number') {
       formattedValue = parseFloat(value);
+    } else if (value && dataFormat === 'boolean') {
+      if (value === '0') formattedValue = false;
+      if (value === '1') formattedValue = true;
     }
 
     // @ts-ignore
@@ -148,8 +161,10 @@ export async function saveFormData({ customPayload = {} }) {
       };
     } else {
       payload = {
-        ...(value !== undefined && formattedValue === undefined && { [field]: value }),
-        ...(value !== undefined && formattedValue !== undefined && { [field]: formattedValue }),
+        ...(value !== undefined &&
+          formattedValue === undefined && { [field]: value }),
+        ...(value !== undefined &&
+          formattedValue !== undefined && { [field]: formattedValue }),
         ...payload,
         ...(Object.keys(customPayload)?.length && customPayload),
       };

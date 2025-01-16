@@ -17,6 +17,7 @@ import {
 import { useScript } from '../../common/scripts.js';
 import { configureFields } from '../../common/fieldConfiguration.js';
 import {
+  checkAndSetTFCREligbilityNotice,
   setBusinessOrPersonalAddressLabels,
   setBusinessOrPersonalStateForVLB,
 } from '../../common/onChangeHandlers.js';
@@ -54,6 +55,14 @@ export function customizeApplicantInfoStep() {
     customizeApplicantInfoStepForVLB();
     setBusinessOrPersonalStateForVLB();
   }
+
+  if (programAbbreviation === 'TFCR') {
+    customizeApplicantInfoStepForTFCR();
+  }
+}
+
+function customizeApplicantInfoStepForTFCR() {
+  checkAndSetTFCREligbilityNotice();
 }
 
 function customizeApplicantInfoStepForVLB() {
@@ -410,7 +419,6 @@ function setupApplicantInfoStepFields() {
     //     htmlContentToAddBelowTipReport
     //   );
     // }
-
     // @ts-ignore
     // initOnChange_DependentRequiredField({
     //   dependentOnValue: '255550001',
@@ -418,7 +426,6 @@ function setupApplicantInfoStepFields() {
     //   requiredFieldTag: 'quartech_tipreportenrolled',
     //   customFunc: setShowOrHideTipNotice,
     // });
-
     // setShowOrHideTipNotice();
   }
 
@@ -426,7 +433,8 @@ function setupApplicantInfoStepFields() {
     programAbbreviation &&
     (programAbbreviation.includes('ABPP') ||
       programAbbreviation === 'NEFBA' ||
-      programAbbreviation === 'NEFBA2')
+      programAbbreviation === 'NEFBA2' ||
+      programAbbreviation === 'TFCR')
   ) {
     addTextAboveField(
       'quartech_indigenousapplicant',
