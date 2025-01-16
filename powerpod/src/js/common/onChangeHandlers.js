@@ -193,7 +193,6 @@ export function checkAndSetTFCREligbilityNotice() {
     if (errMsgDiv) {
       errMsgDiv.style.display = 'block';
     }
-    $('#NextButton').prop('disabled', false);
   }
 }
 
