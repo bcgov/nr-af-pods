@@ -11,6 +11,7 @@ import {
   showFieldRow,
   getFieldRow,
   getControlType,
+  configureCustomLogo,
 } from './html.js';
 import { Logger } from './logger.js';
 import { getCurrentStep, getProgramAbbreviation } from './program.ts';
@@ -94,6 +95,10 @@ export function getFieldsBySectionApplication(stepName, forceRefresh = false) {
   // hide tabs if 'hiddenSteps' is passed in JSON config
   const hiddenSteps = applicationConfigData.hiddenSteps;
   if (hiddenSteps) hideTabs(hiddenSteps);
+
+  // configure custom logo if passed
+  const customLogo = applicationConfigData.customLogo;
+  if (customLogo) configureCustomLogo(customLogo);
 
   const applicationSection = applicationSections?.find(
     (s) => s.name === stepName

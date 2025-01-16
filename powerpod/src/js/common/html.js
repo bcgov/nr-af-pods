@@ -64,6 +64,10 @@ POWERPOD.html = {
   addTextBelowSection,
 };
 
+export function configureCustomLogo(customLogo) {
+  $('#page-logo').attr('src', customLogo);
+}
+
 export function redirectToFormId(id) {
   let currentUrl = new URL(window.location.href);
 
