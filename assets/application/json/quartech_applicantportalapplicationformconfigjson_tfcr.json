@@ -1,5 +1,5 @@
 {
-  "version": "1.1.3",
+  "version": "1.1.7",
   "tags": [
     "Application",
     "StaffPortal",
@@ -18,8 +18,15 @@
   "sections": [
     {
       "name": "ApplicantInfoStep",
-      "additionalTextAboveSection": "<p>Your personal information is collected under section 26(c) and 26(e) of the Freedom of Information and Protection of Privacy Act for the purposes of evaluating applications and for the planning and evaluating of the S-CAP Ministry Program. The information you provide will be shared with the federal government to fulfill the provincial obligations under the Sustainable Canadian Agricultural Partnership (S-CAP) bilateral agreement. It may be combined with other survey or administrative data sources and used for statistical, research and evaluation purposes.</p>",
       "dataName": "tab_ApplicantInfo",
+      "subsections": [
+        {
+          "name": "Applicant Information",
+          "type": "SectionTitle",
+          "subsectionAriaLabel": "Applicant Information",
+          "additionalTextAboveSubsection": "<p>Your personal information is collected under section 26(c) and 26(e) of the Freedom of Information and Protection of Privacy Act for the purposes of evaluating applications and for the planning and evaluating of the S-CAP Ministry Program. The information you provide will be shared with the federal government to fulfill the provincial obligations under the Sustainable Canadian Agricultural Partnership (S-CAP) bilateral agreement. It may be combined with other survey or administrative data sources and used for statistical, research and evaluation purposes.</p>"
+        }
+      ],
       "fields": [
         {
           "name": "quartech_areyouanexistingtreefruit",
@@ -69,7 +76,7 @@
           "required": true,
           "visibleIf": {
             "fieldName": "quartech_ownandorleaseland",
-            "selectedValueIn": [255550001],
+            "selectedValue": ["255550001"],
             "techComment": "I lease the land Selected"
           }
         },
@@ -326,10 +333,21 @@
       "hideHeaderDescription": true,
       "fields": [
         {
-          "name": "quartech_vlb_proofofvetlicense",
-          "label": "Proof of license/registration with either College of Veterinarians of BC (CVBC) or BC Veterinary Technologists Association (BCVTA)",
+          "name": "quartech_uploadasitemap",
+          "label": "Upload a site map(s) identifying the project location",
           "elementType": "FileInput",
           "required": true
+        },
+        {
+          "name": "quartech_relatedquotesandplans",
+          "label": "Upload quotes for items that are included in your Project Budget",
+          "elementType": "FileInput",
+          "required": true
+        },
+        {
+          "name": "quartech_uploadanyothersupportingdocuments",
+          "label": "Upload any other supporting documents",
+          "elementType": "FileInput"
         }
       ]
     },

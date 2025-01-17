@@ -367,7 +367,16 @@ function addDemographicDataDescription() {
     <p>The Province of British Columbia supports inclusive and increased representation of underrepresented groups. By participating in the survey below, you are helping to improve the delivery of programming. At this time, the questions focus on three identity groups (Indigenous, women and youth), and do not cover all potential groups who are underrepresented in the agriculture sector. We plan to expand the focus to other underrepresented groups in future.</p>
     <p>The survey is conducted independently of the funding program to which you are applying, and your survey responses will not be included in your funding application. If you wish to save a copy of your survey responses, you will have the option of emailing it to yourself upon completion. Please see the top of the survey form for instructions on how to receive a copy by email.</p>`;
 
-  addHtmlToSection('tab_Demographic_Info', html);
+  let sectionDataName = 'tab_Demographic_Info';
+  if (
+    document.querySelector(
+      `div[data-name='tab_Demographic_Information'] > .tab-column > div`
+    )
+  ) {
+    sectionDataName = 'tab_Demographic_Information';
+  }
+
+  addHtmlToSection(sectionDataName, html);
 }
 
 async function addDemographicInfoChefsIframe() {

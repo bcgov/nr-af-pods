@@ -15,7 +15,8 @@ export function customizeDocumentsStep() {
     programAbbreviation.includes('ABPP') ||
     programAbbreviation === 'NEFBA2' ||
     programAbbreviation === 'VLB' ||
-    programAbbreviation.includes('KTTP')
+    programAbbreviation.includes('KTTP') ||
+    programAbbreviation === 'TFCR'
   ) {
     addDocumentsStepText();
   }
@@ -35,8 +36,8 @@ export function customizeDocumentsStep() {
   //         <ul>
   //           <li>Event/training budget (if not outlined in Deliverables & Budget tab)</li>
   //           <li>
-  //             Verification of the last year of farming income (T2042, T1273, or Schedule 125 - 
-  //             Farm Revenue) detailing sales by commodity revenue code) or business income 
+  //             Verification of the last year of farming income (T2042, T1273, or Schedule 125 -
+  //             Farm Revenue) detailing sales by commodity revenue code) or business income
   //             if applying as a food processor
   //           </li>
   //           <li>Direct Deposit Application (template available on program webpage)</li>
@@ -50,7 +51,7 @@ export function customizeDocumentsStep() {
   //         <br><br>
   //         <ul>
   //           <li>Project budget</li>
-  //           <li 
+  //           <li
   //             title="Consultant resume outlining any educational accomplishments and relevant certifications"
   //           >
   //             Consultant resume

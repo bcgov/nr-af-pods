@@ -721,6 +721,54 @@ export function addTextAboveSection(tableDataName, htmlContentToAdd) {
 export function addTextBelowSection(tableDataName, htmlContentToAdd) {
   addHtmlToSection(tableDataName, htmlContentToAdd, 'bottom');
 }
+export function addTextAboveSubsection(subsectionAriaLabel, htmlContentToAdd) {
+  addHtmlToSubsection(subsectionAriaLabel, htmlContentToAdd, 'top');
+}
+
+export function addTextBelowSubsection(subsectionAriaLabel, htmlContentToAdd) {
+  addHtmlToSubsection(subsectionAriaLabel, htmlContentToAdd, 'bottom');
+}
+export function addHtmlToSubsection(
+  subsectionAriaLabel,
+  htmlContentToAdd,
+  topOrBottom = 'top'
+) {
+  const subsectionFieldset = document.querySelector(
+    `fieldset[aria-label='${subsectionAriaLabel}']`
+  );
+
+  if (!subsectionFieldset || !subsectionFieldset.parentNode) {
+    logger.warn({
+      fn: addHtmlToSubsection,
+      message: `Unable to add to subsection of fieldset aria-label: ${subsectionAriaLabel}, could not find section. Could be configuring non-active section.`,
+    });
+    return;
+  }
+  const divElement = document.createElement('div');
+  // const trElement = document.createElement('tr');
+
+  // const tdElement = document.createElement('td');
+  // tdElement.setAttribute('colspan', '2');
+  // tdElement.setAttribute('quartechHtml', 'true');
+  // tdElement.innerHTML = htmlContentToAdd;
+
+  // trElement.appendChild(tdElement);
+
+  divElement.innerHTML = htmlContentToAdd;
+
+  if (topOrBottom === 'top') {
+    // sectionTable.prepend(trElement);
+    // subsectionFieldset.prepend(divElement);
+    subsectionFieldset.parentNode.insertBefore(divElement, subsectionFieldset);
+  } else if (topOrBottom === 'bottom' && subsectionFieldset.nextSibling) {
+    // sectionTable.append(trElement);
+    // subsectionFieldset.append(divElement);
+    subsectionFieldset.parentNode.insertBefore(
+      divElement,
+      subsectionFieldset.nextSibling
+    );
+  }
+}
 
 export function addHtmlToSection(
   tableDataName,

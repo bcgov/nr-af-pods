@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { addTextBelowSection, addTextAboveSection } from './html.js';
+import { addTextBelowSection, addTextAboveSection, addTextAboveSubsection, addTextBelowSubsection } from './html.js';
 import { Logger } from './logger.js';
 import { getCurrentStep } from './program.ts';
 import { setTabName, setHeadings } from './tabs.js';
@@ -150,7 +150,7 @@ export function configureSubsections(sectionName, subsections) {
     },
   });
   subsections.forEach((subsection) => {
-    const { name, newLabel, hidden } = subsection;
+    const { name, newLabel, hidden, subsectionAriaLabel, additionalTextAboveSubsection, additionalTextBelowSubsection } = subsection;
 
     if (!name) {
       logger.error({
@@ -185,6 +185,13 @@ export function configureSubsections(sectionName, subsections) {
         return;
       }
       h3Tag.innerHTML = newLabel;
+    }
+
+    if (additionalTextAboveSubsection && subsectionAriaLabel) {
+      addTextAboveSubsection(subsectionAriaLabel, additionalTextAboveSubsection)
+    }
+    if (additionalTextBelowSubsection && subsectionAriaLabel) {
+      addTextBelowSubsection(subsectionAriaLabel, additionalTextBelowSubsection)
     }
 
     logger.info({
