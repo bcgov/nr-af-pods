@@ -36,6 +36,7 @@ export function customizeCurrencyInput({
   limitInputValue = undefined,
   hideDollarSign = false,
   emptyInitialValue = false,
+  initialValue = undefined,
   allowNegatives = false,
 }) {
   logger.info({
@@ -55,7 +56,7 @@ export function customizeCurrencyInput({
   const existingLabel = document.querySelector(
     `#${inputId}_span_currency_label`
   );
-  if (!existingLabel && !inputCtr.val() && !hideDollarSign) {
+  if (!existingLabel && !hideDollarSign) {
     inputCtr.parent().addClass('input-group');
 
     let span = document.createElement('span');
@@ -353,6 +354,9 @@ export function customizeCurrencyInput({
   // if (emptyInitialValue && inputCtr.val() === "0.00") {
   //   inputCtr.val("");
   // }
+  if (initialValue !== undefined && initialValue !== null) {
+    inputCtr.val(initialValue);
+  }
 }
 
 function handleNewValueEntered(inputCtr, skipCalculatingBudget = false) {

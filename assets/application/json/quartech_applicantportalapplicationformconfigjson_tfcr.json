@@ -1,5 +1,5 @@
 {
-  "version": "1.0.5",
+  "version": "1.1.3",
   "tags": [
     "Application",
     "StaffPortal",
@@ -11,12 +11,6 @@
   "programId": "b9b00cfb-63c6-ef11-a72e-6045bd5beb97",
   "hiddenSteps": [
     {
-      "name": "tab_Deliverables_Budget"
-    },
-    {
-      "displayName": "Documents"
-    },
-    {
       "displayName": "Eligibility"
     }
   ],
@@ -25,42 +19,36 @@
     {
       "name": "ApplicantInfoStep",
       "additionalTextAboveSection": "<p>Your personal information is collected under section 26(c) and 26(e) of the Freedom of Information and Protection of Privacy Act for the purposes of evaluating applications and for the planning and evaluating of the S-CAP Ministry Program. The information you provide will be shared with the federal government to fulfill the provincial obligations under the Sustainable Canadian Agricultural Partnership (S-CAP) bilateral agreement. It may be combined with other survey or administrative data sources and used for statistical, research and evaluation purposes.</p>",
-      "displayName": "Eligibility",
       "dataName": "tab_ApplicantInfo",
       "fields": [
         {
           "name": "quartech_areyouanexistingtreefruit",
           "label": "Are you an existing tree fruit (apple, cherry, pear, and/or other stone fruit) producer in B.C., farming over one acre of tree fruits, whose primary purpose is the production and sale of tree fruit products?",
           "required": true,
-          "dataFormat": "boolean",
           "onChangeHandler": "checkAndSetTFCREligbilityNotice"
         },
         {
           "name": "quartech_areyouanownerorlesseeoftheland",
           "label": "Are you an owner or lessee of the land the project will take place on?",
           "required": true,
-          "dataFormat": "boolean",
           "onChangeHandler": "checkAndSetTFCREligbilityNotice"
         },
         {
           "name": "quartech_areyouataxableentity",
           "label": "Are you a taxable entity (e.g., individual, corporation or trust), limited partnership, commune, cooperative with a GST and business number, or First Nation Band?",
           "required": true,
-          "dataFormat": "boolean",
           "onChangeHandler": "checkAndSetTFCREligbilityNotice"
         },
         {
           "name": "quartech_doyoufilefarmincometaxundertaxactinbc",
           "label": "Is your main farmstead in B.C. and do you file farm income tax (form T2042 or T1273) under the Income Tax Act in B.C.? This eligibility requirement may not be applicable to Indigenous applicants.",
           "required": true,
-          "dataFormat": "boolean",
           "onChangeHandler": "checkAndSetTFCREligbilityNotice"
         },
         {
           "name": "quartech_doyoucommittomaintainingtheproperty",
           "label": "Do you commit to maintaining the property as a commercial operation for at least four years after completion of the project?",
           "required": true,
-          "dataFormat": "boolean",
           "additionalTextBelowField": "<p id='doesNotMeetTFCREligibilityRequirements' style='color:red;display:none;'>Thank you for your interest. As you do not meet all eligibility requirements, your application does not qualify for approval at this time.</p>",
           "onChangeHandler": "checkAndSetTFCREligbilityNotice"
         },
@@ -68,7 +56,6 @@
           "name": "quartech_indigenousapplicant",
           "label": "Are you an Indigenous Applicant?",
           "required": true,
-          "dataFormat": "boolean",
           "elementType": "DropdownSelect"
         },
         {
@@ -142,324 +129,195 @@
       "hideHeaderDescription": true,
       "fields": [
         {
-          "name": "quartech_numberofrvtstudentsintendtohire",
-          "label": "How many veterinary and registered veterinary technologist (RVT) students do you intend to hire?",
+          "name": "quartech_selectthecategoryyouareapplyingin",
+          "label": "Select the category you are applying in",
+          "required": true
+        },
+        {
+          "name": "quartech_singleorgroupapplication",
+          "label": "Is this a single applicant or part of a group application?",
+          "required": true
+        },
+        {
+          "name": "quartech_coapplicatntsnames",
+          "label": "Please provide the names of the co-applicants to your group application",
           "required": true,
-          "additionalTextAboveField": "<div><p>Please note, AF program staff may contact students throughout the work period to check in and offer online educational opportunities. For a participating practice to be eligible for reimbursement at the end of the work placement, the student must complete 12 full consecutive weeks working at the practice, and the following documents must be received by the AF program administrator from each student:</p><ul><li>food-animal case log,</li><li>program evaluation form.</li></ul><p>It is the practice’s responsibility to make sure these criteria are met.</p><p>Please list students in order of preference for hiring (1 through 3). Initially, funding will be allocated on a one-student-per-clinic basis. If funding is not fully allocated, additional student work placements per clinic may be funded.</p></div>"
+          "maxLength": 4000,
+          "visibleIf": {
+            "fieldName": "quartech_singleorgroupapplication",
+            "selectedValue": 255550001,
+            "techComment": "Group application"
+          }
+        },
+        {
+          "name": "quartech_whenistheprojectstartdate",
+          "label": "When is the planned project start date?",
+          "required": true,
+          "elementType": "DatePicker"
+        },
+        {
+          "name": "quartech_activityenddate",
+          "label": "When is the planned project completion date?",
+          "required": true,
+          "elementType": "DatePicker"
         },
         {
           "name": "quartech_inordertocontinuouslyimprovecommunications",
-          "hidden": true
+          "hidden": true,
+          "techComment": "This is NEEDED to override default global json config, please leave this here."
         },
         {
-          "name": "quartech_ifotherpleasedescribe",
-          "hidden": true
-        },
-        {
-          "name": "quartech_1ststudentname",
-          "label": "1st Student | Name",
+          "name": "quartech_proposedactivitystopicpurposeintent",
+          "label": "Provide a description of the impacts of past extreme weather events on your tree fruit operation. Include specific information on when crop loss occurred due to extreme weather, % of crop loss by season, and long-term impacts on your operation.",
           "required": true,
-          "additionalTextAboveField": "<strong>Student 1 (please list the 1st choice for hiring)</strong>",
-          "visibleIf": {
-            "fieldName": "quartech_numberofrvtstudentsintendtohire",
-            "selectedValueIn": [255550001, 255550002, 255550003],
-            "techComment": "1, 2, or 3 Student(s) Selected"
-          }
+          "maxLength": 10000
         },
         {
-          "name": "quartech_1ststudentemail",
-          "label": "1st Student | Email",
+          "name": "quartech_proposedactivitydescription",
+          "label": "Provide a description of how this project will help reduce the impacts of extreme weather events on your farm",
           "required": true,
-          "format": "email",
-          "visibleIf": {
-            "fieldName": "quartech_numberofrvtstudentsintendtohire",
-            "selectedValueIn": [255550001, 255550002, 255550003],
-            "techComment": "1, 2, or 3 Student(s) Selected"
-          }
+          "maxLength": 10000
         },
         {
-          "name": "quartech_1ststudentphonenumber",
-          "label": "1st Student | Phone Number",
-          "format": "phoneNumber",
+          "name": "quartech_whatisthetotalareaacresoftreefruit",
+          "label": "What is the total area (acres) of tree fruit currently farmed by your business?",
           "required": true,
+          "format": "number",
+          "dataFormat": "number",
           "validation": {
-            "type": "length",
-            "value": 14,
-            "comparison": "equalTo",
-            "postfix": "digits",
-            "overrideDisplayValue": 10
-          },
-          "visibleIf": {
-            "fieldName": "quartech_numberofrvtstudentsintendtohire",
-            "selectedValueIn": [255550001, 255550002, 255550003],
-            "techComment": "1, 2, or 3 Student(s) Selected"
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThan"
           }
         },
         {
-          "name": "quartech_1ststudentenrolledin",
-          "label": "1st Student | Enrolled in",
+          "name": "quartech_totalareaacreswithinyourfarmingoperation",
+          "label": "What is the total area (acres) within your farming operation that will benefit as a result of completing this project?",
           "required": true,
-          "visibleIf": {
-            "fieldName": "quartech_numberofrvtstudentsintendtohire",
-            "selectedValueIn": [255550001, 255550002, 255550003],
-            "techComment": "1, 2, or 3 Student(s) Selected"
-          }
-        },
-        {
-          "name": "quartech_1ststudent_nameofeducationalinstitute",
-          "label": "1st Student | Name of educational institute",
-          "required": true,
-          "visibleIf": {
-            "fieldName": "quartech_numberofrvtstudentsintendtohire",
-            "selectedValueIn": [255550001, 255550002, 255550003],
-            "techComment": "1, 2, or 3 Student(s) Selected"
-          }
-        },
-        {
-          "name": "quartech_1ststudent_yearofstudiescompleted",
-          "label": "1st Student | Year of studies completed",
-          "required": true,
-          "visibleIf": {
-            "fieldName": "quartech_numberofrvtstudentsintendtohire",
-            "selectedValueIn": [255550001, 255550002, 255550003],
-            "techComment": "1, 2, or 3 Student(s) Selected"
-          }
-        },
-        {
-          "name": "quartech_1ststudent_workplacementstartdate",
-          "label": "1st Student | Work placement start date",
-          "required": true,
-          "visibleIf": {
-            "fieldName": "quartech_numberofrvtstudentsintendtohire",
-            "selectedValueIn": [255550001, 255550002, 255550003],
-            "techComment": "1, 2, or 3 Student(s) Selected"
-          },
+          "format": "number",
+          "dataFormat": "number",
           "validation": {
-            "comparison": "lessThan",
-            "fieldName": "quartech_1ststudent_workplacementenddate",
-            "type": "date"
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThan"
+          }
+        }
+      ]
+    },
+    {
+      "name": "DeliverablesBudgetStep",
+      "subsections": [
+        {
+          "name": "Deliverables & Budget",
+          "type": "SectionTitle",
+          "newLabel": "Eligble Expenses"
+        }
+      ],
+      "fields": [
+        {
+          "name": "quartech_smefee",
+          "required": true,
+          "format": "currency",
+          "maxDigits": 13,
+          "initialValue": "0.00",
+          "label": "Contractor / Consultant Cost",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
           },
-          "forceRevalidate": true
+          "onChangeHandler": "calculateTFCRBudgets"
         },
         {
-          "name": "quartech_1ststudent_workplacementenddate",
-          "label": "1st Student | Work placement end date",
+          "name": "quartech_hiredlabour",
+          "required": true,
+          "format": "currency",
+          "maxDigits": 13,
+          "initialValue": "0.00",
+          "label": "Hired Labour",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          },
+          "onChangeHandler": "calculateTFCRBudgets"
+        },
+        {
+          "name": "quartech_facilityequipmenttechnologyrental",
+          "required": true,
+          "format": "currency",
+          "maxDigits": 13,
+          "initialValue": "0.00",
+          "label": "Equipment",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          },
+          "onChangeHandler": "calculateTFCRBudgets"
+        },
+        {
+          "name": "quartech_materials",
+          "required": true,
+          "format": "currency",
+          "maxDigits": 13,
+          "initialValue": "0.00",
+          "label": "Materials",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          },
+          "onChangeHandler": "calculateTFCRBudgets"
+        },
+        {
+          "name": "quartech_othercost",
+          "required": true,
+          "format": "currency",
+          "maxDigits": 13,
+          "initialValue": "0.00",
+          "label": "Other Cost",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          },
+          "onChangeHandler": "calculateTFCRBudgets"
+        },
+        {
+          "name": "quartech_pleaseexplainotherifapplicable",
+          "label": "Please explain Other",
           "required": true,
           "visibleIf": {
-            "fieldName": "quartech_numberofrvtstudentsintendtohire",
-            "selectedValueIn": [255550001, 255550002, 255550003],
-            "techComment": "1, 2, or 3 Student(s) Selected"
-          },
-          "validation": {
+            "fieldName": "quartech_othercost",
             "comparison": "greaterThan",
-            "fieldName": "quartech_1ststudent_workplacementstartdate",
-            "type": "date"
-          },
-          "forceRevalidate": true
-        },
-        {
-          "name": "quartech_2ndstudentname",
-          "label": "2nd Student | Name",
-          "additionalTextAboveField": "<strong>Student 2 (please list the 2nd choice for hiring)</strong>",
-          "required": true,
-          "visibleIf": {
-            "fieldName": "quartech_numberofrvtstudentsintendtohire",
-            "selectedValueIn": [255550002, 255550003],
-            "techComment": "2, or 3 Students Selected"
+            "value": "0"
           }
         },
         {
-          "name": "quartech_2ndstudentemail",
-          "label": "2nd Student | Email",
-          "required": true,
-          "format": "email",
-          "visibleIf": {
-            "fieldName": "quartech_numberofrvtstudentsintendtohire",
-            "selectedValueIn": [255550002, 255550003],
-            "techComment": "2, or 3 Students Selected"
-          }
-        },
-        {
-          "name": "quartech_2ndstudentphonenumber",
-          "label": "2nd Student | Phone Number",
-          "format": "phoneNumber",
-          "required": true,
+          "name": "quartech_estimatedbudgettotalactivitycost",
+          "format": "currency",
+          "maxDigits": 11,
+          "label": "Total estimated cash costs of project",
           "validation": {
-            "type": "length",
-            "value": 14,
-            "comparison": "equalTo",
-            "postfix": "digits",
-            "overrideDisplayValue": 10
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
           },
-          "visibleIf": {
-            "fieldName": "quartech_numberofrvtstudentsintendtohire",
-            "selectedValueIn": [255550002, 255550003],
-            "techComment": "2, or 3 Students Selected"
-          }
+          "readOnly": true
         },
         {
-          "name": "quartech_2ndstudentenrolledin",
-          "label": "2nd Student | Enrolled in",
-          "required": true,
-          "visibleIf": {
-            "fieldName": "quartech_numberofrvtstudentsintendtohire",
-            "selectedValueIn": [255550002, 255550003],
-            "techComment": "2, or 3 Students Selected"
-          }
-        },
-        {
-          "name": "quartech_2ndstudent_nameofeducationalinstitute",
-          "label": "2nd Student | Name of educational institute",
-          "required": true,
-          "visibleIf": {
-            "fieldName": "quartech_numberofrvtstudentsintendtohire",
-            "selectedValueIn": [255550002, 255550003],
-            "techComment": "2, or 3 Students Selected"
-          }
-        },
-        {
-          "name": "quartech_2ndstudent_yearofstudiescompleted",
-          "label": "2nd Student | Year of studies completed",
-          "required": true,
-          "visibleIf": {
-            "fieldName": "quartech_numberofrvtstudentsintendtohire",
-            "selectedValueIn": [255550002, 255550003],
-            "techComment": "2, or 3 Students Selected"
-          }
-        },
-        {
-          "name": "quartech_2ndstudent_workplacementstartdate",
-          "label": "2nd Student | Work placement start date",
-          "required": true,
-          "visibleIf": {
-            "fieldName": "quartech_numberofrvtstudentsintendtohire",
-            "selectedValueIn": [255550002, 255550003],
-            "techComment": "2, or 3 Students Selected"
-          },
+          "name": "quartech_totalfundingrequiredfromtheprogram",
+          "format": "currency",
+          "maxDigits": 11,
+          "label": "Maximum funding requested from program (80% cost-share of up to $125,000 of eligible costs to a maximum of $100,000 per farm business)",
           "validation": {
-            "comparison": "lessThan",
-            "fieldName": "quartech_2ndstudent_workplacementenddate",
-            "type": "date"
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
           },
-          "forceRevalidate": true
-        },
-        {
-          "name": "quartech_2ndstudent_workplacementenddate",
-          "label": "2nd Student | Work placement end date",
-          "required": true,
-          "visibleIf": {
-            "fieldName": "quartech_numberofrvtstudentsintendtohire",
-            "selectedValueIn": [255550002, 255550003],
-            "techComment": "2, or 3 Students Selected"
-          },
-          "validation": {
-            "comparison": "greaterThan",
-            "fieldName": "quartech_2ndstudent_workplacementstartdate",
-            "type": "date"
-          },
-          "forceRevalidate": true
-        },
-        {
-          "name": "quartech_3rdstudentname",
-          "label": "3rd Student Name",
-          "additionalTextAboveField": "<strong>Student 3 (please list the 3rd choice for hiring)</strong>",
-          "required": true,
-          "visibleIf": {
-            "fieldName": "quartech_numberofrvtstudentsintendtohire",
-            "selectedValueIn": [255550003],
-            "techComment": "3 Students Selected"
-          }
-        },
-        {
-          "name": "quartech_3rdstudentemail",
-          "label": "3rd Student | Email",
-          "required": true,
-          "format": "email",
-          "visibleIf": {
-            "fieldName": "quartech_numberofrvtstudentsintendtohire",
-            "selectedValueIn": [255550003],
-            "techComment": "3 Students Selected"
-          }
-        },
-        {
-          "name": "quartech_3rdstudentphonenumber",
-          "label": "3rd Student | Phone Number",
-          "format": "phoneNumber",
-          "required": true,
-          "validation": {
-            "type": "length",
-            "value": 14,
-            "comparison": "equalTo",
-            "postfix": "digits",
-            "overrideDisplayValue": 10
-          },
-          "visibleIf": {
-            "fieldName": "quartech_numberofrvtstudentsintendtohire",
-            "selectedValueIn": [255550003],
-            "techComment": "3 Students Selected"
-          }
-        },
-        {
-          "name": "quartech_3rdstudentenrolledin",
-          "label": "3rd Student | Enrolled in",
-          "required": true,
-          "visibleIf": {
-            "fieldName": "quartech_numberofrvtstudentsintendtohire",
-            "selectedValueIn": [255550003],
-            "techComment": "3 Students Selected"
-          }
-        },
-        {
-          "name": "quartech_3rdstudent_nameofeducationalinstitute",
-          "label": "3rd Student | Name of educational institute",
-          "required": true,
-          "visibleIf": {
-            "fieldName": "quartech_numberofrvtstudentsintendtohire",
-            "selectedValueIn": [255550003],
-            "techComment": "3 Students Selected"
-          }
-        },
-        {
-          "name": "quartech_3rdstudent_yearofstudiescompleted",
-          "label": "3rd Student | Year of studies completed",
-          "required": true,
-          "visibleIf": {
-            "fieldName": "quartech_numberofrvtstudentsintendtohire",
-            "selectedValueIn": [255550003],
-            "techComment": "3 Students Selected"
-          }
-        },
-        {
-          "name": "quartech_3rdstudent_workplacementstartdate",
-          "label": "3rd Student | Work placement start date",
-          "required": true,
-          "visibleIf": {
-            "fieldName": "quartech_numberofrvtstudentsintendtohire",
-            "selectedValueIn": [255550003],
-            "techComment": "3 Students Selected"
-          },
-          "validation": {
-            "comparison": "lessThan",
-            "fieldName": "quartech_3rdstudent_workplacementenddate",
-            "type": "date"
-          },
-          "forceRevalidate": true
-        },
-        {
-          "name": "quartech_3rdstudent_workplacementenddate",
-          "label": "3rd Student | Work placement end date",
-          "required": true,
-          "visibleIf": {
-            "fieldName": "quartech_numberofrvtstudentsintendtohire",
-            "selectedValueIn": [255550003],
-            "techComment": "3 Students Selected"
-          },
-          "validation": {
-            "comparison": "greaterThan",
-            "fieldName": "quartech_3rdstudent_workplacementstartdate",
-            "type": "date"
-          },
-          "forceRevalidate": true
+          "errorMessage": "Total Funding Required must sum to be greater than or equal to 0.",
+          "readOnly": true
         }
       ]
     },

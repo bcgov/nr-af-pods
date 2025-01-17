@@ -102,7 +102,7 @@ export function configureField(field) {
     name,
     loading: true,
   });
-  if (initialValue) {
+  if (initialValue !== null && initialValue !== undefined) {
     // ONLY set initialValue if there's no existing value present
     const currValue = getControlValue({ controlId: name, raw: true });
     if (!currValue) {
@@ -206,6 +206,7 @@ export function configureField(field) {
         : { skipCalculatingBudget: true }),
       ...(maxDigits ? { maxDigits } : { maxDigits: 13 }),
       ...(emptyInitialValue && { emptyInitialValue }),
+      ...(initialValue !== undefined && initialValue !== null && { initialValue }),
       ...(allowNegatives && { allowNegatives }),
     });
   } else if (format === 'percentage') {

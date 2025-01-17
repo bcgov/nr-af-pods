@@ -25,6 +25,7 @@ POWERPOD.onChangeHandlers = {
   populateTotalPercent,
   calculateAndPopulateRequestedClaimAmountForVLB,
   checkAndSetTFCREligbilityNotice,
+  calculateTFCRBudgets,
 };
 
 const logger = Logger('common/onChangeHandlers');
@@ -116,6 +117,88 @@ export function setOnChangeHandler(fieldName, elemType, onChangeHandlerName) {
   store.dispatch('addFieldData', {
     name: fieldName,
     onChangeHandlerSet: true,
+  });
+}
+
+export function calculateTFCRBudgets() {
+  logger.info({
+    fn: calculateTFCRBudgets,
+    message: `calculateTFCRBudgets called, start calculating...`,
+  });
+  // Get input values from the elements
+  const smeFee = document.getElementById('quartech_smefee')?.value || 0;
+  const hiredLabour =
+    document.getElementById('quartech_hiredlabour')?.value || 0;
+  const equipment =
+    document.getElementById('quartech_facilityequipmenttechnologyrental')
+      ?.value || 0;
+  const materials = document.getElementById('quartech_materials')?.value || 0;
+  const other = document.getElementById('quartech_othercost')?.value || 0;
+
+  logger.info({
+    fn: calculateTFCRBudgets,
+    message: `calculateTFCRBudgets returned the following values`,
+    data: { smeFee, hiredLabour, equipment, materials, other },
+  });
+
+  // Convert input values to numbers (fallback to 0 if invalid)
+  const smeFeeCost = parseFloat(smeFee.replace(',', '')) || 0;
+  const hiredLabourCost = parseFloat(hiredLabour.replace(',', '')) || 0;
+  const equipmentCost = parseFloat(equipment.replace(',', '')) || 0;
+  const materialsCost = parseFloat(materials.replace(',', '')) || 0;
+  const otherCost = parseFloat(other.replace(',', '')) || 0;
+
+  logger.info({
+    fn: calculateTFCRBudgets,
+    message: `calculateAndPopulateRequestedClaimAmountForVLB returned the following for expenses`,
+    data: {
+      smeFeeCost,
+      hiredLabourCost,
+      equipmentCost,
+      materialsCost,
+      otherCost,
+    },
+  });
+
+  // Perform the calculation
+  const totalProposedBudgetCost =
+    smeFeeCost + hiredLabourCost + equipmentCost + materialsCost + otherCost;
+
+  const formattedTotalProposedBudgetCost = formatCurrencyOnBlur(
+    `${totalProposedBudgetCost}`
+  );
+
+  // @ts-ignore
+  setFieldValue({
+    name: 'quartech_estimatedbudgettotalactivitycost',
+    value: formattedTotalProposedBudgetCost,
+  });
+  logger.info({
+    fn: calculateTFCRBudgets,
+    message: `Successfuly set field tag: quartech_estimatedbudgettotalactivitycost to value: ${formattedTotalProposedBudgetCost}`,
+  });
+
+  let finalTotalFundingRequired;
+  const totalFundingRequired = 0.8 * totalProposedBudgetCost;
+
+  if (totalFundingRequired > 100000) {
+    finalTotalFundingRequired = 100000;
+  } else {
+    finalTotalFundingRequired = totalFundingRequired;
+  }
+
+  const formattedfinalTotalFundingRequired = formatCurrencyOnBlur(
+    `${finalTotalFundingRequired}`
+  );
+
+  // @ts-ignore
+  setFieldValue({
+    name: 'quartech_totalfundingrequiredfromtheprogram',
+    value: formattedfinalTotalFundingRequired,
+  });
+  logger.info({
+    fn: calculateTFCRBudgets,
+    message: `Successfuly set field tag: quartech_totalfundingrequiredfromtheprogram to value: ${formattedfinalTotalFundingRequired}`,
   });
 }
 
