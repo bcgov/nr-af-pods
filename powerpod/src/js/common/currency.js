@@ -56,7 +56,11 @@ export function customizeCurrencyInput({
   const existingLabel = document.querySelector(
     `#${inputId}_span_currency_label`
   );
-  if (!existingLabel && !inputCtr.val() && !hideDollarSign) {
+  if (
+    !existingLabel &&
+    !inputCtr.parent().hasClass('input-group') &&
+    !hideDollarSign
+  ) {
     inputCtr.parent().addClass('input-group');
 
     let span = document.createElement('span');
@@ -354,7 +358,7 @@ export function customizeCurrencyInput({
   // if (emptyInitialValue && inputCtr.val() === "0.00") {
   //   inputCtr.val("");
   // }
-  if (initialValue !== undefined && initialValue !== null) {
+  if (initialValue !== undefined && initialValue !== null && !inputCtr.val()) {
     inputCtr.val(initialValue);
   }
 }
