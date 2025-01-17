@@ -157,24 +157,24 @@ export function checkAndSetTFCREligbilityNotice() {
   });
 
   const areAnyValuesNo =
-    existingTreeFruit === '0' ||
-    ownerOrLesseeOfTheLand === '0' ||
-    taxableEntity === '0' ||
-    fileFarmIncomeTaxUnderTaxActInBC === '0' ||
-    commitToMaintainingTheProperty === '0';
+    existingTreeFruit === '255550001' ||
+    ownerOrLesseeOfTheLand === '255550001' ||
+    taxableEntity === '255550001' ||
+    fileFarmIncomeTaxUnderTaxActInBC === '255550001' ||
+    commitToMaintainingTheProperty === '255550001';
 
   const areAllValuesYes =
-    existingTreeFruit === '1' &&
-    ownerOrLesseeOfTheLand === '1' &&
-    taxableEntity === '1' &&
-    fileFarmIncomeTaxUnderTaxActInBC === '1' &&
-    commitToMaintainingTheProperty === '1';
+    existingTreeFruit === '255550000' &&
+    ownerOrLesseeOfTheLand === '255550000' &&
+    taxableEntity === '255550000' &&
+    fileFarmIncomeTaxUnderTaxActInBC === '255550000' &&
+    commitToMaintainingTheProperty === '255550000';
 
   const noticeElement = document.getElementById(
     'doesNotMeetTFCREligibilityRequirements'
   );
   // this means that one value is NO
-  if (areAnyValuesNo && noticeElement?.style?.display) {
+  if (areAnyValuesNo && noticeElement?.style) {
     noticeElement.style.display = '';
     hideAllStepSections();
     $('fieldset[aria-label="Eligibility"] > table').parent().css('display', '');
