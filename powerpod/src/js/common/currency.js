@@ -56,7 +56,7 @@ export function customizeCurrencyInput({
   const existingLabel = document.querySelector(
     `#${inputId}_span_currency_label`
   );
-  if (!existingLabel && !hideDollarSign) {
+  if (!existingLabel && !inputCtr.val() && !hideDollarSign) {
     inputCtr.parent().addClass('input-group');
 
     let span = document.createElement('span');
