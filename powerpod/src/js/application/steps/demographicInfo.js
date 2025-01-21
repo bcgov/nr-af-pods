@@ -1,5 +1,5 @@
-import { NO_VALUE, YES_VALUE } from '../../common/constants.js';
-import { getEnvVars } from '../../common/env.ts';
+import { Environment, NO_VALUE, YES_VALUE } from '../../common/constants.js';
+import { getEnv, getEnvVars } from '../../common/env.ts';
 import {
   addHtmlToSection,
   addTextAboveField,
@@ -11,7 +11,7 @@ import { Logger } from '../../common/logger.js';
 import { configureFields } from '../../common/fieldConfiguration.js';
 import { setFieldReadOnly } from '../../common/fieldValidation.js';
 import { validateDemographicInfoRequiredFields } from '../validation.js';
-import { getProgramEmailAddress } from '../../common/program.ts';
+import { getProgramAbbreviation, getProgramEmailAddress } from '../../common/program.ts';
 import { saveFormData } from '../../common/saveButton.js';
 import { getFormId } from '../../common/form.js';
 import { getApplicationData } from '../../common/fetch.js';
@@ -382,7 +382,7 @@ function addDemographicDataDescription() {
 async function addDemographicInfoChefsIframe() {
   logger.info({
     fn: addDemographicInfoChefsIframe,
-    message: `Start adding chefs iframe...`,
+    message: `Start adding chefs iframe... v1.1`,
   });
   $('#quartech_chefssubmissionid')?.closest('tr')?.css({ display: 'none' });
 
@@ -418,12 +418,30 @@ async function addDemographicInfoChefsIframe() {
   if (chefsSubmissionGuid) {
     chefsUrl = `https://submit.digital.gov.bc.ca/app/form/success?s=${chefsSubmissionGuid}`;
   } else {
+    let chefsDemographicDataFormId, chefsDemographicDataIndividualsFormId;
     const {
-      quartech_ChefsDemographicDataFormId: chefsDemographicDataFormId,
-      quartech_ChefsDemographicDataIndividualsFormId:
-        chefsDemographicDataIndividualsFormId,
+      quartech_ChefsDemographicDataFormId,
+      quartech_ChefsDemographicDataIndividualsFormId
     } = await getEnvVars();
 
+    if (getProgramAbbreviation() === 'TFCR') {
+      const env = getEnv();
+      if (env === Environment.PROD) {
+        chefsDemographicDataFormId = '7be807bc-3de2-4d4c-a92c-bea845876ff9';
+        chefsDemographicDataIndividualsFormId = '7be807bc-3de2-4d4c-a92c-bea845876ff9';
+      } else {
+        chefsDemographicDataFormId = '4714bd44-0fe1-472e-8636-b477c207695b';
+        chefsDemographicDataIndividualsFormId = '4714bd44-0fe1-472e-8636-b477c207695b';
+      }
+    } else {
+      chefsDemographicDataFormId = quartech_ChefsDemographicDataFormId;
+      chefsDemographicDataIndividualsFormId = quartech_ChefsDemographicDataIndividualsFormId;
+    }
+
+    logger.info({
+      fn: addDemographicInfoChefsIframe,
+      message: `Retrieved params for iframe, chefsDemographicDataFormId: ${chefsDemographicDataFormId}, chefsDemographicDataIndividualsFormId: ${chefsDemographicDataIndividualsFormId}`,
+    });
     const formId = getFormId();
 
     const applicationDataRes = await getApplicationData({ id: formId });
