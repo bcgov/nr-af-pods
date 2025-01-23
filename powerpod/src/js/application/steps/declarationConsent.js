@@ -58,10 +58,10 @@ function addConsentForTFCR(programName) {
               declare that I have/the applicant has not knowingly submitted false or misleading information and that the information provided in this application and attachments are true and correct in every respect to the best of my/the applicant's knowledge;</li>
           <li>acknowledge the information provided on this application form and attachments will be used by program staff to assess the applicant's eligibility for funding from the Program;</li>
           <li>understand that failing to comply with all application requirements may delay the processing of this application or make the applicant ineligible to receive funding under the Program;</li>
-          <li>represent that I have/the applicant has read and understood the Program Guide and agree(s) to be bound by the Program Guide, and in this application;</li>
+          <li>represent that I have/the applicant has read and understood the Program Guide and agree(s) to be bound by the Program Guide;</li>
           <li>represent that the applicant is in compliance with all Program eligibility requirements as described in the Program Guide, and in this document;</li>
           <li>agree to proactively disclose to the Program all other sources of funding the applicant or any partners within the same organization or the same farming or food processing operation receives with respect to the projects funded by this Program, including financial and/or in-kind contributions from federal, provincial, or municipal government;</li>        
-          <li>acknowledge that the Business Number (GST Number) is collected under the authority of the Income Tax Act for the purpose of reporting income.</li>
+          <li>acknowledge that the Business Number (GST Number) is collected by the Ministry and/or a contractor retained by the Ministry to administer the Program under the authority of the Income Tax Act for the purpose of reporting income.</li>
       </u>
       <br/>
   </div>`;
