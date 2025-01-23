@@ -60,7 +60,8 @@
         {
           "name": "quartech_legalbusinessororganizationname",
           "required": true,
-          "additionalTextAboveField": "<p>Your personal information is collected under section 26(c) and 26(e) of the Freedom of Information and Protection of Privacy Act for the purposes of evaluating applications and for the planning and evaluation of the program. The information you provide may be combined with other survey or administrative data sources and used for statistical, research and evaluation purposes.</p>"
+          "additionalTextAboveField": "<p>Your personal information is collected under section 26(c) and 26(e) of the Freedom of Information and Protection of Privacy Act for the purposes of evaluating applications and for the planning and evaluation of the program. The information you provide may be combined with other survey or administrative data sources and used for statistical, research and evaluation purposes.</p>",
+          "techComment": "Included to specify the fixed text above."
         },
         {
           "name": "quartech_indigenousapplicant",
@@ -163,13 +164,23 @@
           "name": "quartech_whenistheprojectstartdate",
           "label": "When is the planned project start date?",
           "required": true,
-          "elementType": "DatePicker"
+          "elementType": "DatePicker",
+          "relocateField": {
+            "originFieldName": "quartech_whenistheprojectstartdate",
+            "destinationFieldName": "quartech_coapplicatntsnames",
+            "relativePosition": "below"
+          }
         },
         {
           "name": "quartech_activityenddate",
           "label": "When is the planned project completion date?",
           "required": true,
-          "elementType": "DatePicker"
+          "elementType": "DatePicker",
+          "relocateField": {
+            "originFieldName": "quartech_activityenddate",
+            "destinationFieldName": "quartech_whenistheprojectstartdate",
+            "relativePosition": "below"
+          }
         },
         {
           "name": "quartech_inordertocontinuouslyimprovecommunications",
