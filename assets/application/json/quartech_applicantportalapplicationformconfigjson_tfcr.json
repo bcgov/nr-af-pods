@@ -251,7 +251,8 @@
             "value": "0",
             "comparison": "greaterThanOrEqualTo"
           },
-          "onChangeHandler": "calculateTFCRBudgets"
+          "onChangeHandler": "calculateTFCRBudgets",
+          "tooltipText": "Fees for external contractors or consultants hired to support the project"
         },
         {
           "name": "quartech_hiredlabour",
@@ -265,7 +266,8 @@
             "value": "0",
             "comparison": "greaterThanOrEqualTo"
           },
-          "onChangeHandler": "calculateTFCRBudgets"
+          "onChangeHandler": "calculateTFCRBudgets",
+          "tooltipText": "Additional hired labour directly related to the project"
         },
         {
           "name": "quartech_facilityequipmenttechnologyrental",
@@ -273,13 +275,14 @@
           "format": "currency",
           "maxDigits": 13,
           "initialValue": "0.00",
-          "label": "Equipment",
+          "label": "Rented Tools or Equipment",
           "validation": {
             "type": "numeric",
             "value": "0",
             "comparison": "greaterThanOrEqualTo"
           },
-          "onChangeHandler": "calculateTFCRBudgets"
+          "onChangeHandler": "calculateTFCRBudgets",
+          "tooltipText": "Tools or equipment needed for installation or implementation"
         },
         {
           "name": "quartech_materials",
@@ -287,13 +290,14 @@
           "format": "currency",
           "maxDigits": 13,
           "initialValue": "0.00",
-          "label": "Materials",
+          "label": "Project Equipment and Materials",
           "validation": {
             "type": "numeric",
             "value": "0",
             "comparison": "greaterThanOrEqualTo"
           },
-          "onChangeHandler": "calculateTFCRBudgets"
+          "onChangeHandler": "calculateTFCRBudgets",
+          "tooltipText": "Costs for purchasing major components or materials such as frost fans, evaporative cooling systems, energy-efficient heaters, etc"
         },
         {
           "name": "quartech_othercost",
@@ -307,7 +311,8 @@
             "value": "0",
             "comparison": "greaterThanOrEqualTo"
           },
-          "onChangeHandler": "calculateTFCRBudgets"
+          "onChangeHandler": "calculateTFCRBudgets",
+          "tooltipText": "Miscellaneous costs such as shipping"
         },
         {
           "name": "quartech_pleaseexplainotherifapplicable",
