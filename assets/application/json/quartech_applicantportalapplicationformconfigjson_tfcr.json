@@ -1,5 +1,5 @@
 {
-  "version": "1.1.8",
+  "version": "1.1.9",
   "tags": [
     "Application",
     "StaffPortal",
@@ -23,8 +23,7 @@
         {
           "name": "Applicant Information",
           "type": "SectionTitle",
-          "subsectionAriaLabel": "Applicant Information",
-          "additionalTextAboveSubsection": "<p>Your personal information is collected under section 26(c) and 26(e) of the Freedom of Information and Protection of Privacy Act for the purposes of evaluating applications and for the planning and evaluating of the S-CAP Ministry Program. The information you provide will be shared with the federal government to fulfill the provincial obligations under the Sustainable Canadian Agricultural Partnership (S-CAP) bilateral agreement. It may be combined with other survey or administrative data sources and used for statistical, research and evaluation purposes.</p>"
+          "subsectionAriaLabel": "Applicant Information"          
         }
       ],
       "fields": [
@@ -32,8 +31,7 @@
           "name": "quartech_areyouanexistingtreefruit",
           "label": "Are you an existing tree fruit (apple, cherry, pear, and/or other stone fruit) producer in B.C., farming over one acre of tree fruits, whose primary purpose is the production and sale of tree fruit products?",
           "required": true,
-          "onChangeHandler": "checkAndSetTFCREligbilityNotice"
-        },
+          "onChangeHandler": "checkAndSetTFCREligbilityNotice"        },
         {
           "name": "quartech_areyouanownerorlesseeoftheland",
           "label": "Are you an owner or lessee of the land the project will take place on?",
@@ -58,6 +56,11 @@
           "required": true,
           "additionalTextBelowField": "<p id='doesNotMeetTFCREligibilityRequirements' style='color:red;display:none;'>Thank you for your interest. As you do not meet all eligibility requirements, your application does not qualify for approval at this time.</p>",
           "onChangeHandler": "checkAndSetTFCREligbilityNotice"
+        },
+        {
+          "name": "quartech_legalbusinessororganizationname",
+          "required": true,
+          "additionalTextAboveField": "<p>Your personal information is collected under section 26(c) and 26(e) of the Freedom of Information and Protection of Privacy Act for the purposes of evaluating applications and for the planning and evaluation of the program. The information you provide may be combined with other survey or administrative data sources and used for statistical, research and evaluation purposes.</p>"
         },
         {
           "name": "quartech_indigenousapplicant",
@@ -177,13 +180,15 @@
           "name": "quartech_proposedactivitystopicpurposeintent",
           "label": "Provide a description of the impacts of past extreme weather events on your tree fruit operation. Include specific information on when crop loss occurred due to extreme weather, % of crop loss by season, and long-term impacts on your operation.",
           "required": true,
-          "maxLength": 10000
+          "maxLength": 10000,
+          "tooltipText": "Type up to 1000 characters"          
         },
         {
           "name": "quartech_proposedactivitydescription",
           "label": "Provide a description of how this project will help reduce the impacts of extreme weather events on your farm",
           "required": true,
-          "maxLength": 10000
+          "maxLength": 10000,
+          "tooltipText": "Type up to 1000 characters"   
         },
         {
           "name": "quartech_whatisthetotalareaacresoftreefruit",
@@ -195,7 +200,8 @@
             "type": "numeric",
             "value": "0",
             "comparison": "greaterThan"
-          }
+          },
+          "tooltipText": "Type in number format only"
         },
         {
           "name": "quartech_totalareaacreswithinyourfarmingoperation",
@@ -207,7 +213,8 @@
             "type": "numeric",
             "value": "0",
             "comparison": "greaterThan"
-          }
+          },
+          "tooltipText": "Type in number format only"
         }
       ]
     },
@@ -324,7 +331,8 @@
             "comparison": "greaterThanOrEqualTo"
           },
           "errorMessage": "Total Funding Required must sum to be greater than or equal to 0.",
-          "readOnly": true
+          "readOnly": true,
+          "additionalTextBelowField": "<p style='color:red'>Note: In-kind contributions cannot be counted towards the applicant's cost-share contributions.</p>"
         }
       ]
     },
