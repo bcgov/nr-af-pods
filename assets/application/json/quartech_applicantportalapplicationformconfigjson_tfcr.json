@@ -46,7 +46,7 @@
         },
         {
           "name": "quartech_doyoufilefarmincometaxundertaxactinbc",
-          "label": "Is your main farmstead in B.C. and do you file farm income tax (form T2042 or T1273) under the Income Tax Act in B.C.? This eligibility requirement may not be applicable to Indigenous applicants.",
+          "label": "Is your main farmstead in B.C. and do you file farm income tax (form T2042 or T1273) under the <span style='font-style:italic;'>Income Tax Act</span> in B.C.? This eligibility requirement may not be applicable to Indigenous applicants.",
           "required": true,
           "onChangeHandler": "checkAndSetTFCREligbilityNotice"
         },
@@ -324,15 +324,14 @@
           "name": "quartech_totalfundingrequiredfromtheprogram",
           "format": "currency",
           "maxDigits": 11,
-          "label": "Maximum funding requested from program (80% cost-share of up to $125,000 of eligible costs to a maximum of $100,000 per farm business)",
+          "label": "Maximum funding requested from program (80% cost-share <span style='color:red;'>of up to $125,000 of eligible costs</span> to a maximum of $100,000 per farm business)<p style='color:red'>Note: In-kind contributions cannot be counted towards the applicant's cost-share contributions.</p>",
           "validation": {
             "type": "numeric",
             "value": "0",
             "comparison": "greaterThanOrEqualTo"
           },
           "errorMessage": "Total Funding Required must sum to be greater than or equal to 0.",
-          "readOnly": true,
-          "additionalTextBelowField": "<p style='color:red'>Note: In-kind contributions cannot be counted towards the applicant's cost-share contributions.</p>"
+          "readOnly": true
         }
       ]
     },
