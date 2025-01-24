@@ -1,5 +1,5 @@
 import store from '../store/index.js';
-import { HtmlElementType, POWERPOD } from './constants.js';
+import { HtmlElementType, NO_VALUE, POWERPOD, YES_VALUE } from './constants.js';
 import { formatCurrencyOnBlur } from './currency.js';
 import { getFieldConfig } from './fields.js';
 import {
@@ -240,24 +240,45 @@ export function checkAndSetTFCREligbilityNotice() {
   });
 
   const areAnyValuesNo =
-    existingTreeFruit === '255550001' ||
-    ownerOrLesseeOfTheLand === '255550001' ||
-    taxableEntity === '255550001' ||
-    fileFarmIncomeTaxUnderTaxActInBC === '255550001' ||
-    commitToMaintainingTheProperty === '255550001';
+    existingTreeFruit === NO_VALUE ||
+    ownerOrLesseeOfTheLand === NO_VALUE ||
+    taxableEntity === NO_VALUE ||
+    fileFarmIncomeTaxUnderTaxActInBC === NO_VALUE ||
+    commitToMaintainingTheProperty === NO_VALUE;
+
+  const areAnyValuesBlank =
+    existingTreeFruit === '' ||
+    ownerOrLesseeOfTheLand === '' ||
+    taxableEntity === '' ||
+    fileFarmIncomeTaxUnderTaxActInBC === '' ||
+    commitToMaintainingTheProperty === '';
+
+  const areAllValuesBlank =
+    existingTreeFruit === '' &&
+    ownerOrLesseeOfTheLand === '' &&
+    taxableEntity === '' &&
+    fileFarmIncomeTaxUnderTaxActInBC === '' &&
+    commitToMaintainingTheProperty === '';
 
   const areAllValuesYes =
-    existingTreeFruit === '255550000' &&
-    ownerOrLesseeOfTheLand === '255550000' &&
-    taxableEntity === '255550000' &&
-    fileFarmIncomeTaxUnderTaxActInBC === '255550000' &&
-    commitToMaintainingTheProperty === '255550000';
+    existingTreeFruit === YES_VALUE &&
+    ownerOrLesseeOfTheLand === YES_VALUE &&
+    taxableEntity === YES_VALUE &&
+    fileFarmIncomeTaxUnderTaxActInBC === YES_VALUE &&
+    commitToMaintainingTheProperty === YES_VALUE;
 
   const noticeElement = document.getElementById(
     'doesNotMeetTFCREligibilityRequirements'
   );
+  if (!noticeElement) {
+    logger.error({
+      fn: checkAndSetTFCREligbilityNotice,
+      message: `Could not fetch noticeElement by id doesNotMeetTFCREligibilityRequirements`,
+    });
+    return;
+  }
   // If all values are Yes, we must enable the button and show the rest of the form
-  if (areAllValuesYes && noticeElement) {
+  if (areAllValuesYes) {
     noticeElement.style.display = 'none';
     $('fieldset[aria-label="Eligibility"] > table').parent().css('display', '');
     $('fieldset[aria-label="Business Information"] > table')
@@ -286,19 +307,22 @@ export function checkAndSetTFCREligbilityNotice() {
     }
   }
   // If any value is not Yes, we must hide the rest of the form and disable the button
-  else if(noticeElement?.style) {
-    noticeElement.style.display = '';
+  else {
     hideAllStepSections();
     $('fieldset[aria-label="Eligibility"] > table').parent().css('display', '');
-    
+
     $('#NextButton').prop('disabled', true);
 
     // If any value is No, we must show the notice
     if (areAnyValuesNo) {
-      const errMsgDiv = document.getElementById('error_messages_div');
-      if (errMsgDiv) {
-        errMsgDiv.style.display = 'none';
-      }      
+      noticeElement.style.display = '';
+    } else if (areAnyValuesBlank || areAllValuesBlank) {
+      noticeElement.style.display = 'none';
+    }
+
+    const errMsgDiv = document.getElementById('error_messages_div');
+    if (errMsgDiv) {
+      errMsgDiv.style.display = 'none';
     }
   }
 }

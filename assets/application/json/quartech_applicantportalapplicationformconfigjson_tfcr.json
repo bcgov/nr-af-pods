@@ -1,5 +1,5 @@
 {
-  "version": "1.1.9",
+  "version": "1.2.0",
   "tags": [
     "Application",
     "StaffPortal",
@@ -23,7 +23,7 @@
         {
           "name": "Applicant Information",
           "type": "SectionTitle",
-          "subsectionAriaLabel": "Applicant Information"          
+          "subsectionAriaLabel": "Applicant Information"
         }
       ],
       "fields": [
@@ -31,7 +31,8 @@
           "name": "quartech_areyouanexistingtreefruit",
           "label": "Are you an existing tree fruit (apple, cherry, pear, and/or other stone fruit) producer in B.C., farming over one acre of tree fruits, whose primary purpose is the production and sale of tree fruit products?",
           "required": true,
-          "onChangeHandler": "checkAndSetTFCREligbilityNotice"        },
+          "onChangeHandler": "checkAndSetTFCREligbilityNotice"
+        },
         {
           "name": "quartech_areyouanownerorlesseeoftheland",
           "label": "Are you an owner or lessee of the land the project will take place on?",
@@ -192,14 +193,14 @@
           "label": "Provide a description of the impacts of past extreme weather events on your tree fruit operation. Include specific information on when crop loss occurred due to extreme weather, % of crop loss by season, and long-term impacts on your operation.",
           "required": true,
           "maxLength": 10000,
-          "tooltipText": "Type up to 1000 characters"          
+          "tooltipText": "Type up to 1000 characters"
         },
         {
           "name": "quartech_proposedactivitydescription",
           "label": "Provide a description of how this project will help reduce the impacts of extreme weather events on your farm",
           "required": true,
           "maxLength": 10000,
-          "tooltipText": "Type up to 1000 characters"   
+          "tooltipText": "Type up to 1000 characters"
         },
         {
           "name": "quartech_whatisthetotalareaacresoftreefruit",
@@ -380,7 +381,8 @@
           "name": "quartech_totalfundingrequiredfromtheprogram",
           "format": "currency",
           "maxDigits": 11,
-          "label": "Maximum funding requested from program (80% cost-share <span style='color:red;'>of up to $125,000 of eligible costs</span> to a maximum of $100,000 per farm business)<p style='color:red'>Note: In-kind contributions cannot be counted towards the applicant's cost-share contributions.</p>",
+          "label": "Maximum funding requested from program (80% cost-share <span style='color:red;'>of up to $125,000 of eligible costs</span> to a maximum of $100,000 per farm business)",
+          "additionalTextBelowField": "<p style='color:red'>Note: In-kind contributions cannot be counted towards the applicant's cost-share contributions.</p>",
           "validation": {
             "type": "numeric",
             "value": "0",
