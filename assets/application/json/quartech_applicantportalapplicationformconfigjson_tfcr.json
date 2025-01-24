@@ -286,7 +286,7 @@
         },
         {
           "name": "quartech_pleasedescribeequipmentrequiredifapplicable",
-          "label": "Please describe equipment required",
+          "label": "Please describe the type of Tools or Equipment rented",
           "required": true,
           "visibleIf": {
             "fieldName": "quartech_facilityequipmenttechnologyrental",
@@ -326,7 +326,7 @@
         },
         {
           "name": "quartech_pleaseexplainotherifapplicable",
-          "label": "Please explain Other",
+          "label": "Please describe the Other Costs involved",
           "required": true,
           "visibleIf": {
             "fieldName": "quartech_othercost",
