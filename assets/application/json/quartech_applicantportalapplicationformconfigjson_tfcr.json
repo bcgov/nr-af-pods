@@ -1,5 +1,5 @@
 {
-  "version": "1.1.8",
+  "version": "1.2.0",
   "tags": [
     "Application",
     "StaffPortal",
@@ -23,8 +23,7 @@
         {
           "name": "Applicant Information",
           "type": "SectionTitle",
-          "subsectionAriaLabel": "Applicant Information",
-          "additionalTextAboveSubsection": "<p>Your personal information is collected under section 26(c) and 26(e) of the Freedom of Information and Protection of Privacy Act for the purposes of evaluating applications and for the planning and evaluating of the S-CAP Ministry Program. The information you provide will be shared with the federal government to fulfill the provincial obligations under the Sustainable Canadian Agricultural Partnership (S-CAP) bilateral agreement. It may be combined with other survey or administrative data sources and used for statistical, research and evaluation purposes.</p>"
+          "subsectionAriaLabel": "Applicant Information"
         }
       ],
       "fields": [
@@ -48,7 +47,7 @@
         },
         {
           "name": "quartech_doyoufilefarmincometaxundertaxactinbc",
-          "label": "Is your main farmstead in B.C. and do you file farm income tax (form T2042 or T1273) under the Income Tax Act in B.C.? This eligibility requirement may not be applicable to Indigenous applicants.",
+          "label": "Is your main farmstead in B.C. and do you file farm income tax (form T2042 or T1273) under the <span style='font-style:italic;'>Income Tax Act</span> in B.C.? This eligibility requirement may not be applicable to Indigenous applicants.",
           "required": true,
           "onChangeHandler": "checkAndSetTFCREligbilityNotice"
         },
@@ -58,6 +57,12 @@
           "required": true,
           "additionalTextBelowField": "<p id='doesNotMeetTFCREligibilityRequirements' style='color:red;display:none;'>Thank you for your interest. As you do not meet all eligibility requirements, your application does not qualify for approval at this time.</p>",
           "onChangeHandler": "checkAndSetTFCREligbilityNotice"
+        },
+        {
+          "name": "quartech_legalbusinessororganizationname",
+          "required": true,
+          "additionalTextAboveField": "<p>Your personal information is collected under section 26(c) and 26(e) of the Freedom of Information and Protection of Privacy Act for the purposes of evaluating applications and for the planning and evaluation of the program. The information you provide may be combined with other survey or administrative data sources and used for statistical, research and evaluation purposes.</p>",
+          "techComment": "Included to specify the fixed text above."
         },
         {
           "name": "quartech_indigenousapplicant",
@@ -160,13 +165,23 @@
           "name": "quartech_whenistheprojectstartdate",
           "label": "When is the planned project start date?",
           "required": true,
-          "elementType": "DatePicker"
+          "elementType": "DatePicker",
+          "relocateField": {
+            "originFieldName": "quartech_whenistheprojectstartdate",
+            "destinationFieldName": "quartech_coapplicatntsnames",
+            "relativePosition": "below"
+          }
         },
         {
           "name": "quartech_activityenddate",
           "label": "When is the planned project completion date?",
           "required": true,
-          "elementType": "DatePicker"
+          "elementType": "DatePicker",
+          "relocateField": {
+            "originFieldName": "quartech_activityenddate",
+            "destinationFieldName": "quartech_whenistheprojectstartdate",
+            "relativePosition": "below"
+          }
         },
         {
           "name": "quartech_inordertocontinuouslyimprovecommunications",
@@ -177,13 +192,15 @@
           "name": "quartech_proposedactivitystopicpurposeintent",
           "label": "Provide a description of the impacts of past extreme weather events on your tree fruit operation. Include specific information on when crop loss occurred due to extreme weather, % of crop loss by season, and long-term impacts on your operation.",
           "required": true,
-          "maxLength": 10000
+          "maxLength": 10000,
+          "tooltipText": "Type up to 1000 characters"
         },
         {
           "name": "quartech_proposedactivitydescription",
           "label": "Provide a description of how this project will help reduce the impacts of extreme weather events on your farm",
           "required": true,
-          "maxLength": 10000
+          "maxLength": 10000,
+          "tooltipText": "Type up to 1000 characters"
         },
         {
           "name": "quartech_whatisthetotalareaacresoftreefruit",
@@ -195,7 +212,8 @@
             "type": "numeric",
             "value": "0",
             "comparison": "greaterThan"
-          }
+          },
+          "tooltipText": "Type in number format only"
         },
         {
           "name": "quartech_totalareaacreswithinyourfarmingoperation",
@@ -207,7 +225,8 @@
             "type": "numeric",
             "value": "0",
             "comparison": "greaterThan"
-          }
+          },
+          "tooltipText": "Type in number format only"
         }
       ]
     },
@@ -233,7 +252,18 @@
             "value": "0",
             "comparison": "greaterThanOrEqualTo"
           },
-          "onChangeHandler": "calculateTFCRBudgets"
+          "onChangeHandler": "calculateTFCRBudgets",
+          "tooltipText": "Fees for external contractors or consultants hired to support the project"
+        },
+        {
+          "name": "quartech_describetheconsultantssupportingthisproject",
+          "label": "Please describe the Consultants / Contractors supporting this project",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_smefee",
+            "comparison": "greaterThan",
+            "value": "0"
+          }
         },
         {
           "name": "quartech_hiredlabour",
@@ -247,7 +277,18 @@
             "value": "0",
             "comparison": "greaterThanOrEqualTo"
           },
-          "onChangeHandler": "calculateTFCRBudgets"
+          "onChangeHandler": "calculateTFCRBudgets",
+          "tooltipText": "Additional hired labour directly related to the project"
+        },
+        {
+          "name": "quartech_describethehiredlaboursupportingthisproject",
+          "label": "Please describe the Hired Labour supporting this project",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_hiredlabour",
+            "comparison": "greaterThan",
+            "value": "0"
+          }
         },
         {
           "name": "quartech_facilityequipmenttechnologyrental",
@@ -255,13 +296,24 @@
           "format": "currency",
           "maxDigits": 13,
           "initialValue": "0.00",
-          "label": "Equipment",
+          "label": "Rented Tools or Equipment",
           "validation": {
             "type": "numeric",
             "value": "0",
             "comparison": "greaterThanOrEqualTo"
           },
-          "onChangeHandler": "calculateTFCRBudgets"
+          "onChangeHandler": "calculateTFCRBudgets",
+          "tooltipText": "Tools or equipment needed for installation or implementation"
+        },
+        {
+          "name": "quartech_pleasedescribeequipmentrequiredifapplicable",
+          "label": "Please describe the type of Tools or Equipment rented",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_facilityequipmenttechnologyrental",
+            "comparison": "greaterThan",
+            "value": "0"
+          }
         },
         {
           "name": "quartech_materials",
@@ -269,13 +321,24 @@
           "format": "currency",
           "maxDigits": 13,
           "initialValue": "0.00",
-          "label": "Materials",
+          "label": "Project Equipment and Materials",
           "validation": {
             "type": "numeric",
             "value": "0",
             "comparison": "greaterThanOrEqualTo"
           },
-          "onChangeHandler": "calculateTFCRBudgets"
+          "onChangeHandler": "calculateTFCRBudgets",
+          "tooltipText": "Costs for purchasing major components or materials such as frost fans, evaporative cooling systems, energy-efficient heaters, etc"
+        },
+        {
+          "name": "quartech_describeprojectequipmentandmaterialsinvolved",
+          "label": "Please describe the Project Equipment and Materials involved",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_materials",
+            "comparison": "greaterThan",
+            "value": "0"
+          }
         },
         {
           "name": "quartech_othercost",
@@ -289,11 +352,12 @@
             "value": "0",
             "comparison": "greaterThanOrEqualTo"
           },
-          "onChangeHandler": "calculateTFCRBudgets"
+          "onChangeHandler": "calculateTFCRBudgets",
+          "tooltipText": "Miscellaneous costs such as shipping"
         },
         {
           "name": "quartech_pleaseexplainotherifapplicable",
-          "label": "Please explain Other",
+          "label": "Please describe the Other Costs involved",
           "required": true,
           "visibleIf": {
             "fieldName": "quartech_othercost",
@@ -317,7 +381,8 @@
           "name": "quartech_totalfundingrequiredfromtheprogram",
           "format": "currency",
           "maxDigits": 11,
-          "label": "Maximum funding requested from program (80% cost-share of up to $125,000 of eligible costs to a maximum of $100,000 per farm business)",
+          "label": "Maximum funding requested from program (80% cost-share <span style='color:red;'>of up to $125,000 of eligible costs</span> to a maximum of $100,000 per farm business)",
+          "additionalTextBelowField": "<p style='color:red'>Note: In-kind contributions cannot be counted towards the applicant's cost-share contributions.</p>",
           "validation": {
             "type": "numeric",
             "value": "0",
