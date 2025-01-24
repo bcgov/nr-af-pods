@@ -285,6 +285,16 @@
           "tooltipText": "Tools or equipment needed for installation or implementation"
         },
         {
+          "name": "quartech_pleasedescribeequipmentrequiredifapplicable",
+          "label": "Please describe equipment required",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_facilityequipmenttechnologyrental",
+            "comparison": "greaterThan",
+            "value": "0"
+          }
+        },
+        {
           "name": "quartech_materials",
           "required": true,
           "format": "currency",
