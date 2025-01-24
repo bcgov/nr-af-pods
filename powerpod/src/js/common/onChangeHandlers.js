@@ -1,6 +1,7 @@
 import store from '../store/index.js';
 import { HtmlElementType, NO_VALUE, POWERPOD, YES_VALUE } from './constants.js';
 import { formatCurrencyOnBlur } from './currency.js';
+import { setFieldVisibility } from './fieldConditionalLogic.js';
 import { getFieldConfig } from './fields.js';
 import {
   copyFromFieldAToFieldB,
@@ -125,6 +126,7 @@ export function calculateTFCRBudgets() {
     fn: calculateTFCRBudgets,
     message: `calculateTFCRBudgets called, start calculating...`,
   });
+  
   // Get input values from the elements
   const smeFee = document.getElementById('quartech_smefee')?.value || 0;
   const hiredLabour =
@@ -200,6 +202,12 @@ export function calculateTFCRBudgets() {
     fn: calculateTFCRBudgets,
     message: `Successfuly set field tag: quartech_totalfundingrequiredfromtheprogram to value: ${formattedfinalTotalFundingRequired}`,
   });
+
+  setFieldVisibility('quartech_describetheconsultantssupportingthisproject');
+  setFieldVisibility('quartech_describethehiredlaboursupportingthisproject');
+  setFieldVisibility('quartech_pleasedescribeequipmentrequiredifapplicable');
+  setFieldVisibility('quartech_describeprojectequipmentandmaterialsinvolved');
+  setFieldVisibility('quartech_pleaseexplainotherifapplicable');
 }
 
 export function checkAndSetTFCREligbilityNotice() {

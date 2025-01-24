@@ -24,6 +24,10 @@ import store from '../store/index.js';
 
 const logger = Logger('common/fieldConditionalLogic');
 
+POWERPOD.fieldConditionalLogic = {
+  setFieldVisibility,
+};
+
 export function assignDependentFields(fieldConfig) {
   const { name } = fieldConfig;
   logger.info({

@@ -1,5 +1,5 @@
 {
-  "version": "1.2.0",
+  "version": "1.2.2",
   "tags": [
     "Application",
     "StaffPortal",
@@ -249,7 +249,7 @@
           "label": "Contractor / Consultant Cost",
           "validation": {
             "type": "numeric",
-            "value": "0",
+            "value": 0,
             "comparison": "greaterThanOrEqualTo"
           },
           "onChangeHandler": "calculateTFCRBudgets",

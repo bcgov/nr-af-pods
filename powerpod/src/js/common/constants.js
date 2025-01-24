@@ -144,4 +144,6 @@ export const POWERPOD = {
   dateUtils: {},
   utils: {},
   typesOfFood: {},
+  fieldConditionalLogic: {},
+  fieldConfiguration: {},
 };

@@ -54,6 +54,8 @@ import { initCraNumberCheckbox } from './initValuesFns.js';
 
 const logger = Logger('common/fieldConfiguration');
 
+POWERPOD.fieldConfiguration = { updateFieldValue };
+
 export function configureField(field) {
   const {
     name,
@@ -206,7 +208,8 @@ export function configureField(field) {
         : { skipCalculatingBudget: true }),
       ...(maxDigits ? { maxDigits } : { maxDigits: 13 }),
       ...(emptyInitialValue && { emptyInitialValue }),
-      ...(initialValue !== undefined && initialValue !== null && { initialValue }),
+      ...(initialValue !== undefined &&
+        initialValue !== null && { initialValue }),
       ...(allowNegatives && { allowNegatives }),
     });
   } else if (format === 'percentage') {
