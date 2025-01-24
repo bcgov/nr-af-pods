@@ -255,6 +255,16 @@
           "tooltipText": "Fees for external contractors or consultants hired to support the project"
         },
         {
+          "name": "quartech_describetheconsultantssupportingthisproject",
+          "label": "Please describe the Consultants / Contractors supporting this project",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_smefee",
+            "comparison": "greaterThan",
+            "value": "0"
+          }
+        },
+        {
           "name": "quartech_hiredlabour",
           "required": true,
           "format": "currency",
@@ -268,6 +278,16 @@
           },
           "onChangeHandler": "calculateTFCRBudgets",
           "tooltipText": "Additional hired labour directly related to the project"
+        },
+        {
+          "name": "quartech_describethehiredlaboursupportingthisproject",
+          "label": "Please describe the Hired Labour supporting this project",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_hiredlabour",
+            "comparison": "greaterThan",
+            "value": "0"
+          }
         },
         {
           "name": "quartech_facilityequipmenttechnologyrental",
@@ -308,6 +328,16 @@
           },
           "onChangeHandler": "calculateTFCRBudgets",
           "tooltipText": "Costs for purchasing major components or materials such as frost fans, evaporative cooling systems, energy-efficient heaters, etc"
+        },
+        {
+          "name": "quartech_describeprojectequipmentandmaterialsinvolved",
+          "label": "Please describe the Project Equipment and Materials involved",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_materials",
+            "comparison": "greaterThan",
+            "value": "0"
+          }
         },
         {
           "name": "quartech_othercost",
