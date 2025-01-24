@@ -256,17 +256,8 @@ export function checkAndSetTFCREligbilityNotice() {
   const noticeElement = document.getElementById(
     'doesNotMeetTFCREligibilityRequirements'
   );
-  // this means that one value is NO
-  if (areAnyValuesNo && noticeElement?.style) {
-    noticeElement.style.display = '';
-    hideAllStepSections();
-    $('fieldset[aria-label="Eligibility"] > table').parent().css('display', '');
-    const errMsgDiv = document.getElementById('error_messages_div');
-    if (errMsgDiv) {
-      errMsgDiv.style.display = 'none';
-    }
-    $('#NextButton').prop('disabled', true);
-  } else if (areAllValuesYes && noticeElement) {
+  // If all values are Yes, we must enable the button and show the rest of the form
+  if (areAllValuesYes && noticeElement) {
     noticeElement.style.display = 'none';
     $('fieldset[aria-label="Eligibility"] > table').parent().css('display', '');
     $('fieldset[aria-label="Business Information"] > table')
@@ -292,6 +283,22 @@ export function checkAndSetTFCREligbilityNotice() {
       validationErrorHtml === ''
     ) {
       $('#NextButton').prop('disabled', false);
+    }
+  }
+  // If any value is not Yes, we must hide the rest of the form and disable the button
+  else if(noticeElement?.style) {
+    noticeElement.style.display = '';
+    hideAllStepSections();
+    $('fieldset[aria-label="Eligibility"] > table').parent().css('display', '');
+    
+    $('#NextButton').prop('disabled', true);
+
+    // If any value is No, we must show the notice
+    if (areAnyValuesNo) {
+      const errMsgDiv = document.getElementById('error_messages_div');
+      if (errMsgDiv) {
+        errMsgDiv.style.display = 'none';
+      }      
     }
   }
 }
