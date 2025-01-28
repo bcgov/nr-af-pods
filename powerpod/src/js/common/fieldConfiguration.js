@@ -19,6 +19,7 @@ import {
   getOriginalMsosElement,
   hideFieldRow,
   observeChanges,
+  onDocumentReadyState,
   setFieldNameLabel,
   setFieldValue,
   showFieldRow,
@@ -744,6 +745,22 @@ export function setFieldObserver(name, format = '') {
           });
         }
       );
+      // Configuration needed to ensure datepicker pop up box works as expected
+      onDocumentReadyState(() => {
+        // @ts-ignore
+        $(`#${name}_datepicker_description`).datetimepicker({
+          locale: 'en',
+        });
+        const targetSpan = $(`#${name}_datepicker_description`)
+          .closest('div')
+          .find('span[role="button"][title="Choose a date"]');
+
+        // Attach click event
+        targetSpan.on('click', function () {
+          // @ts-ignore
+          $(`#${name}_datepicker_description`).datetimepicker('show');
+        });
+      });
       break;
     case HtmlElementType.MultiSelectPicklist:
     case HtmlElementType.SingleOptionSet:
