@@ -1,5 +1,5 @@
 {
-  "version": "1.2.2",
+  "version": "1.2.3",
   "tags": [
     "Application",
     "StaffPortal",
@@ -71,18 +71,23 @@
           "elementType": "DropdownSelect"
         },
         {
-          "name": "quartech_ownandorleaseland",
+          "name": "quartech_ownorleaseland",
           "label": "Do you own or lease the land that your operation is based on?",
-          "required": true
+          "required": true,
+          "relocateField": {
+            "originFieldName": "quartech_ownorleaseland",
+            "destinationFieldName": "quartech_howmanyyearsistheleasevalidfor",
+            "relativePosition": "above"
+          }
         },
         {
           "name": "quartech_howmanyyearsistheleasevalidfor",
           "label": "How many years is the lease valid for?",
           "required": true,
           "visibleIf": {
-            "fieldName": "quartech_ownandorleaseland",
-            "selectedValue": ["255550001"],
-            "techComment": "I lease the land Selected"
+            "fieldName": "quartech_ownorleaseland",
+            "selectedValueIn": [255550001, 255550003],
+            "techComment": "I lease the land, or Both Selected"
           }
         },
         {
@@ -181,7 +186,8 @@
             "originFieldName": "quartech_activityenddate",
             "destinationFieldName": "quartech_whenistheprojectstartdate",
             "relativePosition": "below"
-          }
+          },
+          "additionalTextBelowField": "All projects must be completed by or before March 14, 2027"
         },
         {
           "name": "quartech_inordertocontinuouslyimprovecommunications",
