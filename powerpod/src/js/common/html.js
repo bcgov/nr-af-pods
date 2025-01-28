@@ -820,8 +820,45 @@ export function addHtmlToField(
   htmlContentToAdd,
   topOrBottom = 'top'
 ) {
+  logger.info({
+    fn: addHtmlToField,
+    message: `additionalTextAboveField or additionalTextBelowField was specified, adding... fieldName: ${fieldName}, htmlContentToAdd: ${htmlContentToAdd}, topOrBottom: ${topOrBottom}`,
+  });
+
   const tr = $(`#${fieldName}`).closest('tr');
   if (!tr) return;
+
+  const fieldConfig = getFieldConfig(fieldName);
+
+  // Check if the htmlContentToAdd has already been added by comparing UUIDs
+  if (fieldConfig && Array.isArray(fieldConfig.html)) {
+    const existingHtmlUuids = fieldConfig.html;
+
+    // Check if the same content already exists
+    const isAlreadyAdded = existingHtmlUuids.some((uuid) => {
+      const existingElement = $(
+        `tr[data-uuid='${uuid}'] td[quartechHtml='true']`
+      );
+      if (!existingElement) return false;
+
+      // Normalize by stripping whitespace and ignoring quotes
+      const existingContent = existingElement
+        .html()
+        .replace(/["'`]/g, '')
+        .trim();
+      const newContent = htmlContentToAdd.replace(/["'`]/g, '').trim();
+
+      return existingContent === newContent;
+    });
+
+    if (isAlreadyAdded) {
+      logger.info({
+        fn: addHtmlToField,
+        message: `HTML content is already added for fieldName: ${fieldName}`,
+      });
+      return;
+    }
+  }
 
   const uuid = crypto.randomUUID();
 
@@ -837,6 +874,7 @@ export function addHtmlToField(
       fn: addHtmlToField,
       message: 'Failed to create new row',
     });
+    return;
   }
 
   const tdElement = document.createElement('td');
@@ -845,14 +883,8 @@ export function addHtmlToField(
   tdElement.setAttribute('class', 'clearfix cell text form-control-cell');
   tdElement.innerHTML = htmlContentToAdd;
 
-  const fieldConfig = getFieldConfig(fieldName);
-
-  if (
-    fieldConfig &&
-    (fieldConfig.additionalTextAboveField ||
-      fieldConfig.additionalTextBelowField)
-  ) {
-    let html = fieldConfig?.html || [];
+  if (fieldConfig) {
+    let html = fieldConfig.html || [];
     html.push(uuid);
     store.dispatch('addFieldData', {
       name: fieldName,
@@ -1528,25 +1560,29 @@ export function renameSectionLabel(name, newLabel) {
 export function removeDropdownOptions(name, removeDropdownOptionsValues) {
   // Ensure the `removeDropdownOptionsValues` is always treated as an array
   const valuesToRemove = Array.isArray(removeDropdownOptionsValues)
-      ? removeDropdownOptionsValues
-      : [removeDropdownOptionsValues];
+    ? removeDropdownOptionsValues
+    : [removeDropdownOptionsValues];
 
   // Find the select element by its name or id
-  const selectElement = document.querySelector(`select[name="${name}"], #${name}`);
-  
+  const selectElement = document.querySelector(
+    `select[name="${name}"], #${name}`
+  );
+
   if (selectElement) {
-      // Iterate through the values to remove
-      valuesToRemove.forEach(value => {
-          const optionToRemove = selectElement.querySelector(`option[value="${value}"]`);
-          if (optionToRemove) {
-              selectElement.removeChild(optionToRemove);
-          }
-      });
+    // Iterate through the values to remove
+    valuesToRemove.forEach((value) => {
+      const optionToRemove = selectElement.querySelector(
+        `option[value="${value}"]`
+      );
+      if (optionToRemove) {
+        selectElement.removeChild(optionToRemove);
+      }
+    });
   } else {
-      logger.warn({
-        fn: removeDropdownOptions,
-        message: `No dropdown found with name or id: ${name}`,
-        data: { name, removeDropdownOptionsValues }
-      })
+    logger.warn({
+      fn: removeDropdownOptions,
+      message: `No dropdown found with name or id: ${name}`,
+      data: { name, removeDropdownOptionsValues },
+    });
   }
 }
