@@ -1524,3 +1524,29 @@ export function renameSectionLabel(name, newLabel) {
     message: `Succesfully renamed section name: ${name}, to newLabel: ${newLabel}`,
   });
 }
+
+export function removeDropdownOptions(name, removeDropdownOptionsValues) {
+  // Ensure the `removeDropdownOptionsValues` is always treated as an array
+  const valuesToRemove = Array.isArray(removeDropdownOptionsValues)
+      ? removeDropdownOptionsValues
+      : [removeDropdownOptionsValues];
+
+  // Find the select element by its name or id
+  const selectElement = document.querySelector(`select[name="${name}"], #${name}`);
+  
+  if (selectElement) {
+      // Iterate through the values to remove
+      valuesToRemove.forEach(value => {
+          const optionToRemove = selectElement.querySelector(`option[value="${value}"]`);
+          if (optionToRemove) {
+              selectElement.removeChild(optionToRemove);
+          }
+      });
+  } else {
+      logger.warn({
+        fn: removeDropdownOptions,
+        message: `No dropdown found with name or id: ${name}`,
+        data: { name, removeDropdownOptionsValues }
+      })
+  }
+}

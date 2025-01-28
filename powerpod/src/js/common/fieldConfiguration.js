@@ -20,6 +20,7 @@ import {
   hideFieldRow,
   observeChanges,
   onDocumentReadyState,
+  removeDropdownOptions,
   setFieldNameLabel,
   setFieldValue,
   showFieldRow,
@@ -87,6 +88,7 @@ export function configureField(field) {
     visible = true,
     additionalTextAboveField,
     additionalTextBelowField,
+    removeDropdownOptionsValues,
   } = field;
   let { elementType } = field;
   logger.info({
@@ -333,6 +335,9 @@ export function configureField(field) {
     setFieldVisibility(name);
   } else {
     showFieldRow(name);
+  }
+  if (removeDropdownOptionsValues) {
+    removeDropdownOptions(name, removeDropdownOptionsValues);
   }
 
   store.dispatch('addFieldData', {

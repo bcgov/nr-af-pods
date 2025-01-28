@@ -1,5 +1,5 @@
 {
-  "version": "1.2.4",
+  "version": "1.2.5",
   "tags": [
     "Application",
     "StaffPortal",
@@ -78,7 +78,8 @@
             "originFieldName": "quartech_ownorleaseland",
             "destinationFieldName": "quartech_howmanyyearsistheleasevalidfor",
             "relativePosition": "above"
-          }
+          },
+          "removeDropdownOptionsValues": 255550002
         },
         {
           "name": "quartech_howmanyyearsistheleasevalidfor",
