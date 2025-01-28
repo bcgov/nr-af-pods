@@ -1,5 +1,5 @@
 {
-  "version": "1.2.3",
+  "version": "1.2.4",
   "tags": [
     "Application",
     "StaffPortal",
@@ -198,14 +198,14 @@
           "name": "quartech_proposedactivitystopicpurposeintent",
           "label": "Provide a description of the impacts of past extreme weather events on your tree fruit operation. Include specific information on when crop loss occurred due to extreme weather, % of crop loss by season, and long-term impacts on your operation.",
           "required": true,
-          "maxLength": 10000,
+          "maxLength": 1000,
           "tooltipText": "Type up to 1000 characters"
         },
         {
           "name": "quartech_proposedactivitydescription",
           "label": "Provide a description of how this project will help reduce the impacts of extreme weather events on your farm",
           "required": true,
-          "maxLength": 10000,
+          "maxLength": 1000,
           "tooltipText": "Type up to 1000 characters"
         },
         {
