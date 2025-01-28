@@ -122,7 +122,7 @@ export function customizeDeliverablesBudgetStep() {
   }
   // END KTTP PROGRAMS/STREAMS CUSTOMIZATION
 
-  configureFields();
+  // configureFields();
 }
 
 function setOnKeypressBudgetInput(elementId) {
