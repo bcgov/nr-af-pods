@@ -1,5 +1,5 @@
 {
-  "version": "1.2.2",
+  "version": "1.2.3",
   "tags": [
     "Application",
     "StaffPortal",
@@ -181,7 +181,8 @@
             "originFieldName": "quartech_activityenddate",
             "destinationFieldName": "quartech_whenistheprojectstartdate",
             "relativePosition": "below"
-          }
+          },
+          "additionalTextBelowField": "All projects must be completed by or before March 14, 2027"
         },
         {
           "name": "quartech_inordertocontinuouslyimprovecommunications",
