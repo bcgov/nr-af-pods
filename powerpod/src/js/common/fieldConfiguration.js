@@ -605,7 +605,7 @@ export function updateFieldValue({
     }
     if (datePickerElement) {
       const dateValue = getControlValue({ controlId: name }); // returns in display value like M/D/YYY
-      const formattedDate = formatDateToISOString(dateValue);
+      const formattedDate = formatDateToISOString(dateValue) ?? '';
       logger.info({
         fn: updateFieldValue,
         message: `updateFieldValue called on DatePicker element of name: ${name}, with value: ${formattedDate}`,
