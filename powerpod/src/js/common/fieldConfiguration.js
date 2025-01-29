@@ -53,6 +53,7 @@ import { generateFormJson } from './form.js';
 //       This is needed due to tree shaking during compilation.
 import { hasCraNumberCheckboxEventHandler } from './customEventHandlers.js';
 import { initCraNumberCheckbox } from './initValuesFns.js';
+import { formatDateToISOString } from './date.js';
 
 const logger = Logger('common/fieldConfiguration');
 
@@ -592,6 +593,26 @@ export function updateFieldValue({
       data: { params, fieldConfig, value },
     });
     return;
+  }
+
+  if (elementType && elementType === HtmlElementType.DatePicker) {
+    const datePickerElement = document.getElementById(name);
+    if (!datePickerElement) {
+      logger.warn({
+        fn: updateFieldValue,
+        message: `Could not find DatePicker element for name: ${name}`,
+      });
+    }
+    if (datePickerElement) {
+      const dateValue = getControlValue({ controlId: name }); // returns in display value like M/D/YYY
+      const formattedDate = formatDateToISOString(dateValue);
+      logger.info({
+        fn: updateFieldValue,
+        message: `updateFieldValue called on DatePicker element of name: ${name}, with value: ${formattedDate}`,
+      });
+      // @ts-ignore
+      datePickerElement.value = formattedDate;
+    }
   }
 
   logger.info({
