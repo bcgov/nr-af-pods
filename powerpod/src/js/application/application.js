@@ -26,6 +26,7 @@ import { getGlobalConfigData } from '../common/config.js';
 import { addFormDataOnClickHandler } from '../common/form.js';
 import { preloadRequestVerificationToken } from '../common/dynamics.ts';
 import { addSaveButton } from '../common/saveButton.js';
+import { customizeSuccessStep } from './steps/success.js';
 
 const logger = Logger('application/application');
 
@@ -125,7 +126,8 @@ async function updatePageForSelectedProgram(programId = undefined) {
 
   const currentStep = getCurrentStep();
 
-  addSaveButton();
+  // Only add Save Btn to non-success steps
+  if (currentStep !== FormStep.Success) addSaveButton();
 
   if (!programId || currentStep === 'UnknownStep') {
     hideLoadingAnimation();
@@ -175,7 +177,8 @@ async function updatePageForSelectedProgram(programId = undefined) {
         hideLoadingAnimation();
         // validateRequiredFields();
 
-        addFormDataOnClickHandler(); // for form data json generation
+        // Only add form data on click handler for non-success steps
+        if (currentStep !== FormStep.Success) addFormDataOnClickHandler(); // for form data json generation
       }
     },
   });
@@ -251,6 +254,9 @@ function updateFormStepForSelectedProgram(programData) {
       break;
     case FormStep.DeclarationAndConsent:
       customizeDeclarationConsentStep(programData);
+      break;
+    case FormStep.Success:
+      customizeSuccessStep(programData);
       break;
     default:
       break;

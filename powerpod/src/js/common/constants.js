@@ -66,6 +66,7 @@ export const FormStep = {
   ClaimInfo: 'ClaimInfoStep',
   // Unknown
   Unknown: 'UnknownStep',
+  Success: 'Success',
 };
 
 export const TabDisplayNames = {

@@ -53,14 +53,14 @@ export default function powerpod(options) {
   logger.info({ message: 'setting up API with options:', data: getOptions() });
   setAPI();
 
-  if (window?.location?.search?.includes('&msg=success')) {
-    logger.warn({
-      message: `ABORT initialization... success page detected, hide loader if displayed.`,
-    });
-    hideLoadingAnimation();
-    // @ts-ignore
-    return window.powerpod;
-  }
+  // if (window?.location?.search?.includes('&msg=success')) {
+  //   logger.warn({
+  //     message: `ABORT initialization... success page detected, hide loader if displayed.`,
+  //   });
+  //   hideLoadingAnimation();
+  //   // @ts-ignore
+  //   return window.powerpod;
+  // }
 
   switch (getOptions().form) {
     case Form.Application:
@@ -90,7 +90,7 @@ function setAPI() {
     };
   };
   // @ts-ignore
-  POWERPOD.version = '3.1.8';
+  POWERPOD.version = '3.2.0';
   // @ts-ignore
   window.powerpod = POWERPOD;
 }

@@ -1,5 +1,5 @@
 {
-  "version": "1.2.5",
+  "version": "1.2.7",
   "tags": [
     "Application",
     "StaffPortal",
@@ -72,7 +72,7 @@
         },
         {
           "name": "quartech_ownorleaseland",
-          "label": "Do you own or lease the land that your operation is based on?",
+          "label": "Do you own or lease the land this project will take place on?",
           "required": true,
           "relocateField": {
             "originFieldName": "quartech_ownorleaseland",
@@ -443,6 +443,10 @@
           "doNotBlank": true
         }
       ]
+    },
+    {
+      "name": "Success",
+      "hideHeaderDescription": true
     }
   ]
 }

@@ -1,6 +1,7 @@
 import {
   Environment,
   Form,
+  FormStep,
   HtmlElementType,
   POWERPOD,
   doc,
@@ -368,6 +369,8 @@ export function configureFields() {
   } else {
     fields = getFieldsBySectionClaim(stepName);
   }
+
+  if (stepName === FormStep.Success) return;
 
   if (!fields) return;
 
@@ -772,19 +775,16 @@ export function setFieldObserver(name, format = '') {
           });
         }
       );
-      $(`#${name}_datepicker_description`).on(
-        'blur',
-        (event) => {
-          validateNeededFields({
-            name,
-            origin: `${setFieldObserver.name} focus click blur touchstart | event.type: ${event.type}`,
-          });
-          $(`#${name}_datepicker_description`)
-            .closest('div')
-            // @ts-ignore
-            .datetimepicker('hide');
-        }
-      );
+      $(`#${name}_datepicker_description`).on('blur', (event) => {
+        validateNeededFields({
+          name,
+          origin: `${setFieldObserver.name} focus click blur touchstart | event.type: ${event.type}`,
+        });
+        $(`#${name}_datepicker_description`)
+          .closest('div')
+          // @ts-ignore
+          .datetimepicker('hide');
+      });
       // Configuration needed to ensure datepicker pop up box works as expected
       onDocumentReadyState(() => {
         // @ts-ignore
@@ -796,7 +796,6 @@ export function setFieldObserver(name, format = '') {
           // @ts-ignore
           .datetimepicker({
             debug: false,
-            showClose: true,
             keepOpen: false,
           });
         const targetSpan = $(`#${name}_datepicker_description`)
@@ -809,6 +808,26 @@ export function setFieldObserver(name, format = '') {
             .closest('div')
             // @ts-ignore
             .datetimepicker('show');
+        });
+
+        $(document).on('mousedown', function (event) {
+          const targetSpan = $(`#${name}_datepicker_description`)
+            .closest('div')
+            .find('span[role="button"][title="Choose a date"]');
+
+          if (
+            !targetSpan.is(event.target) &&
+            targetSpan.has(event.target).length === 0
+          ) {
+            // The click occurred outside of the targetSpan
+            targetSpan.on('click', function () {
+              $(`#${name}_datepicker_description`)
+                .closest('div')
+                // @ts-ignore
+                .datetimepicker('show');
+              // Perform your action here
+            });
+          }
         });
       });
       break;

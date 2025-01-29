@@ -219,6 +219,18 @@ export function getProgramAbbreviation() {
 export function getCurrentStep() {
   let activeStep = FormStep.Unknown;
 
+  if (window?.location?.search?.includes('&msg=success')) {
+    logger.info({
+      fn: getCurrentStep,
+      message: `Determined that current step is Success page step`,
+      data: {
+        windowLocationSearch: window.location.search,
+      },
+    });
+    // @ts-ignore
+    return FormStep.Success;
+  }
+
   const activeTabName = htmlDecode(
     $('div > ol > li.list-group-item.active').html()
   );
