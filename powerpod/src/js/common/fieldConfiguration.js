@@ -595,25 +595,26 @@ export function updateFieldValue({
     return;
   }
 
-  if (elementType && elementType === HtmlElementType.DatePicker) {
-    const datePickerElement = document.getElementById(name);
-    if (!datePickerElement) {
-      logger.warn({
-        fn: updateFieldValue,
-        message: `Could not find DatePicker element for name: ${name}`,
-      });
-    }
-    if (datePickerElement) {
-      const dateValue = getControlValue({ controlId: name }); // returns in display value like M/D/YYY
-      const formattedDate = formatDateToISOString(dateValue) ?? '';
-      logger.info({
-        fn: updateFieldValue,
-        message: `updateFieldValue called on DatePicker element of name: ${name}, with value: ${formattedDate}`,
-      });
-      // @ts-ignore
-      datePickerElement.value = formattedDate;
-    }
-  }
+  // Removed after fixing date picker issue with work-around
+  // if (elementType && elementType === HtmlElementType.DatePicker) {
+  //   const datePickerElement = document.getElementById(name);
+  //   if (!datePickerElement) {
+  //     logger.warn({
+  //       fn: updateFieldValue,
+  //       message: `Could not find DatePicker element for name: ${name}`,
+  //     });
+  //   }
+  //   if (datePickerElement) {
+  //     const dateValue = getControlValue({ controlId: name }); // returns in display value like M/D/YYY
+  //     const formattedDate = formatDateToISOString(dateValue) ?? '';
+  //     logger.info({
+  //       fn: updateFieldValue,
+  //       message: `updateFieldValue called on DatePicker element of name: ${name}, with value: ${formattedDate}`,
+  //     });
+  //     // @ts-ignore
+  //     datePickerElement.value = formattedDate;
+  //   }
+  // }
 
   logger.info({
     fn: updateFieldValue,
@@ -763,7 +764,7 @@ export function setFieldObserver(name, format = '') {
         });
       });
       $(`#${name}_datepicker_description`).on(
-        'focus click blur touchstart',
+        'focus click touchstart',
         (event) => {
           validateNeededFields({
             name,
@@ -771,20 +772,43 @@ export function setFieldObserver(name, format = '') {
           });
         }
       );
+      $(`#${name}_datepicker_description`).on(
+        'blur',
+        (event) => {
+          validateNeededFields({
+            name,
+            origin: `${setFieldObserver.name} focus click blur touchstart | event.type: ${event.type}`,
+          });
+          $(`#${name}_datepicker_description`)
+            .closest('div')
+            // @ts-ignore
+            .datetimepicker('hide');
+        }
+      );
       // Configuration needed to ensure datepicker pop up box works as expected
       onDocumentReadyState(() => {
         // @ts-ignore
-        $(`#${name}_datepicker_description`).datetimepicker({
-          locale: 'en',
-        });
+        // $(`#${name}_datepicker_description`).datetimepicker({
+        //   locale: 'en',
+        // });
+        $(`#${name}_datepicker_description`)
+          .closest('div')
+          // @ts-ignore
+          .datetimepicker({
+            debug: false,
+            showClose: true,
+            keepOpen: false,
+          });
         const targetSpan = $(`#${name}_datepicker_description`)
           .closest('div')
           .find('span[role="button"][title="Choose a date"]');
 
         // Attach click event
         targetSpan.on('click', function () {
-          // @ts-ignore
-          $(`#${name}_datepicker_description`).datetimepicker('show');
+          $(`#${name}_datepicker_description`)
+            .closest('div')
+            // @ts-ignore
+            .datetimepicker('show');
         });
       });
       break;
