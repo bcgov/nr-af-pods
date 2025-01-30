@@ -370,6 +370,7 @@ export function configureFields() {
     fields = getFieldsBySectionClaim(stepName);
   }
 
+  // Exit early if Success step
   if (stepName === FormStep.Success) return;
 
   if (!fields) return;
@@ -599,25 +600,25 @@ export function updateFieldValue({
   }
 
   // Removed after fixing date picker issue with work-around
-  // if (elementType && elementType === HtmlElementType.DatePicker) {
-  //   const datePickerElement = document.getElementById(name);
-  //   if (!datePickerElement) {
-  //     logger.warn({
-  //       fn: updateFieldValue,
-  //       message: `Could not find DatePicker element for name: ${name}`,
-  //     });
-  //   }
-  //   if (datePickerElement) {
-  //     const dateValue = getControlValue({ controlId: name }); // returns in display value like M/D/YYY
-  //     const formattedDate = formatDateToISOString(dateValue) ?? '';
-  //     logger.info({
-  //       fn: updateFieldValue,
-  //       message: `updateFieldValue called on DatePicker element of name: ${name}, with value: ${formattedDate}`,
-  //     });
-  //     // @ts-ignore
-  //     datePickerElement.value = formattedDate;
-  //   }
-  // }
+  if (elementType && elementType === HtmlElementType.DatePicker) {
+    const datePickerElement = document.getElementById(name);
+    if (!datePickerElement) {
+      logger.warn({
+        fn: updateFieldValue,
+        message: `Could not find DatePicker element for name: ${name}`,
+      });
+    }
+    if (datePickerElement) {
+      const dateValue = getControlValue({ controlId: name }); // returns in display value like M/D/YYY
+      const formattedDate = formatDateToISOString(dateValue) ?? '';
+      logger.info({
+        fn: updateFieldValue,
+        message: `updateFieldValue called on DatePicker element of name: ${name}, with value: ${formattedDate}`,
+      });
+      // @ts-ignore
+      datePickerElement.value = formattedDate;
+    }
+  }
 
   logger.info({
     fn: updateFieldValue,
