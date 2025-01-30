@@ -144,11 +144,11 @@ export function calculateTFCRBudgets() {
   });
 
   // Convert input values to numbers (fallback to 0 if invalid)
-  const smeFeeCost = parseFloat(smeFee.replace(',', '')) || 0;
-  const hiredLabourCost = parseFloat(hiredLabour.replace(',', '')) || 0;
-  const equipmentCost = parseFloat(equipment.replace(',', '')) || 0;
-  const materialsCost = parseFloat(materials.replace(',', '')) || 0;
-  const otherCost = parseFloat(other.replace(',', '')) || 0;
+  const smeFeeCost = parseFloat(smeFee.replaceAll(',', '')) || 0;
+  const hiredLabourCost = parseFloat(hiredLabour.replaceAll(',', '')) || 0;
+  const equipmentCost = parseFloat(equipment.replaceAll(',', '')) || 0;
+  const materialsCost = parseFloat(materials.replaceAll(',', '')) || 0;
+  const otherCost = parseFloat(other.replaceAll(',', '')) || 0;
 
   logger.info({
     fn: calculateTFCRBudgets,
