@@ -24,7 +24,7 @@ const script = {
     jquerymask:
       'https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js',
     canadapost:
-      'https://ws1.postescanada-canadapost.ca/js/addresscomplete-2.30.min.js',
+      'https://ws1.postescanada-canadapost.ca/js/addresscomplete-2.50.min.js',
     shoelace:
       'https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/shoelace-autoloader.js',
   },
