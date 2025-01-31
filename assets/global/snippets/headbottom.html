@@ -2,8 +2,7 @@
   -------------------
   FILE INFO
   -------------------
-  ENV: PROD (has CP/AddressComplete integration)
-  version: 1.0.9
+  version: 1.1.0
   name: Head/Bottom
   type: Content Snippet/HTML
   description: This is added to Global Content Snippets configuration in Portal Management, 
@@ -134,7 +133,7 @@
   }
   a:hover,
   a:focus {
-    text-decoration: underline !important;
+    text-decoration: none !important;
     outline: none !important;
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -244,8 +243,9 @@
 
 <!-- START: SIGN-IN PAGE CUSTOMIZATION -->
 <script type="text/javascript">
+  const { pathname: path } = window.location;
   // Only execute this on SignIn page
-  if (window.location.pathname.includes('/SignIn')) {
+  if (path === '/SignIn') {
     function hideRegisterTab() {
       const registerTabElement = document
         .querySelector('li > a[aria-label="Register"')
