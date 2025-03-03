@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "KTTP-SMEA", "KTTP1"],
-  "version": "1.6.2",
+  "version": "1.6.5",
   "name": "KTTP - Subject Matter Expert Activities",
   "abbreviation": "KTTP-SMEA",
   "programId": "25493093-9d2b-ee11-bdf4-000d3af3ac95",
@@ -12,9 +12,14 @@
       "dataName": "tab_ApplicantInfo",
       "subsections": [
         {
-          "name": "Business Overview",
+          "name": "Business Information",
           "type": "SectionTitle",
           "newLabel": "Organization Information"
+        },
+        {
+          "name": "Business Overview",
+          "type": "SectionTitle",
+          "hideLabel": true
         }
       ],
       "fields": [
@@ -43,6 +48,17 @@
           "label": "Type of Business / Organization"
         },
         {
+          "name": "quartech_industryassociationtype",
+          "label": "Please specify which kind of \"Industry Association\"",
+          "required": true
+        },
+        {
+          "name": "quartech_businessgoals",
+          "label": "Describe how your organization's activities benefit primary food producers or processors",
+          "required": true,
+          "maxWords": 1000
+        },
+        {
           "name": "quartech_commodity",
           "label": "What is your primary production?",
           "required": true,
@@ -54,6 +70,12 @@
         {
           "name": "quartech_businessdescription",
           "label": "Organization Background",
+          "required": true,
+          "maxWords": 100
+        },
+        {
+          "name": "quartech_organizationsectororcommodity",
+          "label": "Which sector or commodity does your organization represent? (select those that best apply)",
           "required": true
         },
         {
@@ -108,6 +130,7 @@
           "name": "quartech_ifyespleaseprovideabriefbackgroundoutlinin",
           "label": "Please provide a brief description of the organization and what their role be in this activity (300 words maximum)",
           "required": true,
+          "maxWords": 300,
           "visibleIf": {
             "fieldName": "quartech_areyoucollaboratingwithanyotherorg",
             "selectedValue": 255550000,

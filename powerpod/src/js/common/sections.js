@@ -1,5 +1,10 @@
 // @ts-nocheck
-import { addTextBelowSection, addTextAboveSection, addTextAboveSubsection, addTextBelowSubsection } from './html.js';
+import {
+  addTextBelowSection,
+  addTextAboveSection,
+  addTextAboveSubsection,
+  addTextBelowSubsection,
+} from './html.js';
 import { Logger } from './logger.js';
 import { getCurrentStep } from './program.ts';
 import { setTabName, setHeadings } from './tabs.js';
@@ -118,8 +123,8 @@ export function hidePageDescription(hideHeaderDescription, sectionName = null) {
   } else {
     logger.error({
       fn: hidePageDescription,
-      message: `Failed to find pageDescriptionElement for configuring visibility`
-    })
+      message: `Failed to find pageDescriptionElement for configuring visibility`,
+    });
   }
 }
 
@@ -150,7 +155,15 @@ export function configureSubsections(sectionName, subsections) {
     },
   });
   subsections.forEach((subsection) => {
-    const { name, newLabel, hidden, subsectionAriaLabel, additionalTextAboveSubsection, additionalTextBelowSubsection } = subsection;
+    const {
+      name,
+      newLabel,
+      hideLabel,
+      hidden,
+      subsectionAriaLabel,
+      additionalTextAboveSubsection,
+      additionalTextBelowSubsection,
+    } = subsection;
 
     if (!name) {
       logger.error({
@@ -160,10 +173,21 @@ export function configureSubsections(sectionName, subsections) {
       return;
     }
 
+    const sectionElement = $(`fieldset[aria-label="${name}"]`);
+    if (!sectionElement) {
+      logger.warn({
+        fn: configureSubsections,
+        message: `Could not find sectionElement for name: ${name}`,
+      });
+      return;
+    }
     if (hidden) {
-      const sectionElement = $(`fieldset[aria-label="${name}"]`);
-      if (sectionElement) {
-        sectionElement?.css('display', 'none');
+      sectionElement?.css('display', 'none');
+    }
+    if (hideLabel) {
+      const legendElement = document.querySelector(`fieldset[aria-label="${name}"] > legend`)
+      if (legendElement && legendElement.style) {
+        legendElement.style.display = 'none';
       }
     }
     if (newLabel) {
@@ -188,10 +212,16 @@ export function configureSubsections(sectionName, subsections) {
     }
 
     if (additionalTextAboveSubsection && subsectionAriaLabel) {
-      addTextAboveSubsection(subsectionAriaLabel, additionalTextAboveSubsection)
+      addTextAboveSubsection(
+        subsectionAriaLabel,
+        additionalTextAboveSubsection
+      );
     }
     if (additionalTextBelowSubsection && subsectionAriaLabel) {
-      addTextBelowSubsection(subsectionAriaLabel, additionalTextBelowSubsection)
+      addTextBelowSubsection(
+        subsectionAriaLabel,
+        additionalTextBelowSubsection
+      );
     }
 
     logger.info({

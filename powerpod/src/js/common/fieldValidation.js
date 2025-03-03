@@ -19,13 +19,20 @@ import {
 import {
   getControlValue,
   getFieldErrorDiv,
+  // @ts-ignore
+  // @ts-ignore
+  // @ts-ignore
   getFieldRow,
+  // @ts-ignore
+  // @ts-ignore
+  // @ts-ignore
   getOriginalMsosElement,
 } from './html.js';
 import { Logger } from './logger.js';
 import { getOptions } from './options.js';
 import { getCurrentStep, getProgramAbbreviation } from './program.ts';
 
+// @ts-ignore
 const logger = Logger('common/validation');
 
 POWERPOD.fieldValidation = {
@@ -41,10 +48,12 @@ export function validateRequiredFields() {
   validateStepFields(currentStep);
 }
 
+// @ts-ignore
 export function validateStepField(fieldName) {
   const fieldConfig = getFieldConfig(fieldName);
   if (!fieldConfig) {
     logger.error({
+      // @ts-ignore
       fn: validateStepField,
       message: `failed to find fieldName: ${fieldName} in state`,
     });
@@ -52,13 +61,16 @@ export function validateStepField(fieldName) {
   }
   if (fieldConfig.hidden) {
     logger.warn({
+      // @ts-ignore
       fn: validateStepField,
       message: `skip validating HIDDEN fieldName: ${fieldName}`,
+      // @ts-ignore
       data: { fieldConfig },
     });
     // clear any field errors if present
     if (fieldConfig.error?.length) {
       store.dispatch('addFieldData', {
+        // @ts-ignore
         name,
         error: '',
       });
@@ -66,8 +78,10 @@ export function validateStepField(fieldName) {
     return;
   }
   logger.info({
+    // @ts-ignore
     fn: validateStepField,
     message: `start validating fieldName: ${fieldName}`,
+    // @ts-ignore
     data: { fieldConfig },
   });
   const { name, required, elementType, validation, format, errorMessage } =
@@ -76,8 +90,10 @@ export function validateStepField(fieldName) {
   const needsValidation = required || validation || format;
   if (!needsValidation) {
     logger.warn({
+      // @ts-ignore
       fn: validateStepField,
       message: `no validation options configured, skip validating fieldName: ${fieldName}`,
+      // @ts-ignore
       data: { fieldConfig },
     });
     return;
@@ -135,6 +151,7 @@ export function validateStepField(fieldName) {
       overrideDisplayValue
     );
     logger.info({
+      // @ts-ignore
       fn: validateStepField,
       message: 'Generate length validation error html...',
     });
@@ -142,6 +159,7 @@ export function validateStepField(fieldName) {
     if (errorMsg && errorMsg.length > 0) {
       errorMsgs.push(errorMsg);
       logger.info({
+        // @ts-ignore
         fn: validateStepField,
         message: 'Done generating length validation error html...',
       });
@@ -150,6 +168,7 @@ export function validateStepField(fieldName) {
   if (format === 'email') {
     const errorMsg = validateEmailAddressField(name);
     logger.info({
+      // @ts-ignore
       fn: validateStepField,
       message: 'Generate email validation error html...',
     });
@@ -157,6 +176,7 @@ export function validateStepField(fieldName) {
     if (errorMsg && errorMsg.length > 0) {
       errorMsgs.push(errorMsg);
       logger.info({
+        // @ts-ignore
         fn: validateStepField,
         message: 'Done generating email validation error html...',
       });
@@ -165,6 +185,7 @@ export function validateStepField(fieldName) {
   let errorMessageElement = getFieldErrorDiv(fieldName);
   if (!errorMessageElement) {
     logger.error({
+      // @ts-ignore
       fn: validateStepField,
       message: `Failed to find field error div, fieldName: ${fieldName}`,
     });
@@ -176,6 +197,7 @@ export function validateStepField(fieldName) {
   // NO ERROR FOUND:
   if (!fieldErrorHtml?.length) {
     logger.info({
+      // @ts-ignore
       fn: validateStepField,
       message: `Did NOT find error message for field: ${name}`,
     });
@@ -184,7 +206,9 @@ export function validateStepField(fieldName) {
       elementType === HtmlElementType.MultiOptionSet ||
       elementType === HtmlElementType.MultiSelectPicklist
     ) {
+      // @ts-ignore
       if (document.querySelector(`#${fieldName}_i`)?.style?.border) {
+        // @ts-ignore
         document.querySelector(`#${fieldName}_i`).style.border = '';
       }
     } else {
@@ -198,6 +222,7 @@ export function validateStepField(fieldName) {
   } else {
     // IF THERE ARE ERRORS:
     logger.info({
+      // @ts-ignore
       fn: validateStepField,
       message: `Found error message for field: ${name}, fieldErrorHtml: ${fieldErrorHtml}`,
     });
@@ -205,6 +230,7 @@ export function validateStepField(fieldName) {
     // only show error message ON FIELD if field has been touched
     if (fieldConfig.touched) {
       logger.info({
+        // @ts-ignore
         fn: validateStepField,
         message: `Field has been touched name: ${name}, show error message on field: ${name}, fieldErrorHtml: ${fieldErrorHtml}`,
       });
@@ -221,6 +247,7 @@ export function validateStepField(fieldName) {
     } else {
       // if FIELD NOT TOUCHED
       logger.warn({
+        // @ts-ignore
         fn: validateStepField,
         message: `Field NOT touched yet name: ${name}, skip showing error message on field: ${name}, fieldErrorHtml: ${fieldErrorHtml}`,
       });
@@ -229,7 +256,9 @@ export function validateStepField(fieldName) {
         elementType === HtmlElementType.MultiOptionSet ||
         elementType === HtmlElementType.MultiSelectPicklist
       ) {
+        // @ts-ignore
         if (document.querySelector(`#${fieldName}_i`)?.style?.border) {
+          // @ts-ignore
           document.querySelector(`#${fieldName}_i`).style.border = '';
         }
       } else {
@@ -247,12 +276,16 @@ export function validateStepField(fieldName) {
   displayActiveFieldErrors();
 }
 
+// @ts-ignore
 export function validateStepFields(stepName, returnString) {
   if (!stepName) {
     stepName = getCurrentStep();
   }
 
   let validationErrorHtml = '';
+  // @ts-ignore
+  // @ts-ignore
+  // @ts-ignore
   let fieldErrorMsgs = {};
 
   // TODO: Remove this old func usage
@@ -266,8 +299,10 @@ export function validateStepFields(stepName, returnString) {
   if (!fields) return '';
 
   logger.info({
+    // @ts-ignore
     fn: validateStepFields,
     message: 'loop through fields to get validation errors',
+    // @ts-ignore
     data: { validationErrorHtml },
   });
 
@@ -276,8 +311,10 @@ export function validateStepFields(stepName, returnString) {
   }
 
   logger.info({
+    // @ts-ignore
     fn: validateStepFields,
     message: 'Go through dynamic fields to generate validation error html',
+    // @ts-ignore
     data: { validationErrorHtml },
   });
 
@@ -287,6 +324,7 @@ export function validateStepFields(stepName, returnString) {
     .forEach((x) => {
       let fieldErrorHtml = '';
       const fieldId = x.replace('shouldRequire_', '');
+      // @ts-ignore
       const fieldDefinition = fields.find((field) => field.name === fieldId);
 
       // if the field has already been required via JSON, no need to generate another error msg
@@ -305,6 +343,7 @@ export function validateStepFields(stepName, returnString) {
       fieldErrorHtml = fieldErrorHtml.concat(errorMsg);
 
       logger.info({
+        // @ts-ignore
         fn: validateStepFields,
         message: `Found error for field: ${fieldId}, errorMsg: ${fieldErrorHtml}`,
       });
@@ -333,22 +372,28 @@ export function validateStepFields(stepName, returnString) {
 
   if (returnString) {
     logger.info({
+      // @ts-ignore
       fn: validateStepFields,
       message: 'returning string',
+      // @ts-ignore
       data: validationErrorHtml,
     });
     return validationErrorHtml;
   }
   logger.info({
+    // @ts-ignore
     fn: validateStepFields,
     message: 'Done! Displaying validation error html',
+    // @ts-ignore
     data: { validationErrorHtml },
   });
 
   if (POWERPOD.validation.errorHtml === validationErrorHtml) {
     logger.info({
+      // @ts-ignore
       fn: validateStepFields,
       message: 'No need to display new error, same as old one.',
+      // @ts-ignore
       data: {
         storedErrorHtml: POWERPOD.validation.errorHtml,
         validationErrorHtml,
@@ -361,6 +406,7 @@ export function validateStepFields(stepName, returnString) {
   // store.dispatch('setValidationError', validationErrorHtml);
 }
 
+// @ts-ignore
 export function isValueEmpty(value) {
   // Check if the value is undefined
   if (value === undefined) {
@@ -382,11 +428,13 @@ export function isValueEmpty(value) {
 }
 
 export function validateRequiredField({
+  // @ts-ignore
   fieldName,
   elemType = HtmlElementType.Input,
   errorMessage = 'Please enter a value, this field is required.',
 }) {
   logger.info({
+    // @ts-ignore
     fn: validateRequiredField,
     message: `Start validating required fieldName: ${fieldName} of elemType: ${elemType}`,
   });
@@ -406,11 +454,14 @@ export function validateRequiredField({
   });
 
   let fieldConfig;
+  // @ts-ignore
   if (POWERPOD.state?.fields?.[fieldName]) {
+    // @ts-ignore
     fieldConfig = POWERPOD.state?.fields?.[fieldName];
   }
 
   logger.info({
+    // @ts-ignore
     fn: validateRequiredField,
     message: `Required field fieldName: ${fieldName}, elemType: ${elemType} isEmptyField: ${
       !value || !value.length
@@ -426,6 +477,7 @@ export function validateRequiredField({
 
   if (isEmpty) {
     logger.info({
+      // @ts-ignore
       fn: validateRequiredField,
       message: `Required field fieldName: ${fieldName} is empty! Set validation error message`,
     });
@@ -437,6 +489,7 @@ export function validateRequiredField({
   return validationErrorHtml;
 }
 
+// @ts-ignore
 function checkForEmptyValues(jsonString) {
   let emptyObjectValues = false;
 
@@ -469,6 +522,7 @@ function checkForEmptyValues(jsonString) {
       if (emptyObjectValues) break; // Exit the outer loop
     }
   } catch (error) {
+    // @ts-ignore
     console.error('Error parsing JSON or processing data:', error.message);
     emptyObjectValues = true; // Handle invalid input as having empty values
   }
@@ -477,8 +531,11 @@ function checkForEmptyValues(jsonString) {
 }
 
 export function validateDateFieldValue({
+  // @ts-ignore
   fieldName,
+  // @ts-ignore
   comparisonFieldName,
+  // @ts-ignore
   operator,
   errorMessage = '',
 }) {
@@ -494,15 +551,19 @@ export function validateDateFieldValue({
 
   if (!element || !comparisonElement) {
     logger.error({
+      // @ts-ignore
       fn: validateDateFieldValue,
       message: `Failed to find element for date field validation`,
+      // @ts-ignore
       data: params,
     });
     return;
   }
 
   // Extract values from the elements
+  // @ts-ignore
   const fieldValue = element.value;
+  // @ts-ignore
   const comparisonValue = comparisonElement.value;
 
   // Ensure the values are present
@@ -522,17 +583,23 @@ export function validateDateFieldValue({
   }
 
   logger.info({
+    // @ts-ignore
     fn: validateDateFieldValue,
     message: `After cleaning values:`,
+    // @ts-ignore
     data: { fieldDate, comparisonDate },
   });
 
   // Format dates to MM/dd/yyyy
+  // @ts-ignore
   const formatDate = (date) =>
     `${String(date.getMonth() + 1).padStart(2, '0')}/${String(
       date.getDate()
     ).padStart(2, '0')}/${date.getFullYear()}`;
 
+  // @ts-ignore
+  // @ts-ignore
+  // @ts-ignore
   const formattedFieldDate = formatDate(fieldDate);
   const formattedComparisonDate = formatDate(comparisonDate);
 
@@ -568,6 +635,7 @@ export function validateDateFieldValue({
     default:
       finalMessage = 'Invalid operator';
       logger.error({
+        // @ts-ignore
         fn: validateDateFieldValue,
         message: `Invalid operator`,
       });
@@ -579,10 +647,12 @@ export function validateDateFieldValue({
   }
 
   logger.info({
+    // @ts-ignore
     fn: validateDateFieldValue,
     message: `Returning error message: ${
       finalMessage?.length > 0 ? finalMessage : 'VALIDATION PASSED'
     }`,
+    // @ts-ignore
     data: { params, finalMessage },
   });
 
@@ -590,8 +660,11 @@ export function validateDateFieldValue({
 }
 
 export function validateNumericFieldValue({
+  // @ts-ignore
   fieldName,
+  // @ts-ignore
   comparisonValue,
+  // @ts-ignore
   operator,
   forceRequired = false,
   errorMessage = '',
@@ -607,8 +680,10 @@ export function validateNumericFieldValue({
 
   if (!element) {
     logger.error({
+      // @ts-ignore
       fn: validateNumericFieldValue,
       message: `failed to find element for numeric field validation`,
+      // @ts-ignore
       data: params,
     });
     return;
@@ -617,8 +692,10 @@ export function validateNumericFieldValue({
   // @ts-ignore
   if (element.value === '' && !forceRequired) {
     logger.info({
+      // @ts-ignore
       fn: validateNumericFieldValue,
       message: `element control value is empty, but it is not required, so skip numeric validation`,
+      // @ts-ignore
       data: params,
     });
     return '';
@@ -629,6 +706,7 @@ export function validateNumericFieldValue({
     element.value.replace(/,/g, '').replace('$', '').replace('%', '')
   );
   logger.info({
+    // @ts-ignore
     fn: validateNumericFieldValue,
     message: `After cleaning value: ${value}`,
   });
@@ -668,6 +746,7 @@ export function validateNumericFieldValue({
     default:
       finalMessage = 'Invalid operator';
       logger.error({
+        // @ts-ignore
         fn: validateNumericFieldValue,
         message: `Invalid operator`,
       });
@@ -677,18 +756,23 @@ export function validateNumericFieldValue({
     finalMessage = errorMessage;
   }
   logger.info({
+    // @ts-ignore
     fn: validateNumericFieldValue,
     message: `returning error message: ${
       finalMessage?.length > 0 ? finalMessage : 'VALIDATION PASSED'
     }`,
+    // @ts-ignore
     data: { params, finalMessage },
   });
   return finalMessage;
 }
 
 export function validateFieldLength(
+  // @ts-ignore
   fieldName,
+  // @ts-ignore
   comparisonValue,
+  // @ts-ignore
   operator,
   forceRequired = true,
   postfix = undefined,
@@ -747,10 +831,12 @@ export function validateFieldLength(
   }
 }
 
+// @ts-ignore
 export function validateEmailAddressField(fieldName) {
   const fieldElement = document.querySelector(`#${fieldName}`);
   if (!fieldElement) {
     logger.error({
+      // @ts-ignore
       fn: validateEmailAddressField,
       message: `Could not find fieldElement for fieldName: ${fieldName}`,
     });
@@ -759,6 +845,7 @@ export function validateEmailAddressField(fieldName) {
 
   const pattern = /^\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i;
 
+  // @ts-ignore
   const input = fieldElement?.value;
   if (!input || !pattern.test(input)) {
     return 'Please enter a valid email address.';
@@ -768,10 +855,13 @@ export function validateEmailAddressField(fieldName) {
 }
 
 export function displayActiveFieldErrors() {
+  // @ts-ignore
   const fields = POWERPOD.state.fields;
   logger.info({
+    // @ts-ignore
     fn: displayActiveFieldErrors,
     message: `checking field state for active errors on fields...`,
+    // @ts-ignore
     data: { fields },
   });
 
@@ -785,6 +875,7 @@ export function displayActiveFieldErrors() {
 
   if (!fieldsWithErrors || fieldsWithErrors.length === 0) {
     logger.info({
+      // @ts-ignore
       fn: displayActiveFieldErrors,
       message: `No active errors on any fields to display`,
     });
@@ -802,20 +893,25 @@ export function displayActiveFieldErrors() {
   });
 
   logger.info({
+    // @ts-ignore
     fn: displayActiveFieldErrors,
     message: `found fields with errors...`,
+    // @ts-ignore
     data: { fieldsWithErrors, validationErrorHtml },
   });
 
   store.dispatch('setValidationError', validationErrorHtml);
 }
 
+// @ts-ignore
 export function displayValidationErrors(validationErrorHtml) {
   let validationErrorsDiv = $('#error_messages_div');
 
   logger.info({
+    // @ts-ignore
     fn: displayValidationErrors,
     message: 'displaying validation errors',
+    // @ts-ignore
     data: {
       validationErrorHtml,
     },
@@ -847,8 +943,10 @@ export function displayValidationErrors(validationErrorHtml) {
     validationErrorsDiv.innerHTML = validationErrorHtml + '</br>';
     // @ts-ignore
     validationErrorsDiv.style = 'display:block;';
+    // @ts-ignore
     if (window.debug_pp) {
       logger.warn({
+        // @ts-ignore
         fn: displayValidationErrors,
         message: `Debugging mode enabled, not disabling next button`,
       });
@@ -861,6 +959,7 @@ export function displayValidationErrors(validationErrorHtml) {
   POWERPOD.validation.errorHtml = validationErrorHtml;
 }
 
+// @ts-ignore
 export function addValidationCheck(fieldName, validation) {
   if (validation?.intervalBased) {
     const env = getEnv();
@@ -876,10 +975,74 @@ export function addValidationCheck(fieldName, validation) {
   }
 }
 
+// @ts-ignore
 export function setInputMaxLength(fieldName, maxLength) {
   $(`#${fieldName}`).attr('maxlength', maxLength);
 }
 
+// @ts-ignore
+export function setInputMaxWords(fieldName, maxWords) {
+  maxWords += 1;
+  const $field = $(`#${fieldName}`);
+  const $controlDiv = $field.closest('.control'); // Find the closest parent div with class "control"
+
+  // Create word count display if not already present
+  if (!$(`#${fieldName}-word-count`).length) {
+    // Ensure the counter is inserted AFTER the error message div
+    if ($controlDiv.length) {
+      $controlDiv.after(`<p id="${fieldName}-word-count" style="margin-top: 5px; font-size: 12px; color: #555; text-align: right;">
+                        Words: 0/${maxWords}
+                      </p>`);
+    } else {
+      $field.after(`<p id="${fieldName}-word-count" style="margin-top: 5px; font-size: 12px; color: #555; text-align: right;">
+                      Words: 0/${maxWords}
+                    </p>`);
+    }
+  }
+
+  const $counter = $(`#${fieldName}-word-count`);
+
+  function updateWordCount() {
+    // @ts-ignore
+    let text = $field.val().replace(/[,.]/g, ' '); // Convert punctuation to spaces
+    let words = text
+      .trim()
+      .split(/\s+/)
+      // @ts-ignore
+      .filter((word) => word.length > 0);
+
+    // Update the counter
+    $counter.text(`Words: ${words.length}/${maxWords - 1}`);
+
+    // If words exceed limit, trim the input
+    if (words.length > maxWords) {
+      $field.val(words.slice(0, maxWords).join(' '));
+      $counter.text(`Words: ${maxWords}/${maxWords - 1}`);
+    }
+  }
+
+  $field.on('input', updateWordCount);
+
+  $field.on('keydown', function (event) {
+    // @ts-ignore
+    let text = $field.val().replace(/[,.]/g, ' ');
+    let words = text
+      .trim()
+      .split(/\s+/)
+      // @ts-ignore
+      .filter((word) => word.length > 0);
+
+    // Prevent further input if limit is reached
+    if (words.length >= maxWords && event.key !== 'Backspace') {
+      event.preventDefault();
+    }
+  });
+
+  // Initialize counter on page load
+  updateWordCount();
+}
+
+// @ts-ignore
 export function setFieldReadOnly(fieldName) {
   // @ts-ignore
   $(`#${fieldName}`).attr('readonly', true);

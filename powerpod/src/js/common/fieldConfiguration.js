@@ -36,6 +36,7 @@ import {
   addValidationCheck,
   setFieldReadOnly,
   setInputMaxLength,
+  setInputMaxWords,
   validateStepField,
 } from './fieldValidation.js';
 import { setFieldVisibility } from './fieldConditionalLogic.js';
@@ -72,6 +73,7 @@ export function configureField(field) {
     maxDigits, // CURRENCY-specific, applies if format === 'currency'
     emptyInitialValue, // CURRENCY-specific, applies if format === 'currency'
     maxLength, // only works on string inputs
+    maxWords, // only works on string inputs
     label,
     bold, // bolds the label text
     type,
@@ -198,6 +200,9 @@ export function configureField(field) {
   // max characters
   if (maxLength) {
     setInputMaxLength(name, maxLength);
+  }
+  if (maxWords) {
+    setInputMaxWords(name, maxWords);
   }
   if (readOnly) {
     setFieldReadOnly(name);
