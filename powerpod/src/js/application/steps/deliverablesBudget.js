@@ -84,6 +84,9 @@ export function customizeDeliverablesBudgetStep() {
     setOnKeypressBudgetInput(
       'quartech_costsharecontributioncashorinkinddonation'
     );
+    setOnKeypressBudgetInput(
+      'quartech_estimatednumberofattendees'
+    );
 
     const deliverablesBudgetSectionElement = document.querySelector(
       '#EntityFormView > div.tab.clearfix > div > div > fieldset:nth-child(1) > legend > h3'
@@ -423,6 +426,51 @@ export function calculateEstimatedActivityBudget() {
     administration +
     otherCosts;
   let totalFundingRequired = totalActivityCost - costShareContribution;
+
+  const estimatedNumberOfAttendeesId = 'quartech_estimatednumberofattendees';
+  const estimatedNumberOfAttendees =
+    document.getElementById(estimatedNumberOfAttendeesId)?.value || 1;
+  const estimatedNumberOfAttendeesVal =
+    parseFloat(estimatedNumberOfAttendees) || 1;
+
+  logger.info({
+    fn: calculateEstimatedActivityBudget,
+    message: `estimatedNumberOfAttendees: ${estimatedNumberOfAttendees}, estimatedNumberOfAttendeesVal: ${estimatedNumberOfAttendeesVal}`,
+  });
+
+  const estimatedCostPerAttendeeId = 'quartech_estimatedcostperattendee';
+  const estimatedCostPerAttendee =
+    totalFundingRequired / estimatedNumberOfAttendeesVal;
+
+  logger.info({
+    fn: calculateEstimatedActivityBudget,
+    message: `estimatedCostPerAttendee: ${estimatedCostPerAttendee}`,
+  });
+
+  let estimatedCostPerAttendeeWithCurrencyFormat = CURRENCY_FORMAT.format(
+    estimatedCostPerAttendee
+  );
+
+  logger.info({
+    fn: calculateEstimatedActivityBudget,
+    message: `estimatedCostPerAttendeeWithCurrencyFormat: ${estimatedCostPerAttendeeWithCurrencyFormat}`,
+  });
+  $(estimatedCostPerAttendeeId).val(
+    estimatedCostPerAttendeeWithCurrencyFormat.replace('CA$', '')
+  );
+
+  if (document.getElementById(estimatedCostPerAttendeeId)) {
+    // @ts-ignore
+    document.getElementById(estimatedCostPerAttendeeId).value =
+      estimatedCostPerAttendeeWithCurrencyFormat.replace('CA$', '');
+  }
+
+  updateFieldValue({
+    name: estimatedCostPerAttendeeId,
+    value: estimatedCostPerAttendeeWithCurrencyFormat.replace('CA$', ''),
+    skipValidation: POWERPOD.loading,
+    origin: calculateEstimatedActivityBudget.name,
+  });
 
   let totalActivityCostWithCurrencyFormat =
     CURRENCY_FORMAT.format(totalActivityCost);

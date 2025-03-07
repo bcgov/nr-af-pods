@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "KTTP-SMEA", "KTTP1"],
-  "version": "1.6.5",
+  "version": "1.6.6",
   "name": "KTTP - Subject Matter Expert Activities",
   "abbreviation": "KTTP-SMEA",
   "programId": "25493093-9d2b-ee11-bdf4-000d3af3ac95",
@@ -347,7 +347,7 @@
           "name": "quartech_smefee",
           "format": "currency",
           "maxDigits": 13,
-          "emptyInitialValue": true,
+          "initialValue": "0.00",
           "label": "Subject Matter Expert (SME) Fee",
           "validation": {
             "type": "numeric",
@@ -359,7 +359,7 @@
           "name": "quartech_smetravelairfareparkingetc",
           "format": "currency",
           "maxDigits": 13,
-          "emptyInitialValue": true,
+          "initialValue": "0.00",
           "label": "SME Travel (airfare, parking, etc)",
           "validation": {
             "type": "numeric",
@@ -381,7 +381,7 @@
           "name": "quartech_smeaccommodation",
           "format": "currency",
           "maxDigits": 13,
-          "emptyInitialValue": true,
+          "initialValue": "0.00",
           "label": "SME Accommodation",
           "validation": {
             "type": "numeric",
@@ -403,7 +403,7 @@
           "name": "quartech_facilityequipmenttechnologyrental",
           "format": "currency",
           "maxDigits": 13,
-          "emptyInitialValue": true,
+          "initialValue": "0.00",
           "label": "Facility, Equipment, Technology Rental",
           "validation": {
             "type": "numeric",
@@ -425,7 +425,7 @@
           "name": "quartech_advertisingcommunications",
           "format": "currency",
           "maxDigits": 13,
-          "emptyInitialValue": true,
+          "initialValue": "0.00",
           "label": "Advertising/Communications",
           "tooltipText": "All promotional material must be reviewed by the Province. Please plan to submit your promotional material at least two weeks in advance of promoting your event.",
           "validation": {
@@ -449,7 +449,7 @@
           "name": "quartech_administrationcosts",
           "format": "currency",
           "maxDigits": 13,
-          "emptyInitialValue": true,
+          "initialValue": "0.00",
           "label": "Administration Costs",
           "tooltipText": "Administrative costs must not exceed 10% of the Total Funding Required from KTTP (not Total Project Cost)",
           "validation": {
@@ -473,7 +473,7 @@
           "name": "quartech_othercost",
           "format": "currency",
           "maxDigits": 13,
-          "emptyInitialValue": true,
+          "initialValue": "0.00",
           "label": "Other Cost",
           "validation": {
             "type": "numeric",
@@ -525,6 +525,21 @@
           }
         },
         {
+          "name": "quartech_chargeanadmissionfee",
+          "label": "Are you expecting to charge an admisssion fee for any of your activities or events?",
+          "required": true
+        },
+        {
+          "name": "quartech_estimatedadmissionfees",
+          "label": "Please provide a range of the estimated amount",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_chargeanadmissionfee",
+            "selectedValue": 255550000,
+            "techComment": "Yes value"
+          }
+        },
+        {
           "name": "quartech_totalfundingrequiredfromtheprogram",
           "format": "currency",
           "maxDigits": 11,
@@ -535,6 +550,23 @@
             "comparison": "greaterThanOrEqualTo"
           },
           "errorMessage": "Total Funding Required must sum to be greater than or equal to 0."
+        },
+        {
+          "name": "quartech_estimatednumberofattendees",
+          "label": "What is the estimated number of attendees?",
+          "format": "number",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThan"
+          },
+          "onChangeHandler": "calculateEstimatedCostPerAttendee"
+        },
+        {
+          "name": "quartech_estimatedcostperattendee",
+          "label": "Estimated cost per attendee",
+          "format": "currency",
+          "readOnly": true
         }
       ]
     },
