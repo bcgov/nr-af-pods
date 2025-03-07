@@ -466,7 +466,7 @@ export function calculateEstimatedActivityBudget() {
   }
 
   updateFieldValue({
-    name: estimatedCostPerAttendeeId,
+    name: 'quartech_estimatedcostperattendee',
     value: estimatedCostPerAttendeeWithCurrencyFormat.replace('CA$', ''),
     skipValidation: POWERPOD.loading,
     origin: calculateEstimatedActivityBudget.name,
