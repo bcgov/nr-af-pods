@@ -1,10 +1,14 @@
 {
   "tags": ["Application", "StaffPortal", "KTTP-SMEA", "KTTP1"],
-  "version": "1.6.7",
+  "version": "1.7.1",
   "name": "KTTP - Subject Matter Expert Activities",
   "abbreviation": "KTTP-SMEA",
   "programId": "25493093-9d2b-ee11-bdf4-000d3af3ac95",
-  "hiddenSteps": [{ "name": "tab_eligibility" }],
+  "hiddenSteps": [
+    {
+      "name": "tab_eligibility"
+    }
+  ],
   "sections": [
     {
       "name": "ApplicantInfoStep",
@@ -60,7 +64,7 @@
         },
         {
           "name": "quartech_commodity",
-          "label": "What is your primary production?",
+          "label": "Specify the most relevant industry segment. If your Project applies to multiple areas, select the closest match.",
           "required": true,
           "visibleIf": {
             "fieldName": "quartech_recipienttype",
@@ -146,6 +150,10 @@
           "name": "Business Plan",
           "type": "SectionTitle",
           "hidden": true
+        },
+        {
+          "name": "Description",
+          "newLabel": "Project Description"
         }
       ],
       "fields": [
@@ -158,14 +166,15 @@
         {
           "name": "quartech_projectdescription",
           "required": true,
-          "label": "Project Description"
+          "label": "Please provide a brief description of the Project",
+          "maxChars": 2000
         },
         {
           "name": "quartech_naicsindustry",
           "elementType": "MultiSelectPicklist",
           "required": true,
           "disableSingleLine": false,
-          "label": "Please select the primary Commodity/Sector that will benefit from this project"
+          "label": "Specify the most relevant industry segment. If your Project applies to multiple areas, select the closest match."
         },
         {
           "name": "quartech_ifotherpleasedescribecommodity",
@@ -181,7 +190,11 @@
           "name": "quartech_eventtype",
           "required": true,
           "label": "Will the event be virtual, in-person, or hybrid?",
-          "elementType": "DropdownSelect"
+          "elementType": "DropdownSelect",
+          "reorderField": {
+            "position": "before",
+            "fieldName": "quartech_projectdescription"
+          }
         },
         {
           "name": "quartech_projectlocation",
@@ -216,7 +229,11 @@
           "name": "quartech_pleaseselectthemostapplicableactivitytype",
           "label": "Please select the most applicable activity type",
           "required": true,
-          "elementType": "DropdownSelect"
+          "elementType": "DropdownSelect",
+          "reorderField": {
+            "position": "after",
+            "fieldName": "quartech_applicantsprojectname"
+          }
         },
         {
           "name": "quartech_ifotherpleasedescribeyouractivitytype",
@@ -226,6 +243,10 @@
             "fieldName": "quartech_pleaseselectthemostapplicableactivitytype",
             "selectedValue": 255550010,
             "techComment": "Other value"
+          },
+          "reorderField": {
+            "position": "before",
+            "fieldName": "quartech_eventtype"
           }
         },
         {
@@ -233,18 +254,66 @@
           "label": "Priority Topic(s). Please select the most applicable topic that your project will focus on",
           "required": true,
           "disableSingleLine": false,
-          "elementType": "DropdownSelect"
+          "elementType": "DropdownSelect",
+          "reorderField": {
+            "position": "before",
+            "fieldName": "quartech_projectdescription"
+          }
         },
         {
           "name": "quartech_prioritytopicsecondary",
           "label": "If applicable, select a secondary priority topic that you project will focus on",
-          "elementType": "DropdownSelect"
+          "elementType": "DropdownSelect",
+          "reorderField": {
+            "position": "before",
+            "fieldName": "quartech_projectdescription"
+          }
+        },
+        {
+          "name": "quartech_primaryaudiencefortheproject",
+          "label": "Who is the primary audience for this Project?",
+          "required": true,
+          "maxChars": 2000
         },
         {
           "name": "quartech_proposedactivitystopicpurposeintent",
-          "label": "Explain what your activity will be about, why you're doing it, and what you hope to achieve. Make sure the things you hope to achieve can be measured, and explain how they will make a difference.",
+          "label": "What do you want to achieve with this Project?",
           "required": true,
-          "tooltipText": "Keep in mind that you will be asked to measure outcomes in your post-project report."
+          "tooltipText": "Keep in mind that you will be asked to measure outcomes in your post-project report.",
+          "maxChars": 2000,
+          "reorderField": {
+            "position": "after",
+            "fieldName": "quartech_primaryaudiencefortheproject"
+          }
+        },
+        {
+          "name": "quartech_stepstocompletethebusinessplan",
+          "label": "How will you track progress toward your goals?",
+          "required": true,
+          "maxChars": 2000,
+          "reorderField": {
+            "position": "after",
+            "fieldName": "quartech_proposedactivitystopicpurposeintent"
+          }
+        },
+        {
+          "name": "quartech_proposedactivitydescription",
+          "label": "What impact will this work have on your community?",
+          "required": true,
+          "maxChars": 2000,
+          "reorderField": {
+            "position": "after",
+            "fieldName": "quartech_stepstocompletethebusinessplan"
+          }
+        },
+        {
+          "name": "quartech_industrysectortosupport",
+          "label": "Select the industry sector your project is intended to support",
+          "required": true,
+          "reorderField": {
+            "position": "after",
+            "fieldName": "quartech_proposedactivitydescription"
+          }
         },
         {
           "name": "quartech_accessandinclusivenessdescription",
@@ -456,7 +525,9 @@
             "type": "numeric",
             "value": "0",
             "comparison": "greaterThanOrEqualTo"
-          }
+          },
+          "onChangeHandler": "displayOrHideAdministrationCostsNoticeForKTTP",
+          "additionalTextBelowField": "<p id='doesNotMeetAdministrativeCostRequirementsNotice' style='display:none;'>Administrative Costs exceeding 10% of the total funding requested are not eligible for reimbursement. Please refer to the Program Guide for more information.</p>"
         },
         {
           "name": "quartech_pleasedescribetheadministrativecoststobeinc",

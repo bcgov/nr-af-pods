@@ -19,6 +19,7 @@ import {
   getFieldLabel,
   getOriginalMsosElement,
   hideFieldRow,
+  moveTableRow,
   observeChanges,
   onDocumentReadyState,
   removeDropdownOptions,
@@ -35,6 +36,7 @@ import { hasUpperCase } from './utils.js';
 import {
   addValidationCheck,
   setFieldReadOnly,
+  setInputMaxChars,
   setInputMaxLength,
   setInputMaxWords,
   validateStepField,
@@ -74,6 +76,7 @@ export function configureField(field) {
     emptyInitialValue, // CURRENCY-specific, applies if format === 'currency'
     maxLength, // only works on string inputs
     maxWords, // only works on string inputs
+    maxChars, // only works on string inputs
     label,
     bold, // bolds the label text
     type,
@@ -93,6 +96,7 @@ export function configureField(field) {
     additionalTextAboveField,
     additionalTextBelowField,
     removeDropdownOptionsValues,
+    reorderField = {},
   } = field;
   let { elementType } = field;
   logger.info({
@@ -204,6 +208,9 @@ export function configureField(field) {
   if (maxWords) {
     setInputMaxWords(name, maxWords);
   }
+  if (maxChars) {
+    setInputMaxChars(name, maxChars);
+  }
   if (readOnly) {
     setFieldReadOnly(name);
   }
@@ -245,6 +252,10 @@ export function configureField(field) {
     maskInput(name, FieldMaskType.PhoneNumber);
   } else if (format === 'postalCode') {
     maskInput(name, FieldMaskType.PostalCode);
+  }
+
+  if (reorderField && reorderField.position && reorderField.fieldName) {
+    moveTableRow(name, reorderField.fieldName, reorderField.position);
   }
 
   if (customComponent && customComponent.customElementTag) {

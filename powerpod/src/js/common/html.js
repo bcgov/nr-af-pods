@@ -62,6 +62,7 @@ POWERPOD.html = {
   renameSectionLabel,
   addTextAboveSection,
   addTextBelowSection,
+  moveTableRow,
 };
 
 export function configureCustomLogo(customLogo) {
@@ -1585,4 +1586,37 @@ export function removeDropdownOptions(name, removeDropdownOptionsValues) {
       data: { name, removeDropdownOptionsValues },
     });
   }
+}
+
+export function moveTableRow(rowIdToMove, referenceRowId, position = 'after') {
+  const rowToMove = document.getElementById(rowIdToMove)?.closest('tr');
+  const referenceRow = document.getElementById(referenceRowId)?.closest('tr');
+
+  if (!rowToMove || !referenceRow) {
+    console.error('One or both of the specified rows were not found.');
+    return;
+  }
+
+  const referenceParent = referenceRow.closest('tbody'); // Get the tbody of the reference row
+
+  // Remove the row from its current position
+  rowToMove.parentNode.removeChild(rowToMove);
+
+  // Insert the row in the new position
+  if (position === 'before') {
+    referenceParent.insertBefore(rowToMove, referenceRow);
+  } else {
+    referenceParent.insertBefore(rowToMove, referenceRow.nextSibling);
+  }
+
+  // Normalize colspan and rowspan for all rows in the table
+  normalizeTableCells();
+}
+
+// Normalize colspan and rowspan for all table rows
+function normalizeTableCells() {
+  document.querySelectorAll('tbody tr td').forEach((td) => {
+    td.setAttribute('colspan', '1');
+    td.setAttribute('rowspan', '1');
+  });
 }

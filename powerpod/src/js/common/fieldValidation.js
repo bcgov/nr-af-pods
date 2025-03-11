@@ -990,11 +990,11 @@ export function setInputMaxWords(fieldName, maxWords) {
   if (!$(`#${fieldName}-word-count`).length) {
     // Ensure the counter is inserted AFTER the error message div
     if ($controlDiv.length) {
-      $controlDiv.after(`<p id="${fieldName}-word-count" style="margin-top: 5px; font-size: 12px; color: #555; text-align: right;">
+      $controlDiv.after(`<p id="${fieldName}-word-count" style="margin-top: 5px; font-size: 12px; color: #555; text-align: right; font-family: 'BC Sans', 'Noto Sans', 'Verdana', 'Arial', 'sans-serif' !important;">
                         Words: 0/${maxWords}
                       </p>`);
     } else {
-      $field.after(`<p id="${fieldName}-word-count" style="margin-top: 5px; font-size: 12px; color: #555; text-align: right;">
+      $field.after(`<p id="${fieldName}-word-count" style="margin-top: 5px; font-size: 12px; color: #555; text-align: right; font-family: 'BC Sans', 'Noto Sans', 'Verdana', 'Arial', 'sans-serif' !important;">
                       Words: 0/${maxWords}
                     </p>`);
     }
@@ -1040,6 +1040,59 @@ export function setInputMaxWords(fieldName, maxWords) {
 
   // Initialize counter on page load
   updateWordCount();
+}
+
+// @ts-ignore
+export function setInputMaxChars(fieldName, maxChars) {
+  const $field = $(`#${fieldName}`);
+  const $controlDiv = $field.closest('.control'); // Find the closest parent div with class "control"
+
+  // Create character count display if not already present
+  if (!$(`#${fieldName}-char-count`).length) {
+    // Ensure the counter is inserted AFTER the error message div
+    if ($controlDiv.length) {
+      $controlDiv.after(`<p id="${fieldName}-char-count" style="margin-top: 5px; font-size: 12px; color: #555; text-align: right; font-family: 'BC Sans', 'Noto Sans', 'Verdana', 'Arial', 'sans-serif' !important;">
+                          Characters: 0/${maxChars}
+                        </p>`);
+    } else {
+      $field.after(`<p id="${fieldName}-char-count" style="margin-top: 5px; font-size: 12px; color: #555; text-align: right; font-family: 'BC Sans', 'Noto Sans', 'Verdana', 'Arial', 'sans-serif' !important;">
+                      Characters: 0/${maxChars}
+                    </p>`);
+    }
+  }
+
+  const $counter = $(`#${fieldName}-char-count`);
+
+  function updateCharCount() {
+    // @ts-ignore
+    let text = $field.val();
+    let charCount = text.length;
+
+    // Update the counter
+    $counter.text(`Characters: ${charCount}/${maxChars}`);
+
+    // If characters exceed limit, trim the input
+    if (charCount > maxChars) {
+      $field.val(text.substring(0, maxChars));
+      $counter.text(`Characters: ${maxChars}/${maxChars}`);
+    }
+  }
+
+  $field.on('input', updateCharCount);
+
+  $field.on('keydown', function (event) {
+    // @ts-ignore
+    let text = $field.val();
+    let charCount = text.length;
+
+    // Prevent further input if limit is reached
+    if (charCount >= maxChars && event.key !== 'Backspace') {
+      event.preventDefault();
+    }
+  });
+
+  // Initialize counter on page load
+  updateCharCount();
 }
 
 // @ts-ignore

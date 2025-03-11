@@ -27,6 +27,7 @@ POWERPOD.onChangeHandlers = {
   calculateAndPopulateRequestedClaimAmountForVLB,
   checkAndSetTFCREligbilityNotice,
   calculateTFCRBudgets,
+  displayOrHideAdministrationCostsNoticeForKTTP,
 };
 
 const logger = Logger('common/onChangeHandlers');
@@ -126,7 +127,7 @@ export function calculateTFCRBudgets() {
     fn: calculateTFCRBudgets,
     message: `calculateTFCRBudgets called, start calculating...`,
   });
-  
+
   // Get input values from the elements
   const smeFee = document.getElementById('quartech_smefee')?.value || 0;
   const hiredLabour =
@@ -727,4 +728,69 @@ export function populateBusinessNameOnChangeFirstOrLastNameVLB() {
     fn: populateBusinessNameOnChangeFirstOrLastNameVLB,
     message: `Successfuly set field tag: quartech_legalbusinessororganizationname to value: ${newValue}`,
   });
+}
+
+export function displayOrHideAdministrationCostsNoticeForKTTP() {
+  logger.info({
+    fn: displayOrHideAdministrationCostsNoticeForKTTP,
+    message: `displayOrHideAdministrationCostsNoticeForKTTP called, start calculating...`,
+  });
+
+  // Get input values from the elements
+  const administration =
+    document.getElementById('quartech_administrationcosts')?.value || 0;
+  const totalFundingRequested =
+    document.getElementById('quartech_totalfundingrequiredfromtheprogram')
+      ?.value || 0;
+
+  logger.info({
+    fn: displayOrHideAdministrationCostsNoticeForKTTP,
+    message: `displayOrHideAdministrationCostsNoticeForKTTP returned the following values`,
+    data: { administration, totalFundingRequested },
+  });
+
+  // Convert input values to numbers (fallback to 0 if invalid)
+  const administrationCost =
+    parseFloat(administration.replaceAll(',', '')) || 0;
+  const totalFundingRequestedCost =
+    parseFloat(totalFundingRequested.replaceAll(',', '')) || 0;
+
+  logger.info({
+    fn: displayOrHideAdministrationCostsNoticeForKTTP,
+    message: `displayOrHideAdministrationCostsNoticeForKTTP returned the following for expenses`,
+    data: {
+      administrationCost,
+      totalFundingRequestedCost,
+    },
+  });
+
+  // Perform the calculation
+  let isAdministrationCostGreaterThan10PercentOfFundingRequired = false;
+
+  if (administrationCost > totalFundingRequestedCost * 0.1) {
+    isAdministrationCostGreaterThan10PercentOfFundingRequired = true;
+  }
+
+  logger.info({
+    fn: displayOrHideAdministrationCostsNoticeForKTTP,
+    message: `displayOrHideAdministrationCostsNoticeForKTTP isAdministrationCostGreaterThan10PercentOfFundingRequired: ${isAdministrationCostGreaterThan10PercentOfFundingRequired}`
+  });
+
+  const noticeElement = document.getElementById(
+    'doesNotMeetAdministrativeCostRequirementsNotice'
+  );
+  if (!noticeElement) {
+    logger.error({
+      fn: displayOrHideAdministrationCostsNoticeForKTTP,
+      message: `Could not fetch noticeElement by id doesNotMeetAdministrativeCostRequirementsNotice`,
+    });
+    return;
+  }
+
+  // If any value is No, we must show the notice
+  if (isAdministrationCostGreaterThan10PercentOfFundingRequired) {
+    noticeElement.style.display = '';
+  } else  {
+    noticeElement.style.display = 'none';
+  }
 }
