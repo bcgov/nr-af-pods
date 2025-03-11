@@ -23,13 +23,15 @@ export function convertDateToISO(dateString) {
   // Split the date string by '/'
   var parts = dateString.split('/');
 
-  // Extract month, day, and year from the parts
-  var month = parts[0].padStart(2, '0'); // Ensures month is 2 digits
-  var day = parts[1].padStart(2, '0'); // Ensures day is 2 digits
-  var year = parts[2];
-
-  // Return the date in YYYY-MM-DD format
-  return `${year}-${month}-${day}`;
+  if (parts[0] && parts[1] && parts[2]) {
+    // Extract month, day, and year from the parts
+    var month = parts[0]?.padStart(2, '0'); // Ensures month is 2 digits
+    var day = parts[1]?.padStart(2, '0'); // Ensures day is 2 digits
+    var year = parts[2];
+  
+    // Return the date in YYYY-MM-DD format
+    return `${year}-${month}-${day}`;
+  }
 }
 
 export function formatDateToISOString(dateString) {

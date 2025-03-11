@@ -173,12 +173,6 @@ export function configureField(field) {
       label: existingLabel,
     });
   }
-  if (additionalTextBelowField) {
-    addTextBelowField(name, additionalTextBelowField);
-  }
-  if (additionalTextAboveField) {
-    addTextAboveField(name, additionalTextAboveField);
-  }
   if (onChangeHandler) {
     setOnChangeHandler(name, elementType, onChangeHandler);
   }
@@ -256,6 +250,13 @@ export function configureField(field) {
 
   if (reorderField && reorderField.position && reorderField.fieldName) {
     moveTableRow(name, reorderField.fieldName, reorderField.position);
+  }
+
+  if (additionalTextBelowField) {
+    addTextBelowField(name, additionalTextBelowField);
+  }
+  if (additionalTextAboveField) {
+    addTextAboveField(name, additionalTextAboveField);
   }
 
   if (customComponent && customComponent.customElementTag) {

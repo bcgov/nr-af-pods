@@ -16,6 +16,7 @@ import { updateFieldValue } from './fieldConfiguration.js';
 const logger = Logger('common/html');
 
 POWERPOD.html = {
+  setFieldNameLabel,
   redirectToFormId,
   getControlType,
   isEmptyRow,
@@ -880,7 +881,8 @@ export function addHtmlToField(
 
   const tdElement = document.createElement('td');
   tdElement.setAttribute('colspan', '2');
-  tdElement.setAttribute('quartechHtml', 'true');
+  tdElement.setAttribute('quartechhtml', 'true');
+  tdElement.setAttribute('additionaltextaroundfield', 'true');
   tdElement.setAttribute('class', 'clearfix cell text form-control-cell');
   tdElement.innerHTML = htmlContentToAdd;
 
@@ -1616,7 +1618,9 @@ export function moveTableRow(rowIdToMove, referenceRowId, position = 'after') {
 // Normalize colspan and rowspan for all table rows
 function normalizeTableCells() {
   document.querySelectorAll('tbody tr td').forEach((td) => {
-    td.setAttribute('colspan', '1');
-    td.setAttribute('rowspan', '1');
+    if (!td.matches('[additionaltextaroundfield="true"]')) {
+      td.setAttribute('colspan', '1');
+      td.setAttribute('rowspan', '1');
+    }
   });
 }

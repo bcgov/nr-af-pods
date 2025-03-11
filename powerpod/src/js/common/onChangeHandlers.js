@@ -28,6 +28,7 @@ POWERPOD.onChangeHandlers = {
   checkAndSetTFCREligbilityNotice,
   calculateTFCRBudgets,
   displayOrHideAdministrationCostsNoticeForKTTP,
+  updateSMEDesignationExplanationFieldLabel,
 };
 
 const logger = Logger('common/onChangeHandlers');
@@ -773,7 +774,7 @@ export function displayOrHideAdministrationCostsNoticeForKTTP() {
 
   logger.info({
     fn: displayOrHideAdministrationCostsNoticeForKTTP,
-    message: `displayOrHideAdministrationCostsNoticeForKTTP isAdministrationCostGreaterThan10PercentOfFundingRequired: ${isAdministrationCostGreaterThan10PercentOfFundingRequired}`
+    message: `displayOrHideAdministrationCostsNoticeForKTTP isAdministrationCostGreaterThan10PercentOfFundingRequired: ${isAdministrationCostGreaterThan10PercentOfFundingRequired}`,
   });
 
   const noticeElement = document.getElementById(
@@ -790,7 +791,38 @@ export function displayOrHideAdministrationCostsNoticeForKTTP() {
   // If any value is No, we must show the notice
   if (isAdministrationCostGreaterThan10PercentOfFundingRequired) {
     noticeElement.style.display = '';
-  } else  {
+  } else {
     noticeElement.style.display = 'none';
+  }
+}
+
+export function updateSMEDesignationExplanationFieldLabel() {
+  logger.info({
+    fn: updateSMEDesignationExplanationFieldLabel,
+    message: `updateSMEDesignationExplanationFieldLabel called, start determing label to show...`,
+  });
+  const smeSelect = document.getElementById(
+    'quartech_smeholdsarelevantprofessionaldesignation'
+  );
+  const smeLabel = document.getElementById(
+    'quartech_smedesignationexplanation'
+  );
+
+  if (smeSelect && smeLabel) {
+    const selectedValue = smeSelect.value;
+
+    if (selectedValue === '255550000') {
+      // Yes
+      setFieldNameLabel(
+        'quartech_smedesignationexplanation',
+        'Please describe the type of Tools or Equipment rented'
+      );
+    } else if (selectedValue === '255550001') {
+      // No
+      setFieldNameLabel(
+        'quartech_smedesignationexplanation',
+        'Briefly explain why it is not required for this role'
+      );
+    }
   }
 }

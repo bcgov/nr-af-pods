@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "KTTP-SMEA", "KTTP1"],
-  "version": "1.7.1",
+  "version": "1.7.2",
   "name": "KTTP - Subject Matter Expert Activities",
   "abbreviation": "KTTP-SMEA",
   "programId": "25493093-9d2b-ee11-bdf4-000d3af3ac95",
@@ -154,6 +154,10 @@
         {
           "name": "Description",
           "newLabel": "Project Description"
+        },
+        {
+          "name": "Activity Information",
+          "newLabel": "Project Timeline"
         }
       ],
       "fields": [
@@ -198,7 +202,7 @@
         },
         {
           "name": "quartech_projectlocation",
-          "label": "Primary Location",
+          "label": "Project Primary Location",
           "required": true,
           "disableSingleLine": false,
           "tooltipText": "If your project takes place in multiple locations, please identify the location with the most funding allocated to.",
@@ -319,7 +323,11 @@
           "name": "quartech_accessandinclusivenessdescription",
           "label": "The Province supports inclusiveness and increased representation of target and underrepresented groups. Please describe how you will work towards increasing access and inclusiveness of your activity?",
           "required": true,
-          "tooltipText": "For more information about planning for inclusive activities, please refer to the Program Guide."
+          "tooltipText": "For more information about planning for inclusive activities, please refer to the Program Guide.",
+          "reorderField": {
+            "position": "after",
+            "fieldName": "quartech_numberofoverallattendeesexpectedtoattendthi"
+          }
         },
         {
           "name": "quartech_inordertocontinuouslyimprovecommunications",
@@ -334,26 +342,68 @@
         {
           "name": "quartech_subjectmatterexpertsmename",
           "required": true,
-          "label": "Subject Matter Expert (SME) Name"
+          "label": "Subject Matter Expert (SME) Name",
+          "reorderField": {
+            "position": "after",
+            "fieldName": "quartech_naicsindustry_name"
+          }
         },
         {
           "name": "quartech_smeemail",
           "label": "SME Email",
           "format": "email",
-          "required": true
+          "required": true,
+          "reorderField": {
+            "position": "after",
+            "fieldName": "quartech_subjectmatterexpertsmename"
+          }
         },
         {
           "name": "quartech_smewebsite",
-          "label": "SME Website"
+          "label": "SME Website",
+          "reorderField": {
+            "position": "after",
+            "fieldName": "quartech_smeemail"
+          }
         },
         {
           "name": "quartech_facilitatorexpertisedescription",
           "label": "Describe the expertise of the Subject Matter Expert (SME) and what experience they have in transferring knowledge",
-          "required": true
+          "required": true,
+          "reorderField": {
+            "position": "after",
+            "fieldName": "quartech_smewebsite"
+          }
+        },
+        {
+          "name": "quartech_smeholdsarelevantprofessionaldesignation",
+          "label": "Does the Subject Matter Expert (SME) hold a professional designation relevant to their area of practice or expertise?",
+          "required": true,
+          "tooltipText": "This refers to a recognized certification or credential that demonstrates a person's qualifications in their field, such as Professional Agrologist (P.Ag.), Certified Crop Advisor (CCA), etc. More information can be found at <a href=\"www.bcia.com\">www.bcia.com</a>.",
+          "reorderField": {
+            "position": "after",
+            "fieldName": "quartech_facilitatorexpertisedescription"
+          },
+          "onChangeHandler": "updateSMEDesignationExplanationFieldLabel"
+        },
+        {
+          "name": "quartech_smedesignationexplanation",
+          "label": "Please describe the type of Tools or Equipment rented",
+          "techComment": "This label changes based on quartech_smeholdsarelevantprofessionaldesignation selected value",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_smeholdsarelevantprofessionaldesignation",
+            "selectedValueIn": [255550000, 255550001],
+            "techComment": "Yes OR No value"
+          },
+          "reorderField": {
+            "position": "after",
+            "fieldName": "quartech_smeholdsarelevantprofessionaldesignation"
+          }
         },
         {
           "name": "quartech_activitystartdate",
-          "label": "Activity Start Date",
+          "label": "Project Start Date (day on which the activity begins)",
           "required": true,
           "elementType": "DatePicker",
           "disableSingleLine": false
@@ -375,10 +425,24 @@
           }
         },
         {
+          "name": "quartech_activityenddate",
+          "label": "Project End Date (day on which the last activity ends)",
+          "required": true,
+          "additionalTextBelowField": "Note: Your reinbursement claim must be submitted within 30 days after the Project ends and no later than March 06, 2026.",
+          "reorderField": {
+            "position": "after",
+            "fieldName": "quartech_ifyespleaseprovidetheadditionaldates"
+          }
+        },
+        {
           "name": "quartech_willthisactivitybeopentotheentirepublic",
           "label": "Will this activity be open to any agriculture and seafood producers/ processors that wish to attend?",
           "required": true,
-          "elementType": "DropdownSelect"
+          "elementType": "DropdownSelect",
+          "reorderField": {
+            "position": "after",
+            "fieldName": "quartech_smedesignationexplanation"
+          }
         },
         {
           "name": "quartech_allactivitiesmustbeopentothepublicplease",
@@ -388,17 +452,29 @@
             "fieldName": "quartech_willthisactivitybeopentotheentirepublic",
             "selectedValue": 255550001,
             "techComment": "No value"
+          },
+          "reorderField": {
+            "position": "after",
+            "fieldName": "quartech_willthisactivitybeopentotheentirepublic"
           }
         },
         {
           "name": "quartech_numberofbcagricultureproducersprocessors",
           "label": "Number of B.C. agriculture and seafood producers/ processors/ businesses expected to attend this activity",
-          "required": true
+          "required": true,
+          "reorderField": {
+            "position": "after",
+            "fieldName": "quartech_allactivitiesmustbeopentothepublicplease"
+          }
         },
         {
           "name": "quartech_numberofoverallattendeesexpectedtoattendthi",
           "label": "Number of overall attendees expected to attend this activity",
-          "required": true
+          "required": true,
+          "reorderField": {
+            "position": "after",
+            "fieldName": "quartech_numberofbcagricultureproducersprocessors"
+          }
         }
       ]
     },
