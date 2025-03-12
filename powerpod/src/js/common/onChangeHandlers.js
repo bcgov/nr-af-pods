@@ -28,7 +28,7 @@ POWERPOD.onChangeHandlers = {
   checkAndSetTFCREligbilityNotice,
   calculateTFCRBudgets,
   displayOrHideAdministrationCostsNoticeForKTTP,
-  updateSMEDesignationExplanationFieldLabel,
+  updateSMEDesignationExplanationFieldLabelForKTTP1,
 };
 
 const logger = Logger('common/onChangeHandlers');
@@ -796,10 +796,10 @@ export function displayOrHideAdministrationCostsNoticeForKTTP() {
   }
 }
 
-export function updateSMEDesignationExplanationFieldLabel() {
+export function updateSMEDesignationExplanationFieldLabelForKTTP1() {
   logger.info({
-    fn: updateSMEDesignationExplanationFieldLabel,
-    message: `updateSMEDesignationExplanationFieldLabel called, start determing label to show...`,
+    fn: updateSMEDesignationExplanationFieldLabelForKTTP1,
+    message: `updateSMEDesignationExplanationFieldLabelForKTTP1 called, start determing label to show...`,
   });
   const smeSelect = document.getElementById(
     'quartech_smeholdsarelevantprofessionaldesignation'
@@ -816,6 +816,37 @@ export function updateSMEDesignationExplanationFieldLabel() {
       setFieldNameLabel(
         'quartech_smedesignationexplanation',
         'Please describe the type of Tools or Equipment rented'
+      );
+    } else if (selectedValue === '255550001') {
+      // No
+      setFieldNameLabel(
+        'quartech_smedesignationexplanation',
+        'Briefly explain why it is not required for this role'
+      );
+    }
+  }
+}
+
+export function updateSMEDesignationExplanationFieldLabelForKTTP2() {
+  logger.info({
+    fn: updateSMEDesignationExplanationFieldLabelForKTTP2,
+    message: `updateSMEDesignationExplanationFieldLabelForKTTP1 called, start determing label to show...`,
+  });
+  const smeSelect = document.getElementById(
+    'quartech_smeholdsarelevantprofessionaldesignation'
+  );
+  const smeLabel = document.getElementById(
+    'quartech_smedesignationexplanation'
+  );
+
+  if (smeSelect && smeLabel) {
+    const selectedValue = smeSelect.value;
+
+    if (selectedValue === '255550000') {
+      // Yes
+      setFieldNameLabel(
+        'quartech_smedesignationexplanation',
+        'Please provide details regarding the Facilitator\'s kind of accreditation or licence (e.g., Professional Agrologist, Veterinarian, etc.)'
       );
     } else if (selectedValue === '255550001') {
       // No

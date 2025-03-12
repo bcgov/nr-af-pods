@@ -363,7 +363,7 @@
             "position": "after",
             "fieldName": "quartech_facilitatorexpertisedescription"
           },
-          "onChangeHandler": "updateSMEDesignationExplanationFieldLabel"
+          "onChangeHandler": "updateSMEDesignationExplanationFieldLabelForKTTP1"
         },
         {
           "name": "quartech_smedesignationexplanation",
