@@ -63,15 +63,6 @@
           "maxWords": 1000
         },
         {
-          "name": "quartech_commodity",
-          "label": "Specify the most relevant industry segment. If your Project applies to multiple areas, select the closest match.",
-          "required": true,
-          "visibleIf": {
-            "fieldName": "quartech_recipienttype",
-            "selectedValue": 255550001
-          }
-        },
-        {
           "name": "quartech_businessdescription",
           "label": "Organization Background",
           "required": true,
@@ -172,23 +163,6 @@
           "required": true,
           "label": "Please provide a brief description of the Project",
           "maxChars": 2000
-        },
-        {
-          "name": "quartech_naicsindustry",
-          "elementType": "MultiSelectPicklist",
-          "required": true,
-          "disableSingleLine": false,
-          "label": "Specify the most relevant industry segment. If your Project applies to multiple areas, select the closest match."
-        },
-        {
-          "name": "quartech_ifotherpleasedescribecommodity",
-          "label": "Please explain if you selected Sector-Wide, or if you have additional information to share on the Commodity/Sector",
-          "required": true,
-          "visibleIf": {
-            "fieldName": "quartech_naicsindustry",
-            "selectedValue": "6ce2584f-4740-ee11-be6e-000d3af3ac95",
-            "techComment": "Raw value for * Sector Wide"
-          }
         },
         {
           "name": "quartech_eventtype",
@@ -320,6 +294,11 @@
           }
         },
         {
+          "name": "quartech_commodity",
+          "label": "Specify the most relevant industry segment. If your Project applies to multiple areas, select the closest match.",
+          "required": true
+        },
+        {
           "name": "quartech_accessandinclusivenessdescription",
           "label": "The Province supports inclusiveness and increased representation of target and underrepresented groups. Please describe how you will work towards increasing access and inclusiveness of your activity?",
           "required": true,
@@ -345,7 +324,7 @@
           "label": "Subject Matter Expert (SME) Name",
           "reorderField": {
             "position": "after",
-            "fieldName": "quartech_naicsindustry_name"
+            "fieldName": "quartech_commodity"
           }
         },
         {
