@@ -64,6 +64,7 @@ POWERPOD.html = {
   addTextAboveSection,
   addTextBelowSection,
   moveTableRow,
+  hideFieldRow,
 };
 
 export function configureCustomLogo(customLogo) {

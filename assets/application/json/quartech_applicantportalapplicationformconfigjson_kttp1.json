@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "KTTP-SMEA", "KTTP1"],
-  "version": "1.7.2",
+  "version": "1.7.3",
   "name": "KTTP - Subject Matter Expert Activities",
   "abbreviation": "KTTP-SMEA",
   "programId": "25493093-9d2b-ee11-bdf4-000d3af3ac95",
@@ -724,6 +724,15 @@
           "label": "CHEFS Submission Id",
           "hidden": true,
           "doNotBlank": true
+        }
+      ]
+    },
+    {
+      "name": "DeclarationAndConsentStep",
+      "fields": [
+        {
+          "name": "quartech_declarationandconsent",
+          "hidden": true
         }
       ]
     }

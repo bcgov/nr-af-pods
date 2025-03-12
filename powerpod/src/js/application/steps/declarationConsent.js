@@ -1,5 +1,9 @@
 import { configureFields } from '../../common/fieldConfiguration.js';
-import { hideFieldsAndSections } from '../../common/html.js';
+import {
+  addTextAboveField,
+  hideFieldRow,
+  hideFieldsAndSections,
+} from '../../common/html.js';
 import { getProgramAbbreviation } from '../../common/program.ts';
 import { hidePageDescription } from '../../common/sections.js';
 
@@ -14,6 +18,17 @@ export function customizeDeclarationConsentStep(programData) {
     addConsent(programData?.quartech_applicantportalprogramname);
   } else {
     addConsentForTFCR(programData?.quartech_applicantportalprogramname);
+  }
+
+  if (programAbbreviation.includes('KTTP')) {
+    hideFieldRow({
+      fieldName: 'quartech_declarationandconsent',
+      doNotBlank: true,
+    });
+    addTextAboveField(
+      'quartech_declarationandconsent',
+      'Testimonials may be used in program reporting, promotional materials, or shared publicly if funding is awarded. Do you consent to providing a written testimonial (with 1 to 3 high-quality photos, if possible) once your project has been completed?'
+    );
   }
 }
 
