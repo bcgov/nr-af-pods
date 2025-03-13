@@ -84,9 +84,7 @@ export function customizeDeliverablesBudgetStep() {
     setOnKeypressBudgetInput(
       'quartech_costsharecontributioncashorinkinddonation'
     );
-    setOnKeypressBudgetInput(
-      'quartech_estimatednumberofattendees'
-    );
+    setOnKeypressBudgetInput('quartech_estimatednumberofattendees');
 
     const deliverablesBudgetSectionElement = document.querySelector(
       '#EntityFormView > div.tab.clearfix > div > div > fieldset:nth-child(1) > legend > h3'
@@ -425,7 +423,7 @@ export function calculateEstimatedActivityBudget() {
     advertising +
     administration +
     otherCosts;
-  let totalFundingRequired = totalActivityCost - costShareContribution;
+  let totalFundingRequired = totalActivityCost - (costShareContribution || 0);
 
   const estimatedNumberOfAttendeesId = 'quartech_estimatednumberofattendees';
   const estimatedNumberOfAttendees =

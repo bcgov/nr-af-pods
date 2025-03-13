@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "KTTP-SMEA", "KTTP1"],
-  "version": "1.7.3",
+  "version": "1.7.4",
   "name": "KTTP - Subject Matter Expert Activities",
   "abbreviation": "KTTP-SMEA",
   "programId": "25493093-9d2b-ee11-bdf4-000d3af3ac95",
@@ -577,9 +577,10 @@
           "label": "Administration Costs",
           "tooltipText": "Administrative costs must not exceed 10% of the Total Funding Required from KTTP (not Total Project Cost)",
           "validation": {
-            "type": "numeric",
+            "type": "custom",
             "value": "0",
-            "comparison": "greaterThanOrEqualTo"
+            "comparison": "greaterThanOrEqualTo",
+            "customFunc": "validateAdministrationCosts"
           },
           "onChangeHandler": "displayOrHideAdministrationCostsNoticeForKTTP",
           "additionalTextBelowField": "<p id='doesNotMeetAdministrativeCostRequirementsNotice' style='display:none;'>Administrative Costs exceeding 10% of the total funding requested are not eligible for reimbursement. Please refer to the Program Guide for more information.</p>"

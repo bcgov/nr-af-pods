@@ -29,6 +29,7 @@ import {
   getOriginalMsosElement,
 } from './html.js';
 import { Logger } from './logger.js';
+import { displayOrHideAdministrationCostsNoticeForKTTP } from './onChangeHandlers.js';
 import { getOptions } from './options.js';
 import { getCurrentStep, getProgramAbbreviation } from './program.ts';
 
@@ -106,6 +107,28 @@ export function validateStepField(fieldName) {
       elemType: elementType,
       errorMessage,
     });
+    if (errorMsg && errorMsg.length) {
+      errorMsgs.push(errorMsg);
+    }
+  }
+  if (
+    validation?.type === 'custom' &&
+    validation.customFunc === 'validateAdministrationCosts'
+  ) {
+    const { value, comparison } = validation;
+    let errorMsg = validateNumericFieldValue({
+      fieldName: name,
+      comparisonValue: value,
+      operator: comparison,
+      errorMessage,
+    });
+
+    if (displayOrHideAdministrationCostsNoticeForKTTP() === true) {
+      errorMsg =
+        'Administration Costs must not exceed 10% of the Total Funding Requested From the Program';
+    } else {
+      errorMsg = '';
+    }
     if (errorMsg && errorMsg.length) {
       errorMsgs.push(errorMsg);
     }

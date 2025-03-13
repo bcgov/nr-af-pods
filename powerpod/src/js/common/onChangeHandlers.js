@@ -2,6 +2,7 @@ import store from '../store/index.js';
 import { HtmlElementType, NO_VALUE, POWERPOD, YES_VALUE } from './constants.js';
 import { formatCurrencyOnBlur } from './currency.js';
 import { setFieldVisibility } from './fieldConditionalLogic.js';
+import { updateFieldValue } from './fieldConfiguration.js';
 import { getFieldConfig } from './fields.js';
 import {
   copyFromFieldAToFieldB,
@@ -791,8 +792,10 @@ export function displayOrHideAdministrationCostsNoticeForKTTP() {
   // If any value is No, we must show the notice
   if (isAdministrationCostGreaterThan10PercentOfFundingRequired) {
     noticeElement.style.display = '';
+    return true;
   } else {
     noticeElement.style.display = 'none';
+    return false;
   }
 }
 
@@ -846,7 +849,7 @@ export function updateSMEDesignationExplanationFieldLabelForKTTP2() {
       // Yes
       setFieldNameLabel(
         'quartech_smedesignationexplanation',
-        'Please provide details regarding the Facilitator\'s kind of accreditation or licence (e.g., Professional Agrologist, Veterinarian, etc.)'
+        "Please provide details regarding the Facilitator's kind of accreditation or licence (e.g., Professional Agrologist, Veterinarian, etc.)"
       );
     } else if (selectedValue === '255550001') {
       // No
