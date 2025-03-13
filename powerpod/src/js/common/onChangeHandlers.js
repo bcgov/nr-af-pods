@@ -753,9 +753,9 @@ export function displayOrHideAdministrationCostsNoticeForKTTP() {
 
   // Convert input values to numbers (fallback to 0 if invalid)
   const administrationCost =
-    parseFloat(administration.replaceAll(',', '')) || 0;
+    parseFloat(administration?.replaceAll(',', '')) || 0;
   const totalFundingRequestedCost =
-    parseFloat(totalFundingRequested.replaceAll(',', '')) || 0;
+    parseFloat(totalFundingRequested?.replaceAll(',', '')) || 0;
 
   logger.info({
     fn: displayOrHideAdministrationCostsNoticeForKTTP,
