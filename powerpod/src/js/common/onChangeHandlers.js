@@ -751,6 +751,20 @@ export function displayOrHideAdministrationCostsNoticeForKTTP() {
     data: { administration, totalFundingRequested },
   });
 
+  if (
+    !administration ||
+    !administration.replaceAll ||
+    !totalFundingRequested ||
+    !totalFundingRequested.replaceAll
+  ) {
+    logger.warn({
+      fn: displayOrHideAdministrationCostsNoticeForKTTP,
+      message: `Could not retrieve administration or totalFundingRequested field values`,
+      data: { administration, totalFundingRequested },
+    });
+    return;
+  }
+
   // Convert input values to numbers (fallback to 0 if invalid)
   const administrationCost =
     parseFloat(administration?.replaceAll(',', '')) || 0;
