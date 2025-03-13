@@ -255,6 +255,11 @@ export function generateFormJson(setFieldOrder = false) {
   fieldsetArr.forEach((fieldset) => {
     const displayName = fieldset.querySelector('h3')?.textContent; // e.g. "Application Information for Reimbursement"
 
+    // skip coding sections
+    if (displayName?.toLowerCase().includes("coding section")) {
+      return;
+    }
+
     const tableElement = fieldset.querySelector('table');
     const sectionId = tableElement?.getAttribute('data-name'); // e.g. "applicationInfoSection"
 
