@@ -438,7 +438,7 @@ export function calculateEstimatedActivityBudget() {
 
   const estimatedCostPerAttendeeId = 'quartech_estimatedcostperattendee';
   const estimatedCostPerAttendee =
-    totalFundingRequired / estimatedNumberOfAttendeesVal;
+    totalActivityCost / estimatedNumberOfAttendeesVal;
 
   logger.info({
     fn: calculateEstimatedActivityBudget,

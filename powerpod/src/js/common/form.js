@@ -334,12 +334,12 @@ export function generateFormJson(setFieldOrder = false) {
       }
       const controlId = getControlId(tr, controlType);
 
-      if (controlId === 'quartech_consenttotestimonials') {
-        formJsonObj[sectionId][questionAnswerListKey].push({
-          [questionKey]: 'Declaration & Consent Text',
-          [answerKey]: 'Testimonials may be used in program reporting, promotional materials, or shared publicly if funding is awarded. Do you consent to providing a written testimonial (with 1 to 3 high-quality photos, if possible) once your project has been completed?',
-        });
-      }
+      // if (controlId === 'quartech_consenttotestimonials') {
+      //   formJsonObj[sectionId][questionAnswerListKey].push({
+      //     [questionKey]: 'Declaration & Consent Text',
+      //     [answerKey]: 'Testimonials may be used in program reporting, promotional materials, or shared publicly if funding is awarded. Do you consent to providing a written testimonial (with 1 to 3 high-quality photos, if possible) once your project has been completed?',
+      //   });
+      // }
 
       let fieldConfig = {};
       if (POWERPOD.state?.fields?.[controlId]) {

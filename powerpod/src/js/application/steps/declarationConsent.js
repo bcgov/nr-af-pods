@@ -16,11 +16,10 @@ export function customizeDeclarationConsentStep(programData) {
   }
   if (programAbbreviation.includes('KTTP')) {
     // addConsentForKTTP(programData?.quartech_applicantportalprogramname);
-    // hideFieldRow({
-    //   fieldName: 'quartech_declarationandconsent',
-    //   doNotBlank: true,
-    // });
-    addTextAboveField('quartech_consenttotestimonials', 'Testimonials may be used in program reporting, promotional materials, or shared publicly if funding is awarded. Do you consent to providing a written testimonial (with 1 to 3 high-quality photos, if possible) once your project has been completed?')
+    hideFieldRow({
+      fieldName: 'quartech_consenttotestimonials'
+    });
+    // addTextAboveField('quartech_consenttotestimonials', 'Testimonials may be used in program reporting, promotional materials, or shared publicly if funding is awarded. Do you consent to providing a written testimonial (with 1 to 3 high-quality photos, if possible) once your project has been completed?')
   }
   if (programAbbreviation !== 'TFCR') {
     addConsent(programData?.quartech_applicantportalprogramname);

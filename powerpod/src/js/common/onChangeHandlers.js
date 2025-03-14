@@ -832,7 +832,7 @@ export function updateSMEDesignationExplanationFieldLabelForKTTP1() {
       // Yes
       setFieldNameLabel(
         'quartech_smedesignationexplanation',
-        'Please describe the type of Tools or Equipment rented'
+        'Please provide details regarding the SME\'s kind of accreditation or licence (e.g., Professional Agrologist, Veterinarian, etc.)'
       );
     } else if (selectedValue === '255550001') {
       // No
@@ -863,7 +863,7 @@ export function updateSMEDesignationExplanationFieldLabelForKTTP2() {
       // Yes
       setFieldNameLabel(
         'quartech_smedesignationexplanation',
-        "Please provide details regarding the Facilitator's kind of accreditation or licence (e.g., Professional Agrologist, Veterinarian, etc.)"
+        'Please provide details regarding the Facilitator\'s kind of accreditation or licence (e.g., Professional Agrologist, Veterinarian, etc.)'
       );
     } else if (selectedValue === '255550001') {
       // No

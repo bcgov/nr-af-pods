@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "KTTP-SMEA", "KTTP1"],
-  "version": "1.7.4",
+  "version": "1.7.5",
   "name": "KTTP - Subject Matter Expert Activities",
   "abbreviation": "KTTP-SMEA",
   "programId": "25493093-9d2b-ee11-bdf4-000d3af3ac95",
@@ -12,7 +12,7 @@
   "sections": [
     {
       "name": "ApplicantInfoStep",
-      "additionalTextAboveSection": "<p>Your personal information is collected under section 26(c) and 26(e) of the Freedom of Information and Protection of Privacy Act for the purposes of evaluating applications and for the planning and evaluating of the S-CAP Ministry Program. The information you provide will be shared with the federal government to fulfill the provincial obligations under the Sustainable Canadian Agricultural Partnership (S-CAP) bilateral agreement. It may be combined with other survey or administrative data sources and used for statistical, research and evaluation purposes.</p>",
+      "additionalTextAboveSection": "<p>Your personal information is collected under section 26(c) and 26(e) of the Freedom of Information and Protection of Privacy Act for the purposes of evaluating applications and for the planning and evaluating of the S-CAP Ministry Program. The information you provide will be shared with the federal government to fulfill the provincial obligations under the Sustainable Canadian Agricultural Partnership (S-CAP) bilateral agreement. It may be combined with other survey or administrative data sources and used for statistical, research and evaluation purposes.</p><p>If funding is awarded, we will request a written testimonial and 1 to 3 high-quality photos from your event or project upon completion. These may be used in program reporting, promotional materials, or shared publicly.</p>",
       "dataName": "tab_ApplicantInfo",
       "subsections": [
         {
@@ -46,6 +46,10 @@
           "label": "Email address for communication about this application"
         },
         {
+          "name": "quartech_businesswebsite",
+          "label": "Business Website"
+        },
+        {
           "name": "quartech_recipienttype",
           "required": true,
           "elementType": "DropdownSelect",
@@ -60,13 +64,13 @@
           "name": "quartech_businessgoals",
           "label": "Describe how your organization's activities benefit primary food producers or processors",
           "required": true,
-          "maxWords": 1000
+          "maxChars": 2000
         },
         {
           "name": "quartech_businessdescription",
           "label": "Organization Background",
           "required": true,
-          "maxWords": 100
+          "maxChars": 2000
         },
         {
           "name": "quartech_organizationsectororcommodity",
@@ -125,7 +129,7 @@
           "name": "quartech_ifyespleaseprovideabriefbackgroundoutlinin",
           "label": "Please provide a brief description of the organization and what their role be in this activity (300 words maximum)",
           "required": true,
-          "maxWords": 300,
+          "maxChars": 2000,
           "visibleIf": {
             "fieldName": "quartech_areyoucollaboratingwithanyotherorg",
             "selectedValue": 255550000,
@@ -385,7 +389,8 @@
           "label": "Project Start Date (day on which the activity begins)",
           "required": true,
           "elementType": "DatePicker",
-          "disableSingleLine": false
+          "disableSingleLine": false,
+          "tooltipText": "All events must take place between April 16, 2025 and March 1, 2026."
         },
         {
           "name": "quartech_doestheactivitytakeplaceovermultipleday",
@@ -702,7 +707,7 @@
       "fields": [
         {
           "name": "quartech_relatedquotesandplans",
-          "label": "<b>Applications must upload an event agenda with your application.</b> You may use our <a href='https://www2.gov.bc.ca/assets/gov/farming-natural-resources-and-industry/agriculture-and-seafood/programs/knowledge-transfer-events/kttp_agenda_template.docx' target='_blank' style='color:blue; font-size: unset; margin-left: 0px'>KTTP agenda template</a> or provide your own",
+          "label": "<b>Applications must upload an event agenda with your application.</b> You may use our <a href='https://www2.gov.bc.ca/assets/gov/farming-natural-resources-and-industry/agriculture-and-seafood/programs/knowledge-transfer-events/2025-26_kttp_draft_agenda_template.docx' target='_blank' style='color:blue; font-size: unset; margin-left: 0px'>KTTP agenda template</a> or provide your own",
           "required": true,
           "elementType": "FileInput"
         }
@@ -732,7 +737,7 @@
       "name": "DeclarationAndConsentStep",
       "fields": [
         {
-          "name": "quartech_declarationandconsent",
+          "name": "quartech_consenttotestimonials",
           "hidden": true
         }
       ]
