@@ -1,6 +1,9 @@
 import { getGlobalConfigData } from '../../common/config.js';
 import { YES_VALUE } from '../../common/constants.js';
-import { getOrgbookAutocompleteData } from '../../common/fetch.js';
+import {
+  getCommoditiesData,
+  getOrgbookAutocompleteData,
+} from '../../common/fetch.js';
 import { initOnChange_DependentRequiredField } from '../../common/fieldConditionalLogic.js';
 import {
   addTextAboveField,
@@ -8,6 +11,7 @@ import {
   getFieldInfoDiv,
   hideFieldsetTitle,
   relocateField,
+  setFieldValue,
 } from '../../common/html.js';
 import { Logger } from '../../common/logger.js';
 import {
@@ -21,6 +25,7 @@ import {
   setBusinessOrPersonalAddressLabels,
   setBusinessOrPersonalStateForVLB,
 } from '../../common/onChangeHandlers.js';
+import { processCommoditiesData } from '../../common/commodities.ts';
 
 const logger = Logger('application/steps/applicantInfo');
 
@@ -58,6 +63,10 @@ export function customizeApplicantInfoStep() {
 
   if (programAbbreviation === 'TFCR') {
     customizeApplicantInfoStepForTFCR();
+  }
+
+  if (programAbbreviation.includes('KTTP')) {
+    initCommoditiesMultiSelect();
   }
 }
 
@@ -584,4 +593,108 @@ function customizeApplicantInfoStepForNEFBA() {
   );
   if (businessOverviewFieldSetElement)
     businessOverviewFieldSetElement.css('display', 'none');
+}
+
+function initCommoditiesMultiSelect() {
+  logger.info({
+    fn: initCommoditiesMultiSelect,
+    message: 'start initializing commodities multiselect',
+  });
+  getCommoditiesData({
+    onSuccess: (data) => {
+      if (data) {
+        addCommodityMultiSelect(data);
+      }
+    },
+  });
+}
+
+function addCommodityMultiSelect(commoditiesJson) {
+  const commodityFieldId = 'quartech_organizationsectororcommodity';
+
+  if (!$(`#${commodityFieldId}`)) return;
+
+  const commoditiesGroupedByCategoryKey =
+    processCommoditiesData(commoditiesJson);
+
+  logger.info({
+    fn: addCommodityMultiSelect,
+    message: `got processed commodities data:`,
+    data: commoditiesGroupedByCategoryKey,
+  });
+
+  const fieldControlDiv = $(`#${commodityFieldId}`).closest('div');
+
+  const selectElement = `
+        <select id="commoditiesControl" data-placeholder="Select commodities" class="chosen-select" multiple tabindex="6">
+          <option value=""></option>
+        </select>
+      `;
+  $(fieldControlDiv)?.append(selectElement);
+
+  // hide dynamics field
+  $(`#${commodityFieldId}`).css({ display: 'none' });
+
+  Object.keys(commoditiesGroupedByCategoryKey).forEach((categoryName) => {
+    const group = $('<optgroup label="' + categoryName + '" />');
+    // @ts-ignore
+    commoditiesGroupedByCategoryKey[categoryName].forEach((commodity) => {
+      $(`<option value="${commodity.name}"/>`)
+        .html(commodity.name)
+        .appendTo(group);
+    });
+    group.appendTo($('#commoditiesControl'));
+  });
+
+  useScript('chosen', setupChosen);
+}
+
+function setupChosen() {
+  logger.info({ fn: setupChosen, message: 'setting up chosen...' });
+  // @ts-ignore
+  $('.chosen-select').chosen();
+  // @ts-ignore
+  $('.chosen-select-deselect').chosen({ allow_single_deselect: true });
+
+  // fetch pre-selected options, if any
+  const existingCommodities = $(
+    '#quartech_organizationsectororcommodity'
+  ).val();
+
+  if (existingCommodities) {
+    const existingCommoditiesArray = existingCommodities.split(', ');
+    $('.chosen-select').val(existingCommoditiesArray);
+    $('.chosen-select').trigger('chosen:updated');
+  }
+
+  // @ts-ignore
+  var target = document
+    .getElementById('quartech_organizationsectororcommodity')
+    .closest('tr');
+  var observer = new MutationObserver(function (mutations) {
+    if (target?.style?.display === 'none') {
+      $('.chosen-select').val([]);
+      $('.chosen-select').trigger('chosen:updated');
+    }
+  });
+  if (target && target.nodeType === Node.ELEMENT_NODE) {
+    observer.observe(target, {
+      attributes: true,
+      attributeFilter: ['style'],
+    });
+  }
+
+  // update dynamics field value on change of chosen field
+  $('.chosen-select').on('change', function () {
+    const newSelectedCommodities = $('.chosen-select').val();
+    // @ts-ignore
+    const stringToPassToFieldInput = newSelectedCommodities?.join(', ');
+    // @ts-ignore
+    setFieldValue({
+      name: 'quartech_organizationsectororcommodity',
+      value: stringToPassToFieldInput,
+    });
+  });
+
+  logger.info({ fn: setupChosen, message: 'successfully setup chosen...' });
 }

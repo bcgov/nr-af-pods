@@ -42,7 +42,7 @@ export const ENDPOINT_URL = {
     `/_api/quartech_demographicinfos(${demographicInfoId})`,
   post_browserinformation_data: '/_api/quartech_browserinformations',
   get_types_of_food_data: `/_api/quartech_typeoffoods?$select=quartech_name`,
-  get_commodities_data: `/_api/quartech_commodities`,
+  get_commodities_data: `/_api/quartech_commodities?$select=quartech_name,_quartech_naicscode_value,quartech_category`,
 };
 
 POWERPOD.fetch = {
@@ -600,14 +600,26 @@ export async function getTypesOfFoodData({ ...options } = {}) {
   });
 }
 
-export async function getCommoditiesData({ ...options } = {}) {
+// export async function getCommoditiesData({ ...options } = {}) {
+//   return fetch({
+//     url: ENDPOINT_URL.get_commodities_data,
+//     contentType: CONTENT_TYPE.json,
+//     datatype: DATATYPE.json,
+//     includeODataHeaders: true,
+//     async: false,
+//     returnData: true,
+//     ...options,
+//   });
+// }
+
+export async function getCommoditiesData({ onSuccess = null, ...options }) {
   return fetch({
     url: ENDPOINT_URL.get_commodities_data,
     contentType: CONTENT_TYPE.json,
     datatype: DATATYPE.json,
     includeODataHeaders: true,
     async: false,
-    returnData: true,
+    onSuccess,
     ...options,
   });
 }

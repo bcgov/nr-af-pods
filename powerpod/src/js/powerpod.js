@@ -16,6 +16,7 @@ import { initApplication } from './application/application.js';
 import { initClaim } from './claim/claim.js';
 import './components/ExpenseReportTable.ts';
 import './components/ClaimInfoGridVLB.ts';
+import './components/CommoditiesMultiSelect.ts';
 import { hideLoadingAnimation } from './common/loading.js';
 
 const logger = Logger('powerpod');

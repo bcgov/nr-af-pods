@@ -147,4 +147,5 @@ export const POWERPOD = {
   typesOfFood: {},
   fieldConditionalLogic: {},
   fieldConfiguration: {},
+  commodities: {},
 };

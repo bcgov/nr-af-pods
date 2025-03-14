@@ -1,115 +1,115 @@
 {
   "data": {
+    "@odata.context": "https://af-pods-dev.powerappsportals.com/_api/$metadata#quartech_typeoffoods(quartech_name)",
+    "@Microsoft.Dynamics.CRM.totalrecordcount": -1,
+    "@Microsoft.Dynamics.CRM.totalrecordcountlimitexceeded": false,
+    "@Microsoft.Dynamics.CRM.globalmetadataversion": "33566300",
+    "value": [
+      {
+        "@odata.etag": "W/\"33299306\"",
+        "quartech_typeoffoodid": "84f64203-92a3-ef11-a72d-000d3ae8ff2c",
+        "quartech_name": "Smallholder Swine"
+      },
+      {
+        "@odata.etag": "W/\"33299308\"",
+        "quartech_typeoffoodid": "cd206609-92a3-ef11-a72d-000d3ae8ff2c",
+        "quartech_name": "Commercial Poultry"
+      },
+      {
+        "@odata.etag": "W/\"33299304\"",
+        "quartech_typeoffoodid": "dd5714fe-91a3-ef11-a72d-002248ae88a6",
+        "quartech_name": "Commercial Swine"
+      },
+      {
+        "@odata.etag": "W/\"33299298\"",
+        "quartech_typeoffoodid": "c86d19fa-91a3-ef11-a72d-6045bd5beb97",
+        "quartech_name": "Beef Cattle"
+      },
+      {
+        "@odata.etag": "W/\"33299300\"",
+        "quartech_typeoffoodid": "d26d19fa-91a3-ef11-a72d-6045bd5beb97",
+        "quartech_name": "Dairy Cattle"
+      },
+      {
+        "@odata.etag": "W/\"33299302\"",
+        "quartech_typeoffoodid": "7d04c000-92a3-ef11-a72d-6045bd5beb97",
+        "quartech_name": "Small Ruminant"
+      },
+      {
+        "@odata.etag": "W/\"33299309\"",
+        "quartech_typeoffoodid": "cc9b4d08-92a3-ef11-a72d-6045bd5beb97",
+        "quartech_name": "Smallholder Poultry"
+      },
+      {
+        "@odata.etag": "W/\"33299311\"",
+        "quartech_typeoffoodid": "7891750e-92a3-ef11-a72d-6045bd5beb97",
+        "quartech_name": "Equine"
+      },
+      {
+        "@odata.etag": "W/\"33299314\"",
+        "quartech_typeoffoodid": "7a91750e-92a3-ef11-a72d-6045bd5beb97",
+        "quartech_name": "Companion Animal"
+      }
+    ]
+  },
+  "textStatus": "success",
+  "jqXHR": {
+    "readyState": 4,
+    "responseText": "{\r\n  \"@odata.context\": \"https://af-pods-dev.powerappsportals.com/_api/$metadata#quartech_typeoffoods(quartech_name)\",\r\n  \"@Microsoft.Dynamics.CRM.totalrecordcount\": -1,\r\n  \"@Microsoft.Dynamics.CRM.totalrecordcountlimitexceeded\": false,\r\n  \"@Microsoft.Dynamics.CRM.globalmetadataversion\": \"33566300\",\r\n  \"value\": [\r\n    {\r\n      \"@odata.etag\": \"W/\\\"33299306\\\"\",\r\n      \"quartech_typeoffoodid\": \"84f64203-92a3-ef11-a72d-000d3ae8ff2c\",\r\n      \"quartech_name\": \"Smallholder Swine\"\r\n    },\r\n    {\r\n      \"@odata.etag\": \"W/\\\"33299308\\\"\",\r\n      \"quartech_typeoffoodid\": \"cd206609-92a3-ef11-a72d-000d3ae8ff2c\",\r\n      \"quartech_name\": \"Commercial Poultry\"\r\n    },\r\n    {\r\n      \"@odata.etag\": \"W/\\\"33299304\\\"\",\r\n      \"quartech_typeoffoodid\": \"dd5714fe-91a3-ef11-a72d-002248ae88a6\",\r\n      \"quartech_name\": \"Commercial Swine\"\r\n    },\r\n    {\r\n      \"@odata.etag\": \"W/\\\"33299298\\\"\",\r\n      \"quartech_typeoffoodid\": \"c86d19fa-91a3-ef11-a72d-6045bd5beb97\",\r\n      \"quartech_name\": \"Beef Cattle\"\r\n    },\r\n    {\r\n      \"@odata.etag\": \"W/\\\"33299300\\\"\",\r\n      \"quartech_typeoffoodid\": \"d26d19fa-91a3-ef11-a72d-6045bd5beb97\",\r\n      \"quartech_name\": \"Dairy Cattle\"\r\n    },\r\n    {\r\n      \"@odata.etag\": \"W/\\\"33299302\\\"\",\r\n      \"quartech_typeoffoodid\": \"7d04c000-92a3-ef11-a72d-6045bd5beb97\",\r\n      \"quartech_name\": \"Small Ruminant\"\r\n    },\r\n    {\r\n      \"@odata.etag\": \"W/\\\"33299309\\\"\",\r\n      \"quartech_typeoffoodid\": \"cc9b4d08-92a3-ef11-a72d-6045bd5beb97\",\r\n      \"quartech_name\": \"Smallholder Poultry\"\r\n    },\r\n    {\r\n      \"@odata.etag\": \"W/\\\"33299311\\\"\",\r\n      \"quartech_typeoffoodid\": \"7891750e-92a3-ef11-a72d-6045bd5beb97\",\r\n      \"quartech_name\": \"Equine\"\r\n    },\r\n    {\r\n      \"@odata.etag\": \"W/\\\"33299314\\\"\",\r\n      \"quartech_typeoffoodid\": \"7a91750e-92a3-ef11-a72d-6045bd5beb97\",\r\n      \"quartech_name\": \"Companion Animal\"\r\n    }\r\n  ]\r\n}",
+    "responseJSON": {
       "@odata.context": "https://af-pods-dev.powerappsportals.com/_api/$metadata#quartech_typeoffoods(quartech_name)",
       "@Microsoft.Dynamics.CRM.totalrecordcount": -1,
       "@Microsoft.Dynamics.CRM.totalrecordcountlimitexceeded": false,
       "@Microsoft.Dynamics.CRM.globalmetadataversion": "33566300",
       "value": [
-          {
-              "@odata.etag": "W/\"33299306\"",
-              "quartech_typeoffoodid": "84f64203-92a3-ef11-a72d-000d3ae8ff2c",
-              "quartech_name": "Smallholder Swine"
-          },
-          {
-              "@odata.etag": "W/\"33299308\"",
-              "quartech_typeoffoodid": "cd206609-92a3-ef11-a72d-000d3ae8ff2c",
-              "quartech_name": "Commercial Poultry"
-          },
-          {
-              "@odata.etag": "W/\"33299304\"",
-              "quartech_typeoffoodid": "dd5714fe-91a3-ef11-a72d-002248ae88a6",
-              "quartech_name": "Commercial Swine"
-          },
-          {
-              "@odata.etag": "W/\"33299298\"",
-              "quartech_typeoffoodid": "c86d19fa-91a3-ef11-a72d-6045bd5beb97",
-              "quartech_name": "Beef Cattle"
-          },
-          {
-              "@odata.etag": "W/\"33299300\"",
-              "quartech_typeoffoodid": "d26d19fa-91a3-ef11-a72d-6045bd5beb97",
-              "quartech_name": "Dairy Cattle"
-          },
-          {
-              "@odata.etag": "W/\"33299302\"",
-              "quartech_typeoffoodid": "7d04c000-92a3-ef11-a72d-6045bd5beb97",
-              "quartech_name": "Small Ruminant"
-          },
-          {
-              "@odata.etag": "W/\"33299309\"",
-              "quartech_typeoffoodid": "cc9b4d08-92a3-ef11-a72d-6045bd5beb97",
-              "quartech_name": "Smallholder Poultry"
-          },
-          {
-              "@odata.etag": "W/\"33299311\"",
-              "quartech_typeoffoodid": "7891750e-92a3-ef11-a72d-6045bd5beb97",
-              "quartech_name": "Equine"
-          },
-          {
-              "@odata.etag": "W/\"33299314\"",
-              "quartech_typeoffoodid": "7a91750e-92a3-ef11-a72d-6045bd5beb97",
-              "quartech_name": "Companion Animal"
-          }
+        {
+          "@odata.etag": "W/\"33299306\"",
+          "quartech_typeoffoodid": "84f64203-92a3-ef11-a72d-000d3ae8ff2c",
+          "quartech_name": "Smallholder Swine"
+        },
+        {
+          "@odata.etag": "W/\"33299308\"",
+          "quartech_typeoffoodid": "cd206609-92a3-ef11-a72d-000d3ae8ff2c",
+          "quartech_name": "Commercial Poultry"
+        },
+        {
+          "@odata.etag": "W/\"33299304\"",
+          "quartech_typeoffoodid": "dd5714fe-91a3-ef11-a72d-002248ae88a6",
+          "quartech_name": "Commercial Swine"
+        },
+        {
+          "@odata.etag": "W/\"33299298\"",
+          "quartech_typeoffoodid": "c86d19fa-91a3-ef11-a72d-6045bd5beb97",
+          "quartech_name": "Beef Cattle"
+        },
+        {
+          "@odata.etag": "W/\"33299300\"",
+          "quartech_typeoffoodid": "d26d19fa-91a3-ef11-a72d-6045bd5beb97",
+          "quartech_name": "Dairy Cattle"
+        },
+        {
+          "@odata.etag": "W/\"33299302\"",
+          "quartech_typeoffoodid": "7d04c000-92a3-ef11-a72d-6045bd5beb97",
+          "quartech_name": "Small Ruminant"
+        },
+        {
+          "@odata.etag": "W/\"33299309\"",
+          "quartech_typeoffoodid": "cc9b4d08-92a3-ef11-a72d-6045bd5beb97",
+          "quartech_name": "Smallholder Poultry"
+        },
+        {
+          "@odata.etag": "W/\"33299311\"",
+          "quartech_typeoffoodid": "7891750e-92a3-ef11-a72d-6045bd5beb97",
+          "quartech_name": "Equine"
+        },
+        {
+          "@odata.etag": "W/\"33299314\"",
+          "quartech_typeoffoodid": "7a91750e-92a3-ef11-a72d-6045bd5beb97",
+          "quartech_name": "Companion Animal"
+        }
       ]
-  },
-  "textStatus": "success",
-  "jqXHR": {
-      "readyState": 4,
-      "responseText": "{\r\n  \"@odata.context\": \"https://af-pods-dev.powerappsportals.com/_api/$metadata#quartech_typeoffoods(quartech_name)\",\r\n  \"@Microsoft.Dynamics.CRM.totalrecordcount\": -1,\r\n  \"@Microsoft.Dynamics.CRM.totalrecordcountlimitexceeded\": false,\r\n  \"@Microsoft.Dynamics.CRM.globalmetadataversion\": \"33566300\",\r\n  \"value\": [\r\n    {\r\n      \"@odata.etag\": \"W/\\\"33299306\\\"\",\r\n      \"quartech_typeoffoodid\": \"84f64203-92a3-ef11-a72d-000d3ae8ff2c\",\r\n      \"quartech_name\": \"Smallholder Swine\"\r\n    },\r\n    {\r\n      \"@odata.etag\": \"W/\\\"33299308\\\"\",\r\n      \"quartech_typeoffoodid\": \"cd206609-92a3-ef11-a72d-000d3ae8ff2c\",\r\n      \"quartech_name\": \"Commercial Poultry\"\r\n    },\r\n    {\r\n      \"@odata.etag\": \"W/\\\"33299304\\\"\",\r\n      \"quartech_typeoffoodid\": \"dd5714fe-91a3-ef11-a72d-002248ae88a6\",\r\n      \"quartech_name\": \"Commercial Swine\"\r\n    },\r\n    {\r\n      \"@odata.etag\": \"W/\\\"33299298\\\"\",\r\n      \"quartech_typeoffoodid\": \"c86d19fa-91a3-ef11-a72d-6045bd5beb97\",\r\n      \"quartech_name\": \"Beef Cattle\"\r\n    },\r\n    {\r\n      \"@odata.etag\": \"W/\\\"33299300\\\"\",\r\n      \"quartech_typeoffoodid\": \"d26d19fa-91a3-ef11-a72d-6045bd5beb97\",\r\n      \"quartech_name\": \"Dairy Cattle\"\r\n    },\r\n    {\r\n      \"@odata.etag\": \"W/\\\"33299302\\\"\",\r\n      \"quartech_typeoffoodid\": \"7d04c000-92a3-ef11-a72d-6045bd5beb97\",\r\n      \"quartech_name\": \"Small Ruminant\"\r\n    },\r\n    {\r\n      \"@odata.etag\": \"W/\\\"33299309\\\"\",\r\n      \"quartech_typeoffoodid\": \"cc9b4d08-92a3-ef11-a72d-6045bd5beb97\",\r\n      \"quartech_name\": \"Smallholder Poultry\"\r\n    },\r\n    {\r\n      \"@odata.etag\": \"W/\\\"33299311\\\"\",\r\n      \"quartech_typeoffoodid\": \"7891750e-92a3-ef11-a72d-6045bd5beb97\",\r\n      \"quartech_name\": \"Equine\"\r\n    },\r\n    {\r\n      \"@odata.etag\": \"W/\\\"33299314\\\"\",\r\n      \"quartech_typeoffoodid\": \"7a91750e-92a3-ef11-a72d-6045bd5beb97\",\r\n      \"quartech_name\": \"Companion Animal\"\r\n    }\r\n  ]\r\n}",
-      "responseJSON": {
-          "@odata.context": "https://af-pods-dev.powerappsportals.com/_api/$metadata#quartech_typeoffoods(quartech_name)",
-          "@Microsoft.Dynamics.CRM.totalrecordcount": -1,
-          "@Microsoft.Dynamics.CRM.totalrecordcountlimitexceeded": false,
-          "@Microsoft.Dynamics.CRM.globalmetadataversion": "33566300",
-          "value": [
-              {
-                  "@odata.etag": "W/\"33299306\"",
-                  "quartech_typeoffoodid": "84f64203-92a3-ef11-a72d-000d3ae8ff2c",
-                  "quartech_name": "Smallholder Swine"
-              },
-              {
-                  "@odata.etag": "W/\"33299308\"",
-                  "quartech_typeoffoodid": "cd206609-92a3-ef11-a72d-000d3ae8ff2c",
-                  "quartech_name": "Commercial Poultry"
-              },
-              {
-                  "@odata.etag": "W/\"33299304\"",
-                  "quartech_typeoffoodid": "dd5714fe-91a3-ef11-a72d-002248ae88a6",
-                  "quartech_name": "Commercial Swine"
-              },
-              {
-                  "@odata.etag": "W/\"33299298\"",
-                  "quartech_typeoffoodid": "c86d19fa-91a3-ef11-a72d-6045bd5beb97",
-                  "quartech_name": "Beef Cattle"
-              },
-              {
-                  "@odata.etag": "W/\"33299300\"",
-                  "quartech_typeoffoodid": "d26d19fa-91a3-ef11-a72d-6045bd5beb97",
-                  "quartech_name": "Dairy Cattle"
-              },
-              {
-                  "@odata.etag": "W/\"33299302\"",
-                  "quartech_typeoffoodid": "7d04c000-92a3-ef11-a72d-6045bd5beb97",
-                  "quartech_name": "Small Ruminant"
-              },
-              {
-                  "@odata.etag": "W/\"33299309\"",
-                  "quartech_typeoffoodid": "cc9b4d08-92a3-ef11-a72d-6045bd5beb97",
-                  "quartech_name": "Smallholder Poultry"
-              },
-              {
-                  "@odata.etag": "W/\"33299311\"",
-                  "quartech_typeoffoodid": "7891750e-92a3-ef11-a72d-6045bd5beb97",
-                  "quartech_name": "Equine"
-              },
-              {
-                  "@odata.etag": "W/\"33299314\"",
-                  "quartech_typeoffoodid": "7a91750e-92a3-ef11-a72d-6045bd5beb97",
-                  "quartech_name": "Companion Animal"
-              }
-          ]
-      },
-      "status": 200,
-      "statusText": "OK"
+    },
+    "status": 200,
+    "statusText": "OK"
   }
 }

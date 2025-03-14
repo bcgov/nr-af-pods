@@ -7,7 +7,7 @@ import { Logger } from './logger.js';
  * APPLICATION FORMS
  */
 // KTTP1:
-// import localConfigJson from '../../../../assets/application/json/quartech_applicantportalapplicationformconfigjson_kttp1.json';
+import localConfigJson from '../../../../assets/application/json/quartech_applicantportalapplicationformconfigjson_kttp1.json';
 // KTTP2:
 // import localConfigJson from '../../../../assets/application/json/quartech_applicantportalapplicationformconfigjson_kttp2.json';
 // ABPP1:
@@ -146,14 +146,14 @@ export function getApplicationConfigData(programId) {
   });
 
   // UNCOMMENT THIS IF YOU WANT TO FORCE TO USE LOCAL JSON CONFIG
-  // if (path.includes('application-dev') && localConfigJson) {
-  //   logger.info({
-  //     fn: getApplicationConfigData,
-  //     message: 'successfully fetched application config data from localhost',
-  //     data: { localConfigJson },
-  //   });
-  //   return localConfigJson;
-  // }
+  if (path.includes('application-dev') && localConfigJson) {
+    logger.info({
+      fn: getApplicationConfigData,
+      message: 'successfully fetched application config data from localhost',
+      data: { localConfigJson },
+    });
+    return localConfigJson;
+  }
   // UNCOMMENT THIS IF YOU WANT TO FORCE TO USE LOCAL JSON CONFIG
 
   const programData = localStorage.getItem('programData');
