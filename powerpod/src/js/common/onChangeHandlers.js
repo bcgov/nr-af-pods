@@ -847,7 +847,7 @@ export function updateSMEDesignationExplanationFieldLabelForKTTP1() {
 export function updateSMEDesignationExplanationFieldLabelForKTTP2() {
   logger.info({
     fn: updateSMEDesignationExplanationFieldLabelForKTTP2,
-    message: `updateSMEDesignationExplanationFieldLabelForKTTP1 called, start determing label to show...`,
+    message: `updateSMEDesignationExplanationFieldLabelForKTTP2 called, start determing label to show...`,
   });
   const smeSelect = document.getElementById(
     'quartech_smeholdsarelevantprofessionaldesignation'

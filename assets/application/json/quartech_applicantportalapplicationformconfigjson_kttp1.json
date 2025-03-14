@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "KTTP-SMEA", "KTTP1"],
-  "version": "1.7.5",
+  "version": "1.7.6",
   "name": "KTTP - Subject Matter Expert Activities",
   "abbreviation": "KTTP-SMEA",
   "programId": "25493093-9d2b-ee11-bdf4-000d3af3ac95",
@@ -371,7 +371,7 @@
         },
         {
           "name": "quartech_smedesignationexplanation",
-          "label": "Please describe the type of Tools or Equipment rented",
+          "label": "Please provide details regarding the SME's kind of accreditation or licence (e.g., Professional Agrologist, Veterinarian, etc.)",
           "techComment": "This label changes based on quartech_smeholdsarelevantprofessionaldesignation selected value",
           "required": true,
           "visibleIf": {
