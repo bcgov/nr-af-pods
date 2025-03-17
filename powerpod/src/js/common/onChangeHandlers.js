@@ -30,6 +30,7 @@ POWERPOD.onChangeHandlers = {
   calculateTFCRBudgets,
   displayOrHideAdministrationCostsNoticeForKTTP,
   updateSMEDesignationExplanationFieldLabelForKTTP1,
+  updateSMEDesignationExplanationFieldLabelForKTTP2,
 };
 
 const logger = Logger('common/onChangeHandlers');
@@ -832,7 +833,7 @@ export function updateSMEDesignationExplanationFieldLabelForKTTP1() {
       // Yes
       setFieldNameLabel(
         'quartech_smedesignationexplanation',
-        'Please provide details regarding the SME\'s kind of accreditation or licence (e.g., Professional Agrologist, Veterinarian, etc.)'
+        "Please provide details regarding the SME's kind of accreditation or licence (e.g., Professional Agrologist, Veterinarian, etc.)"
       );
     } else if (selectedValue === '255550001') {
       // No
@@ -863,7 +864,7 @@ export function updateSMEDesignationExplanationFieldLabelForKTTP2() {
       // Yes
       setFieldNameLabel(
         'quartech_smedesignationexplanation',
-        'Please provide details regarding the Facilitator\'s kind of accreditation or licence (e.g., Professional Agrologist, Veterinarian, etc.)'
+        "Please provide details regarding the Facilitator's kind of accreditation or licence (e.g., Professional Agrologist, Veterinarian, etc.)"
       );
     } else if (selectedValue === '255550001') {
       // No
