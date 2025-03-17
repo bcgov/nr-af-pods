@@ -1592,11 +1592,18 @@ export function removeDropdownOptions(name, removeDropdownOptionsValues) {
 }
 
 export function moveTableRow(rowIdToMove, referenceRowId, position = 'after') {
+  logger.info({
+    fn: moveTableRow,
+    message: `moveTableRow called with rowIdToMove: ${rowIdToMove}, referenceRowId: ${referenceRowId}, position: ${position}`
+  })
   const rowToMove = document.getElementById(rowIdToMove)?.closest('tr');
   const referenceRow = document.getElementById(referenceRowId)?.closest('tr');
 
   if (!rowToMove || !referenceRow) {
-    console.error('One or both of the specified rows were not found.');
+    logger.error({
+      fn: moveTableRow,
+      message: 'One or both of the specified rows were not found.'
+    })
     return;
   }
 

@@ -16,6 +16,7 @@ import {
   addTextAboveField,
   addTextBelowField,
   hideFieldsetTitle,
+  moveTableRow,
   setFieldValue,
 } from '../../common/html.js';
 import { processLocationData } from '../../common/locations.ts';
@@ -35,6 +36,10 @@ export function customizeProjectStep(programData) {
   initOnChange_ActiviyOpenToPublic();
 
   initAdditionalLocationsMultiSelect();
+
+  if (getProgramAbbreviation().includes('KTTP')) {
+    moveTableRow('quartech_accessandinclusivenessdescription', 'quartech_numberofoverallattendeesexpectedtoattendthi');
+  }
 }
 
 function customizeActivityTypesDropDownList(programData) {

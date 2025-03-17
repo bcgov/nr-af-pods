@@ -136,6 +136,9 @@ export function configureField(field) {
     });
     return; // no need to do any config yet if field is hidden
   }
+  if (reorderField && reorderField.position && reorderField.fieldName) {
+    moveTableRow(name, reorderField.fieldName, reorderField.position);
+  }
   // setFieldObserver(name, format);
   // cleanup resize handlers that break UI
   if (elementType === HtmlElementType.MultiOptionSet) {
@@ -246,10 +249,6 @@ export function configureField(field) {
     maskInput(name, FieldMaskType.PhoneNumber);
   } else if (format === 'postalCode') {
     maskInput(name, FieldMaskType.PostalCode);
-  }
-
-  if (reorderField && reorderField.position && reorderField.fieldName) {
-    moveTableRow(name, reorderField.fieldName, reorderField.position);
   }
 
   if (additionalTextBelowField) {
