@@ -1,0 +1,177 @@
+{
+  "tags": ["Claim", "TFCR"],
+  "version": "1.0.0",
+  "name": "Tree Fruit Climate Resiliency Program",
+  "abbreviation": "TFCR",
+  "sections": [
+    {
+      "name": "ApplicantInfoStep",
+      "fields": [
+        {
+          "name": "quartech_legalbusinessororganizationname",
+          "label": "Legal Business or Individual's Name"
+        },
+        {
+          "name": "quartech_businessaddress",
+          "label": "Locum's Address"
+        },
+        {
+          "name": "quartech_businessphonenumber",
+          "format": "phoneNumber",
+          "label": "Tel"
+        },
+        {
+          "name": "quartech_businessemailaddress",
+          "format": "email",
+          "label": "Email"
+        },
+        {
+          "name": "quartech_applicantinformationconfirmation",
+          "label": "I / We confirm the above information is correct",
+          "required": true,
+          "elementType": "DropdownSelect"
+        },
+        {
+          "name": "quartech_applicantinformationcorrections",
+          "label": "Please provide further detail",
+          "required": true,
+          "maxLength": 10000,
+          "visibleIf": {
+            "fieldName": "quartech_applicantinformationconfirmation",
+            "selectedValue": 255550001,
+            "techComment": "No value"
+          }
+        },
+        {
+          "name": "quartech_filenumber",
+          "label": "File Number (from authorization letter)",
+          "readOnly": true
+        }
+      ]
+    },
+    {
+      "name": "ProjectResultsStep",
+      "fields": [
+        {
+          "name": "quartech_claimingforregistrationmembershipfees",
+          "label": "Are you claiming 2024 / 2025 annual registrant / membership fees with CVBC and SBCV or BCVTA?",
+          "required": true,
+          "elementType": "DropdownSelect"
+        },
+        {
+          "name": "quartech_reasonnotclaimingregistrationmembership",
+          "label": "Please explain the reason",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_claimingforregistrationmembershipfees",
+            "selectedValue": 255550001,
+            "techComment": "No value"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ClaimInfoStep",
+      "fields": [
+        {
+          "name": "quartech_totalsumofreportedexpenses",
+          "label": "CVBC and SBCV or BCVTA annual fees",
+          "format": "currency",
+          "required": true,
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThan"
+          },
+          "emptyInitialValue": true,
+          "onChangeHandler": "calculateAndPopulateRequestedClaimAmountForVLB"
+        },
+        {
+          "name": "quartech_numberoffulldaysworkedasaveterinarian",
+          "label": "Total number of full days worked as a veterinarian",
+          "required": true,
+          "dataFormat": "number",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          },
+          "additionalTextAboveField": "<p>Instructions:<ul><li>Claims can only be submitted once per quarter.</li><li>Claim forms can be accessed through My Claims.</li><li>Multiple entries can be made to each claim form. However, once the claim form is submitted no further edits will be allowed. Be sure that all entries for the quarter have been made prior to clicking \"SUBMIT.\"</li></ul></p>",
+          "onChangeHandler": "calculateAndPopulateRequestedClaimAmountForVLB"
+        },
+        {
+          "name": "quartech_numberoffulldaysworkedasanrvt",
+          "label": "Total number of full days worked as an RVT",
+          "required": true,
+          "dataFormat": "number",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          },
+          "onChangeHandler": "calculateAndPopulateRequestedClaimAmountForVLB"
+        },
+        {
+          "name": "quartech_numberofdaysprovidingtelemedicinesupport",
+          "label": "Total number of days worked providing telemedicine support as a veterinarian or an RVT",
+          "required": true,
+          "dataFormat": "number",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          },
+          "onChangeHandler": "calculateAndPopulateRequestedClaimAmountForVLB"
+        },
+        {
+          "name": "quartech_practiceswherelocumservicesweredelivered",
+          "label": "Practice(s) where locum services were delivered",
+          "forceGenerateWordTemplateData": true,
+          "hidden": true,
+          "doNotBlank": true,
+          "techComment": "This is the JSON used to generate the PDF for the practice grid"
+        },
+        {
+          "name": "quartech_locumservicespracticegrid",
+          "label": "Practice(s) Where Locum Services Were Delivered",
+          "errorMessage": "Please fill out each requested field for each Practice.",
+          "required": true,
+          "hideLabel": true,
+          "checkForEmptyValues": true,
+          "skipWordTemplateGeneration": true,
+          "disableSingleLine": true,
+          "techComment": "This custom component is too complex for JSON, so it's defined in claimInfoStep.js"
+        },
+        {
+          "name": "quartech_totalfees",
+          "label": "Your requested amount in this claim ($CAD)",
+          "tooltipText": "Enter the amount you are requesting reimbursement for in this claim",
+          "relocateField": {
+            "originFieldName": "quartech_totalfees",
+            "destinationFieldName": "quartech_numberofdaysprovidingtelemedicinesupport",
+            "relativePosition": "below"
+          },
+          "readOnly": true,
+          "required": true,
+          "format": "currency",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThan"
+          }
+        }
+      ]
+    },
+    {
+      "name": "DocumentsStep",
+      "fields": [
+        {
+          "name": "quartech_proofofpayment",
+          "label": "2024 / 2025 receipt for their annual registrant / membership fees with CVBC and SBCV or BCVTA",
+          "required": true,
+          "elementType": "FileInput"
+        }
+      ]
+    }
+  ]
+}
