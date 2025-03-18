@@ -1,8 +1,13 @@
 {
   "tags": ["Claim", "TFCR"],
-  "version": "1.0.0",
+  "version": "1.0.1",
   "name": "Tree Fruit Climate Resiliency Program",
   "abbreviation": "TFCR",
+  "hiddenSteps": [
+    {
+      "displayName": "Project Results"
+    }
+  ],
   "sections": [
     {
       "name": "ApplicantInfoStep",

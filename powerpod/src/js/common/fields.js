@@ -303,6 +303,10 @@ export function getFieldsBySectionClaim(stepName, forceRefresh = false) {
     data: claimConfigData,
   });
 
+  // hide tabs if 'hiddenSteps' is passed in JSON config
+  const hiddenSteps = claimConfigData.hiddenSteps;
+  if (hiddenSteps) hideTabs(hiddenSteps);
+
   const claimSections = claimConfigData?.sections;
 
   const claimSection = claimSections?.find((s) => s.name === stepName);
