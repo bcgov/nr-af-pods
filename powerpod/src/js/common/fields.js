@@ -307,6 +307,10 @@ export function getFieldsBySectionClaim(stepName, forceRefresh = false) {
   const hiddenSteps = claimConfigData.hiddenSteps;
   if (hiddenSteps) hideTabs(hiddenSteps);
 
+  // configure custom logo if passed
+  const customLogo = claimConfigData.customLogo;
+  if (customLogo) configureCustomLogo(customLogo);
+
   const claimSections = claimConfigData?.sections;
 
   const claimSection = claimSections?.find((s) => s.name === stepName);

@@ -36,6 +36,8 @@ import { Logger } from './logger.js';
 // import localConfigJson from '../../../../assets/claim/json/quartech_applicantportalclaimformjson_nefba2.json';
 // Claim VLB:
 // import localConfigJson from '../../../../assets/claim/json/quartech_applicantportalclaimformjson_vlb.json';
+// Claim TFCR:
+// import localConfigJson from '../../../../assets/claim/json/quartech_applicantportalclaimformjson_tfcr.json';
 
 const logger = Logger('common/config');
 
