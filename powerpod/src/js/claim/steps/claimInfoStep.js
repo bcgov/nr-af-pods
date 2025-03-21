@@ -23,7 +23,10 @@ import '../../components/DropdownSearch.ts';
 import '../../components/TextField.ts';
 import '../../components/ExpenseReceiptsTable.ts';
 import 'fa-icons';
-import { getTotalExpenseAmount, getTotalReceiptsAmount } from '../../common/expenseTypes.ts';
+import {
+  getTotalExpenseAmount,
+  getTotalReceiptsAmount,
+} from '../../common/expenseTypes.ts';
 import { Logger } from '../../common/logger.js';
 import { filterEmptyRows, isValidJSON } from '../../common/utils.js';
 import { renderCustomComponent } from '../../common/components.ts';
@@ -212,6 +215,7 @@ export function customizeClaimInfoStep() {
     addInstructionsForExpenseReceipts();
     addExpenseReceiptsGrid();
     $('#quartech_expensereceipts_label').closest('div.info').hide();
+    setFieldReadOnly('quartech_totalsumofreportedexpenses');
   }
 
   if (programAbbreviation === 'NEFBA2') {

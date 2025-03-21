@@ -1,6 +1,6 @@
 {
   "tags": ["Claim", "TFCR"],
-  "version": "1.0.4",
+  "version": "1.0.5",
   "name": "Tree Fruit Climate Resiliency Program",
   "abbreviation": "TFCR",
   "hiddenSteps": [
@@ -130,6 +130,18 @@
         {
           "name": "quartech_proofofpayment",
           "label": "2024 / 2025 receipt for their annual registrant / membership fees with CVBC and SBCV or BCVTA",
+          "required": true,
+          "elementType": "FileInput"
+        },
+        {
+          "name": "quartech_photosordocsofpurchase",
+          "label": "Photos of completed project",
+          "required": true,
+          "elementType": "FileInput"
+        },
+        {
+          "name": "quartech_directdepositdetails",
+          "label": "Direct Deposit details",
           "required": true,
           "elementType": "FileInput"
         }
