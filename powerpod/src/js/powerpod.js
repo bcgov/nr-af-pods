@@ -17,6 +17,7 @@ import { initClaim } from './claim/claim.js';
 import './components/ExpenseReportTable.ts';
 import './components/ClaimInfoGridVLB.ts';
 import './components/CommoditiesMultiSelect.ts';
+import './components/ExpenseReceiptsTable.ts';
 import { hideLoadingAnimation } from './common/loading.js';
 
 const logger = Logger('powerpod');
@@ -91,7 +92,7 @@ function setAPI() {
     };
   };
   // @ts-ignore
-  POWERPOD.version = '3.4.6';
+  POWERPOD.version = '3.4.7';
   // @ts-ignore
   window.powerpod = POWERPOD;
 }

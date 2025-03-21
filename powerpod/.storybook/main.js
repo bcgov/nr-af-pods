@@ -32,6 +32,10 @@ const config = {
             __dirname,
             '../src/assets/css/shoelace.css?inline'
           ),
+          '../../assets/css/flatpickr.min.css': path.resolve(
+            __dirname,
+            '../src/assets/css/flatpickr.min.css?inline'
+          ),
         },
       },
     }),

@@ -21,6 +21,7 @@ import '../../components/ExpenseReportTable.ts';
 import '../../components/CurrencyInput.ts';
 import '../../components/DropdownSearch.ts';
 import '../../components/TextField.ts';
+import '../../components/ExpenseReceiptsTable.ts';
 import 'fa-icons';
 import { getTotalExpenseAmount } from '../../common/expenseTypes.ts';
 import { Logger } from '../../common/logger.js';
@@ -275,7 +276,7 @@ export function customizeClaimInfoStep() {
       );
     }
 
-    customizeInterimPaymentAmountField()
+    customizeInterimPaymentAmountField();
     // observeChanges($('#quartech_requestedinterimpaymentamount')[0], () =>
     //   customizeInterimPaymentAmountField()
     // );

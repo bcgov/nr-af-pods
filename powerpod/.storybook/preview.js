@@ -30,6 +30,7 @@ global.Microsoft = {
 
 import '../src/assets/css/bootstrap.css';
 import '../src/assets/css/shoelace.css';
+import '../src/assets/css/flatpickr.min.css';
 
 /** @type { import('@storybook/web-components').Preview } */
 const preview = {

@@ -1,7 +1,7 @@
 {
   "name": "powerpod",
   "type": "module",
-  "version": "3.4.6",
+  "version": "3.4.7",
   "description": "Powerpod is a jQuery plugin that enhances functionality of Power Pages components.",
   "main": "dist/powerpod",
   "scripts": {
@@ -86,6 +86,7 @@
     "@lit/task": "^1.0.0",
     "@shoelace-style/shoelace": "^2.15.0",
     "fa-icons": "^0.2.0",
+    "flatpickr": "^4.6.13",
     "lit": "^3.1.2",
     "storybook-addon-manual-mocks": "^1.0.3",
     "vite": "^4.5.2"
