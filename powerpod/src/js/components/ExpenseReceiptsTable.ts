@@ -6,8 +6,9 @@ import { customElement, property } from 'lit/decorators.js';
 import './CurrencyInput';
 import './DropdownSearch';
 import './TextField';
+import './DateField';
 import {
-  getTotalExpenseAmount,
+  getTotalReceiptsAmount,
   processExpenseTypesData,
 } from '../common/expenseTypes';
 import { getExpenseTypeData } from '../common/fetch';
@@ -64,7 +65,7 @@ class ExpenseReceiptsTable extends LitElement {
         id: this.id,
         message: 'Expense receipts data has changed',
         value: JSON.stringify(rowData),
-        total: getTotalExpenseAmount(rowData),
+        total: getTotalReceiptsAmount(rowData),
       },
       bubbles: true,
       composed: true,
@@ -225,14 +226,30 @@ class ExpenseReceiptsTable extends LitElement {
                         const cellValue = row[col.id];
                         if (
                           col.id === 'receiptNum' ||
-                          col.id === 'purchasedFrom' ||
-                          col.id === 'description'
+                          col.id === 'purchasedFrom'
                         ) {
                           return html` <td>
                             <text-field
                               customStyle="width: 95%"
                               .inputValue=${cellValue}
                               .readOnly=${this.readOnly}
+                              @onChangeTextField=${(e: CustomEvent) => {
+                                this.handleUpdateCell(
+                                  rowIndex,
+                                  col.id,
+                                  e.detail.value
+                                );
+                                e.stopImmediatePropagation();
+                              }}
+                            ></text-field>
+                          </td>`;
+                        } else if (col.id === 'description') {
+                          return html` <td>
+                            <text-field
+                              customStyle="width: 95%"
+                              .inputValue=${cellValue}
+                              .readOnly=${this.readOnly}
+                              maxLength="250"
                               @onChangeTextField=${(e: CustomEvent) => {
                                 this.handleUpdateCell(
                                   rowIndex,
@@ -326,6 +343,7 @@ class ExpenseReceiptsTable extends LitElement {
           </tbody>
         </tbody>
       </table>
+      <p style="margin:-20px 0px 10px;font-size:14px;">See program guide for eligibile expenses</p>
     `;
   }
 }

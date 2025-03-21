@@ -3,7 +3,7 @@ module.exports = {
   moduleNameMapper: {
     '\\.css$': 'identity-obj-proxy',
   },
-  transformIgnorePatterns: ['/node_modules/(?!(lit|@shoelace-style)/)'],
+  transformIgnorePatterns: ['/node_modules/(?!(lit|@shoelace-style|flatpickr)/)'],
   transform: {
     '^.+\\.[tj]sx?$': 'babel-jest',
   },

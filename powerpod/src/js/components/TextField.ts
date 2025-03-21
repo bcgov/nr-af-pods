@@ -9,6 +9,7 @@ class TextField extends LitElement {
   @property() customStyle = '';
   @property({ type: Boolean }) readOnly = false;
   @property({ type: String }) fieldLabel: string = '';
+  @property({ type: Number }) maxLength: number | undefined;
 
   emitEvent() {
     let event = new CustomEvent('onChangeTextField', {
@@ -64,6 +65,7 @@ class TextField extends LitElement {
         id="inputElement"
         type="text"
         .value=${this.inputValue || ''}
+        maxlength=${this.maxLength ?? ''}
         @change=${this.handleEmitEvent}
       />
     `;

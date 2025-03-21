@@ -75,3 +75,17 @@ export function getTotalExpenseAmount(rowData: RowItem[]) {
   });
   return formattedValue;
 }
+
+export function getTotalReceiptsAmount(rowData: RowItem[]) {
+  let floatValue = rowData.reduce((acc: number, row: RowItem) => {
+    const amount = row['subtotal'];
+    const numericValue = amount.replace(/[^\d.-]/g, '');
+    if (!!numericValue) return acc + parseFloat(numericValue);
+    return acc;
+  }, 0.0);
+  const formattedValue = floatValue.toLocaleString('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+  return formattedValue;
+}

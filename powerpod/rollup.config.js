@@ -7,7 +7,7 @@ import json from '@rollup/plugin-json';
 import commonjs from '@rollup/plugin-commonjs';
 
 const licenseContent = `/*!
-* powerpod 3.4.7
+* powerpod 3.4.8
 * https://github.com/bcgov/nr-af-pods/powerpod
 *
 * @license GPLv3 for open source use only
@@ -42,6 +42,7 @@ module.exports = [
         name: 'powerpod',
         format: 'umd',
         banner: licenseContent,
+        context: 'window',
         globals: {
           document: 'document',
           window: 'window',

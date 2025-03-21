@@ -1,6 +1,6 @@
 {
   "tags": ["Claim", "TFCR"],
-  "version": "1.0.2",
+  "version": "1.0.4",
   "name": "Tree Fruit Climate Resiliency Program",
   "abbreviation": "TFCR",
   "hiddenSteps": [
@@ -80,8 +80,13 @@
       "name": "ClaimInfoStep",
       "fields": [
         {
+          "name": "quartech_expensereceipts",
+          "label": "Expenses Receipts",
+          "disableSingleLine": true
+        },
+        {
           "name": "quartech_totalsumofreportedexpenses",
-          "label": "CVBC and SBCV or BCVTA annual fees",
+          "label": "Total sum of reported expenses ($CAD)",
           "format": "currency",
           "required": true,
           "validation": {
@@ -90,66 +95,17 @@
             "comparison": "greaterThan"
           },
           "emptyInitialValue": true,
-          "onChangeHandler": "calculateAndPopulateRequestedClaimAmountForVLB"
+          "onChangeHandler": "calculateAndPopulateRequestedClaimAmountForTFCR"
         },
         {
-          "name": "quartech_numberoffulldaysworkedasaveterinarian",
-          "label": "Total number of full days worked as a veterinarian",
-          "required": true,
-          "dataFormat": "number",
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThanOrEqualTo"
-          },
-          "additionalTextAboveField": "<p>Instructions:<ul><li>Claims can only be submitted once per quarter.</li><li>Claim forms can be accessed through My Claims.</li><li>Multiple entries can be made to each claim form. However, once the claim form is submitted no further edits will be allowed. Be sure that all entries for the quarter have been made prior to clicking \"SUBMIT.\"</li></ul></p>",
-          "onChangeHandler": "calculateAndPopulateRequestedClaimAmountForVLB"
-        },
-        {
-          "name": "quartech_numberoffulldaysworkedasanrvt",
-          "label": "Total number of full days worked as an RVT",
-          "required": true,
-          "dataFormat": "number",
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThanOrEqualTo"
-          },
-          "onChangeHandler": "calculateAndPopulateRequestedClaimAmountForVLB"
-        },
-        {
-          "name": "quartech_numberofdaysprovidingtelemedicinesupport",
-          "label": "Total number of days worked providing telemedicine support as a veterinarian or an RVT",
-          "required": true,
-          "dataFormat": "number",
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThanOrEqualTo"
-          },
-          "onChangeHandler": "calculateAndPopulateRequestedClaimAmountForVLB"
-        },
-        {
-          "name": "quartech_practiceswherelocumservicesweredelivered",
-          "label": "Practice(s) where locum services were delivered",
-          "forceGenerateWordTemplateData": true,
-          "hidden": true,
-          "doNotBlank": true,
-          "techComment": "This is the JSON used to generate the PDF for the practice grid"
-        },
-        {
-          "name": "quartech_locumservicespracticegrid",
-          "label": "Practice(s) Where Locum Services Were Delivered",
-          "errorMessage": "Please fill out each requested field for each Practice.",
-          "required": true,
-          "hideLabel": true,
-          "checkForEmptyValues": true,
-          "skipWordTemplateGeneration": true,
-          "disableSingleLine": true,
-          "techComment": "This custom component is too complex for JSON, so it's defined in claimInfoStep.js"
+          "name": "quartech_authorizedclaimedamount",
+          "label": "Approved Funding as per Authorization Letter (in total)",
+          "readOnly": true,
+          "onChangeHandler": "calculateAndPopulateRequestedClaimAmountForTFCR"
         },
         {
           "name": "quartech_totalfees",
+          "visible": false,
           "label": "Your requested amount in this claim ($CAD)",
           "tooltipText": "Enter the amount you are requesting reimbursement for in this claim",
           "relocateField": {

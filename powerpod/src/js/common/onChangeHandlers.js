@@ -26,6 +26,7 @@ POWERPOD.onChangeHandlers = {
   setBusinessOrPersonalAddressLabels,
   populateTotalPercent,
   calculateAndPopulateRequestedClaimAmountForVLB,
+  calculateAndPopulateRequestedClaimAmountForTFCR,
   checkAndSetTFCREligbilityNotice,
   calculateTFCRBudgets,
   displayOrHideAdministrationCostsNoticeForKTTP,
@@ -384,6 +385,46 @@ export function calculateAndPopulateRequestedClaimAmountForVLB() {
   setFieldValue({ name: 'quartech_totalfees', value: formattedResult });
   logger.info({
     fn: calculateAndPopulateRequestedClaimAmountForVLB,
+    message: `Successfuly set field tag: quartech_totalfees to value: ${result}`,
+  });
+}
+
+export function calculateAndPopulateRequestedClaimAmountForTFCR() {
+  logger.info({
+    fn: calculateAndPopulateRequestedClaimAmountForTFCR,
+    message: `calculateAndPopulateRequestedClaimAmountForTFCR called, start calculating...`,
+  });
+  // Get input values from the elements
+  const approvedAmountForTFCR =
+    document.getElementById('quartech_authorizedclaimedamount')?.value || 0;
+  const sumOfTotalExpensesForTFCR =
+    document.getElementById('quartech_totalsumofreportedexpenses')?.value || 0;
+
+  logger.info({
+    fn: calculateAndPopulateRequestedClaimAmountForTFCR,
+    message: `calculateAndPopulateRequestedClaimAmountForTFCR returned ${sumOfTotalExpensesForTFCR} for totalExpensesForCVBCAndBCVTA`,
+  });
+
+  // Convert input values to numbers (fallback to 0 if invalid)
+  const sumOfTotalExpenses =
+    parseFloat(sumOfTotalExpensesForTFCR.replace(',', '')) || 0;
+  const approvedAmount =
+    parseFloat(approvedAmountForTFCR.replace(',', '')) || 0;
+
+  logger.info({
+    fn: calculateAndPopulateRequestedClaimAmountForTFCR,
+    message: `calculateAndPopulateRequestedClaimAmountForTFCR returned ${sumOfTotalExpenses} for expenses, and approvedAmount: ${approvedAmount}`,
+  });
+
+  // Perform the calculation
+  const result = Math.min(sumOfTotalExpenses, approvedAmount);
+
+  const formattedResult = formatCurrencyOnBlur(`${result}`);
+
+  // @ts-ignore
+  setFieldValue({ name: 'quartech_totalfees', value: formattedResult });
+  logger.info({
+    fn: calculateAndPopulateRequestedClaimAmountForTFCR,
     message: `Successfuly set field tag: quartech_totalfees to value: ${result}`,
   });
 }

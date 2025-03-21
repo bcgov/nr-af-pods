@@ -33,7 +33,6 @@ class DateField extends LitElement {
   firstUpdated() {
     flatpickr(this.inputElement, {
       dateFormat: 'M-d-Y',
-      defaultDate: new Date(),
       onChange: (selectedDates, dateStr) => {
         console.log('Selected:', dateStr);
         this.dispatchEvent(

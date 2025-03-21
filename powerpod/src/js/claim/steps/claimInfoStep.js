@@ -23,7 +23,7 @@ import '../../components/DropdownSearch.ts';
 import '../../components/TextField.ts';
 import '../../components/ExpenseReceiptsTable.ts';
 import 'fa-icons';
-import { getTotalExpenseAmount } from '../../common/expenseTypes.ts';
+import { getTotalExpenseAmount, getTotalReceiptsAmount } from '../../common/expenseTypes.ts';
 import { Logger } from '../../common/logger.js';
 import { filterEmptyRows, isValidJSON } from '../../common/utils.js';
 import { renderCustomComponent } from '../../common/components.ts';
@@ -36,7 +36,7 @@ export function customizeClaimInfoStep() {
   const programAbbreviation = getProgramAbbreviation();
 
   // START step specific functions
-  function addInstructions() {
+  function addInstructionsForEligibleExpenses() {
     if (!document.querySelector('#claimInfoInstructionsNote')) {
       const claimInfoInstructionsNoteHtmlContent = `
         <div id="claimInfoInstructionsNote" style="padding-bottom: 20px;">
@@ -54,6 +54,21 @@ export function customizeClaimInfoStep() {
       $('#quartech_eligibleexpenses')
         .closest('tr')
         .before(claimInfoInstructionsNoteHtmlContent);
+    }
+  }
+
+  function addInstructionsForExpenseReceipts() {
+    if (!document.querySelector('#claimInfoInstructionsNote')) {
+      const claimInfoInstructionsNoteHtmlContent = `
+        <div id="claimInfoInstructionsNote" style="padding-bottom: 20px;">
+          <p>The program will provide 80 percent cost-share funding of up to $125,000 of eligible costs for eligible projects - up to a maximum of $100,000 per farm business.</p>
+          <p>Expenses will be reimbursed based on the submitted receipts and the approved project budget.</p>
+        </div>
+      `;
+
+      $('#quartech_expensereceipts')
+        .closest('td')
+        .prepend(claimInfoInstructionsNoteHtmlContent);
     }
   }
 
@@ -193,8 +208,14 @@ export function customizeClaimInfoStep() {
     });
   }
 
+  if (programAbbreviation.includes('TFCR')) {
+    addInstructionsForExpenseReceipts();
+    addExpenseReceiptsGrid();
+    $('#quartech_expensereceipts_label').closest('div.info').hide();
+  }
+
   if (programAbbreviation === 'NEFBA2') {
-    addInstructions();
+    addInstructionsForEligibleExpenses();
     addExpenseReportGrid();
     addFundingInformationNote();
     addRequestedClaimAmountNote();
@@ -591,5 +612,111 @@ function addExpenseReportGrid() {
   logger.info({
     fn: addExpenseReportGrid,
     message: 'Successfully added expense report grid',
+  });
+}
+
+function addExpenseReceiptsGrid() {
+  const columns = [
+    {
+      id: 'receiptNum',
+      name: 'Receipt #',
+      width: '15%',
+    },
+    {
+      id: 'receiptDate',
+      name: 'Receipt date',
+      width: '15%',
+    },
+    {
+      id: 'purchasedFrom',
+      name: 'Purchased from',
+      width: '15%',
+    },
+    {
+      id: 'description',
+      name: 'Description',
+      width: '40%',
+    },
+    {
+      id: 'subtotal',
+      name: 'Subtotal (no GST)',
+      width: '15%',
+    },
+  ];
+
+  let rows = [
+    {
+      receiptNum: '',
+      receiptDate: '',
+      purchasedFrom: '',
+      description: '',
+      subtotal: '',
+    },
+  ];
+
+  const expenseReportTableElement = renderCustomComponent({
+    fieldId: 'quartech_expensereceipts',
+    customElementTag: 'expense-receipts-table',
+    attributes: {
+      primary: true,
+      columns: JSON.stringify(columns),
+      rows: JSON.stringify(rows),
+    },
+    customEvent: 'onChangeExpenseReceiptsData',
+    customEventHandler: (event, customElement) => {
+      logger.info({
+        fn: customizeClaimInfoStep,
+        message: 'onChangeExpenseReceiptsData event listener triggered',
+        data: { event, customElement },
+      });
+      // @ts-ignore
+      rows = JSON.parse(event.detail.value);
+      customElement.setAttribute('rows', JSON.stringify(rows));
+      // @ts-ignore
+      setFieldValue({
+        name: 'quartech_expensereceipts',
+        value: JSON.stringify(filterEmptyRows(rows)),
+      });
+      // @ts-ignore
+      setFieldValue({
+        name: 'quartech_totalsumofreportedexpenses',
+        value: event.detail.total,
+      });
+      verifyTotalSumEqualsRequestedAmount();
+    },
+    mappedValueKey: 'rows',
+    initFn: (reportedExpenses) => {
+      // @ts-ignore
+      setFieldValue({
+        name: 'quartech_totalsumofreportedexpenses',
+        value: getTotalReceiptsAmount(JSON.parse(reportedExpenses)),
+      });
+      verifyTotalSumEqualsRequestedAmount();
+    },
+    initValuesFn: (mappedValueKey, existingValue, customElement) => {
+      logger.info({
+        fn: addExpenseReportGrid,
+        message: `Running initValuesFn for Expense Report Grid...`,
+        data: { mappedValueKey, existingValue, customElement },
+      });
+      if (
+        mappedValueKey === 'rows' &&
+        existingValue &&
+        existingValue.length &&
+        isValidJSON(existingValue)
+      ) {
+        const arr = JSON.parse(existingValue);
+        if (!Array.isArray(arr)) {
+          customElement.setAttribute(`${mappedValueKey}`, JSON.stringify(rows));
+        }
+      } else if (!existingValue || existingValue.length === 0) {
+        customElement.setAttribute(`${mappedValueKey}`, JSON.stringify(rows));
+      }
+    },
+  });
+
+  logger.info({
+    fn: addExpenseReportGrid,
+    message: 'Successfully added expense receipts grid',
   });
 }

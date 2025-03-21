@@ -13,7 +13,7 @@ type Story = StoryObj;
 
 export const Primary: Story = {
   args: {
-    inputValue: 'Mar-21-2025',
+    inputValue: 'Jan-21-2025',
   },
   render: function Render(args) {
     const [{ inputValue }, updateArgs] = useArgs();
