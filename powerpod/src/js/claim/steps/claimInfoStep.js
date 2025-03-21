@@ -6,6 +6,7 @@ import {
 } from '../../common/constants.js';
 import { initOnChange_DependentRequiredField } from '../../common/fieldConditionalLogic.js';
 import {
+  addTextBelowField,
   hideFieldRow,
   hideQuestion,
   observeChanges,
@@ -380,7 +381,8 @@ function showSumNotEqualWarning(show) {
     show &&
     !document.querySelector('#totalSumDoesNotEqualRequestAmountWarning')
   ) {
-    $('#quartech_totalfees').closest('tr').after(totalSumNotEqualNoteHtml);
+    // $('#quartech_totalfees').closest('td').append(totalSumNotEqualNoteHtml);
+    addTextBelowField('quartech_totalfees', totalSumNotEqualNoteHtml);
   } else if (show) {
     $('#totalSumDoesNotEqualRequestAmountWarning').css('display', '');
   } else if (!show) {

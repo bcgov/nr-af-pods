@@ -1,6 +1,6 @@
 {
   "tags": ["Claim", "TFCR"],
-  "version": "1.0.5",
+  "version": "1.0.7",
   "name": "Tree Fruit Climate Resiliency Program",
   "abbreviation": "TFCR",
   "hiddenSteps": [
@@ -95,7 +95,8 @@
             "comparison": "greaterThan"
           },
           "emptyInitialValue": true,
-          "onChangeHandler": "calculateAndPopulateRequestedClaimAmountForTFCR"
+          "onChangeHandler": "calculateAndPopulateRequestedClaimAmountForTFCR",
+          "errorMessage": "Sum of all reported expenses must be greater than 0. Please fill the table shown above."
         },
         {
           "name": "quartech_authorizedclaimedamount",
