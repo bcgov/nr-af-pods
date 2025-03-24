@@ -1,6 +1,6 @@
 {
   "tags": ["Claim", "TFCR"],
-  "version": "1.1.0",
+  "version": "1.1.2",
   "name": "Tree Fruit Climate Resiliency Program",
   "abbreviation": "TFCR",
   "hiddenSteps": [
@@ -87,7 +87,8 @@
           "skipWordTemplateGeneration": true,
           "checkForEmptyValues": true,
           "required": true,
-          "techComment": "This custom component is too complex for JSON, so it's defined in claimInfoStep.js"
+          "techComment": "This custom component is too complex for JSON, so it's defined in claimInfoStep.js",
+          "additionalTextAboveField": "<div id='claimInfoInstructionsNote' style='padding-bottom: 20px;'><p>The program will provide 80 percent cost-share funding of up to $125,000 of eligible costs for eligible projects - up to a maximum of $100,000 per farm business.</p><p>Expenses will be reimbursed based on the submitted receipts and the approved project budget.</p></div><div style='margin-top:-40px'><p>For a completed example of the claim form, see the screenshot below:</p><img src='/expense-receipts-example.png' style='max-width: 100%; height: auto; display: block; margin-bottom: 20px' /></div>"
         },
         {
           "name": "quartech_expensereceipts",
@@ -119,7 +120,8 @@
         },
         {
           "name": "quartech_totalfees",
-          "visible": false,
+          "hidden": true,
+          "doNotBlank": true,
           "label": "Your requested amount in this claim ($CAD)",
           "tooltipText": "Enter the amount you are requesting reimbursement for in this claim",
           "relocateField": {

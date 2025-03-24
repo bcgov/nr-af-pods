@@ -213,7 +213,7 @@ export function customizeClaimInfoStep() {
   }
 
   if (programAbbreviation.includes('TFCR')) {
-    addInstructionsForExpenseReceipts();
+    // addInstructionsForExpenseReceipts();
     addExpenseReceiptsGrid();
     $('#quartech_expensereceipts_label').closest('div.info').hide();
     setFieldReadOnly('quartech_totalsumofreportedexpenses');
