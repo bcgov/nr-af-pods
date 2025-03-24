@@ -1,6 +1,6 @@
 {
   "tags": ["Claim", "TFCR"],
-  "version": "1.0.9",
+  "version": "1.1.0",
   "name": "Tree Fruit Climate Resiliency Program",
   "abbreviation": "TFCR",
   "hiddenSteps": [
@@ -82,7 +82,12 @@
         {
           "name": "quartech_expensereceiptsgrid",
           "label": "Expense Receipts",
-          "disableSingleLine": true
+          "errorMessage": "Please fill out each requested field for each receipt entry.",
+          "disableSingleLine": true,
+          "skipWordTemplateGeneration": true,
+          "checkForEmptyValues": true,
+          "required": true,
+          "techComment": "This custom component is too complex for JSON, so it's defined in claimInfoStep.js"
         },
         {
           "name": "quartech_expensereceipts",

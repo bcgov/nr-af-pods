@@ -486,6 +486,7 @@ export function generateFormJson(setFieldOrder = false) {
             answerObj,
           },
         });
+        return;
       }
 
       formJsonObj[sectionId][questionAnswerListKey].push({
