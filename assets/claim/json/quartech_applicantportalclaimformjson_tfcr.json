@@ -1,6 +1,6 @@
 {
   "tags": ["Claim", "TFCR"],
-  "version": "1.0.8",
+  "version": "1.0.9",
   "name": "Tree Fruit Climate Resiliency Program",
   "abbreviation": "TFCR",
   "hiddenSteps": [
@@ -80,9 +80,17 @@
       "name": "ClaimInfoStep",
       "fields": [
         {
-          "name": "quartech_expensereceipts",
-          "label": "Expenses Receipts",
+          "name": "quartech_expensereceiptsgrid",
+          "label": "Expense Receipts",
           "disableSingleLine": true
+        },
+        {
+          "name": "quartech_expensereceipts",
+          "label": "Expense Receipts",
+          "forceGenerateWordTemplateData": true,
+          "hidden": true,
+          "doNotBlank": true,
+          "techComment": "This is the JSON used to generate the PDF for the Expense Receipts grid"
         },
         {
           "name": "quartech_totalsumofreportedexpenses",

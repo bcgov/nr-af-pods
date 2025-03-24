@@ -661,7 +661,7 @@ function addExpenseReceiptsGrid() {
   ];
 
   const expenseReportTableElement = renderCustomComponent({
-    fieldId: 'quartech_expensereceipts',
+    fieldId: 'quartech_expensereceiptsgrid',
     customElementTag: 'expense-receipts-table',
     attributes: {
       primary: true,
@@ -680,13 +680,18 @@ function addExpenseReceiptsGrid() {
       customElement.setAttribute('rows', JSON.stringify(rows));
       // @ts-ignore
       setFieldValue({
-        name: 'quartech_expensereceipts',
+        name: 'quartech_expensereceiptsgrid',
         value: JSON.stringify(filterEmptyRows(rows)),
       });
       // @ts-ignore
       setFieldValue({
         name: 'quartech_totalsumofreportedexpenses',
         value: event.detail.total,
+      });
+      // @ts-ignore
+      setFieldValue({
+        name: 'quartech_expensereceipts',
+        value: event.detail.pdfJson,
       });
       verifyTotalSumEqualsRequestedAmount();
     },

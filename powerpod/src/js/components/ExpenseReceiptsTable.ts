@@ -45,10 +45,6 @@ class ExpenseReceiptsTable extends LitElement {
   connectedCallback(): void {
     super.connectedCallback();
 
-    if (!this.readOnly) {
-      this.getExpenseTypes();
-    }
-
     if (!Array.isArray(this.rows)) {
       this.rows = [];
     }
@@ -66,19 +62,12 @@ class ExpenseReceiptsTable extends LitElement {
         message: 'Expense receipts data has changed',
         value: JSON.stringify(rowData),
         total: getTotalReceiptsAmount(rowData),
+        pdfJson: JSON.stringify(this.generatePDFJson(rowData)),
       },
       bubbles: true,
       composed: true,
     });
     this.dispatchEvent(customEvent);
-  }
-
-  async getExpenseTypes() {
-    const { data } = await getExpenseTypeData();
-    if (!data) {
-      throw new Error('Expense types task failed');
-    }
-    this.expenseTypes = processExpenseTypesData(data);
   }
 
   private handleUpdateCell(
@@ -125,6 +114,46 @@ class ExpenseReceiptsTable extends LitElement {
       this.rows = rowData;
     }
     this.emitEvent();
+  }
+
+  private generatePDFJson(rowData) {
+    return {
+      expenseReceiptsSection: {
+        displayName: 'Expense Receipts',
+        expenseReceiptsSectionQuestionAnswerList: rowData.flatMap(
+          (receipt, index) => [
+            {
+              expenseReceiptsSectionQuestion: 'Receipt Line #',
+              expenseReceiptsSectionAnswer: (index + 1).toString(),
+            },
+            {
+              expenseReceiptsSectionQuestion: 'Receipt Number',
+              expenseReceiptsSectionAnswer: receipt.receiptNum,
+            },
+            {
+              expenseReceiptsSectionQuestion: 'Receipt Date',
+              expenseReceiptsSectionAnswer: receipt.receiptDate,
+            },
+            {
+              expenseReceiptsSectionQuestion: 'Purchased From',
+              expenseReceiptsSectionAnswer: receipt.purchasedFrom,
+            },
+            {
+              expenseReceiptsSectionQuestion: 'Description',
+              expenseReceiptsSectionAnswer: receipt.description,
+            },
+            {
+              expenseReceiptsSectionQuestion: 'Subtotal',
+              expenseReceiptsSectionAnswer: receipt.subtotal,
+            },
+            {
+              expenseReceiptsSectionQuestion: '--',
+              expenseReceiptsSectionAnswer: '--',
+            },
+          ]
+        ),
+      },
+    };
   }
 
   render() {
