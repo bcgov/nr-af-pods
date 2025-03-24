@@ -474,6 +474,18 @@ export function generateFormJson(setFieldOrder = false) {
           },
         });
         return;
+      } else if (controlId === 'quartech_expensereceipts') {
+        const answerObj = JSON.parse(answerText);
+        sectionToAppend = answerObj;
+        appendSection = true;
+        logger.info({
+          fn: generateFormJson,
+          message: `For quartech_expensereceipts skipping adding to original object, instead append at the end`,
+          data: {
+            answerText,
+            answerObj,
+          },
+        });
       }
 
       formJsonObj[sectionId][questionAnswerListKey].push({

@@ -398,7 +398,8 @@ function verifyTotalSumEqualsRequestedAmount() {
     programAbbreviation === 'NEFBA2' ||
     programAbbreviation === 'VLB' ||
     programAbbreviation === 'VVTS' ||
-    programAbbreviation.includes('KTTP')
+    programAbbreviation.includes('KTTP') || 
+    programAbbreviation.includes('TFCR')
   ) {
     return;
   }
