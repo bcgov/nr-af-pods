@@ -1,6 +1,6 @@
 {
   "tags": ["Claim", "TFCR"],
-  "version": "1.1.6",
+  "version": "1.1.7",
   "name": "Tree Fruit Climate Resiliency Program",
   "abbreviation": "TFCR",
   "hiddenSteps": [
@@ -145,19 +145,19 @@
       "fields": [
         {
           "name": "quartech_proofofpayment",
-          "label": "Proof of payment",
+          "label": "<b>Proof of payment<b/>",
           "required": true,
           "elementType": "FileInput"
         },
         {
           "name": "quartech_photosordocsofpurchase",
-          "label": "Photos of completed project",
+          "label": "<b>Photos of completed project</b>",
           "required": true,
           "elementType": "FileInput"
         },
         {
           "name": "quartech_directdepositdetails",
-          "label": "Direct Deposit details",
+          "label": "<b>Direct Deposit details</b>",
           "required": true,
           "elementType": "FileInput"
         }
