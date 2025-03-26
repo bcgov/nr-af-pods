@@ -637,17 +637,17 @@ function addExpenseReceiptsGrid() {
     {
       id: 'purchasedFrom',
       name: 'Purchased from',
-      width: '15%',
+      width: '25%',
     },
     {
       id: 'description',
       name: 'Description',
-      width: '40%',
+      width: '50%',
     },
     {
       id: 'subtotal',
       name: 'Subtotal (no GST)',
-      width: '15%',
+      width: '5%',
     },
   ];
 

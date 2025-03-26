@@ -1,6 +1,6 @@
 {
   "tags": ["Claim", "TFCR"],
-  "version": "1.1.2",
+  "version": "1.1.5",
   "name": "Tree Fruit Climate Resiliency Program",
   "abbreviation": "TFCR",
   "hiddenSteps": [
@@ -18,8 +18,7 @@
           "label": "Legal Business or Individual's Name"
         },
         {
-          "name": "quartech_businessaddress",
-          "label": "Locum's Address"
+          "name": "quartech_businessaddress"
         },
         {
           "name": "quartech_businessphonenumber",
@@ -116,7 +115,8 @@
           "name": "quartech_authorizedclaimedamount",
           "label": "Approved Funding as per Authorization Letter (in total)",
           "readOnly": true,
-          "onChangeHandler": "calculateAndPopulateRequestedClaimAmountForTFCR"
+          "onChangeHandler": "calculateAndPopulateRequestedClaimAmountForTFCR",
+          "additionalTextBelowField": "Program staff will review expenses to finalize your claim amount."
         },
         {
           "name": "quartech_totalfees",
@@ -145,7 +145,7 @@
       "fields": [
         {
           "name": "quartech_proofofpayment",
-          "label": "2024 / 2025 receipt for their annual registrant / membership fees with CVBC and SBCV or BCVTA",
+          "label": "Proof of payment",
           "required": true,
           "elementType": "FileInput"
         },
