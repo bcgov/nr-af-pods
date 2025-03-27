@@ -1,6 +1,6 @@
 {
   "tags": ["Application", "StaffPortal", "KTTP-SMEA", "KTTP1"],
-  "version": "1.7.7",
+  "version": "1.7.8",
   "name": "KTTP - Subject Matter Expert Activities",
   "abbreviation": "KTTP-SMEA",
   "programId": "25493093-9d2b-ee11-bdf4-000d3af3ac95",
@@ -659,7 +659,7 @@
         },
         {
           "name": "quartech_chargeanadmissionfee",
-          "label": "Are you expecting to charge an admisssion fee for any of your activities or events?",
+          "label": "Are you expecting to charge an admission fee for any of your activities or events?",
           "required": true
         },
         {
