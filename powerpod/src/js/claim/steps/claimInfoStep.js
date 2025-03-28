@@ -4,7 +4,7 @@ import {
   NO_VALUE,
   doc,
 } from '../../common/constants.js';
-import { initOnChange_DependentRequiredField } from '../../common/fieldConditionalLogic.js';
+import { initOnChange_DependentRequiredField } from '../../common/fieldConditionalLogicLegacy.js';
 import {
   addTextBelowField,
   hideFieldRow,

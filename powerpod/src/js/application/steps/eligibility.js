@@ -1,5 +1,5 @@
 import { YES_VALUE } from '../../common/constants.js';
-import { initOnChange_DependentRequiredField } from '../../common/fieldConditionalLogic.js';
+import { initOnChange_DependentRequiredField } from '../../common/fieldConditionalLogicLegacy.js';
 import {
   addTextAboveField,
   addHtmlToSection,

@@ -9,7 +9,7 @@ import { getMunicipalData } from '../../common/fetch.js';
 import {
   initOnChange_DependentRequiredField,
   shouldRequireDependentField,
-} from '../../common/fieldConditionalLogic.js';
+} from '../../common/fieldConditionalLogicLegacy.js';
 import {
   addHtmlToSection,
   addHtmlToTabDiv,

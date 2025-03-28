@@ -4,7 +4,7 @@ import {
   getCommoditiesData,
   getOrgbookAutocompleteData,
 } from '../../common/fetch.js';
-import { initOnChange_DependentRequiredField } from '../../common/fieldConditionalLogic.js';
+import { initOnChange_DependentRequiredField } from '../../common/fieldConditionalLogicLegacy.js';
 import {
   addTextAboveField,
   addTextBelowField,
