@@ -1,0 +1,455 @@
+{
+  "version": "1.0.1",
+  "tags": [
+    "Application",
+    "StaffPortal",
+    "TFCCRF",
+    "Tree Fruit Climate Change Response Fund"
+  ],
+  "name": "Tree Fruit Climate Change Response Fund",
+  "abbreviation": "TFCCRF",
+  "programId": "357a7a04-a309-f011-bae3-002248ae7f3c",
+  "hiddenSteps": [
+    {
+      "displayName": "Eligibility"
+    },
+    {
+      "displayName": "Deliverables & Budget"
+    }
+  ],
+  "customLogo": "/BCID_H_rgb_pos.png",
+  "sections": [
+    {
+      "name": "ApplicantInfoStep",
+      "dataName": "tab_ApplicantInfo",
+      "subsections": [
+        {
+          "name": "Applicant Information",
+          "type": "SectionTitle",
+          "subsectionAriaLabel": "Applicant Information"
+        }
+      ],
+      "fields": [
+        {
+          "name": "quartech_areyouanexistingtreefruit",
+          "label": "Are you an existing tree fruit (apple, cherry, pear, and/or other stone fruit) producer in B.C., farming over one acre of tree fruits, whose primary purpose is the production and sale of tree fruit products?",
+          "required": true,
+          "onChangeHandler": "checkAndSetTFCREligbilityNotice"
+        },
+        {
+          "name": "quartech_areyouanownerorlesseeoftheland",
+          "label": "Are you an owner or lessee of the land the project will take place on?",
+          "required": true,
+          "onChangeHandler": "checkAndSetTFCREligbilityNotice"
+        },
+        {
+          "name": "quartech_areyouataxableentity",
+          "label": "Are you a taxable entity (e.g., individual, corporation or trust), limited partnership, commune, cooperative with a GST and business number, or First Nation Band?",
+          "required": true,
+          "onChangeHandler": "checkAndSetTFCREligbilityNotice"
+        },
+        {
+          "name": "quartech_doyoufilefarmincometaxundertaxactinbc",
+          "label": "Is your main farmstead in B.C. and do you file farm income tax (form T2042 or T1273) under the <span style='font-style:italic;'>Income Tax Act</span> in B.C.? This eligibility requirement may not be applicable to Indigenous applicants.",
+          "required": true,
+          "onChangeHandler": "checkAndSetTFCREligbilityNotice"
+        },
+        {
+          "name": "quartech_doyoucommittomaintainingtheproperty",
+          "label": "Do you commit to maintaining the property as a commercial operation for at least four years after completion of the project?",
+          "required": true,
+          "additionalTextBelowField": "<p id='doesNotMeetTFCREligibilityRequirements' style='color:red;display:none;'>Thank you for your interest. As you do not meet all eligibility requirements, your application does not qualify for approval at this time.</p>",
+          "onChangeHandler": "checkAndSetTFCREligbilityNotice"
+        },
+        {
+          "name": "quartech_legalbusinessororganizationname",
+          "required": true,
+          "additionalTextAboveField": "<p>Your personal information is collected under section 26(c) and 26(e) of the Freedom of Information and Protection of Privacy Act for the purposes of evaluating applications and for the planning and evaluation of the program. The information you provide may be combined with other survey or administrative data sources and used for statistical, research and evaluation purposes.</p>",
+          "techComment": "Included to specify the fixed text above."
+        },
+        {
+          "name": "quartech_indigenousapplicant",
+          "label": "Are you an Indigenous Applicant?",
+          "required": true,
+          "elementType": "DropdownSelect"
+        },
+        {
+          "name": "quartech_ownorleaseland",
+          "label": "Do you own or lease the land this project will take place on?",
+          "required": true,
+          "relocateField": {
+            "originFieldName": "quartech_ownorleaseland",
+            "destinationFieldName": "quartech_howmanyyearsistheleasevalidfor",
+            "relativePosition": "above"
+          },
+          "removeDropdownOptionsValues": 255550002
+        },
+        {
+          "name": "quartech_howmanyyearsistheleasevalidfor",
+          "label": "How many years is the lease valid for?",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_ownorleaseland",
+            "selectedValueIn": [255550001, 255550003],
+            "techComment": "I lease the land, or Both Selected"
+          }
+        },
+        {
+          "name": "quartech_recipienttype",
+          "label": "Type of Business / Organization. If your operation does both processing and primary production, please select the one that will primarily benefit from this program.",
+          "required": true,
+          "initialValue": 255550001,
+          "techComment": "intialValue set to Primary Producer",
+          "elementType": "DropdownSelect",
+          "hidden": true,
+          "doNotBlank": true,
+          "forceSave": true
+        },
+        {
+          "name": "quartech_commodity",
+          "label": "What is your primary production?",
+          "required": "true",
+          "elementType": "MultiSelectPicklist",
+          "initialValue": "732bef41-b75b-ee11-8df0-000d3af3ac95",
+          "hidden": true,
+          "doNotBlank": true,
+          "forceSave": true
+        },
+        {
+          "name": "quartech_whatistheprimarytreefruit",
+          "label": "What is the primary tree fruit that will benefit from this project?",
+          "required": true
+        },
+        {
+          "name": "quartech_projectlocation",
+          "label": "What is the primary project location?",
+          "required": "true"
+        },
+        {
+          "name": "quartech_howmanyparcelsoflandwillthisprojectcover",
+          "label": "How many parcels of land will this project cover?",
+          "format": "number",
+          "required": true,
+          "initialValue": "0",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          }
+        },
+        {
+          "name": "quartech_listallparcelidentifiers",
+          "label": "List all Parcel Identifiers (PIDs) that the project will cover separated by a comma",
+          "required": true,
+          "tooltipText": "How to find your PID, click <a href='https://www2.gov.bc.ca/assets/gov/farming-natural-resources-and-industry/agriculture-and-seafood/food-safety/how_to_find_a_bc_land_titles_parcel_id_using_civic_address.pdf' target='_blank' style='font-size: unset; color:blue; margin-left: 0px;'>here</a>."
+        }
+      ]
+    },
+    {
+      "name": "ProjectStep",
+      "hideHeaderDescription": true,
+      "fields": [
+        {
+          "name": "quartech_selectthecategoryyouareapplyingin",
+          "label": "Select the category you are applying in",
+          "required": true
+        },
+        {
+          "name": "quartech_singleorgroupapplication",
+          "label": "Is this a single applicant or part of a group application?",
+          "required": true
+        },
+        {
+          "name": "quartech_coapplicatntsnames",
+          "label": "Please provide the names of the co-applicants to your group application",
+          "required": true,
+          "maxLength": 4000,
+          "visibleIf": {
+            "fieldName": "quartech_singleorgroupapplication",
+            "selectedValue": 255550001,
+            "techComment": "Group application"
+          }
+        },
+        {
+          "name": "quartech_whenistheprojectstartdate",
+          "label": "When is the planned project start date?",
+          "required": true,
+          "elementType": "DatePicker",
+          "relocateField": {
+            "originFieldName": "quartech_whenistheprojectstartdate",
+            "destinationFieldName": "quartech_coapplicatntsnames",
+            "relativePosition": "below"
+          }
+        },
+        {
+          "name": "quartech_activityenddate",
+          "label": "When is the planned project completion date?",
+          "required": true,
+          "elementType": "DatePicker",
+          "relocateField": {
+            "originFieldName": "quartech_activityenddate",
+            "destinationFieldName": "quartech_whenistheprojectstartdate",
+            "relativePosition": "below"
+          },
+          "additionalTextBelowField": "All projects must be completed by or before March 14, 2027"
+        },
+        {
+          "name": "quartech_inordertocontinuouslyimprovecommunications",
+          "hidden": true,
+          "techComment": "This is NEEDED to override default global json config, please leave this here."
+        },
+        {
+          "name": "quartech_proposedactivitystopicpurposeintent",
+          "label": "Provide a description of the impacts of past extreme weather events on your tree fruit operation. Include specific information on when crop loss occurred due to extreme weather, % of crop loss by season, and long-term impacts on your operation.",
+          "required": true,
+          "maxLength": 1000,
+          "tooltipText": "Type up to 1000 characters"
+        },
+        {
+          "name": "quartech_proposedactivitydescription",
+          "label": "Provide a description of how this project will help reduce the impacts of extreme weather events on your farm",
+          "required": true,
+          "maxLength": 1000,
+          "tooltipText": "Type up to 1000 characters"
+        },
+        {
+          "name": "quartech_whatisthetotalareaacresoftreefruit",
+          "label": "What is the total area (acres) of tree fruit currently farmed by your business?",
+          "required": true,
+          "format": "number",
+          "dataFormat": "number",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThan"
+          },
+          "tooltipText": "Type in number format only"
+        },
+        {
+          "name": "quartech_totalareaacreswithinyourfarmingoperation",
+          "label": "What is the total area (acres) within your farming operation that will benefit as a result of completing this project?",
+          "required": true,
+          "format": "number",
+          "dataFormat": "number",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThan"
+          },
+          "tooltipText": "Type in number format only"
+        }
+      ]
+    },
+    {
+      "name": "DeliverablesBudgetStep",
+      "subsections": [
+        {
+          "name": "Deliverables & Budget",
+          "type": "SectionTitle",
+          "newLabel": "Eligible Expenses"
+        }
+      ],
+      "fields": [
+        {
+          "name": "quartech_smefee",
+          "required": true,
+          "format": "currency",
+          "maxDigits": 13,
+          "initialValue": "0.00",
+          "label": "Contractor / Consultant Cost",
+          "validation": {
+            "type": "numeric",
+            "value": 0,
+            "comparison": "greaterThanOrEqualTo"
+          },
+          "onChangeHandler": "calculateTFCRBudgets",
+          "tooltipText": "Fees for external contractors or consultants hired to support the project"
+        },
+        {
+          "name": "quartech_describetheconsultantssupportingthisproject",
+          "label": "Please describe the Consultants / Contractors supporting this project",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_smefee",
+            "comparison": "greaterThan",
+            "value": "0"
+          }
+        },
+        {
+          "name": "quartech_hiredlabour",
+          "required": true,
+          "format": "currency",
+          "maxDigits": 13,
+          "initialValue": "0.00",
+          "label": "Hired Labour",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          },
+          "onChangeHandler": "calculateTFCRBudgets",
+          "tooltipText": "Additional hired labour directly related to the project"
+        },
+        {
+          "name": "quartech_describethehiredlaboursupportingthisproject",
+          "label": "Please describe the Hired Labour supporting this project",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_hiredlabour",
+            "comparison": "greaterThan",
+            "value": "0"
+          }
+        },
+        {
+          "name": "quartech_facilityequipmenttechnologyrental",
+          "required": true,
+          "format": "currency",
+          "maxDigits": 13,
+          "initialValue": "0.00",
+          "label": "Rented Tools or Equipment",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          },
+          "onChangeHandler": "calculateTFCRBudgets",
+          "tooltipText": "Tools or equipment needed for installation or implementation"
+        },
+        {
+          "name": "quartech_pleasedescribeequipmentrequiredifapplicable",
+          "label": "Please describe the type of Tools or Equipment rented",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_facilityequipmenttechnologyrental",
+            "comparison": "greaterThan",
+            "value": "0"
+          }
+        },
+        {
+          "name": "quartech_materials",
+          "required": true,
+          "format": "currency",
+          "maxDigits": 13,
+          "initialValue": "0.00",
+          "label": "Project Equipment and Materials",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          },
+          "onChangeHandler": "calculateTFCRBudgets",
+          "tooltipText": "Costs for purchasing major components or materials such as frost fans, evaporative cooling systems, energy-efficient heaters, etc"
+        },
+        {
+          "name": "quartech_describeprojectequipmentandmaterialsinvolved",
+          "label": "Please describe the Project Equipment and Materials involved",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_materials",
+            "comparison": "greaterThan",
+            "value": "0"
+          }
+        },
+        {
+          "name": "quartech_othercost",
+          "required": true,
+          "format": "currency",
+          "maxDigits": 13,
+          "initialValue": "0.00",
+          "label": "Other Cost",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          },
+          "onChangeHandler": "calculateTFCRBudgets",
+          "tooltipText": "Miscellaneous costs such as shipping"
+        },
+        {
+          "name": "quartech_pleaseexplainotherifapplicable",
+          "label": "Please describe the Other Costs involved",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_othercost",
+            "comparison": "greaterThan",
+            "value": "0"
+          }
+        },
+        {
+          "name": "quartech_estimatedbudgettotalactivitycost",
+          "format": "currency",
+          "maxDigits": 11,
+          "label": "Total estimated cash costs of project",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          },
+          "readOnly": true
+        },
+        {
+          "name": "quartech_totalfundingrequiredfromtheprogram",
+          "format": "currency",
+          "maxDigits": 11,
+          "label": "Maximum funding requested from program (80% cost-share <span style='color:red;'>of up to $125,000 of eligible costs</span> to a maximum of $100,000 per farm business)",
+          "additionalTextBelowField": "<p style='color:red'>Note: In-kind contributions cannot be counted towards the applicant's cost-share contributions.</p>",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          },
+          "errorMessage": "Total Funding Required must sum to be greater than or equal to 0.",
+          "readOnly": true
+        }
+      ]
+    },
+    {
+      "name": "DocumentsStep",
+      "hideHeaderDescription": true,
+      "fields": [
+        {
+          "name": "quartech_uploadasitemap",
+          "label": "Upload a site map(s) identifying the project location",
+          "elementType": "FileInput",
+          "required": true
+        },
+        {
+          "name": "quartech_relatedquotesandplans",
+          "label": "Upload quotes for items that are included in your Project Budget",
+          "elementType": "FileInput",
+          "required": true
+        },
+        {
+          "name": "quartech_uploadanyothersupportingdocuments",
+          "label": "Upload any other supporting documents",
+          "elementType": "FileInput"
+        }
+      ]
+    },
+    {
+      "name": "DemographicInfoStep",
+      "hideHeaderDescription": true,
+      "fields": [
+        {
+          "name": "quartech_chefsid",
+          "required": true,
+          "tooltipText": "This number is automatically generated when the survey has been submitted",
+          "label": "Demographic Data Collection Survey ID number",
+          "bold": true,
+          "readOnly": true,
+          "errorMessage": "Please complete the required survey, this field will autofill."
+        },
+        {
+          "name": "quartech_chefssubmissionid",
+          "label": "CHEFS Submission Id",
+          "hidden": true,
+          "doNotBlank": true
+        }
+      ]
+    },
+    {
+      "name": "Success",
+      "hideHeaderDescription": true
+    }
+  ]
+}
