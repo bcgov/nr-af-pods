@@ -1,6 +1,6 @@
 {
   "tags": ["Claim", "TFCR"],
-  "version": "1.1.8",
+  "version": "1.2.0",
   "name": "Tree Fruit Climate Resiliency Program",
   "abbreviation": "TFCR",
   "hiddenSteps": [
@@ -134,6 +134,7 @@
         },
         {
           "name": "quartech_totalfees",
+          "dataFormat": "number",
           "hidden": true,
           "doNotBlank": true,
           "label": "Your requested amount in this claim ($CAD)",
@@ -150,6 +151,22 @@
             "type": "numeric",
             "value": "0",
             "comparison": "greaterThan"
+          }
+        },
+        {
+          "name": "quartech_fundingfromothergovernmentsources",
+          "label": "Considering the above, have you received funding from other Government sources for this project?",
+          "required": true,
+          "additionalTextAboveField": "<p>The Tree Fruit Climate Resiliency Program requires that all recipients contribute at least 20% of project funds. As a result, if you have received funding from other Government sources for the same, or substantially similar project, then the stacking of funding from all government funding programs including the Tree Fruit Climate Resiliency Program will be capped at 80% of eligible project costs.</p>"
+        },
+        {
+          "name": "quartech_othergovernmentfundingsourcesdetails",
+          "label": "Please provide the name of the funding source and how much was received",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_fundingfromothergovernmentsources",
+            "selectedValue": 255550000,
+            "techComment": "Yes value"
           }
         }
       ]
