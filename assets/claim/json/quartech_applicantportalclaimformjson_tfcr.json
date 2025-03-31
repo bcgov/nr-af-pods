@@ -1,6 +1,6 @@
 {
   "tags": ["Claim", "TFCR"],
-  "version": "1.2.0",
+  "version": "1.2.1",
   "name": "Tree Fruit Climate Resiliency Program",
   "abbreviation": "TFCR",
   "hiddenSteps": [
@@ -176,7 +176,7 @@
       "fields": [
         {
           "name": "quartech_proofofpayment",
-          "label": "<b>Proof of payment<b/>",
+          "label": "<b>Invoice(s) and proof(s) of payment</b> - Proof of payment is evidence demonstrating that the invoiced expenses were paid for by the Recipient. Some examples of this include an updated invoice or statement from the vendor showing a zero balance against the submitted invoice #, bank / credit card statement showing the payment made to the vendor stated on the invoice, a processed cheque, or other methods approved by Program Management.",
           "required": true,
           "elementType": "FileInput"
         },
@@ -188,7 +188,7 @@
         },
         {
           "name": "quartech_directdepositdetails",
-          "label": "<b>Direct Deposit details</b>",
+          "label": "<b>Direct Deposit</b> - Please upload a VOID cheque in the name of the organization approved to receive funding through this program.",
           "required": true,
           "elementType": "FileInput"
         }
