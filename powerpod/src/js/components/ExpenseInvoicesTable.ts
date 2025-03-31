@@ -1,21 +1,16 @@
 import bootstrap from '../../assets/css/bootstrap.css';
 import shoelace from '../../assets/css/shoelace.css';
-import flatpickr from 'flatpickr';
 import { LitElement, css, html, unsafeCSS } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import './CurrencyInput';
 import './DropdownSearch';
 import './TextField';
 import './DateField';
-import {
-  getTotalReceiptsAmount,
-  processExpenseTypesData,
-} from '../common/expenseTypes';
-import { getExpenseTypeData } from '../common/fetch';
+import { getTotalInvoicesAmount } from '../common/expenseTypes';
 import { Logger } from '../common/logger';
 import { isLastObjectEmpty } from '../common/utils';
 
-const logger = Logger('components/ExpenseReceiptsTable');
+const logger = Logger('components/ExpenseInvoicesTable');
 
 type RowItem = {
   [key: string]: string;
@@ -29,8 +24,8 @@ type Headings = {
   [key: string]: string;
 };
 
-@customElement('expense-receipts-table')
-class ExpenseReceiptsTable extends LitElement {
+@customElement('expense-invoices-table')
+class ExpenseInvoicesTable extends LitElement {
   @property({ type: String, reflect: true }) id: string = crypto.randomUUID();
   @property({ type: Object }) columns: Column[] = [];
   @property({ type: Array }) rows: RowItem[] = [];
@@ -56,12 +51,12 @@ class ExpenseReceiptsTable extends LitElement {
 
   emitEvent() {
     const rowData = this.rows;
-    const customEvent = new CustomEvent('onChangeExpenseReceiptsData', {
+    const customEvent = new CustomEvent('onChangeExpenseInvoicesData', {
       detail: {
         id: this.id,
-        message: 'Expense receipts data has changed',
+        message: 'Expense invoices data has changed',
         value: JSON.stringify(rowData),
-        total: getTotalReceiptsAmount(rowData),
+        total: getTotalInvoicesAmount(rowData),
         pdfJson: JSON.stringify(this.generatePDFJson(rowData)),
       },
       bubbles: true,
@@ -88,8 +83,8 @@ class ExpenseReceiptsTable extends LitElement {
     }
     if (rowData) {
       rowData.push({
-        receiptNum: '',
-        receiptDate: '',
+        invoiceNum: '',
+        invoiceDate: '',
         subtotal: '',
       });
       this.rows = rowData;
@@ -102,8 +97,8 @@ class ExpenseReceiptsTable extends LitElement {
     if (rowData.length === 1) {
       this.rows = [
         {
-          receiptNum: '',
-          receiptDate: '',
+          invoiceNum: '',
+          invoiceDate: '',
           purchasedFrom: '',
           description: '',
           subtotal: '',
@@ -118,37 +113,37 @@ class ExpenseReceiptsTable extends LitElement {
 
   private generatePDFJson(rowData) {
     return {
-      expenseReceiptsSection: {
-        displayName: 'Expense Receipts',
-        expenseReceiptsSectionQuestionAnswerList: rowData.flatMap(
-          (receipt, index) => [
+      expenseInvoicesSection: {
+        displayName: 'Expense Invoices',
+        expenseInvoicesSectionQuestionAnswerList: rowData.flatMap(
+          (invoice, index) => [
             {
-              expenseReceiptsSectionQuestion: 'Receipt Line #',
-              expenseReceiptsSectionAnswer: (index + 1).toString(),
+              expenseInvoicesSectionQuestion: 'Invoice Line #',
+              expenseInvoicesSectionAnswer: (index + 1).toString(),
             },
             {
-              expenseReceiptsSectionQuestion: 'Receipt Number',
-              expenseReceiptsSectionAnswer: receipt.receiptNum,
+              expenseInvoicesSectionQuestion: 'Invoice Number',
+              expenseInvoicesSectionAnswer: invoice.invoiceNum,
             },
             {
-              expenseReceiptsSectionQuestion: 'Receipt Date',
-              expenseReceiptsSectionAnswer: receipt.receiptDate,
+              expenseInvoicesSectionQuestion: 'Invoice Date',
+              expenseInvoicesSectionAnswer: invoice.invoiceDate,
             },
             {
-              expenseReceiptsSectionQuestion: 'Purchased From',
-              expenseReceiptsSectionAnswer: receipt.purchasedFrom,
+              expenseInvoicesSectionQuestion: 'Purchased From',
+              expenseInvoicesSectionAnswer: invoice.purchasedFrom,
             },
             {
-              expenseReceiptsSectionQuestion: 'Description',
-              expenseReceiptsSectionAnswer: receipt.description,
+              expenseInvoicesSectionQuestion: 'Description',
+              expenseInvoicesSectionAnswer: invoice.description,
             },
             {
-              expenseReceiptsSectionQuestion: 'Subtotal',
-              expenseReceiptsSectionAnswer: receipt.subtotal,
+              expenseInvoicesSectionQuestion: 'Subtotal',
+              expenseInvoicesSectionAnswer: invoice.subtotal,
             },
             {
-              expenseReceiptsSectionQuestion: '--',
-              expenseReceiptsSectionAnswer: '--',
+              expenseInvoicesSectionQuestion: '--',
+              expenseInvoicesSectionAnswer: '--',
             },
           ]
         ),
@@ -254,7 +249,7 @@ class ExpenseReceiptsTable extends LitElement {
                       ${this.columns.map((col) => {
                         const cellValue = row[col.id];
                         if (
-                          col.id === 'receiptNum' ||
+                          col.id === 'invoiceNum' ||
                           col.id === 'purchasedFrom'
                         ) {
                           return html` <td>
@@ -289,7 +284,7 @@ class ExpenseReceiptsTable extends LitElement {
                               }}
                             ></text-field>
                           </td>`;
-                        } else if (col.id === 'receiptDate') {
+                        } else if (col.id === 'invoiceDate') {
                           return html` <td>
                             <date-field
                               customStyle="width: 95%"

@@ -76,7 +76,7 @@ export function getTotalExpenseAmount(rowData: RowItem[]) {
   return formattedValue;
 }
 
-export function getTotalReceiptsAmount(rowData: RowItem[]) {
+export function getTotalInvoicesAmount(rowData: RowItem[]) {
   let floatValue = rowData.reduce((acc: number, row: RowItem) => {
     const amount = row['subtotal'];
     const numericValue = amount.replace(/[^\d.-]/g, '');

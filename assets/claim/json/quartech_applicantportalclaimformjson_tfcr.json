@@ -70,7 +70,21 @@
           "visibleIf": {
             "fieldName": "quartech_claimingforregistrationmembershipfees",
             "selectedValue": 255550001,
-            "techComment": "No value"
+            "techComment": "No value",
+            "additionalConditions": [
+              {
+                "condition": "and",
+                "fieldName": "quartech_applicantinformationconfirmation",
+                "selectedValue": 255550001,
+                "techComment": "No value"
+              },
+              {
+                "condition": "or",
+                "fieldName": "quartech_applicantinformationconfirmation",
+                "selectedValue": 255550001,
+                "techComment": "No value"
+              }
+            ]
           }
         }
       ]
@@ -80,22 +94,22 @@
       "fields": [
         {
           "name": "quartech_expensereceiptsgrid",
-          "label": "Expense Receipts",
-          "errorMessage": "Please fill out each requested field for each receipt entry.",
+          "label": "Expense Invoices",
+          "errorMessage": "Please fill out each requested field for each invoice entry.",
           "disableSingleLine": true,
           "skipWordTemplateGeneration": true,
           "checkForEmptyValues": true,
           "required": true,
           "techComment": "This custom component is too complex for JSON, so it's defined in claimInfoStep.js",
-          "additionalTextAboveField": "<div id='claimInfoInstructionsNote' style='padding-bottom: 20px;'><p>The program will provide 80 percent cost-share funding of up to $125,000 of eligible costs for eligible projects - up to a maximum of $100,000 per farm business.</p><p>Expenses will be reimbursed based on the submitted receipts and the approved project budget.</p></div><div style='margin-top:-40px'><p>For a completed example of the claim form, see the screenshot below:</p><img src='/expense-receipts-example.png' style='max-width: 100%; height: auto; display: block; margin-bottom: 20px' /></div>"
+          "additionalTextAboveField": "<div style='padding-bottom:20px' id='claimInfoInstructionsNote'><p>The project expenses detailed below will be reimbursed according to their submitted invoice(s) and corresponding proof(s) of payment. Please note that the program will provide up to 80 percent of cost-shared funding, and not more than the maximum approved found in your project approval letter, against these invoices.</div><div style='margin-top:-40px'><p>For a completed example of the claim form, see the screenshot below:</p><img src='/expense-receipts-example.png' style='max-width:100%;height:auto;display:block;margin-bottom:20px'></div>"
         },
         {
           "name": "quartech_expensereceipts",
-          "label": "Expense Receipts",
+          "label": "Expense Invoices",
           "forceGenerateWordTemplateData": true,
           "hidden": true,
           "doNotBlank": true,
-          "techComment": "This is the JSON used to generate the PDF for the Expense Receipts grid"
+          "techComment": "This is the JSON used to generate the PDF for the Expense Invoices grid"
         },
         {
           "name": "quartech_totalsumofreportedexpenses",

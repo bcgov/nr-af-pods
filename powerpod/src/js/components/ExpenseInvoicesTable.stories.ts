@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/web-components';
-import './ExpenseReceiptsTable.ts';
+import './ExpenseInvoicesTable.ts';
 
 import { html } from 'lit';
 import { useArgs } from '@storybook/client-api';
 import { action } from '@storybook/addon-actions';
 
 const meta: Meta = {
-  component: 'expense-receipts-table',
+  component: 'expense-invoices-table',
 };
 
 export default meta;
@@ -16,13 +16,13 @@ export const Primary: Story = {
   args: {
     columns: [
       {
-        id: 'receiptNum',
-        name: 'Receipt #',
+        id: 'invoiceNum',
+        name: 'Invoice #',
         width: '15%',
       },
       {
-        id: 'receiptDate',
-        name: 'Receipt date',
+        id: 'invoiceDate',
+        name: 'Invoice Date',
         width: '15%',
       },
       {
@@ -43,15 +43,15 @@ export const Primary: Story = {
     ],
     rows: [
       {
-        receiptNum: '#1234',
-        receiptDate: 'Jan-10-2025',
+        invoiceNum: '#1234',
+        invoiceDate: 'Jan-10-2025',
         purchasedFrom: 'GMP Metal Works',
         description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium.',
         subtotal: '50.00',
       },
       {
-        receiptNum: '#1234',
-        receiptDate: 'Jan-10-2025',
+        invoiceNum: '#1234',
+        invoiceDate: 'Jan-10-2025',
         purchasedFrom: 'GMP Metal Works',
         description: 'This is for our contractor',
         subtotal: '50.00',
@@ -60,14 +60,14 @@ export const Primary: Story = {
   },
   render: function Render(args) {
     const [{ rows, headings, columns }, updateArgs] = useArgs();
-    return html`<expense-receipts-table
+    return html`<expense-invoices-table
       columns=${JSON.stringify(columns)}
       rows=${JSON.stringify(rows)}
-      @onChangeExpenseReceiptsData=${(e: CustomEvent) => {
-        action('onChangeExpenseReceiptsData')(e);
+      @onChangeExpenseInvoicesData=${(e: CustomEvent) => {
+        action('onChangeExpenseInvoicesData')(e);
         updateArgs({ rows: JSON.parse(e.detail.value) });
       }}
       primary
-    ></expense-receipts-table>`;
+    ></expense-invoices-table>`;
   },
 };

@@ -22,11 +22,11 @@ import '../../components/ExpenseReportTable.ts';
 import '../../components/CurrencyInput.ts';
 import '../../components/DropdownSearch.ts';
 import '../../components/TextField.ts';
-import '../../components/ExpenseReceiptsTable.ts';
+import '../../components/ExpenseInvoicesTable.ts';
 import 'fa-icons';
 import {
   getTotalExpenseAmount,
-  getTotalReceiptsAmount,
+  getTotalInvoicesAmount,
 } from '../../common/expenseTypes.ts';
 import { Logger } from '../../common/logger.js';
 import { filterEmptyRows, isValidJSON } from '../../common/utils.js';
@@ -61,7 +61,7 @@ export function customizeClaimInfoStep() {
     }
   }
 
-  function addInstructionsForExpenseReceipts() {
+  function addInstructionsForExpenseInvoices() {
     if (!document.querySelector('#claimInfoInstructionsNote')) {
       const claimInfoInstructionsNoteHtmlContent = `
         <div id="claimInfoInstructionsNote" style="padding-bottom: 20px;">
@@ -213,8 +213,8 @@ export function customizeClaimInfoStep() {
   }
 
   if (programAbbreviation.includes('TFCR')) {
-    // addInstructionsForExpenseReceipts();
-    addExpenseReceiptsGrid();
+    // addInstructionsForExpenseInvoices();
+    addExpenseInvoicesGrid();
     $('#quartech_expensereceipts_label').closest('div.info').hide();
     setFieldReadOnly('quartech_totalsumofreportedexpenses');
   }
@@ -622,16 +622,16 @@ function addExpenseReportGrid() {
   });
 }
 
-function addExpenseReceiptsGrid() {
+function addExpenseInvoicesGrid() {
   const columns = [
     {
-      id: 'receiptNum',
-      name: 'Receipt #',
+      id: 'invoiceNum',
+      name: 'Invoice #',
       width: '15%',
     },
     {
-      id: 'receiptDate',
-      name: 'Receipt date',
+      id: 'invoiceDate',
+      name: 'Invoice date',
       width: '15%',
     },
     {
@@ -653,8 +653,8 @@ function addExpenseReceiptsGrid() {
 
   let rows = [
     {
-      receiptNum: '',
-      receiptDate: '',
+      invoiceNum: '',
+      invoiceDate: '',
       purchasedFrom: '',
       description: '',
       subtotal: '',
@@ -663,17 +663,17 @@ function addExpenseReceiptsGrid() {
 
   const expenseReportTableElement = renderCustomComponent({
     fieldId: 'quartech_expensereceiptsgrid',
-    customElementTag: 'expense-receipts-table',
+    customElementTag: 'expense-invoices-table',
     attributes: {
       primary: true,
       columns: JSON.stringify(columns),
       rows: JSON.stringify(rows),
     },
-    customEvent: 'onChangeExpenseReceiptsData',
+    customEvent: 'onChangeExpenseInvoicesData',
     customEventHandler: (event, customElement) => {
       logger.info({
         fn: customizeClaimInfoStep,
-        message: 'onChangeExpenseReceiptsData event listener triggered',
+        message: 'onChangeExpenseInvoicesData event listener triggered',
         data: { event, customElement },
       });
       // @ts-ignore
@@ -701,7 +701,7 @@ function addExpenseReceiptsGrid() {
       // @ts-ignore
       setFieldValue({
         name: 'quartech_totalsumofreportedexpenses',
-        value: getTotalReceiptsAmount(JSON.parse(reportedExpenses)),
+        value: getTotalInvoicesAmount(JSON.parse(reportedExpenses)),
       });
       verifyTotalSumEqualsRequestedAmount();
     },
@@ -729,6 +729,6 @@ function addExpenseReceiptsGrid() {
 
   logger.info({
     fn: addExpenseReportGrid,
-    message: 'Successfully added expense receipts grid',
+    message: 'Successfully added expense invoices grid',
   });
 }
