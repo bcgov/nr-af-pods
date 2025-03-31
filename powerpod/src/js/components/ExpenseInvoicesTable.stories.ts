@@ -37,7 +37,7 @@ export const Primary: Story = {
       },
       {
         id: 'subtotal',
-        name: 'Subtotal (no GST)',
+        name: 'Subtotal (before tax)',
         width: '15%',
       },
     ],

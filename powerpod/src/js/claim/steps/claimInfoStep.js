@@ -646,7 +646,7 @@ function addExpenseInvoicesGrid() {
     },
     {
       id: 'subtotal',
-      name: 'Subtotal (no GST)',
+      name: 'Subtotal (before tax)',
       width: '5%',
     },
   ];
