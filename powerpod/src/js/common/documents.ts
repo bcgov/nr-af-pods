@@ -351,8 +351,17 @@ export async function generateDocumentSubject(
 
   if (fieldName && fieldName.length) {
     const label = getFieldLabel(fieldName);
-    subject += ` for field: ${label} [field:${fieldName}]`;
-  }
+    const fieldSuffix = ` for field: ${label} [field:${fieldName}]`;
+  
+    // Check if adding the fieldSuffix would make subject too long
+    if (subject.length + fieldSuffix.length > 500) {
+      const maxLabelLength = 500 - subject.length - ` for field:  [field:${fieldName}]`.length;
+      const trimmedLabel = label.substring(0, Math.max(0, maxLabelLength));
+      subject += ` for field: ${trimmedLabel} [field:${fieldName}]`;
+    } else {
+      subject += fieldSuffix;
+    }
+  }  
 
   return { subject, fileId };
 }
