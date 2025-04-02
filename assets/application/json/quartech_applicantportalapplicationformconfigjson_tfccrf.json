@@ -1,5 +1,5 @@
 {
-  "version": "1.0.1",
+  "version": "1.0.8",
   "tags": [
     "Application",
     "StaffPortal",
@@ -32,34 +32,46 @@
       "fields": [
         {
           "name": "quartech_areyouanexistingtreefruit",
-          "label": "Are you an existing tree fruit (apple, cherry, pear, and/or other stone fruit) producer in B.C., farming over one acre of tree fruits, whose primary purpose is the production and sale of tree fruit products?",
+          "label": "Is an existing Tree Fruit producer in B.C., whose primary purpose is the production and sale of harvested tree fruit.",
           "required": true,
-          "onChangeHandler": "checkAndSetTFCREligbilityNotice"
+          "onChangeHandler": "checkAndSetTFCCRFEligbilityNotice"
         },
         {
-          "name": "quartech_areyouanownerorlesseeoftheland",
-          "label": "Are you an owner or lessee of the land the project will take place on?",
+          "name": "quartech_treefruitdensityeligibility",
+          "label": "Farming at least 2.47 Eligible Acre of Tree Fruits with a Minimum Planting Density of 100 trees per acre.",
           "required": true,
-          "onChangeHandler": "checkAndSetTFCREligbilityNotice"
+          "onChangeHandler": "checkAndSetTFCCRFEligbilityNotice"
         },
         {
           "name": "quartech_areyouataxableentity",
-          "label": "Are you a taxable entity (e.g., individual, corporation or trust), limited partnership, commune, cooperative with a GST and business number, or First Nation Band?",
+          "label": "Is a taxable entity (e.g. individual, corporation or trust), limited partnership, commune, cooperative with a GST and business number, or First Nation Band.",
           "required": true,
-          "onChangeHandler": "checkAndSetTFCREligbilityNotice"
+          "onChangeHandler": "checkAndSetTFCCRFEligbilityNotice"
         },
         {
           "name": "quartech_doyoufilefarmincometaxundertaxactinbc",
-          "label": "Is your main farmstead in B.C. and do you file farm income tax (form T2042 or T1273) under the <span style='font-style:italic;'>Income Tax Act</span> in B.C.? This eligibility requirement may not be applicable to Indigenous applicants.",
+          "label": "Has their main farmstead in British Columbia and has filed farm income tax for the tax year 2023(form T2042 or T1273) under the Income Tax Act in B.C.",
           "required": true,
-          "onChangeHandler": "checkAndSetTFCREligbilityNotice"
+          "onChangeHandler": "checkAndSetTFCCRFEligbilityNotice"
         },
         {
-          "name": "quartech_doyoucommittomaintainingtheproperty",
-          "label": "Do you commit to maintaining the property as a commercial operation for at least four years after completion of the project?",
+          "name": "quartech_taxreturnnotrequired",
+          "label": "Is an applicant not required to file farm income tax, and can provide Acceptable Documentation that demonstrates the production of over 2.47 Eligible Acre and the sale of Tree Fruit.",
           "required": true,
-          "additionalTextBelowField": "<p id='doesNotMeetTFCREligibilityRequirements' style='color:red;display:none;'>Thank you for your interest. As you do not meet all eligibility requirements, your application does not qualify for approval at this time.</p>",
-          "onChangeHandler": "checkAndSetTFCREligbilityNotice"
+          "onChangeHandler": "checkAndSetTFCCRFEligbilityNotice"
+        },
+        {
+          "name": "quartech_areyouanownerorlesseeoftheland",
+          "label": "Primary Producer with owned or leased Tree Fruit production land as of November 30, 2024 within British Columbia.",
+          "required": true,
+          "onChangeHandler": "checkAndSetTFCCRFEligbilityNotice"
+        },
+        {
+          "name": "quartech_notresearchstationorgovernmentfundedagency",
+          "label": "Is not a research station or government funded agency or institution.",
+          "required": true,
+          "onChangeHandler": "checkAndSetTFCCRFEligbilityNotice",
+          "additionalTextBelowField": "<p id='doesNotMeetTFCCRFEligibilityRequirements' style='color:red;display:none;'>Thank you for your interest. As you do not meet all eligibility requirements, your application does not qualify for approval at this time.</p>"
         },
         {
           "name": "quartech_legalbusinessororganizationname",
@@ -68,80 +80,24 @@
           "techComment": "Included to specify the fixed text above."
         },
         {
-          "name": "quartech_indigenousapplicant",
-          "label": "Are you an Indigenous Applicant?",
-          "required": true,
-          "elementType": "DropdownSelect"
+          "name": "quartech_businesssuitenumberoptional",
+          "additionalTextAboveField": "<p>Physical address as used by emergency services</p>",
+          "label": "Business - Suite Number (optional)",
+          "visible": true
         },
         {
-          "name": "quartech_ownorleaseland",
-          "label": "Do you own or lease the land this project will take place on?",
-          "required": true,
-          "relocateField": {
-            "originFieldName": "quartech_ownorleaseland",
-            "destinationFieldName": "quartech_howmanyyearsistheleasevalidfor",
-            "relativePosition": "above"
-          },
-          "removeDropdownOptionsValues": 255550002
+          "name": "quartech_alternatebusinessaddress",
+          "label": "Mailing address (if it's different from physical address)",
+          "tooltipText": "i.e. PO Box"
         },
         {
-          "name": "quartech_howmanyyearsistheleasevalidfor",
-          "label": "How many years is the lease valid for?",
+          "name": "quartech_applicanttype",
+          "label": "Type of Business",
           "required": true,
-          "visibleIf": {
-            "fieldName": "quartech_ownorleaseland",
-            "selectedValueIn": [255550001, 255550003],
-            "techComment": "I lease the land, or Both Selected"
+          "reorderField": {
+            "position": "after",
+            "fieldName": "quartech_alternatebusinessaddress"
           }
-        },
-        {
-          "name": "quartech_recipienttype",
-          "label": "Type of Business / Organization. If your operation does both processing and primary production, please select the one that will primarily benefit from this program.",
-          "required": true,
-          "initialValue": 255550001,
-          "techComment": "intialValue set to Primary Producer",
-          "elementType": "DropdownSelect",
-          "hidden": true,
-          "doNotBlank": true,
-          "forceSave": true
-        },
-        {
-          "name": "quartech_commodity",
-          "label": "What is your primary production?",
-          "required": "true",
-          "elementType": "MultiSelectPicklist",
-          "initialValue": "732bef41-b75b-ee11-8df0-000d3af3ac95",
-          "hidden": true,
-          "doNotBlank": true,
-          "forceSave": true
-        },
-        {
-          "name": "quartech_whatistheprimarytreefruit",
-          "label": "What is the primary tree fruit that will benefit from this project?",
-          "required": true
-        },
-        {
-          "name": "quartech_projectlocation",
-          "label": "What is the primary project location?",
-          "required": "true"
-        },
-        {
-          "name": "quartech_howmanyparcelsoflandwillthisprojectcover",
-          "label": "How many parcels of land will this project cover?",
-          "format": "number",
-          "required": true,
-          "initialValue": "0",
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThanOrEqualTo"
-          }
-        },
-        {
-          "name": "quartech_listallparcelidentifiers",
-          "label": "List all Parcel Identifiers (PIDs) that the project will cover separated by a comma",
-          "required": true,
-          "tooltipText": "How to find your PID, click <a href='https://www2.gov.bc.ca/assets/gov/farming-natural-resources-and-industry/agriculture-and-seafood/food-safety/how_to_find_a_bc_land_titles_parcel_id_using_civic_address.pdf' target='_blank' style='font-size: unset; color:blue; margin-left: 0px;'>here</a>."
         }
       ]
     },

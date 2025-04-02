@@ -28,6 +28,7 @@ POWERPOD.onChangeHandlers = {
   calculateAndPopulateRequestedClaimAmountForVLB,
   calculateAndPopulateRequestedClaimAmountForTFCR,
   checkAndSetTFCREligbilityNotice,
+  checkAndSetTFCCRFEligbilityNotice,
   calculateTFCRBudgets,
   displayOrHideAdministrationCostsNoticeForKTTP,
   updateSMEDesignationExplanationFieldLabelForKTTP1,
@@ -213,6 +214,145 @@ export function calculateTFCRBudgets() {
   setFieldVisibility('quartech_pleasedescribeequipmentrequiredifapplicable');
   setFieldVisibility('quartech_describeprojectequipmentandmaterialsinvolved');
   setFieldVisibility('quartech_pleaseexplainotherifapplicable');
+}
+
+export function checkAndSetTFCCRFEligbilityNotice() {
+  logger.info({
+    fn: checkAndSetTFCCRFEligbilityNotice,
+    message: `checkAndSetTFCCRFEligbilityNotice called, start calculating...`,
+  });
+  const existingTreeFruit = document.getElementById(
+    'quartech_areyouanexistingtreefruit'
+  )?.value;
+
+  const treeFruitDensityEligibility = document.getElementById(
+    'quartech_treefruitdensityeligibility'
+  )?.value;
+
+  const taxableEntity = document.getElementById(
+    'quartech_areyouataxableentity'
+  )?.value;
+
+  const fileFarmIncomeTaxUnderTaxActInBC = document.getElementById(
+    'quartech_doyoufilefarmincometaxundertaxactinbc'
+  )?.value;
+
+  const taxReturnNotRequired = document.getElementById(
+    'quartech_taxreturnnotrequired'
+  )?.value;
+
+  const ownerOrLesseeOfTheLand = document.getElementById(
+    'quartech_areyouanownerorlesseeoftheland'
+  )?.value;
+
+  const notResearchStationOrGovernmentFundedAgency = document.getElementById(
+    'quartech_notresearchstationorgovernmentfundedagency'
+  )?.value;
+
+  logger.info({
+    fn: checkAndSetTFCCRFEligbilityNotice,
+    message: `founds the following values...`,
+    data: {
+      existingTreeFruit,
+      treeFruitDensityEligibility,
+      taxableEntity,
+      fileFarmIncomeTaxUnderTaxActInBC,
+      taxReturnNotRequired,
+      ownerOrLesseeOfTheLand,
+      notResearchStationOrGovernmentFundedAgency,
+    },
+  });
+
+  const areAnyValuesNo =
+    existingTreeFruit === NO_VALUE ||
+    treeFruitDensityEligibility === NO_VALUE ||
+    taxableEntity === NO_VALUE ||
+    fileFarmIncomeTaxUnderTaxActInBC === NO_VALUE ||
+    ownerOrLesseeOfTheLand === NO_VALUE ||
+    notResearchStationOrGovernmentFundedAgency === NO_VALUE;
+
+  const areAnyValuesBlank =
+    existingTreeFruit === '' ||
+    treeFruitDensityEligibility === '' ||
+    taxableEntity === '' ||
+    fileFarmIncomeTaxUnderTaxActInBC === '' ||
+    ownerOrLesseeOfTheLand === '' ||
+    notResearchStationOrGovernmentFundedAgency === '';
+
+  const areAllValuesBlank =
+    existingTreeFruit === '' &&
+    treeFruitDensityEligibility === '' &&
+    taxableEntity === '' &&
+    fileFarmIncomeTaxUnderTaxActInBC === '' &&
+    ownerOrLesseeOfTheLand === '' &&
+    notResearchStationOrGovernmentFundedAgency === '';
+
+  const areAllValuesYes =
+    existingTreeFruit === YES_VALUE &&
+    treeFruitDensityEligibility === YES_VALUE && 
+    taxableEntity === YES_VALUE &&
+    fileFarmIncomeTaxUnderTaxActInBC === YES_VALUE &&
+    ownerOrLesseeOfTheLand === YES_VALUE &&
+    notResearchStationOrGovernmentFundedAgency === YES_VALUE;
+
+  const noticeElement = document.getElementById(
+    'doesNotMeetTFCCRFEligibilityRequirements'
+  );
+  if (!noticeElement) {
+    logger.error({
+      fn: checkAndSetTFCCRFEligbilityNotice,
+      message: `Could not fetch noticeElement by id doesNotMeetTFCCRFEligibilityRequirements`,
+    });
+    return;
+  }
+  // If all values are Yes, we must enable the button and show the rest of the form
+  if (areAllValuesYes) {
+    noticeElement.style.display = 'none';
+    $('fieldset[aria-label="Eligibility"] > table').parent().css('display', '');
+    // $('fieldset[aria-label="Business Information"] > table')
+    //   .parent()
+    //   .css('display', '');
+    // $('fieldset[aria-label="Indigenous Applicants"] > table')
+    //   .parent()
+    //   .css('display', '');
+    $('fieldset[aria-label="Application Contact"] > table')
+      .parent()
+      .css('display', '');
+    $('fieldset[aria-label="Applicant Information"] > table')
+      .parent()
+      .css('display', '');
+    const errMsgDiv = document.getElementById('error_messages_div');
+    if (errMsgDiv) {
+      errMsgDiv.style.display = 'block';
+    }
+    let validationErrorHtml = POWERPOD.state.validationError;
+    if (
+      !validationErrorHtml ||
+      validationErrorHtml?.length === 0 ||
+      validationErrorHtml === ''
+    ) {
+      $('#NextButton').prop('disabled', false);
+    }
+  }
+  // If any value is not Yes, we must hide the rest of the form and disable the button
+  else {
+    hideAllStepSections();
+    $('fieldset[aria-label="Eligibility"] > table').parent().css('display', '');
+
+    $('#NextButton').prop('disabled', true);
+
+    // If any value is No, we must show the notice
+    if (areAnyValuesNo) {
+      noticeElement.style.display = '';
+    } else if (areAnyValuesBlank || areAllValuesBlank) {
+      noticeElement.style.display = 'none';
+    }
+
+    const errMsgDiv = document.getElementById('error_messages_div');
+    if (errMsgDiv) {
+      errMsgDiv.style.display = 'none';
+    }
+  }
 }
 
 export function checkAndSetTFCREligbilityNotice() {

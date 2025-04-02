@@ -22,6 +22,8 @@ import { Logger } from './logger.js';
 // import localConfigJson from '../../../../assets/application/json/quartech_applicantportalapplicationformconfigjson_vvts.json';
 // TFCR:
 // import localConfigJson from '../../../../assets/application/json/quartech_applicantportalapplicationformconfigjson_tfcr.json';
+// TFCCRF:
+// import localConfigJson from '../../../../assets/application/json/quartech_applicantportalapplicationformconfigjson_tfccrf.json';
 
 /*
  * CLAIM FORMS

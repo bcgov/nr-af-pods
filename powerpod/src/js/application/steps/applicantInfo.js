@@ -21,6 +21,7 @@ import {
 import { useScript } from '../../common/scripts.js';
 import { configureFields } from '../../common/fieldConfiguration.js';
 import {
+  checkAndSetTFCCRFEligbilityNotice,
   checkAndSetTFCREligbilityNotice,
   setBusinessOrPersonalAddressLabels,
   setBusinessOrPersonalStateForVLB,
@@ -65,6 +66,10 @@ export function customizeApplicantInfoStep() {
     customizeApplicantInfoStepForTFCR();
   }
 
+  if (programAbbreviation === 'TFCCRF') {
+    customizeApplicantInfoStepForTFCCRF();
+  }
+
   if (programAbbreviation.includes('KTTP')) {
     initCommoditiesMultiSelect();
   }
@@ -72,6 +77,10 @@ export function customizeApplicantInfoStep() {
 
 function customizeApplicantInfoStepForTFCR() {
   checkAndSetTFCREligbilityNotice();
+}
+
+function customizeApplicantInfoStepForTFCCRF() {
+  checkAndSetTFCCRFEligbilityNotice();
 }
 
 function customizeApplicantInfoStepForVLB() {
