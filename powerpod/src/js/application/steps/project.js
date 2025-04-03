@@ -15,6 +15,8 @@ import {
   addHtmlToTabDiv,
   addTextAboveField,
   addTextBelowField,
+  disableSingleLine,
+  getControlValue,
   hideFieldsetTitle,
   moveTableRow,
   setFieldValue,
@@ -37,8 +39,42 @@ export function customizeProjectStep(programData) {
 
   initAdditionalLocationsMultiSelect();
 
-  if (getProgramAbbreviation().includes('KTTP')) {
-    moveTableRow('quartech_accessandinclusivenessdescription', 'quartech_numberofoverallattendeesexpectedtoattendthi');
+  const programAbbreviation = getProgramAbbreviation();
+
+  if (programAbbreviation.includes('KTTP')) {
+    moveTableRow(
+      'quartech_accessandinclusivenessdescription',
+      'quartech_numberofoverallattendeesexpectedtoattendthi'
+    );
+  }
+
+  if (programAbbreviation === 'TFCCRF') {
+    // customizeProjectStepForTFCCRF();
+    // disableSingleLine('subgrid_ProjectStep_Import_TF_Inventory');
+    // disableSingleLine('subgrid_ProjectStep_New_TF_Inventory');
+  }
+}
+
+function customizeProjectStepForTFCCRF() {
+  const originalSource = getControlValue({
+    controlId: 'quartech_originalsource',
+  });
+  logger.info({
+    fn: customizeProjectStepForTFCCRF,
+    message: `found originalSource: ${originalSource}`,
+  });
+  if (originalSource && originalSource !== 'Import') {
+    const element = document.getElementById(
+      'TFCCRF_dateCropsPlantedInstructions'
+    );
+    if (!element) {
+      logger.error({
+        fn: customizeProjectStepForTFCCRF,
+        message: `could not find element with ID: TFCCRF_dateCropsPlantedInstructions`,
+      });
+      return;
+    }
+    element.style.display = 'none';
   }
 }
 
@@ -112,6 +148,123 @@ function customizeProjectStepForVLB() {
   hideFieldsetTitle('Description');
 }
 
+function customizeProjectStepForNEFBA() {
+  if (!document.querySelector('#quartech_businessgoals_note')) {
+    addTextAboveField(
+      'quartech_businessgoals',
+      "<br /><div id='quartech_businessgoals_note'><b>Note: Reimbursement for program costs will not be distributed unless you submit a complete new or updated business plan by March 1, 2024.</b><br /><br /></div>"
+    );
+  }
+
+  // @ts-ignore
+  initOnChange_DependentRequiredField({
+    dependentOnValue: '255550000',
+    dependentOnElementTag: 'quartech_completingcategory',
+    requiredFieldTag: 'quartech_stepstocompletethebusinessplan',
+  });
+
+  // @ts-ignore
+  initOnChange_DependentRequiredField({
+    dependentOnValue: '255550001', // Business Plan Coaching from a Business Consultant ($3,000 in funding)
+    dependentOnElementTag: 'quartech_completingcategory',
+    requiredFieldTag: 'quartech_businessconsultantinformation', // Identify the business consultant chosen by name, contact information and business registration number.
+  });
+
+  if (!document.querySelector('#quartech_bciaregisteredconsultant_note')) {
+    addTextAboveField(
+      'quartech_bciaregisteredconsultant',
+      "<br /><div id='quartech_bciaregisteredconsultant_note'><b>Note: The consultant must be registered with BCIA or as a CPA. Please select another consultant if they are not registered with either. See the Program Guide for more information.</b></div><br />"
+    );
+  }
+
+  if (!document.querySelector('#quartech_nefba_project_step_note')) {
+    const containerDiv = $('#EntityFormView > div.tab.clearfix > div > div');
+
+    containerDiv.append(`
+      <div id="quartech_nefba_project_step_note">
+        <label>
+          <b>Review the Program Guide for support on how to complete or update your business plan and requirements for Phase 2 funding.</b>
+        </label>
+        <br />
+        <br />
+        <label>Reminders:​</label>
+        <br />
+        <br />
+        <label>
+          If a consultant is used, an invoice and proof of payment is required for reimbursement up to a maximum amount of $3,000.
+        ​</label>
+        <br />
+        <br />
+        <label>
+          Note that participating in Phase 1 prepares applicants for success in the Phase 2 application process, however, does NOT guarantee funding through Phase 2. See Program Guide for full details.​
+        </label>
+        <br />
+        <br />
+        <label>
+          For Phase 2 funding, a Statement of Completion from the Environmental Farm Plan (EFP) Program or commitment to apply for and, to the extent possible, complete an Environmental Farm Plan (EFP) prior to March 1, 2025 is required. Participation in the EFP program is free and confidential and applicants are encouraged to start the EFP process as soon as possible.
+        </label>
+      </div>`);
+  }
+
+  const programCategoryElement = document.querySelector(
+    '#quartech_completingcategory'
+  );
+  const programCategoryElementInitialValue = programCategoryElement.value;
+
+  const BUSINESS_PLAN_COACHING_VALUE = '255550001';
+  if (programCategoryElementInitialValue === BUSINESS_PLAN_COACHING_VALUE) {
+    // @ts-ignore
+    shouldRequireDependentField({
+      shouldBeRequired: true,
+      requiredFieldTag: 'quartech_bciaregisteredconsultant',
+    });
+    setBciaOnChange();
+  } else {
+    // @ts-ignore
+    shouldRequireDependentField({
+      shouldBeRequired: false,
+      requiredFieldTag: 'quartech_bciaregisteredconsultant',
+    });
+    // @ts-ignore
+    shouldRequireDependentField({
+      shouldBeRequired: false,
+      requiredFieldTag: 'quartech_cpaconsultant',
+    });
+    $('#quartech_bciaregisteredconsultant').off('change');
+  }
+
+  $('#quartech_completingcategory').on('change', function () {
+    // @ts-ignore
+    const programCategoryValue = document.querySelector(
+      '#quartech_completingcategory'
+      // @ts-ignore
+    )?.value;
+    if (programCategoryValue === BUSINESS_PLAN_COACHING_VALUE) {
+      // @ts-ignore
+      shouldRequireDependentField({
+        shouldBeRequired: true,
+        requiredFieldTag: 'quartech_bciaregisteredconsultant',
+        // setRequiredFieldsFunc: setProjectStepRequiredFields
+      });
+      setBciaOnChange();
+    } else {
+      // @ts-ignore
+      shouldRequireDependentField({
+        shouldBeRequired: false,
+        requiredFieldTag: 'quartech_bciaregisteredconsultant',
+        // setRequiredFieldsFunc: setProjectStepRequiredFields
+      });
+      // @ts-ignore
+      shouldRequireDependentField({
+        shouldBeRequired: false,
+        requiredFieldTag: 'quartech_cpaconsultant',
+        // setRequiredFieldsFunc: setProjectStepRequiredFields
+      });
+      $('#quartech_bciaregisteredconsultant').off('change');
+    }
+  });
+}
+
 function setProjectStepRequiredFields() {
   configureFields();
 
@@ -123,120 +276,7 @@ function setProjectStepRequiredFields() {
 
   // START NEFBA PROJECT STEP CUSTOMIZATION
   if (programAbbreviation && programAbbreviation === 'NEFBA') {
-    if (!document.querySelector('#quartech_businessgoals_note')) {
-      addTextAboveField(
-        'quartech_businessgoals',
-        "<br /><div id='quartech_businessgoals_note'><b>Note: Reimbursement for program costs will not be distributed unless you submit a complete new or updated business plan by March 1, 2024.</b><br /><br /></div>"
-      );
-    }
-
-    // @ts-ignore
-    initOnChange_DependentRequiredField({
-      dependentOnValue: '255550000',
-      dependentOnElementTag: 'quartech_completingcategory',
-      requiredFieldTag: 'quartech_stepstocompletethebusinessplan',
-    });
-
-    // @ts-ignore
-    initOnChange_DependentRequiredField({
-      dependentOnValue: '255550001', // Business Plan Coaching from a Business Consultant ($3,000 in funding)
-      dependentOnElementTag: 'quartech_completingcategory',
-      requiredFieldTag: 'quartech_businessconsultantinformation', // Identify the business consultant chosen by name, contact information and business registration number.
-    });
-
-    if (!document.querySelector('#quartech_bciaregisteredconsultant_note')) {
-      addTextAboveField(
-        'quartech_bciaregisteredconsultant',
-        "<br /><div id='quartech_bciaregisteredconsultant_note'><b>Note: The consultant must be registered with BCIA or as a CPA. Please select another consultant if they are not registered with either. See the Program Guide for more information.</b></div><br />"
-      );
-    }
-
-    if (!document.querySelector('#quartech_nefba_project_step_note')) {
-      const containerDiv = $('#EntityFormView > div.tab.clearfix > div > div');
-
-      containerDiv.append(`
-        <div id="quartech_nefba_project_step_note">
-          <label>
-            <b>Review the Program Guide for support on how to complete or update your business plan and requirements for Phase 2 funding.</b>
-          </label>
-          <br />
-          <br />
-          <label>Reminders:​</label>
-          <br />
-          <br />
-          <label>
-            If a consultant is used, an invoice and proof of payment is required for reimbursement up to a maximum amount of $3,000.
-          ​</label>
-          <br />
-          <br />
-          <label>
-            Note that participating in Phase 1 prepares applicants for success in the Phase 2 application process, however, does NOT guarantee funding through Phase 2. See Program Guide for full details.​
-          </label>
-          <br />
-          <br />
-          <label>
-            For Phase 2 funding, a Statement of Completion from the Environmental Farm Plan (EFP) Program or commitment to apply for and, to the extent possible, complete an Environmental Farm Plan (EFP) prior to March 1, 2025 is required. Participation in the EFP program is free and confidential and applicants are encouraged to start the EFP process as soon as possible.
-          </label>
-        </div>`);
-    }
-
-    const programCategoryElement = document.querySelector(
-      '#quartech_completingcategory'
-    );
-    const programCategoryElementInitialValue = programCategoryElement.value;
-
-    const BUSINESS_PLAN_COACHING_VALUE = '255550001';
-    if (programCategoryElementInitialValue === BUSINESS_PLAN_COACHING_VALUE) {
-      // @ts-ignore
-      shouldRequireDependentField({
-        shouldBeRequired: true,
-        requiredFieldTag: 'quartech_bciaregisteredconsultant',
-      });
-      setBciaOnChange();
-    } else {
-      // @ts-ignore
-      shouldRequireDependentField({
-        shouldBeRequired: false,
-        requiredFieldTag: 'quartech_bciaregisteredconsultant',
-      });
-      // @ts-ignore
-      shouldRequireDependentField({
-        shouldBeRequired: false,
-        requiredFieldTag: 'quartech_cpaconsultant',
-      });
-      $('#quartech_bciaregisteredconsultant').off('change');
-    }
-
-    $('#quartech_completingcategory').on('change', function () {
-      // @ts-ignore
-      const programCategoryValue = document.querySelector(
-        '#quartech_completingcategory'
-        // @ts-ignore
-      )?.value;
-      if (programCategoryValue === BUSINESS_PLAN_COACHING_VALUE) {
-        // @ts-ignore
-        shouldRequireDependentField({
-          shouldBeRequired: true,
-          requiredFieldTag: 'quartech_bciaregisteredconsultant',
-          // setRequiredFieldsFunc: setProjectStepRequiredFields
-        });
-        setBciaOnChange();
-      } else {
-        // @ts-ignore
-        shouldRequireDependentField({
-          shouldBeRequired: false,
-          requiredFieldTag: 'quartech_bciaregisteredconsultant',
-          // setRequiredFieldsFunc: setProjectStepRequiredFields
-        });
-        // @ts-ignore
-        shouldRequireDependentField({
-          shouldBeRequired: false,
-          requiredFieldTag: 'quartech_cpaconsultant',
-          // setRequiredFieldsFunc: setProjectStepRequiredFields
-        });
-        $('#quartech_bciaregisteredconsultant').off('change');
-      }
-    });
+    customizeProjectStepForNEFBA();
   }
   // END NEFBA PROJECT STEP CUSTOMIZATION
 
@@ -276,18 +316,6 @@ function setProjectStepRequiredFields() {
         htmlContentToAddAboveStartDate
       );
     }
-
-    // if (programAbbreviation === 'ABPP2') {
-    //   if (!document.querySelector('#activityEndDateNotice')) {
-    //     let htmlContentToAddAboveEndDate = `<div id="activityEndDateNotice" style="padding-top: 15px;">
-    //     Consultants must submit the ${dynamicText} report to the Applicant for review and feedback at least two weeks prior to the ${dynamicText} end date. Revisions requested by the Applicant must be completed by the Consultant and approved by the Applicant prior to the final submission to the program.
-    //   </div>`;
-    //     addTextBelowField(
-    //       'quartech_activityenddate',
-    //       htmlContentToAddAboveEndDate
-    //     );
-    //   }
-    // }
   }
   // END ABPP1 AND ABPP2 CUSTOMIZATION
 
@@ -304,30 +332,6 @@ function setProjectStepRequiredFields() {
     consultantInformationElement.css('display', 'none');
   }
   // END ONLY ABPP1 CUSTOMIZATION
-
-  // START ONLY ABPP2 CUSTOMIZATION
-  // if (getProgramAbbreviation() === 'ABPP2') {
-  //   if (!document.querySelector('#consultantNotice')) {
-  //     let htmlContentToAddUnderConsultantInfo = `<div id="consultantNotice" style="padding-bottom: 15px;">
-  //     **Please note that the Ministry reserves the right to refuse projects submitted with consultants who are not considered to be in good standing with the Ministry. Applications with unacceptable consultants listed will be held or waitlisted and the applicants will be given an opportunity to find an acceptable consultant.
-  //   </div>`;
-  //     addTextAboveField(
-  //       'quartech_consultantcompanyname',
-  //       htmlContentToAddUnderConsultantInfo
-  //     );
-  //   }
-
-  //   if (!document.querySelector('#moreThan10PercentNotice')) {
-  //     let htmlContentToAddUnderMoreThan10Percent = `<div id="moreThan10PercentNotice" style="padding-top: 15px;">
-  //     **Please note that supporting consultants may not complete more than 40% of the proposed project.
-  //   </div>`;
-  //     addTextBelowField(
-  //       'quartech_consultantcompletingoverlimit',
-  //       htmlContentToAddUnderMoreThan10Percent
-  //     );
-  //   }
-  // }
-  // END ONLY ABPP2 CUSTOMIZATION
 }
 
 function setBciaOnChange() {

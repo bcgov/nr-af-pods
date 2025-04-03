@@ -1,5 +1,5 @@
 {
-  "version": "1.0.8",
+  "version": "1.1.3",
   "tags": [
     "Application",
     "StaffPortal",
@@ -106,93 +106,169 @@
       "hideHeaderDescription": true,
       "fields": [
         {
-          "name": "quartech_selectthecategoryyouareapplyingin",
-          "label": "Select the category you are applying in",
-          "required": true
-        },
-        {
-          "name": "quartech_singleorgroupapplication",
-          "label": "Is this a single applicant or part of a group application?",
-          "required": true
-        },
-        {
-          "name": "quartech_coapplicatntsnames",
-          "label": "Please provide the names of the co-applicants to your group application",
-          "required": true,
-          "maxLength": 4000,
+          "name": "subgrid_ProjectStep_Import_TF_Inventory",
+          "disableSingleLine": true,
+          "elementType": "subgrid",
+          "additionalTextAboveField": "<p>Insured plantings with less than 100 trees per acre have been removed from eligible acres calculation</p>",
+          "hideOrShowAdditionalTextWithFieldVisibility": true,
           "visibleIf": {
-            "fieldName": "quartech_singleorgroupapplication",
+            "fieldName": "quartech_originalsource",
             "selectedValue": 255550001,
-            "techComment": "Group application"
+            "techComment": "Import option selected"
           }
         },
         {
-          "name": "quartech_whenistheprojectstartdate",
-          "label": "When is the planned project start date?",
+          "name": "quartech_reportnewtreefruitinventory",
+          "label": "Are you reporting new additional Eligible Acres?",
           "required": true,
-          "elementType": "DatePicker",
-          "relocateField": {
-            "originFieldName": "quartech_whenistheprojectstartdate",
-            "destinationFieldName": "quartech_coapplicatntsnames",
-            "relativePosition": "below"
+          "visibleIf": {
+            "fieldName": "quartech_originalsource",
+            "selectedValue": 255550001,
+            "techComment": "Import option selected"
           }
         },
         {
-          "name": "quartech_activityenddate",
-          "label": "When is the planned project completion date?",
+          "name": "quartech_originalsource",
+          "techComment": "this needs to be defined in order to reference it in visibleIf conditions",
+          "hidden": true,
+          "doNotBlank": true
+        },
+        {
+          "name": "quartech_ownorleaseland",
+          "label": "Do you own or lease the land on which the Fruit Trees are planted?",
           "required": true,
-          "elementType": "DatePicker",
-          "relocateField": {
-            "originFieldName": "quartech_activityenddate",
-            "destinationFieldName": "quartech_whenistheprojectstartdate",
-            "relativePosition": "below"
-          },
-          "additionalTextBelowField": "All projects must be completed by or before March 14, 2027"
+          "additionalTextAboveField": "<p id='TFCCRF_dateCropsPlantedInstructions'>Each Fruit Tree (excluding Pollinizers) must have been permanently planted, grafted, or budded before November 30, 2024. </p>",
+          "hideOrShowAdditionalTextWithFieldVisibility": true,
+          "visibleIf": {
+            "comparison": "or",
+            "comparisons": [
+              {
+                "fieldName": "quartech_originalsource",
+                "selectedValueIn": [255550000, 255550002],
+                "techComment": "Import option NOT selected"
+              },
+              {
+                "comparison": "and",
+                "comparisons": [
+                  {
+                    "fieldName": "quartech_originalsource",
+                    "selectedValue": 255550001,
+                    "techComment": "Import option selected"
+                  },
+                  {
+                    "fieldName": "quartech_reportnewtreefruitinventory",
+                    "selectedValue": 255550000,
+                    "techComment": "YES value"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "quartech_measurementsystemutilized",
+          "label": "Would you provide row spacing and tree spacing information by metric (meters) or imperial (feet)?",
+          "required": true,
+          "visibleIf": {
+            "comparison": "or",
+            "comparisons": [
+              {
+                "fieldName": "quartech_originalsource",
+                "selectedValueIn": [255550000, 255550002],
+                "techComment": "Import option NOT selected"
+              },
+              {
+                "comparison": "and",
+                "comparisons": [
+                  {
+                    "fieldName": "quartech_originalsource",
+                    "selectedValue": 255550001,
+                    "techComment": "Import option selected"
+                  },
+                  {
+                    "fieldName": "quartech_reportnewtreefruitinventory",
+                    "selectedValue": 255550000,
+                    "techComment": "YES value"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "subgrid_ProjectStep_New_TF_Inventory",
+          "disableSingleLine": true,
+          "elementType": "subgrid",
+          "visibleIf": {
+            "comparison": "or",
+            "comparisons": [
+              {
+                "fieldName": "quartech_originalsource",
+                "selectedValueIn": [255550000, 255550002],
+                "techComment": "Import option NOT selected"
+              },
+              {
+                "comparison": "and",
+                "comparisons": [
+                  {
+                    "fieldName": "quartech_originalsource",
+                    "selectedValue": 255550001,
+                    "techComment": "Import option selected"
+                  },
+                  {
+                    "fieldName": "quartech_reportnewtreefruitinventory",
+                    "selectedValue": 255550000,
+                    "techComment": "YES value"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "quartech_plantoremovetrees",
+          "label": "Do you plan to remove any fruit trees before September 30, 2025",
+          "required": true,
+          "visibleIf": {
+            "comparison": "or",
+            "comparisons": [
+              {
+                "fieldName": "quartech_originalsource",
+                "selectedValueIn": [255550000, 255550002],
+                "techComment": "Import option NOT selected"
+              },
+              {
+                "comparison": "and",
+                "comparisons": [
+                  {
+                    "fieldName": "quartech_originalsource",
+                    "selectedValue": 255550001,
+                    "techComment": "Import option selected"
+                  },
+                  {
+                    "fieldName": "quartech_reportnewtreefruitinventory",
+                    "selectedValue": 255550000,
+                    "techComment": "YES value"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "quartech_treeremovalexplanation",
+          "label": "Please provide a rational, and describe how many trees, which location, and when the removal will be happening.",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_plantoremovetrees",
+            "selectedValue": 255550000,
+            "techComment": "YES value"
+          }
         },
         {
           "name": "quartech_inordertocontinuouslyimprovecommunications",
           "hidden": true,
           "techComment": "This is NEEDED to override default global json config, please leave this here."
-        },
-        {
-          "name": "quartech_proposedactivitystopicpurposeintent",
-          "label": "Provide a description of the impacts of past extreme weather events on your tree fruit operation. Include specific information on when crop loss occurred due to extreme weather, % of crop loss by season, and long-term impacts on your operation.",
-          "required": true,
-          "maxLength": 1000,
-          "tooltipText": "Type up to 1000 characters"
-        },
-        {
-          "name": "quartech_proposedactivitydescription",
-          "label": "Provide a description of how this project will help reduce the impacts of extreme weather events on your farm",
-          "required": true,
-          "maxLength": 1000,
-          "tooltipText": "Type up to 1000 characters"
-        },
-        {
-          "name": "quartech_whatisthetotalareaacresoftreefruit",
-          "label": "What is the total area (acres) of tree fruit currently farmed by your business?",
-          "required": true,
-          "format": "number",
-          "dataFormat": "number",
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThan"
-          },
-          "tooltipText": "Type in number format only"
-        },
-        {
-          "name": "quartech_totalareaacreswithinyourfarmingoperation",
-          "label": "What is the total area (acres) within your farming operation that will benefit as a result of completing this project?",
-          "required": true,
-          "format": "number",
-          "dataFormat": "number",
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThan"
-          },
-          "tooltipText": "Type in number format only"
         }
       ]
     },

@@ -20,14 +20,15 @@ POWERPOD.fieldConditionalLogic = {
 };
 
 export function assignDependentFields(fieldConfig) {
-  const { name } = fieldConfig;
+  const { name, visibleIf } = fieldConfig;
+
   logger.info({
     fn: assignDependentFields,
     message: `starting to set dependent fields for name: ${name}`,
     data: { fieldConfig },
   });
 
-  if (!fieldConfig.visibleIf) {
+  if (!visibleIf) {
     logger.warn({
       fn: assignDependentFields,
       message: `could not find visibleIf configuration for field with name: ${name}`,
@@ -36,32 +37,43 @@ export function assignDependentFields(fieldConfig) {
     return;
   }
 
-  if (fieldConfig.visibleIf && fieldConfig.visibleIf.fieldName) {
-    const { fieldName: controlFieldName } = fieldConfig.visibleIf;
+  const fieldNames = extractDependentFieldNames(visibleIf);
+
+  fieldNames.forEach((controlFieldName) => {
     const controlFieldConfig = getFieldConfig(controlFieldName);
+    if (!controlFieldConfig) {
+      logger.warn({
+        fn: assignDependentFields,
+        message: `control field config not found for: ${controlFieldName}`,
+        data: { name, controlFieldName },
+      });
+      return;
+    }
+
     checkControlDependentFields({
       controlFieldConfig,
       name,
       fieldConfig,
       controlFieldName,
     });
-  } else if (
-    fieldConfig.visibleIf &&
-    fieldConfig.visibleIf.comparisons &&
-    Array.isArray(fieldConfig.visibleIf.comparisons)
-  ) {
-    const { comparisons } = fieldConfig.visibleIf;
-    comparisons.forEach((c) => {
-      const { fieldName: controlFieldName } = c;
-      const controlFieldConfig = getFieldConfig(controlFieldName);
-      checkControlDependentFields({
-        controlFieldConfig,
-        name,
-        fieldConfig,
-        controlFieldName,
-      });
+  });
+}
+
+function extractDependentFieldNames(visibleIf) {
+  const result = new Set();
+
+  if (visibleIf.fieldName) {
+    result.add(visibleIf.fieldName);
+  }
+
+  if (Array.isArray(visibleIf.comparisons)) {
+    visibleIf.comparisons.forEach((item) => {
+      const nested = extractDependentFieldNames(item);
+      nested.forEach((f) => result.add(f));
     });
   }
+
+  return Array.from(result);
 }
 
 export function checkControlDependentFields(params) {
@@ -399,13 +411,8 @@ export function checkVisibleIfCondition({
 function evaluateVisibilityConditions(visibleIf, name) {
   // Legacy case: single condition
   if (visibleIf.fieldName) {
-    const {
-      fieldName,
-      selectedValue,
-      selectedValueIn,
-      comparison,
-      value,
-    } = visibleIf;
+    const { fieldName, selectedValue, selectedValueIn, comparison, value } =
+      visibleIf;
 
     const controlValue = getControlValue({
       controlId: fieldName,
@@ -414,8 +421,19 @@ function evaluateVisibilityConditions(visibleIf, name) {
     });
 
     return comparison && value
-      ? checkVisibleIfComparison({ name, dependentOnFieldName: fieldName, controlValue, comparison, value })
-      : checkVisibleIfCondition({ name, controlValue, selectedValue, selectedValueIn });
+      ? checkVisibleIfComparison({
+          name,
+          dependentOnFieldName: fieldName,
+          controlValue,
+          comparison,
+          value,
+        })
+      : checkVisibleIfCondition({
+          name,
+          controlValue,
+          selectedValue,
+          selectedValueIn,
+        });
   }
 
   // Recursive condition group

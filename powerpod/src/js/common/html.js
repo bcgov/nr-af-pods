@@ -65,6 +65,7 @@ POWERPOD.html = {
   addTextBelowSection,
   moveTableRow,
   hideFieldRow,
+  disableSingleLine,
 };
 
 export function configureCustomLogo(customLogo) {
@@ -560,15 +561,22 @@ export function getFieldLabel(fieldName) {
 }
 
 export function getFieldRow(fieldName) {
-  const fieldLabelElement = document.querySelector(`#${fieldName}_label`);
+  let fieldLabelElement = document.querySelector(`#${fieldName}_label`);
   if (!fieldLabelElement) {
-    logger.error({
-      fn: getFieldRow,
-      message: `could not find fieldLabelElement for fieldName: ${fieldName}`,
-    });
-    return;
+    const fieldConfig = getFieldConfig(fieldName);
+    if (fieldConfig.elementType === 'subgrid') {
+      fieldLabelElement = document.getElementById(fieldName);
+    }
+
+    if (!fieldLabelElement) {
+      logger.error({
+        fn: getFieldRow,
+        message: `could not find fieldLabelElement for fieldName: ${fieldName}`,
+      });
+      return;
+    }
   }
-  const fieldRow = fieldLabelElement.closest('tr');
+  let fieldRow = fieldLabelElement.closest('tr');
 
   if (!fieldRow) {
     logger.error({
@@ -586,6 +594,7 @@ export function hideFieldRow({ fieldName, doNotBlank = false }) {
     fn: hideFieldRow,
     message: `hideFieldRow called for fieldName: ${fieldName}, doNotBlank: ${doNotBlank}`,
   });
+
   const fieldRow = getFieldRow(fieldName);
 
   if (!fieldRow) {
@@ -596,7 +605,24 @@ export function hideFieldRow({ fieldName, doNotBlank = false }) {
     return;
   }
 
+  // Hide the main field row
   $(fieldRow)?.css({ display: 'none' });
+
+  // Look up fieldDefinition and optionally hide additional HTML if allowed
+  const fieldDefinition = powerpod?.state?.fields?.[fieldName];
+  const shouldHideAdditionalText =
+    fieldDefinition?.hideOrShowAdditionalTextWithFieldVisibility === true;
+
+  if (shouldHideAdditionalText && Array.isArray(fieldDefinition?.html)) {
+    fieldDefinition.html.forEach((uuid) => {
+      const existingElement = $(
+        `tr[data-uuid='${uuid}'] td[quartechHtml='true']`
+      );
+      if (existingElement.length > 0) {
+        existingElement.css({ display: 'none' });
+      }
+    });
+  }
 
   if (!doNotBlank) {
     setFieldValueToEmptyState(fieldName);
@@ -629,6 +655,7 @@ export function showFieldRow(fieldName) {
     fn: showFieldRow,
     message: `showFieldRow called for fieldName: ${fieldName}`,
   });
+
   const fieldRow = getFieldRow(fieldName);
 
   if (!fieldRow) {
@@ -639,14 +666,32 @@ export function showFieldRow(fieldName) {
     return;
   }
 
+  // Show the main field row
   $(fieldRow)?.css({ display: '' });
 
-  const isRequired = POWERPOD.state?.fields?.[fieldName].required;
+  // Look up fieldDefinition and optionally show additional HTML if allowed
+  const fieldDefinition = powerpod?.state?.fields?.[fieldName];
+  const shouldShowAdditionalText =
+    fieldDefinition?.hideOrShowAdditionalTextWithFieldVisibility === true;
+
+  if (shouldShowAdditionalText && Array.isArray(fieldDefinition?.html)) {
+    fieldDefinition.html.forEach((uuid) => {
+      const existingElement = $(
+        `tr[data-uuid='${uuid}'] td[quartechHtml='true']`
+      );
+      if (existingElement.length > 0) {
+        existingElement.css({ display: '' });
+      }
+    });
+  }
+
+  // Add required class if needed
+  const isRequired = fieldDefinition?.required;
   if (isRequired) {
     $(`#${fieldName}_label`).parent().addClass('required');
   }
 
-  // check if a fieldset exists and make sure it's visible if so
+  // Ensure the nearest fieldset is visible
   const nearestFieldSet = fieldRow.closest('fieldset');
   if (!nearestFieldSet) {
     logger.error({
@@ -1594,16 +1639,16 @@ export function removeDropdownOptions(name, removeDropdownOptionsValues) {
 export function moveTableRow(rowIdToMove, referenceRowId, position = 'after') {
   logger.info({
     fn: moveTableRow,
-    message: `moveTableRow called with rowIdToMove: ${rowIdToMove}, referenceRowId: ${referenceRowId}, position: ${position}`
-  })
+    message: `moveTableRow called with rowIdToMove: ${rowIdToMove}, referenceRowId: ${referenceRowId}, position: ${position}`,
+  });
   const rowToMove = document.getElementById(rowIdToMove)?.closest('tr');
   const referenceRow = document.getElementById(referenceRowId)?.closest('tr');
 
   if (!rowToMove || !referenceRow) {
     logger.error({
       fn: moveTableRow,
-      message: 'One or both of the specified rows were not found.'
-    })
+      message: 'One or both of the specified rows were not found.',
+    });
     return;
   }
 

@@ -96,6 +96,7 @@ export function configureField(field) {
     additionalTextAboveField,
     additionalTextBelowField,
     removeDropdownOptionsValues,
+    hideOrShowAdditionalTextWithFieldVisibility,
     reorderField = {},
   } = field;
   let { elementType } = field;
@@ -129,7 +130,11 @@ export function configureField(field) {
     }
   }
   if (hidden) {
-    hideFieldRow({ fieldName: name, doNotBlank });
+    hideFieldRow({
+      fieldName: name,
+      doNotBlank,
+      hideOrShowAdditionalTextWithFieldVisibility,
+    });
     logger.info({
       fn: configureField,
       message: `aborting field config for fieldName: ${name}, since it is hidden`,
