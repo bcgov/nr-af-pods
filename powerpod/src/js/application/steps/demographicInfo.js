@@ -11,7 +11,10 @@ import { Logger } from '../../common/logger.js';
 import { configureFields } from '../../common/fieldConfiguration.js';
 import { setFieldReadOnly } from '../../common/fieldValidation.js';
 import { validateDemographicInfoRequiredFields } from '../validation.js';
-import { getProgramAbbreviation, getProgramEmailAddress } from '../../common/program.ts';
+import {
+  getProgramAbbreviation,
+  getProgramEmailAddress,
+} from '../../common/program.ts';
 import { saveFormData } from '../../common/saveButton.js';
 import { getFormId } from '../../common/form.js';
 import { getApplicationData } from '../../common/fetch.js';
@@ -421,21 +424,24 @@ async function addDemographicInfoChefsIframe() {
     let chefsDemographicDataFormId, chefsDemographicDataIndividualsFormId;
     const {
       quartech_ChefsDemographicDataFormId,
-      quartech_ChefsDemographicDataIndividualsFormId
+      quartech_ChefsDemographicDataIndividualsFormId,
     } = await getEnvVars();
 
     if (getProgramAbbreviation() === 'TFCR') {
       const env = getEnv();
       if (env === Environment.PROD) {
         chefsDemographicDataFormId = 'd486e8be-a211-4ff1-b50a-6b1ae4c8766b';
-        chefsDemographicDataIndividualsFormId = 'd486e8be-a211-4ff1-b50a-6b1ae4c8766b';
+        chefsDemographicDataIndividualsFormId =
+          'd486e8be-a211-4ff1-b50a-6b1ae4c8766b';
       } else {
         chefsDemographicDataFormId = '7ed1a4b6-a609-478b-9811-6e76911a0bf6';
-        chefsDemographicDataIndividualsFormId = '7ed1a4b6-a609-478b-9811-6e76911a0bf6';
+        chefsDemographicDataIndividualsFormId =
+          '7ed1a4b6-a609-478b-9811-6e76911a0bf6';
       }
     } else {
       chefsDemographicDataFormId = quartech_ChefsDemographicDataFormId;
-      chefsDemographicDataIndividualsFormId = quartech_ChefsDemographicDataIndividualsFormId;
+      chefsDemographicDataIndividualsFormId =
+        quartech_ChefsDemographicDataIndividualsFormId;
     }
 
     logger.info({

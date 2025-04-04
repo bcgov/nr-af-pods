@@ -1,4 +1,4 @@
-import { configureFields } from '../../common/fieldConfiguration.js';
+import { configureFields, setRequiredField } from '../../common/fieldConfiguration.js';
 import {
   addTextAboveField,
   hideFieldRow,
@@ -14,10 +14,13 @@ export function customizeDeclarationConsentStep(programData) {
   if (programAbbreviation === 'VVTS' || programAbbreviation === 'TFCR') {
     hidePageDescription(true);
   }
-  if (programAbbreviation.includes('KTTP')) {
+  if (
+    programAbbreviation.includes('KTTP') ||
+    programAbbreviation === 'TFCCRF'
+  ) {
     // addConsentForKTTP(programData?.quartech_applicantportalprogramname);
     hideFieldRow({
-      fieldName: 'quartech_consenttotestimonials'
+      fieldName: 'quartech_consenttotestimonials',
     });
     // addTextAboveField('quartech_consenttotestimonials', 'Testimonials may be used in program reporting, promotional materials, or shared publicly if funding is awarded. Do you consent to providing a written testimonial (with 1 to 3 high-quality photos, if possible) once your project has been completed?')
   }
@@ -25,6 +28,10 @@ export function customizeDeclarationConsentStep(programData) {
     addConsent(programData?.quartech_applicantportalprogramname);
   } else {
     addConsentForTFCR(programData?.quartech_applicantportalprogramname);
+  }
+
+  if (programAbbreviation === 'TFCCRF') {
+    setRequiredField('quartech_signature');
   }
 }
 
