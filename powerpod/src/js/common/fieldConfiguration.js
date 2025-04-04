@@ -929,15 +929,6 @@ export function setRequiredField(
   // @ts-ignore
   $(`#${fieldName}`).attr('required', true);
 
-  // let errorMessageElement = getFieldErrorDiv(fieldName);
-
-  // let div = document.createElement('div');
-  // div.id = `${fieldName}_error_message`;
-  // div.className = 'error_message';
-  // // @ts-ignore
-  // div.style = 'display:none;';
-  // div.innerHTML = `<span'>${validationErrorMessage}</span>`;
-  // $(`#${fieldName}`).parent().append(div);
 
   switch (elemType) {
     case HtmlElementType.FileInput:
@@ -948,50 +939,28 @@ export function setRequiredField(
         message: 'observe changes on file input element',
         data: { attachFileField, textareaField, fieldName },
       });
-      // observeChanges(attachFileField);
-      // attachFileField?.on('blur input', () => {
-      //   validateRequiredField(fieldName);
-      // });
-      // textareaField?.on('change', function () {
-      //   validateRequiredField(fieldName);
-      // });
       break;
     case HtmlElementType.DatePicker:
       logger.info({
         fn: setRequiredField,
         message: `Configuring required datepicker element for fieldName: ${fieldName}`,
       });
-      // const datePickerElement = $(
-      //   `input[id=${fieldName}_datepicker_description]`
-      // ).parent()[0];
-      // // logger.info({
-      // //   fn: setRequiredField,
-      // //   message: 'observe changes on datepicker element',
-      // //   data: { datePickerElement },
-      // // });
-      // // observeChanges(datePickerElement);
-      // // $(`#${fieldName}_datepicker_description`).on('blur input', () => {
-      // //   validateRequiredField(fieldName);
-      // // });
       break;
     case HtmlElementType.MultiSelectPicklist:
     case HtmlElementType.SingleOptionSet:
     case HtmlElementType.MultiOptionSet:
-      // $(`input[id*='${fieldName}']`).on('change', function () {
-      //   validateRequiredField(fieldName);
-      // });
       break;
     case HtmlElementType.DropdownSelect:
-      // $(`select[id*='${fieldName}']`).on('change', function () {
-      //   validateRequiredField(fieldName);
-      // });
       break;
     default: // HtmlElementTypeEnum.Input
-      // $(`#${fieldName}`).on('change keyup', function (event) {
-      //   validateRequiredField(fieldName);
-      // });
       break;
   }
+}
+
+export function unsetRequiredField(fieldName) {
+  $(`#${fieldName}_label`).parent().removeClass('required');
+  // @ts-ignore
+  $(`#${fieldName}`).attr('required', false);
 }
 
 export function setDynamicallyRequiredFields(stepName) {

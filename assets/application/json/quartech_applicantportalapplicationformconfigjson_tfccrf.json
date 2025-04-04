@@ -1,5 +1,5 @@
 {
-  "version": "1.1.3",
+  "version": "1.1.4",
   "tags": [
     "Application",
     "StaffPortal",
@@ -273,188 +273,50 @@
       ]
     },
     {
-      "name": "DeliverablesBudgetStep",
-      "subsections": [
-        {
-          "name": "Deliverables & Budget",
-          "type": "SectionTitle",
-          "newLabel": "Eligible Expenses"
-        }
-      ],
-      "fields": [
-        {
-          "name": "quartech_smefee",
-          "required": true,
-          "format": "currency",
-          "maxDigits": 13,
-          "initialValue": "0.00",
-          "label": "Contractor / Consultant Cost",
-          "validation": {
-            "type": "numeric",
-            "value": 0,
-            "comparison": "greaterThanOrEqualTo"
-          },
-          "onChangeHandler": "calculateTFCRBudgets",
-          "tooltipText": "Fees for external contractors or consultants hired to support the project"
-        },
-        {
-          "name": "quartech_describetheconsultantssupportingthisproject",
-          "label": "Please describe the Consultants / Contractors supporting this project",
-          "required": true,
-          "visibleIf": {
-            "fieldName": "quartech_smefee",
-            "comparison": "greaterThan",
-            "value": "0"
-          }
-        },
-        {
-          "name": "quartech_hiredlabour",
-          "required": true,
-          "format": "currency",
-          "maxDigits": 13,
-          "initialValue": "0.00",
-          "label": "Hired Labour",
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThanOrEqualTo"
-          },
-          "onChangeHandler": "calculateTFCRBudgets",
-          "tooltipText": "Additional hired labour directly related to the project"
-        },
-        {
-          "name": "quartech_describethehiredlaboursupportingthisproject",
-          "label": "Please describe the Hired Labour supporting this project",
-          "required": true,
-          "visibleIf": {
-            "fieldName": "quartech_hiredlabour",
-            "comparison": "greaterThan",
-            "value": "0"
-          }
-        },
-        {
-          "name": "quartech_facilityequipmenttechnologyrental",
-          "required": true,
-          "format": "currency",
-          "maxDigits": 13,
-          "initialValue": "0.00",
-          "label": "Rented Tools or Equipment",
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThanOrEqualTo"
-          },
-          "onChangeHandler": "calculateTFCRBudgets",
-          "tooltipText": "Tools or equipment needed for installation or implementation"
-        },
-        {
-          "name": "quartech_pleasedescribeequipmentrequiredifapplicable",
-          "label": "Please describe the type of Tools or Equipment rented",
-          "required": true,
-          "visibleIf": {
-            "fieldName": "quartech_facilityequipmenttechnologyrental",
-            "comparison": "greaterThan",
-            "value": "0"
-          }
-        },
-        {
-          "name": "quartech_materials",
-          "required": true,
-          "format": "currency",
-          "maxDigits": 13,
-          "initialValue": "0.00",
-          "label": "Project Equipment and Materials",
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThanOrEqualTo"
-          },
-          "onChangeHandler": "calculateTFCRBudgets",
-          "tooltipText": "Costs for purchasing major components or materials such as frost fans, evaporative cooling systems, energy-efficient heaters, etc"
-        },
-        {
-          "name": "quartech_describeprojectequipmentandmaterialsinvolved",
-          "label": "Please describe the Project Equipment and Materials involved",
-          "required": true,
-          "visibleIf": {
-            "fieldName": "quartech_materials",
-            "comparison": "greaterThan",
-            "value": "0"
-          }
-        },
-        {
-          "name": "quartech_othercost",
-          "required": true,
-          "format": "currency",
-          "maxDigits": 13,
-          "initialValue": "0.00",
-          "label": "Other Cost",
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThanOrEqualTo"
-          },
-          "onChangeHandler": "calculateTFCRBudgets",
-          "tooltipText": "Miscellaneous costs such as shipping"
-        },
-        {
-          "name": "quartech_pleaseexplainotherifapplicable",
-          "label": "Please describe the Other Costs involved",
-          "required": true,
-          "visibleIf": {
-            "fieldName": "quartech_othercost",
-            "comparison": "greaterThan",
-            "value": "0"
-          }
-        },
-        {
-          "name": "quartech_estimatedbudgettotalactivitycost",
-          "format": "currency",
-          "maxDigits": 11,
-          "label": "Total estimated cash costs of project",
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThanOrEqualTo"
-          },
-          "readOnly": true
-        },
-        {
-          "name": "quartech_totalfundingrequiredfromtheprogram",
-          "format": "currency",
-          "maxDigits": 11,
-          "label": "Maximum funding requested from program (80% cost-share <span style='color:red;'>of up to $125,000 of eligible costs</span> to a maximum of $100,000 per farm business)",
-          "additionalTextBelowField": "<p style='color:red'>Note: In-kind contributions cannot be counted towards the applicant's cost-share contributions.</p>",
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThanOrEqualTo"
-          },
-          "errorMessage": "Total Funding Required must sum to be greater than or equal to 0.",
-          "readOnly": true
-        }
-      ]
-    },
-    {
       "name": "DocumentsStep",
       "hideHeaderDescription": true,
       "fields": [
         {
+          "name": "quartech_taxdocument",
+          "label": "Upload a copy of your 2023 tax documents submitted to Canada Revenue Agency, including Tax return (T1 General) for all individual/owners with Statement of Farming Activity (T2042 or T1273) or Corporation Income Tax Return if Business/Company (T2)",
+          "required": true,
+          "elementType": "FileInput",
+          "reorderField": {
+            "position": "before",
+            "fieldName": "quartech_uploadasitemap"
+          }
+        },
+        {
+          "name": "quartech_propertyassessmentnotice",
+          "label": "Upload property assessment notice (if you own the land on which the fruit trees are planted)",
+          "required": true,
+          "elementType": "FileInput",
+          "reorderField": {
+            "position": "after",
+            "fieldName": "quartech_taxdocument"
+          }
+        },
+        {
+          "name": "quartech_leaseagreement",
+          "label": "Upload the lease agreement (if you lease the land on which the fruit trees are planted)",
+          "elementType": "FileInput",
+          "required": true,
+          "reorderField": {
+            "position": "after",
+            "fieldName": "quartech_propertyassessmentnotice"
+          }
+        },
+        {
           "name": "quartech_uploadasitemap",
-          "label": "Upload a site map(s) identifying the project location",
+          "label": "Upload the map of the orchard",
           "elementType": "FileInput",
           "required": true
         },
         {
-          "name": "quartech_relatedquotesandplans",
-          "label": "Upload quotes for items that are included in your Project Budget",
+          "name": "quartech_directdepositapplication",
+          "label": "Attach void cheque or bank letter",
           "elementType": "FileInput",
           "required": true
-        },
-        {
-          "name": "quartech_uploadanyothersupportingdocuments",
-          "label": "Upload any other supporting documents",
-          "elementType": "FileInput"
         }
       ]
     },

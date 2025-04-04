@@ -38,6 +38,7 @@ const logger = Logger('common/validation');
 
 POWERPOD.fieldValidation = {
   validateRequiredFields,
+  validateStepFields,
 };
 
 export function validateRequiredFields() {

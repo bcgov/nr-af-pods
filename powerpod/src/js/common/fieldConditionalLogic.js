@@ -97,16 +97,27 @@ export function checkControlDependentFields(params) {
   store.dispatch('addFieldData', { name: controlFieldName, dependentFields });
 }
 
-export function setFieldVisibility(name) {
+export function setFieldVisibility(
+  name,
+  visibleIf = {},
+  condition = undefined
+) {
   logger.info({
     fn: setFieldVisibility,
     message: `starting to set field visibility for name: ${name}`,
   });
 
-  const fieldConfig = getFieldConfig(name);
-  assignDependentFields(fieldConfig);
+  let doNotBlank = false,
+    html = [];
 
-  const { visibleIf, doNotBlank, html } = fieldConfig;
+  if (Object.keys(visibleIf).length === 0) {
+    const fieldConfig = getFieldConfig(name);
+    assignDependentFields(fieldConfig);
+
+    visibleIf = fieldConfig.visibleIf;
+    doNotBlank = fieldConfig.doNotBlank;
+    html = fieldConfig.html;
+  }
   let matchesCondition = false;
 
   if (!visibleIf) {
@@ -118,7 +129,11 @@ export function setFieldVisibility(name) {
     return;
   }
 
-  matchesCondition = evaluateVisibilityConditions(visibleIf, name);
+  if (condition) {
+    matchesCondition = condition;
+  } else {
+    matchesCondition = evaluateVisibilityConditions(visibleIf, name);
+  }
 
   if (matchesCondition) {
     showFieldRow(name);
