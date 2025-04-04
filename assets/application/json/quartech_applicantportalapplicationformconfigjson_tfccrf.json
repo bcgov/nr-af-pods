@@ -1,5 +1,5 @@
 {
-  "version": "1.1.5",
+  "version": "1.1.6",
   "tags": [
     "Application",
     "StaffPortal",
@@ -103,6 +103,7 @@
     },
     {
       "name": "ProjectStep",
+      "displayName": "Tree Fruit Information",
       "hideHeaderDescription": true,
       "fields": [
         {
