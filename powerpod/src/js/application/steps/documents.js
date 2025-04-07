@@ -29,7 +29,8 @@ export function customizeDocumentsStep() {
     programAbbreviation === 'NEFBA2' ||
     programAbbreviation === 'VLB' ||
     programAbbreviation.includes('KTTP') ||
-    programAbbreviation === 'TFCR'
+    programAbbreviation === 'TFCR' ||
+    programAbbreviation === 'TFCCRF'
   ) {
     addDocumentsStepText();
   }
