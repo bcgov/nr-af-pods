@@ -1,10 +1,18 @@
 import store from '../store/index.js';
 import { getFormType } from './applicationUtils.js';
 import { Form, FormStep, HtmlElementType, POWERPOD } from './constants.js';
-import { patchApplicationData, patchClaimData } from './fetch.js';
-import { generateFormJson, getFormId } from './form.js';
+import {
+  getApplicationData,
+  patchApplicationData,
+  patchClaimData,
+} from './fetch.js';
+import {
+  augmentFormDataForBUG6998,
+  generateFormJson,
+  getFormId,
+} from './form.js';
 import { Logger } from './logger.js';
-import { getCurrentStep } from './program.ts';
+import { getCurrentStep, getProgramId } from './program.ts';
 import { PropertyReferences, PropertyReferenceValues } from './propertyRefs.js';
 import { isObjectEmpty } from './utils.js';
 
@@ -192,6 +200,8 @@ export async function saveFormData({ customPayload = {} }) {
 
   const formId = getFormId();
   const formType = getFormType();
+
+  payload = await augmentFormDataForBUG6998(payload);
 
   try {
     let res;

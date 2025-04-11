@@ -1,10 +1,10 @@
-// @ts-nocheck
 import {
   HtmlElementType,
   POWERPOD,
   doc,
   Form,
   BrowserInformationAction,
+  FormStep,
 } from './constants.js';
 import {
   getControlType,
@@ -15,10 +15,20 @@ import {
   isHiddenRow,
 } from './html.js';
 import { getFormType } from './applicationUtils.js';
-import { getProgramAbbreviation, getProgramData } from './program.ts';
+import {
+  getCurrentStep,
+  getProgramAbbreviation,
+  getProgramData,
+  getProgramId,
+} from './program.ts';
 import { Logger } from './logger.js';
 import store from '../store/index.js';
 import { convertObjectToString, isObject, saveBrowserInfo } from './utils.js';
+import {
+  getApplicationData,
+  patchApplicationData,
+  patchClaimData,
+} from './fetch.js';
 
 const logger = Logger('common/form');
 
@@ -163,6 +173,7 @@ export function addFormDataOnClickHandler() {
   nextButton.removeAttribute('onclick');
 
   nextButton?.addEventListener('click', (event) => {
+    augmentFormDataForBUG6998({}, true);
     saveBrowserInfo(BrowserInformationAction.Next);
     formDataOnClickHandler(event, nextFn);
   });
@@ -256,7 +267,7 @@ export function generateFormJson(setFieldOrder = false) {
     const displayName = fieldset.querySelector('h3')?.textContent; // e.g. "Application Information for Reimbursement"
 
     // skip coding sections
-    if (displayName?.toLowerCase().includes("coding section")) {
+    if (displayName?.toLowerCase().includes('coding section')) {
       return;
     }
 
@@ -621,4 +632,115 @@ export function generateConsentHtmlToText(formType) {
 
   // Return the cleaned and formatted text
   return text;
+}
+
+export async function augmentFormDataForBUG6998(
+  payload = {},
+  patchData = false
+) {
+  const formId = getFormId();
+  const formType = getFormType();
+  const currentStep = getCurrentStep();
+  logger.info({
+    fn: augmentFormDataForBUG6998,
+    message: `start to getApplicationData: ${formType}`,
+    data: { formId, formType, payload, currentStep },
+  });
+  if (currentStep === FormStep.ApplicantInfo) {
+    const { programId } = await getProgramId();
+    logger.info({
+      fn: augmentFormDataForBUG6998,
+      message: `start to getApplicationData: ${formType}`,
+      data: { formId, formType, payload, currentStep, programId },
+    });
+    // Implemented as part of BUG 6998
+    // if quartech_originalsource = import (255550001) and msgov_programid=357a7a04-a309-f011-bae3-002248ae7f3c DO NOTHING
+    // else update quartech_originalsource = portal (255550002)
+    if (programId === '357a7a04-a309-f011-bae3-002248ae7f3c') {
+      logger.info({
+        fn: augmentFormDataForBUG6998,
+        message: `start to getApplicationData: ${formType}`,
+        data: { formId, formType, payload, currentStep, programId },
+      });
+      try {
+        const applicationDataRes = await getApplicationData({ id: formId });
+
+        if (!applicationDataRes?.data?.value?.[0]) {
+          logger.error({
+            fn: augmentFormDataForBUG6998,
+            message: `Could not get application data result`,
+          });
+        }
+
+        const { quartech_originalsource } =
+          applicationDataRes?.data?.value?.[0];
+
+        logger.info({
+          fn: augmentFormDataForBUG6998,
+          message: `successfully fetched application data and found quartech_originalsource: ${quartech_originalsource}`,
+          data: { quartech_originalsource, programId, currentStep },
+        });
+
+        if (quartech_originalsource === 255550001) {
+          // do nothing
+        } else {
+          payload.quartech_originalsource = 255550002;
+          logger.info({
+            fn: augmentFormDataForBUG6998,
+            message: `successfully updated payload with payload.quartech_originalsource: ${payload.quartech_originalsource}`,
+            data: {
+              payload_quartech_originalsource: payload.quartech_originalsource,
+              quartech_originalsource,
+              programId,
+              currentStep,
+            },
+          });
+        }
+      } catch (e) {
+        logger.error({
+          fn: augmentFormDataForBUG6998,
+          message: `failed to getApplicationData: ${formType}`,
+          data: { e, formId, formType, payload, currentStep, programId },
+        });
+      }
+    } else {
+      payload.quartech_originalsource = 255550002;
+    }
+    logger.info({
+      fn: augmentFormDataForBUG6998,
+      message: `payload.quartech_originalsource: ${payload.quartech_originalsource}`,
+      data: {
+        payload_quratech_originalsource: payload.quartech_originalsource,
+        currentStep,
+        programId,
+        formId,
+      },
+    });
+  }
+
+  if (patchData) {
+    try {
+      let res;
+
+      if (formType === Form.Application) {
+        res = await patchApplicationData({ id: formId, fieldData: payload });
+      } else if (formType === Form.Claim) {
+        res = await patchClaimData({ id: formId, fieldData: payload });
+      }
+
+      logger.info({
+        fn: augmentFormDataForBUG6998,
+        message: 'successfully patched form data with payload',
+        data: { formId, formType, payload },
+      });
+    } catch (e) {
+      logger.error({
+        fn: augmentFormDataForBUG6998,
+        message: `failed to patch form data for formType: ${formType}`,
+        data: { e, formId, formType, payload },
+      });
+    }
+  }
+
+  return payload;
 }
