@@ -80,7 +80,7 @@ export const TabDisplayNames = {
   [FormStep.ApplicantInfo]: 'Applicant Information',
   [FormStep.Eligibility]: ['Eligibility', 'Availability', 'Practice'],
   [FormStep.Project]: ['Project', 'Scope of Practice', 'Student Candidates'],
-  [FormStep.DeliverablesBudget]: 'Deliverables & Budget',
+  [FormStep.DeliverablesBudget]: ['Deliverables & Budget', 'EFT Form'],
   [FormStep.DemographicInfo]: 'Demographic Information',
   // Claim Steps:
   [FormStep.ClaimInfo]: 'Claim Information',

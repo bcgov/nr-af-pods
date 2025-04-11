@@ -12,6 +12,7 @@ import {
   getFieldRow,
   getControlType,
   configureCustomLogo,
+  addCustomField,
 } from './html.js';
 import { Logger } from './logger.js';
 import { getCurrentStep, getProgramAbbreviation } from './program.ts';
@@ -187,6 +188,23 @@ export function getFieldsBySectionApplication(stepName, forceRefresh = false) {
   });
 
   fields.forEach((s) => {
+    if (
+      s.type &&
+      s.type === 'customField' &&
+      s.reorderField.position &&
+      s.reorderField.fieldName
+    ) {
+      logger.info({
+        fn: getFieldsBySectionApplication,
+        message: `Adding custom field, s.name: ${s.name}, s.label: ${s.label}, s.reorderField.fieldName: ${s.reorderField.fieldName}, s.reorderField.position: ${s.reorderField.position}`,
+      });
+      addCustomField(
+        s.name,
+        s.label,
+        s.reorderField.fieldName,
+        s.reorderField.position
+      );
+    }
     if (document.getElementById(s.name) === null) {
       logger.warn({
         fn: getFieldsBySectionApplication,

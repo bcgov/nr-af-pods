@@ -1,5 +1,5 @@
 {
-  "version": "1.1.6",
+  "version": "1.2.2",
   "tags": [
     "Application",
     "StaffPortal",
@@ -12,9 +12,6 @@
   "hiddenSteps": [
     {
       "displayName": "Eligibility"
-    },
-    {
-      "displayName": "Deliverables & Budget"
     }
   ],
   "customLogo": "/BCID_H_rgb_pos.png",
@@ -270,6 +267,126 @@
           "name": "quartech_inordertocontinuouslyimprovecommunications",
           "hidden": true,
           "techComment": "This is NEEDED to override default global json config, please leave this here."
+        }
+      ]
+    },
+    {
+      "name": "DeliverablesBudgetStep",
+      "displayName": "EFT Form",
+      "subsections": [
+        {
+          "name": "Deliverables & Budget",
+          "type": "SectionTitle",
+          "newLabel": "General Information"
+        },
+        {
+          "name": "Partial Budget",
+          "type": "SectionTitle",
+          "newLabel": "Financial Institution Information"
+        }
+      ],
+      "fields": [
+        {
+          "type": "customField",
+          "name": "isBusinessContactInfoSameAsBefore",
+          "label": "Is the Business contact information the same as before?",
+          "customComponent": {
+            "customElementTag": "dropdown-search",
+            "mappedValueKey": "inputvalue",
+            "customEventHandler": "handleIsBusinessContactInfoDropdownChangeHandler",
+            "customEventName": "onChangeDropdownValue",
+            "attributes": {
+              "options": "[\"Yes\",\"No\"]"
+            }
+          },
+          "required": true,
+          "reorderField": {
+            "position": "before",
+            "fieldName": "quartech_designatedregistrantname"
+          }
+        },
+        {
+          "name": "quartech_designatedregistrantname",
+          "label": "Recipient Name",
+          "required": true
+        },
+        {
+          "name": "quartech_suitenumberoptional",
+          "label": "Suite Number (optional)"
+        },
+        {
+          "name": "quartech_streetnumber",
+          "label": "Street Number",
+          "required": true
+        },
+        {
+          "name": "quartech_street",
+          "label": "Street",
+          "required": true
+        },
+        {
+          "name": "quartech_city2",
+          "label": "City/Town",
+          "required": true
+        },
+        {
+          "name": "quartech_provinceterritory",
+          "label": "Province/Territory",
+          "required": true
+        },
+        {
+          "name": "quartech_postalcode",
+          "label": "Postal Code",
+          "required": true
+        },
+        {
+          "name": "quartech_notificationemailaddress",
+          "label": "Notification E-mail Address",
+          "required": true
+        },
+        {
+          "name": "quartech_nameoffinancialinstitution",
+          "label": "Name of Financial Institution",
+          "required": true
+        },
+        {
+          "name": "quartech_branchnumber",
+          "label": "Branch No.",
+          "required": true,
+          "format": "number",
+          "maxLength": 5,
+          "validation": {
+            "type": "length",
+            "value": 5,
+            "comparison": "equalTo",
+            "postfix": "digits"
+          }
+        },
+        {
+          "name": "quartech_institutionnumber",
+          "label": "Institution No.",
+          "required": true,
+          "format": "number",
+          "maxLength": 3,
+          "validation": {
+            "type": "length",
+            "value": 3,
+            "comparison": "equalTo",
+            "postfix": "digits"
+          }
+        },
+        {
+          "name": "quartech_accountnumber",
+          "label": "Account No.",
+          "required": true,
+          "format": "number",
+          "maxLength": 13,
+          "validation": {
+            "type": "length",
+            "value": 13,
+            "comparison": "equalTo",
+            "postfix": "digits"
+          }
         }
       ]
     },

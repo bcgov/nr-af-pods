@@ -5,10 +5,11 @@ import { customElement, property, query } from 'lit/decorators.js';
 class DropdownSearch extends LitElement {
   @query('#selectElement') selectElement: HTMLSelectElement | undefined;
   @property({ type: String, reflect: true }) id: string = crypto.randomUUID();
-  @property({ type: Array }) options: string[] = [];
+  @property({ type: Array, reflect: true }) options: string[] = [];
   @property({ type: String }) selectedValue: string = '';
   @property({ type: String }) additionalTextBelowField: string = '';
   @property({ type: String }) fieldLabel: string = '';
+  @property({ type: String }) placeholder: string = 'Select an option';
 
   static styles = css`
     .dropdown-search {
@@ -52,6 +53,18 @@ class DropdownSearch extends LitElement {
       border-right: var(--size) solid transparent;
       border-top: var(--size) solid black;
       top: 55%;
+    }
+
+    .placeholder-option {
+      color: #999; /* Light gray */
+    }
+
+    select.placeholder {
+      color: #999; /* Light gray when placeholder is shown */
+    }
+
+    option {
+      color: #000; /* Ensure actual options show as black */
     }
   `;
 
@@ -106,6 +119,15 @@ class DropdownSearch extends LitElement {
                 return a.localeCompare(b); // Sort alphabetically
               })
               .map((option) => this.generateOption(option))}
+            <option
+              value=""
+              disabled
+              selected
+              hidden
+              class="placeholder-option"
+            >
+              ${this.placeholder}
+            </option>
           </select>
         </div>
         <div>

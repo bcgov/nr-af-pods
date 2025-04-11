@@ -66,6 +66,8 @@ POWERPOD.html = {
   moveTableRow,
   hideFieldRow,
   disableSingleLine,
+  addCustomField,
+  generatePlaceholderRowForCustomField,
 };
 
 export function configureCustomLogo(customLogo) {
@@ -861,6 +863,57 @@ export function addTextAboveField(fieldName, htmlContentToAdd) {
 
 export function addTextBelowField(fieldName, htmlContentToAdd) {
   addHtmlToField(fieldName, htmlContentToAdd, 'bottom');
+}
+
+export function generatePlaceholderRowForCustomField(name, label) {
+  const html = `
+      <tr>
+				<td colspan="1" rowspan="1" class="clearfix cell text form-control-cell"><div class="info"><label for="${name}" id="${name}_label" class="field-label">${label}</label><div class="validators"><span id="MaximumLengthValidator${name}" style="visibility:hidden;">*</span></div></div><div class="control"><input name="${name}" type="text" maxlength="160" id="${name}" class="text form-control " onchange="setIsDirty(this.id);" onkeypress="javascript:return LengthError(this, event);"></div></td>
+				<td class="cell zero-cell"></td>
+			</tr>
+  `;
+  return html;
+}
+
+export function addCustomField(
+  customFieldName,
+  customFieldLabel,
+  existingFieldName,
+  beforeOrAfter = 'before'
+) {
+  logger.info({
+    fn: addCustomField,
+    message: `addCustomField or addCustomField was specified, adding...`,
+    data: { customFieldName, customFieldLabel, existingFieldName, beforeOrAfter },
+  });
+
+  const tr = $(`#${existingFieldName}`).closest('tr');
+  if (!tr) return;
+
+  const htmlContentToAdd = generatePlaceholderRowForCustomField(
+    customFieldName,
+    customFieldLabel
+  );
+
+  if (beforeOrAfter === 'before') {
+    $(htmlContentToAdd).insertBefore(tr);
+    logger.info({
+      fn: addCustomField,
+      message: `Added customFieldName: ${customFieldName} before existingFieldName: ${existingFieldName}`
+    })
+  } else if (beforeOrAfter === 'after') {
+    $(htmlContentToAdd).insertAfter(tr);
+    logger.info({
+      fn: addCustomField,
+      message: `Added customFieldName: ${customFieldName} after existingFieldName: ${existingFieldName}`
+    })
+  }
+
+  logger.info({
+    fn: addCustomField,
+    message: `Successfully added custom field html for customFieldName: ${customFieldName}, customFieldLabel: ${customFieldLabel}, existingFieldName: ${existingFieldName}, beforeOrAfter: ${beforeOrAfter}`,
+    data: { tr, htmlContentToAdd },
+  });
 }
 
 export function addHtmlToField(

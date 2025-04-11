@@ -13,6 +13,8 @@ import {
   getFieldConfig,
 } from './fields.js';
 import {
+  addCustomField,
+  addHtmlToField,
   addTextAboveField,
   addTextBelowField,
   getControlValue,
@@ -928,7 +930,6 @@ export function setRequiredField(
   $(`#${fieldName}_label`).parent().addClass('required');
   // @ts-ignore
   $(`#${fieldName}`).attr('required', true);
-
 
   switch (elemType) {
     case HtmlElementType.FileInput:
