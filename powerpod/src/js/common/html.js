@@ -823,7 +823,8 @@ export function addHtmlToSubsection(
 export function addHtmlToSection(
   tableDataName,
   htmlContentToAdd,
-  topOrBottom = 'top'
+  topOrBottom = 'top',
+  type
 ) {
   const sectionTable = document.querySelector(
     `div[data-name='${tableDataName}'] > .tab-column > div`
@@ -836,7 +837,16 @@ export function addHtmlToSection(
     });
     return;
   }
-  const divElement = document.createElement('div');
+  let divElement = document.createElement('div');
+
+  if (type === 'customField') {
+    // @ts-ignore
+    divElement = document.createElement('fieldset');
+    divElement.setAttribute(
+      'style',
+      'margin-bottom:0px!important;margin-top:20px'
+    );
+  }
   // const trElement = document.createElement('tr');
 
   // const tdElement = document.createElement('td');
@@ -879,41 +889,64 @@ export function addCustomField(
   customFieldName,
   customFieldLabel,
   existingFieldName,
+  sectionDataName,
   beforeOrAfter = 'before'
 ) {
   logger.info({
     fn: addCustomField,
     message: `addCustomField or addCustomField was specified, adding...`,
-    data: { customFieldName, customFieldLabel, existingFieldName, beforeOrAfter },
+    data: {
+      customFieldName,
+      customFieldLabel,
+      existingFieldName,
+      beforeOrAfter,
+    },
   });
-
-  const tr = $(`#${existingFieldName}`).closest('tr');
-  if (!tr) return;
-
   const htmlContentToAdd = generatePlaceholderRowForCustomField(
     customFieldName,
     customFieldLabel
   );
+  if (existingFieldName) {
+    const tr = $(`#${existingFieldName}`).closest('tr');
+    if (!tr) return;
 
-  if (beforeOrAfter === 'before') {
-    $(htmlContentToAdd).insertBefore(tr);
+    if (beforeOrAfter === 'before') {
+      $(htmlContentToAdd).insertBefore(tr);
+      logger.info({
+        fn: addCustomField,
+        message: `Added customFieldName: ${customFieldName} before existingFieldName: ${existingFieldName}`,
+      });
+    } else if (beforeOrAfter === 'after') {
+      $(htmlContentToAdd).insertAfter(tr);
+      logger.info({
+        fn: addCustomField,
+        message: `Added customFieldName: ${customFieldName} after existingFieldName: ${existingFieldName}`,
+      });
+    }
+
     logger.info({
       fn: addCustomField,
-      message: `Added customFieldName: ${customFieldName} before existingFieldName: ${existingFieldName}`
-    })
-  } else if (beforeOrAfter === 'after') {
-    $(htmlContentToAdd).insertAfter(tr);
+      message: `Successfully added custom field html for customFieldName: ${customFieldName}, customFieldLabel: ${customFieldLabel}, existingFieldName: ${existingFieldName}, beforeOrAfter: ${beforeOrAfter}`,
+      data: { tr, htmlContentToAdd },
+    });
+  } else if (sectionDataName) {
+    addHtmlToSection(
+      sectionDataName,
+      `
+        <table role="presentation" class="section">
+          <tbody>
+            ${htmlContentToAdd}
+          </tbody>
+        </table>
+      `,
+      beforeOrAfter === 'before' ? 'top' : 'bottom',
+      'customField'
+    );
     logger.info({
       fn: addCustomField,
-      message: `Added customFieldName: ${customFieldName} after existingFieldName: ${existingFieldName}`
-    })
+      message: `adding customField to section: ${sectionDataName}, customFieldName: ${customFieldName}`,
+    });
   }
-
-  logger.info({
-    fn: addCustomField,
-    message: `Successfully added custom field html for customFieldName: ${customFieldName}, customFieldLabel: ${customFieldLabel}, existingFieldName: ${existingFieldName}, beforeOrAfter: ${beforeOrAfter}`,
-    data: { tr, htmlContentToAdd },
-  });
 }
 
 export function addHtmlToField(

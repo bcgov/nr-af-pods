@@ -472,16 +472,23 @@ export function validateRequiredField({
   // }
 
   let validationErrorHtml = '';
-  const value = getControlValue({
-    controlId: fieldName,
-    raw: true,
-  });
 
   let fieldConfig;
   // @ts-ignore
   if (POWERPOD.state?.fields?.[fieldName]) {
     // @ts-ignore
     fieldConfig = POWERPOD.state?.fields?.[fieldName];
+  }
+
+  let value = null;
+
+  if (fieldConfig.type === 'customField') {
+    value = fieldConfig.value;
+  } else {
+    value = getControlValue({
+      controlId: fieldName,
+      raw: true,
+    });
   }
 
   logger.info({

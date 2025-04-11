@@ -1,5 +1,5 @@
 {
-  "version": "1.2.2",
+  "version": "1.2.3",
   "tags": [
     "Application",
     "StaffPortal",
@@ -272,6 +272,7 @@
     },
     {
       "name": "DeliverablesBudgetStep",
+      "dataName": "tab_Deliverables_Budget",
       "displayName": "EFT Form",
       "subsections": [
         {
@@ -302,7 +303,7 @@
           "required": true,
           "reorderField": {
             "position": "before",
-            "fieldName": "quartech_designatedregistrantname"
+            "sectionDataName": "tab_Deliverables_Budget"
           }
         },
         {

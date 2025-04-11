@@ -192,7 +192,7 @@ export function getFieldsBySectionApplication(stepName, forceRefresh = false) {
       s.type &&
       s.type === 'customField' &&
       s.reorderField.position &&
-      s.reorderField.fieldName
+      (s.reorderField.fieldName || s.reorderField.sectionDataName)
     ) {
       logger.info({
         fn: getFieldsBySectionApplication,
@@ -202,6 +202,7 @@ export function getFieldsBySectionApplication(stepName, forceRefresh = false) {
         s.name,
         s.label,
         s.reorderField.fieldName,
+        s.reorderField.sectionDataName,
         s.reorderField.position
       );
     }
