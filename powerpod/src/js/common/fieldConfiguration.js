@@ -21,6 +21,7 @@ import {
   getFieldLabel,
   getOriginalMsosElement,
   hideFieldRow,
+  hideNumberInputArrowsById,
   moveTableRow,
   observeChanges,
   onDocumentReadyState,
@@ -100,6 +101,7 @@ export function configureField(field) {
     removeDropdownOptionsValues,
     hideOrShowAdditionalTextWithFieldVisibility,
     reorderField = {},
+    hideNumberInputArrows,
   } = field;
   let { elementType } = field;
   logger.info({
@@ -249,6 +251,10 @@ export function configureField(field) {
         'oninput',
         'this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null'
       );
+    }
+
+    if (hideNumberInputArrows) {
+      hideNumberInputArrowsById(name);
     }
   } else if (format === 'cra') {
     maskInput(name, FieldMaskType.CRA);

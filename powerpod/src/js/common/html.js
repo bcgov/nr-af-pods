@@ -68,6 +68,7 @@ POWERPOD.html = {
   disableSingleLine,
   addCustomField,
   generatePlaceholderRowForCustomField,
+  hideNumberInputArrowsById,
 };
 
 export function configureCustomLogo(customLogo) {
@@ -1762,4 +1763,19 @@ function normalizeTableCells() {
       td.setAttribute('rowspan', '1');
     }
   });
+}
+
+export function hideNumberInputArrowsById(inputId) {
+  const style = document.createElement('style');
+  style.textContent = `
+    #${inputId}::-webkit-inner-spin-button,
+    #${inputId}::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    #${inputId} {
+      -moz-appearance: textfield;
+    }
+  `;
+  document.head.appendChild(style);
 }

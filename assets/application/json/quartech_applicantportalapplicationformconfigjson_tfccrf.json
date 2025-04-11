@@ -1,5 +1,5 @@
 {
-  "version": "1.2.3",
+  "version": "1.2.4",
   "tags": [
     "Application",
     "StaffPortal",
@@ -355,6 +355,7 @@
           "label": "Branch No.",
           "required": true,
           "format": "number",
+          "hideNumberInputArrows": true,
           "maxLength": 5,
           "validation": {
             "type": "length",
@@ -368,6 +369,7 @@
           "label": "Institution No.",
           "required": true,
           "format": "number",
+          "hideNumberInputArrows": true,
           "maxLength": 3,
           "validation": {
             "type": "length",
@@ -381,6 +383,7 @@
           "label": "Account No.",
           "required": true,
           "format": "number",
+          "hideNumberInputArrows": true,
           "maxLength": 13,
           "validation": {
             "type": "length",
