@@ -69,6 +69,7 @@ POWERPOD.html = {
   addCustomField,
   generatePlaceholderRowForCustomField,
   hideNumberInputArrowsById,
+  isSignatureFilled,
 };
 
 export function configureCustomLogo(customLogo) {
@@ -1778,4 +1779,40 @@ export function hideNumberInputArrowsById(inputId) {
     }
   `;
   document.head.appendChild(style);
+}
+
+export function isSignatureFilled() {
+  const canvas = document.querySelector('.drawCanvas');
+
+  if (!canvas) {
+    logger.error({
+      fn: isSignatureFilled,
+      message: `Could not find signature canvas`,
+    });
+    return;
+  }
+  // @ts-ignore
+  const ctx = canvas.getContext('2d');
+
+  if (!ctx || !canvas.width || !canvas.height) {
+    logger.error({
+      fn: isSignatureFilled,
+      message: `Could not get context, canvas width or height`,
+      data: { ctx, canvas },
+    });
+  }
+  // @ts-ignore
+  const { width, height } = canvas;
+
+  // Get pixel data for entire canvas
+  const imageData = ctx.getImageData(0, 0, width, height).data;
+
+  // Check if there's any pixel that's not fully transparent
+  for (let i = 0; i < imageData.length; i++) {
+    if (imageData[i] !== 0) {
+      return true; // Signature exists
+    }
+  }
+
+  return false; // Canvas is empty
 }

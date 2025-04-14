@@ -43,6 +43,7 @@ import {
   setInputMaxLength,
   setInputMaxWords,
   validateStepField,
+  validateStepFields,
 } from './fieldValidation.js';
 import { setFieldVisibility } from './fieldConditionalLogic.js';
 import { useScript } from './scripts.js';
@@ -738,6 +739,26 @@ export function setFieldObserver(name, format = '') {
     message: `Watching for value changes on name: ${name}, elementType: ${elementType}, format: ${format}`,
   });
   switch (elementType) {
+    case HtmlElementType.SignatureControl:
+      const canvas = document.querySelector('.drawCanvas');
+      if (!canvas) {
+        logger.error({
+          fn: setFieldObserver,
+          message: `Could not find signature canvas`,
+        });
+        return;
+      }
+      const handler = () => {
+        validateStepField(name);
+        setDirtyField(name);
+      };
+      // Use multiple events to cover both mouse and touch input
+      canvas.addEventListener('mousedown', handler);
+      canvas.addEventListener('mouseup', handler);
+      canvas.addEventListener('mouseenter', handler);
+      canvas.addEventListener('mouseleave', handler);
+      canvas.addEventListener('touchstart', handler);
+      canvas.addEventListener('pointerdown', handler);
     case HtmlElementType.FileInput:
       const textareaField = $(`#${name}`);
       const attachFileField = $(`input[id=${name}_AttachFile]`);

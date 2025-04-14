@@ -1,11 +1,22 @@
-import { configureFields, setRequiredField } from '../../common/fieldConfiguration.js';
+import {
+  configureFields,
+  setRequiredField,
+} from '../../common/fieldConfiguration.js';
+import {
+  validateStepField,
+  validateStepFields,
+} from '../../common/fieldValidation.js';
 import {
   addTextAboveField,
   hideFieldRow,
   hideFieldsAndSections,
 } from '../../common/html.js';
+import { Logger } from '../../common/logger.js';
 import { getProgramAbbreviation } from '../../common/program.ts';
 import { hidePageDescription } from '../../common/sections.js';
+import store from '../../store/index.js';
+
+const logger = Logger('application/steps/declarationConsent');
 
 export function customizeDeclarationConsentStep(programData) {
   configureFields();
@@ -22,6 +33,7 @@ export function customizeDeclarationConsentStep(programData) {
     hideFieldRow({
       fieldName: 'quartech_consenttotestimonials',
     });
+
     // addTextAboveField('quartech_consenttotestimonials', 'Testimonials may be used in program reporting, promotional materials, or shared publicly if funding is awarded. Do you consent to providing a written testimonial (with 1 to 3 high-quality photos, if possible) once your project has been completed?')
   }
   if (programAbbreviation !== 'TFCR') {
@@ -32,6 +44,67 @@ export function customizeDeclarationConsentStep(programData) {
 
   if (programAbbreviation === 'TFCCRF') {
     setRequiredField('quartech_signature');
+    validateStepFields();
+    styleSignatureDivs();
+
+    const confirmButton = document.querySelector('.confirmButton');
+
+    if (confirmButton) {
+      confirmButton.onclick = function () {
+        store.dispatch('addFieldData', {
+          name: 'quartech_signature',
+          signatureSaved: true,
+        });
+
+        validateStepField('quartech_signature');
+      };
+    }
+  }
+}
+
+function styleSignatureDivs() {
+  const divs = document.querySelectorAll(
+    '[id^="SignatureControl"][id$="_outer"]'
+  );
+  if (divs.length === 0) {
+    logger.warn({
+      fn: styleSignatureDivs,
+      message: `No matching SignatureControl divs found.`,
+    });
+    return;
+  }
+
+  divs.forEach((div) => {
+    div.style.border = '1px solid black';
+    div.style.maxWidth = '500px';
+  });
+
+  const confirmButton = document.querySelector('.confirmButton');
+  const confirmButtonText = confirmButton?.querySelector('.confirmButtonTick');
+
+  if (confirmButton && confirmButtonText) {
+    // Set button text
+    confirmButtonText.textContent = 'Save signature';
+
+    // Style the container div
+    confirmButton.style.width = '175px';
+    confirmButton.style.borderRadius = '0';
+    confirmButton.style.display = 'inline-flex';
+    confirmButton.style.justifyContent = 'center';
+    confirmButton.style.alignItems = 'center';
+    confirmButton.style.padding = '8px 12px';
+    confirmButton.style.backgroundColor = '#3E9327';
+    confirmButton.style.color = '#FFFFFF';
+    confirmButton.style.marginRight = '10px';
+
+    const style = document.createElement('style');
+    style.textContent = `
+      .signatureControl.editmode .inkControl .inkControlCommandBar .confirmButtonTick::before {
+        content: none !important;
+        display: none !important;
+      }
+    `;
+    document.head.appendChild(style);
   }
 }
 

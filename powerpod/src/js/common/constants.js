@@ -49,6 +49,7 @@ export const HtmlElementType = {
   Checkbox: 'Checkbox',
   NotesControl: 'NotesControl',
   Unknown: 'Unknown',
+  SignatureControl: 'SignatureControl',
 };
 
 export const FormStep = {

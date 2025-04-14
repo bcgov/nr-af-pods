@@ -1,5 +1,5 @@
 {
-  "version": "1.2.4",
+  "version": "1.2.5",
   "tags": [
     "Application",
     "StaffPortal",
@@ -467,6 +467,10 @@
       "name": "DeclarationAndConsentStep",
       "fields": [
         {
+          "name": "quartech_declarationandconsent",
+          "required": true
+        },
+        {
           "name": "quartech_consenttoallowsiteinspectionsoraudits",
           "required": true
         },
@@ -476,7 +480,11 @@
         },
         {
           "name": "quartech_signature",
-          "label": "Applicant signature"
+          "label": "Applicant signature",
+          "elementType": "SignatureControl",
+          "validation": {
+            "type": "signature"
+          }
         }
       ]
     },

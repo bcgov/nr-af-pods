@@ -27,6 +27,7 @@ import {
   // @ts-ignore
   // @ts-ignore
   getOriginalMsosElement,
+  isSignatureFilled,
 } from './html.js';
 import { Logger } from './logger.js';
 import { displayOrHideAdministrationCostsNoticeForKTTP } from './onChangeHandlers.js';
@@ -53,6 +54,13 @@ export function validateRequiredFields() {
 // @ts-ignore
 export function validateStepField(fieldName) {
   const fieldConfig = getFieldConfig(fieldName);
+  logger.info({
+    // @ts-ignore
+    fn: validateStepField,
+    message: `validateStepField called for fieldName: ${fieldName}`,
+    // @ts-ignore
+    data: { fieldConfig },
+  });
   if (!fieldConfig) {
     logger.error({
       // @ts-ignore
@@ -186,6 +194,23 @@ export function validateStepField(fieldName) {
         // @ts-ignore
         fn: validateStepField,
         message: 'Done generating length validation error html...',
+      });
+    }
+  }
+  if (validation?.type === 'signature') {
+    const errorMsg = validateSignatureField(name);
+    logger.info({
+      // @ts-ignore
+      fn: validateStepField,
+      message: 'Generate signature validation error html...',
+    });
+    // Display instant feedback on field input
+    if (errorMsg && errorMsg.length > 0) {
+      errorMsgs.push(errorMsg);
+      logger.info({
+        // @ts-ignore
+        fn: validateStepField,
+        message: 'Done generating signature validation error html...',
       });
     }
   }
@@ -327,9 +352,13 @@ export function validateStepFields(stepName, returnString) {
     fn: validateStepFields,
     message: 'loop through fields to get validation errors',
     // @ts-ignore
-    data: { validationErrorHtml },
+    data: { validationErrorHtml, fields },
   });
 
+  // let fieldKeys = Object.keys(fields);
+  // fieldKeys.forEach(key => {
+  //   validateStepField(fields[key].name)
+  // })
   for (let i = 0; i < fields.length; i++) {
     validateStepField(fields[i].name);
   }
@@ -431,7 +460,10 @@ export function validateStepFields(stepName, returnString) {
 }
 
 // @ts-ignore
-export function isValueEmpty(value) {
+export function isValueEmpty(value, elemType) {
+  if (elemType === HtmlElementType.Checkbox && value === false) {
+    return true;
+  }
   // Check if the value is undefined
   if (value === undefined) {
     return true;
@@ -503,7 +535,7 @@ export function validateRequiredField({
   if (fieldConfig && fieldConfig.checkForEmptyValues) {
     isEmpty = checkForEmptyValues(value);
   } else {
-    isEmpty = isValueEmpty(value);
+    isEmpty = isValueEmpty(value, elemType);
   }
 
   if (isEmpty) {
@@ -1136,4 +1168,20 @@ export function setFieldReadOnly(fieldName) {
     window.focus();
   });
   $(`#${fieldName}`).attr('style', 'background-color: #eee !important');
+}
+
+// @ts-ignore
+export function validateSignatureField(name) {
+  const sigFilled = isSignatureFilled();
+  const { signatureSaved } = getFieldConfig(name);
+
+  logger.info({
+    fn: validateSignatureField,
+    message: `validateSignatureField for name: ${name}, sigFilled: ${sigFilled}, signatureSaved: ${signatureSaved}`,
+  });
+  if (!sigFilled || !signatureSaved || signatureSaved == undefined) {
+    return 'Please ensure you have filled out & saved your signature.';
+  } else {
+    return '';
+  }
 }
