@@ -49,6 +49,13 @@ export function customizeProjectStep(programData) {
   }
 
   if (programAbbreviation === 'TFCCRF') {
+    const style = document.createElement('style');
+    style.textContent = `
+      a.btn-primary, button.btn-primary {
+        color: #fff !important;
+      }
+    `;
+    document.head.appendChild(style);
     // customizeProjectStepForTFCCRF();
     // disableSingleLine('subgrid_ProjectStep_Import_TF_Inventory');
     // disableSingleLine('subgrid_ProjectStep_New_TF_Inventory');
