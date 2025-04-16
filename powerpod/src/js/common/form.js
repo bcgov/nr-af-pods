@@ -411,6 +411,17 @@ export function generateFormJson(setFieldOrder = false) {
         return;
       }
 
+      if (controlId?.includes('subgrid_')) {
+        logger.info({
+          fn: generateFormJson,
+          message: `Skipping subgrid, controlId: ${controlId}`,
+          data: {
+            tr,
+          },
+        });
+        return;
+      }
+
       let questionText = getInfoValue(tr);
 
       logger.info({
