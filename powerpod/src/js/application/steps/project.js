@@ -59,8 +59,41 @@ export function customizeProjectStep(programData) {
     // customizeProjectStepForTFCCRF();
     // disableSingleLine('subgrid_ProjectStep_Import_TF_Inventory');
     // disableSingleLine('subgrid_ProjectStep_New_TF_Inventory');
+
+    ensureHeaderSingleLineForTFCCRF('subgrid_ProjectStep_Import_TF_Inventory');
+    ensureHeaderSingleLineForTFCCRF('subgrid_ProjectStep_New_TF_Inventory');
   }
 }
+
+function ensureHeaderSingleLineForTFCCRF(subgridName) {
+  const container = document.querySelector(`#${subgridName}`);
+  if (!container) return;
+
+  const thElements = container.querySelectorAll('tr > th');
+
+  thElements.forEach((th) => {
+    const anchor = th.querySelector('a');
+    if (anchor) {
+      // Prevent wrapping
+      anchor.style.whiteSpace = 'nowrap';
+      anchor.style.display = 'inline-block';
+
+      // Temporarily append to measure actual size
+      const clone = anchor.cloneNode(true);
+      clone.style.visibility = 'hidden';
+      clone.style.position = 'absolute';
+      clone.style.width = 'auto';
+      clone.style.maxWidth = 'none';
+
+      document.body.appendChild(clone);
+      const width = clone.offsetWidth + 24; // add buffer/padding
+      document.body.removeChild(clone);
+
+      th.style.width = `${width}px`;
+    }
+  });
+}
+
 
 function customizeProjectStepForTFCCRF() {
   const originalSource = getControlValue({
