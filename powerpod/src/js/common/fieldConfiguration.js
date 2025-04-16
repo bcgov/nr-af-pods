@@ -257,6 +257,24 @@ export function configureField(field) {
     if (hideNumberInputArrows) {
       hideNumberInputArrowsById(name);
     }
+  } else if (format === 'numbersOnly') {
+    const input = document.getElementById(name);
+    if (!input) {
+      logger.error({
+        fn: configureField,
+        message: `could not find input element for numbersOnly config`
+      })
+      return
+    }
+    input.addEventListener('input', function () {
+      this.value = this.value.replace(/[^0-9]/g, '');
+    });
+    input.addEventListener('paste', function (e) {
+      e.preventDefault();
+      const pasted = (e.clipboardData || window.clipboardData).getData('text');
+      const numbersOnly = pasted.replace(/[^0-9]/g, '');
+      document.execCommand('insertText', false, numbersOnly);
+    });
   } else if (format === 'cra') {
     maskInput(name, FieldMaskType.CRA);
   } else if (format === 'phoneNumber') {

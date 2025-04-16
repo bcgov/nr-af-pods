@@ -1,5 +1,5 @@
 {
-  "version": "1.2.6",
+  "version": "1.2.8",
   "tags": [
     "Application",
     "StaffPortal",
@@ -351,12 +351,12 @@
           "required": true
         },
         {
-          "name": "quartech_branchnumber",
+          "name": "quartech_branchno",
           "label": "Branch No.",
           "required": true,
-          "format": "number",
           "hideNumberInputArrows": true,
           "maxLength": 5,
+          "format": "numbersOnly",
           "validation": {
             "type": "length",
             "value": 5,
@@ -365,12 +365,12 @@
           }
         },
         {
-          "name": "quartech_institutionnumber",
+          "name": "quartech_institutionno",
           "label": "Institution No.",
           "required": true,
-          "format": "number",
           "hideNumberInputArrows": true,
           "maxLength": 3,
+          "format": "numbersOnly",
           "validation": {
             "type": "length",
             "value": 3,
@@ -382,13 +382,13 @@
           "name": "quartech_accountnumber",
           "label": "Account No.",
           "required": true,
-          "format": "number",
           "hideNumberInputArrows": true,
           "maxLength": 13,
+          "format": "numbersOnly",
           "validation": {
             "type": "length",
             "value": 13,
-            "comparison": "equalTo",
+            "comparison": "lessThanOrEqualTo",
             "postfix": "digits"
           }
         }
