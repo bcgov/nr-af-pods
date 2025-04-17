@@ -1,5 +1,5 @@
 {
-  "version": "1.2.9",
+  "version": "1.3.0",
   "tags": [
     "Application",
     "StaffPortal",
@@ -141,36 +141,6 @@
           "required": true,
           "additionalTextAboveField": "<p id='TFCCRF_dateCropsPlantedInstructions'>Each Fruit Tree (excluding Pollinizers) must have been permanently planted, grafted, or budded before November 30, 2024. </p>",
           "hideOrShowAdditionalTextWithFieldVisibility": true,
-          "visibleIf": {
-            "comparison": "or",
-            "comparisons": [
-              {
-                "fieldName": "quartech_originalsource",
-                "selectedValueIn": [255550000, 255550002],
-                "techComment": "Import option NOT selected"
-              },
-              {
-                "comparison": "and",
-                "comparisons": [
-                  {
-                    "fieldName": "quartech_originalsource",
-                    "selectedValue": 255550001,
-                    "techComment": "Import option selected"
-                  },
-                  {
-                    "fieldName": "quartech_reportnewtreefruitinventory",
-                    "selectedValue": 255550000,
-                    "techComment": "YES value"
-                  }
-                ]
-              }
-            ]
-          }
-        },
-        {
-          "name": "quartech_measurementsystemutilized",
-          "label": "Would you provide row spacing and tree spacing information by metric (meters) or imperial (feet)?",
-          "required": true,
           "visibleIf": {
             "comparison": "or",
             "comparisons": [

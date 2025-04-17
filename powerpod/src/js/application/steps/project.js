@@ -62,6 +62,30 @@ export function customizeProjectStep(programData) {
 
     ensureHeaderSingleLineForTFCCRF('subgrid_ProjectStep_Import_TF_Inventory');
     ensureHeaderSingleLineForTFCCRF('subgrid_ProjectStep_New_TF_Inventory');
+
+    addTextBelowNewTFInventoryLabel();
+  }
+}
+
+function addTextBelowNewTFInventoryLabel() {
+  const heading = document.querySelector(
+    'h3.info.form-subgrid-heading > label[for="subgrid_ProjectStep_New_TF_Inventory"]'
+  )?.parentElement;
+
+  if (heading) {
+    const blankParagraph = document.createElement('br');
+
+    const paragraph1 = document.createElement('p');
+    paragraph1.textContent =
+      'Provide row spacing and tree spacing measurements in feet.';
+
+    const paragraph2 = document.createElement('p');
+    paragraph2.textContent =
+      'You will be able to view the calculated acreage for each line item on the printable copy once your application has been submitted.';
+
+    heading.insertAdjacentElement('afterend', blankParagraph);
+    blankParagraph.insertAdjacentElement('afterend', paragraph1);
+    paragraph1.insertAdjacentElement('afterend', paragraph2);
   }
 }
 
@@ -93,7 +117,6 @@ function ensureHeaderSingleLineForTFCCRF(subgridName) {
     }
   });
 }
-
 
 function customizeProjectStepForTFCCRF() {
   const originalSource = getControlValue({
