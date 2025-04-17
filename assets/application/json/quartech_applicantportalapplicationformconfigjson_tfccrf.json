@@ -1,5 +1,5 @@
 {
-  "version": "1.2.8",
+  "version": "1.2.9",
   "tags": [
     "Application",
     "StaffPortal",
@@ -55,7 +55,11 @@
           "name": "quartech_taxreturnnotrequired",
           "label": "Is an applicant not required to file farm income tax, and can provide Acceptable Documentation that demonstrates the production of over 2.47 Eligible Acre and the sale of Tree Fruit.",
           "required": true,
-          "onChangeHandler": "checkAndSetTFCCRFEligbilityNotice"
+          "onChangeHandler": "checkAndSetTFCCRFEligbilityNotice",
+          "visibleIf": {
+            "fieldName": "quartech_doyoufilefarmincometaxundertaxactinbc",
+            "selectedValue": 255550001
+          }
         },
         {
           "name": "quartech_areyouanownerorlesseeoftheland",

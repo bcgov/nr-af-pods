@@ -267,7 +267,8 @@ export function checkAndSetTFCCRFEligbilityNotice() {
     existingTreeFruit === NO_VALUE ||
     treeFruitDensityEligibility === NO_VALUE ||
     taxableEntity === NO_VALUE ||
-    fileFarmIncomeTaxUnderTaxActInBC === NO_VALUE ||
+    // fileFarmIncomeTaxUnderTaxActInBC === NO_VALUE ||
+    taxReturnNotRequired === NO_VALUE ||
     ownerOrLesseeOfTheLand === NO_VALUE ||
     notResearchStationOrGovernmentFundedAgency === NO_VALUE;
 
@@ -276,6 +277,7 @@ export function checkAndSetTFCCRFEligbilityNotice() {
     treeFruitDensityEligibility === '' ||
     taxableEntity === '' ||
     fileFarmIncomeTaxUnderTaxActInBC === '' ||
+    taxReturnNotRequired === '' ||
     ownerOrLesseeOfTheLand === '' ||
     notResearchStationOrGovernmentFundedAgency === '';
 
@@ -284,14 +286,17 @@ export function checkAndSetTFCCRFEligbilityNotice() {
     treeFruitDensityEligibility === '' &&
     taxableEntity === '' &&
     fileFarmIncomeTaxUnderTaxActInBC === '' &&
+    taxReturnNotRequired === '' &&
     ownerOrLesseeOfTheLand === '' &&
     notResearchStationOrGovernmentFundedAgency === '';
 
   const areAllValuesYes =
     existingTreeFruit === YES_VALUE &&
-    treeFruitDensityEligibility === YES_VALUE && 
+    treeFruitDensityEligibility === YES_VALUE &&
     taxableEntity === YES_VALUE &&
-    fileFarmIncomeTaxUnderTaxActInBC === YES_VALUE &&
+    (fileFarmIncomeTaxUnderTaxActInBC === YES_VALUE ||
+      (fileFarmIncomeTaxUnderTaxActInBC === NO_VALUE &&
+        taxReturnNotRequired === YES_VALUE)) &&
     ownerOrLesseeOfTheLand === YES_VALUE &&
     notResearchStationOrGovernmentFundedAgency === YES_VALUE;
 
