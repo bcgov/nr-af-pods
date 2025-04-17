@@ -1,6 +1,5 @@
 import { addDocumentsStepText } from '../../common/documents.ts';
 import { getApplicationData } from '../../common/fetch.js';
-import { setFieldVisibility } from '../../common/fieldConditionalLogic.js';
 import {
   configureFields,
   setRequiredField,
@@ -42,12 +41,16 @@ export function customizeDocumentsStep() {
 }
 
 async function customizeDocumentsStepForTFCCRF() {
+  logger.info({
+    fn: customizeDocumentsStepForTFCCRF,
+    message: `Start customizing documents step for TFCCRF`,
+  });
   const formId = getFormId();
   const applicationDataRes = await getApplicationData({ id: formId });
 
   if (!applicationDataRes?.data?.value?.[0]) {
     logger.error({
-      fn: customizeDocumentsStep,
+      fn: customizeDocumentsStepForTFCCRF,
       message: `Could not get application data result to determine whether individual or business`,
     });
   }
@@ -59,7 +62,7 @@ async function customizeDocumentsStepForTFCCRF() {
   } = applicationDataRes?.data?.value?.[0];
 
   logger.info({
-    fn: customizeDocumentsStep,
+    fn: customizeDocumentsStepForTFCCRF,
     message: `Found application value quartech_originalsource: ${quartech_originalsource}`,
   });
 
@@ -76,7 +79,7 @@ async function customizeDocumentsStepForTFCCRF() {
   });
 
   // if own or lease land is ('I lease the land', 'Both')
-  if ([255550000, 255550003].includes(quartech_ownorleaseland)) {
+  if ([255550001, 255550003].includes(quartech_ownorleaseland)) {
     showFieldRow('quartech_propertyassessmentnotice');
     showFieldRow('quartech_leaseagreement');
   } else {
@@ -85,7 +88,7 @@ async function customizeDocumentsStepForTFCCRF() {
   }
 
   logger.info({
-    fn: customizeDocumentsStep,
+    fn: customizeDocumentsStepForTFCCRF,
     message: `Found application value quartech_reportnewtreefruitinventory: ${quartech_reportnewtreefruitinventory}`,
   });
   // Mandatory if quartech_originalsource != Import OR quartech_reportnewtreefruitinventory = YES
@@ -94,7 +97,7 @@ async function customizeDocumentsStepForTFCCRF() {
     quartech_reportnewtreefruitinventory === 255550000
   ) {
     logger.info({
-      fn: customizeDocumentsStep,
+      fn: customizeDocumentsStepForTFCCRF,
       message: `Found application value quartech_reportnewtreefruitinventory: ${quartech_reportnewtreefruitinventory}, setting quartech_uploadasitemap to REQUIRED`,
     });
     // showFieldRow('quartech_uploadasitemap');
@@ -108,7 +111,7 @@ async function customizeDocumentsStepForTFCCRF() {
   } else {
     // hideFieldRow({ fieldName: 'quartech_uploadasitemap' });
     logger.info({
-      fn: customizeDocumentsStep,
+      fn: customizeDocumentsStepForTFCCRF,
       message: `Found application value quartech_reportnewtreefruitinventory: ${quartech_reportnewtreefruitinventory}, setting quartech_uploadasitemap to NOT required`,
     });
     store.dispatch('addFieldData', {
