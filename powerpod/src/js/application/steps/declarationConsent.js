@@ -64,31 +64,43 @@ export function customizeDeclarationConsentStep(programData) {
   }
 }
 
-function styleSignatureDivs() {
+function styleSignatureDivs(retries = 10, delay = 500) {
   const divs = document.querySelectorAll(
     '[id^="SignatureControl"][id$="_outer"]'
   );
+
+  if (divs.length === 0 && retries > 0) {
+    setTimeout(() => styleSignatureDivs(retries - 1, delay), delay);
+    return;
+  }
+
   if (divs.length === 0) {
-    logger.warn({
-      fn: styleSignatureDivs,
-      message: `No matching SignatureControl divs found.`,
-    });
+    console.warn('No matching SignatureControl divs found after retrying.');
     return;
   }
 
   divs.forEach((div) => {
-    div.style.border = '1px solid black';
-    div.style.maxWidth = '500px';
+    if (div?.style) {
+      div.style.border = '1px solid black';
+      div.style.maxWidth = '500px';
+    }
   });
 
   const confirmButton = document.querySelector('.confirmButton');
   const confirmButtonText = confirmButton?.querySelector('.confirmButtonTick');
 
-  if (confirmButton && confirmButtonText) {
-    // Set button text
+  if (!confirmButton || !confirmButtonText) {
+    if (retries > 0) {
+      setTimeout(() => styleSignatureDivs(retries - 1, delay), delay);
+    } else {
+      console.warn('Confirm button or text not found after retrying.');
+    }
+    return;
+  }
+
+  try {
     confirmButtonText.textContent = 'Save signature';
 
-    // Style the container div
     confirmButton.style.width = '175px';
     confirmButton.style.borderRadius = '0';
     confirmButton.style.display = 'inline-flex';
@@ -107,6 +119,8 @@ function styleSignatureDivs() {
       }
     `;
     document.head.appendChild(style);
+  } catch (e) {
+    console.error('Error styling confirm button:', e);
   }
 }
 

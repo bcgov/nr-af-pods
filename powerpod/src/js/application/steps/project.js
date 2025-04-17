@@ -60,8 +60,9 @@ export function customizeProjectStep(programData) {
     // disableSingleLine('subgrid_ProjectStep_Import_TF_Inventory');
     // disableSingleLine('subgrid_ProjectStep_New_TF_Inventory');
 
-    ensureHeaderSingleLineForTFCCRF('subgrid_ProjectStep_Import_TF_Inventory');
-    ensureHeaderSingleLineForTFCCRF('subgrid_ProjectStep_New_TF_Inventory');
+    // ensureHeaderSingleLineForTFCCRF('subgrid_ProjectStep_Import_TF_Inventory');
+    // ensureHeaderSingleLineForTFCCRF('subgrid_ProjectStep_New_TF_Inventory');
+    // setTFInventoryColumnWidthsByData();
 
     addTextBelowNewTFInventoryLabel();
   }
@@ -114,6 +115,46 @@ function ensureHeaderSingleLineForTFCCRF(subgridName) {
       document.body.removeChild(clone);
 
       th.style.width = `${width}px`;
+    }
+  });
+}
+
+function setTFInventoryColumnWidthsByData() {
+  const dataFocusedWidths = [
+    '16%', // PID
+    '10%', // Field Location
+    '14%', // Own or Lease the Land
+    '7%', // Crop
+    '8%', // Variety
+    '6%', // Number of Trees
+    '6%', // Tree Spacing (ft)
+    '6%', // Row Spacing (ft)
+    '8%', // Planting Date
+    '12%', // Created On
+    '3%', // Actions
+  ];
+
+  const container = document.querySelector(
+    '#subgrid_ProjectStep_Import_TF_Inventory'
+  );
+  if (!container) {
+    console.warn('TF Inventory subgrid not found.');
+    return;
+  }
+
+  const headerRow = container.querySelector('tr');
+  if (!headerRow) {
+    console.warn('No header row found in subgrid.');
+    return;
+  }
+
+  const thElements = headerRow.querySelectorAll('th');
+
+  thElements.forEach((th, index) => {
+    if (dataFocusedWidths[index]) {
+      th.style.width = dataFocusedWidths[index];
+      th.style.minWidth = dataFocusedWidths[index];
+      th.style.maxWidth = dataFocusedWidths[index];
     }
   });
 }
