@@ -78,13 +78,18 @@ async function customizeDocumentsStepForTFCCRF() {
     message: `Found application value quartech_ownorleaseland: ${quartech_ownorleaseland}`,
   });
 
-  // if own or lease land is ('I lease the land', 'Both')
-  if ([255550001, 255550003].includes(quartech_ownorleaseland)) {
+  // Visible IF quartech_OwnOrLeaseLand IN ('I own the land', 'Both')	
+  if ([255550000, 255550003].includes(quartech_ownorleaseland)) {
     showFieldRow('quartech_propertyassessmentnotice');
+  } else {
+    hideFieldRow({ fieldName: 'quartech_propertyassessmentnotice' });
+  }
+
+  // Visible IF quartech_OwnOrLeaseLand IN ('I lease the land', 'Both')
+  if ([255550001, 255550003].includes(quartech_ownorleaseland)) {
     showFieldRow('quartech_leaseagreement');
   } else {
     hideFieldRow({ fieldName: 'quartech_propertyassessmentnotice' });
-    hideFieldRow({ fieldName: 'quartech_leaseagreement' });
   }
 
   logger.info({
