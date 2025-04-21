@@ -78,6 +78,10 @@ async function customizeDocumentsStepForTFCCRF() {
     message: `Found application value quartech_ownorleaseland: ${quartech_ownorleaseland}`,
   });
 
+  // 00 corresponds to I own the land
+  // 01 corresponds to I lease the land
+  // 03 corresponds to Both
+  // 02 is N/A
   // Visible IF quartech_OwnOrLeaseLand IN ('I own the land', 'Both')	
   if ([255550000, 255550003].includes(quartech_ownorleaseland)) {
     showFieldRow('quartech_propertyassessmentnotice');

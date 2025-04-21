@@ -174,10 +174,11 @@ export function handleIsBusinessContactInfoDropdownChangeHandler(name) {
         'quartech_notificationemailaddress',
       ];
 
-      personalFields.forEach((name) => {
-        // @ts-ignore
-        setFieldValue({ name, value: '' });
-      });
+      // As per BUG 7058, do not clear these fields
+      // personalFields.forEach((name) => {
+      //   // @ts-ignore
+      //   setFieldValue({ name, value: '' });
+      // });
     }
   };
 }
