@@ -89,7 +89,7 @@ async function customizeDocumentsStepForTFCCRF() {
   if ([255550001, 255550003].includes(quartech_ownorleaseland)) {
     showFieldRow('quartech_leaseagreement');
   } else {
-    hideFieldRow({ fieldName: 'quartech_propertyassessmentnotice' });
+    hideFieldRow({ fieldName: 'quartech_leaseagreement' });
   }
 
   logger.info({
