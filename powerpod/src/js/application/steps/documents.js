@@ -125,6 +125,7 @@ async function customizeDocumentsStepForTFCCRF() {
     });
     store.dispatch('addFieldData', {
       name: 'quartech_uploadasitemap',
+      error: '',
       required: false,
     });
     unsetRequiredField('quartech_uploadasitemap');

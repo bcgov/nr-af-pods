@@ -40,6 +40,7 @@ const logger = Logger('common/validation');
 POWERPOD.fieldValidation = {
   validateRequiredFields,
   validateStepFields,
+  validateStepField,
 };
 
 export function validateRequiredFields() {
@@ -355,20 +356,20 @@ export function validateStepFields(stepName, returnString) {
     data: { validationErrorHtml, fields },
   });
 
-  // let fieldKeys = Object.keys(fields);
-  // fieldKeys.forEach(key => {
-  //   validateStepField(fields[key].name)
-  // })
-  for (let i = 0; i < fields.length; i++) {
-    validateStepField(fields[i].name);
-  }
+  let fieldKeys = Object.keys(fields);
+  fieldKeys.forEach(key => {
+    validateStepField(fields[key].name)
+  })
+  // for (let i = 0; i < fields.length; i++) {
+  //   validateStepField(fields[i].name);
+  // }
 
   logger.info({
     // @ts-ignore
     fn: validateStepFields,
     message: 'Go through dynamic fields to generate validation error html',
     // @ts-ignore
-    data: { validationErrorHtml },
+    // data: { validationErrorHtml },
   });
 
   // check which fields we are dynamically requiring validation
@@ -433,27 +434,31 @@ export function validateStepFields(stepName, returnString) {
     });
     return validationErrorHtml;
   }
-  logger.info({
-    // @ts-ignore
-    fn: validateStepFields,
-    message: 'Done! Displaying validation error html',
-    // @ts-ignore
-    data: { validationErrorHtml },
-  });
 
-  if (POWERPOD.validation.errorHtml === validationErrorHtml) {
-    logger.info({
-      // @ts-ignore
-      fn: validateStepFields,
-      message: 'No need to display new error, same as old one.',
-      // @ts-ignore
-      data: {
-        storedErrorHtml: POWERPOD.validation.errorHtml,
-        validationErrorHtml,
-      },
-    });
-    return;
-  }
+  // const { validationError: stateValidationError } = powerpod.state;
+  // if (
+  //   POWERPOD.validation.errorHtml === validationErrorHtml &&
+  //   stateValidationError === validationErrorHtml
+  // ) {
+  //   logger.info({
+  //     // @ts-ignore
+  //     fn: validateStepFields,
+  //     message: 'No need to display new error, same as old one.',
+  //     // @ts-ignore
+  //     data: {
+  //       storedErrorHtml: POWERPOD.validation.errorHtml,
+  //       validationErrorHtml,
+  //     },
+  //   });
+  //   return;
+  // }
+  // logger.info({
+  //   // @ts-ignore
+  //   fn: validateStepFields,
+  //   message: 'Done! Displaying validation error html',
+  //   // @ts-ignore
+  //   data: { validationErrorHtml },
+  // });
 
   // displayValidationErrors(validationErrorHtml);
   // store.dispatch('setValidationError', validationErrorHtml);
