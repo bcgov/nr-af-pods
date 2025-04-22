@@ -60,9 +60,15 @@ export function customizeProjectStep(programData) {
     // disableSingleLine('subgrid_ProjectStep_Import_TF_Inventory');
     // disableSingleLine('subgrid_ProjectStep_New_TF_Inventory');
 
-    // ensureHeaderSingleLineForTFCCRF('subgrid_ProjectStep_Import_TF_Inventory');
-    // ensureHeaderSingleLineForTFCCRF('subgrid_ProjectStep_New_TF_Inventory');
+    verticallyCenterTableHeadingsForTFCCRF(
+      'subgrid_ProjectStep_Import_TF_Inventory'
+    );
+    verticallyCenterTableHeadingsForTFCCRF(
+      'subgrid_ProjectStep_New_TF_Inventory'
+    );
     // setTFInventoryColumnWidthsByData();
+    setNewTFInventoryColWidths();
+    setImportTFInventoryColWidths();
 
     addTextBelowNewTFInventoryLabel();
   }
@@ -90,6 +96,17 @@ function addTextBelowNewTFInventoryLabel() {
   }
 }
 
+function verticallyCenterTableHeadingsForTFCCRF(subgridName) {
+  const container = document.querySelector(`#${subgridName}`);
+  if (!container) return;
+
+  const thElements = container.querySelectorAll('tr > th');
+
+  thElements.forEach((th) => {
+    th.style.alignContent = 'center';
+  });
+}
+
 function ensureHeaderSingleLineForTFCCRF(subgridName) {
   const container = document.querySelector(`#${subgridName}`);
   if (!container) return;
@@ -115,6 +132,96 @@ function ensureHeaderSingleLineForTFCCRF(subgridName) {
       document.body.removeChild(clone);
 
       th.style.width = `${width}px`;
+    }
+  });
+}
+
+function setNewTFInventoryColWidths() {
+  let dataFocusedWidths = [
+    '14%', // PID
+    '13%', // Field Location
+    '10%', // Own or Lease the Land
+    '7%', // Crop
+    '8%', // Variety
+    '8%', // Number of Trees
+    '8%', // Tree Spacing (ft)
+    '8%', // Row Spacing (ft)
+    '9%', // Planting Date
+    '12%', // Created On
+    '3%', // Actions
+  ];
+
+  let container = document.querySelector(
+    '#subgrid_ProjectStep_New_TF_Inventory'
+  );
+  if (!container) {
+    logger.error({
+      fn: setNewTFInventoryColWidths,
+      message: `TF Inventory subgrid not found.`,
+    });
+    return;
+  }
+
+  let headerRow = container.querySelector('tr');
+  if (!headerRow) {
+    logger.error({
+      fn: setNewTFInventoryColWidths,
+      message: `No header row found in subgrid.`,
+    });
+    return;
+  }
+
+  let thElements = headerRow.querySelectorAll('th');
+
+  thElements.forEach((th, index) => {
+    if (dataFocusedWidths[index]) {
+      th.style.width = dataFocusedWidths[index];
+      th.style.minWidth = dataFocusedWidths[index];
+      th.style.maxWidth = dataFocusedWidths[index];
+    }
+  });
+}
+
+function setImportTFInventoryColWidths() {
+  let dataFocusedWidths = [
+    '20%', // PID
+    '15%', // Field Location
+    '12%', // Own or Lease the Land
+    '8%', // Crop
+    '8%', // Variety
+    '6%', // Number of Trees
+    '8%', // Acres
+    '8%', // Density
+    '3%', // Actions
+  ];
+
+  let container = document.querySelector(
+    '#subgrid_ProjectStep_Import_TF_Inventory'
+  );
+  if (!container) {
+    logger.error({
+      fn: setNewTFInventoryColWidths,
+      message: `TF Inventory subgrid not found.`,
+    });
+    return;
+  }
+
+  let headerRow = container.querySelector('tr');
+  if (!headerRow) {
+    logger.error({
+      fn: setNewTFInventoryColWidths,
+      message: `No header row found in subgrid.`,
+    });
+    return;
+  }
+
+  let thElements = headerRow.querySelectorAll('th');
+
+  thElements.forEach((th, index) => {
+    if (dataFocusedWidths[index]) {
+      th.style.width = dataFocusedWidths[index];
+      th.style.minWidth = dataFocusedWidths[index];
+      th.style.maxWidth = dataFocusedWidths[index];
     }
   });
 }
