@@ -48,19 +48,6 @@ export function customizeDeclarationConsentStep(programData) {
     setRequiredField('quartech_signature');
     validateStepFields();
     styleSignatureDivs();
-
-    const confirmButton = document.querySelector('.confirmButton');
-
-    if (confirmButton) {
-      confirmButton.onclick = function () {
-        store.dispatch('addFieldData', {
-          name: 'quartech_signature',
-          signatureSaved: true,
-        });
-
-        validateStepField('quartech_signature');
-      };
-    }
   }
 }
 
@@ -88,29 +75,67 @@ function styleSignatureDivs(retries = 10, delay = 500) {
 
   const confirmButton = document.querySelector('.confirmButton');
   const confirmButtonText = confirmButton?.querySelector('.confirmButtonTick');
+  const clearButton = document.querySelector('.clearButton');
+  const clearButtonText = clearButton?.querySelector('.clearButtonCaption');
 
-  if (!confirmButton || !confirmButtonText) {
-    if (retries > 0) {
-      setTimeout(() => styleSignatureDivs(retries - 1, delay), delay);
-    } else {
-      console.warn('Confirm button or text not found after retrying.');
-    }
+  if (
+    (!confirmButton ||
+      !confirmButtonText ||
+      !clearButton ||
+      !clearButtonText) &&
+    retries > 0
+  ) {
+    setTimeout(() => styleSignatureDivs(retries - 1, delay), delay);
     return;
   }
 
+  if (!confirmButton || !confirmButtonText) {
+    console.warn('Confirm button or text not found after retrying.');
+  }
+
+  if (!clearButton || !clearButtonText) {
+    console.warn('Clear button or text not found after retrying.');
+  }
+
   try {
-    confirmButtonText.textContent = 'Save signature';
+    // Style Confirm Button
+    if (confirmButton && confirmButtonText) {
+      confirmButtonText.textContent = 'Save signature';
+      confirmButton.style.width = '175px';
+      confirmButton.style.borderRadius = '0';
+      confirmButton.style.display = 'inline-flex';
+      confirmButton.style.justifyContent = 'center';
+      confirmButton.style.alignItems = 'center';
+      confirmButton.style.padding = '8px 12px';
+      confirmButton.style.backgroundColor = '#3E9327';
+      confirmButton.style.color = '#FFFFFF';
+      confirmButton.style.marginRight = '10px';
 
-    confirmButton.style.width = '175px';
-    confirmButton.style.borderRadius = '0';
-    confirmButton.style.display = 'inline-flex';
-    confirmButton.style.justifyContent = 'center';
-    confirmButton.style.alignItems = 'center';
-    confirmButton.style.padding = '8px 12px';
-    confirmButton.style.backgroundColor = '#3E9327';
-    confirmButton.style.color = '#FFFFFF';
-    confirmButton.style.marginRight = '10px';
+      confirmButton.onclick = function () {
+        store.dispatch('addFieldData', {
+          name: 'quartech_signature',
+          signatureSaved: true,
+        });
 
+        validateStepField('quartech_signature');
+      };
+    }
+
+    // Style Clear Button
+    if (clearButton && clearButtonText) {
+      clearButtonText.textContent = 'Clear';
+      clearButton.style.width = '100px';
+      clearButton.style.borderRadius = '0';
+      clearButton.style.display = 'inline-flex';
+      clearButton.style.justifyContent = 'center';
+      clearButton.style.alignItems = 'center';
+      clearButton.style.padding = '8px 12px';
+      clearButton.style.backgroundColor = '#CCCCCC';
+      clearButton.style.color = '#000000';
+      clearButton.style.marginLeft = '10px';
+    }
+
+    // Hide the ::before icon on the confirm button
     const style = document.createElement('style');
     style.textContent = `
       .signatureControl.editmode .inkControl .inkControlCommandBar .confirmButtonTick::before {
@@ -120,7 +145,7 @@ function styleSignatureDivs(retries = 10, delay = 500) {
     `;
     document.head.appendChild(style);
   } catch (e) {
-    console.error('Error styling confirm button:', e);
+    console.error('Error styling signature buttons:', e);
   }
 }
 
