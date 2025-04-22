@@ -20,7 +20,7 @@ const logger = Logger('application/steps/declarationConsent');
 
 export function customizeDeclarationConsentStep(programData) {
   configureFields();
-  hideFieldsAndSections(false);
+  // hideFieldsAndSections(false);
   const programAbbreviation = getProgramAbbreviation();
   if (programAbbreviation === 'VVTS' || programAbbreviation === 'TFCR') {
     hidePageDescription(true);

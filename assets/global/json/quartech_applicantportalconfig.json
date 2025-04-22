@@ -1,6 +1,6 @@
 {
   "tags": ["Global", "ALL", "Application", "StaffPortal"],
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Global JSON config used in Applications",
   "FieldsConfig": {
     "programs": [
@@ -245,6 +245,15 @@
                 "name": "quartech_unabletoansweridentifysharepercentage",
                 "format": "percentage",
                 "validation": true
+              }
+            ]
+          },
+          {
+            "name": "DeclarationAndConsentStep",
+            "fields": [
+              {
+                "name": "quartech_declarationandconsent",
+                "required": true
               }
             ]
           }
