@@ -9,17 +9,17 @@ export function setupTooltip(field) {
   if (tooltipText) {
     let tooltipTargetElement = $(`#${tooltipTargetElementId ?? name}`);
 
+    // DatePicker Tooltip doesn't work unless we target parentNode (control div)
+    if (elementType === HtmlElementType.DatePicker) {
+      tooltipTargetElement = tooltipTargetElement.parent();
+    }
+
     if (!tooltipTargetElement) {
       logger.error({
         fn: setupTooltip,
         message: 'Could not find tooltipTargetElement',
         data: { field },
       });
-    }
-
-    // DatePicker Tooltip doesn't work unless we target parentNode (control div)
-    if (elementType === HtmlElementType.DatePicker) {
-      tooltipTargetElement = tooltipTargetElement.parent();
     }
 
     logger.info({
@@ -60,4 +60,45 @@ export function setupTooltip(field) {
         }, 300);
       });
   }
+}
+
+export function setupTooltipForElement(element, tooltipText) {
+  element = element.parent().children('file-upload');
+  logger.info({
+    fn: setupTooltip,
+    message: `Start configuring tooltip for element`,
+    data: { element, tooltipText },
+  });
+
+  element.attr('data-content', tooltipText);
+  element.attr('data-placement', 'bottom');
+  element.attr('data-html', 'true');
+  element.attr('data-trigger', 'hover');
+  element.attr('data-original-title', '');
+
+  element
+    // @ts-ignore
+    .popover({
+      trigger: 'manual',
+      html: true,
+      animation: false,
+    })
+    .on('mouseenter', function () {
+      var _this = this;
+      // @ts-ignore
+      $(this).popover('show');
+      $('.popover').on('mouseleave', function () {
+        // @ts-ignore
+        $(_this).popover('hide');
+      });
+    })
+    .on('mouseleave', function () {
+      var _this = this;
+      setTimeout(function () {
+        if (!$('.popover:hover').length) {
+          // @ts-ignore
+          $(_this).popover('hide');
+        }
+      }, 300);
+    });
 }

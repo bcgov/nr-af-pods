@@ -822,6 +822,63 @@ export function addHtmlToSubsection(
   }
 }
 
+export function addTextBelowLabel(labelId, htmlToInsert) {
+  insertHtmlAroundLabel(labelId, htmlToInsert, 'after');
+}
+export function addTextAboveLabel(labelId, htmlToInsert) {
+  insertHtmlAroundLabel(labelId, htmlToInsert, 'before');
+}
+
+export function insertHtmlAroundLabel(
+  labelId,
+  htmlToInsert,
+  position = 'after'
+) {
+  const label = document.getElementById(`${labelId}_label`);
+
+  if (!label) {
+    console.warn(`Label with ID "${labelId}" not found.`);
+    return;
+  }
+
+  const tempWrapper = document.createElement('div');
+  tempWrapper.innerHTML = htmlToInsert;
+
+  const insertTarget = label;
+
+  Array.from(tempWrapper.childNodes).forEach((node) => {
+    if (position === 'before') {
+      insertTarget.parentNode.insertBefore(node, insertTarget);
+    } else if (position === 'after') {
+      insertTarget.parentNode.insertBefore(node, insertTarget.nextSibling);
+    } else {
+      console.warn(
+        `Invalid position "${position}" passed. Use "before" or "after".`
+      );
+    }
+  });
+}
+
+export function boldLabelText(labelId) {
+  const label = document.getElementById(`${labelId}_label`);
+  if (!label) {
+    console.warn(`Label with ID "${labelId}" not found.`);
+    return;
+  }
+
+  // Wrap existing content in a <b> tag if it’s not already bold
+  if (!label.querySelector('b')) {
+    const boldWrapper = document.createElement('b');
+    while (label.firstChild) {
+      boldWrapper.appendChild(label.firstChild);
+    }
+    label.appendChild(boldWrapper);
+  } else {
+    // If already contains <b>, ensure it has font-weight bold
+    label.style.fontWeight = 'bold';
+  }
+}
+
 export function addHtmlToSection(
   tableDataName,
   htmlContentToAdd,

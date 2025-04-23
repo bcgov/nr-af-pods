@@ -1,6 +1,6 @@
 {
   "tags": ["Global", "ALL", "Application", "StaffPortal"],
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Global JSON config used in Applications",
   "FieldsConfig": {
     "programs": [
@@ -30,7 +30,8 @@
                 "visibleIf": {
                   "fieldName": "quartech_nocragstnumber",
                   "selectedValue": false
-                }
+                },
+                "tooltipText": "Business or GST number used with CRA first 9#s starts with RC0001"
               },
               {
                 "name": "quartech_nocragstnumber",

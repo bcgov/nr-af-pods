@@ -16,7 +16,10 @@ import {
   addCustomField,
   addHtmlToField,
   addTextAboveField,
+  addTextAboveLabel,
   addTextBelowField,
+  addTextBelowLabel,
+  boldLabelText,
   getControlValue,
   getFieldLabel,
   getOriginalMsosElement,
@@ -99,6 +102,9 @@ export function configureField(field) {
     visible = true,
     additionalTextAboveField,
     additionalTextBelowField,
+    additionalTextBelowLabel,
+    additionalTextAboveLabel,
+    boldLabel,
     removeDropdownOptionsValues,
     hideOrShowAdditionalTextWithFieldVisibility,
     reorderField = {},
@@ -262,9 +268,9 @@ export function configureField(field) {
     if (!input) {
       logger.error({
         fn: configureField,
-        message: `could not find input element for numbersOnly config`
-      })
-      return
+        message: `could not find input element for numbersOnly config`,
+      });
+      return;
     }
     input.addEventListener('input', function () {
       this.value = this.value.replace(/[^0-9]/g, '');
@@ -288,6 +294,15 @@ export function configureField(field) {
   }
   if (additionalTextAboveField) {
     addTextAboveField(name, additionalTextAboveField);
+  }
+  if (additionalTextAboveLabel) {
+    addTextAboveLabel(name, additionalTextAboveLabel);
+  }
+  if (additionalTextBelowLabel) {
+    addTextBelowLabel(name, additionalTextBelowLabel);
+  }
+  if (boldLabel) {
+    boldLabelText(name);
   }
 
   if (customComponent && customComponent.customElementTag) {
@@ -352,6 +367,7 @@ export function configureField(field) {
       customElementTag: 'file-upload',
       attributes: {
         fieldName: name,
+        tooltiptext: tooltipText,
       },
       customEvent: 'onChangeFileUpload',
       customEventHandler: (event, customElement) => {
