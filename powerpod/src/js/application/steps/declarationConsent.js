@@ -183,7 +183,7 @@ function addConsentForTFCCRF(programName) {
   const programNameTag = '%%ProgramName%%';
 
   let htmlConsent = `<div style='font-style: italic;'>
-      <span>BY SUBMITTING THIS APPLICATION FORM TO %%ProgramName%% (the "Program"), I:</span>
+      <span>BY SUBMITTING THIS APPLICATION FORM TO %%ProgramName%% (the "Fund"), I:</span>
       <u style='text-decoration:none;'>
           <li>represent that I am the applicant or the fully authorized signatory of the applicant;</li>
           <li>
