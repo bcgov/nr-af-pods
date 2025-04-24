@@ -1,5 +1,5 @@
 {
-  "version": "1.3.3",
+  "version": "1.3.4",
   "tags": [
     "Application",
     "StaffPortal",
@@ -403,9 +403,9 @@
         },
         {
           "name": "quartech_uploadasitemap",
-          "label": "Upload the map of the orchard:",
+          "label": "Upload map(s) of the orchard for new tree fruit inventory entries only.",
           "boldLabel": true,
-          "additionalTextBelowLabel": "<div><br/><p>Your map must include -<ol><li><b>Property boundary</b> (outline of your land)</li><li><b>Fruit tree planting areas</b> clearly marked</li><li><b>Tree spacing</b> – both between trees and between rows</li><li><b>North arrow</b></li><li><b>Labels for: planting blocks and tree type</b></li></ol></p></div>",
+          "additionalTextBelowLabel": "<div><br/><p>Your map must include:<ol><li><b>Property boundary</b> (outline of your land)</li><li><b>Fruit tree planting areas</b> clearly marked</li><li><b>Tree spacing</b> – both between trees and between rows</li><li><b>North arrow</b></li><li><b>Labels for: planting blocks and tree type</b></li></ol></p></div>",
           "elementType": "FileInput",
           "required": true,
           "tooltipText": "All applicants must submit a map showing the location of fruit tree plantings for new information. The map should be able to confirm # of trees, row and tree spacing and location."
