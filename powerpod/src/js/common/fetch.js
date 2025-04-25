@@ -29,6 +29,7 @@ export const ENDPOINT_URL = {
   get_orgbook_credentials_data: (topicId) =>
     `https://orgbook.gov.bc.ca/api/v4/topic/${topicId}/credential-set`,
   patch_quartech_claim_data: (id) => `/_api/quartech_claims(${id})`,
+  get_claim_data: (id) => `/_api/quartech_claims(${id})`,
   patch_application_data: (id) =>
     `/_api/msgov_businessgrantapplications(${id})`,
   get_application_data: (id) =>
@@ -71,6 +72,7 @@ POWERPOD.fetch = {
   postBrowserInformationData,
   getTypesOfFoodData,
   getCommoditiesData,
+  getClaimData
 };
 
 const CONTENT_TYPE = {
@@ -473,6 +475,14 @@ export async function patchClaimData({ id, fieldData, ...options }) {
 export async function getApplicationData({ id, ...options }) {
   return fetch({
     url: ENDPOINT_URL.get_application_data(id),
+    returnData: true,
+    ...options,
+  });
+}
+
+export async function getClaimData({ id, ...options }) {
+  return fetch({
+    url: ENDPOINT_URL.get_claim_data(id),
     returnData: true,
     ...options,
   });

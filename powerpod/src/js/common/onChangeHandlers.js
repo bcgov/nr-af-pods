@@ -304,7 +304,7 @@ export function checkAndSetTFCCRFEligbilityNotice() {
     'doesNotMeetTFCCRFEligibilityRequirements'
   );
   if (!noticeElement) {
-    logger.error({
+    logger.warn({
       fn: checkAndSetTFCCRFEligbilityNotice,
       message: `Could not fetch noticeElement by id doesNotMeetTFCCRFEligibilityRequirements`,
     });

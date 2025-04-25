@@ -427,7 +427,8 @@ async function addDemographicInfoChefsIframe() {
       quartech_ChefsDemographicDataIndividualsFormId,
     } = await getEnvVars();
 
-    if (getProgramAbbreviation() === 'TFCR') {
+    const programAbbreviation = getProgramAbbreviation();
+    if (programAbbreviation === 'TFCR' || programAbbreviation === 'TFCCRF') {
       const env = getEnv();
       if (env === Environment.PROD) {
         chefsDemographicDataFormId = 'd486e8be-a211-4ff1-b50a-6b1ae4c8766b';
