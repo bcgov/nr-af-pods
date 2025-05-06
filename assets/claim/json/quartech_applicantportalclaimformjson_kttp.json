@@ -1,6 +1,6 @@
 {
   "tags": ["Claim", "KTTP", "KTTP-SMEA", "KTTP-StreamTwo", "KTTP-Stream3"],
-  "version": "1.1.6",
+  "version": "1.1.8",
   "description": "Claim form field config used for all KTTP streams",
   "sections": [
     {
@@ -87,20 +87,35 @@
           }
         },
         {
+          "name": "quartech_admissionfeerequired",
+          "label": "Was an admission fee required for participants to access any activities or events?",
+          "required": true
+        },
+        {
+          "name": "quartech_admissionfeeamount",
+          "label": "Please specify how much was charged per person per activity or event",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_admissionfeerequired",
+            "selectedValue": 255550000,
+            "techComment": "YES value"
+          }
+        },
+        {
           "name": "quartech_majorchangestoagendaoriginallysubmitted",
-          "label": "Summarize any major changes to the agenda from what was originally submitted (e.g. change to topics or guest speakers)",
+          "label": "Were there any changes to the agenda from what was originally submitted (e.g., adjustments to topics, guest speakers, or activities)?",
           "required": true,
           "maxLength": 1000
         },
         {
           "name": "quartech_keytakeawaysfromtheactivity",
-          "label": "What were the key takeaways from the activity? (e.g. specific knowledge or skills learned)",
+          "label": "What skills or knowledge did the intended audience gain from this project?",
           "required": true,
           "maxLength": 1000
         },
         {
           "name": "quartech_anticipatedimpactoftheactivity",
-          "label": "What short-term or long-term impacts do you anticipate as a result of the activity?",
+          "label": "How did the Project impact your organization and community? What stood out as the most valuable part of the Project for you?",
           "required": true,
           "maxLength": 1000
         },
