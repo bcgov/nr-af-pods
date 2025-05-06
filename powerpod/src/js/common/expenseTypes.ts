@@ -44,6 +44,18 @@ export async function getExpenseTypes() {
   return Promise.reject(new Error(errorMsg));
 }
 
+export function processExpenseTypesDataFromProgramData(data) {
+  const optionArray = [];
+
+  for (const key in data) {
+    if (data.hasOwnProperty(key) && data[key].Option) {
+      optionArray.push(data[key].Option);
+    }
+  }
+
+  return optionArray;
+}
+
 export function processExpenseTypesData(json: ExpenseTypesDataBlob) {
   const dataArray = json?.value;
 

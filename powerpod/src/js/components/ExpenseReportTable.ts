@@ -7,10 +7,12 @@ import './TextField';
 import {
   getTotalExpenseAmount,
   processExpenseTypesData,
+  processExpenseTypesDataFromProgramData,
 } from '../common/expenseTypes';
 import { getExpenseTypeData } from '../common/fetch';
 import { Logger } from '../common/logger';
 import { isLastObjectEmpty } from '../common/utils';
+import { getProgramData } from '../common/program';
 
 const logger = Logger('components/ExpenseReportTable');
 
@@ -39,7 +41,7 @@ class ExpenseReportTable extends LitElement {
     super.connectedCallback();
 
     if (!this.readOnly) {
-      this.getExpenseTypes();
+      this.getExpenseTypesFromProgramData();
     }
 
     if (!Array.isArray(this.rows)) {
@@ -72,6 +74,17 @@ class ExpenseReportTable extends LitElement {
       throw new Error('Expense types task failed');
     }
     this.expenseTypes = processExpenseTypesData(data);
+  }
+
+  getExpenseTypesFromProgramData() {
+    const programData = getProgramData();
+
+    if (!programData) {
+      throw new Error('Failed to get program data');
+    }
+    this.expenseTypes = processExpenseTypesDataFromProgramData(
+      JSON.parse(programData.quartech_expensetypestodisplay)
+    );
   }
 
   private handleUpdateCell(
