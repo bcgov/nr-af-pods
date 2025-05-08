@@ -1,6 +1,6 @@
 {
   "tags": ["Claim", "KTTP", "KTTP-SMEA", "KTTP-StreamTwo", "KTTP-Stream3"],
-  "version": "1.1.9",
+  "version": "1.2.1",
   "description": "Claim form field config used for all KTTP streams",
   "sections": [
     {
@@ -170,6 +170,17 @@
     {
       "name": "DocumentsStep",
       "fields": [
+        {
+          "name": "quartech_incomestatementdocument",
+          "label": "Your organization charged an admission fee for an event or activity. You are required to submit details on the total income generated from such fees against all expenses incurred. <br />Please upload the Final Income and Expense Statement as part of your claim.",
+          "elementType": "FileInput",
+          "required": true
+        },
+        {
+          "name": "quartech_photosordocsofpurchase",
+          "label": "Include 1 to 3 high-quality photos that best represent the project in action or its results (optional)",
+          "elementType": "FileInput"
+        },
         {
           "name": "quartech_activityreport",
           "label": "Supporting Documents (optional)",

@@ -2,9 +2,10 @@ import {
   hideFieldRow,
   hideQuestion,
   observeIframeChanges,
+  showFieldRow,
 } from '../../common/html.js';
 import { getEnv, getEnvVars } from '../../common/env.ts';
-import { getProgramAbbreviation } from '../../common/program.ts';
+import { getProgramAbbreviation, getProgramId } from '../../common/program.ts';
 import { configureFields } from '../../common/fieldConfiguration.js';
 import { setFieldValue } from '../../common/html.js';
 import { setFieldReadOnly } from '../../common/fieldValidation.js';
@@ -12,6 +13,8 @@ import { Logger } from '../../common/logger.js';
 import { saveFormData } from '../../common/saveButton.js';
 import { addDocumentsStepText } from '../../common/documents.ts';
 import { Environment } from '../../common/constants.js';
+import { getFormId } from '../../common/form.js';
+import { getClaimData, getClaimFormData } from '../../common/fetch.js';
 
 const logger = Logger('claim/steps/documents');
 
@@ -27,6 +30,10 @@ export async function customizeDocumentsStep() {
     programAbbreviation === 'TFCR'
   ) {
     addDocumentsStepText();
+  }
+
+  if (programAbbreviation.includes('KTTP')) {
+    customizeDocumentsStepForKTTP();
   }
 
   if (programAbbreviation === 'VVTS') {
@@ -66,6 +73,38 @@ export async function customizeDocumentsStep() {
 
   if (programAbbreviation.includes('ABPP')) {
     addSatisfactionSurveyChefsIframeForABPP();
+  }
+}
+
+async function customizeDocumentsStepForKTTP() {
+  logger.info({
+    fn: customizeDocumentsStepForKTTP,
+    message: `Start customizing documents step for KTTP`,
+  });
+  const { programId } = await getProgramId();
+  const formId = getFormId();
+  // @ts-ignore
+  const claimDataRes = await getClaimData({ id: formId });
+
+  if (!claimDataRes?.data) {
+    logger.error({
+      fn: customizeDocumentsStepForKTTP,
+      message: `Could not get claim data result to determine whether admission fee was required in project results step`,
+    });
+  }
+
+  const { quartech_admissionfeerequired } = claimDataRes?.data;
+
+  logger.info({
+    fn: customizeDocumentsStepForKTTP,
+    message: `Found claim value quartech_admissionfeerequired: ${quartech_admissionfeerequired}`,
+  });
+
+  // If original source is NOT import
+  if ([255550000].includes(quartech_admissionfeerequired)) {
+    showFieldRow('quartech_incomestatementdocument');
+  } else {
+    hideFieldRow({ fieldName: 'quartech_incomestatementdocument' });
   }
 }
 
