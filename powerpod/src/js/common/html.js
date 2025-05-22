@@ -70,6 +70,7 @@ POWERPOD.html = {
   generatePlaceholderRowForCustomField,
   hideNumberInputArrowsById,
   isSignatureFilled,
+  normalizeTableCells,
 };
 
 export function configureCustomLogo(customLogo) {
@@ -1087,6 +1088,8 @@ export function addHtmlToField(
   }
 
   newTrElement.append(tdElement);
+
+  normalizeTableCells();
 }
 
 export function observeChanges(
@@ -1814,7 +1817,7 @@ export function moveTableRow(rowIdToMove, referenceRowId, position = 'after') {
 }
 
 // Normalize colspan and rowspan for all table rows
-function normalizeTableCells() {
+export function normalizeTableCells() {
   document.querySelectorAll('tbody tr td').forEach((td) => {
     if (!td.matches('[additionaltextaroundfield="true"]')) {
       td.setAttribute('colspan', '1');
