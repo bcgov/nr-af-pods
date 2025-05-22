@@ -57,7 +57,7 @@ export const Primary: Story = {
         email: 'rauber@farm.ca',
         staffNumber: '2',
         typeOfFood: ['beef-cattle'],
-        dates: '12/13/24,23/5/24',
+        dates: '',
       },
       {
         name: 'Practice B',
@@ -65,7 +65,7 @@ export const Primary: Story = {
         email: 'rauber@gov.bc.ca',
         staffNumber: '2',
         typeOfFood: ['beef-cattle'],
-        dates: '12/13/24,05/23/24',
+        dates: '12/13/2024,05/23/2024',
       },
       {
         name: 'Practice C',
@@ -73,7 +73,7 @@ export const Primary: Story = {
         email: 'rauber@gov.bc.ca',
         staffNumber: '1',
         typeOfFood: ['beef-cattle'],
-        dates: '12/13/24,05/23/24',
+        dates: '12/13/2024,05/23/2024',
       },
     ],
   },

@@ -4,10 +4,12 @@ import { customElement, property } from 'lit/decorators.js';
 import './CurrencyInput';
 import './DropdownMultiSelect';
 import './TextField';
+import './DateMultiSelect';
 import { processTypesOfFoodData } from '../common/typesOfFood';
 import { getTypesOfFoodData } from '../common/fetch';
 import { Logger } from '../common/logger';
 import { isLastObjectEmpty } from '../common/utils';
+import { validateEmail, validateNumericValue } from '../common/fieldValidation';
 
 const logger = Logger('components/ClaimInfoGridVLB');
 
@@ -31,6 +33,8 @@ class ClaimInfoGridVLB extends LitElement {
   @property({ type: Array }) rows: RowItem[] = [];
   @property({ type: Array }) typesOfFood: string[] = [];
   @property({ type: Boolean }) readOnly = false;
+  @property({ type: Object }) cellErrors: Record<string, string> = {};
+  @property({ type: String }) errorMessage: string = '';
 
   static emptyRowObject = {
     name: '',
@@ -57,6 +61,7 @@ class ClaimInfoGridVLB extends LitElement {
   }
 
   emitEvent() {
+    this.hasAnyCellErrors();
     const rowData = this.rows;
     const customEvent = new CustomEvent('onChangeClaimInfoGridVLBData', {
       detail: {
@@ -64,6 +69,7 @@ class ClaimInfoGridVLB extends LitElement {
         message: 'Claim info grid VLB data has changed',
         value: JSON.stringify(rowData),
         pdfJson: JSON.stringify(this.generatePDFJson(rowData)),
+        errorMessage: this.errorMessage,
       },
       bubbles: true,
       composed: true,
@@ -91,7 +97,33 @@ class ClaimInfoGridVLB extends LitElement {
       rowData[rowIndex]['typeOfFoodVerbose'] = typeOfFoodVerbose;
     }
     this.rows = rowData;
+    this.handleCellValidation(rowIndex, columnKey, newValue);
     this.emitEvent();
+  }
+
+  private handleCellValidation(
+    rowIndex: number,
+    columnKey: string,
+    newValue: string
+  ) {
+    const key = `${rowIndex}-${columnKey}`;
+    if (columnKey === 'email') {
+      const updated = { ...this.cellErrors };
+      updated[key] = validateEmail(newValue);
+      this.cellErrors = updated;
+    } else if (columnKey === 'staffNumber') {
+      const updated = { ...this.cellErrors };
+      updated[key] = validateNumericValue(newValue, 'greaterThanOrEqualTo', 0);
+      this.cellErrors = updated;
+    } else if (!newValue || newValue.trim() === '') {
+      const updated = { ...this.cellErrors };
+      updated[key] = 'Please enter a value.';
+      this.cellErrors = updated;
+    } else {
+      const updated = { ...this.cellErrors };
+      delete updated[key];
+      this.cellErrors = updated;
+    }
   }
 
   private handleAddRow() {
@@ -117,12 +149,18 @@ class ClaimInfoGridVLB extends LitElement {
     this.emitEvent();
   }
 
+  firstUpdated() {
+    console.log('Initial render complete');
+    this.hasAnyCellErrors();
+  }
+
   private renderColumnItem(row, col, rowIndex) {
     const cellValue = row[col.id];
     if (
-      // !this.readOnly && 
-      col.id === 'typeOfFood' && 
-      this.typesOfFood?.length) {
+      // !this.readOnly &&
+      col.id === 'typeOfFood' &&
+      this.typesOfFood?.length
+    ) {
       return html` <td>
         <dropdown-multiselect
           fieldLabel=${col.name}
@@ -150,7 +188,7 @@ class ClaimInfoGridVLB extends LitElement {
           }}
         ></dropdown-multiselect>
       </td>`;
-    } 
+    }
     // else if (this.readOnly && col.id === 'typeOfFood') {
     //   return html` <td>
     //     <text-field
@@ -161,7 +199,7 @@ class ClaimInfoGridVLB extends LitElement {
     //       .readOnly=${this.readOnly}
     //     ></text-field>
     //   </td>`;
-    // } 
+    // }
     else if (
       col.id === 'name' ||
       col.id === 'city' ||
@@ -169,21 +207,57 @@ class ClaimInfoGridVLB extends LitElement {
       col.id === 'staffNumber' ||
       col.id === 'dates'
     ) {
-      return html` <td>
-        <text-field
-          required
-          fieldLabel=${col.name}
-          customStyle="width: 95%"
-          .inputValue=${cellValue}
-          .readOnly=${this.readOnly}
-          @onChangeTextField=${(e: CustomEvent) => {
-            this.handleUpdateCell(rowIndex, col.id, e.detail.value);
-            e.stopImmediatePropagation();
-          }}
-        ></text-field>
-      </td>`;
+      const key = `${rowIndex}-${col.id}`;
+
+      if (col.id === 'dates') {
+        console.log(`key: ${key}`);
+        console.log(`cellValue: ${cellValue}`);
+        console.log(`${this.cellErrors[key] || ''}`);
+        return html` <td>
+          <date-multiselect
+            required
+            fieldLabel=${col.name}
+            customStyle="width: 95%"
+            .inputValue=${cellValue}
+            .readOnly=${this.readOnly}
+            @onChangeDateMultiSelectValues=${(e: CustomEvent) => {
+              this.handleUpdateCell(rowIndex, col.id, e.detail.value);
+              e.stopImmediatePropagation();
+            }}
+            .errorMessage=${this.cellErrors[key] || ''}
+          ></text-field>
+        </td>`;
+      } else {
+        return html` <td>
+          <text-field
+            required
+            fieldLabel=${col.name}
+            customStyle="width: 95%"
+            .inputValue=${cellValue}
+            .readOnly=${this.readOnly}
+            @onChangeTextField=${(e: CustomEvent) => {
+              this.handleUpdateCell(rowIndex, col.id, e.detail.value);
+              e.stopImmediatePropagation();
+            }}
+            .errorMessage=${this.cellErrors[key] || ''}
+          ></text-field>
+        </td>`;
+      }
     }
     return html`<td>${cellValue}</td>`;
+  }
+
+  private hasAnyCellErrors(): boolean {
+    const hasErrors = Object.values(this.cellErrors).some(
+      (error) => typeof error === 'string' && error.trim() !== ''
+    );
+    console.log(`hasErrors: ${hasErrors}`);
+    if (hasErrors) {
+      this.errorMessage = 'Please fill required fields';
+    } else {
+      this.errorMessage = '';
+    }
+    return hasErrors;
   }
 
   private renderDeleteBtn(rowIndex: number) {
@@ -258,6 +332,23 @@ class ClaimInfoGridVLB extends LitElement {
   render() {
     return html`
       <style>
+        #errorMessage {
+          margin: 0px;
+          margin-top: -15px;
+          font-size: 13px;
+          color: #e23636;
+          padding: 0px;
+          position: absolute;
+          ${
+            !this.errorMessage && !this.errorMessage?.length
+              ? css`
+                  display: none;
+                `
+              : css`
+                  display: block;
+                `
+          }
+        }
         .styled-table {
           width: 100%;
           border-collapse: collapse;
@@ -407,6 +498,9 @@ class ClaimInfoGridVLB extends LitElement {
           </tbody>
         </tbody>
       </table>
+      <p id="errorMessage" class="error-message">
+        ${this.errorMessage || ''}
+      </p>
     `;
   }
 }

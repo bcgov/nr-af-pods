@@ -3,6 +3,7 @@ import { useArgs } from '@storybook/client-api';
 import { action } from '@storybook/addon-actions';
 import type { Meta, StoryObj } from '@storybook/web-components';
 import './TextField.ts';
+import { validateEmail } from '../common/fieldValidation.js';
 
 const meta: Meta = {
   component: 'text-field',
@@ -23,6 +24,7 @@ export const Primary: Story = {
         action('onChangeTextField')(e);
         updateArgs({ inputValue: e.detail.value });
       }}
+      .validation=${validateEmail}
       primary
     ></text-field>`;
   },

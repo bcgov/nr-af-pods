@@ -357,9 +357,9 @@ export function validateStepFields(stepName, returnString) {
   });
 
   let fieldKeys = Object.keys(fields);
-  fieldKeys.forEach(key => {
-    validateStepField(fields[key].name)
-  })
+  fieldKeys.forEach((key) => {
+    validateStepField(fields[key].name);
+  });
   // for (let i = 0; i < fields.length; i++) {
   //   validateStepField(fields[i].name);
   // }
@@ -835,6 +835,60 @@ export function validateNumericFieldValue({
   return finalMessage;
 }
 
+export function validateNumericValue(inputStr, operator, comparisonValue) {
+  const value = parseFloat(
+    // @ts-ignore
+    inputStr.replace(/,/g, '').replace('$', '').replace('%', '')
+  );
+  let finalMessage = '';
+  let errorMessage = '';
+  const genericErrorMsg = `Please enter a valid number`;
+  switch (operator) {
+    case 'greaterThan':
+      // @ts-ignore
+      if (!(value > comparisonValue) || value === '') {
+        finalMessage = `${genericErrorMsg}. The value must be greater than ${comparisonValue}.`;
+      }
+      break;
+    case 'lessThan':
+      // @ts-ignore
+      if (!(value < comparisonValue) || value === '') {
+        finalMessage = `${genericErrorMsg}. The value must be less than ${comparisonValue}.`;
+      }
+      break;
+    case 'equalTo':
+      // @ts-ignore
+      if (!(value === comparisonValue) || value === '') {
+        finalMessage = `${genericErrorMsg}. The value must be equal to ${comparisonValue}.`;
+      }
+      break;
+    case 'greaterThanOrEqualTo':
+      // @ts-ignore
+      if (!(value >= comparisonValue) || value === '') {
+        finalMessage = `${genericErrorMsg}. The value must be greater than or equal to ${comparisonValue}.`;
+      }
+      break;
+    case 'lessThanOrEqualTo':
+      // @ts-ignore
+      if (!(value <= comparisonValue) || value === '') {
+        finalMessage = `${genericErrorMsg}. The value must be less than or equal to ${comparisonValue}.`;
+      }
+      break;
+    default:
+      finalMessage = 'Invalid operator';
+      logger.error({
+        // @ts-ignore
+        fn: validateNumericFieldValue,
+        message: `Invalid operator`,
+      });
+      break;
+  }
+  if (finalMessage?.length > 0) {
+    finalMessage = 'Please enter a valid number.';
+  }
+  return finalMessage;
+}
+
 export function validateFieldLength(
   // @ts-ignore
   fieldName,
@@ -916,6 +970,17 @@ export function validateEmailAddressField(fieldName) {
   // @ts-ignore
   const input = fieldElement?.value;
   if (!input || !pattern.test(input)) {
+    return 'Please enter a valid email address.';
+  } else {
+    return '';
+  }
+}
+
+export function validateEmail(inputStr) {
+  const pattern = /^\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i;
+
+  // @ts-ignore
+  if (!inputStr || !pattern.test(inputStr)) {
     return 'Please enter a valid email address.';
   } else {
     return '';

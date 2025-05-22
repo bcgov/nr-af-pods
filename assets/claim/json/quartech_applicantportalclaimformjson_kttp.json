@@ -1,6 +1,6 @@
 {
   "tags": ["Claim", "KTTP", "KTTP-SMEA", "KTTP-StreamTwo", "KTTP-Stream3"],
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Claim form field config used for all KTTP streams",
   "sections": [
     {
@@ -185,6 +185,20 @@
           "name": "quartech_activityreport",
           "label": "Supporting Documents (optional)",
           "elementType": "FileInput"
+        }
+      ]
+    },
+    {
+      "name": "DeclarationAndConsentStep",
+      "fields": [
+        {
+          "name": "quartech_declarationandconsent",
+          "required": true
+        },
+        {
+          "name": "quartech_consenttotestimonials",
+          "label": "I / We agree to the above statement.",
+          "additionalTextAboveField": "<p>Testimonials and images may be used in program reporting, promotional materials, or shared publicly. Do you consent to the use of your submitted testimonial and photos for these purposes?</p>"
         }
       ]
     }
