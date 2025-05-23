@@ -1089,7 +1089,7 @@ export function addHtmlToField(
 
   newTrElement.append(tdElement);
 
-  normalizeTableCells();
+  // normalizeTableCells();
 }
 
 export function observeChanges(
