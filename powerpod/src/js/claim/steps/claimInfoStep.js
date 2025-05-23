@@ -646,17 +646,17 @@ function addExpenseReportGridForKTTP() {
 
   let rows = [
     {
-      type: '',
+      type: 'Administration Costs',
       description: '',
       amount: '',
     },
     {
-      type: '',
+      type: 'Cost share contribution (cash or in-kind)',
       description: '',
       amount: '',
     },
     {
-      type: '',
+      type: 'SME / Facilitator Fee',
       description: '',
       amount: '',
     },

@@ -160,13 +160,27 @@ class ExpenseReportTableKTTP extends LitElement {
 
   private handleDeleteRow(rowIndex: number) {
     const rowData = this.rows;
-    if (rowData.length === 3) {
+    if (rowIndex <= 2) {
       let currentRow = this.rows[rowIndex];
-      currentRow = {
-        type: '',
-        description: '',
-        amount: '',
-      };
+      if (rowIndex === 0) {
+        currentRow = {
+          type: 'Administration Costs',
+          description: '',
+          amount: '',
+        };
+      } else if (rowIndex === 1) {
+        currentRow = {
+          type: 'Cost share contribution (cash or in-kind)',
+          description: '',
+          amount: '',
+        };
+      } else if (rowIndex === 2) {
+        currentRow = {
+          type: 'SME / Facilitator Fee',
+          description: '',
+          amount: '',
+        };
+      }
       let rowsCopy = this.rows;
       rowsCopy[rowIndex] = currentRow;
       this.rows = rowsCopy;
@@ -306,6 +320,7 @@ class ExpenseReportTableKTTP extends LitElement {
                             <dropdown-search
                               .options=${this.expenseTypes}
                               .selectedValue=${cellValue}
+                              .disabled=${rowIndex <= 2 ? true : false}
                               .errorMessage=${this.cellErrors[key] || ''}
                               additionalTextBelowField="See program guide for eligible expenses"
                               @onChangeDropdownValue=${(e: CustomEvent) => {

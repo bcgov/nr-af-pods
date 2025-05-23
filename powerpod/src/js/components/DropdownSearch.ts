@@ -11,6 +11,7 @@ class DropdownSearch extends LitElement {
   @property({ type: String }) fieldLabel: string = '';
   @property({ type: String }) placeholder: string = 'Select an option';
   @property({ type: String }) errorMessage: string = '';
+  @property({ type: Boolean }) disabled: boolean = false;
 
   static styles = css`
     .dropdown-search {
@@ -122,6 +123,7 @@ class DropdownSearch extends LitElement {
         <div class="dropdown-search">
           <select
             id="selectElement"
+            .disabled=${this.disabled}
             .value=${this.selectedValue}
             @change=${(event: Event) => {
               const { target } = event;

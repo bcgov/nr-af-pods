@@ -33,17 +33,17 @@ export const Primary: Story = {
     ],
     rows: [
       {
-        type: 'Facility, equipment, technology rental',
+        type: 'Administration Costs',
         description: 'This is for our contractor',
         amount: '50.00',
       },
       {
-        type: 'Administration Costs',
+        type: 'Cost share contribution (cash or in-kind)',
         description: 'Agriculture fees for facilitating resources',
         amount: '65.00',
       },
       {
-        type: 'Administration Costs',
+        type: 'SME / Facilitator Fee',
         description: 'Agriculture fees for facilitating resources',
         amount: '65.00',
       },
