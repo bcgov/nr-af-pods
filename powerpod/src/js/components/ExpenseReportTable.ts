@@ -11,7 +11,7 @@ import {
 } from '../common/expenseTypes';
 import { getExpenseTypeData } from '../common/fetch';
 import { Logger } from '../common/logger';
-import { isLastObjectEmpty } from '../common/utils';
+import { isAnyOfLastThreeObjectsEmpty } from '../common/utils';
 import { getProgramData } from '../common/program';
 
 const logger = Logger('components/ExpenseReportTable');
@@ -100,7 +100,7 @@ class ExpenseReportTable extends LitElement {
 
   private handleAddRow() {
     const rowData = this.rows;
-    if (isLastObjectEmpty(rowData)) {
+    if (isAnyOfLastThreeObjectsEmpty(rowData)) {
       return;
     }
     if (rowData) {

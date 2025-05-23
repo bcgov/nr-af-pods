@@ -183,15 +183,18 @@ export function filterEmptyRows(rowData) {
   });
 }
 
-export function isLastObjectEmpty(array) {
+export function isAnyOfLastThreeObjectsEmpty(array) {
   if (array.length === 0) {
-    return false; // If the array is empty, return false
+    return false;
   }
 
-  const lastObject = array[array.length - 1]; // Get the last object in the array
+  // Get the last 3 objects (or fewer if array has less than 3 items)
+  const lastThree = array.slice(-3);
 
-  // Check if all values of the last object are empty strings
-  return Object.values(lastObject).every((value) => value.trim() === '');
+  // Check if any of the last three objects are "empty"
+  return lastThree.some(obj =>
+    Object.values(obj).every(value => value.trim() === '')
+  );
 }
 
 export function sha256(str) {

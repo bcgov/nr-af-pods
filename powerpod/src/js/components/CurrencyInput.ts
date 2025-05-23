@@ -8,6 +8,7 @@ class CurrencyInput extends LitElement {
   @property({ type: Boolean }) allowNegatives: boolean = true;
   @property({ type: Number }) maxValue: number | null = null;
   @property({ type: Boolean }) readOnly = false;
+  @property({ type: String }) errorMessage: string = '';
   private cursorPosition: number = 0;
   private previousInputValue: string = '';
 
@@ -151,6 +152,7 @@ class CurrencyInput extends LitElement {
         // @ts-ignore
         id: this.id,
         value: this.inputValue,
+        errorMessage: this.errorMessage,
       },
       bubbles: true,
       composed: true,
@@ -217,6 +219,20 @@ class CurrencyInput extends LitElement {
   render() {
     return html`
       <style>
+        #errorMessage {
+          margin: 0px;
+          font-size: 13px;
+          color: #e23636;
+          padding: 0px;
+          position: absolute;
+          ${!this.errorMessage && !this.errorMessage.length
+          ? css`
+              display: none;
+            `
+          : css`
+              display: block;
+            `}
+        }
         .input-icon {
           position: relative;
         }
@@ -280,6 +296,7 @@ class CurrencyInput extends LitElement {
         />
         <i>$</i>
       </div>
+      <p id="errorMessage" class="error-message">${this.errorMessage || ''}</p>
     `;
   }
 }

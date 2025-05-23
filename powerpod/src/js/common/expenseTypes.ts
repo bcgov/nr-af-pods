@@ -1,7 +1,12 @@
+import { POWERPOD } from './constants';
 import { getExpenseTypeData } from './fetch';
 import { Logger } from './logger';
 
 const logger = Logger('common/expenseTypes');
+
+POWERPOD.expenseTypes = {
+  processExpenseTypesDataFromProgramData,
+};
 
 type ExpenseTypesDataBlob = {
   value: Array<ExpenseTypeBlob>;

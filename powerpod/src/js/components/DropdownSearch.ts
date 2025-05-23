@@ -10,10 +10,12 @@ class DropdownSearch extends LitElement {
   @property({ type: String }) additionalTextBelowField: string = '';
   @property({ type: String }) fieldLabel: string = '';
   @property({ type: String }) placeholder: string = 'Select an option';
+  @property({ type: String }) errorMessage: string = '';
 
   static styles = css`
     .dropdown-search {
       position: relative;
+      margin-top: 18px;
     }
 
     select {
@@ -95,6 +97,22 @@ class DropdownSearch extends LitElement {
 
   render() {
     return html`
+      <style>
+        #errorMessage {
+          margin: 0px;
+          font-size: 13px;
+          color: #e23636;
+          padding: 0px;
+          position: absolute;
+          ${!this.errorMessage && !this.errorMessage.length
+          ? css`
+              display: none;
+            `
+          : css`
+              display: block;
+            `}
+        }
+      </style>
       <div style="display:flex; flex-direction:column;">
         <div>
           ${this.fieldLabel?.length
@@ -132,7 +150,11 @@ class DropdownSearch extends LitElement {
         </div>
         <div>
           ${this.additionalTextBelowField?.length
-            ? html`<span>${this.additionalTextBelowField}</span>`
+            ? html`<span style="font-size:13px;"
+                >${this.additionalTextBelowField}${this.errorMessage.length
+                  ? html`<p id="errorMessage" class="error-message">${this.errorMessage}</p>`
+                  : ''}</span
+              >`
             : html``}
         </div>
       </div>

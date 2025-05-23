@@ -19,6 +19,7 @@ import { configureFields } from '../../common/fieldConfiguration.js';
 import { setFieldReadOnly } from '../../common/fieldValidation.js';
 import { customizeSingleOrGroupApplicantQuestions } from '../fieldLogic.js';
 import '../../components/ExpenseReportTable.ts';
+import '../../components/ExpenseReportTableKTTP.ts';
 import '../../components/CurrencyInput.ts';
 import '../../components/DropdownSearch.ts';
 import '../../components/TextField.ts';
@@ -31,6 +32,7 @@ import {
 import { Logger } from '../../common/logger.js';
 import { filterEmptyRows, isValidJSON } from '../../common/utils.js';
 import { renderCustomComponent } from '../../common/components.ts';
+import store from '../../store/index.js';
 
 const logger = Logger('claim/steps/claimInfoStep');
 
@@ -201,7 +203,7 @@ export function customizeClaimInfoStep() {
 
   if (programAbbreviation.includes('KTTP')) {
     // addInstructions();
-    addExpenseReportGrid();
+    addExpenseReportGridForKTTP();
     addFundingInformationNote();
     addKttpRequestedClaimAmountNote();
 
@@ -398,7 +400,7 @@ function verifyTotalSumEqualsRequestedAmount() {
     programAbbreviation === 'NEFBA2' ||
     programAbbreviation === 'VLB' ||
     programAbbreviation === 'VVTS' ||
-    programAbbreviation.includes('KTTP') || 
+    programAbbreviation.includes('KTTP') ||
     programAbbreviation.includes('TFCR')
   ) {
     return;
@@ -577,6 +579,7 @@ function addExpenseReportGrid() {
       setFieldValue({
         name: 'quartech_eligibleexpenses',
         value: JSON.stringify(filterEmptyRows(rows)),
+        error: event.detail.errorMessage || '',
       });
       // @ts-ignore
       setFieldValue({
@@ -618,6 +621,114 @@ function addExpenseReportGrid() {
 
   logger.info({
     fn: addExpenseReportGrid,
+    message: 'Successfully added expense report grid',
+  });
+}
+
+function addExpenseReportGridForKTTP() {
+  const columns = [
+    {
+      id: 'type',
+      name: 'Expense Type',
+      width: '35%',
+    },
+    {
+      id: 'description',
+      name: 'Description',
+      width: '50%',
+    },
+    {
+      id: 'amount',
+      name: 'Amount ($CAD)',
+      width: '15%',
+    },
+  ];
+
+  let rows = [
+    {
+      type: '',
+      description: '',
+      amount: '',
+    },
+    {
+      type: '',
+      description: '',
+      amount: '',
+    },
+    {
+      type: '',
+      description: '',
+      amount: '',
+    },
+  ];
+
+  const expenseReportTableElement = renderCustomComponent({
+    fieldId: 'quartech_eligibleexpenses',
+    customElementTag: 'expense-report-table-kttp',
+    attributes: {
+      primary: true,
+      columns: JSON.stringify(columns),
+      rows: JSON.stringify(rows),
+    },
+    customEvent: 'onChangeExpenseReportData',
+    customEventHandler: (event, customElement) => {
+      logger.info({
+        fn: customizeClaimInfoStep,
+        message: 'onChangeExpenseReportData event listener triggered',
+        data: { event, customElement },
+      });
+      // @ts-ignore
+      rows = JSON.parse(event.detail.value);
+      customElement.setAttribute('rows', JSON.stringify(rows));
+      // @ts-ignore
+      setFieldValue({
+        name: 'quartech_eligibleexpenses',
+        value: JSON.stringify(filterEmptyRows(rows)),
+      });
+      store.dispatch('addFieldData', {
+        name: 'quartech_eligibleexpenses',
+        error: event.detail.errorMessage || '',
+      });
+      // @ts-ignore
+      setFieldValue({
+        name: 'quartech_totalsumofreportedexpenses',
+        value: event.detail.total,
+      });
+      verifyTotalSumEqualsRequestedAmount();
+    },
+    mappedValueKey: 'rows',
+    initFn: (existingEligibleExpenses) => {
+      // @ts-ignore
+      setFieldValue({
+        name: 'quartech_totalsumofreportedexpenses',
+        value: getTotalExpenseAmount(JSON.parse(existingEligibleExpenses)),
+      });
+      verifyTotalSumEqualsRequestedAmount();
+    },
+    initValuesFn: (mappedValueKey, existingValue, customElement) => {
+      logger.info({
+        fn: addExpenseReportGridForKTTP,
+        message: `Running initValuesFn for Expense Report Grid...`,
+        data: { mappedValueKey, existingValue, customElement },
+      });
+      if (
+        mappedValueKey === 'rows' &&
+        existingValue &&
+        existingValue.length &&
+        isValidJSON(existingValue)
+      ) {
+        const arr = JSON.parse(existingValue);
+        if (!Array.isArray(arr)) {
+          customElement.setAttribute(`${mappedValueKey}`, JSON.stringify(rows));
+        }
+      } else if (!existingValue || existingValue.length === 0) {
+        customElement.setAttribute(`${mappedValueKey}`, JSON.stringify(rows));
+      }
+    },
+  });
+
+  logger.info({
+    fn: addExpenseReportGridForKTTP,
     message: 'Successfully added expense report grid',
   });
 }

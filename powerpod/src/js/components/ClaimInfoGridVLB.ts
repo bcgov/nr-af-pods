@@ -8,7 +8,7 @@ import './DateMultiSelect';
 import { processTypesOfFoodData } from '../common/typesOfFood';
 import { getTypesOfFoodData } from '../common/fetch';
 import { Logger } from '../common/logger';
-import { isLastObjectEmpty } from '../common/utils';
+import { isAnyOfLastThreeObjectsEmpty } from '../common/utils';
 import { validateEmail, validateNumericValue } from '../common/fieldValidation';
 
 const logger = Logger('components/ClaimInfoGridVLB');
@@ -97,11 +97,11 @@ class ClaimInfoGridVLB extends LitElement {
       rowData[rowIndex]['typeOfFoodVerbose'] = typeOfFoodVerbose;
     }
     this.rows = rowData;
-    this.handleCellValidation(rowIndex, columnKey, newValue);
+    this.handleValidation(rowIndex, columnKey, newValue);
     this.emitEvent();
   }
 
-  private handleCellValidation(
+  private handleValidation(
     rowIndex: number,
     columnKey: string,
     newValue: string
@@ -128,7 +128,7 @@ class ClaimInfoGridVLB extends LitElement {
 
   private handleAddRow() {
     const rowData = this.rows;
-    if (isLastObjectEmpty(rowData)) {
+    if (isAnyOfLastThreeObjectsEmpty(rowData)) {
       return;
     }
     if (rowData) {

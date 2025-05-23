@@ -1,16 +1,20 @@
 import bootstrap from '../../assets/css/bootstrap.css';
-import shoelace from '../../assets/css/shoelace.css';
 import { LitElement, css, html, unsafeCSS } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import './CurrencyInput';
 import './DropdownSearch';
 import './TextField';
-import './DateField';
-import { getTotalInvoicesAmount } from '../common/expenseTypes';
+import {
+  getTotalExpenseAmount,
+  processExpenseTypesData,
+  processExpenseTypesDataFromProgramData,
+} from '../common/expenseTypes';
+import { getExpenseTypeData } from '../common/fetch';
 import { Logger } from '../common/logger';
 import { isAnyOfLastThreeObjectsEmpty } from '../common/utils';
+import { getProgramData } from '../common/program';
 
-const logger = Logger('components/ExpenseInvoicesTable');
+const logger = Logger('components/ExpenseReportTableKTTP');
 
 type RowItem = {
   [key: string]: string;
@@ -24,21 +28,23 @@ type Headings = {
   [key: string]: string;
 };
 
-@customElement('expense-invoices-table')
-class ExpenseInvoicesTable extends LitElement {
+@customElement('expense-report-table-kttp')
+class ExpenseReportTableKTTP extends LitElement {
   @property({ type: String, reflect: true }) id: string = crypto.randomUUID();
   @property({ type: Object }) columns: Column[] = [];
   @property({ type: Array }) rows: RowItem[] = [];
   @property({ type: Array }) expenseTypes: string[] = [];
   @property({ type: Boolean }) readOnly = false;
-
-  static styles = css`
-    ${unsafeCSS(shoelace)}
-  `;
+  @property({ type: Object }) cellErrors: Record<string, string> = {};
+  @property({ type: String }) errorMessage: string = '';
 
   // make fetch call as soon as component is mounted
   connectedCallback(): void {
     super.connectedCallback();
+
+    if (!this.readOnly && this.expenseTypes.length === 0) {
+      this.getExpenseTypesFromProgramData();
+    }
 
     if (!Array.isArray(this.rows)) {
       this.rows = [];
@@ -50,19 +56,78 @@ class ExpenseInvoicesTable extends LitElement {
   }
 
   emitEvent() {
+    this.hasAnyCellErrors();
     const rowData = this.rows;
-    const customEvent = new CustomEvent('onChangeExpenseInvoicesData', {
+    const customEvent = new CustomEvent('onChangeExpenseReportData', {
       detail: {
         id: this.id,
-        message: 'Expense invoices data has changed',
+        message: 'Expense report data has changed',
         value: JSON.stringify(rowData),
-        total: getTotalInvoicesAmount(rowData),
-        pdfJson: JSON.stringify(this.generatePDFJson(rowData)),
+        total: getTotalExpenseAmount(rowData),
+        errorMessage: this.errorMessage,
       },
       bubbles: true,
       composed: true,
     });
     this.dispatchEvent(customEvent);
+  }
+
+  async getExpenseTypes() {
+    const { data } = await getExpenseTypeData();
+    if (!data) {
+      throw new Error('Expense types task failed');
+    }
+    this.expenseTypes = processExpenseTypesData(data);
+  }
+
+  getExpenseTypesFromProgramData() {
+    const programData = getProgramData();
+
+    if (!programData) {
+      throw new Error('Failed to get program data');
+    }
+    this.expenseTypes = processExpenseTypesDataFromProgramData(
+      JSON.parse(programData.quartech_expensetypestodisplay)
+    );
+  }
+
+  private handleValidationForCell(
+    rowIndex: number,
+    columnKey: string,
+    newValue: string
+  ) {
+    const key = `${rowIndex}-${columnKey}`;
+    console.log(`newValue: ${newValue}`);
+    if (!newValue || newValue.trim() === '') {
+      const updated = { ...this.cellErrors };
+      updated[key] = 'Please enter a value.';
+      this.cellErrors = updated;
+    } else {
+      const updated = { ...this.cellErrors };
+      delete updated[key];
+      this.cellErrors = updated;
+    }
+  }
+
+  private hasAnyCellErrors(): boolean {
+    const hasErrors = Object.values(this.cellErrors).some(
+      (error) => typeof error === 'string' && error.trim() !== ''
+    );
+    console.log(`hasErrors: ${hasErrors}`);
+    console.log(this.cellErrors);
+    if (hasErrors) {
+      this.errorMessage = 'Please fill required fields in the table.';
+    } else {
+      this.errorMessage = '';
+    }
+    if (hasErrors && this.columns.length && this.rows.length) {
+      this.rows.forEach((row, rowIndex) => {
+        this.columns.forEach((col) => {
+          this.handleValidationForCell(rowIndex, col.id, row[col.id]);
+        });
+      });
+    }
+    return hasErrors;
   }
 
   private handleUpdateCell(
@@ -73,6 +138,7 @@ class ExpenseInvoicesTable extends LitElement {
     const rowData = this.rows;
     rowData[rowIndex][columnKey] = newValue ?? '';
     this.rows = rowData;
+    this.handleValidationForCell(rowIndex, columnKey, newValue);
     this.emitEvent();
   }
 
@@ -83,9 +149,9 @@ class ExpenseInvoicesTable extends LitElement {
     }
     if (rowData) {
       rowData.push({
-        invoiceNum: '',
-        invoiceDate: '',
-        subtotal: '',
+        type: '',
+        description: '',
+        amount: '',
       });
       this.rows = rowData;
     }
@@ -94,66 +160,46 @@ class ExpenseInvoicesTable extends LitElement {
 
   private handleDeleteRow(rowIndex: number) {
     const rowData = this.rows;
-    if (rowData.length === 1) {
-      this.rows = [
-        {
-          invoiceNum: '',
-          invoiceDate: '',
-          purchasedFrom: '',
-          description: '',
-          subtotal: '',
-        },
-      ];
+    if (rowData.length === 3) {
+      let currentRow = this.rows[rowIndex];
+      currentRow = {
+        type: '',
+        description: '',
+        amount: '',
+      };
+      let rowsCopy = this.rows;
+      rowsCopy[rowIndex] = currentRow;
+      this.rows = rowsCopy;
     } else {
       rowData.splice(rowIndex, 1);
       this.rows = rowData;
     }
+    this.columns.forEach((col) => {
+      this.handleValidationForCell(rowIndex, col.id, '');
+    });
     this.emitEvent();
-  }
-
-  private generatePDFJson(rowData) {
-    return {
-      expenseInvoicesSection: {
-        displayName: 'Expense Invoices',
-        expenseInvoicesSectionQuestionAnswerList: rowData.flatMap(
-          (invoice, index) => [
-            {
-              expenseInvoicesSectionQuestion: 'Invoice Line #',
-              expenseInvoicesSectionAnswer: (index + 1).toString(),
-            },
-            {
-              expenseInvoicesSectionQuestion: 'Invoice Number',
-              expenseInvoicesSectionAnswer: invoice.invoiceNum,
-            },
-            {
-              expenseInvoicesSectionQuestion: 'Invoice Date',
-              expenseInvoicesSectionAnswer: invoice.invoiceDate,
-            },
-            {
-              expenseInvoicesSectionQuestion: 'Purchased From',
-              expenseInvoicesSectionAnswer: invoice.purchasedFrom,
-            },
-            {
-              expenseInvoicesSectionQuestion: 'Description',
-              expenseInvoicesSectionAnswer: invoice.description,
-            },
-            {
-              expenseInvoicesSectionQuestion: 'Subtotal',
-              expenseInvoicesSectionAnswer: invoice.subtotal,
-            },
-            {
-              expenseInvoicesSectionQuestion: '--',
-              expenseInvoicesSectionAnswer: '--',
-            },
-          ]
-        ),
-      },
-    };
   }
 
   render() {
     return html`
       <style>
+        #errorMessage {
+          margin: 0px;
+          margin-top: -15px;
+          font-size: 13px;
+          color: #e23636;
+          padding: 0px;
+          position: absolute;
+          ${
+            !this.errorMessage && !this.errorMessage?.length
+              ? css`
+                  display: none;
+                `
+              : css`
+                  display: block;
+                `
+          }
+        }
         .styled-table {
           width: 100%;
           border-collapse: collapse;
@@ -185,7 +231,7 @@ class ExpenseInvoicesTable extends LitElement {
           }
         }
         .styled-table td {
-          padding: 12px 15px 24px;
+          padding: 5px 15px 20px;
         }
         .styled-table tbody tr {
           border-bottom: 1px solid #dddddd;
@@ -234,7 +280,9 @@ class ExpenseInvoicesTable extends LitElement {
             ${
               this.columns &&
               this.columns.map((col) => {
-                return html`<th style="width: ${col.width};">${col.name}</th>`;
+                return html`<th style="width: ${col.width};">
+                  ${col.name}<span style="color:red;">*</span>
+                </th>`;
               })
             }
             ${!this.readOnly ? html`<th />` : html``}
@@ -243,21 +291,24 @@ class ExpenseInvoicesTable extends LitElement {
         <tbody>
           ${
             this.rows?.length > 0
-              ? this.rows.map(
-                  (row: RowItem, rowIndex: number) => html`
+              ? this.rows.map((row: RowItem, rowIndex: number) => {
+                  return html`
                     <tr>
                       ${this.columns.map((col) => {
+                        const key = `${rowIndex}-${col.id}`;
                         const cellValue = row[col.id];
                         if (
-                          col.id === 'invoiceNum' ||
-                          col.id === 'purchasedFrom'
+                          !this.readOnly &&
+                          col.id === 'type' &&
+                          this.expenseTypes?.length
                         ) {
                           return html` <td>
-                            <text-field
-                              customStyle="width: 95%"
-                              .inputValue=${cellValue}
-                              .readOnly=${this.readOnly}
-                              @onChangeTextField=${(e: CustomEvent) => {
+                            <dropdown-search
+                              .options=${this.expenseTypes}
+                              .selectedValue=${cellValue}
+                              .errorMessage=${this.cellErrors[key] || ''}
+                              additionalTextBelowField="See program guide for eligible expenses"
+                              @onChangeDropdownValue=${(e: CustomEvent) => {
                                 this.handleUpdateCell(
                                   rowIndex,
                                   col.id,
@@ -265,6 +316,14 @@ class ExpenseInvoicesTable extends LitElement {
                                 );
                                 e.stopImmediatePropagation();
                               }}
+                            ></dropdown-search>
+                          </td>`;
+                        } else if (this.readOnly && col.id === 'type') {
+                          return html` <td>
+                            <text-field
+                              customStyle="width: 95%"
+                              .inputValue=${cellValue}
+                              .readOnly=${this.readOnly}
                             ></text-field>
                           </td>`;
                         } else if (col.id === 'description') {
@@ -273,7 +332,7 @@ class ExpenseInvoicesTable extends LitElement {
                               customStyle="width: 95%"
                               .inputValue=${cellValue}
                               .readOnly=${this.readOnly}
-                              maxLength="250"
+                              .errorMessage=${this.cellErrors[key] || ''}
                               @onChangeTextField=${(e: CustomEvent) => {
                                 this.handleUpdateCell(
                                   rowIndex,
@@ -284,27 +343,12 @@ class ExpenseInvoicesTable extends LitElement {
                               }}
                             ></text-field>
                           </td>`;
-                        } else if (col.id === 'invoiceDate') {
-                          return html` <td>
-                            <date-field
-                              customStyle="width: 95%"
-                              .inputValue=${cellValue}
-                              .readOnly=${this.readOnly}
-                              @onChangeDateField=${(e: CustomEvent) => {
-                                this.handleUpdateCell(
-                                  rowIndex,
-                                  col.id,
-                                  e.detail.value
-                                );
-                                e.stopImmediatePropagation();
-                              }}
-                            ></text-field>
-                          </td>`;
-                        } else if (col.id === 'subtotal') {
+                        } else if (col.id === 'amount') {
                           return html`<td>
                             <currency-input
                               .inputValue=${cellValue}
                               .readOnly=${this.readOnly}
+                              .errorMessage=${this.cellErrors[key] || ''}
                               @onChangeCurrencyInput=${(e: CustomEvent) => {
                                 this.handleUpdateCell(
                                   rowIndex,
@@ -339,8 +383,8 @@ class ExpenseInvoicesTable extends LitElement {
                           `
                         : html``}
                     </tr>
-                  `
-                )
+                  `;
+                })
               : ''
           }
           ${
@@ -367,7 +411,9 @@ class ExpenseInvoicesTable extends LitElement {
           </tbody>
         </tbody>
       </table>
-      <p style="margin:-20px 0px 10px;font-size:14px;">See program guide for eligibile expenses</p>
+      <p id="errorMessage" class="error-message">
+        ${this.errorMessage || ''}
+      </p>
     `;
   }
 }
