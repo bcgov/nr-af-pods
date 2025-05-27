@@ -1,6 +1,6 @@
 {
   "tags": ["Claim", "VLB"],
-  "version": "1.1.9",
+  "version": "1.2.0",
   "name": "Veterinary and Veterinary Technologists Locums Working in BC Food Animal Practices Pilot Program",
   "abbreviation": "VLB",
   "sections": [
@@ -46,27 +46,6 @@
           "name": "quartech_filenumber",
           "label": "File Number (from authorization letter)",
           "readOnly": true
-        }
-      ]
-    },
-    {
-      "name": "ProjectResultsStep",
-      "fields": [
-        {
-          "name": "quartech_claimingforregistrationmembershipfees",
-          "label": "Are you claiming 2024 / 2025 annual registrant / membership fees with CVBC and SBCV or BCVTA?",
-          "required": true,
-          "elementType": "DropdownSelect"
-        },
-        {
-          "name": "quartech_reasonnotclaimingregistrationmembership",
-          "label": "Please explain the reason",
-          "required": true,
-          "visibleIf": {
-            "fieldName": "quartech_claimingforregistrationmembershipfees",
-            "selectedValue": 255550001,
-            "techComment": "No value"
-          }
         }
       ]
     },
