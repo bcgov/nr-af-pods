@@ -33,7 +33,10 @@ class ClaimInfoGridVLB extends LitElement {
   @property({ type: Array }) rows: RowItem[] = [];
   @property({ type: Array }) typesOfFood: string[] = [];
   @property({ type: Boolean }) readOnly = false;
-  @property({ type: Object }) cellErrors: Record<string, string> = {};
+  @property({ type: Object, reflect: true }) cellErrors: Record<
+    string,
+    string
+  > = {};
   @property({ type: String }) errorMessage: string = '';
 
   static emptyRowObject = {
@@ -97,16 +100,16 @@ class ClaimInfoGridVLB extends LitElement {
       rowData[rowIndex]['typeOfFoodVerbose'] = typeOfFoodVerbose;
     }
     this.rows = rowData;
-    this.handleValidation(rowIndex, columnKey, newValue);
     this.emitEvent();
   }
 
-  private handleValidation(
+  private handleValidationForCell(
     rowIndex: number,
     columnKey: string,
     newValue: string
   ) {
     const key = `${rowIndex}-${columnKey}`;
+
     if (columnKey === 'email') {
       const updated = { ...this.cellErrors };
       updated[key] = validateEmail(newValue);
@@ -115,7 +118,17 @@ class ClaimInfoGridVLB extends LitElement {
       const updated = { ...this.cellErrors };
       updated[key] = validateNumericValue(newValue, 'greaterThanOrEqualTo', 0);
       this.cellErrors = updated;
-    } else if (!newValue || newValue.trim() === '') {
+    } else if (
+      !newValue ||
+      (typeof newValue === 'string' && newValue?.trim() == '')
+    ) {
+      const updated = { ...this.cellErrors };
+      updated[key] = 'Please enter a value.';
+      this.cellErrors = updated;
+    } else if (
+      columnKey === 'typeOfFood' &&
+      (newValue.length === 0 || !newValue)
+    ) {
       const updated = { ...this.cellErrors };
       updated[key] = 'Please enter a value.';
       this.cellErrors = updated;
@@ -150,11 +163,11 @@ class ClaimInfoGridVLB extends LitElement {
   }
 
   firstUpdated() {
-    console.log('Initial render complete');
     this.hasAnyCellErrors();
   }
 
   private renderColumnItem(row, col, rowIndex) {
+    const key = `${rowIndex}-${col.id}`;
     const cellValue = row[col.id];
     if (
       // !this.readOnly &&
@@ -165,6 +178,7 @@ class ClaimInfoGridVLB extends LitElement {
         <dropdown-multiselect
           fieldLabel=${col.name}
           required
+          .errorMessage=${this.cellErrors[key] || ''}
           .readOnly=${this.readOnly}
           .options=${this.typesOfFood}
           .selectedOptions=${cellValue}
@@ -210,9 +224,6 @@ class ClaimInfoGridVLB extends LitElement {
       const key = `${rowIndex}-${col.id}`;
 
       if (col.id === 'dates') {
-        console.log(`key: ${key}`);
-        console.log(`cellValue: ${cellValue}`);
-        console.log(`${this.cellErrors[key] || ''}`);
         return html` <td>
           <date-multiselect
             required
@@ -248,12 +259,19 @@ class ClaimInfoGridVLB extends LitElement {
   }
 
   private hasAnyCellErrors(): boolean {
+    if (this.columns.length && this.rows.length) {
+      this.rows.forEach((row, rowIndex) => {
+        this.columns.forEach((col) => {
+          this.handleValidationForCell(rowIndex, col.id, row[col.id]);
+        });
+      });
+    }
     const hasErrors = Object.values(this.cellErrors).some(
-      (error) => typeof error === 'string' && error.trim() !== ''
+      (error) => typeof error === 'string' && error?.trim() !== ''
     );
-    console.log(`hasErrors: ${hasErrors}`);
     if (hasErrors) {
-      this.errorMessage = 'Please fill required fields';
+      this.errorMessage =
+        'Please fill out each requested field for each Practice.';
     } else {
       this.errorMessage = '';
     }

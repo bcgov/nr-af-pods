@@ -16,7 +16,7 @@ import {
 } from '../../common/html.js';
 import { getProgramAbbreviation } from '../../common/program.ts';
 import { configureFields } from '../../common/fieldConfiguration.js';
-import { setFieldReadOnly } from '../../common/fieldValidation.js';
+import { displayActiveFieldErrors, setFieldReadOnly } from '../../common/fieldValidation.js';
 import { customizeSingleOrGroupApplicantQuestions } from '../fieldLogic.js';
 import '../../components/ExpenseReportTable.ts';
 import '../../components/ExpenseReportTableKTTP.ts';
@@ -480,6 +480,11 @@ function addClaimInfoGrid() {
         message: 'onChangeClaimInfoGridVLBData event listener triggered',
         data: { event, customElement },
       });
+      store.dispatch('addFieldData', {
+        name: 'quartech_locumservicespracticegrid',
+        error: event.detail.errorMessage || '',
+      });
+      displayActiveFieldErrors();
       // @ts-ignore
       rows = JSON.parse(event.detail.value);
       customElement.setAttribute('rows', JSON.stringify(rows));
@@ -579,7 +584,6 @@ function addExpenseReportGrid() {
       setFieldValue({
         name: 'quartech_eligibleexpenses',
         value: JSON.stringify(filterEmptyRows(rows)),
-        error: event.detail.errorMessage || '',
       });
       // @ts-ignore
       setFieldValue({
@@ -677,6 +681,10 @@ function addExpenseReportGridForKTTP() {
         message: 'onChangeExpenseReportData event listener triggered',
         data: { event, customElement },
       });
+      store.dispatch('addFieldData', {
+        name: 'quartech_eligibleexpenses',
+        error: event.detail.errorMessage || '',
+      });
       // @ts-ignore
       rows = JSON.parse(event.detail.value);
       customElement.setAttribute('rows', JSON.stringify(rows));
@@ -684,10 +692,6 @@ function addExpenseReportGridForKTTP() {
       setFieldValue({
         name: 'quartech_eligibleexpenses',
         value: JSON.stringify(filterEmptyRows(rows)),
-      });
-      store.dispatch('addFieldData', {
-        name: 'quartech_eligibleexpenses',
-        error: event.detail.errorMessage || '',
       });
       // @ts-ignore
       setFieldValue({

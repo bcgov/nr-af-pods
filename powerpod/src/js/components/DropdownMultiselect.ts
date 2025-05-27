@@ -16,6 +16,7 @@ class DropdownMultiselect extends LitElement {
   @property({ type: Array }) slimmedOptions: string[] = [];
   @property({ type: Object }) lookupMap: Map<string, string> = new Map();
   @property({ type: String }) selectedOptions: string[] = [];
+  @property({ type: String }) errorMessage: string = '';
   @property({ type: Boolean }) readOnly = false;
 
   static styles = css`
@@ -80,6 +81,7 @@ class DropdownMultiselect extends LitElement {
         message: 'Dropdown multiselect value has changed',
         value: this.mapToOriginalString(this.selectedOptions),
         selectedOptions: this.selectedOptions,
+        errorMessage: this.errorMessage,
       },
       bubbles: true,
       composed: true,
@@ -89,6 +91,22 @@ class DropdownMultiselect extends LitElement {
 
   render() {
     return html`
+      <style>
+        #errorMessage {
+          margin: 0px;
+          font-size: 13px;
+          position:absolute;
+          color: #e23636;
+          padding: 0px;
+          ${!this.errorMessage && !this.errorMessage.length
+          ? css`
+              display: none;
+            `
+          : css`
+              display: block;
+            `}
+        }
+      </style>
       <div style="display:flex; flex-direction:column;">
         <div>
           ${this.fieldLabel?.length
@@ -99,59 +117,68 @@ class DropdownMultiselect extends LitElement {
               </span>`
             : html``}
         </div>
-        ${
-          !this.readOnly ?
-          html`
-            <sl-select
-              id="selectElement"
-              size="large"
-              style="flex-grow: 0;"
-              .value=${this.selectedOptions}
-              @sl-change=${(event: Event) => {
-                const { target } = event;
-                if (target) {
-                  const val = Array.isArray((target as HTMLSelectElement).value)
-                    ? (target as HTMLSelectElement).value
-                    : ((target as HTMLSelectElement).value as string)?.split(',') ??
-                      [];
-                  if (Array.isArray(val)) {
-                    this.selectedOptions = val;
+        ${!this.readOnly
+          ? html`
+              <sl-select
+                id="selectElement"
+                size="large"
+                style="flex-grow: 0;"
+                .value=${this.selectedOptions}
+                @sl-change=${(event: Event) => {
+                  const { target } = event;
+                  if (target) {
+                    const val = Array.isArray(
+                      (target as HTMLSelectElement).value
+                    )
+                      ? (target as HTMLSelectElement).value
+                      : ((target as HTMLSelectElement).value as string)?.split(
+                          ','
+                        ) ?? [];
+                    if (Array.isArray(val)) {
+                      this.selectedOptions = val;
+                    }
                   }
-                }
-                this.emitEvent();
-              }}
-              multiple
-              clearable
-            >
-              ${this.options
-                ?.sort((a, b) => {
-                  if (a === 'Other Costs') return 1; // Push "Other Costs" to the end
-                  if (b === 'Other Costs') return -1; // Push "Other Costs" to the end
-                  return a.localeCompare(b); // Sort alphabetically
-                })
-                .map((option) => this.generateOption(option))}
-            </sl-select>
-          ` : html`
-            <sl-select
-              disabled
-              id="selectElement"
-              size="large"
-              style="flex-grow: 0;"
-              .value=${this.selectedOptions}
-              multiple
-              clearable
-            >
-              ${this.options
-                ?.sort((a, b) => {
-                  if (a === 'Other Costs') return 1; // Push "Other Costs" to the end
-                  if (b === 'Other Costs') return -1; // Push "Other Costs" to the end
-                  return a.localeCompare(b); // Sort alphabetically
-                })
-                .map((option) => this.generateOption(option))}
-            </sl-select>
-          `
-        }
+                  this.emitEvent();
+                }}
+                multiple
+                clearable
+              >
+                ${this.options
+                  ?.sort((a, b) => {
+                    if (a === 'Other Costs') return 1; // Push "Other Costs" to the end
+                    if (b === 'Other Costs') return -1; // Push "Other Costs" to the end
+                    return a.localeCompare(b); // Sort alphabetically
+                  })
+                  .map((option) => this.generateOption(option))}
+              </sl-select>
+            `
+          : html`
+              <sl-select
+                disabled
+                id="selectElement"
+                size="large"
+                style="flex-grow: 0;"
+                .value=${this.selectedOptions}
+                multiple
+                clearable
+              >
+                ${this.options
+                  ?.sort((a, b) => {
+                    if (a === 'Other Costs') return 1; // Push "Other Costs" to the end
+                    if (b === 'Other Costs') return -1; // Push "Other Costs" to the end
+                    return a.localeCompare(b); // Sort alphabetically
+                  })
+                  .map((option) => this.generateOption(option))}
+              </sl-select>
+            `}
         <div>
+          ${this.errorMessage && !this.readOnly
+            ? html`
+                <p id="errorMessage" class="error-message">
+                  ${this.errorMessage || ''}
+                </p>
+              `
+            : html``}
           ${this.additionalTextBelowField?.length
             ? html`<span>${this.additionalTextBelowField}</span>`
             : html``}

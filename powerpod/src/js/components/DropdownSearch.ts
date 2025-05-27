@@ -154,7 +154,9 @@ class DropdownSearch extends LitElement {
           ${this.additionalTextBelowField?.length
             ? html`<span style="font-size:13px;"
                 >${this.additionalTextBelowField}${this.errorMessage.length
-                  ? html`<p id="errorMessage" class="error-message">${this.errorMessage}</p>`
+                  ? html`<p id="errorMessage" class="error-message">
+                      ${this.errorMessage}
+                    </p>`
                   : ''}</span
               >`
             : html``}

@@ -64,7 +64,7 @@ export const Primary: Story = {
         city: 'Vancouver',
         email: 'rauber@gov.bc.ca',
         staffNumber: '2',
-        typeOfFood: ['beef-cattle'],
+        typeOfFood: [],
         dates: '12/13/2024,05/23/2024',
       },
       {
@@ -78,8 +78,8 @@ export const Primary: Story = {
     ],
   },
   render: function Render(args) {
-    const [{ readOnly, rows, header, columns }, updateArgs] = useArgs();
-    console.log(`readOnly: ${readOnly}`);
+    const [{ readOnly, rows, header, columns }, updateArgs] =
+      useArgs();
     return html`<claim-info-grid-vlb
       columns=${JSON.stringify(columns)}
       rows=${JSON.stringify(rows)}

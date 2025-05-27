@@ -35,7 +35,7 @@ class ExpenseReportTableKTTP extends LitElement {
   @property({ type: Array }) rows: RowItem[] = [];
   @property({ type: Array }) expenseTypes: string[] = [];
   @property({ type: Boolean }) readOnly = false;
-  @property({ type: Object }) cellErrors: Record<string, string> = {};
+  @property({ type: Object, reflect: true }) cellErrors: Record<string, string> = {};
   @property({ type: String }) errorMessage: string = '';
 
   // make fetch call as soon as component is mounted
@@ -97,7 +97,6 @@ class ExpenseReportTableKTTP extends LitElement {
     newValue: string
   ) {
     const key = `${rowIndex}-${columnKey}`;
-    console.log(`newValue: ${newValue}`);
     if (!newValue || newValue.trim() === '') {
       const updated = { ...this.cellErrors };
       updated[key] = 'Please enter a value.';
@@ -113,8 +112,6 @@ class ExpenseReportTableKTTP extends LitElement {
     const hasErrors = Object.values(this.cellErrors).some(
       (error) => typeof error === 'string' && error.trim() !== ''
     );
-    console.log(`hasErrors: ${hasErrors}`);
-    console.log(this.cellErrors);
     if (hasErrors) {
       this.errorMessage = 'Please fill required fields in the table.';
     } else {
