@@ -1,6 +1,6 @@
 {
   "tags": ["Claim", "VLB"],
-  "version": "1.2.0",
+  "version": "1.2.2",
   "name": "Veterinary and Veterinary Technologists Locums Working in BC Food Animal Practices Pilot Program",
   "abbreviation": "VLB",
   "sections": [
@@ -52,6 +52,22 @@
     {
       "name": "ClaimInfoStep",
       "fields": [
+                {
+          "name": "quartech_claimingforregistrationmembershipfees",
+          "label": "Are you claiming 2024 / 2025 annual registrant / membership fees with CVBC and SBCV or BCVTA?",
+          "required": true,
+          "elementType": "DropdownSelect"
+        },
+        {
+          "name": "quartech_reasonnotclaimingregistrationmembership",
+          "label": "Please explain the reason",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_claimingforregistrationmembershipfees",
+            "selectedValue": 255550001,
+            "techComment": "No value"
+          }
+        },
         {
           "name": "quartech_totalsumofreportedexpenses",
           "label": "CVBC and SBCV or BCVTA annual fees",
@@ -61,6 +77,11 @@
             "type": "numeric",
             "value": "0",
             "comparison": "greaterThan"
+          },
+          "visibleIf": {
+            "fieldName": "quartech_claimingforregistrationmembershipfees",
+            "selectedValue": 255550000,
+            "techComment": "Yes value"
           },
           "emptyInitialValue": true,
           "onChangeHandler": "calculateAndPopulateRequestedClaimAmountForVLB"
