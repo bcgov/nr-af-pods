@@ -259,6 +259,7 @@ class ClaimInfoGridVLB extends LitElement {
   }
 
   private hasAnyCellErrors(): boolean {
+    this.cellErrors = {};
     if (this.columns.length && this.rows.length) {
       this.rows.forEach((row, rowIndex) => {
         this.columns.forEach((col) => {
@@ -267,7 +268,7 @@ class ClaimInfoGridVLB extends LitElement {
       });
     }
     const hasErrors = Object.values(this.cellErrors).some(
-      (error) => typeof error === 'string' && error?.trim() !== ''
+      (error) => typeof error === 'string' && error.trim() !== ''
     );
     if (hasErrors) {
       this.errorMessage =

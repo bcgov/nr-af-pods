@@ -109,6 +109,14 @@ class ExpenseReportTableKTTP extends LitElement {
   }
 
   private hasAnyCellErrors(): boolean {
+    this.cellErrors = {};
+    if (this.columns.length && this.rows.length) {
+      this.rows.forEach((row, rowIndex) => {
+        this.columns.forEach((col) => {
+          this.handleValidationForCell(rowIndex, col.id, row[col.id]);
+        });
+      });
+    }
     const hasErrors = Object.values(this.cellErrors).some(
       (error) => typeof error === 'string' && error.trim() !== ''
     );
@@ -116,13 +124,6 @@ class ExpenseReportTableKTTP extends LitElement {
       this.errorMessage = 'Please fill required fields in the table.';
     } else {
       this.errorMessage = '';
-    }
-    if (hasErrors && this.columns.length && this.rows.length) {
-      this.rows.forEach((row, rowIndex) => {
-        this.columns.forEach((col) => {
-          this.handleValidationForCell(rowIndex, col.id, row[col.id]);
-        });
-      });
     }
     return hasErrors;
   }
@@ -135,7 +136,6 @@ class ExpenseReportTableKTTP extends LitElement {
     const rowData = this.rows;
     rowData[rowIndex][columnKey] = newValue ?? '';
     this.rows = rowData;
-    this.handleValidationForCell(rowIndex, columnKey, newValue);
     this.emitEvent();
   }
 
@@ -185,9 +185,9 @@ class ExpenseReportTableKTTP extends LitElement {
       rowData.splice(rowIndex, 1);
       this.rows = rowData;
     }
-    this.columns.forEach((col) => {
-      this.handleValidationForCell(rowIndex, col.id, '');
-    });
+    // this.columns.forEach((col) => {
+    //   this.handleValidationForCell(rowIndex, col.id, '');
+    // });
     this.emitEvent();
   }
 
