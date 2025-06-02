@@ -1,6 +1,6 @@
 {
   "tags": ["Claim", "KTTP", "KTTP-SMEA", "KTTP-StreamTwo", "KTTP-Stream3"],
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "Claim form field config used for all KTTP streams",
   "sections": [
     {
@@ -78,8 +78,9 @@
         },
         {
           "name": "quartech_numberofproducersprocessorparticipants",
-          "label": "If applicable, please provide the estimated number of participants who were producers/processors",
+          "label": "Please provide the estimated number of participants who were producers/processors",
           "format": "number",
+          "required": true,
           "validation": {
             "type": "numeric",
             "value": "0",
