@@ -33,6 +33,7 @@ function addConsent() {
   </div>`;
 
   if (getProgramAbbreviation() === 'VLB') {
+    hideFieldRow({ fieldName: 'quartech_consenttotestimonials' });
     htmlConsent = `
     <div style='font-style: italic;'>
       <span>BY SUBMITTING THIS CLAIM FOR PAYMENT FORM TO %%ProgramName%% (the "Program"), I:</span>
