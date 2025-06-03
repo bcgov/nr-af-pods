@@ -5,7 +5,6 @@ import './CurrencyInput';
 import './DropdownSearch';
 import './TextField';
 import {
-  getTotalExpenseAmount,
   processExpenseTypesData,
   processExpenseTypesDataFromProgramData,
 } from '../common/expenseTypes';
@@ -35,7 +34,10 @@ class ExpenseReportTableKTTP extends LitElement {
   @property({ type: Array }) rows: RowItem[] = [];
   @property({ type: Array }) expenseTypes: string[] = [];
   @property({ type: Boolean }) readOnly = false;
-  @property({ type: Object, reflect: true }) cellErrors: Record<string, string> = {};
+  @property({ type: Object, reflect: true }) cellErrors: Record<
+    string,
+    string
+  > = {};
   @property({ type: String }) errorMessage: string = '';
 
   // make fetch call as soon as component is mounted
@@ -63,13 +65,36 @@ class ExpenseReportTableKTTP extends LitElement {
         id: this.id,
         message: 'Expense report data has changed',
         value: JSON.stringify(rowData),
-        total: getTotalExpenseAmount(rowData),
+        total: this.getTotalExpenseAmount(rowData),
         errorMessage: this.errorMessage,
       },
       bubbles: true,
       composed: true,
     });
     this.dispatchEvent(customEvent);
+  }
+
+  private getTotalExpenseAmount(rowData: RowItem[]) {
+    console.log(rowData);
+    let floatValue = rowData.reduce((acc: number, row: RowItem) => {
+      const amount = row['amount'];
+      const numericValue = amount.replace(/[^\d.-]/g, '');
+      if (!numericValue) return acc;
+
+      const value = parseFloat(numericValue);
+      if (row['type'] === 'Cost share contribution (cash or in-kind)') {
+        return acc - value;
+      } else {
+        return acc + value;
+      }
+    }, 0.0);
+
+    const formattedValue = floatValue.toLocaleString('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+
+    return formattedValue;
   }
 
   async getExpenseTypes() {
