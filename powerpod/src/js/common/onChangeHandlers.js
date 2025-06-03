@@ -512,8 +512,11 @@ export function calculateAndPopulateRequestedClaimAmountForVLB() {
   const vetDays = parseFloat(totalDaysAsAVet) || 0;
   const rvtDays = parseFloat(totalDaysAsAnRVT) || 0;
   const telemedicineDays = parseFloat(totalDaysAsTelemedicineSupport) || 0;
-  const expenses =
-    parseFloat(totalExpensesForCVBCAndBCVTA.replace(',', '')) || 0;
+  
+  const sanitizedtotalExpensesForCVBCAndBCVTA = typeof totalExpensesForCVBCAndBCVTA === 'string'
+    ? totalExpensesForCVBCAndBCVTA.replace(',', '')
+    : String(totalExpensesForCVBCAndBCVTA).replace(',', '');
+  const expenses = parseFloat(sanitizedtotalExpensesForCVBCAndBCVTA) || 0;
 
   logger.info({
     fn: calculateAndPopulateRequestedClaimAmountForVLB,
