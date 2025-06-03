@@ -82,12 +82,12 @@ class ExpenseReportTableKTTP extends LitElement {
       if (!numericValue) return acc;
 
       const value = parseFloat(numericValue);
-      if (row['type'] === 'Cost share contribution (cash or in-kind)') {
-        return acc - value;
-      } else {
-        return acc + value;
-      }
+      return row['type'] === 'Cost share contribution (cash or in-kind)'
+        ? acc - value
+        : acc + value;
     }, 0.0);
+
+    if (floatValue < 0) floatValue = 0;
 
     const formattedValue = floatValue.toLocaleString('en-US', {
       minimumFractionDigits: 2,
