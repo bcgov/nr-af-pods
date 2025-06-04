@@ -12,6 +12,7 @@ class TextField extends LitElement {
   @property({ type: String }) fieldLabel: string = '';
   @property({ type: Number }) maxLength: number | undefined;
   @property({ type: Function }) validation?: (value: string) => string;
+  @property({ type: String }) tooltip: string = '';
 
   firstUpdated() {
     if (this.validation && typeof this.validation === 'function') {
@@ -47,8 +48,22 @@ class TextField extends LitElement {
   }
 
   render() {
+    let inputHtml = html`
+      <input
+        class="text-field"
+        style=${unsafeCSS(this.customStyle)}
+        id="inputElement"
+        type="text"
+        .value=${this.inputValue || ''}
+        maxlength=${this.maxLength ?? ''}
+        @change=${this.handleEmitEvent}
+      />
+    `;
     return html`
       <style>
+        sl-tooltip::part(body) {
+          font-size: 1.2rem;
+        }
         input {
           line-height: 1.42857;
           padding: 6px 12px;
@@ -89,15 +104,11 @@ class TextField extends LitElement {
               </span>`
             : html``}
         </div>
-        <input
-          class="text-field"
-          style=${unsafeCSS(this.customStyle)}
-          id="inputElement"
-          type="text"
-          .value=${this.inputValue || ''}
-          maxlength=${this.maxLength ?? ''}
-          @change=${this.handleEmitEvent}
-        />
+        ${this.tooltip && this.tooltip.length
+          ? html`
+              <sl-tooltip content=${this.tooltip}> ${inputHtml} </sl-tooltip>
+            `
+          : html` ${inputHtml} `}
         <p id="errorMessage" class="error-message">
           ${this.errorMessage || ''}
         </p>

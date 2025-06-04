@@ -328,6 +328,7 @@ class ExpenseReportTableKTTP extends LitElement {
           ${
             this.rows?.length > 0
               ? this.rows.map((row: RowItem, rowIndex: number) => {
+                  console.log(row);
                   return html`
                     <tr>
                       ${this.columns.map((col) => {
@@ -364,12 +365,21 @@ class ExpenseReportTableKTTP extends LitElement {
                             ></text-field>
                           </td>`;
                         } else if (col.id === 'description') {
+                          let tooltip = '';
+                          if (
+                            row.type ===
+                            'Cost share contribution (cash or in-kind)'
+                          ) {
+                            tooltip =
+                              'The applicant is expected to cover at least 25% of total eligible expenses';
+                          }
                           return html` <td>
                             <text-field
                               customStyle="width: 95%"
                               .inputValue=${cellValue}
                               .readOnly=${this.readOnly}
                               .errorMessage=${this.cellErrors[key] || ''}
+                              .tooltip=${tooltip}
                               @onChangeTextField=${(e: CustomEvent) => {
                                 this.handleUpdateCell(
                                   rowIndex,
@@ -381,11 +391,20 @@ class ExpenseReportTableKTTP extends LitElement {
                             ></text-field>
                           </td>`;
                         } else if (col.id === 'amount') {
+                          let tooltip = '';
+                          if (
+                            row.type ===
+                            'Cost share contribution (cash or in-kind)'
+                          ) {
+                            tooltip =
+                              'The applicant is expected to cover at least 25% of total eligible expenses';
+                          }
                           return html`<td>
                             <currency-input
                               .inputValue=${cellValue}
                               .readOnly=${this.readOnly}
                               .errorMessage=${this.cellErrors[key] || ''}
+                              .tooltip=${tooltip}
                               @onChangeCurrencyInput=${(e: CustomEvent) => {
                                 this.handleUpdateCell(
                                   rowIndex,
