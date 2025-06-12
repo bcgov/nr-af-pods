@@ -17,11 +17,16 @@ export const Hosts = {
 };
 export const ClaimPaths = ['/claim/', '/claim-dev/'];
 export const ApplicationPaths = ['/application/', '/application-dev/'];
+export const HomePaths = ['/', '/home-dev/'];
 
 export const Form = {
   Application: 'Application',
   Claim: 'Claim',
   StaffPortalClaim: 'StaffPortalClaim',
+};
+
+export const Page = {
+  Home: 'Home',
 };
 
 export const BrowserInformationType = {

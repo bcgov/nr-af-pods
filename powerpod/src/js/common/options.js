@@ -16,6 +16,7 @@ const ALLOWED_HOSTS = [
   ...Hosts[Environment.PROD],
 ];
 const ALLOWED_PATHS = [
+  '/home-dev/',
   '/claim/',
   '/claim-dev/',
   '/application/',
@@ -35,6 +36,7 @@ const defaultOptions = {
   // TODO: implement log level filtering
   logLevel: ENV_LOG_LEVEL[Environment.PROD],
   form: null, // if null, will try to auto-detect the form
+  page: null,
   allowedHosts: [...ALLOWED_HOSTS],
   allowedPaths: [...ALLOWED_PATHS],
   allowedEnvs: [...ALLOWED_ENVS],

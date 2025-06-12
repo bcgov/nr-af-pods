@@ -2,6 +2,8 @@ import {
   ApplicationPaths,
   ClaimPaths,
   Form,
+  HomePaths,
+  Page,
   POWERPOD,
   win,
 } from './common/constants.js';
@@ -19,6 +21,7 @@ import './components/ClaimInfoGridVLB.ts';
 import './components/CommoditiesMultiSelect.ts';
 import './components/ExpenseInvoicesTable.ts';
 import { hideLoadingAnimation } from './common/loading.js';
+import { initHome } from './pages/home.js';
 
 const logger = Logger('powerpod');
 
@@ -32,6 +35,9 @@ export default function powerpod(options) {
     } else if (ApplicationPaths.some((appPath) => path.includes(appPath))) {
       logger.info({ message: `auto-detected ${Form.Application} form` });
       setOption('form', Form.Application);
+    } else if (HomePaths.some((appPath) => path.includes(appPath))) {
+      logger.info({ message: `auto-detected ${Page.Home} page` });
+      setOption('page', Page.Home);
     } else {
       logger.warn({
         message: `Unable to autodetect form type, path: ${path}`,
@@ -80,6 +86,18 @@ export default function powerpod(options) {
       break;
   }
 
+  switch (getOptions().page) {
+    case Page.Home:
+      logger.info({ message: `initializing ${Page.Home}`});
+      initHome();
+      break;
+    default:
+      logger.warn({
+        message: 'init with no page defined in options',
+      });
+      break;
+  }
+
   // @ts-ignore
   return window.powerpod;
 }
@@ -92,7 +110,7 @@ function setAPI() {
     };
   };
   // @ts-ignore
-  POWERPOD.version = '4.1.2';
+  POWERPOD.version = '4.1.3';
   // @ts-ignore
   window.powerpod = POWERPOD;
 }

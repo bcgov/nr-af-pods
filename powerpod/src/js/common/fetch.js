@@ -13,8 +13,7 @@ export const ENDPOINT_URL = {
     `/_api/msgov_programs(${programId})?$select=msgov_programid, msgov_programname, quartech_applicantportalprogramname, quartech_claimformheaderhtmlcontent, quartech_applicantportalclaimformjson, quartech_applicantportalprogramstreamjsonconfig, quartech_portalapplicationpagetitle, quartech_portalapplicationpagesubtitle, quartech_portalapplicationpagedescription, quartech_programabbreviation, quartech_programemailaddress, quartech_portalappactivityinfohiddenfields, quartech_portalappprojectdeschiddenfields, quartech_portalappfieldsdisplaynamesmapping, quartech_typesofbusinesstodisplay, quartech_applicantportalapplicationformconfigjson, quartech_expensetypestodisplay, quartech_activitiestypestodisplay&$expand=quartech_ApplicantPortalConfig($select=quartech_name,quartech_configdata)`,
   get_municipal_data:
     '/_api/quartech_municipals?$select=quartech_name,quartech_municipalid&$expand=quartech_RegionalDistrict($select=quartech_name,quartech_regionaldistrictid,_quartech_censusofagricultureregion_value)',
-  get_expense_type_data:
-    '/_api/quartech_expensetypes?$select=quartech_expensetypeid,quartech_expensetype',
+  get_expense_type_data: ' ',
   get_documents_data: (formId) =>
     `/_api/annotations?$filter=_objectid_value%20eq%20${formId}&$select=filename,filesize,modifiedon,subject,isdocument,objecttypecode,annotationid,mimetype`,
   get_document_data: (annotationId) =>
@@ -44,6 +43,8 @@ export const ENDPOINT_URL = {
   post_browserinformation_data: '/_api/quartech_browserinformations',
   get_types_of_food_data: `/_api/quartech_typeoffoods?$select=quartech_name`,
   get_commodities_data: `/_api/quartech_commodities?$select=quartech_name,_quartech_naicscode_value,quartech_category`,
+  get_program_intake_data: `/_api/quartech_programintakes?$select=quartech_intakeenddate,quartech_intakestartdate,quartech_openintakedescription,quartech_closedintakedescription`,
+  get_program_home_page_content_data: `/_api/quartech_programhomepagecontents`,
 };
 
 POWERPOD.fetch = {
@@ -72,7 +73,9 @@ POWERPOD.fetch = {
   postBrowserInformationData,
   getTypesOfFoodData,
   getCommoditiesData,
-  getClaimData
+  getClaimData,
+  getProgramIntakeData,
+  getProgramHomePageContentData,
 };
 
 const CONTENT_TYPE = {
@@ -630,6 +633,30 @@ export async function getCommoditiesData({ onSuccess = null, ...options }) {
     includeODataHeaders: true,
     async: false,
     onSuccess,
+    ...options,
+  });
+}
+
+export async function getProgramIntakeData({ onSuccess = null, ...options }) {
+  return fetch({
+    url: ENDPOINT_URL.get_program_intake_data,
+    contentType: CONTENT_TYPE.json,
+    datatype: DATATYPE.json,
+    includeODataHeaders: true,
+    async: false,
+    onSuccess,
+    ...options,
+  });
+}
+
+export async function getProgramHomePageContentData({ ...options } = {}) {
+  return fetch({
+    url: ENDPOINT_URL.get_program_home_page_content_data,
+    contentType: CONTENT_TYPE.json,
+    datatype: DATATYPE.json,
+    includeODataHeaders: true,
+    async: false,
+    returnData: true,
     ...options,
   });
 }
