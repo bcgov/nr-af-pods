@@ -16,6 +16,7 @@ const ALLOWED_HOSTS = [
   ...Hosts[Environment.PROD],
 ];
 const ALLOWED_PATHS = [
+  '/',
   '/home-dev/',
   '/claim/',
   '/claim-dev/',
