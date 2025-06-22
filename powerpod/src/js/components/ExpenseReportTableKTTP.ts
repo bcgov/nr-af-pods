@@ -337,7 +337,7 @@ class ExpenseReportTableKTTP extends LitElement {
                             <dropdown-search
                               .options=${this.expenseTypes}
                               .selectedValue=${cellValue}
-                              .disabled=${rowIndex <= 2 ? true : false}
+                              .disabled=${rowIndex <= 1 ? true : false}
                               .errorMessage=${this.cellErrors[key] || ''}
                               additionalTextBelowField="See program guide for eligible expenses"
                               @onChangeDropdownValue=${(e: CustomEvent) => {

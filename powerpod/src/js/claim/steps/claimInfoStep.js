@@ -174,7 +174,7 @@ export function customizeClaimInfoStep() {
   function addKttpRequestedClaimAmountNote() {
     if (!document.querySelector('#requestedClaimAmountNote')) {
       const requestedClaimAmountNoteHtmlContent = `<div id="requestedClaimAmountNote" style="padding-bottom: 20px;">
-        The amount requested for reimbursement includes all eligible costs (such as training, courses, registration, tuition) in $CAD.
+        The amount requested for reimbursement includes all eligible costs in $CAD.
       </div>`;
 
       $('#quartech_totalfees')
