@@ -1,6 +1,6 @@
 {
   "tags": ["Claim", "KTTP", "KTTP-SMEA", "KTTP-StreamTwo", "KTTP-Stream3"],
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "Claim form field config used for all KTTP streams",
   "sections": [
     {
@@ -153,6 +153,14 @@
           "format": "currency"
         },
         {
+          "name": "quartech_costsharecontributioncashorinkind",
+          "label": "Cost share contribution (cash or in-kind)",
+          "required": true,
+          "format": "currency",
+          "tooltipText": "The applicant is expected to cover at least 25% of the eligible expenses",
+          "onChangeHandler": "calculateTotalRequestedAmountForKTTP"
+        },
+        {
           "name": "quartech_authorizedclaimedamount",
           "label": "Approved Funding as per Authorization Letter (in total):",
           "readOnly": true,
@@ -169,7 +177,8 @@
             "value": "0",
             "comparison": "greaterThan"
           },
-          "emptyInitialValue": true
+          "emptyInitialValue": true,
+          "readOnly": true
         }
       ]
     },

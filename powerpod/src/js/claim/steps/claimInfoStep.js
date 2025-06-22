@@ -16,7 +16,10 @@ import {
 } from '../../common/html.js';
 import { getProgramAbbreviation } from '../../common/program.ts';
 import { configureFields } from '../../common/fieldConfiguration.js';
-import { displayActiveFieldErrors, setFieldReadOnly } from '../../common/fieldValidation.js';
+import {
+  displayActiveFieldErrors,
+  setFieldReadOnly,
+} from '../../common/fieldValidation.js';
 import { customizeSingleOrGroupApplicantQuestions } from '../fieldLogic.js';
 import '../../components/ExpenseReportTable.ts';
 import '../../components/ExpenseReportTableKTTP.ts';
@@ -33,6 +36,8 @@ import { Logger } from '../../common/logger.js';
 import { filterEmptyRows, isValidJSON } from '../../common/utils.js';
 import { renderCustomComponent } from '../../common/components.ts';
 import store from '../../store/index.js';
+import { formatCurrencyOnBlur } from '../../common/currency.js';
+import { calculateTotalRequestedAmountForKTTP } from '../../common/onChangeHandlers.js';
 
 const logger = Logger('claim/steps/claimInfoStep');
 
@@ -655,11 +660,6 @@ function addExpenseReportGridForKTTP() {
       amount: '',
     },
     {
-      type: 'Cost share contribution (cash or in-kind)',
-      description: '',
-      amount: '',
-    },
-    {
       type: 'SME / Facilitator Fee',
       description: '',
       amount: '',
@@ -699,6 +699,7 @@ function addExpenseReportGridForKTTP() {
         value: event.detail.total,
       });
       verifyTotalSumEqualsRequestedAmount();
+      calculateTotalRequestedAmountForKTTP();
     },
     mappedValueKey: 'rows',
     initFn: (existingEligibleExpenses) => {
@@ -708,6 +709,7 @@ function addExpenseReportGridForKTTP() {
         value: getTotalExpenseAmount(JSON.parse(existingEligibleExpenses)),
       });
       verifyTotalSumEqualsRequestedAmount();
+      calculateTotalRequestedAmountForKTTP();
     },
     initValuesFn: (mappedValueKey, existingValue, customElement) => {
       logger.info({

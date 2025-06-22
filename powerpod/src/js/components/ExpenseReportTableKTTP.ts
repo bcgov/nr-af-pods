@@ -192,12 +192,6 @@ class ExpenseReportTableKTTP extends LitElement {
         };
       } else if (rowIndex === 1) {
         currentRow = {
-          type: 'Cost share contribution (cash or in-kind)',
-          description: '',
-          amount: '',
-        };
-      } else if (rowIndex === 2) {
-        currentRow = {
           type: 'SME / Facilitator Fee',
           description: '',
           amount: '',

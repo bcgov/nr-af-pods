@@ -33,6 +33,7 @@ POWERPOD.onChangeHandlers = {
   displayOrHideAdministrationCostsNoticeForKTTP,
   updateSMEDesignationExplanationFieldLabelForKTTP1,
   updateSMEDesignationExplanationFieldLabelForKTTP2,
+  calculateTotalRequestedAmountForKTTP,
 };
 
 const logger = Logger('common/onChangeHandlers');
@@ -124,6 +125,50 @@ export function setOnChangeHandler(fieldName, elemType, onChangeHandlerName) {
   store.dispatch('addFieldData', {
     name: fieldName,
     onChangeHandlerSet: true,
+  });
+}
+
+export function calculateTotalRequestedAmountForKTTP() {
+  const totalSumOfReportedExpenses =
+    document.getElementById('quartech_totalsumofreportedexpenses')?.value || 0;
+  const costShareContribution =
+    document.getElementById('quartech_costsharecontributioncashorinkind')
+      ?.value || 0;
+
+  logger.info({
+    fn: calculateTotalRequestedAmountForKTTP,
+    message: `calculateTotalRequestedAmount returned the following data`,
+    data: { totalSumOfReportedExpenses, costShareContribution },
+  });
+
+  const sanitizedTotalSumOfExpenses =
+    typeof totalSumOfReportedExpenses === 'string'
+      ? totalSumOfReportedExpenses.replace(',', '')
+      : String(totalSumOfReportedExpenses).replace(',', '');
+  const totalExpenses = parseFloat(sanitizedTotalSumOfExpenses) || 0;
+
+  const sanitizedCostShareContribution =
+    typeof costShareContribution === 'string'
+      ? costShareContribution.replace(',', '')
+      : String(costShareContribution).replace(',', '');
+  const contribution = parseFloat(sanitizedCostShareContribution) || 0;
+
+  logger.info({
+    fn: calculateTotalRequestedAmountForKTTP,
+    message: `calculateTotalRequestedAmount returned ${totalExpenses} for totalExpenses and ${contribution} for contribution`,
+  });
+
+  let result = totalExpenses - contribution;
+
+  if (result < 0) result = 0;
+
+  const formattedResult = formatCurrencyOnBlur(`${result}`);
+
+  // @ts-ignore
+  setFieldValue({ name: 'quartech_totalfees', value: formattedResult });
+  logger.info({
+    fn: calculateTotalRequestedAmountForKTTP,
+    message: `Successfuly set field tag: quartech_totalfees to value: ${result}`,
   });
 }
 
@@ -512,10 +557,11 @@ export function calculateAndPopulateRequestedClaimAmountForVLB() {
   const vetDays = parseFloat(totalDaysAsAVet) || 0;
   const rvtDays = parseFloat(totalDaysAsAnRVT) || 0;
   const telemedicineDays = parseFloat(totalDaysAsTelemedicineSupport) || 0;
-  
-  const sanitizedtotalExpensesForCVBCAndBCVTA = typeof totalExpensesForCVBCAndBCVTA === 'string'
-    ? totalExpensesForCVBCAndBCVTA.replace(',', '')
-    : String(totalExpensesForCVBCAndBCVTA).replace(',', '');
+
+  const sanitizedtotalExpensesForCVBCAndBCVTA =
+    typeof totalExpensesForCVBCAndBCVTA === 'string'
+      ? totalExpensesForCVBCAndBCVTA.replace(',', '')
+      : String(totalExpensesForCVBCAndBCVTA).replace(',', '');
   const expenses = parseFloat(sanitizedtotalExpensesForCVBCAndBCVTA) || 0;
 
   logger.info({
