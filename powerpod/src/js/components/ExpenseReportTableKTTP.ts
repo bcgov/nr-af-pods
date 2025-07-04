@@ -182,7 +182,7 @@ class ExpenseReportTableKTTP extends LitElement {
 
   private handleDeleteRow(rowIndex: number) {
     const rowData = this.rows;
-    if (rowIndex <= 2) {
+    if (rowIndex <= 1) {
       let currentRow = this.rows[rowIndex];
       if (rowIndex === 0) {
         currentRow = {
@@ -220,27 +220,25 @@ class ExpenseReportTableKTTP extends LitElement {
           color: #e23636;
           padding: 0px;
           position: absolute;
-          ${
-            !this.errorMessage && !this.errorMessage?.length
-              ? css`
+          ${!this.errorMessage && !this.errorMessage?.length
+        ? css`
                   display: none;
                 `
-              : css`
+        : css`
                   display: block;
                 `
-          }
+      }
         }
         .styled-table {
           width: 100%;
           border-collapse: collapse;
           margin: 25px 0;
-          ${
-            !this.readOnly
-              ? css`
+          ${!this.readOnly
+        ? css`
                   font-size: 0.9em;
                 `
-              : css``
-          }
+        : css``
+      }
           font-family: sans-serif;
           min-width: 400px;
           box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
@@ -252,13 +250,12 @@ class ExpenseReportTableKTTP extends LitElement {
         }
         .styled-table th {
           padding: 12px 15px;
-          ${
-            !this.readOnly
-              ? css`
+          ${!this.readOnly
+        ? css`
                   font-size: 15px;
                 `
-              : css``
-          }
+        : css``
+      }
         }
         .styled-table td {
           padding: 5px 15px 20px;
@@ -291,13 +288,12 @@ class ExpenseReportTableKTTP extends LitElement {
         }
         .add-another-btn {
           line-height: 1.5;
-          ${
-            !this.readOnly
-              ? css`
+          ${!this.readOnly
+        ? css`
                   font-size: 13px;
                 `
-              : css``
-          }
+        : css``
+      }
         }
         .add-another-btn span {
           padding-bottom: 2px;
@@ -307,33 +303,31 @@ class ExpenseReportTableKTTP extends LitElement {
       <table class="styled-table">
         <thead>
           <tr>
-            ${
-              this.columns &&
-              this.columns.map((col) => {
-                return html`<th style="width: ${col.width};">
+            ${this.columns &&
+      this.columns.map((col) => {
+        return html`<th style="width: ${col.width};">
                   ${col.name}<span style="color:red;">*</span>
                 </th>`;
-              })
-            }
+      })
+      }
             ${!this.readOnly ? html`<th />` : html``}
           </tr>
         </thead>
         <tbody>
-          ${
-            this.rows?.length > 0
-              ? this.rows.map((row: RowItem, rowIndex: number) => {
-                  console.log(row);
-                  return html`
+          ${this.rows?.length > 0
+        ? this.rows.map((row: RowItem, rowIndex: number) => {
+          console.log(row);
+          return html`
                     <tr>
                       ${this.columns.map((col) => {
-                        const key = `${rowIndex}-${col.id}`;
-                        const cellValue = row[col.id];
-                        if (
-                          !this.readOnly &&
-                          col.id === 'type' &&
-                          this.expenseTypes?.length
-                        ) {
-                          return html` <td>
+            const key = `${rowIndex}-${col.id}`;
+            const cellValue = row[col.id];
+            if (
+              !this.readOnly &&
+              col.id === 'type' &&
+              this.expenseTypes?.length
+            ) {
+              return html` <td>
                             <dropdown-search
                               .options=${this.expenseTypes}
                               .selectedValue=${cellValue}
@@ -341,33 +335,33 @@ class ExpenseReportTableKTTP extends LitElement {
                               .errorMessage=${this.cellErrors[key] || ''}
                               additionalTextBelowField="See program guide for eligible expenses"
                               @onChangeDropdownValue=${(e: CustomEvent) => {
-                                this.handleUpdateCell(
-                                  rowIndex,
-                                  col.id,
-                                  e.detail.value
-                                );
-                                e.stopImmediatePropagation();
-                              }}
+                  this.handleUpdateCell(
+                    rowIndex,
+                    col.id,
+                    e.detail.value
+                  );
+                  e.stopImmediatePropagation();
+                }}
                             ></dropdown-search>
                           </td>`;
-                        } else if (this.readOnly && col.id === 'type') {
-                          return html` <td>
+            } else if (this.readOnly && col.id === 'type') {
+              return html` <td>
                             <text-field
                               customStyle="width: 95%"
                               .inputValue=${cellValue}
                               .readOnly=${this.readOnly}
                             ></text-field>
                           </td>`;
-                        } else if (col.id === 'description') {
-                          let tooltip = '';
-                          if (
-                            row.type ===
-                            'Cost share contribution (cash or in-kind)'
-                          ) {
-                            tooltip =
-                              'The applicant is expected to cover at least 25% of total eligible expenses';
-                          }
-                          return html` <td>
+            } else if (col.id === 'description') {
+              let tooltip = '';
+              if (
+                row.type ===
+                'Cost share contribution (cash or in-kind)'
+              ) {
+                tooltip =
+                  'The applicant is expected to cover at least 25% of total eligible expenses';
+              }
+              return html` <td>
                             <text-field
                               customStyle="width: 95%"
                               .inputValue=${cellValue}
@@ -375,45 +369,45 @@ class ExpenseReportTableKTTP extends LitElement {
                               .errorMessage=${this.cellErrors[key] || ''}
                               .tooltip=${tooltip}
                               @onChangeTextField=${(e: CustomEvent) => {
-                                this.handleUpdateCell(
-                                  rowIndex,
-                                  col.id,
-                                  e.detail.value
-                                );
-                                e.stopImmediatePropagation();
-                              }}
+                  this.handleUpdateCell(
+                    rowIndex,
+                    col.id,
+                    e.detail.value
+                  );
+                  e.stopImmediatePropagation();
+                }}
                             ></text-field>
                           </td>`;
-                        } else if (col.id === 'amount') {
-                          let tooltip = '';
-                          if (
-                            row.type ===
-                            'Cost share contribution (cash or in-kind)'
-                          ) {
-                            tooltip =
-                              'The applicant is expected to cover at least 25% of total eligible expenses';
-                          }
-                          return html`<td>
+            } else if (col.id === 'amount') {
+              let tooltip = '';
+              if (
+                row.type ===
+                'Cost share contribution (cash or in-kind)'
+              ) {
+                tooltip =
+                  'The applicant is expected to cover at least 25% of total eligible expenses';
+              }
+              return html`<td>
                             <currency-input
                               .inputValue=${cellValue}
                               .readOnly=${this.readOnly}
                               .errorMessage=${this.cellErrors[key] || ''}
                               .tooltip=${tooltip}
                               @onChangeCurrencyInput=${(e: CustomEvent) => {
-                                this.handleUpdateCell(
-                                  rowIndex,
-                                  col.id,
-                                  e.detail.value
-                                );
-                                e.stopImmediatePropagation();
-                              }}
+                  this.handleUpdateCell(
+                    rowIndex,
+                    col.id,
+                    e.detail.value
+                  );
+                  e.stopImmediatePropagation();
+                }}
                             ></currency-input>
                           </td>`;
-                        }
-                        return html`<td>${cellValue}</td>`;
-                      })}
+            }
+            return html`<td>${cellValue}</td>`;
+          })}
                       ${!this.readOnly
-                        ? html`
+              ? html`
                             <td>
                               <button
                                 type="button"
@@ -421,9 +415,9 @@ class ExpenseReportTableKTTP extends LitElement {
                               >
                                 <span
                                   style="padding-top: 4px; font-weight: bold; ${!this
-                                    .readOnly
-                                    ? 'font-size: 15px'
-                                    : ''}"
+                  .readOnly
+                  ? 'font-size: 15px'
+                  : ''}"
                                   class="glyphicon glyphicon-trash"
                                   role="img"
                                   aria-label="Delete"
@@ -431,15 +425,14 @@ class ExpenseReportTableKTTP extends LitElement {
                               </button>
                             </td>
                           `
-                        : html``}
+              : html``}
                     </tr>
                   `;
-                })
-              : ''
-          }
-          ${
-            !this.readOnly
-              ? html`
+        })
+        : ''
+      }
+          ${!this.readOnly
+        ? html`
                   <tr class="add-another-row">
                     <td>
                       <button
@@ -456,8 +449,8 @@ class ExpenseReportTableKTTP extends LitElement {
                     </td>
                   </tr>
                 `
-              : html``
-          }
+        : html``
+      }
           </tbody>
         </tbody>
       </table>
