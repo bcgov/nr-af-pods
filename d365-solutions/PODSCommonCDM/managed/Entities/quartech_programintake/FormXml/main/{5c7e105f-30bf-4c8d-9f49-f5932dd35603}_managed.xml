@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{5c7e105f-30bf-4c8d-9f49-f5932dd35603}</formid>
+    <IntroducedVersion>1.2.0.1</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form>
+      <tabs>
+        <tab verticallayout="true" id="{110018e0-6f0e-48b2-8e48-4d4933fa3b2f}" IsUserDefined="1" locklevel="0" expanded="true" showlabel="true">
+          <labels>
+            <label description="General" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="33%">
+              <sections>
+                <section showlabel="false" showbar="false" IsUserDefined="0" id="{f5317181-5d90-4ca8-bb34-822aa4f85039}">
+                  <labels>
+                    <label description="General" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{dab016ea-c2a7-dd58-a9c2-381e65399b23}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="Program" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_program" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="quartech_program" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{7e9016a9-6e30-42f3-976f-ceded3cc6163}">
+                        <labels>
+                          <label description="Program Intake Name" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_name" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="quartech_name" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{db01941b-5a21-c3e9-5d2a-2795a885519e}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="Intake Start Date" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_intakestartdate" classid="{5B773807-9FB2-42db-97C3-7A91EFF8ADFF}" datafieldname="quartech_intakestartdate" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{93434735-c449-8101-e8ee-c2db9cec7276}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="Intake End Date" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_intakeenddate" classid="{5B773807-9FB2-42db-97C3-7A91EFF8ADFF}" datafieldname="quartech_intakeenddate" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{19c2113e-de95-9790-497a-580c18491602}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="Project Completed By" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_projectcompletedby" classid="{5B773807-9FB2-42db-97C3-7A91EFF8ADFF}" datafieldname="quartech_projectcompletedby" disabled="false" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+            <column width="66%">
+              <sections>
+                <section showlabel="false" showbar="false" id="{e7c368ed-6af4-4a1e-993c-294e065f2052}" IsUserDefined="0" height="auto">
+                  <labels>
+                    <label description="Notes" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell showlabel="false" rowspan="15" auto="false" id="{19da15ad-4a7a-4b88-afb3-94b17c576468}">
+                        <labels>
+                          <label description="Note Text" languagecode="1033" />
+                        </labels>
+                        <control id="notescontrol" classid="{06375649-c143-495e-a496-c962e5b4488e}">
+                          <parameters>
+                            <DefaultTabId>NotesTab</DefaultTabId>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row height="auto" />
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+      <Navigation>
+        <NavBar></NavBar>
+        <NavBarAreas>
+          <NavBarArea Id="Info">
+            <Titles>
+              <Title LCID="1033" Text="Common" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="Sales">
+            <Titles>
+              <Title LCID="1033" Text="Sales" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="Service">
+            <Titles>
+              <Title LCID="1033" Text="Service" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="Marketing">
+            <Titles>
+              <Title LCID="1033" Text="Marketing" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="ProcessCenter">
+            <Titles>
+              <Title LCID="1033" Text="Process Sessions" />
+            </Titles>
+          </NavBarArea>
+        </NavBarAreas>
+      </Navigation>
+    </form>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <LocalizedNames>
+      <LocalizedName description="Information" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="A form for this entity." languagecode="1033" />
+    </Descriptions>
+  </systemform>
+</forms>

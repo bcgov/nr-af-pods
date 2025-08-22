@@ -1,0 +1,14 @@
+<environmentvariabledefinition schemaname="quartech_PodsSharePointWordOnlineTemplatesRelativeFolderPath">
+  <defaultvalue>/PODS Dataverse/Templates/</defaultvalue>
+  <description default="Relative SharePoint Folder Path">
+    <label description="Relative SharePoint Folder Path" languagecode="1033" />
+  </description>
+  <displayname default="PODS SharePoint - Word Online Templates - Relative Folder Path">
+    <label description="PODS SharePoint - Word Online Templates - Relative Folder Path" languagecode="1033" />
+  </displayname>
+  <introducedversion>1.0.0.79</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <secretstore>0</secretstore>
+  <type>100000000</type>
+</environmentvariabledefinition>

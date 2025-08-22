@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{5414ddd1-aa49-43d3-83e1-b2c5db23ee69}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="quartech_name" select="1" icon="1" preview="1">
+        <row name="result" id="quartech_fiscalyearid">
+          <cell name="quartech_name" width="221" />
+          <cell name="quartech_starton" width="155" />
+          <cell name="quartech_endon" width="178" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="quartech_fiscalyear">
+          <attribute name="quartech_fiscalyearid" />
+          <attribute name="quartech_name" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <order attribute="quartech_name" descending="true" />
+          <attribute name="quartech_starton" />
+          <attribute name="quartech_endon" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active Fiscal Years" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

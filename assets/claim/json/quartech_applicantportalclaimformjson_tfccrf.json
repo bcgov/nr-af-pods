@@ -1,0 +1,190 @@
+{
+  "tags": ["Claim", "TFCCRF"],
+  "version": "1.0.0",
+  "name": "Tree Fruit Climate Change Response Fund",
+  "abbreviation": "TFCR",
+  "hiddenSteps": [
+    {
+      "displayName": "Project Results"
+    }
+  ],
+  "customLogo": "/BCID_H_rgb_pos.png",
+  "sections": [
+    {
+      "name": "ApplicantInfoStep",
+      "fields": [
+        {
+          "name": "quartech_legalbusinessororganizationname",
+          "label": "Legal Business or Individual's Name"
+        },
+        {
+          "name": "quartech_businessaddress"
+        },
+        {
+          "name": "quartech_businessphonenumber",
+          "format": "phoneNumber",
+          "label": "Tel"
+        },
+        {
+          "name": "quartech_businessemailaddress",
+          "format": "email",
+          "label": "Email"
+        },
+        {
+          "name": "quartech_applicantinformationconfirmation",
+          "label": "I / We confirm the above information is correct",
+          "required": true,
+          "elementType": "DropdownSelect"
+        },
+        {
+          "name": "quartech_applicantinformationcorrections",
+          "label": "Please provide further detail",
+          "required": true,
+          "maxLength": 10000,
+          "visibleIf": {
+            "fieldName": "quartech_applicantinformationconfirmation",
+            "selectedValue": 255550001,
+            "techComment": "No value"
+          }
+        },
+        {
+          "name": "quartech_filenumber",
+          "label": "File Number (from authorization letter)",
+          "readOnly": true
+        }
+      ]
+    },
+    {
+      "name": "ProjectResultsStep",
+      "fields": [
+        {
+          "name": "quartech_claimingforregistrationmembershipfees",
+          "label": "Are you claiming 2024 / 2025 annual registrant / membership fees with CVBC and SBCV or BCVTA?",
+          "required": true,
+          "elementType": "DropdownSelect"
+        },
+        {
+          "name": "quartech_reasonnotclaimingregistrationmembership",
+          "label": "Please explain the reason",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_claimingforregistrationmembershipfees",
+            "selectedValue": 255550001,
+            "techComment": "No value",
+            "additionalConditions": [
+              {
+                "condition": "and",
+                "fieldName": "quartech_applicantinformationconfirmation",
+                "selectedValue": 255550001,
+                "techComment": "No value"
+              },
+              {
+                "condition": "or",
+                "fieldName": "quartech_applicantinformationconfirmation",
+                "selectedValue": 255550001,
+                "techComment": "No value"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "ClaimInfoStep",
+      "fields": [
+        {
+          "name": "quartech_expensereceiptsgrid",
+          "label": "Expense Receipts",
+          "errorMessage": "Please fill out each requested field for each receipt entry.",
+          "disableSingleLine": true,
+          "skipWordTemplateGeneration": true,
+          "checkForEmptyValues": true,
+          "required": true,
+          "techComment": "This custom component is too complex for JSON, so it's defined in claimInfoStep.js",
+          "additionalTextAboveField": "<div id='claimInfoInstructionsNote' style='padding-bottom: 20px;'><p>The program will provide 80 percent cost-share funding of up to $125,000 of eligible costs for eligible projects - up to a maximum of $100,000 per farm business.</p><p>Expenses will be reimbursed based on the submitted receipts and the approved project budget.</p></div><div style='margin-top:-40px'><p>For a completed example of the claim form, see the screenshot below:</p><img src='/expense-receipts-example.png' style='max-width: 100%; height: auto; display: block; margin-bottom: 20px' /></div>"
+        },
+        {
+          "name": "quartech_expensereceipts",
+          "label": "Expense Receipts",
+          "forceGenerateWordTemplateData": true,
+          "hidden": true,
+          "doNotBlank": true,
+          "techComment": "This is the JSON used to generate the PDF for the Expense Receipts grid"
+        },
+        {
+          "name": "quartech_totalsumofreportedexpenses",
+          "label": "Total sum of reported expenses ($CAD)",
+          "format": "currency",
+          "required": true,
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThan"
+          },
+          "emptyInitialValue": true,
+          "onChangeHandler": "calculateAndPopulateRequestedClaimAmountForTFCR",
+          "errorMessage": "Sum of all reported expenses must be greater than 0. Please fill the table shown above."
+        },
+        {
+          "name": "quartech_authorizedclaimedamount",
+          "label": "Approved Funding as per Authorization Letter (in total)",
+          "readOnly": true,
+          "onChangeHandler": "calculateAndPopulateRequestedClaimAmountForTFCR",
+          "additionalTextBelowField": "Program staff will review expenses to finalize your claim amount."
+        },
+        {
+          "name": "quartech_totalfees",
+          "hidden": true,
+          "doNotBlank": true,
+          "label": "Your requested amount in this claim ($CAD)",
+          "tooltipText": "Enter the amount you are requesting reimbursement for in this claim",
+          "relocateField": {
+            "originFieldName": "quartech_totalfees",
+            "destinationFieldName": "quartech_numberofdaysprovidingtelemedicinesupport",
+            "relativePosition": "below"
+          },
+          "readOnly": true,
+          "required": true,
+          "format": "currency",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThan"
+          }
+        }
+      ]
+    },
+    {
+      "name": "DocumentsStep",
+      "fields": [
+        {
+          "name": "quartech_proofofpayment",
+          "label": "<b>Proof of payment<b/>",
+          "required": true,
+          "elementType": "FileInput"
+        },
+        {
+          "name": "quartech_photosordocsofpurchase",
+          "label": "<b>Photos of completed project</b>",
+          "required": true,
+          "elementType": "FileInput"
+        },
+        {
+          "name": "quartech_directdepositdetails",
+          "label": "<b>Direct Deposit details</b>",
+          "required": true,
+          "elementType": "FileInput"
+        }
+      ]
+    },
+    {
+      "name": "DeclarationAndConsentStep",
+      "fields": [
+        {
+          "name": "quartech_consenttotestimonials",
+          "hidden": true
+        }
+      ]
+    }
+  ]
+}

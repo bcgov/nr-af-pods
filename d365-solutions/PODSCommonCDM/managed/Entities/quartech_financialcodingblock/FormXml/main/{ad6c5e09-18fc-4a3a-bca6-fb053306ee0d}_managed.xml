@@ -1,0 +1,250 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{ad6c5e09-18fc-4a3a-bca6-fb053306ee0d}</formid>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form shownavigationbar="false" showImage="false" maxWidth="1920">
+      <tabs>
+        <tab verticallayout="true" id="{89a5e070-8aef-4cbd-a30b-4a77ad72c8d2}" IsUserDefined="1">
+          <labels>
+            <label description="General" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%">
+              <sections>
+                <section showlabel="false" showbar="false" IsUserDefined="0" id="{31b06c8d-3be7-4533-898c-2ff5b4721a26}">
+                  <labels>
+                    <label description="General" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{43b40b58-41b3-48aa-ac9e-8e914e3ca1de}">
+                        <labels>
+                          <label description="Name" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_name" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="quartech_name" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{877a4eb8-8115-2254-4698-647134d24316}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="Client" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_client" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="quartech_client" disabled="false" uniqueid="{96d6506c-3207-567e-c06e-5470e7214022}" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{a8277e55-deec-c676-a71a-074e078a2292}" showlabel="true" locklevel="0" visible="false">
+                        <labels>
+                          <label description="Resp Centre" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_respcentre" classid="{F9A8A302-114E-466A-B582-6771B2AE0D92}" datafieldname="quartech_respcentre" disabled="false" uniqueid="{9da19604-1ec2-2155-a491-131829863038}" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{ae48eb5c-897c-8285-88ec-addec6d58e3a}" showlabel="true" locklevel="0" visible="false">
+                        <labels>
+                          <label description="Service Line" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_serviceline" classid="{F9A8A302-114E-466A-B582-6771B2AE0D92}" datafieldname="quartech_serviceline" disabled="false" uniqueid="{7094a9cb-5da6-c8d7-54c5-4e56d13a1612}" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{e893b18a-a2bb-485e-7939-8d810603ddd8}" showlabel="true" locklevel="0" visible="false">
+                        <labels>
+                          <label description="STOB" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_stob" classid="{F9A8A302-114E-466A-B582-6771B2AE0D92}" datafieldname="quartech_stob" disabled="false" uniqueid="{b781862e-ed60-bab6-4c41-ac2ec6997008}" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{d9e7ec81-5ac3-4018-5478-335a911c07e1}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="Project" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_project" classid="{F9A8A302-114E-466A-B582-6771B2AE0D92}" datafieldname="quartech_project" disabled="false" uniqueid="{e0258e02-d954-0121-83eb-e70b81312d21}" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+      <header id="{e784ef67-ed84-47ea-9256-d0462a0482ed}" columns="111">
+        <rows>
+          <row>
+            <cell id="{fc26d009-d541-4328-8688-fa429cf77ddd}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{6fce2fdf-bdf2-4a48-b8cc-6600e7e4daac}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{e019c3c9-b522-0b88-1047-1c9801894ade}" showlabel="true" locklevel="0">
+              <labels>
+                <label description="Owner" languagecode="1033" />
+              </labels>
+              <control id="header_ownerid" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="ownerid" disabled="false" />
+            </cell>
+          </row>
+        </rows>
+      </header>
+      <Navigation>
+        <NavBar></NavBar>
+        <NavBarAreas>
+          <NavBarArea Id="Info">
+            <Titles>
+              <Title LCID="1033" Text="Common" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="Sales">
+            <Titles>
+              <Title LCID="1033" Text="Sales" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="Service">
+            <Titles>
+              <Title LCID="1033" Text="Service" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="Marketing">
+            <Titles>
+              <Title LCID="1033" Text="Marketing" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="ProcessCenter">
+            <Titles>
+              <Title LCID="1033" Text="Process Sessions" />
+            </Titles>
+          </NavBarArea>
+        </NavBarAreas>
+      </Navigation>
+      <controlDescriptions>
+        <controlDescription forControl="{9da19604-1ec2-2155-a491-131829863038}">
+          <customControl id="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}">
+            <parameters>
+              <datafieldname>quartech_respcentre</datafieldname>
+            </parameters>
+          </customControl>
+          <customControl formFactor="0" name="MscrmControls.InputMask.InputMaskControl">
+            <parameters>
+              <value>quartech_respcentre</value>
+              <mask static="true" type="SingleLine.Text">00AAA</mask>
+              <msinternal.isvisibleinmocaonly static="true">true</msinternal.isvisibleinmocaonly>
+            </parameters>
+          </customControl>
+          <customControl formFactor="1" name="MscrmControls.InputMask.InputMaskControl">
+            <parameters>
+              <value>quartech_respcentre</value>
+              <mask static="true" type="SingleLine.Text">00AAA</mask>
+              <msinternal.isvisibleinmocaonly static="true">true</msinternal.isvisibleinmocaonly>
+            </parameters>
+          </customControl>
+          <customControl formFactor="2" name="MscrmControls.InputMask.InputMaskControl">
+            <parameters>
+              <value>quartech_respcentre</value>
+              <mask static="true" type="SingleLine.Text">00AAA</mask>
+              <msinternal.isvisibleinmocaonly static="true">true</msinternal.isvisibleinmocaonly>
+            </parameters>
+          </customControl>
+        </controlDescription>
+        <controlDescription forControl="{7094a9cb-5da6-c8d7-54c5-4e56d13a1612}">
+          <customControl id="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}">
+            <parameters>
+              <datafieldname>quartech_serviceline</datafieldname>
+            </parameters>
+          </customControl>
+          <customControl formFactor="0" name="MscrmControls.InputMask.InputMaskControl">
+            <parameters>
+              <value>quartech_serviceline</value>
+              <mask static="true" type="SingleLine.Text">00000</mask>
+              <msinternal.isvisibleinmocaonly static="true">true</msinternal.isvisibleinmocaonly>
+            </parameters>
+          </customControl>
+          <customControl formFactor="1" name="MscrmControls.InputMask.InputMaskControl">
+            <parameters>
+              <value>quartech_serviceline</value>
+              <mask static="true" type="SingleLine.Text">00000</mask>
+              <msinternal.isvisibleinmocaonly static="true">true</msinternal.isvisibleinmocaonly>
+            </parameters>
+          </customControl>
+          <customControl formFactor="2" name="MscrmControls.InputMask.InputMaskControl">
+            <parameters>
+              <value>quartech_serviceline</value>
+              <mask static="true" type="SingleLine.Text">00000</mask>
+              <msinternal.isvisibleinmocaonly static="true">true</msinternal.isvisibleinmocaonly>
+            </parameters>
+          </customControl>
+        </controlDescription>
+        <controlDescription forControl="{b781862e-ed60-bab6-4c41-ac2ec6997008}">
+          <customControl id="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}">
+            <parameters>
+              <datafieldname>quartech_stob</datafieldname>
+            </parameters>
+          </customControl>
+          <customControl formFactor="0" name="MscrmControls.InputMask.InputMaskControl">
+            <parameters>
+              <value>quartech_stob</value>
+              <mask static="true" type="SingleLine.Text">0000</mask>
+              <msinternal.isvisibleinmocaonly static="true">true</msinternal.isvisibleinmocaonly>
+            </parameters>
+          </customControl>
+          <customControl formFactor="1" name="MscrmControls.InputMask.InputMaskControl">
+            <parameters>
+              <value>quartech_stob</value>
+              <mask static="true" type="SingleLine.Text">0000</mask>
+              <msinternal.isvisibleinmocaonly static="true">true</msinternal.isvisibleinmocaonly>
+            </parameters>
+          </customControl>
+          <customControl formFactor="2" name="MscrmControls.InputMask.InputMaskControl">
+            <parameters>
+              <value>quartech_stob</value>
+              <mask static="true" type="SingleLine.Text">0000</mask>
+              <msinternal.isvisibleinmocaonly static="true">true</msinternal.isvisibleinmocaonly>
+            </parameters>
+          </customControl>
+        </controlDescription>
+        <controlDescription forControl="{e0258e02-d954-0121-83eb-e70b81312d21}">
+          <customControl id="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}">
+            <parameters>
+              <datafieldname>quartech_project</datafieldname>
+            </parameters>
+          </customControl>
+          <customControl formFactor="0" name="MscrmControls.InputMask.InputMaskControl">
+            <parameters>
+              <value>quartech_project</value>
+              <mask static="true" type="SingleLine.Text">AAAAAAA</mask>
+            </parameters>
+          </customControl>
+          <customControl formFactor="1" name="MscrmControls.InputMask.InputMaskControl">
+            <parameters>
+              <value>quartech_project</value>
+              <mask static="true" type="SingleLine.Text">AAAAAAA</mask>
+            </parameters>
+          </customControl>
+          <customControl formFactor="2" name="MscrmControls.InputMask.InputMaskControl">
+            <parameters>
+              <value>quartech_project</value>
+              <mask static="true" type="SingleLine.Text">AAAAAAA</mask>
+            </parameters>
+          </customControl>
+        </controlDescription>
+      </controlDescriptions>
+    </form>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <LocalizedNames>
+      <LocalizedName description="Information" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="A form for this entity." languagecode="1033" />
+    </Descriptions>
+  </systemform>
+</forms>

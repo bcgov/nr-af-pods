@@ -1,12 +1,14 @@
 {
   "tags": ["Application", "StaffPortal", "NEFBA", "NEFBA Phase 1"],
-  "version": "1.0.2",
+  "version": "1.1.1",
   "name": "New Entrant Farm Business Accelerator",
   "abbreviation": "NEFBA",
-  "hiddenSteps": "tab_Deliverables_Budget",
+  "hiddenSteps": [{ "name": "tab_Deliverables_Budget" }],
   "sections": [
     {
       "name": "ApplicantInfoStep",
+      "additionalTextAboveSection": "<p>Your personal information is collected under section 26(c) and 26(e) of the Freedom of Information and Protection of Privacy Act for the purposes of evaluating applications and for the planning and evaluating of the S-CAP Ministry Program. The information you provide will be shared with the federal government to fulfill the provincial obligations under the Sustainable Canadian Agricultural Partnership (S-CAP) bilateral agreement. It may be combined with other survey or administrative data sources and used for statistical, research and evaluation purposes.</p>",
+      "dataName": "tab_ApplicantInfo",
       "fields": [
         {
           "name": "quartech_indigenousapplicant",
@@ -96,8 +98,7 @@
         },
         {
           "name": "quartech_commodity",
-          "required": true,
-          "elementType": "DropdownSelect"
+          "required": true
         },
         {
           "name": "quartech_operationdoesprocessingandprimaryproducti",
@@ -106,8 +107,7 @@
         },
         {
           "name": "quartech_livestockprimarytypeandnumber",
-          "required": true,
-          "elementType": "DropdownSelect"
+          "required": true
         },
         {
           "name": "Business Overview",
@@ -175,7 +175,6 @@
         },
         {
           "name": "quartech_projectlocation",
-          "elementType": "DropdownSelect",
           "required": true,
           "label": "Project Location (Community)"
         },
@@ -222,10 +221,19 @@
       "name": "DemographicInfoStep",
       "fields": [
         {
-          "name": "quartech_chefsconfirmationid",
+          "name": "quartech_chefsid",
           "required": true,
           "tooltipText": "This number is automatically generated when the survey has been submitted",
-          "label": "Demographic Data Collection Survey ID number"
+          "label": "Demographic Data Collection Survey ID number",
+          "bold": true,
+          "readOnly": true,
+          "errorMessage": "Please complete the required survey, this field will autofill."
+        },
+        {
+          "name": "quartech_chefssubmissionid",
+          "label": "CHEFS Submission Id",
+          "hidden": true,
+          "doNotBlank": true
         }
       ]
     },

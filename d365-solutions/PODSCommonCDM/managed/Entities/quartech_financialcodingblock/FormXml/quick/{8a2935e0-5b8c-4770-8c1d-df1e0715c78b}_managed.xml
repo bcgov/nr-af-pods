@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{8a2935e0-5b8c-4770-8c1d-df1e0715c78b}</formid>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form>
+      <tabs>
+        <tab verticallayout="true" id="{6a7dac67-5e9d-4a55-8a9b-74c1253b6d7b}" IsUserDefined="1">
+          <labels>
+            <label description="" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%">
+              <sections>
+                <section showlabel="false" showbar="false" IsUserDefined="0" id="{673f0419-16b2-426b-9dff-ef2c9f225617}">
+                  <labels>
+                    <label description="GENERAL" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{7499600e-1729-1062-5222-c3491940557c}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="Client" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_client" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="quartech_client" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{326209e1-86cc-64ca-3696-5679c86bcc7e}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="Resp Centre" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_respcentre" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="quartech_respcentre" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{cdc169b5-729b-3c74-714c-3359786ba4d9}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="Service Line" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_serviceline" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="quartech_serviceline" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{35dd5cd3-8605-b1cd-50cd-2eb818bbee24}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="STOB" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_stob" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="quartech_stob" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{1db81e59-22e6-292c-7bd9-6be7626c153a}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="Project" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_project" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="quartech_project" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{feef9ae5-af5e-4c83-817b-45ae06e5019a}" showlabel="true" locklevel="0" visible="false">
+                        <labels>
+                          <label description="Name" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_name" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="quartech_name" uniqueid="{c29376e7-bea6-e88c-3b13-868a7d0a8428}" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{b07f0558-1c98-4753-ab45-326533eaaba8}" showlabel="true" locklevel="1" visible="false">
+                        <labels>
+                          <label description="Owner" languagecode="1033" />
+                        </labels>
+                        <control id="ownerid" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="ownerid" uniqueid="{951a3a10-8103-56ae-a671-c47b6b0449a7}" disabled="false">
+                          <parameters>
+                            <AutoResolve>true</AutoResolve>
+                            <DisableMru>false</DisableMru>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+    </form>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <LocalizedNames>
+      <LocalizedName description="Information" languagecode="1033" />
+    </LocalizedNames>
+  </systemform>
+</forms>

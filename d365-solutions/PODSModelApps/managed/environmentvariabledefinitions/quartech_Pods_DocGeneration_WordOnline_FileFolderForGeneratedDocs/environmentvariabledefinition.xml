@@ -1,0 +1,14 @@
+<environmentvariabledefinition schemaname="quartech_Pods_DocGeneration_WordOnline_FileFolderForGeneratedDocs">
+  <defaultvalue>/PODS Dataverse/Generated Documents</defaultvalue>
+  <description default="Relative Folder where documents are generated in the Documents doc lib of the Word Online (Business) connector ">
+    <label description="Relative Folder where documents are generated in the Documents doc lib of the Word Online (Business) connector " languagecode="1033" />
+  </description>
+  <displayname default="PODS Doc Generation - Word Online - File Folder For Generated Docs">
+    <label description="PODS Doc Generation - Word Online - File Folder For Generated Docs" languagecode="1033" />
+  </displayname>
+  <introducedversion>1.0.0.78</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <secretstore>0</secretstore>
+  <type>100000000</type>
+</environmentvariabledefinition>

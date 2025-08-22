@@ -10,11 +10,10 @@ export const ENDPOINT_URL = {
   get_application_form_data: (programId) =>
     `/_api/msgov_programs(${programId})?$select=msgov_programid, quartech_disabledchefsdemographicinfo, msgov_programname, quartech_applicantportalprogramname, quartech_applicantportalprogramstreamjsonconfig, quartech_portalapplicationpagetitle, quartech_portalapplicationpagesubtitle, quartech_portalapplicationpagedescription, quartech_programabbreviation, quartech_programemailaddress, quartech_portalappactivityinfohiddenfields, quartech_portalappprojectdeschiddenfields, quartech_portalappfieldsdisplaynamesmapping, quartech_typesofbusinesstodisplay, quartech_applicantportalapplicationformconfigjson, quartech_activitiestypestodisplay&$expand=quartech_ApplicantPortalConfig($select=quartech_name,quartech_configdata)`,
   get_claim_form_data: (programId) =>
-    `/_api/msgov_programs(${programId})?$select=msgov_programid, msgov_programname, quartech_applicantportalprogramname, quartech_claimformheaderhtmlcontent, quartech_applicantportalclaimformjson, quartech_applicantportalprogramstreamjsonconfig, quartech_portalapplicationpagetitle, quartech_portalapplicationpagesubtitle, quartech_portalapplicationpagedescription, quartech_programabbreviation, quartech_programemailaddress, quartech_portalappactivityinfohiddenfields, quartech_portalappprojectdeschiddenfields, quartech_portalappfieldsdisplaynamesmapping, quartech_typesofbusinesstodisplay, quartech_applicantportalapplicationformconfigjson, quartech_activitiestypestodisplay&$expand=quartech_ApplicantPortalConfig($select=quartech_name,quartech_configdata)`,
+    `/_api/msgov_programs(${programId})?$select=msgov_programid, msgov_programname, quartech_applicantportalprogramname, quartech_claimformheaderhtmlcontent, quartech_applicantportalclaimformjson, quartech_applicantportalprogramstreamjsonconfig, quartech_portalapplicationpagetitle, quartech_portalapplicationpagesubtitle, quartech_portalapplicationpagedescription, quartech_programabbreviation, quartech_programemailaddress, quartech_portalappactivityinfohiddenfields, quartech_portalappprojectdeschiddenfields, quartech_portalappfieldsdisplaynamesmapping, quartech_typesofbusinesstodisplay, quartech_applicantportalapplicationformconfigjson, quartech_expensetypestodisplay, quartech_activitiestypestodisplay&$expand=quartech_ApplicantPortalConfig($select=quartech_name,quartech_configdata)`,
   get_municipal_data:
     '/_api/quartech_municipals?$select=quartech_name,quartech_municipalid&$expand=quartech_RegionalDistrict($select=quartech_name,quartech_regionaldistrictid,_quartech_censusofagricultureregion_value)',
-  get_expense_type_data:
-    '/_api/quartech_expensetypes?$select=quartech_expensetypeid,quartech_expensetype',
+  get_expense_type_data: ' ',
   get_documents_data: (formId) =>
     `/_api/annotations?$filter=_objectid_value%20eq%20${formId}&$select=filename,filesize,modifiedon,subject,isdocument,objecttypecode,annotationid,mimetype`,
   get_document_data: (annotationId) =>
@@ -29,6 +28,7 @@ export const ENDPOINT_URL = {
   get_orgbook_credentials_data: (topicId) =>
     `https://orgbook.gov.bc.ca/api/v4/topic/${topicId}/credential-set`,
   patch_quartech_claim_data: (id) => `/_api/quartech_claims(${id})`,
+  get_claim_data: (id) => `/_api/quartech_claims(${id})`,
   patch_application_data: (id) =>
     `/_api/msgov_businessgrantapplications(${id})`,
   get_application_data: (id) =>
@@ -36,6 +36,15 @@ export const ENDPOINT_URL = {
   get_draft_applications_for_programid_data: (programid) =>
     `/_api/msgov_businessgrantapplications?$filter=_quartech_program_value%20eq%20${programid}%20and%20quartech_applicationstatus%20eq%20255550002%20and%20statuscode%20eq%201&$select=msgov_businessgrantapplicationid,_quartech_program_value,quartech_applicationstatus,statuscode`,
   post_application_data: '/_api/msgov_businessgrantapplications',
+  get_demographic_info_data: (demographicInfoId) =>
+    `/_api/quartech_demographicinfos(${demographicInfoId})`,
+  patch_demographic_info_data: (demographicInfoId) =>
+    `/_api/quartech_demographicinfos(${demographicInfoId})`,
+  post_browserinformation_data: '/_api/quartech_browserinformations',
+  get_types_of_food_data: `/_api/quartech_typeoffoods?$select=quartech_name`,
+  get_commodities_data: `/_api/quartech_commodities?$select=quartech_name,_quartech_naicscode_value,quartech_category`,
+  get_program_intake_data: `/_api/quartech_programintakes?$select=quartech_intakeenddate,quartech_intakestartdate,quartech_openintakedescription,quartech_closedintakedescription`,
+  get_program_home_page_content_data: `/_api/quartech_programhomepagecontents`,
 };
 
 POWERPOD.fetch = {
@@ -59,6 +68,14 @@ POWERPOD.fetch = {
   getApplicationData,
   getDraftApplicationsForProgramIdData,
   postApplicationData,
+  getDemographicInfoData,
+  patchDemographicInfoData,
+  postBrowserInformationData,
+  getTypesOfFoodData,
+  getCommoditiesData,
+  getClaimData,
+  getProgramIntakeData,
+  getProgramHomePageContentData,
 };
 
 const CONTENT_TYPE = {
@@ -466,6 +483,14 @@ export async function getApplicationData({ id, ...options }) {
   });
 }
 
+export async function getClaimData({ id, ...options }) {
+  return fetch({
+    url: ENDPOINT_URL.get_claim_data(id),
+    returnData: true,
+    ...options,
+  });
+}
+
 export async function getDraftApplicationsForProgramIdData({
   programid,
   ...options
@@ -481,6 +506,7 @@ export async function postApplicationData({
   id,
   programid,
   contactid,
+  quartech_nocragstnumber = null,
   ...options
 }) {
   return fetch({
@@ -496,6 +522,41 @@ export async function postApplicationData({
       'quartech_Program@odata.bind': `/msgov_programs(${programid})`,
       'quartech_Applicant@odata.bind': `/contacts(${contactid})`,
       quartech_originalsource: 255550002, // always set to "Portal" for Draft status
+      ...(quartech_nocragstnumber != null && { quartech_nocragstnumber }),
+    }),
+    ...options,
+  });
+}
+
+export async function postBrowserInformationData({
+  claimId = null,
+  applicationId = null,
+  payload = '',
+  action,
+  type,
+  contactId,
+  ...options
+}) {
+  return fetch({
+    method: 'POST',
+    url: ENDPOINT_URL.post_browserinformation_data,
+    datatype: DATATYPE.json,
+    includeODataHeaders: true,
+    addRequestVerificationToken: true,
+    processData: false,
+    returnData: true,
+    data: JSON.stringify({
+      quartech_name: 'POWERPOD',
+      quartech_action: `${action}`,
+      ...(claimId != null && {
+        'quartech_ClaimId@odata.bind': `/quartech_claims(${claimId})`,
+      }),
+      ...(applicationId != null && {
+        'quartech_ApplicationId@odata.bind': `/msgov_businessgrantapplications(${applicationId})`,
+      }),
+      quartech_type: type,
+      quartech_userid: contactId,
+      quartech_applicantbrowserinformation: payload,
     }),
     ...options,
   });
@@ -513,6 +574,89 @@ export async function patchApplicationData({ id, fieldData, ...options }) {
     data: JSON.stringify({
       ...fieldData,
     }),
+    ...options,
+  });
+}
+
+export async function getDemographicInfoData({ id, ...options }) {
+  return fetch({
+    url: ENDPOINT_URL.get_demographic_info_data(id),
+    returnData: true,
+  });
+}
+
+export async function patchDemographicInfoData({ id, fieldData, ...options }) {
+  return fetch({
+    method: 'PATCH',
+    url: ENDPOINT_URL.patch_demographic_info_data(id),
+    datatype: DATATYPE.json,
+    includeODataHeaders: true,
+    addRequestVerificationToken: true,
+    processData: false,
+    returnData: true,
+    data: JSON.stringify({
+      ...fieldData,
+    }),
+    ...options,
+  });
+}
+
+export async function getTypesOfFoodData({ ...options } = {}) {
+  return fetch({
+    url: ENDPOINT_URL.get_types_of_food_data,
+    contentType: CONTENT_TYPE.json,
+    datatype: DATATYPE.json,
+    includeODataHeaders: true,
+    async: false,
+    returnData: true,
+    ...options,
+  });
+}
+
+// export async function getCommoditiesData({ ...options } = {}) {
+//   return fetch({
+//     url: ENDPOINT_URL.get_commodities_data,
+//     contentType: CONTENT_TYPE.json,
+//     datatype: DATATYPE.json,
+//     includeODataHeaders: true,
+//     async: false,
+//     returnData: true,
+//     ...options,
+//   });
+// }
+
+export async function getCommoditiesData({ onSuccess = null, ...options }) {
+  return fetch({
+    url: ENDPOINT_URL.get_commodities_data,
+    contentType: CONTENT_TYPE.json,
+    datatype: DATATYPE.json,
+    includeODataHeaders: true,
+    async: false,
+    onSuccess,
+    ...options,
+  });
+}
+
+export async function getProgramIntakeData({ onSuccess = null, ...options }) {
+  return fetch({
+    url: ENDPOINT_URL.get_program_intake_data,
+    contentType: CONTENT_TYPE.json,
+    datatype: DATATYPE.json,
+    includeODataHeaders: true,
+    async: false,
+    onSuccess,
+    ...options,
+  });
+}
+
+export async function getProgramHomePageContentData({ ...options } = {}) {
+  return fetch({
+    url: ENDPOINT_URL.get_program_home_page_content_data,
+    contentType: CONTENT_TYPE.json,
+    datatype: DATATYPE.json,
+    includeODataHeaders: true,
+    async: false,
+    returnData: true,
     ...options,
   });
 }

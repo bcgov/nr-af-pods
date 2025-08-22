@@ -4,6 +4,7 @@ import {
   ClaimPaths,
   Form,
   win,
+  ProgramIds,
 } from './constants.js';
 import { getCurrentUser } from './dynamics.ts';
 import {
@@ -18,7 +19,6 @@ const logger = Logger('common/application');
 
 POWERPOD.applicationUtils = {
   getFormType,
-  preloadExistingDraftApplications: getExistingDraftApplicationId,
   getExistingDraftApplicationId,
   existingDraftApplications: null,
 };
@@ -126,10 +126,20 @@ export async function getExistingDraftApplicationId() {
 
       const { contactId } = getCurrentUser();
 
+      let quartech_nocragstnumber = null;
+      if (programId === ProgramIds.VLB) {
+        logger.info({
+          fn: getExistingDraftApplicationId,
+          message: `Detected VLB program id, starting app with quartech_nocragstnumber = true;`,
+        });
+        quartech_nocragstnumber = true;
+      }
+
       const payload = {
         id: uuid,
         programid: programId,
         contactid: contactId,
+        ...(quartech_nocragstnumber != null && { quartech_nocragstnumber }),
       };
 
       const response = await postApplicationData(payload);

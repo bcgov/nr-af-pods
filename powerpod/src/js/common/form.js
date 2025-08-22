@@ -1,5 +1,11 @@
-// @ts-nocheck
-import { POWERPOD, doc } from './constants.js';
+import {
+  HtmlElementType,
+  POWERPOD,
+  doc,
+  Form,
+  BrowserInformationAction,
+  FormStep,
+} from './constants.js';
 import {
   getControlType,
   getControlValue,
@@ -8,7 +14,22 @@ import {
   isEmptyRow,
   isHiddenRow,
 } from './html.js';
+import { getFormType } from './applicationUtils.js';
+import {
+  getCurrentStep,
+  getProgramAbbreviation,
+  getProgramData,
+  getProgramId,
+} from './program.ts';
 import { Logger } from './logger.js';
+import store from '../store/index.js';
+import { convertObjectToString, isObject, saveBrowserInfo } from './utils.js';
+import {
+  getApplicationData,
+  patchApplicationData,
+  patchClaimData,
+} from './fetch.js';
+import { getConsentText } from '../application/steps/declarationConsent.js';
 
 const logger = Logger('common/form');
 
@@ -152,9 +173,11 @@ export function addFormDataOnClickHandler() {
 
   nextButton.removeAttribute('onclick');
 
-  nextButton?.addEventListener('click', (event) =>
-    formDataOnClickHandler(event, nextFn)
-  );
+  nextButton?.addEventListener('click', (event) => {
+    augmentFormDataForBUG6998({}, true);
+    saveBrowserInfo(BrowserInformationAction.Next);
+    formDataOnClickHandler(event, nextFn);
+  });
 
   logger.info({
     fn: addFormDataOnClickHandler,
@@ -182,14 +205,17 @@ function formDataOnClickHandler(event, nextFn) {
   });
 }
 
-export function generateFormJson() {
+export function generateFormJson(setFieldOrder = false) {
   const containerElement = document.querySelector('#EntityFormView');
 
   const wordTemplateDataElement = containerElement.querySelectorAll(
     'textarea[id*="quartech_wordtemplatedata"]'
   );
 
-  if (!wordTemplateDataElement || !wordTemplateDataElement.length) {
+  if (
+    !setFieldOrder &&
+    (!wordTemplateDataElement || !wordTemplateDataElement.length)
+  ) {
     logger.info({
       fn: generateFormJson,
       message: 'No need to generate form json if no word template field exists',
@@ -232,13 +258,23 @@ export function generateFormJson() {
     message: `Processing fieldSet array for tabDataName: ${tabDataName}`,
   });
 
-  const formJsonObj = {};
+  let formJsonObj = {};
+
+  // these are used for appending an extra section post-processing:
+  let appendSection = false;
+  let sectionToAppend = {};
 
   fieldsetArr.forEach((fieldset) => {
     const displayName = fieldset.querySelector('h3')?.textContent; // e.g. "Application Information for Reimbursement"
 
+    // skip coding sections
+    if (displayName?.toLowerCase().includes('coding section')) {
+      return;
+    }
+
     const tableElement = fieldset.querySelector('table');
     const sectionId = tableElement?.getAttribute('data-name'); // e.g. "applicationInfoSection"
+
     if (sectionId && sectionId.toLowerCase().includes('codingsection')) {
       logger.info({
         fn: generateFormJson,
@@ -260,7 +296,11 @@ export function generateFormJson() {
 
     const trArray = tableElement?.querySelectorAll('tbody > tr');
 
-    if (!sectionId || !displayName || !trArray || !trArray.length) {
+    let currentStep = getCurrentStep();
+    if (
+      (!sectionId || !displayName || !trArray || !trArray.length) &&
+      currentStep !== FormStep.DeclarationAndConsent
+    ) {
       logger.error({
         fn: generateFormJson,
         message:
@@ -283,21 +323,92 @@ export function generateFormJson() {
       [questionAnswerListKey]: [],
     };
 
+    const questionKey = `${sectionId}Question`;
+    const answerKey = `${sectionId}Answer`;
+
+    if (
+      sectionId === 'applicantDeclarationSection' ||
+      sectionId === 'declarationAndConsentSection'
+    ) {
+      const formType = getFormType();
+      const consentText = generateConsentHtmlToText(formType);
+      formJsonObj[sectionId][questionAnswerListKey].push({
+        [questionKey]: 'Declaration & Consent Text',
+        [answerKey]: consentText,
+      });
+    }
+
     trArray.forEach((tr) => {
-      if (isHiddenRow(tr)) {
+      const controlType = getControlType({ tr });
+      if (controlType === HtmlElementType.NotesControl) {
         logger.info({
           fn: generateFormJson,
-          message: 'Skipping hidden row',
+          message: 'Skipping notes control element',
+          data: { tr },
+        });
+        return;
+      }
+      const controlId = getControlId(tr, controlType);
+
+      // if (controlId === 'quartech_consenttotestimonials') {
+      //   formJsonObj[sectionId][questionAnswerListKey].push({
+      //     [questionKey]: 'Declaration & Consent Text',
+      //     [answerKey]: 'Testimonials may be used in program reporting, promotional materials, or shared publicly if funding is awarded. Do you consent to providing a written testimonial (with 1 to 3 high-quality photos, if possible) once your project has been completed?',
+      //   });
+      // }
+
+      let fieldConfig = {};
+      if (POWERPOD.state?.fields?.[controlId]) {
+        fieldConfig = POWERPOD.state?.fields?.[controlId];
+      }
+
+      const {
+        forceGenerateWordTemplateData = false,
+        skipWordTemplateGeneration = false,
+      } = fieldConfig;
+
+      // exit early if the intention is just to set the field order
+      if (controlId && setFieldOrder) {
+        logger.info({
+          fn: generateFormJson,
+          message: `addToFieldOrder controlId: ${controlId}`,
+        });
+        store.dispatch('addToFieldOrder', controlId);
+        return;
+      }
+      if (skipWordTemplateGeneration) {
+        logger.info({
+          fn: generateFormJson,
+          message: `Skipping row since skipWordTemplateGeneration is set for controlId: ${controlId}`,
           data: {
             tr,
           },
         });
         return;
       }
+      if (isHiddenRow(tr)) {
+        if (!forceGenerateWordTemplateData) {
+          logger.info({
+            fn: generateFormJson,
+            message: `Skipping hidden row, controlId: ${controlId}`,
+            data: {
+              tr,
+            },
+          });
+          return;
+        }
+        logger.info({
+          fn: generateFormJson,
+          message: `Hidden row, but forceGenerateWordTemplateData set to true for controlId: ${controlId}`,
+          data: {
+            tr,
+          },
+        });
+      }
       if (isEmptyRow(tr)) {
         logger.info({
           fn: generateFormJson,
-          message: 'Skipping empty row',
+          message: `Skipping empty row, controlId: ${controlId}`,
           data: {
             tr,
           },
@@ -305,9 +416,18 @@ export function generateFormJson() {
         return;
       }
 
-      const controlType = getControlType(tr);
-      const questionText = getInfoValue(tr);
-      const controlId = getControlId(tr);
+      if (controlId?.includes('subgrid_')) {
+        logger.info({
+          fn: generateFormJson,
+          message: `Skipping subgrid, controlId: ${controlId}`,
+          data: {
+            tr,
+          },
+        });
+        return;
+      }
+
+      let questionText = getInfoValue(tr);
 
       logger.info({
         fn: generateFormJson,
@@ -315,7 +435,11 @@ export function generateFormJson() {
         data: { tr },
       });
 
-      const answerText = getControlValue({ tr, controlId });
+      let answerText = getControlValue({
+        tr,
+        controlId,
+        forTemplateGeneration: true,
+      });
 
       logger.info({
         fn: generateFormJson,
@@ -327,10 +451,22 @@ export function generateFormJson() {
         },
       });
 
-      if (!questionText) {
-        logger.error({
+      if (!answerText || answerText === 'undefined') {
+        logger.warn({
           fn: generateFormJson,
-          message: `Could not find question text for controlId: ${controlId}`,
+          message: `answerText for controlId: ${controlId} was missing or undefined, answerText: ${answerText}, setting it to an empty string`,
+        });
+        answerText = '';
+      }
+
+      if (!questionText && POWERPOD.state?.fields?.[controlId]?.label) {
+        questionText = POWERPOD.state?.fields?.[controlId]?.label;
+      }
+
+      if (!questionText || questionText === ' ') {
+        logger.warn({
+          fn: generateFormJson,
+          message: `Could not find question text for controlId: ${controlId}, controlType: ${controlType}`,
           data: {
             tr,
           },
@@ -351,8 +487,34 @@ export function generateFormJson() {
         return; // skip this forEach loop
       }
 
-      const questionKey = `${sectionId}Question`;
-      const answerKey = `${sectionId}Answer`;
+      // Special case for Claim VLB form / Practice(s) Grid PDF JSON Generation
+      if (controlId === 'quartech_practiceswherelocumservicesweredelivered') {
+        const answerObj = JSON.parse(answerText);
+        sectionToAppend = answerObj;
+        appendSection = true;
+        logger.info({
+          fn: generateFormJson,
+          message: `For quartech_practiceswherelocumservicesweredelivered skipping adding to original object, instead append at the end`,
+          data: {
+            answerText,
+            answerObj,
+          },
+        });
+        return;
+      } else if (controlId === 'quartech_expensereceipts') {
+        const answerObj = JSON.parse(answerText);
+        sectionToAppend = answerObj;
+        appendSection = true;
+        logger.info({
+          fn: generateFormJson,
+          message: `For quartech_expensereceipts skipping adding to original object, instead append at the end`,
+          data: {
+            answerText,
+            answerObj,
+          },
+        });
+        return;
+      }
 
       formJsonObj[sectionId][questionAnswerListKey].push({
         [questionKey]: questionText,
@@ -361,9 +523,44 @@ export function generateFormJson() {
     });
   });
 
+  if (appendSection && sectionToAppend) {
+    logger.info({
+      fn: generateFormJson,
+      message: `attempting to appendSection...`,
+      data: {
+        appendSection,
+        sectionToAppend,
+        formJsonObj,
+      },
+    });
+    formJsonObj = {
+      ...formJsonObj,
+      ...sectionToAppend,
+    };
+    logger.info({
+      fn: generateFormJson,
+      message: `successfully appended Section to formJsonObj...`,
+      data: {
+        appendSection,
+        sectionToAppend,
+        formJsonObj,
+      },
+    });
+  }
+
+  if (setFieldOrder) {
+    logger.info({
+      fn: generateFormJson,
+      message: `Successfully generated field order state array, exiting...`,
+      data: { fieldOrder: POWERPOD.state.fieldOrder },
+    });
+    return;
+  }
+
   logger.info({
     fn: generateFormJson,
-    message: 'Setting word template field data',
+    message:
+      'Setting word template field data: \n' + `${JSON.stringify(formJsonObj)}`,
     data: {
       formJsonObj,
       wordTemplateDataElement: wordTemplateDataElement[0],
@@ -372,4 +569,180 @@ export function generateFormJson() {
 
   wordTemplateDataElement[0].value = JSON.stringify(formJsonObj);
   return true;
+}
+
+export function generateConsentHtmlToText(formType) {
+  const programName = getProgramData()?.quartech_applicantportalprogramname;
+  const programAbbreviation = getProgramAbbreviation();
+  let html = '';
+  if (formType === Form.Claim) {
+    html = `
+      <div style='font-style: italic;'>
+        <span>BY SUBMITTING THIS CLAIM FOR PAYMENT FORM TO %%ProgramName%% (the "Program"), I:</span>
+        <u style='text-decoration:none;'>
+            <li>represent that I am the applicant or the fully authorized signatory of the applicant;</li>
+            <li>declare that I have/the applicant has not knowingly submitted false or misleading information and that the information provided in this claim for payment form and attachments is true and correct in every respect to the best of my/the applicant's knowledge;</li>
+            <li>acknowledge the information provided on this claim for payment and attachments will be used by the Ministry of Agriculture and Food (the "Ministry") to assess the applicant's eligibility for funding from the Program;</li>
+            <li>understand that failing to comply with all application requirements may delay the processing of the application or make the applicant ineligible to receive funding under the Program;</li>
+            <li>represent that I have/the applicant has read and understood the Program Terms and Conditions and agree(s) to be bound by the Program Terms and Conditions;</li>
+            <li>represent that the applicant is in compliance with all Program eligibility requirements as described in the Program Terms and Conditions, and in this document;</li>
+            <li>agree to proactively disclose to the Program all other sources of funding the applicant or any partners within the same organization or the same farming or food processing operation receives with respect to the projects funded by this Program, including financial and/or in-kind contributions from federal, provincial, or municipal government;</li>
+            <li>understand that the Program covers costs up to the maximum Approved amount. Any additional fees over and above the approved amount are the responsibility of the applicant and will not be covered by the B.C. Ministry of Agriculture and Food.</li>
+            <li>acknowledge that the Business Number (GST Number) is collected by the Ministry under the authority of the Income Tax Act for the purpose of reporting income.</li>
+        </u>
+        <br/>
+    </div>`;
+    // }
+    // else if (formType === Form.Application && programAbbreviation.includes('KTTP')) {
+    //   html = `
+    //   <div style='font-style: italic;'>
+    //     <span>BY SUBMITTING THIS APPLICATION FORM TO %%ProgramName%% (the "Program"), I:</span>
+    //     <u style='text-decoration:none;'>
+    //         <li>represent that I am the applicant or the fully authorized signatory of the applicant;</li>
+    //         <li>declare that I have/the applicant has not knowingly submitted false or misleading information and that the information provided in this application and attachments is true and correct in every respect to the best of my/the applicant's knowledge;</li>
+    //         <li>acknowledge the information provided on this application form and attachments will be used by the Ministry of Agriculture and Food (the "Ministry") to assess the applicant's eligibility for funding from the Program;</li>
+    //         <li>understand that failing to comply with all application requirements may delay the processing of this application or make the applicant ineligible to receive funding under the Program;</li>
+    //         <li>represent that I have/the applicant has read and understood the Program Terms and Conditions and agree(s) to be bound by the Program Terms and Conditions;</li>
+    //         <li>represent that the applicant is in compliance with all Program eligibility requirements as described in the Program Terms and Conditions, and in this document;</li>
+    //         <li>agree to proactively disclose to the Program all other sources of funding the applicant or any partners within the same organization or the same farming or food processing operation receives with respect to the projects funded by this Program, including financial and/or in-kind contributions from federal, provincial, or municipal government;</li>
+    //         <li>acknowledge that the Business Number (GST Number) is collected by the Ministry under the authority of the Income Tax Act for the purpose of reporting income.</li>
+    //     </u>
+    //     <br/>
+    //     <p>Testimonials may be used in program reporting, promotional materials, or shared publicly if funding is awarded. Do you consent to providing a written testimonial (with 1 to 3 high-quality photos, if possible) once your project has been completed?</p>
+    // </div>`;
+  } else if (formType === Form.Application) {
+    html = getConsentText();
+  }
+  // Create a temporary DOM element
+  const tempDiv = document.createElement('div');
+
+  // Set the HTML content
+  tempDiv.innerHTML = html;
+
+  // Extract text and format it
+  let text = tempDiv.innerText
+    .replace(/\s+/g, ' ') // Remove excess white spaces
+    .replace(/^\d+/, '') // Remove potential numbering issues
+    .replace(/•/g, '') // Remove any bullet points, if exist
+
+    // Handle any placeholders
+    .replace(/%%ProgramName%%/g, programName)
+
+    // Add necessary formatting for better readability
+    .replace(/\s*<li>\s*/gi, '\n- ') // Bullet points
+    .replace(/<br\s*\/?>/gi, '\n'); // Line breaks
+
+  // Return the cleaned and formatted text
+  return text;
+}
+
+export async function augmentFormDataForBUG6998(
+  payload = {},
+  patchData = false
+) {
+  const formId = getFormId();
+  const formType = getFormType();
+  const currentStep = getCurrentStep();
+  logger.info({
+    fn: augmentFormDataForBUG6998,
+    message: `start to getApplicationData: ${formType}`,
+    data: { formId, formType, payload, currentStep },
+  });
+  if (currentStep === FormStep.ApplicantInfo) {
+    const { programId } = await getProgramId();
+    logger.info({
+      fn: augmentFormDataForBUG6998,
+      message: `start to getApplicationData: ${formType}`,
+      data: { formId, formType, payload, currentStep, programId },
+    });
+    // Implemented as part of BUG 6998
+    // if quartech_originalsource = import (255550001) and msgov_programid=357a7a04-a309-f011-bae3-002248ae7f3c DO NOTHING
+    // else update quartech_originalsource = portal (255550002)
+    if (programId === '357a7a04-a309-f011-bae3-002248ae7f3c') {
+      logger.info({
+        fn: augmentFormDataForBUG6998,
+        message: `start to getApplicationData: ${formType}`,
+        data: { formId, formType, payload, currentStep, programId },
+      });
+      try {
+        const applicationDataRes = await getApplicationData({ id: formId });
+
+        if (!applicationDataRes?.data?.value?.[0]) {
+          logger.error({
+            fn: augmentFormDataForBUG6998,
+            message: `Could not get application data result`,
+          });
+        }
+
+        const { quartech_originalsource } =
+          applicationDataRes?.data?.value?.[0];
+
+        logger.info({
+          fn: augmentFormDataForBUG6998,
+          message: `successfully fetched application data and found quartech_originalsource: ${quartech_originalsource}`,
+          data: { quartech_originalsource, programId, currentStep },
+        });
+
+        if (quartech_originalsource === 255550001) {
+          // do nothing
+        } else {
+          payload.quartech_originalsource = 255550002;
+          logger.info({
+            fn: augmentFormDataForBUG6998,
+            message: `successfully updated payload with payload.quartech_originalsource: ${payload.quartech_originalsource}`,
+            data: {
+              payload_quartech_originalsource: payload.quartech_originalsource,
+              quartech_originalsource,
+              programId,
+              currentStep,
+            },
+          });
+        }
+      } catch (e) {
+        logger.error({
+          fn: augmentFormDataForBUG6998,
+          message: `failed to getApplicationData: ${formType}`,
+          data: { e, formId, formType, payload, currentStep, programId },
+        });
+      }
+    } else {
+      payload.quartech_originalsource = 255550002;
+    }
+    logger.info({
+      fn: augmentFormDataForBUG6998,
+      message: `payload.quartech_originalsource: ${payload.quartech_originalsource}`,
+      data: {
+        payload_quratech_originalsource: payload.quartech_originalsource,
+        currentStep,
+        programId,
+        formId,
+      },
+    });
+  }
+
+  if (patchData) {
+    try {
+      let res;
+
+      if (formType === Form.Application) {
+        res = await patchApplicationData({ id: formId, fieldData: payload });
+      } else if (formType === Form.Claim) {
+        res = await patchClaimData({ id: formId, fieldData: payload });
+      }
+
+      logger.info({
+        fn: augmentFormDataForBUG6998,
+        message: 'successfully patched form data with payload',
+        data: { formId, formType, payload },
+      });
+    } catch (e) {
+      logger.error({
+        fn: augmentFormDataForBUG6998,
+        message: `failed to patch form data for formType: ${formType}`,
+        data: { e, formId, formType, payload },
+      });
+    }
+  }
+
+  return payload;
 }

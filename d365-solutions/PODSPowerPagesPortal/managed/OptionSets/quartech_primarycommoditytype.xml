@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<optionset Name="quartech_primarycommoditytype" localizedName="primary commodity type" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <OptionSetType>picklist</OptionSetType>
+  <IsGlobal>1</IsGlobal>
+  <IntroducedVersion>1.0.0.2</IntroducedVersion>
+  <IsCustomizable>1</IsCustomizable>
+  <ExternalTypeName></ExternalTypeName>
+  <displaynames>
+    <displayname description="primary commodity type" languagecode="1033" />
+  </displaynames>
+  <options>
+    <option value="255550000" ExternalValue="">
+      <labels>
+        <label description="Forage and/or Grains" languagecode="1033" />
+      </labels>
+      <Descriptions>
+        <Description description="" languagecode="1033" />
+      </Descriptions>
+    </option>
+    <option value="255550001" ExternalValue="">
+      <labels>
+        <label description="Vegetables and/or Melons" languagecode="1033" />
+      </labels>
+      <Descriptions>
+        <Description description="" languagecode="1033" />
+      </Descriptions>
+    </option>
+    <option value="255550002" ExternalValue="">
+      <labels>
+        <label description="Berries" languagecode="1033" />
+      </labels>
+      <Descriptions>
+        <Description description="" languagecode="1033" />
+      </Descriptions>
+    </option>
+    <option value="255550003" ExternalValue="">
+      <labels>
+        <label description="Grapes" languagecode="1033" />
+      </labels>
+      <Descriptions>
+        <Description description="" languagecode="1033" />
+      </Descriptions>
+    </option>
+    <option value="255550004" ExternalValue="">
+      <labels>
+        <label description="Non-Citrus Tree Fruits and/or Tree Nuts" languagecode="1033" />
+      </labels>
+      <Descriptions>
+        <Description description="" languagecode="1033" />
+      </Descriptions>
+    </option>
+    <option value="255550005" ExternalValue="">
+      <labels>
+        <label description="Greenhouse Food Crops" languagecode="1033" />
+      </labels>
+      <Descriptions>
+        <Description description="" languagecode="1033" />
+      </Descriptions>
+    </option>
+    <option value="255550006" ExternalValue="">
+      <labels>
+        <label description="Nursery and/or Floriculture" languagecode="1033" />
+      </labels>
+      <Descriptions>
+        <Description description="" languagecode="1033" />
+      </Descriptions>
+    </option>
+    <option value="255550007" ExternalValue="">
+      <labels>
+        <label description="Hay" languagecode="1033" />
+      </labels>
+      <Descriptions>
+        <Description description="" languagecode="1033" />
+      </Descriptions>
+    </option>
+    <option value="255550008" ExternalValue="">
+      <labels>
+        <label description="Beef and/or Other Livestock" languagecode="1033" />
+      </labels>
+      <Descriptions>
+        <Description description="" languagecode="1033" />
+      </Descriptions>
+    </option>
+    <option value="255550009" ExternalValue="">
+      <labels>
+        <label description="Dairy and/or Milk Production" languagecode="1033" />
+      </labels>
+      <Descriptions>
+        <Description description="" languagecode="1033" />
+      </Descriptions>
+    </option>
+    <option value="255550010" ExternalValue="">
+      <labels>
+        <label description="Hog and/or Pig" languagecode="1033" />
+      </labels>
+      <Descriptions>
+        <Description description="" languagecode="1033" />
+      </Descriptions>
+    </option>
+    <option value="255550011" ExternalValue="">
+      <labels>
+        <label description="Poultry and/or Egg Production" languagecode="1033" />
+      </labels>
+      <Descriptions>
+        <Description description="" languagecode="1033" />
+      </Descriptions>
+    </option>
+    <option value="255550012" ExternalValue="">
+      <labels>
+        <label description="Support ALL Commodities " languagecode="1033" />
+      </labels>
+      <Descriptions>
+        <Description description="" languagecode="1033" />
+      </Descriptions>
+    </option>
+    <option value="255550013" ExternalValue="">
+      <labels>
+        <label description="Other" languagecode="1033" />
+      </labels>
+      <Descriptions>
+        <Description description="" languagecode="1033" />
+      </Descriptions>
+    </option>
+  </options>
+</optionset>

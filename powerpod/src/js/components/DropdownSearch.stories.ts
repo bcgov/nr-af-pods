@@ -14,7 +14,7 @@ type Story = StoryObj;
 
 export const Primary: Story = {
   args: {
-    selectedValue: 'Other Costs',
+    // selectedValue: 'Other Costs',
     options: [
       'SME Fee',
       'Facilitator Fee',

@@ -1,12 +1,22 @@
-import { HtmlElementType, doc } from './constants.js';
+import { HtmlElementType, ProgramIds, doc } from './constants.js';
 import { Logger } from './logger.js';
-import { validateRequiredFields } from './fieldValidation.js';
+import {
+  displayActiveFieldErrors,
+  validateRequiredFields,
+  validateStepField,
+} from './fieldValidation.js';
 import { POWERPOD } from './constants.js';
-import { cleanString } from './documents.js';
+import { cleanString } from './documents.ts';
+import { getProgramId } from './program.ts';
+import store from '../store/index.js';
+import { getFieldConfig } from './fields.js';
+import { convertDateToISO } from './date.js';
+import { updateFieldValue } from './fieldConfiguration.js';
 
 const logger = Logger('common/html');
 
 POWERPOD.html = {
+  setFieldNameLabel,
   redirectToFormId,
   getControlType,
   isEmptyRow,
@@ -32,6 +42,7 @@ POWERPOD.html = {
   observeIframeChanges,
   hideQuestion,
   showOrHideAndReturnValue,
+  getFieldRow,
   setFieldValue,
   relocateField,
   combineElementsIntoOneRowNew,
@@ -44,7 +55,27 @@ POWERPOD.html = {
   isNode,
   getFieldNameLabel,
   htmlDecode,
+  getFieldInfoDiv,
+  setMultiSelectValues,
+  getMultiOptionSetElementValue,
+  getOriginalMsosElement,
+  newGetOriginalMultiOptionSetElementValue,
+  renameSectionLabel,
+  addTextAboveSection,
+  addTextBelowSection,
+  moveTableRow,
+  hideFieldRow,
+  disableSingleLine,
+  addCustomField,
+  generatePlaceholderRowForCustomField,
+  hideNumberInputArrowsById,
+  isSignatureFilled,
+  normalizeTableCells,
 };
+
+export function configureCustomLogo(customLogo) {
+  $('#page-logo').attr('src', customLogo);
+}
 
 export function redirectToFormId(id) {
   let currentUrl = new URL(window.location.href);
@@ -61,28 +92,67 @@ export function redirectToFormId(id) {
   window.location.href = currentUrl.toString();
 }
 
-export function getControlType(tr) {
-  const controlDiv = tr.querySelector('div.control');
+export function getControlType({ tr, controlId = '', skipState = false }) {
+  if (
+    controlId &&
+    POWERPOD.state?.fields?.[controlId]?.elementType &&
+    POWERPOD.state?.fields?.[controlId]?.elementType !== 'Unknown'
+  ) {
+    return POWERPOD.state.fields[controlId].elementType;
+  }
+
+  logger.info({
+    fn: getControlType,
+    message: `Control/element type not found in state, start determining type...`,
+    data: { tr, controlId, skipState },
+  });
+
+  const controlDiv = tr?.querySelector('div.control');
   const control = controlDiv?.querySelector(
     'input[id*=quartech_], textarea[id*=quartech_], select[id*=quartech_]'
   );
 
   if (!control) {
-    logger.error({
-      fn: getControlType,
-      message: 'Could not find form control element',
-      data: {
-        tr,
-        control,
-      },
-    });
-    return;
+    // exit early for notescontrol file upload
+    if (tr.querySelector('#notescontrol')) {
+      logger.info({
+        fn: getControlType,
+        message: 'Found notes control control type',
+        data: { tr },
+      });
+      return HtmlElementType.NotesControl;
+    } else {
+      logger.warn({
+        fn: getControlType,
+        message: 'Could not find form control element, might be an empty row',
+        data: {
+          tr,
+          control,
+        },
+      });
+      return;
+    }
   }
 
-  const controlId = getControlId(tr);
+  if (!controlId) {
+    controlId = getControlId(tr);
+  }
 
-  if (control?.id && POWERPOD.state?.fields[controlId]?.elementType) {
-    return POWERPOD.state?.fields[controlId]?.elementType;
+  let controlType;
+
+  if (
+    !skipState &&
+    control?.id &&
+    POWERPOD.state?.fields[controlId]?.elementType &&
+    POWERPOD.state?.fields[controlId]?.elementType !== 'Unknown'
+  ) {
+    controlType = POWERPOD.state?.fields[controlId]?.elementType;
+    logger.info({
+      fn: getControlType,
+      message: `Successfully found control type from STATE for controlId: ${controlId}, found elementType: ${controlType}`,
+      data: { tr, controlId },
+    });
+    return controlType;
   }
 
   const tag = control.tagName.toLowerCase();
@@ -90,37 +160,58 @@ export function getControlType(tr) {
   const typeAttribute = control.getAttribute('type');
 
   if (tag === 'input' && classes?.includes('money')) {
-    return HtmlElementType.CurrencyInput;
+    controlType = HtmlElementType.CurrencyInput;
+  } else if (
+    tag === 'input' &&
+    classes?.includes('text') &&
+    classes?.includes('lookup') &&
+    classes?.includes('form-control')
+  ) {
+    controlType = HtmlElementType.MultiSelectPicklist;
   } else if (tag === 'input' && classes?.includes('text')) {
-    return HtmlElementType.Input;
+    controlType = HtmlElementType.Input;
   } else if (tag === 'input' && classes?.includes('datetime')) {
-    return HtmlElementType.DatePicker;
+    controlType = HtmlElementType.DatePicker;
   } else if (tag === 'textarea' && classes?.includes('textarea')) {
-    return HtmlElementType.TextArea;
-  } else if (tag === 'select' && classes?.includes('picklist')) {
-    return HtmlElementType.DropdownSelect;
+    controlType = HtmlElementType.TextArea;
+  } else if (
+    tag === 'select' &&
+    (classes?.includes('picklist') || classes?.includes('boolean-dropdown'))
+  ) {
+    controlType = HtmlElementType.DropdownSelect;
   } else if (tag === 'input' && control.type === 'checkbox') {
-    return HtmlElementType.Checkbox;
+    controlType = HtmlElementType.Checkbox;
+  } else if (tag === 'input' && classes?.includes('msos-input')) {
+    controlType = HtmlElementType.MultiOptionSet;
   }
-  logger.error({
+  if (!controlType) {
+    logger.error({
+      fn: getControlType,
+      message: 'Could not determine control type',
+      data: {
+        tr,
+        control,
+        tag,
+        classes,
+      },
+    });
+    return HtmlElementType.Unknown;
+  }
+  logger.info({
     fn: getControlType,
-    message: 'Could not determine control type',
-    data: {
-      tr,
-      control,
-      tag,
-      classes,
-    },
+    message: `Successfully found control type for controlId: ${controlId}, found elementType: ${controlType}`,
+    data: { tr, controlId },
   });
-  return HtmlElementType.Unknown;
+  return controlType;
 }
 
 export function isEmptyRow(tr) {
   const firstTd = tr.querySelector('td');
   if (
     !firstTd ||
-    firstTd?.getAttribute('quartechHtml') === 'true' ||
-    firstTd?.getAttribute('class').includes('zero-cell') ||
+    (firstTd?.getAttribute('quartechHtml') &&
+      firstTd?.getAttribute('quartechHtml') === 'true') ||
+    firstTd?.getAttribute('class')?.includes('zero-cell') ||
     firstTd.children?.length === 0
   ) {
     return true;
@@ -136,9 +227,34 @@ export function isHiddenRow(tr) {
   return false;
 }
 
-export function getControlId(tr) {
-  const questionDiv = tr.querySelector('.info');
-  const id = questionDiv?.querySelector('label')?.getAttribute('for');
+export function getControlId(tr, controlType = '') {
+  let id = '';
+  if (
+    controlType === HtmlElementType.MultiSelectPicklist ||
+    controlType === HtmlElementType.DatePicker
+  ) {
+    const labelElement = tr.querySelector('label.field-label');
+    if (!labelElement) {
+      logger.error({
+        fn: getControlId,
+        message: `Failed to get label element for control, controlType: ${controlType}`,
+        data: { tr, controlType },
+      });
+      return;
+    }
+    id = labelElement.id.replace('_label', '');
+  } else {
+    const questionDiv = tr.querySelector('.info');
+    id = questionDiv?.querySelector('label')?.getAttribute('for');
+  }
+  if (!id) {
+    logger.warn({
+      fn: getControlId,
+      message: `Failed to get id for control, might be an empty row controlType: ${controlType}`,
+      data: { tr, controlType },
+    });
+    return;
+  }
   return id;
 }
 
@@ -148,51 +264,212 @@ export function getInfoValue(tr) {
   return questionText;
 }
 
-export function getControlValue({ controlId, tr, rawValue = false }) {
-  const type = getControlType(tr);
+export function getControlValue({
+  controlId,
+  tr = undefined,
+  raw = false,
+  forTemplateGeneration = false,
+}) {
+  if (tr === undefined) {
+    // @ts-ignore
+    tr = getFieldRow(controlId);
+  }
+  const elementType = getControlType({ tr, controlId });
 
   logger.info({
     fn: getControlValue,
-    message: `Attempting to get control value for controlId: ${controlId} type: ${type}, rawValue: ${rawValue}`,
+    message: `Attempting to get control value for controlId: ${controlId} type: ${elementType}, raw: ${raw}`,
+    data: {
+      controlId,
+      tr,
+      raw,
+      forTemplateGeneration,
+      programId: POWERPOD.program?.programId,
+    },
   });
 
   const controlDiv = tr.querySelector('.control');
 
-  if (type === HtmlElementType.FileInput) {
-    const value = controlDiv
+  let rawValue, verboseValue;
+  // SPECIAL CASE FOR VLB WHERE NO CRA NUMBER CHECKBOX IS CUSTOM COMPONENT / REVERSED
+  if (
+    forTemplateGeneration &&
+    controlId === 'quartech_nocragstnumber' &&
+    POWERPOD.program?.programId === ProgramIds.VLB
+  ) {
+    const checked =
+      document.getElementsByTagName('quartech-checkbox')?.[0].inputValue;
+    if (checked === 'true' || checked === true) {
+      verboseValue = 'Yes';
+    } else {
+      verboseValue = 'No';
+    }
+    rawValue = verboseValue;
+  } else if (elementType === HtmlElementType.FileInput) {
+    const value = controlDiv?.querySelector('textarea')?.value;
+    rawValue = value;
+    verboseValue = cleanString(value?.replace(/\n/g, ' '));
+  } else if (elementType === HtmlElementType.CurrencyInput) {
+    const value = controlDiv?.querySelector('input')?.value;
+    const floatVal = parseFloat(value.replace(/,/g, ''));
+    rawValue = !isNaN(floatVal) ? floatVal : undefined;
+    verboseValue = `$${value}`;
+  } else if (elementType === HtmlElementType.Input) {
+    verboseValue = controlDiv?.querySelector('input')?.value;
+    rawValue = verboseValue;
+  } else if (elementType === HtmlElementType.DatePicker) {
+    const value = controlDiv?.querySelector(
+      'div > .datetimepicker > input'
+    )?.value;
+    if (value?.length) {
+      logger.info({
+        fn: getControlValue,
+        message: `Attempting to convert date raw value to ISO format, value: ${value}`,
+      });
+      rawValue = convertDateToISO(value) ?? '';
+      verboseValue = value ?? '';
+    } else {
+      rawValue = '';
+      verboseValue = '';
+    }
+  } else if (elementType === HtmlElementType.TextArea) {
+    verboseValue = controlDiv
       ?.querySelector('textarea')
       .value?.replace(/\n/g, ' ');
-    return cleanString(value);
-  } else if (type === HtmlElementType.CurrencyInput) {
-    const value = controlDiv?.querySelector('input')?.value;
-    if (rawValue) return value;
-    return `$${value}`;
-  } else if (type === HtmlElementType.Input) {
-    return controlDiv?.querySelector('input')?.value;
-  } else if (type === HtmlElementType.DatePicker) {
-    return controlDiv?.querySelector('div > .datetimepicker > input')?.value;
-  } else if (type === HtmlElementType.TextArea) {
-    return controlDiv?.querySelector('textarea').value?.replace(/\n/g, ' ');
-  } else if (type === HtmlElementType.DropdownSelect) {
+    rawValue = verboseValue;
+  } else if (elementType === HtmlElementType.DropdownSelect) {
     const selectElement = controlDiv?.querySelector('select');
-    if (rawValue) return selectElement.value;
+    if (!selectElement) {
+      logger.error({
+        fn: getControlValue,
+        message: `Could not found selectElement for controlId: ${controlId}`,
+        data: { controlId, tr, raw, forTemplateGeneration },
+      });
+      return;
+    }
+    rawValue = selectElement?.value;
     const selectedIndex = selectElement?.selectedIndex;
     const selectedOption = selectElement.options[selectedIndex];
     const selectedOptionText =
       selectedOption.textContent || selectedOption.innerText;
-    return selectedOptionText;
-  } else if (type === HtmlElementType.Checkbox) {
+    verboseValue = selectedOptionText;
+  } else if (elementType === HtmlElementType.Checkbox) {
     const checked = controlDiv?.querySelector('input')?.checked;
-    if (rawValue) return checked;
-    if (checked) return 'Yes';
-    return 'No';
-  } else if (type === HtmlElementType.MultiOptionSet && controlId) {
-    return getMultiOptionSetElementValue(controlId, rawValue);
+    logger.info({
+      fn: getControlValue,
+      message: `Found control value for type: ${elementType}, raw: ${raw}, checked: ${checked}`,
+      data: { controlDiv },
+    });
+    rawValue = checked;
+    if (checked === 'true' || checked === true) {
+      verboseValue = 'Yes';
+    } else {
+      verboseValue = 'No';
+    }
+  } else if (elementType === HtmlElementType.MultiOptionSet && controlId) {
+    rawValue = newGetOriginalMultiOptionSetElementValue(controlId, true);
+    verboseValue = newGetOriginalMultiOptionSetElementValue(controlId);
+  } else if (elementType === HtmlElementType.MultiSelectPicklist && controlId) {
+    rawValue = document?.getElementById(controlId)?.value;
+    verboseValue = controlDiv?.querySelector('input')?.value;
   }
-  return null;
+
+  logger.info({
+    fn: getControlValue,
+    message: `For controlId: ${controlId}, raw: ${raw}, forTemplateGeneration: ${forTemplateGeneration} found rawValue: ${rawValue} verboseValue: ${verboseValue}`,
+    data: {
+      controlId,
+      elementType,
+      tr,
+      raw,
+      forTemplateGeneration,
+      verboseValue,
+      rawValue,
+    },
+  });
+
+  if (POWERPOD.state?.fields?.[controlId]?.value !== rawValue) {
+    store.dispatch('addFieldData', {
+      name: controlId,
+      value: rawValue,
+      revalidate: true,
+    });
+  }
+
+  if (raw) {
+    return rawValue;
+  }
+
+  return verboseValue;
 }
 
-export function getMultiOptionSetElementValue(controlId, rawValue) {
+export function newGetOriginalMultiOptionSetElementValue(controlId, raw) {
+  const originalSelectElementForMSOS = getOriginalMsosElement(controlId);
+  if (!originalSelectElementForMSOS) {
+    logger.warn({
+      fn: newGetOriginalMultiOptionSetElementValue,
+      message: `Could not find original msos element for controlId: ${controlId}, attempt to fallback to getMultiOptionSetElementValue`,
+    });
+
+    const valueStr = getMultiOptionSetElementValue(controlId, raw);
+    if (!valueStr) {
+      logger.error({
+        fn: newGetOriginalMultiOptionSetElementValue,
+        message: `Fallback to getMultiOptionSetElementValue also failed...`,
+      });
+      return;
+    }
+    return valueStr;
+  }
+  const selectionContainer =
+    // @ts-ignore
+    originalSelectElementForMSOS?.multiSelectOptionSet()?.$selection;
+  if (!selectionContainer) {
+    logger.error({
+      fn: newGetOriginalMultiOptionSetElementValue,
+      message: `Could not find msos selectionContainer for controlId: ${controlId}`,
+    });
+    return;
+  }
+  const selectedItems = selectionContainer?.find('li[aria-selected="true"]');
+  const inputElements = selectedItems?.find('input');
+  if (
+    !selectedItems &&
+    !selectedItems.length &&
+    !inputElements &&
+    !inputElements.length
+  ) {
+    logger.warn({
+      fn: newGetOriginalMultiOptionSetElementValue,
+      message: `Could not find any selectedItems or inputElements for controlId: ${controlId}`,
+    });
+    return '';
+  }
+  let valueStrArray = [];
+  if (raw) {
+    for (let i = 0; i < inputElements.length; i++) {
+      const input = inputElements[i];
+      valueStrArray.push(input?.value);
+    }
+  } else {
+    for (let i = 0; i < inputElements.length; i++) {
+      const input = inputElements[i];
+      const label = input.getAttribute('aria-label') || '';
+      valueStrArray.push(label);
+    }
+  }
+
+  const valueStr = valueStrArray.join(', ');
+
+  logger.info({
+    fn: newGetOriginalMultiOptionSetElementValue,
+    message: `For controlId: ${controlId} found valueStr: ${valueStr}`,
+  });
+
+  return valueStr;
+}
+
+export function getMultiOptionSetElementValue(controlId, raw) {
   const inputElement = document.getElementById(controlId);
   if (!inputElement) {
     logger.error({
@@ -201,7 +478,7 @@ export function getMultiOptionSetElementValue(controlId, rawValue) {
     });
     return;
   }
-  if (inputElement.value?.length <= 0) {
+  if (inputElement.value === undefined || inputElement.value?.length <= 0) {
     logger.warn({
       fn: getMultiOptionSetElementValue,
       message: `MultiOptionSet value empty for controlId: ${controlId}`,
@@ -212,13 +489,13 @@ export function getMultiOptionSetElementValue(controlId, rawValue) {
 
   let valueStrArray = [];
 
-  if (rawValue) {
+  if (raw) {
     multiOptionSetValueArray.forEach((set) => {
       valueStrArray.push(set?.Value);
     });
   } else {
     multiOptionSetValueArray.forEach((set) => {
-      const label = set?.Label.UserLocalizedLabel?.Label || '';
+      const label = set?.Label?.UserLocalizedLabel?.Label || '';
       if (label?.length > 0) {
         valueStrArray.push(label);
       }
@@ -230,6 +507,7 @@ export function getMultiOptionSetElementValue(controlId, rawValue) {
   logger.info({
     fn: getMultiOptionSetElementValue,
     message: `For controlId: ${controlId} found valueStr: ${valueStr}`,
+    data: { controlId, raw },
   });
 
   return valueStr;
@@ -287,23 +565,162 @@ export function getFieldLabel(fieldName) {
   return label;
 }
 
+export function getFieldRow(fieldName) {
+  let fieldLabelElement = document.querySelector(`#${fieldName}_label`);
+  if (!fieldLabelElement) {
+    const fieldConfig = getFieldConfig(fieldName);
+    if (fieldConfig.elementType === 'subgrid') {
+      fieldLabelElement = document.getElementById(fieldName);
+    }
+
+    if (!fieldLabelElement) {
+      logger.error({
+        fn: getFieldRow,
+        message: `could not find fieldLabelElement for fieldName: ${fieldName}`,
+      });
+      return;
+    }
+  }
+  let fieldRow = fieldLabelElement.closest('tr');
+
+  if (!fieldRow) {
+    logger.error({
+      fn: getFieldRow,
+      message: `could not find fieldRow for fieldName: ${fieldName}`,
+    });
+    return;
+  }
+
+  return fieldRow;
+}
+
+export function hideFieldRow({ fieldName, doNotBlank = false }) {
+  logger.info({
+    fn: hideFieldRow,
+    message: `hideFieldRow called for fieldName: ${fieldName}, doNotBlank: ${doNotBlank}`,
+  });
+
+  const fieldRow = getFieldRow(fieldName);
+
+  if (!fieldRow) {
+    logger.error({
+      fn: hideFieldRow,
+      message: `could not find fieldRow for fieldName: ${fieldName}`,
+    });
+    return;
+  }
+
+  // Hide the main field row
+  $(fieldRow)?.css({ display: 'none' });
+
+  // Look up fieldDefinition and optionally hide additional HTML if allowed
+  const fieldDefinition = powerpod?.state?.fields?.[fieldName];
+  const shouldHideAdditionalText =
+    fieldDefinition?.hideOrShowAdditionalTextWithFieldVisibility === true;
+
+  if (shouldHideAdditionalText && Array.isArray(fieldDefinition?.html)) {
+    fieldDefinition.html.forEach((uuid) => {
+      const existingElement = $(
+        `tr[data-uuid='${uuid}'] td[quartechHtml='true']`
+      );
+      if (existingElement.length > 0) {
+        existingElement.css({ display: 'none' });
+      }
+    });
+  }
+
+  if (!doNotBlank) {
+    setFieldValueToEmptyState(fieldName);
+  } else {
+    updateFieldValue({
+      name: fieldName,
+      skipValidation: true,
+      origin: hideFieldRow.name,
+    });
+  }
+
+  store.dispatch('addFieldData', {
+    name: fieldName,
+    visible: false,
+    error: '',
+    // touched: false,
+  });
+
+  displayActiveFieldErrors();
+
+  logger.info({
+    fn: hideFieldRow,
+    message: `successfully ran hideFieldRow for fieldName: ${fieldName}, doNotBlank: ${doNotBlank}`,
+    data: { fieldRow },
+  });
+}
+
 export function showFieldRow(fieldName) {
-  const fieldLabelElement = document.querySelector(`#${fieldName}_label`);
-  if (!fieldLabelElement) return;
-  const fieldRow = fieldLabelElement.closest('tr');
+  logger.info({
+    fn: showFieldRow,
+    message: `showFieldRow called for fieldName: ${fieldName}`,
+  });
 
-  if (!fieldRow) return;
+  const fieldRow = getFieldRow(fieldName);
 
+  if (!fieldRow) {
+    logger.error({
+      fn: showFieldRow,
+      message: `could not find fieldRow for fieldName: ${fieldName}`,
+    });
+    return;
+  }
+
+  // Show the main field row
   $(fieldRow)?.css({ display: '' });
 
-  const isRequired = POWERPOD.state?.fields?.[fieldName].required;
+  // Look up fieldDefinition and optionally show additional HTML if allowed
+  const fieldDefinition = powerpod?.state?.fields?.[fieldName];
+  const shouldShowAdditionalText =
+    fieldDefinition?.hideOrShowAdditionalTextWithFieldVisibility === true;
+
+  if (shouldShowAdditionalText && Array.isArray(fieldDefinition?.html)) {
+    fieldDefinition.html.forEach((uuid) => {
+      const existingElement = $(
+        `tr[data-uuid='${uuid}'] td[quartechHtml='true']`
+      );
+      if (existingElement.length > 0) {
+        existingElement.css({ display: '' });
+      }
+    });
+  }
+
+  // Add required class if needed
+  const isRequired = fieldDefinition?.required;
   if (isRequired) {
     $(`#${fieldName}_label`).parent().addClass('required');
   }
 
-  // check if a fieldset exists and make sure it's visible if so
+  // Ensure the nearest fieldset is visible
   const nearestFieldSet = fieldRow.closest('fieldset');
-  $(nearestFieldSet)?.css({ display: '' });
+  if (!nearestFieldSet) {
+    logger.error({
+      fn: showFieldRow,
+      message: `could not find nearestFieldSet to fieldName: ${fieldName}`,
+    });
+  }
+  $(nearestFieldSet).css({ display: '' });
+
+  const displayStyle = nearestFieldSet?.style?.display;
+
+  store.dispatch('addFieldData', {
+    name: fieldName,
+    visible: true,
+    revalidate: true,
+  });
+
+  validateStepField(fieldName);
+
+  logger.info({
+    fn: showFieldRow,
+    message: `successfully ran showFieldRow for fieldName: ${fieldName}`,
+    data: { nearestFieldSet, displayStyle },
+  });
 }
 
 export function addHtmlToTabDiv(
@@ -350,34 +767,163 @@ export function showTable(tableDataname) {
   $(`table[data-name=${tableDataname}]`).css('display', '');
 }
 
-export function addHtmlToSection(
-  tableDataName,
+export function addTextAboveSection(tableDataName, htmlContentToAdd) {
+  addHtmlToSection(tableDataName, htmlContentToAdd, 'top');
+}
+
+export function addTextBelowSection(tableDataName, htmlContentToAdd) {
+  addHtmlToSection(tableDataName, htmlContentToAdd, 'bottom');
+}
+export function addTextAboveSubsection(subsectionAriaLabel, htmlContentToAdd) {
+  addHtmlToSubsection(subsectionAriaLabel, htmlContentToAdd, 'top');
+}
+
+export function addTextBelowSubsection(subsectionAriaLabel, htmlContentToAdd) {
+  addHtmlToSubsection(subsectionAriaLabel, htmlContentToAdd, 'bottom');
+}
+export function addHtmlToSubsection(
+  subsectionAriaLabel,
   htmlContentToAdd,
   topOrBottom = 'top'
 ) {
-  const sectionTable = doc.querySelector(
-    `table[data-name='${tableDataName}'] > tbody`
+  const subsectionFieldset = document.querySelector(
+    `fieldset[aria-label='${subsectionAriaLabel}']`
   );
-  if (!sectionTable) {
-    logger.error({
-      fn: addHtmlToSection,
-      message: `Unable to add to section of tableDataName: ${tableDataName}, could not find section`,
+
+  if (!subsectionFieldset || !subsectionFieldset.parentNode) {
+    logger.warn({
+      fn: addHtmlToSubsection,
+      message: `Unable to add to subsection of fieldset aria-label: ${subsectionAriaLabel}, could not find section. Could be configuring non-active section.`,
     });
     return;
   }
-  const trElement = doc.createElement('tr');
+  const divElement = document.createElement('div');
+  // const trElement = document.createElement('tr');
 
-  const tdElement = document.createElement('td');
-  tdElement.setAttribute('colspan', '2');
-  tdElement.setAttribute('quartechHtml', 'true');
-  tdElement.innerHTML = htmlContentToAdd;
+  // const tdElement = document.createElement('td');
+  // tdElement.setAttribute('colspan', '2');
+  // tdElement.setAttribute('quartechHtml', 'true');
+  // tdElement.innerHTML = htmlContentToAdd;
 
-  trElement.appendChild(tdElement);
+  // trElement.appendChild(tdElement);
+
+  divElement.innerHTML = htmlContentToAdd;
 
   if (topOrBottom === 'top') {
-    sectionTable.prepend(trElement);
+    // sectionTable.prepend(trElement);
+    // subsectionFieldset.prepend(divElement);
+    subsectionFieldset.parentNode.insertBefore(divElement, subsectionFieldset);
+  } else if (topOrBottom === 'bottom' && subsectionFieldset.nextSibling) {
+    // sectionTable.append(trElement);
+    // subsectionFieldset.append(divElement);
+    subsectionFieldset.parentNode.insertBefore(
+      divElement,
+      subsectionFieldset.nextSibling
+    );
+  }
+}
+
+export function addTextBelowLabel(labelId, htmlToInsert) {
+  insertHtmlAroundLabel(labelId, htmlToInsert, 'after');
+}
+export function addTextAboveLabel(labelId, htmlToInsert) {
+  insertHtmlAroundLabel(labelId, htmlToInsert, 'before');
+}
+
+export function insertHtmlAroundLabel(
+  labelId,
+  htmlToInsert,
+  position = 'after'
+) {
+  const label = document.getElementById(`${labelId}_label`);
+
+  if (!label) {
+    console.warn(`Label with ID "${labelId}" not found.`);
+    return;
+  }
+
+  const tempWrapper = document.createElement('div');
+  tempWrapper.innerHTML = htmlToInsert;
+
+  const insertTarget = label;
+
+  Array.from(tempWrapper.childNodes).forEach((node) => {
+    if (position === 'before') {
+      insertTarget.parentNode.insertBefore(node, insertTarget);
+    } else if (position === 'after') {
+      insertTarget.parentNode.insertBefore(node, insertTarget.nextSibling);
+    } else {
+      console.warn(
+        `Invalid position "${position}" passed. Use "before" or "after".`
+      );
+    }
+  });
+}
+
+export function boldLabelText(labelId) {
+  const label = document.getElementById(`${labelId}_label`);
+  if (!label) {
+    console.warn(`Label with ID "${labelId}" not found.`);
+    return;
+  }
+
+  // Wrap existing content in a <b> tag if it’s not already bold
+  if (!label.querySelector('b')) {
+    const boldWrapper = document.createElement('b');
+    while (label.firstChild) {
+      boldWrapper.appendChild(label.firstChild);
+    }
+    label.appendChild(boldWrapper);
+  } else {
+    // If already contains <b>, ensure it has font-weight bold
+    label.style.fontWeight = 'bold';
+  }
+}
+
+export function addHtmlToSection(
+  tableDataName,
+  htmlContentToAdd,
+  topOrBottom = 'top',
+  type
+) {
+  const sectionTable = document.querySelector(
+    `div[data-name='${tableDataName}'] > .tab-column > div`
+  );
+
+  if (!sectionTable) {
+    logger.warn({
+      fn: addHtmlToSection,
+      message: `Unable to add to section of tableDataName: ${tableDataName}, could not find section. Could be configuring non-active section.`,
+    });
+    return;
+  }
+  let divElement = document.createElement('div');
+
+  if (type === 'customField') {
+    // @ts-ignore
+    divElement = document.createElement('fieldset');
+    divElement.setAttribute(
+      'style',
+      'margin-bottom:0px!important;margin-top:20px'
+    );
+  }
+  // const trElement = document.createElement('tr');
+
+  // const tdElement = document.createElement('td');
+  // tdElement.setAttribute('colspan', '2');
+  // tdElement.setAttribute('quartechHtml', 'true');
+  // tdElement.innerHTML = htmlContentToAdd;
+
+  // trElement.appendChild(tdElement);
+
+  divElement.innerHTML = htmlContentToAdd;
+
+  if (topOrBottom === 'top') {
+    // sectionTable.prepend(trElement);
+    sectionTable.prepend(divElement);
   } else if (topOrBottom === 'bottom') {
-    sectionTable.append(trElement);
+    // sectionTable.append(trElement);
+    sectionTable.append(divElement);
   }
 }
 
@@ -389,13 +935,124 @@ export function addTextBelowField(fieldName, htmlContentToAdd) {
   addHtmlToField(fieldName, htmlContentToAdd, 'bottom');
 }
 
+export function generatePlaceholderRowForCustomField(name, label) {
+  const html = `
+      <tr>
+				<td colspan="1" rowspan="1" class="clearfix cell text form-control-cell"><div class="info"><label for="${name}" id="${name}_label" class="field-label">${label}</label><div class="validators"><span id="MaximumLengthValidator${name}" style="visibility:hidden;">*</span></div></div><div class="control"><input name="${name}" type="text" maxlength="160" id="${name}" class="text form-control " onchange="setIsDirty(this.id);" onkeypress="javascript:return LengthError(this, event);"></div></td>
+				<td class="cell zero-cell"></td>
+			</tr>
+  `;
+  return html;
+}
+
+export function addCustomField(
+  customFieldName,
+  customFieldLabel,
+  existingFieldName,
+  sectionDataName,
+  beforeOrAfter = 'before'
+) {
+  logger.info({
+    fn: addCustomField,
+    message: `addCustomField or addCustomField was specified, adding...`,
+    data: {
+      customFieldName,
+      customFieldLabel,
+      existingFieldName,
+      beforeOrAfter,
+    },
+  });
+  const htmlContentToAdd = generatePlaceholderRowForCustomField(
+    customFieldName,
+    customFieldLabel
+  );
+  if (existingFieldName) {
+    const tr = $(`#${existingFieldName}`).closest('tr');
+    if (!tr) return;
+
+    if (beforeOrAfter === 'before') {
+      $(htmlContentToAdd).insertBefore(tr);
+      logger.info({
+        fn: addCustomField,
+        message: `Added customFieldName: ${customFieldName} before existingFieldName: ${existingFieldName}`,
+      });
+    } else if (beforeOrAfter === 'after') {
+      $(htmlContentToAdd).insertAfter(tr);
+      logger.info({
+        fn: addCustomField,
+        message: `Added customFieldName: ${customFieldName} after existingFieldName: ${existingFieldName}`,
+      });
+    }
+
+    logger.info({
+      fn: addCustomField,
+      message: `Successfully added custom field html for customFieldName: ${customFieldName}, customFieldLabel: ${customFieldLabel}, existingFieldName: ${existingFieldName}, beforeOrAfter: ${beforeOrAfter}`,
+      data: { tr, htmlContentToAdd },
+    });
+  } else if (sectionDataName) {
+    addHtmlToSection(
+      sectionDataName,
+      `
+        <table role="presentation" class="section">
+          <tbody>
+            ${htmlContentToAdd}
+          </tbody>
+        </table>
+      `,
+      beforeOrAfter === 'before' ? 'top' : 'bottom',
+      'customField'
+    );
+    logger.info({
+      fn: addCustomField,
+      message: `adding customField to section: ${sectionDataName}, customFieldName: ${customFieldName}`,
+    });
+  }
+}
+
 export function addHtmlToField(
   fieldName,
   htmlContentToAdd,
   topOrBottom = 'top'
 ) {
+  logger.info({
+    fn: addHtmlToField,
+    message: `additionalTextAboveField or additionalTextBelowField was specified, adding... fieldName: ${fieldName}, htmlContentToAdd: ${htmlContentToAdd}, topOrBottom: ${topOrBottom}`,
+  });
+
   const tr = $(`#${fieldName}`).closest('tr');
   if (!tr) return;
+
+  const fieldConfig = getFieldConfig(fieldName);
+
+  // Check if the htmlContentToAdd has already been added by comparing UUIDs
+  if (fieldConfig && Array.isArray(fieldConfig.html)) {
+    const existingHtmlUuids = fieldConfig.html;
+
+    // Check if the same content already exists
+    const isAlreadyAdded = existingHtmlUuids.some((uuid) => {
+      const existingElement = $(
+        `tr[data-uuid='${uuid}'] td[quartechHtml='true']`
+      );
+      if (!existingElement) return false;
+
+      // Normalize by stripping whitespace and ignoring quotes
+      const existingContent = existingElement
+        .html()
+        .replace(/["'`]/g, '')
+        .trim();
+      const newContent = htmlContentToAdd.replace(/["'`]/g, '').trim();
+
+      return existingContent === newContent;
+    });
+
+    if (isAlreadyAdded) {
+      logger.info({
+        fn: addHtmlToField,
+        message: `HTML content is already added for fieldName: ${fieldName}`,
+      });
+      return;
+    }
+  }
 
   const uuid = crypto.randomUUID();
 
@@ -411,14 +1068,28 @@ export function addHtmlToField(
       fn: addHtmlToField,
       message: 'Failed to create new row',
     });
+    return;
   }
 
   const tdElement = document.createElement('td');
   tdElement.setAttribute('colspan', '2');
-  tdElement.setAttribute('quartechHtml', 'true');
+  tdElement.setAttribute('quartechhtml', 'true');
+  tdElement.setAttribute('additionaltextaroundfield', 'true');
+  tdElement.setAttribute('class', 'clearfix cell text form-control-cell');
   tdElement.innerHTML = htmlContentToAdd;
 
+  if (fieldConfig) {
+    let html = fieldConfig.html || [];
+    html.push(uuid);
+    store.dispatch('addFieldData', {
+      name: fieldName,
+      html,
+    });
+  }
+
   newTrElement.append(tdElement);
+
+  // normalizeTableCells();
 }
 
 export function observeChanges(
@@ -453,13 +1124,13 @@ export function observeChanges(
   var observer = new MutationObserver(function (mutations, observer) {
     logger.info({
       fn: observeChanges,
-      message: 'Change observed',
+      message: 'Change observed... testing',
       data: { id, element, disableInitialCall, customFunc },
     });
     if (customFunc) {
       customFunc(mutations);
     } else {
-      validateRequiredFields();
+      // validateRequiredFields();
     }
   });
   if (
@@ -488,7 +1159,7 @@ export function observeChanges(
       if (customFunc) {
         customFunc();
       } else {
-        validateRequiredFields();
+        // validateRequiredFields();
       }
     }
     return observer;
@@ -559,11 +1230,11 @@ export function observeIframeChanges(
   }
 }
 
-export function hideFieldByFieldName(
-  fieldName,
-  validationFunc,
-  doNotBlank = false
-) {
+export function hideFieldByFieldName(fieldName, doNotBlank = false) {
+  logger.info({
+    fn: hideFieldByFieldName,
+    message: `hiding field by fieldName: ${fieldName}, doNotBlank: ${doNotBlank}`,
+  });
   const fieldLabelElement = document.querySelector(`#${fieldName}_label`);
   if (!fieldLabelElement) return;
   const fieldRow = fieldLabelElement.closest('tr');
@@ -573,15 +1244,22 @@ export function hideFieldByFieldName(
   if (!fieldRow || !fieldInputElement) return;
 
   $(fieldRow).css({ display: 'none' });
+  store.dispatch('addFieldData', {
+    name: fieldName,
+    visible: false,
+    revalidate: true,
+    erorr: '',
+  });
+
   $(`#${fieldName}_label`).parent().removeClass('required');
   localStorage.removeItem(`shouldRequire_${fieldName}`);
-  if (validationFunc) {
-    validationFunc();
-  }
+  // if (validationFunc) {
+  //   validationFunc();
+  // }
   $(fieldInputElement).off('change');
 
   if (!doNotBlank) {
-    $(fieldInputElement).val('');
+    setFieldValueToEmptyState(fieldName);
   }
 }
 
@@ -591,27 +1269,29 @@ export function hideQuestion(fieldName) {
   const fieldLabelElement = document.querySelector(`#${fieldName}_label`);
   const fieldRow = fieldLabelElement.closest('tr');
   $(fieldRow).css({ display: 'none' });
-  validateRequiredFields();
+
+  // store.dispatch('addFieldData', { name: fieldName, visible: false });
+  // validateRequiredFields();
 }
 
 export function showOrHideAndReturnValue(valueElementId, descriptionElementId) {
   const valueElement = $(`#${valueElementId}`);
-  const descriptionElement = $(`#${descriptionElementId}`);
+  // const descriptionElement = $(`#${descriptionElementId}`);
 
   // @ts-ignore
   let value = parseFloat(valueElement.val().replace(/,/g, ''));
   if (isNaN(value)) value = 0.0;
 
-  const hideDescription = value == 0.0;
-  if (hideDescription) {
-    descriptionElement.val('');
-    descriptionElement.closest('td').css('display', 'none');
-    valueElement.closest('td').attr('colspan', '2');
-  } else {
-    descriptionElement.closest('td').css('display', 'block');
-    descriptionElement.closest('td').attr('colspan', '1');
-    valueElement.closest('td').attr('colspan', '1');
-  }
+  // const hideDescription = value == 0.0;
+  // if (hideDescription) {
+  //   descriptionElement.val('');
+  //   descriptionElement.closest('td').css('display', 'none');
+  //   valueElement.closest('td').attr('colspan', '2');
+  // } else {
+  //   descriptionElement.closest('td').css('display', 'block');
+  //   descriptionElement.closest('td').attr('colspan', '1');
+  //   valueElement.closest('td').attr('colspan', '1');
+  // }
 
   return value;
 }
@@ -623,10 +1303,15 @@ export function showOrHideAndReturnValue(valueElementId, descriptionElementId) {
  * @param {string} name - The name of the associated field id.
  * @param {string} value - The value to set the field to.
  */
-export function setFieldValue(name, value, elementType = null) {
+export function setFieldValue({
+  name,
+  value,
+  elementType = null,
+  skipValidation = false,
+}) {
   logger.info({
     fn: setFieldValue,
-    message: `Setting field value for name: ${name}, value: ${value}, elementType: ${elementType}`,
+    message: `Setting field value for name: ${name}, value: ${value}, elementType: ${elementType}, skipValidation: ${skipValidation}`,
   });
   const element = document.querySelector(`#${name}`);
   if (!element) return;
@@ -637,7 +1322,20 @@ export function setFieldValue(name, value, elementType = null) {
     element.value = value;
   }
   const e = new Event('change');
+  const updateFieldValueObj = {
+    name,
+    value,
+    skipValidation,
+    origin: setFieldValue.name,
+  };
+  logger.info({
+    fn: setFieldValue,
+    message: `Dispatching change event for field name: ${name}, value: ${value}, elementType: ${elementType}, skipValidation: ${skipValidation}`,
+    data: { e, updateFieldValueObj },
+  });
   element.dispatchEvent(e);
+
+  updateFieldValue(updateFieldValueObj);
 }
 
 export function relocateField(field) {
@@ -717,23 +1415,47 @@ export function combineElementsIntoOneRowNew(name) {
   // find and delete colgroup config, if it exists
   tableElement.find('colgroup')?.remove();
 
-  const controlDiv = inputElement.closest('div.control');
-
   const tr = inputElement.closest('tr');
 
-  const clonedTd = inputTd.clone();
-  clonedTd.attr('colspan', '1');
-  tr.append(clonedTd);
+  // Clone the <td> element without children
+  const newTd = $('<td>');
 
-  controlDiv.remove();
+  // Copy attributes from the original <tr> to the new <tr>
+  $.each(inputTd[0].attributes, function () {
+    newTd.attr(this.name, this.value);
+  });
 
-  const newInfoDiv = clonedTd.find('div.info');
-  newInfoDiv.remove();
+  newTd.attr('colspan', '1');
+  tr.append(newTd);
+  inputTd.children().not('div.info').appendTo(newTd);
 }
 
-export function disableSingleLine(name) {
-  const inputElement = $(`#${name}`);
+export function disableSingleLine(name, elementType = '') {
+  logger.info({
+    fn: disableSingleLine,
+    message: `Disable single line for name: ${name}, elementType: ${elementType}`,
+  });
+  let inputElement;
+  if (elementType === HtmlElementType.MultiOptionSet) {
+    inputElement = $(`#${name}_0`);
+  } else {
+    inputElement = $(`#${name}`);
+  }
+  if (!inputElement) {
+    logger.error({
+      fn: disableSingleLine,
+      message: `Failed to disable single line, could not find input element for name: ${name}, elementType: ${HtmlElementType}`,
+    });
+    return;
+  }
   const inputTd = inputElement.closest('td');
+  if (!inputTd) {
+    logger.error({
+      fn: disableSingleLine,
+      message: `Failed to disable single line, could not find input td element for name: ${name}, elementType: ${HtmlElementType}`,
+    });
+    return;
+  }
   inputTd.attr('colspan', '2');
 }
 
@@ -759,6 +1481,10 @@ export function combineElementsIntoOneRow(
 
 export function hideAllStepSections() {
   $('fieldset > table').parent().css('display', 'none');
+}
+
+export function showAllStepSections() {
+  $('fieldset > table').parent().css('display', '');
 }
 
 export function hideFields(hidden = true) {
@@ -838,16 +1564,17 @@ export function setFieldNameLabel(fieldName, label) {
   if (!labelElement) {
     logger.error({
       fn: setFieldNameLabel,
-      message: `Could not find fieldName: ${fieldName} label element`,
+      message: `Could not find field label for fieldName: ${fieldName} label element`,
     });
     return;
   }
-  const obj = $(`#${fieldName}_label`)?.text(label);
-  obj?.html(obj?.html()?.replace(/\n/g, '<br/>'));
+
+  const newLabel = label.replace(/\n/g, '<br/>') ?? label;
+  $(`#${fieldName}_label`)?.html(newLabel);
 
   logger.info({
     fn: setFieldNameLabel,
-    message: `Successfully set fieldName: ${fieldName} to ${label}`,
+    message: `Successfully set field label for fieldName: ${fieldName} to ${label}`,
   });
 }
 
@@ -859,12 +1586,31 @@ export function htmlDecode(input) {
 export function copyFromFieldAToFieldB(fromFieldNameA, toFieldNameB) {
   const fromFieldNameAElement = document.getElementById(fromFieldNameA);
 
-  setFieldValue(toFieldNameB, fromFieldNameAElement.value || '');
+  if (!fromFieldNameAElement) {
+    logger.error({
+      fn: copyFromFieldAToFieldB,
+      message: `could not find element forfromFieldNameA: ${fromFieldNameA}`,
+    });
+    return;
+  }
+
+  logger.info({
+    fn: copyFromFieldAToFieldB,
+    message: `Start copying value ${
+      fromFieldNameAElement?.value || ''
+    } from ${fromFieldNameA} to ${toFieldNameB}`,
+  });
+
+  // @ts-ignore
+  setFieldValue({
+    name: toFieldNameB,
+    value: fromFieldNameAElement?.value || '',
+  });
 
   logger.info({
     fn: copyFromFieldAToFieldB,
     message: `Successfully copied value ${
-      fromFieldNameAElement.value || ''
+      fromFieldNameAElement?.value || ''
     } from ${fromFieldNameA} to ${toFieldNameB}`,
   });
 }
@@ -882,4 +1628,251 @@ export function hideFieldsetTitle(ariaLabel) {
   if (legend) {
     legend.style.display = 'none';
   }
+}
+
+export function getFieldInfoDiv(name) {
+  const infoDiv = $(`#${name}_label`)?.closest('td')?.find('div.info');
+
+  if (!infoDiv) {
+    logger.error({
+      fn: getFieldInfoDiv,
+      message: `Could not find info div for field name: ${name}`,
+    });
+    return;
+  }
+
+  return infoDiv;
+}
+
+export function getOriginalMsosElement(name) {
+  const originalSelectElementForMSOS = $(`#${name}_0`)?.length
+    ? $(`#${name}_0`)
+    : $(`#${name}_i`);
+
+  if (!originalSelectElementForMSOS || !originalSelectElementForMSOS.length) {
+    logger.error({
+      fn: getOriginalMsosElement,
+      message: `Could not get original select control element for fieldName: ${name} for Msos, see initializeMsosLibrary, MultiSelectOptionSet libraries, https://pbauerochse.github.io/searchable-option-list/`,
+    });
+    return;
+  }
+
+  return originalSelectElementForMSOS;
+}
+
+// Note: values should be an array of raw values from the mutli optionset, e.g. [255550000]
+export function setMultiSelectValues(name, values = []) {
+  const originalSelectElementForMSOS = getOriginalMsosElement(name);
+
+  // @ts-ignore
+  if (!originalSelectElementForMSOS?.multiSelectOptionSet()) {
+    logger.error({
+      fn: setMultiSelectValues,
+      message: `Could not get multiSelectOptionSet() object form original select control element for Msos, see initializeMsosLibrary, MultiSelectOptionSet libraries, https://pbauerochse.github.io/searchable-option-list/`,
+    });
+    return;
+  }
+  // @ts-ignore
+  originalSelectElementForMSOS.multiSelectOptionSet().refreshControl(values);
+
+  // to select specific items:
+  // $(`#${multiSelectFieldName}_0`).multiSelectOptionSet().refreshControl([255550005])
+}
+
+export function getFieldErrorDiv(fieldName) {
+  let errorMessageElement = document.querySelector(
+    `#${fieldName}_error_message`
+  );
+
+  if (!errorMessageElement) {
+    let div = document.createElement('div');
+    div.id = `${fieldName}_error_message`;
+    div.className = 'error_message hide_error_message';
+    // @ts-ignore
+    // div.style = 'visibility:hidden';
+
+    const control = getFieldRow(fieldName)?.querySelector('div.control');
+    control?.insertAdjacentElement('afterend', div);
+
+    errorMessageElement = document.querySelector(`#${fieldName}_error_message`);
+
+    if (!errorMessageElement) {
+      logger.error({
+        fn: getFieldErrorDiv,
+        message: `Failed to find field error div, fieldName: ${fieldName}`,
+      });
+      return;
+    }
+  }
+
+  return errorMessageElement;
+}
+
+export function setFieldValueToEmptyState(fieldName) {
+  logger.info({
+    fn: setFieldValueToEmptyState,
+    message: `setting fieldName: ${fieldName} value to empty`,
+  });
+  const fieldConfig = getFieldConfig(fieldName);
+  // for multi option sets specifically must set value to [] otherwise gets Unexpected end of json error
+  if (
+    fieldConfig?.elementType &&
+    (fieldConfig?.elementType === HtmlElementType.MultiOptionSet ||
+      fieldConfig?.elementType === HtmlElementType.MultiSelectPicklist)
+  ) {
+    setMultiSelectValues(fieldName, []);
+  } else {
+    $(`#${fieldName}_name`)?.val(''); // needed for lookup search/modal input elements
+    $(fieldName).val('');
+    // @ts-ignore
+    setFieldValue({ name: fieldName, value: '', skipValidation: true });
+  }
+}
+
+export function renameSectionLabel(name, newLabel) {
+  const h3Tags = document.querySelectorAll('h3'); // Select all <h3> elements
+
+  let matchingElement = null;
+
+  h3Tags.forEach((h3) => {
+    if (h3.textContent.includes(name)) {
+      matchingElement = h3;
+    }
+  });
+
+  if (!matchingElement) {
+    logger.error({
+      fn: renameSectionLabel,
+      message: `Failed to find fieldset for name: ${name}, type: ${type}, newLabel: ${newLabel}`,
+    });
+    return;
+  }
+
+  logger.info({
+    fn: renameSectionLabel,
+    message: `Succesfully renamed section name: ${name}, to newLabel: ${newLabel}`,
+  });
+}
+
+export function removeDropdownOptions(name, removeDropdownOptionsValues) {
+  // Ensure the `removeDropdownOptionsValues` is always treated as an array
+  const valuesToRemove = Array.isArray(removeDropdownOptionsValues)
+    ? removeDropdownOptionsValues
+    : [removeDropdownOptionsValues];
+
+  // Find the select element by its name or id
+  const selectElement = document.querySelector(
+    `select[name="${name}"], #${name}`
+  );
+
+  if (selectElement) {
+    // Iterate through the values to remove
+    valuesToRemove.forEach((value) => {
+      const optionToRemove = selectElement.querySelector(
+        `option[value="${value}"]`
+      );
+      if (optionToRemove) {
+        selectElement.removeChild(optionToRemove);
+      }
+    });
+  } else {
+    logger.warn({
+      fn: removeDropdownOptions,
+      message: `No dropdown found with name or id: ${name}`,
+      data: { name, removeDropdownOptionsValues },
+    });
+  }
+}
+
+export function moveTableRow(rowIdToMove, referenceRowId, position = 'after') {
+  logger.info({
+    fn: moveTableRow,
+    message: `moveTableRow called with rowIdToMove: ${rowIdToMove}, referenceRowId: ${referenceRowId}, position: ${position}`,
+  });
+  const rowToMove = document.getElementById(rowIdToMove)?.closest('tr');
+  const referenceRow = document.getElementById(referenceRowId)?.closest('tr');
+
+  if (!rowToMove || !referenceRow) {
+    logger.error({
+      fn: moveTableRow,
+      message: 'One or both of the specified rows were not found.',
+    });
+    return;
+  }
+
+  const referenceParent = referenceRow.closest('tbody'); // Get the tbody of the reference row
+
+  // Remove the row from its current position
+  rowToMove.parentNode.removeChild(rowToMove);
+
+  // Insert the row in the new position
+  if (position === 'before') {
+    referenceParent.insertBefore(rowToMove, referenceRow);
+  } else {
+    referenceParent.insertBefore(rowToMove, referenceRow.nextSibling);
+  }
+
+  // Normalize colspan and rowspan for all rows in the table
+  normalizeTableCells();
+}
+
+// Normalize colspan and rowspan for all table rows
+export function normalizeTableCells() {
+  document.querySelectorAll('tbody tr td').forEach((td) => {
+    if (!td.matches('[additionaltextaroundfield="true"]')) {
+      td.setAttribute('colspan', '1');
+      td.setAttribute('rowspan', '1');
+    }
+  });
+}
+
+export function hideNumberInputArrowsById(inputId) {
+  const style = document.createElement('style');
+  style.textContent = `
+    #${inputId}::-webkit-inner-spin-button,
+    #${inputId}::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    #${inputId} {
+      -moz-appearance: textfield;
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+export function isSignatureFilled() {
+  const canvas = document.querySelector('.drawCanvas');
+
+  if (!canvas) {
+    logger.error({
+      fn: isSignatureFilled,
+      message: `Could not find signature canvas`,
+    });
+    return;
+  }
+  // @ts-ignore
+  const ctx = canvas.getContext('2d');
+
+  if (!ctx || !canvas.width || !canvas.height) {
+    logger.error({
+      fn: isSignatureFilled,
+      message: `Could not get context, canvas width or height`,
+      data: { ctx, canvas },
+    });
+  }
+  // @ts-ignore
+  const { width, height } = canvas;
+
+  // Get pixel data for entire canvas
+  const imageData = ctx.getImageData(0, 0, width, height).data;
+
+  // Check if there's any pixel that's not fully transparent
+  for (let i = 0; i < imageData.length; i++) {
+    if (imageData[i] !== 0) {
+      return true; // Signature exists
+    }
+  }
+
+  return false; // Canvas is empty
 }

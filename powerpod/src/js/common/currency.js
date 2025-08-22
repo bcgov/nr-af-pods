@@ -1,7 +1,27 @@
 import { calculateEstimatedActivityBudget } from '../application/steps/deliverablesBudget.js';
+import { updateFieldValue } from './fieldConfiguration.js';
 import { Logger } from './logger.js';
 
 const logger = Logger('common/currency');
+
+export function formatCurrencyOnBlur(inputValue, allowNegatives) {
+  // Remove any non-numeric characters except for decimals and negative signs
+  let cleanedValue = inputValue.replace(/[^0-9.-]/g, '');
+
+  // If negative values are not allowed, remove all negative signs
+  if (!allowNegatives) {
+    cleanedValue = cleanedValue.replace(/-/g, '');
+  }
+
+  // Convert to float and format with 2 decimal places
+  const floatValue = parseFloat(cleanedValue || '0');
+  const formattedValue = floatValue.toLocaleString('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+
+  return formattedValue;
+}
 
 export const CURRENCY_FORMAT = new Intl.NumberFormat('en-US', {
   style: 'currency',
@@ -16,13 +36,31 @@ export function customizeCurrencyInput({
   limitInputValue = undefined,
   hideDollarSign = false,
   emptyInitialValue = false,
+  initialValue = undefined,
   allowNegatives = false,
 }) {
+  logger.info({
+    fn: customizeCurrencyInput,
+    message: `customizeCurrencyInput called with the following params`,
+    data: {
+      inputId,
+      skipCalculatingBudget,
+      maxDigits,
+      limitInputValue,
+      hideDollarSign,
+      emptyInitialValue,
+      allowNegatives,
+    },
+  });
   let inputCtr = $(`#${inputId}`);
   const existingLabel = document.querySelector(
     `#${inputId}_span_currency_label`
   );
-  if (!existingLabel && !inputCtr.val() && !hideDollarSign) {
+  if (
+    !existingLabel &&
+    !inputCtr.parent().hasClass('input-group') &&
+    !hideDollarSign
+  ) {
     inputCtr.parent().addClass('input-group');
 
     let span = document.createElement('span');
@@ -320,6 +358,9 @@ export function customizeCurrencyInput({
   // if (emptyInitialValue && inputCtr.val() === "0.00") {
   //   inputCtr.val("");
   // }
+  if (initialValue !== undefined && initialValue !== null && !inputCtr.val()) {
+    inputCtr.val(initialValue);
+  }
 }
 
 function handleNewValueEntered(inputCtr, skipCalculatingBudget = false) {
@@ -352,6 +393,11 @@ function handleNewValueEntered(inputCtr, skipCalculatingBudget = false) {
 
     if (!skipCalculatingBudget) {
       calculateEstimatedActivityBudget();
+      updateFieldValue({
+        name: inputCtr[0].id,
+        // skipValidation: true,
+        origin: handleNewValueEntered.name,
+      });
     }
     let isAddition = false;
 

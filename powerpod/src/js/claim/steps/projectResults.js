@@ -1,12 +1,11 @@
 import { YES_VALUE } from '../../common/constants.js';
-import { initOnChange_DependentRequiredField } from '../../common/fieldConditionalLogic.js';
+import { initOnChange_DependentRequiredField } from '../../common/fieldConditionalLogicLegacy.js';
 import { observeIframeChanges } from '../../common/html.js';
 import { getProgramAbbreviation } from '../../common/program.ts';
 import { configureFields } from '../../common/fieldConfiguration.js';
 import { customizeSingleOrGroupApplicantQuestions } from '../fieldLogic.js';
 
 export function customizeProjectResultsStep() {
-  // initInputMasking();
   configureFields();
 
   const programAbbreviation = getProgramAbbreviation();
@@ -17,17 +16,17 @@ export function customizeProjectResultsStep() {
     programAbbreviation === 'NEFBA2'
   ) {
     // @ts-ignore
-    initOnChange_DependentRequiredField({
-      dependentOnValue: YES_VALUE,
-      dependentOnElementTag: 'quartech_adoptedprojectresults',
-      requiredFieldTag: 'quartech_adoptednumber',
-    });
+    // initOnChange_DependentRequiredField({
+    //   dependentOnValue: YES_VALUE,
+    //   dependentOnElementTag: 'quartech_adoptedprojectresults',
+    //   requiredFieldTag: 'quartech_adoptednumber',
+    // });
     // @ts-ignore
-    initOnChange_DependentRequiredField({
-      dependentOnValue: YES_VALUE,
-      dependentOnElementTag: 'quartech_environmentallybeneficialadoptedresults',
-      requiredFieldTag: 'quartech_environmentallybeneficialadoptednumber',
-    });
+    // initOnChange_DependentRequiredField({
+    //   dependentOnValue: YES_VALUE,
+    //   dependentOnElementTag: 'quartech_environmentallybeneficialadoptedresults',
+    //   requiredFieldTag: 'quartech_environmentallybeneficialadoptednumber',
+    // });
   }
 
   if (programAbbreviation === 'ABPP2') {

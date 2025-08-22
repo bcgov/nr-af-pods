@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{0d1e47ff-12b2-4f53-9090-bee951b98cb4}</formid>
+    <IntroducedVersion>6.0.0.0</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form shownavigationbar="true" showImage="false" maxWidth="1920" headerdensity="HighWithControls">
+      <tabs>
+        <tab name="Email" id="{844b5e32-5b0b-a608-9d14-0191e0ee3898}" IsUserDefined="0" locklevel="0" showlabel="false" expanded="true" ordinalvalue="0">
+          <columns>
+            <column width="67%" id="0">
+              <sections>
+                <section name="recipient information" showlabel="false" showbar="false" locklevel="0" id="{06EADC35-1283-43E0-9EC1-FCEF0A9B9735}" IsUserDefined="0" layout="varwidth" columns="11" labelid="{887cea60-f6e3-4d11-a1de-0c8a41f64500}" ordinalvalue="0">
+                  <rows>
+                    <row>
+                      <cell auto="false" showlabel="true" locklevel="0" rowspan="1" colspan="2" id="{9257B3A4-703D-4810-B5E1-850CC98EDB99}" labelid="{92036837-5d79-4221-9e14-418402a7c174}" ordinalvalue="10000">
+                        <control id="from" classid="{CBFB742C-14E7-4a17-96BB-1A13F7F64AA2}" datafieldname="from" disabled="true" solutionaction="Modified" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell auto="false" showlabel="true" locklevel="0" rowspan="1" colspan="2" id="{789EB1FB-707A-4EE4-8703-00D497EAB254}" labelid="{25d2432b-9948-4872-9ed3-abf8805ed597}" ordinalvalue="10001">
+                        <control id="to" classid="{CBFB742C-14E7-4a17-96BB-1A13F7F64AA2}" datafieldname="to" disabled="false" uniqueid="{68a259e6-250d-5bee-2bee-7895be462d99}" solutionaction="Modified">
+                          <parameters>
+                            <AutoResolve solutionaction="Added">true</AutoResolve>
+                            <DisableMru solutionaction="Added">false</DisableMru>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell auto="false" showlabel="true" locklevel="0" rowspan="1" colspan="2" id="{BD2B7462-E3A4-4343-B594-B64885E4025B}" labelid="{3c88731d-6445-4ecc-bea4-93643103d1c6}" ordinalvalue="10004" solutionaction="Modified" />
+                    </row>
+                    <row>
+                      <cell auto="false" showlabel="true" locklevel="0" rowspan="1" colspan="2" id="{0F309E61-AC65-4D7B-9A30-0D12B7FA9B9D}" labelid="{ff641871-ca1c-4c26-9089-176ba474446a}" ordinalvalue="10005" solutionaction="Modified" />
+                    </row>
+                    <row>
+                      <cell id="{ceb12861-0e01-50d8-bae6-645281512466}" showlabel="true" locklevel="0" colspan="2" ordinalvalue="10003" solutionaction="Added">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_program_email_address" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="quartech_program_email_address" disabled="false" uniqueid="{b0a872b0-ea74-0e93-62d5-9a6b02517802}" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+            <column width="33%" id="1">
+              <sections>
+                <section name="attachments" showlabel="false" showbar="false" locklevel="0" id="{C10BBD11-D5C0-4DE8-B524-54D00F143055}" height="auto" IsUserDefined="0" layout="varheight" columns="11" labelid="{21cace50-4e0b-48ea-b2f8-0e61791a0f42}" labelwidth="115" celllabelalignment="Left" celllabelposition="Left" ordinalvalue="0">
+                  <rows />
+                </section>
+                <section name="tab_4_section_2" showlabel="false" showbar="false" locklevel="0" id="{64d62970-6981-1123-d95e-a7c785918c56}" IsUserDefined="0" layout="varwidth" columns="11" labelwidth="115" ordinalvalue="3">
+                  <rows>
+                    <row>
+                      <cell id="{09f7b633-8574-4cc4-8cdb-02986ac97fb3}" ordinalvalue="10000" solutionaction="Added">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                      <cell id="{b9c89452-b644-4454-9aac-28aec73fc0f0}" ordinalvalue="20001" solutionaction="Added">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+      <events>
+        <event name="onload" application="true" active="true">
+          <Handlers>
+            <Handler functionName="PODS.formOnLoad" libraryName="quartech_email-form" handlerUniqueId="{a8a30f0f-d51f-43eb-9624-438aa13d7868}" enabled="true" parameters="" passExecutionContext="true" ordinalvalue="3" solutionaction="Added" />
+          </Handlers>
+        </event>
+      </events>
+      <formLibraries>
+        <Library name="quartech_email-form" libraryUniqueId="{872e3ddc-381a-4b80-b4db-4c636f792e14}" solutionaction="Added" />
+      </formLibraries>
+    </form>
+    <LocalizedNames>
+      <LocalizedName description="Email" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="Updated default Email form." languagecode="1033" />
+    </Descriptions>
+  </systemform>
+</forms>

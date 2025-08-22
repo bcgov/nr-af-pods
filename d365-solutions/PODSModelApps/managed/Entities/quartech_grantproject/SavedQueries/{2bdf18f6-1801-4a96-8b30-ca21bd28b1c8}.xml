@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{2bdf18f6-1801-4a96-8b30-ca21bd28b1c8}</savedqueryid>
+    <layoutxml>
+      <grid name="quartech_grantprojects" jump="quartech_name" select="1" icon="1" preview="1">
+        <row name="quartech_grantproject" id="quartech_grantprojectid">
+          <cell name="quartech_name" width="300" />
+          <cell name="quartech_recipient" width="150" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="quartech_program" width="150" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="quartech_activitytype" width="150" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="quartech_application" width="150" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="quartech_pt_projectidentifier" width="150" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="createdon" width="125" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>2</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="quartech_grantproject">
+          <attribute name="quartech_name" />
+          <attribute name="createdon" />
+          <order attribute="quartech_name" descending="false" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="quartech_recipient" />
+          <attribute name="quartech_pt_projectidentifier" />
+          <attribute name="quartech_program" />
+          <attribute name="quartech_application" />
+          <attribute name="quartech_activitytype" />
+          <attribute name="quartech_grantprojectid" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.1.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Project Associated View" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

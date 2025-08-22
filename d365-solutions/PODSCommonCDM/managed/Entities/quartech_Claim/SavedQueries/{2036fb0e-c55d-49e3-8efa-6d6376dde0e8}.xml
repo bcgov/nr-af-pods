@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{2036fb0e-c55d-49e3-8efa-6d6376dde0e8}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="quartech_name" select="1" icon="1" preview="1">
+        <row name="result" id="quartech_claimid">
+          <cell name="quartech_project" width="229" />
+          <cell name="quartech_applicant" width="150" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="quartech_name" width="150" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="quartech_claimstatus" width="125" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="quartech_interimorfinalpayment" width="121" />
+          <cell name="quartech_totalfees" width="100" />
+          <cell name="quartech_totalprojectcost" width="141" />
+          <cell name="quartech_authorizedclaimedamount" width="196" />
+          <cell name="quartech_program" width="200" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="quartech_claim">
+          <attribute name="quartech_name" />
+          <order attribute="quartech_name" descending="false" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="quartech_program" />
+          <attribute name="quartech_claimstatus" />
+          <attribute name="quartech_applicant" />
+          <attribute name="quartech_claimid" />
+          <attribute name="quartech_project" />
+          <attribute name="quartech_totalfees" />
+          <attribute name="quartech_totalprojectcost" />
+          <attribute name="quartech_authorizedclaimedamount" />
+          <attribute name="quartech_interimorfinalpayment" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active Claims" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

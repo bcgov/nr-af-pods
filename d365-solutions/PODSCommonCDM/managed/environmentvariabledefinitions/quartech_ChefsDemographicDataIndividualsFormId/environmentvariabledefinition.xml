@@ -1,0 +1,14 @@
+<environmentvariabledefinition schemaname="quartech_ChefsDemographicDataIndividualsFormId">
+  <defaultvalue>22e4c9fc-12f6-4c5d-a454-320320464136</defaultvalue>
+  <description default="Form ID of the Demographic Data (Individuals) in CHEFS">
+    <label description="Form ID of the Demographic Data (Individuals) in CHEFS" languagecode="1033" />
+  </description>
+  <displayname default="Chefs Demographic Data (Individuals) Form Id">
+    <label description="Chefs Demographic Data (Individuals) Form Id" languagecode="1033" />
+  </displayname>
+  <introducedversion>1.0.0.88</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <secretstore>0</secretstore>
+  <type>100000000</type>
+</environmentvariabledefinition>

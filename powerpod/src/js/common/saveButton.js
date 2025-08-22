@@ -1,9 +1,19 @@
 import store from '../store/index.js';
 import { getFormType } from './applicationUtils.js';
-import { Form, POWERPOD } from './constants.js';
-import { patchApplicationData, patchClaimData } from './fetch.js';
-import { generateFormJson, getFormId } from './form.js';
+import { Form, FormStep, HtmlElementType, POWERPOD } from './constants.js';
+import {
+  getApplicationData,
+  patchApplicationData,
+  patchClaimData,
+} from './fetch.js';
+import {
+  augmentFormDataForBUG6998,
+  generateFormJson,
+  getFormId,
+} from './form.js';
 import { Logger } from './logger.js';
+import { getCurrentStep, getProgramId } from './program.ts';
+import { PropertyReferences, PropertyReferenceValues } from './propertyRefs.js';
 import { isObjectEmpty } from './utils.js';
 
 const logger = Logger('common/saveButton');
@@ -13,6 +23,14 @@ POWERPOD.saveButton = {
 };
 
 export function addSaveButton() {
+  const currentStep = getCurrentStep();
+  if (currentStep === FormStep.DeclarationAndConsent) {
+    logger.info({
+      fn: addSaveButton,
+      message: `Skip adding save button on currentStep: ${currentStep}`,
+    });
+    return;
+  }
   const saveBtnHtml = `
     <input 
       type="button"
@@ -64,7 +82,14 @@ export async function saveFormData({ customPayload = {} }) {
   });
   // @ts-ignore
   saveButton.value = 'Saving...';
-  generateFormJson();
+  const formJsonRes = generateFormJson();
+
+  if (!formJsonRes) {
+    logger.error({
+      fn: saveButton,
+      message: `Failed to generateFormJson`,
+    });
+  }
 
   if (isObjectEmpty(store?.state?.fields || {})) {
     logger.warn({
@@ -87,9 +112,33 @@ export async function saveFormData({ customPayload = {} }) {
     });
 
     const fieldData = fieldsStore[field];
-    const { value, error } = fieldData;
+    logger.info({
+      fn: saveFormData,
+      message: `found stored data for field: ${field}, fieldData: ${JSON.stringify(
+        fieldData
+      )}`,
+    });
+    const {
+      value = undefined,
+      error,
+      touched,
+      elementType,
+      dataFormat,
+      forceSave,
+    } = fieldData;
 
-    if (error && error.length) {
+    if (
+      elementType === HtmlElementType.MultiSelectPicklist &&
+      (!value || !value.length)
+    ) {
+      logger.warn({
+        fn: saveFormData,
+        message: `skipping saving EMPTY data for elementType: ${HtmlElementType.MultiSelectPicklist} field name: ${field}`,
+      });
+      return;
+    }
+
+    if (!forceSave && ((error && error.length) || !touched)) {
       logger.warn({
         fn: saveFormData,
         message: `skipping saving data for field name: ${field}`,
@@ -97,11 +146,37 @@ export async function saveFormData({ customPayload = {} }) {
       return;
     }
 
-    payload = {
-      [field]: value,
-      ...payload,
-      ...(Object.keys(customPayload)?.length && customPayload),
-    };
+    let formattedValue = undefined;
+    if (value && dataFormat === 'number') {
+      formattedValue = parseFloat(value);
+    } else if (value && dataFormat === 'boolean') {
+      if (value === '0') formattedValue = false;
+      if (value === '1') formattedValue = true;
+    }
+
+    // @ts-ignore
+    if (PropertyReferences[field]) {
+      payload = {
+        // @ts-ignore
+        ...(value !== undefined &&
+          // @ts-ignore
+          PropertyReferenceValues[field] && {
+            // @ts-ignore
+            [PropertyReferences[field]]: PropertyReferenceValues[field](value),
+          }),
+        ...payload,
+        ...(Object.keys(customPayload)?.length && customPayload),
+      };
+    } else {
+      payload = {
+        ...(value !== undefined &&
+          formattedValue === undefined && { [field]: value }),
+        ...(value !== undefined &&
+          formattedValue !== undefined && { [field]: formattedValue }),
+        ...payload,
+        ...(Object.keys(customPayload)?.length && customPayload),
+      };
+    }
 
     if (customPayload && Object.keys(customPayload).length > 0) {
       logger.info({
@@ -126,6 +201,8 @@ export async function saveFormData({ customPayload = {} }) {
   const formId = getFormId();
   const formType = getFormType();
 
+  payload = await augmentFormDataForBUG6998(payload);
+
   try {
     let res;
 
@@ -137,14 +214,14 @@ export async function saveFormData({ customPayload = {} }) {
 
     logger.info({
       fn: saveFormData,
-      message: 'successfully patched claim data with payload',
+      message: 'successfully patched form data with payload',
       data: { formId, formType, payload },
     });
   } catch (e) {
     logger.error({
       fn: saveFormData,
-      message: 'failed to patch claim data',
-      data: { e },
+      message: `failed to patch form data for formType: ${formType}`,
+      data: { e, formId, formType, payload },
     });
   } finally {
     // @ts-ignore

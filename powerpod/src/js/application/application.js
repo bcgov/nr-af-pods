@@ -26,34 +26,21 @@ import { getGlobalConfigData } from '../common/config.js';
 import { addFormDataOnClickHandler } from '../common/form.js';
 import { preloadRequestVerificationToken } from '../common/dynamics.ts';
 import { addSaveButton } from '../common/saveButton.js';
+import { customizeSuccessStep } from './steps/success.js';
 
 const logger = Logger('application/application');
 
 export function initApplication() {
   preloadRequestVerificationToken();
   hideFieldsAndSections();
-  if (getCurrentStep() === FormStep.DemographicInfo) {
-    updatePageForDemographicStep();
-  } else {
-    updatePageForSelectedProgram();
-  }
+  updatePageForSelectedProgram();
   // addNewAppSystemNotice();
 
   customizePageForFirefox();
 }
 
 function updatePageForDemographicStep() {
-  var demographicInfoStepIframe = document.getElementById(
-    'ApplicationDemographicInfoStepQuickViewForm'
-  );
-  demographicInfoStepIframe.addEventListener('load', function () {
-    var programid = document
-      .querySelector('#ApplicationDemographicInfoStepQuickViewForm')
-      // @ts-ignore
-      ?.contentWindow?.document?.querySelector('#quartech_program')?.value;
-
-    updatePageForSelectedProgram(programid);
-  });
+  updatePageForSelectedProgram();
 }
 
 function customizePageForFirefox() {
@@ -108,6 +95,11 @@ async function updatePageForSelectedProgram(programId = undefined) {
     redirect = fetchedRedirect || false;
   }
 
+  logger.info({
+    fn: updatePageForSelectedProgram,
+    message: `Determining redirect for programId: ${programId}, found formId: ${formId}, found redirect: ${redirect}`,
+  });
+
   if ((POWERPOD.redirectToNewId || redirect) && formId) {
     logger.info({
       fn: updatePageForSelectedProgram,
@@ -134,7 +126,8 @@ async function updatePageForSelectedProgram(programId = undefined) {
 
   const currentStep = getCurrentStep();
 
-  addSaveButton();
+  // Only add Save Btn to non-success steps
+  if (currentStep !== FormStep.Success) addSaveButton();
 
   if (!programId || currentStep === 'UnknownStep') {
     hideLoadingAnimation();
@@ -161,7 +154,9 @@ async function updatePageForSelectedProgram(programId = undefined) {
         fn: updatePageForSelectedProgram,
         message: 'clear any cached data from previous page loads',
       });
-      localStorage.clear();
+      if (localStorage.getItem('programData')) {
+        localStorage.removeItem('programData');
+      }
     },
     onSuccess: (programData, textStatus, xhr) => {
       if (programData) {
@@ -176,12 +171,14 @@ async function updatePageForSelectedProgram(programId = undefined) {
         logger.info({
           fn: updatePageForSelectedProgram,
           message: 'Update application page with the program data.',
+          data: { programData },
         });
         updateFormStepForSelectedProgram(programData);
         hideLoadingAnimation();
-        validateRequiredFields();
+        // validateRequiredFields();
 
-        addFormDataOnClickHandler(); // for form data json generation
+        // Only add form data on click handler for non-success steps
+        if (currentStep !== FormStep.Success) addFormDataOnClickHandler(); // for form data json generation
       }
     },
   });
@@ -231,15 +228,6 @@ function updateFormStepForSelectedProgram(programData) {
       'display',
       'none'
     );
-  } else if (programAbbreviation && programAbbreviation.includes('KTTP')) {
-    $("div[id*='ProgressIndicator'] li:contains('Documents')").css(
-      'display',
-      'none'
-    );
-    $("div[id*='ProgressIndicator'] li:contains('Eligibility')").css(
-      'display',
-      'none'
-    );
   }
 
   const currentStep = getCurrentStep();
@@ -266,6 +254,9 @@ function updateFormStepForSelectedProgram(programData) {
       break;
     case FormStep.DeclarationAndConsent:
       customizeDeclarationConsentStep(programData);
+      break;
+    case FormStep.Success:
+      customizeSuccessStep(programData);
       break;
     default:
       break;

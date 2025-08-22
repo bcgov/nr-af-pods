@@ -5,12 +5,18 @@ import { customElement, property, query } from 'lit/decorators.js';
 class DropdownSearch extends LitElement {
   @query('#selectElement') selectElement: HTMLSelectElement | undefined;
   @property({ type: String, reflect: true }) id: string = crypto.randomUUID();
-  @property({ type: Array }) options: string[] = [];
+  @property({ type: Array, reflect: true }) options: string[] = [];
   @property({ type: String }) selectedValue: string = '';
+  @property({ type: String }) additionalTextBelowField: string = '';
+  @property({ type: String }) fieldLabel: string = '';
+  @property({ type: String }) placeholder: string = 'Select an option';
+  @property({ type: String }) errorMessage: string = '';
+  @property({ type: Boolean }) disabled: boolean = false;
 
   static styles = css`
     .dropdown-search {
       position: relative;
+      margin-top: 18px;
     }
 
     select {
@@ -52,9 +58,16 @@ class DropdownSearch extends LitElement {
       top: 55%;
     }
 
-    span {
-      position: absolute;
-      padding-top: 2px;
+    .placeholder-option {
+      color: #999; /* Light gray */
+    }
+
+    select.placeholder {
+      color: #999; /* Light gray when placeholder is shown */
+    }
+
+    option {
+      color: #000; /* Ensure actual options show as black */
     }
   `;
 
@@ -85,21 +98,70 @@ class DropdownSearch extends LitElement {
 
   render() {
     return html`
-      <div class="dropdown-search">
-        <select
-          id="selectElement"
-          .value=${this.selectedValue}
-          @change=${(event: Event) => {
-            const { target } = event;
-            if (target)
-              this.selectedValue = (target as HTMLSelectElement).value ?? '';
-            this.emitEvent();
-          }}
-        >
-          ${this.options?.map((option) => this.generateOption(option))}
-        </select>
+      <style>
+        #errorMessage {
+          margin: 0px;
+          font-size: 13px;
+          color: #e23636;
+          padding: 0px;
+          position: absolute;
+          ${!this.errorMessage && !this.errorMessage.length
+          ? css`
+              display: none;
+            `
+          : css`
+              display: block;
+            `}
+        }
+      </style>
+      <div style="display:flex; flex-direction:column;">
+        <div>
+          ${this.fieldLabel?.length
+            ? html`<span>${this.fieldLabel}</span>`
+            : html``}
+        </div>
+        <div class="dropdown-search">
+          <select
+            id="selectElement"
+            .disabled=${this.disabled}
+            .value=${this.selectedValue}
+            @change=${(event: Event) => {
+              const { target } = event;
+              if (target)
+                this.selectedValue = (target as HTMLSelectElement).value ?? '';
+              this.emitEvent();
+            }}
+          >
+            ${this.options
+              ?.sort((a, b) => {
+                if (a === 'Other Costs') return 1; // Push "Other Costs" to the end
+                if (b === 'Other Costs') return -1; // Push "Other Costs" to the end
+                return a.localeCompare(b); // Sort alphabetically
+              })
+              .map((option) => this.generateOption(option))}
+            <option
+              value=""
+              disabled
+              selected
+              hidden
+              class="placeholder-option"
+            >
+              ${this.placeholder}
+            </option>
+          </select>
+        </div>
+        <div>
+          ${this.additionalTextBelowField?.length
+            ? html`<span style="font-size:13px;"
+                >${this.additionalTextBelowField}${this.errorMessage.length
+                  ? html`<p id="errorMessage" class="error-message">
+                      ${this.errorMessage}
+                    </p>`
+                  : ''}</span
+              >`
+            : html``}
+        </div>
       </div>
-      <span>See program guide for eligible expenses</span>
     `;
   }
 }

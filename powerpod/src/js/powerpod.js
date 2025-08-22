@@ -2,6 +2,8 @@ import {
   ApplicationPaths,
   ClaimPaths,
   Form,
+  HomePaths,
+  Page,
   POWERPOD,
   win,
 } from './common/constants.js';
@@ -15,6 +17,11 @@ import { Logger } from './common/logger.js';
 import { initApplication } from './application/application.js';
 import { initClaim } from './claim/claim.js';
 import './components/ExpenseReportTable.ts';
+import './components/ClaimInfoGridVLB.ts';
+import './components/CommoditiesMultiSelect.ts';
+import './components/ExpenseInvoicesTable.ts';
+import { hideLoadingAnimation } from './common/loading.js';
+import { initHome } from './pages/home.js';
 
 const logger = Logger('powerpod');
 
@@ -28,6 +35,9 @@ export default function powerpod(options) {
     } else if (ApplicationPaths.some((appPath) => path.includes(appPath))) {
       logger.info({ message: `auto-detected ${Form.Application} form` });
       setOption('form', Form.Application);
+    } else if (HomePaths.some((appPath) => path.includes(appPath))) {
+      logger.info({ message: `auto-detected ${Page.Home} page` });
+      setOption('page', Page.Home);
     } else {
       logger.warn({
         message: `Unable to autodetect form type, path: ${path}`,
@@ -35,11 +45,30 @@ export default function powerpod(options) {
     }
   }
 
+  if (localStorage.getItem('debug_pp')) {
+    setOption('debugging', true);
+    window.debug_pp = true;
+  }
+
+  if (localStorage.getItem('debug_canadapost')) {
+    setOption('debug_canadapost', true);
+    window.debug_canadapost = true;
+  }
+
   // combine given options and default options
   setOptions(options);
 
   logger.info({ message: 'setting up API with options:', data: getOptions() });
   setAPI();
+
+  // if (window?.location?.search?.includes('&msg=success')) {
+  //   logger.warn({
+  //     message: `ABORT initialization... success page detected, hide loader if displayed.`,
+  //   });
+  //   hideLoadingAnimation();
+  //   // @ts-ignore
+  //   return window.powerpod;
+  // }
 
   switch (getOptions().form) {
     case Form.Application:
@@ -57,6 +86,18 @@ export default function powerpod(options) {
       break;
   }
 
+  switch (getOptions().page) {
+    case Page.Home:
+      logger.info({ message: `initializing ${Page.Home}`});
+      initHome();
+      break;
+    default:
+      logger.warn({
+        message: 'init with no page defined in options',
+      });
+      break;
+  }
+
   // @ts-ignore
   return window.powerpod;
 }
@@ -69,7 +110,7 @@ function setAPI() {
     };
   };
   // @ts-ignore
-  POWERPOD.version = '1.7.7';
+  POWERPOD.version = '4.1.7';
   // @ts-ignore
   window.powerpod = POWERPOD;
 }

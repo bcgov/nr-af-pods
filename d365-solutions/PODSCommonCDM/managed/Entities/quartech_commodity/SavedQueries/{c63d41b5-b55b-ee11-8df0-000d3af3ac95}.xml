@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>0</isdefault>
+    <savedqueryid>{c63d41b5-b55b-ee11-8df0-000d3af3ac95}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="quartech_name" select="1" preview="1" icon="1">
+        <row name="result" id="quartech_commodityid">
+          <cell name="quartech_name" width="210" />
+          <cell name="quartech_category" width="100" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" output-format="xml-platform" mapping="logical">
+        <entity name="quartech_commodity">
+          <attribute name="quartech_name" />
+          <attribute name="quartech_category" />
+          <order attribute="quartech_category" descending="false" />
+          <order attribute="quartech_name" descending="false" />
+          <attribute name="quartech_commodityid" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Portal Active Commodities View" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

@@ -36,11 +36,13 @@ const logger = Logger('components/fileUpload');
 @customElement('file-upload')
 class FileUpload extends LitElement {
   @query('#fileUploadElement') fileUploadElement: HTMLDivElement | undefined;
+  @property({ type: String, reflect: true }) id: string = crypto.randomUUID();
   @query('#inputElement') inputElement: HTMLInputElement | undefined;
   @query('#dropElement') dropElement: HTMLDivElement | undefined;
   @property({ type: String }) fileInputStr: string = '';
   @property({ type: String }) formType: string = '';
   @property() fieldName = '';
+  @property() tooltiptext = '';
   @property() customStyle = '';
   @property({ type: Array }) docs: UploadedDoc[] = [];
   @property() handleDropHandler: (e: any) => void = () => {};
@@ -125,7 +127,71 @@ class FileUpload extends LitElement {
     this.getDocuments(true);
   }
 
+  setupTooltip(element, tooltipText): void {
+    logger.info({
+      fn: 'FileUpload.setupTooltip',
+      message: `Start configuring tooltip for element`,
+      data: { element, tooltipText },
+    });
+
+    element.attr('data-content', tooltipText);
+    element.attr('data-placement', 'bottom');
+    element.attr('data-html', 'true');
+    element.attr('data-trigger', 'hover');
+    element.attr('data-original-title', '');
+
+    element
+      // @ts-ignore
+      .popover({
+        trigger: 'manual',
+        html: true,
+        animation: false,
+      })
+      .on('mouseenter', function () {
+        var _this = this;
+        // @ts-ignore
+        $(this).popover('show');
+        $('.popover').on('mouseleave', function () {
+          // @ts-ignore
+          $(_this).popover('hide');
+        });
+      })
+      .on('mouseleave', function () {
+        var _this = this;
+        setTimeout(function () {
+          if (!$('.popover:hover').length) {
+            // @ts-ignore
+            $(_this).popover('hide');
+          }
+        }, 300);
+      });
+  }
+
   firstUpdated(props: Map<string, string>): void {
+    logger.info({
+      fn: 'FileUpload.firstUpdated',
+      message: `this.tooltiptext: ${this.tooltiptext}`,
+      data: {
+        fileUploadElement: this.fileUploadElement,
+        tooltiptext: this.tooltiptext,
+      },
+    });
+    if (
+      this.tooltiptext &&
+      this.tooltiptext.length &&
+      this.tooltiptext !== 'undefined' &&
+      this.fileUploadElement
+    ) {
+      const $fileUploadElement = $(this.fileUploadElement);
+      logger.info({
+        fn: 'FileUpload.firstUpdated',
+        message: `$fileUploadElement:`,
+        data: {
+          $fileUploadElement,
+        },
+      });
+      this.setupTooltip($fileUploadElement, this.tooltiptext);
+    }
     if (this.dropElement) {
       // Prevent default drag behaviors
       ['dragenter', 'dragover', 'dragleave', 'drop'].forEach((eventName) => {
@@ -469,9 +535,9 @@ class FileUpload extends LitElement {
   //   </div>
   // `;
 
-  render() {
+  renderCardHtml() {
     return html`
-      <sl-card class="file-upload-card">
+      <sl-card id="fileUploadElement" class="file-upload-card">
         <div slot="header" id="dropElement">
           <div>
             <sl-icon
@@ -627,6 +693,21 @@ class FileUpload extends LitElement {
             `
           : html``}
       </sl-card>
+    `;
+  }
+
+  render() {
+    if (this.tooltiptext === 'undefined' || !this.tooltiptext.length) {
+      return this.renderCardHtml();
+    }
+    return html`
+      <sl-tooltip
+        id="${this.id}-tooltip"
+        content="${this.tooltiptext}"
+        style="--max-width: 200px;"
+      >
+        ${this.renderCardHtml()}
+      </sl-tooltip>
     `;
   }
 }

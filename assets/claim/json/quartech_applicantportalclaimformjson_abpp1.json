@@ -1,9 +1,8 @@
 {
   "tags": ["Claim", "ABBP1"],
-  "version": "1.0.4",
+  "version": "1.1.6",
   "name": "ABPP - Agri-Business and Leadership Development",
   "abbreviation": "ABPP1",
-  "hiddenSteps": "",
   "sections": [
     {
       "name": "ApplicantInfoStep",
@@ -36,7 +35,12 @@
           "name": "quartech_applicantinformationcorrections",
           "label": "Please provide further detail",
           "required": true,
-          "maxLength": 10000
+          "maxLength": 10000,
+          "visibleIf": {
+            "fieldName": "quartech_applicantinformationconfirmation",
+            "selectedValue": 255550001,
+            "techComment": "No value"
+          }
         },
         {
           "name": "quartech_filenumber",
@@ -67,6 +71,51 @@
           }
         },
         {
+          "name": "quartech_numberofbusinesscourses",
+          "label": "Business courses",
+          "additionalTextAboveField": "How many  Business courses,  Leadership courses, Agriculture and/or Business Management conferences were attended?",
+          "required": true,
+          "format": "number",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          }
+        },
+        {
+          "name": "quartech_numberofleadershipcourses",
+          "label": "Leadership courses",
+          "required": true,
+          "format": "number",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          }
+        },
+        {
+          "name": "quartech_numberofagriculturecourses",
+          "label": "Agriculture courses",
+          "required": true,
+          "format": "number",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          }
+        },
+        {
+          "name": "quartech_numberofbusinessmanagementconferences",
+          "label": "Business Management conferences",
+          "required": true,
+          "format": "number",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
+          }
+        },
+        {
           "name": "quartech_adoptedprojectresults",
           "label": "Did you adopt any technologies, equipment, practices or processes as a result of this project?",
           "required": true,
@@ -81,6 +130,11 @@
             "type": "numeric",
             "value": "0",
             "comparison": "greaterThan"
+          },
+          "visibleIf": {
+            "fieldName": "quartech_adoptedprojectresults",
+            "selectedValue": 255550000,
+            "techComment": "Yes value"
           }
         },
         {
@@ -98,6 +152,11 @@
             "type": "numeric",
             "value": "0",
             "comparison": "greaterThan"
+          },
+          "visibleIf": {
+            "fieldName": "quartech_environmentallybeneficialadoptedresults",
+            "selectedValue": 255550000,
+            "techComment": "Yes value"
           }
         }
       ]
@@ -107,28 +166,39 @@
       "fields": [
         {
           "name": "quartech_authorizedclaimedamount",
-          "label": "Approved Amount as per Authorization Letter (Consultant Fee, GST, Total)",
+          "label": "Approved Funding as per Authorization Letter (in total)",
           "readOnly": true
         },
         {
           "name": "quartech_interimorfinalpayment",
           "label": "Are you requesting an interim claim or a final claim?",
-          "required": true,
           "elementType": "DropdownSelect",
           "hidden": true,
-          "doNotBlank": true,
-          "initialValue": "255550001",
-          "techComment": "Initial value is Final claim option"
+          "initialValue": 255550001,
+          "doNotBlank": true
         },
         {
           "name": "quartech_totalfees",
-          "label": "Your requested amount in this current claim",
+          "label": "Your requested amount in this claim (excluding GST)",
+          "additionalTextAboveField": "The Program covers costs up to the maximum amount indicated in your Approval Letter.<br />Any additional fees invoiced will not be covered by the B.C. Ministry of Agriculture and Food",
           "format": "currency",
           "required": true,
           "validation": {
             "type": "numeric",
             "value": "0",
             "comparison": "greaterThan"
+          },
+          "emptyInitialValue": true
+        },
+        {
+          "name": "quartech_gstamountinthisclaim",
+          "label": "Your GST amount in this claim",
+          "required": true,
+          "format": "currency",
+          "validation": {
+            "type": "numeric",
+            "value": "0",
+            "comparison": "greaterThanOrEqualTo"
           },
           "emptyInitialValue": true
         }
@@ -148,6 +218,18 @@
           "label": "Proof of payment",
           "required": true,
           "elementType": "FileInput"
+        },
+        {
+          "name": "quartech_satisfactionsurveyid",
+          "required": true,
+          "readOnly": true,
+          "tooltipText": "This number is automatically generated when the survey has been submitted",
+          "label": "Program Evaluation Survey ID"
+        },
+        {
+          "name": "quartech_satisfactionsurveychefssubmissionid",
+          "hidden": true,
+          "doNotBlank": true
         }
       ]
     }

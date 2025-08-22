@@ -1,0 +1,19 @@
+{
+	"name": "Application - ABPP S1 - Deliverables & Budget Step - Test Script",
+	"testSteps" : [
+		{   "action" : "open-new-tab", "url": "https://af-pods-dev.powerappsportals.com/application/?programid=bae19fa1-4d52-ee11-be6f-000d3af3ac95" }
+		
+		, { "action" : "Expect", "field" : { "label": "Training(s)/course(s)/business management conference(s)", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Why you are taking this training(s)/course(s)/business management conference(s)", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Please describe how will this improve your business", "visible" : true, "required" : true } }
+		
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : true } }
+    
+		, { "action" : "Enter", "field" : { "label": "Training(s)/course(s)/business management conference(s)", "value" : "Automated Testing" } }
+		, { "action" : "Enter", "field" : { "label": "Why you are taking this training(s)/course(s)/business management conference(s)", "value" : "Automated Testing" } }
+		, { "action" : "Enter", "field" : { "label": "Please describe how will this improve your business", "value" : "Automated Testing" } }
+		
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : false } }
+
+	]
+}

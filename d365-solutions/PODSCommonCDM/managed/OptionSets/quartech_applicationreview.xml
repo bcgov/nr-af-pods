@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<optionset Name="quartech_applicationreview" localizedName="Application Review Status" description="Review status for Application Eligibility and Approval stages." xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <OptionSetType>picklist</OptionSetType>
+  <IsGlobal>1</IsGlobal>
+  <IntroducedVersion>1.0.0.0</IntroducedVersion>
+  <IsCustomizable>1</IsCustomizable>
+  <ExternalTypeName></ExternalTypeName>
+  <displaynames>
+    <displayname description="Application Review Status" languagecode="1033" />
+  </displaynames>
+  <Descriptions>
+    <Description description="Review status for Application Eligibility and Approval stages." languagecode="1033" />
+  </Descriptions>
+  <options>
+    <option value="255550001" ExternalValue="" Color="#0000ff">
+      <labels>
+        <label description="No" languagecode="1033" />
+      </labels>
+      <Descriptions>
+        <Description description="" languagecode="1033" />
+      </Descriptions>
+    </option>
+    <option value="255550002" ExternalValue="" Color="#0000ff">
+      <labels>
+        <label description="Yes" languagecode="1033" />
+      </labels>
+      <Descriptions>
+        <Description description="" languagecode="1033" />
+      </Descriptions>
+    </option>
+  </options>
+</optionset>

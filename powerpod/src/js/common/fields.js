@@ -9,6 +9,10 @@ import {
   disableSingleLine,
   relocateField,
   showFieldRow,
+  getFieldRow,
+  getControlType,
+  configureCustomLogo,
+  addCustomField,
 } from './html.js';
 import { Logger } from './logger.js';
 import { getCurrentStep, getProgramAbbreviation } from './program.ts';
@@ -31,15 +35,32 @@ const logger = Logger('common/fields');
 export function getFieldsBySectionApplication(stepName, forceRefresh = false) {
   let programName = getProgramAbbreviation();
 
+  // OLD: now try getting results from state
   // load cached results unless forceRefresh flag is passed
+  // if (!forceRefresh) {
+  //   const savedData = localStorage.getItem(
+  //     `fieldsData-${programName}-${stepName}`
+  //   );
+  //   if (savedData) {
+  //     return JSON.parse(savedData);
+  //   }
+  // }
+
   if (!forceRefresh) {
-    const savedData = localStorage.getItem(
-      `fieldsData-${programName}-${stepName}`
-    );
-    if (savedData) {
-      return JSON.parse(savedData);
+    if (POWERPOD.loadingFieldsIntoState === false) {
+      logger.info({
+        fn: getFieldsBySectionApplication,
+        message: `returning cached state for fields`,
+        data: { fields: POWERPOD.state.fields },
+      });
+      return POWERPOD.state.fields;
     }
   }
+
+  logger.info({
+    fn: getFieldsBySectionApplication,
+    message: `start building initial fields state loading: ${POWERPOD.loadingFieldsIntoState}`,
+  });
 
   const globalConfigData = getGlobalFieldsConfig();
   logger.info({
@@ -55,19 +76,45 @@ export function getFieldsBySectionApplication(stepName, forceRefresh = false) {
   });
 
   const globalSections = globalConfigData?.sections;
+  logger.info({
+    fn: getFieldsBySectionApplication,
+    message: `globalSections data:`,
+    data: { globalSections },
+  });
+
   const applicationSections = applicationConfigData?.sections;
+  logger.info({
+    fn: getFieldsBySectionApplication,
+    message: `applicationSections data:`,
+    data: { applicationSections },
+  });
 
   // only supports configuration from application json level
+  // configureSections(applicationSections, globalSections);
   configureSections(applicationSections);
 
   // hide tabs if 'hiddenSteps' is passed in JSON config
   const hiddenSteps = applicationConfigData.hiddenSteps;
   if (hiddenSteps) hideTabs(hiddenSteps);
 
+  // configure custom logo if passed
+  const customLogo = applicationConfigData.customLogo;
+  if (customLogo) configureCustomLogo(customLogo);
+
   const applicationSection = applicationSections?.find(
     (s) => s.name === stepName
   );
+  logger.info({
+    fn: getFieldsBySectionApplication,
+    message: `found applicationSection data for stepName: ${stepName}`,
+    data: { applicationSection, stepName },
+  });
   const globalSection = globalSections.find((s) => s.name === stepName);
+  logger.info({
+    fn: getFieldsBySectionApplication,
+    message: `found globalSection data for stepName: ${stepName}`,
+    data: { globalSection, stepName },
+  });
 
   let fields = [];
 
@@ -114,48 +161,21 @@ export function getFieldsBySectionApplication(stepName, forceRefresh = false) {
   } else if (globalSection.fields?.length) {
     // if so, merge them, with application-level config taking precedence
     const globalFields = globalSection.fields;
-    fields = mergeFieldArrays(globalFields, fields, 'name');
+    fields = mergeFieldArrays(fields, globalFields, 'name');
   }
 
-  fields.forEach((s) => {
-    // TODO: Improve this as we do regression testing
-    // Only enable for NEFBA2 and appropriate steps right now.
-    if (
-      !s.disableSingleLine &&
-      (programName === 'NEFBA2' || programName === 'VLB') &&
-      ![
-        FormStep.Documents,
-        FormStep.DeclarationAndConsent,
-        FormStep.Unknown,
-        FormStep.DemographicInfo,
-      ].includes(stepName)
-    ) {
-      combineElementsIntoOneRowNew(s.name);
-    }
-    if (s.disableSingleLine) {
-      disableSingleLine(name);
-    }
-    store.dispatch('addFieldData', s);
-    if (s.relocateField) {
-      logger.info({
-        fn: getFieldsBySectionApplication,
-        message: `relocating field name: ${s.name}`,
-      });
-      relocateField(s);
-    }
-    if (s.visibleIf) {
-      logger.warn({
-        fn: getFieldsBySectionApplication,
-        message: `NOT showing field since conditionally defined visibleIf, name: ${s.name}`,
-      });
-      return;
-    }
-    logger.info({
-      fn: getFieldsBySectionApplication,
-      message: `showing field name: ${s.name}`,
-    });
-    showFieldRow(s.name);
-  });
+  if (
+    localStorage.getItem(
+      `fieldsData-${programName}-${stepName}`,
+      JSON.stringify(fields)
+    )
+  ) {
+    localStorage.removeItem(
+      `fieldsData-${programName}-${stepName}`,
+      JSON.stringify(fields)
+    );
+  }
+
   localStorage.setItem(
     `fieldsData-${programName}-${stepName}`,
     JSON.stringify(fields)
@@ -163,27 +183,137 @@ export function getFieldsBySectionApplication(stepName, forceRefresh = false) {
 
   logger.info({
     fn: getFieldsBySectionApplication,
-    message: 'fieldsData:',
-    data: fields,
+    message: `Start configuring fields for ${programName}-${stepName} with data:`,
+    data: { fields },
   });
 
-  POWERPOD.fields.loading = false;
+  fields.forEach((s) => {
+    if (
+      s.type &&
+      s.type === 'customField' &&
+      s.reorderField.position &&
+      (s.reorderField.fieldName || s.reorderField.sectionDataName)
+    ) {
+      logger.info({
+        fn: getFieldsBySectionApplication,
+        message: `Adding custom field, s.name: ${s.name}, s.label: ${s.label}, s.reorderField.fieldName: ${s.reorderField.fieldName}, s.reorderField.position: ${s.reorderField.position}`,
+      });
+      addCustomField(
+        s.name,
+        s.label,
+        s.reorderField.fieldName,
+        s.reorderField.sectionDataName,
+        s.reorderField.position
+      );
+    }
+    if (document.getElementById(s.name) === null) {
+      logger.warn({
+        fn: getFieldsBySectionApplication,
+        message: `Skipping non-exist field configured in JSON s.name: ${s.name}`,
+      });
+      return;
+    }
+    if (
+      s.type !== 'SectionTitle' &&
+      !s.disableSingleLine &&
+      ![
+        FormStep.Documents,
+        FormStep.DeclarationAndConsent,
+        FormStep.Unknown,
+      ].includes(stepName)
+    ) {
+      combineElementsIntoOneRowNew(s.name);
+    }
+    if (s.disableSingleLine) {
+      disableSingleLine(s.name);
+    }
+    // If elementType is not given, fill it out for future reference
+    if (!s.elementType) {
+      logger.info({
+        fn: getFieldsBySectionApplication,
+        message: `Field elementType not set, try to determine it using getControlType func for s.name: ${s.name}`,
+      });
+      const fieldRow = getFieldRow(s.name);
+      if (!fieldRow) {
+        logger.error({
+          fn: getFieldsBySectionApplication,
+          message: `could not find fieldRow for fieldName: ${s.name}`,
+        });
+      }
+      const elementType = getControlType({ tr: fieldRow, controlId: s.name });
+      s.elementType = elementType;
+    }
+    ///
+    store.dispatch('addFieldData', {
+      ...s,
+      loading: true,
+      touched: false,
+      revalidate: true,
+    });
+    if (s.relocateField) {
+      logger.info({
+        fn: getFieldsBySectionApplication,
+        message: `relocating field name: ${s.name}`,
+      });
+      relocateField(s);
+    }
+    // if (s.visibleIf) {
+    //   logger.warn({
+    //     fn: getFieldsBySectionApplication,
+    //     message: `NOT showing field since conditionally defined visibleIf, name: ${s.name}`,
+    //   });
+    //   return;
+    // }
+    // if (s.type !== 'SectionTitle') {
+    //   logger.info({
+    //     fn: getFieldsBySectionApplication,
+    //     message: `showing field name: ${s.name}, s: ${JSON.stringify(s)}`,
+    //   });
+    //   showFieldRow(s.name);
+    // }
+  });
 
-  return fields;
+  POWERPOD.loadingFieldsIntoState = false;
+
+  logger.info({
+    fn: getFieldsBySectionApplication,
+    message: 'done loading intial field state, fieldsData:',
+    data: { fields: POWERPOD.state.fields },
+  });
+
+  return POWERPOD.state.fields;
 }
 
 export function getFieldsBySectionClaim(stepName, forceRefresh = false) {
   let programName = getProgramAbbreviation();
 
+  // OLD: now try getting results from state
   // load cached results unless forceRefresh flag is passed
+  // if (!forceRefresh) {
+  //   const savedData = localStorage.getItem(
+  //     `fieldsData-${programName}-${stepName}`
+  //   );
+  //   if (savedData) {
+  //     return JSON.parse(savedData);
+  //   }
+  // }
+
   if (!forceRefresh) {
-    const savedData = localStorage.getItem(
-      `fieldsData-${programName}-${stepName}`
-    );
-    if (savedData) {
-      return JSON.parse(savedData);
+    if (POWERPOD.loadingFieldsIntoState === false) {
+      logger.info({
+        fn: getFieldsBySectionApplication,
+        message: `returning cached state for fields`,
+        data: { fields: POWERPOD.state.fields },
+      });
+      return POWERPOD.state.fields;
     }
   }
+
+  logger.info({
+    fn: getFieldsBySectionApplication,
+    message: `call getClaimConfigData() to get fields data`,
+    data: { fields: POWERPOD.state.fields },
+  });
 
   const claimConfigData = getClaimConfigData();
   logger.info({
@@ -191,6 +321,14 @@ export function getFieldsBySectionClaim(stepName, forceRefresh = false) {
     message: 'claimConfigData:',
     data: claimConfigData,
   });
+
+  // hide tabs if 'hiddenSteps' is passed in JSON config
+  const hiddenSteps = claimConfigData.hiddenSteps;
+  if (hiddenSteps) hideTabs(hiddenSteps);
+
+  // configure custom logo if passed
+  const customLogo = claimConfigData.customLogo;
+  if (customLogo) configureCustomLogo(customLogo);
 
   const claimSections = claimConfigData?.sections;
 
@@ -212,53 +350,89 @@ export function getFieldsBySectionClaim(stepName, forceRefresh = false) {
   let fields = claimSection.fields;
 
   fields.forEach((s) => {
-    logger.info({
-      fn: getFieldsBySectionClaim,
-      message: `Getting field with fieldName: ${s.name}...`,
-      data: { programName, stepName, fieldName: s.name, field: s },
-    });
-    // TODO: Improve this as we do regression testing
-    // Only enable for VVTS and appropriate steps right now.
-    if (
-      programName === 'VVTS' &&
-      s.elementType !== 'FileInput' &&
-      ![
-        FormStep.ProjectResults,
-        FormStep.ApplicantInfo,
-        FormStep.DeclarationAndConsent,
-        FormStep.Unknown,
-        FormStep.DemographicInfo,
-      ].includes(stepName)
-    ) {
-      combineElementsIntoOneRowNew(s.name);
-    }
-    store.dispatch('addFieldData', s);
-    if (s.visibleIf) {
+    if (document.getElementById(s.name) === null) {
       logger.warn({
         fn: getFieldsBySectionClaim,
-        message: `NOT showing field since conditionally defined visibleIf, name: ${s.name}`,
+        message: `Skipping non-exist field configured in JSON s.name: ${s.name}`,
       });
       return;
     }
     logger.info({
       fn: getFieldsBySectionClaim,
+      message: `Getting field with fieldName: ${s.name}...`,
+      data: { programName, stepName, fieldName: s.name, field: s },
+    });
+    if (
+      s.type !== 'SectionTitle' &&
+      !s.disableSingleLine &&
+      ![
+        FormStep.Documents,
+        FormStep.DeclarationAndConsent,
+        FormStep.Unknown,
+      ].includes(stepName)
+    ) {
+      combineElementsIntoOneRowNew(s.name);
+    }
+    if (s.disableSingleLine) {
+      disableSingleLine(s.name);
+    }
+    // If elementType is not given, fill it out for future reference
+    if (!s.elementType) {
+      logger.info({
+        fn: getFieldsBySectionClaim,
+        message: `Field elementType not set, try to determine it using getControlType func for s.name: ${s.name}`,
+      });
+      const fieldRow = getFieldRow(s.name);
+      if (!fieldRow) {
+        logger.error({
+          fn: getFieldsBySectionClaim,
+          message: `could not find fieldRow for fieldName: ${s.name}`,
+        });
+      }
+      const elementType = getControlType({ tr: fieldRow, controlId: s.name });
+      s.elementType = elementType;
+    }
+    store.dispatch('addFieldData', {
+      ...s,
+      loading: true,
+      touched: false,
+      revalidate: true,
+    });
+    if (s.relocateField) {
+      logger.info({
+        fn: getFieldsBySectionClaim,
+        message: `relocating field name: ${s.name}`,
+      });
+      relocateField(s);
+    }
+    // if (s.visibleIf) {
+    //   logger.warn({
+    //     fn: getFieldsBySectionClaim,
+    //     message: `NOT showing field since conditionally defined visibleIf, name: ${s.name}`,
+    //   });
+    //   return;
+    // }
+    logger.info({
+      fn: getFieldsBySectionClaim,
       message: `showing field name: ${s.name}, for programName: ${programName}, stepName: ${stepName}`,
     });
-    showFieldRow(s.name);
+    // showFieldRow(s.name);
   });
 
-  localStorage.setItem(
-    `fieldsData-${programName}-${stepName}`,
-    JSON.stringify(fields)
-  );
+  POWERPOD.loadingFieldsIntoState = false;
+
+  // localStorage.setItem(
+  //   `fieldsData-${programName}-${stepName}`,
+  //   JSON.stringify(fields)
+  // );
 
   logger.info({
     fn: getFieldsBySectionClaim,
-    message: 'fieldsData:',
-    data: fields,
+    message: 'done loading intial field state, fieldsData:',
+    data: { fields: POWERPOD.state.fields },
   });
 
-  return fields;
+  return POWERPOD.state.fields;
 }
 
 export function getGlobalFieldsConfig() {
@@ -268,19 +442,38 @@ export function getGlobalFieldsConfig() {
   );
 }
 
-export function getFieldConfig(name) {
-  let programName = getProgramAbbreviation();
-  let stepName = getCurrentStep();
+export function getFieldConfig(fieldName) {
+  let fieldConfig;
+  if (POWERPOD.state?.fields?.[fieldName]) {
+    fieldConfig = POWERPOD.state?.fields?.[fieldName];
+  }
+  // else {
+  //   logger.error({
+  //     fn: getFieldConfig,
+  //     message: `Could not find field config in state, trying local storage`,
+  //   });
+  //   return;
+  //   let programName = getProgramAbbreviation();
+  //   let stepName = getCurrentStep();
 
-  const fieldsConfig = JSON.parse(
-    localStorage.getItem(`fieldsData-${programName}-${stepName}`)
-  );
+  //   const fieldsConfig = JSON.parse(
+  //     localStorage.getItem(`fieldsData-${programName}-${stepName}`)
+  //   );
 
-  const fieldConfig = fieldsConfig.first((f) => f.name === name);
+  //   fieldConfig = fieldsConfig.first((f) => f.name === fieldName);
+  // }
+
+  if (!fieldConfig) {
+    logger.error({
+      fn: getFieldConfig,
+      message: `Could not find fieldConfig for fieldName: ${fieldName}`,
+    });
+    return;
+  }
 
   logger.info({
     fn: getFieldConfig,
-    message: `Retrieved field config for name: ${name}`,
+    message: `Retrieved field config for name: ${fieldName}`,
     data: { fieldConfig },
   });
 

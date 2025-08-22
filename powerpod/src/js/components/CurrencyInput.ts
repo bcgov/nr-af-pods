@@ -8,6 +8,8 @@ class CurrencyInput extends LitElement {
   @property({ type: Boolean }) allowNegatives: boolean = true;
   @property({ type: Number }) maxValue: number | null = null;
   @property({ type: Boolean }) readOnly = false;
+  @property({ type: String }) errorMessage: string = '';
+  @property({ type: String }) tooltip: string = '';
   private cursorPosition: number = 0;
   private previousInputValue: string = '';
 
@@ -151,6 +153,7 @@ class CurrencyInput extends LitElement {
         // @ts-ignore
         id: this.id,
         value: this.inputValue,
+        errorMessage: this.errorMessage,
       },
       bubbles: true,
       composed: true,
@@ -215,8 +218,40 @@ class CurrencyInput extends LitElement {
   }
 
   render() {
+    let inputHtml = html`
+      <div class="input-icon">
+        <input
+          id="inputElement"
+          type="text"
+          class="form-control"
+          .value=${this.inputValue}
+          @input=${this.handleInputChange}
+          @focus=${this.handleInputFocus}
+          @blur=${this.handleInputBlur}
+          @beforeinput=${this.handleBeforeInput}
+        />
+        <i>$</i>
+      </div>
+    `;
     return html`
       <style>
+        sl-tooltip::part(body) {
+          font-size: 1.2rem;
+        }
+        #errorMessage {
+          margin: 0px;
+          font-size: 13px;
+          color: #e23636;
+          padding: 0px;
+          position: absolute;
+          ${!this.errorMessage && !this.errorMessage.length
+          ? css`
+              display: none;
+            `
+          : css`
+              display: block;
+            `}
+        }
         .input-icon {
           position: relative;
         }
@@ -267,19 +302,12 @@ class CurrencyInput extends LitElement {
             `}
         }
       </style>
-      <div class="input-icon">
-        <input
-          id="inputElement"
-          type="text"
-          class="form-control"
-          .value=${this.inputValue}
-          @input=${this.handleInputChange}
-          @focus=${this.handleInputFocus}
-          @blur=${this.handleInputBlur}
-          @beforeinput=${this.handleBeforeInput}
-        />
-        <i>$</i>
-      </div>
+      ${this.tooltip && this.tooltip.length
+        ? html`
+            <sl-tooltip content=${this.tooltip}> ${inputHtml} </sl-tooltip>
+          `
+        : html` ${inputHtml} `}
+      <p id="errorMessage" class="error-message">${this.errorMessage || ''}</p>
     `;
   }
 }

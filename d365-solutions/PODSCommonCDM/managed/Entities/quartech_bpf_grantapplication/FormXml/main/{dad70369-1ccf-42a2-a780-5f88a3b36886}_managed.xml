@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{dad70369-1ccf-42a2-a780-5f88a3b36886}</formid>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form>
+      <tabs>
+        <tab verticallayout="true" id="{c9b4350a-3b7c-4b30-9ee0-89d9ca8e8456}" name="StageStep3" locklevel="0" expanded="true" visible="false" labelid="{6b152839-e889-4436-84e1-a6cd1cb1be7f}">
+          <labels>
+            <label description="Application Submission" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%">
+              <sections>
+                <section showbar="false" columns="1" id="{06d9bd90-323a-96e2-1a5d-80995a81bece}" name="StageStep3_section1" labelid="{9dfab2d5-405f-484c-a2e2-eefcd1bab04c}">
+                  <labels>
+                    <label description="Application Submission" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{672dc351-1079-41be-9c82-e03821e8ed4b}" showlabel="true" visible="true" labelid="{b808ea77-4e8b-4d25-87ac-dee7ff040ad1}">
+                        <labels>
+                          <label description="Submission Completed" languagecode="1033" />
+                        </labels>
+                        <control id="bpf_msgov_businessgrantapplication_quartech_bpf_grantapplication:quartech_documentssubmitted" classid="{67fac785-cd58-4f9f-abb3-4b7ddc6ed5ed}" datafieldname="quartech_documentssubmitted" disabled="false" relationship="bpf_msgov_businessgrantapplication_quartech_bpf_grantapplication" isrequired="true" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+        <tab verticallayout="true" id="{0d7ae807-969e-4fec-ab24-418b959e3d5a}" name="StageStep7" locklevel="0" expanded="true" visible="false" labelid="{cb7beafb-ace1-4500-a8b9-74f084068d7a}">
+          <labels>
+            <label description="Eligibility" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%">
+              <sections>
+                <section showbar="false" columns="1" id="{8b2c8e83-2769-76dc-e481-054583a99931}" name="StageStep7_section1" labelid="{ded64747-396b-4e43-b593-b2daee542c75}">
+                  <labels>
+                    <label description="Eligibility" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{f313debe-ddb0-4f86-ae59-9949a61ae870}" showlabel="true" visible="true" labelid="{8b9a9b60-64b2-4c5a-8829-946841b3e711}">
+                        <labels>
+                          <label description="Eligibility Requirements Met" languagecode="1033" />
+                        </labels>
+                        <control id="bpf_msgov_businessgrantapplication_quartech_bpf_grantapplication:quartech_eligibilityrequirements" classid="{3ef39988-22bb-4f0b-bbbe-64b5a3748aee}" datafieldname="quartech_eligibilityrequirements" disabled="false" relationship="bpf_msgov_businessgrantapplication_quartech_bpf_grantapplication" isrequired="true" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+        <tab verticallayout="true" id="{9c5b510b-2755-4a5e-ac82-f09e22f2af5b}" name="StageStep11" locklevel="0" expanded="true" visible="false" labelid="{0ef4b653-80ea-476d-b458-1c561f15ceba}">
+          <labels>
+            <label description="Evaluation" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%">
+              <sections>
+                <section showbar="false" columns="1" id="{5044100e-4002-054f-9ac2-48439707150d}" name="StageStep11_section1" labelid="{0aca5511-acba-412b-b6a0-1f492f8817bf}">
+                  <labels>
+                    <label description="Evaluation" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{98594e14-c726-4031-bc94-8464b50f95ae}" showlabel="true" visible="true" labelid="{2ae45956-b760-4f78-bf8d-dae0c049a150}">
+                        <labels>
+                          <label description="Evaluation Completed" languagecode="1033" />
+                        </labels>
+                        <control id="bpf_msgov_businessgrantapplication_quartech_bpf_grantapplication:quartech_evaluationcompleted" classid="{67fac785-cd58-4f9f-abb3-4b7ddc6ed5ed}" datafieldname="quartech_evaluationcompleted" disabled="false" relationship="bpf_msgov_businessgrantapplication_quartech_bpf_grantapplication" isrequired="true" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+        <tab verticallayout="true" id="{901507cd-c06e-497e-8223-5086c81883bf}" name="StageStep15" locklevel="0" expanded="true" visible="false" labelid="{9022207b-bd3f-4d27-ab4c-9499acc43d7d}">
+          <labels>
+            <label description="Staff Decision" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%">
+              <sections>
+                <section showbar="false" columns="1" id="{31c6f7f3-aed5-f0f8-a640-b31d66552073}" name="StageStep15_section1" labelid="{177a5327-7da1-480c-b640-64f1ee1c5f4e}">
+                  <labels>
+                    <label description="Staff Decision" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{b94297b3-5408-496a-b57f-d0393cfe7f03}" showlabel="true" visible="true" labelid="{5ddaca52-98dc-402e-85b7-dd6caee3e44b}">
+                        <labels>
+                          <label description="Recommended for approval" languagecode="1033" />
+                        </labels>
+                        <control id="bpf_msgov_businessgrantapplication_quartech_bpf_grantapplication:quartech_applicationapproved" classid="{3ef39988-22bb-4f0b-bbbe-64b5a3748aee}" datafieldname="quartech_applicationapproved" disabled="false" relationship="bpf_msgov_businessgrantapplication_quartech_bpf_grantapplication" isrequired="true" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+    </form>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <LocalizedNames>
+      <LocalizedName description="Information" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="A form for this entity." languagecode="1033" />
+    </Descriptions>
+  </systemform>
+</forms>

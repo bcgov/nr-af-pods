@@ -1,0 +1,104 @@
+{
+	"name": "Claim - Test Script - VVTS",
+	"testSteps" : [
+		{   "action" : "open-new-tab", "url": "https://af-pods-dev.powerappsportals.com/my-claims" }
+		, {   "action" : "find-list-item",
+				"techNotes" : "labels the fields element below indicate the headers of the list/table",
+				"fields" : [ 
+					{ "label" : "Program", "value" : "Veterinary and Veterinary Technologist Students Working in BC Food Animal Practices", "visible" : true}, 
+					{ "label" : "Claim Status", "value" : "Draft", "visible" : true}, 
+					{ "label" : "Actions", "type" : "action menu", "value" : "Edit / Submit Claim", "action" : "Click the link"} 
+				],
+				"description" : "My Claims list should display a DRAFT VVTS Claim with a link to EDIT it." }
+		
+		, { "action" : "Expect", "field" : { "label": "Legal Business or Organization Name", "visible" : true } }
+		, { "action" : "Expect", "field" : { "label": "Business Address", "visible" : true } }
+		, { "action" : "Expect", "field" : { "label": "Tel", "visible" : true } }
+		, { "action" : "Expect", "field" : { "label": "Email", "visible" : true } }
+		
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : true } }
+		
+		, { "action" : "Expect", "field" : { "label": "I / We confirm the above information is correct", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Please provide further detail", "visible" : false } }
+		, { "action" : "Select", "field" : { "label": "I / We confirm the above information is correct", "value" : "No" } }
+		, { "action" : "Expect", "field" : { "label": "Please provide further detail", "visible" : true, "required" : true } }
+		, { "action" : "Select", "field" : { "label": "I / We confirm the above information is correct", "value" : "Yes" } }
+		, { "action" : "Expect", "field" : { "label": "Please provide further detail", "visible" : false } }
+				
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : false } }
+
+		, { "action" : "Expect", "field" : { "label": "File Number (from authorization letter)", "visible" : true } }		
+
+		, { "action" : "Click on the Next button.", "description" : "Go to the Project Results step by clicking on the Next button." }
+
+		, { "action" : "Expect", "field" : { "label": "Was the student enrolled at your clinic exposed to a range of food animal practice related work?", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Did your clinic build a successful relationship with your student?", "visible" : true, "required" : true } }
+		
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : true } }
+		
+		, { "action" : "Select", "field" : { "label": "Was the student enrolled at your clinic exposed to a range of food animal practice related work?", "value" : "Yes" } }
+		, { "action" : "Select", "field" : { "label": "Did your clinic build a successful relationship with your student?", "value" : "Yes" } }
+				
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : false } }
+
+		, { "action" : "Click on the Next button.", "description" : "Go to the Claim Information step by clicking on the Next button." }
+
+		, { "action" : "Expect", "field" : { "label": "Student wages / travel / housing", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "How many students have completed 12 consecutive weeks or longer working in your clinic?", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Your requested amount in this claim ($CAD)", "visible" : true, "required" : true } }
+		
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : true } }
+		
+		, { "action" : "Enter", "field" : { "label": "Student wages / travel / housing", "value" : "5,800.00" } }
+		, { "action" : "Select", "field" : { "label": "How many students have completed 12 consecutive weeks or longer working in your clinic?", "value" : "1" } }
+		, { "action" : "Enter", "field" : { "label": "Your requested amount in this claim ($CAD)", "value" : "6,000.00" } }
+				
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : false } }
+
+		, { "action" : "Click on the Next button.", "description" : "Go to the Documents step by clicking on the Next button." }
+
+		, { "action" : "Expect", "field" : { "label": "End of program data collection and program evaluation ID number", "visible" : true, "required" : true } }
+
+		, { "action" : "Expect", "field" : { "label": "Student 1 - Food-animal case log", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Student 1 has been requested to fill out a program evaluation form. Please, enter the survey ID as a confirmation:", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Student 2 - Food-animal case log", "visible" : false } }
+		, { "action" : "Expect", "field" : { "label": "Student 2 has been requested to fill out a program evaluation form. Please, enter the survey ID as a confirmation:", "visible" : false } }
+		, { "action" : "Expect", "field" : { "label": "Student 3 - Food-animal case log", "visible" : false } }
+		, { "action" : "Expect", "field" : { "label": "Student 3 has been requested to fill out a program evaluation form. Please, enter the survey ID as a confirmation:", "visible" : false } }
+		
+		, { "action" : "Click on the Previous button.", "description" : "Go to the Claim Information step by clicking on the Previous button." }
+		, { "action" : "Select", "field" : { "label": "How many students have completed 12 consecutive weeks or longer working in your clinic?", "value" : "2" } }
+		, { "action" : "Click on the Next button.", "description" : "Go to the Documents step by clicking on the Next button." }
+
+		, { "action" : "Expect", "field" : { "label": "Student 1 - Food-animal case log", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Student 1 has been requested to fill out a program evaluation form. Please, enter the survey ID as a confirmation:", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Student 2 - Food-animal case log", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Student 2 has been requested to fill out a program evaluation form. Please, enter the survey ID as a confirmation:", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Student 3 - Food-animal case log", "visible" : false } }
+		, { "action" : "Expect", "field" : { "label": "Student 3 has been requested to fill out a program evaluation form. Please, enter the survey ID as a confirmation:", "visible" : false } }
+		
+		, { "action" : "Click on the Previous button.", "description" : "Go to the Claim Information step by clicking on the Previous button." }
+		, { "action" : "Select", "field" : { "label": "How many students have completed 12 consecutive weeks or longer working in your clinic?", "value" : "3" } }
+		, { "action" : "Click on the Next button.", "description" : "Go to the Documents step by clicking on the Next button." }
+
+		, { "action" : "Expect", "field" : { "label": "Student 1 - Food-animal case log", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Student 1 has been requested to fill out a program evaluation form. Please, enter the survey ID as a confirmation:", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Student 2 - Food-animal case log", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Student 2 has been requested to fill out a program evaluation form. Please, enter the survey ID as a confirmation:", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Student 3 - Food-animal case log", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Student 3 has been requested to fill out a program evaluation form. Please, enter the survey ID as a confirmation:", "visible" : true, "required" : true } }
+		
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : true } }
+
+		, { "action" : "Enable the Next button.", "description" : "Enable the Next button. Skip the docs upload and the VVTS End of program data collection and program evaluation survey tests." }
+		, { "action" : "Click on the Next button.", "description" : "Go to the Declaration and Consent step by clicking on the Next button." }
+
+		, { "action" : "Expect", "field" : { "label": "I / We agree to the above statement.", "visible" : true, "required" : true } }
+
+		, { "action" : "Expect", "button" : { "label": "Submit", "disabled" : true } }
+		
+		, { "action" : "Enter", "field" : { "label": "I / We agree to the above statement.", "value" : "checked" } }
+
+		, { "action" : "Expect", "button" : { "label": "Submit", "disabled" : false } }	
+	]
+}

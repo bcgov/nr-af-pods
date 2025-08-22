@@ -1,0 +1,473 @@
+{
+  "version": "1.3.4",
+  "tags": [
+    "Application",
+    "StaffPortal",
+    "TFCCRF",
+    "Tree Fruit Climate Change Response Fund"
+  ],
+  "name": "Tree Fruit Climate Change Response Fund",
+  "abbreviation": "TFCCRF",
+  "programId": "357a7a04-a309-f011-bae3-002248ae7f3c",
+  "hiddenSteps": [
+    {
+      "displayName": "Eligibility"
+    }
+  ],
+  "customLogo": "/BCID_H_rgb_pos.png",
+  "sections": [
+    {
+      "name": "ApplicantInfoStep",
+      "dataName": "tab_ApplicantInfo",
+      "subsections": [
+        {
+          "name": "Applicant Information",
+          "type": "SectionTitle",
+          "subsectionAriaLabel": "Applicant Information"
+        }
+      ],
+      "fields": [
+        {
+          "name": "quartech_areyouanexistingtreefruit",
+          "label": "Is an existing Tree Fruit producer in B.C., whose primary purpose is the production and sale of harvested tree fruit.",
+          "required": true,
+          "onChangeHandler": "checkAndSetTFCCRFEligbilityNotice"
+        },
+        {
+          "name": "quartech_treefruitdensityeligibility",
+          "label": "Farming at least 2.47 Eligible Acre of Tree Fruits with a Minimum Planting Density of 100 trees per acre.",
+          "required": true,
+          "onChangeHandler": "checkAndSetTFCCRFEligbilityNotice"
+        },
+        {
+          "name": "quartech_areyouataxableentity",
+          "label": "Is a taxable entity (e.g. individual, corporation or trust), limited partnership, commune, cooperative with a GST and business number, or First Nation Band.",
+          "required": true,
+          "onChangeHandler": "checkAndSetTFCCRFEligbilityNotice"
+        },
+        {
+          "name": "quartech_doyoufilefarmincometaxundertaxactinbc",
+          "label": "Has their main farmstead in British Columbia and has filed farm income tax for the tax year 2023(form T2042 or T1273) under the Income Tax Act in B.C.",
+          "required": true,
+          "onChangeHandler": "checkAndSetTFCCRFEligbilityNotice"
+        },
+        {
+          "name": "quartech_taxreturnnotrequired",
+          "label": "Is an applicant not required to file farm income tax, and can provide Acceptable Documentation that demonstrates the production of over 2.47 Eligible Acre and the sale of Tree Fruit.",
+          "required": true,
+          "onChangeHandler": "checkAndSetTFCCRFEligbilityNotice",
+          "visibleIf": {
+            "fieldName": "quartech_doyoufilefarmincometaxundertaxactinbc",
+            "selectedValue": 255550001
+          }
+        },
+        {
+          "name": "quartech_areyouanownerorlesseeoftheland",
+          "label": "Primary Producer with owned or leased Tree Fruit production land as of November 30, 2024 within British Columbia.",
+          "required": true,
+          "onChangeHandler": "checkAndSetTFCCRFEligbilityNotice"
+        },
+        {
+          "name": "quartech_notresearchstationorgovernmentfundedagency",
+          "label": "Is not a research station or government funded agency or institution.",
+          "required": true,
+          "onChangeHandler": "checkAndSetTFCCRFEligbilityNotice",
+          "additionalTextBelowField": "<p id='doesNotMeetTFCCRFEligibilityRequirements' style='color:red;display:none;'>Thank you for your interest. As you do not meet all eligibility requirements, your application does not qualify for approval at this time.</p>"
+        },
+        {
+          "name": "quartech_legalbusinessororganizationname",
+          "required": true,
+          "additionalTextAboveField": "<p>Your personal information is collected under section 26(c) and 26(e) of the Freedom of Information and Protection of Privacy Act for the purposes of evaluating applications and for the planning and evaluation of the program. The information you provide may be combined with other survey or administrative data sources and used for statistical, research and evaluation purposes.</p>",
+          "techComment": "Included to specify the fixed text above."
+        },
+        {
+          "name": "quartech_businesssuitenumberoptional",
+          "additionalTextAboveField": "<p>Physical address as used by emergency services</p>",
+          "label": "Business - Suite Number (optional)",
+          "visible": true
+        },
+        {
+          "name": "quartech_alternatebusinessaddress",
+          "label": "Mailing address (if it's different from physical address)",
+          "tooltipText": "i.e. PO Box"
+        },
+        {
+          "name": "quartech_applicanttype",
+          "label": "Type of Business",
+          "required": true,
+          "reorderField": {
+            "position": "after",
+            "fieldName": "quartech_alternatebusinessaddress"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ProjectStep",
+      "displayName": "Tree Fruit Information",
+      "hideHeaderDescription": true,
+      "fields": [
+        {
+          "name": "subgrid_ProjectStep_Import_TF_Inventory",
+          "disableSingleLine": true,
+          "elementType": "subgrid",
+          "additionalTextAboveField": "<p>Insured plantings with less than 100 trees per acre have been removed from eligible acres calculation</p>",
+          "hideOrShowAdditionalTextWithFieldVisibility": true,
+          "visibleIf": {
+            "fieldName": "quartech_originalsource",
+            "selectedValue": 255550001,
+            "techComment": "Import option selected"
+          }
+        },
+        {
+          "name": "quartech_reportnewtreefruitinventory",
+          "label": "Are you reporting new additional Eligible Acres?",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_originalsource",
+            "selectedValue": 255550001,
+            "techComment": "Import option selected"
+          }
+        },
+        {
+          "name": "quartech_originalsource",
+          "techComment": "this needs to be defined in order to reference it in visibleIf conditions",
+          "hidden": true,
+          "doNotBlank": true
+        },
+        {
+          "name": "quartech_ownorleaseland",
+          "label": "Do you own or lease the land on which the Fruit Trees are planted?",
+          "required": true,
+          "additionalTextAboveField": "<p id='TFCCRF_dateCropsPlantedInstructions'>Each Fruit Tree (excluding Pollinizers) must have been permanently planted, grafted, or budded before November 30, 2024. </p>",
+          "hideOrShowAdditionalTextWithFieldVisibility": true,
+          "visibleIf": {
+            "comparison": "or",
+            "comparisons": [
+              {
+                "fieldName": "quartech_originalsource",
+                "selectedValueIn": [255550000, 255550002],
+                "techComment": "Import option NOT selected"
+              },
+              {
+                "comparison": "and",
+                "comparisons": [
+                  {
+                    "fieldName": "quartech_originalsource",
+                    "selectedValue": 255550001,
+                    "techComment": "Import option selected"
+                  },
+                  {
+                    "fieldName": "quartech_reportnewtreefruitinventory",
+                    "selectedValue": 255550000,
+                    "techComment": "YES value"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "subgrid_ProjectStep_New_TF_Inventory",
+          "disableSingleLine": true,
+          "elementType": "subgrid",
+          "visibleIf": {
+            "comparison": "or",
+            "comparisons": [
+              {
+                "fieldName": "quartech_originalsource",
+                "selectedValueIn": [255550000, 255550002],
+                "techComment": "Import option NOT selected"
+              },
+              {
+                "comparison": "and",
+                "comparisons": [
+                  {
+                    "fieldName": "quartech_originalsource",
+                    "selectedValue": 255550001,
+                    "techComment": "Import option selected"
+                  },
+                  {
+                    "fieldName": "quartech_reportnewtreefruitinventory",
+                    "selectedValue": 255550000,
+                    "techComment": "YES value"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "quartech_plantoremovetrees",
+          "label": "Do you plan to remove any fruit trees before September 30, 2025",
+          "required": true,
+          "visibleIf": {
+            "comparison": "or",
+            "comparisons": [
+              {
+                "fieldName": "quartech_originalsource",
+                "selectedValueIn": [255550000, 255550002],
+                "techComment": "Import option NOT selected"
+              },
+              {
+                "comparison": "and",
+                "comparisons": [
+                  {
+                    "fieldName": "quartech_originalsource",
+                    "selectedValue": 255550001,
+                    "techComment": "Import option selected"
+                  },
+                  {
+                    "fieldName": "quartech_reportnewtreefruitinventory",
+                    "selectedValue": 255550000,
+                    "techComment": "YES value"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "quartech_treeremovalexplanation",
+          "label": "Please provide a rational, and describe how many trees, which location, and when the removal will be happening.",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_plantoremovetrees",
+            "selectedValue": 255550000,
+            "techComment": "YES value"
+          }
+        },
+        {
+          "name": "quartech_inordertocontinuouslyimprovecommunications",
+          "hidden": true,
+          "techComment": "This is NEEDED to override default global json config, please leave this here."
+        }
+      ]
+    },
+    {
+      "name": "DeliverablesBudgetStep",
+      "dataName": "tab_Deliverables_Budget",
+      "displayName": "EFT Form",
+      "subsections": [
+        {
+          "name": "Deliverables & Budget",
+          "type": "SectionTitle",
+          "newLabel": "General Information"
+        },
+        {
+          "name": "Partial Budget",
+          "type": "SectionTitle",
+          "newLabel": "Financial Institution Information"
+        }
+      ],
+      "fields": [
+        {
+          "type": "customField",
+          "name": "isBusinessContactInfoSameAsBefore",
+          "label": "Copy the previously entered Business Contact information to the fields below?",
+          "customComponent": {
+            "customElementTag": "dropdown-search",
+            "mappedValueKey": "inputvalue",
+            "customEventHandler": "handleIsBusinessContactInfoDropdownChangeHandler",
+            "customEventName": "onChangeDropdownValue",
+            "attributes": {
+              "options": "[\"Yes\",\"No\"]"
+            }
+          },
+          "reorderField": {
+            "position": "before",
+            "sectionDataName": "tab_Deliverables_Budget"
+          }
+        },
+        {
+          "name": "quartech_designatedregistrantname",
+          "label": "Recipient Name",
+          "required": true
+        },
+        {
+          "name": "quartech_suitenumberoptional",
+          "label": "Suite Number (optional)"
+        },
+        {
+          "name": "quartech_streetnumber",
+          "label": "Street Number",
+          "required": true
+        },
+        {
+          "name": "quartech_street",
+          "label": "Street",
+          "required": true
+        },
+        {
+          "name": "quartech_city2",
+          "label": "City/Town",
+          "required": true
+        },
+        {
+          "name": "quartech_provinceterritory",
+          "label": "Province/Territory",
+          "required": true
+        },
+        {
+          "name": "quartech_postalcode",
+          "label": "Postal Code",
+          "required": true
+        },
+        {
+          "name": "quartech_notificationemailaddress",
+          "label": "Notification E-mail Address",
+          "required": true
+        },
+        {
+          "name": "quartech_nameoffinancialinstitution",
+          "label": "Name of Financial Institution",
+          "required": true
+        },
+        {
+          "name": "quartech_branchno",
+          "label": "Branch No.",
+          "required": true,
+          "hideNumberInputArrows": true,
+          "maxLength": 5,
+          "format": "numbersOnly",
+          "validation": {
+            "type": "length",
+            "value": 5,
+            "comparison": "equalTo",
+            "postfix": "digits"
+          }
+        },
+        {
+          "name": "quartech_institutionno",
+          "label": "Institution No.",
+          "required": true,
+          "hideNumberInputArrows": true,
+          "maxLength": 3,
+          "format": "numbersOnly",
+          "validation": {
+            "type": "length",
+            "value": 3,
+            "comparison": "equalTo",
+            "postfix": "digits"
+          }
+        },
+        {
+          "name": "quartech_accountnumber",
+          "label": "Account No.",
+          "required": true,
+          "hideNumberInputArrows": true,
+          "maxLength": 13,
+          "format": "numbersOnly",
+          "validation": {
+            "type": "length",
+            "value": 13,
+            "comparison": "lessThanOrEqualTo",
+            "postfix": "digits"
+          }
+        }
+      ]
+    },
+    {
+      "name": "DocumentsStep",
+      "hideHeaderDescription": true,
+      "fields": [
+        {
+          "name": "quartech_taxdocument",
+          "label": "Upload a copy of your 2023 tax documents submitted to Canada Revenue Agency, including Tax return (T1 General) for all individual/owners with Statement of Farming Activity (T2042 or T1273) or Corporation Income Tax Return if Business/Company (T2)",
+          "required": true,
+          "elementType": "FileInput",
+          "reorderField": {
+            "position": "before",
+            "fieldName": "quartech_uploadasitemap"
+          }
+        },
+        {
+          "name": "quartech_propertyassessmentnotice",
+          "label": "Upload property assessment notice (if you own the land on which the fruit trees are planted)",
+          "required": true,
+          "elementType": "FileInput",
+          "reorderField": {
+            "position": "after",
+            "fieldName": "quartech_taxdocument"
+          }
+        },
+        {
+          "name": "quartech_leaseagreement",
+          "label": "Upload the lease agreement (if you lease the land on which the fruit trees are planted)",
+          "elementType": "FileInput",
+          "required": true,
+          "reorderField": {
+            "position": "after",
+            "fieldName": "quartech_propertyassessmentnotice"
+          }
+        },
+        {
+          "name": "quartech_uploadasitemap",
+          "label": "Upload map(s) of the orchard for new tree fruit inventory entries only.",
+          "boldLabel": true,
+          "additionalTextBelowLabel": "<div><br/><p>Your map must include:<ol><li><b>Property boundary</b> (outline of your land)</li><li><b>Fruit tree planting areas</b> clearly marked</li><li><b>Tree spacing</b> – both between trees and between rows</li><li><b>North arrow</b></li><li><b>Labels for: planting blocks and tree type</b></li></ol></p></div>",
+          "elementType": "FileInput",
+          "required": true,
+          "tooltipText": "All applicants must submit a map showing the location of fruit tree plantings for new information. The map should be able to confirm # of trees, row and tree spacing and location."
+        },
+        {
+          "name": "quartech_directdepositapplication",
+          "label": "Attach void cheque or bank letter",
+          "elementType": "FileInput",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "DemographicInfoStep",
+      "hideHeaderDescription": true,
+      "fields": [
+        {
+          "name": "quartech_chefsid",
+          "required": true,
+          "tooltipText": "This number is automatically generated when the survey has been submitted",
+          "label": "Demographic Data Collection Survey ID number",
+          "bold": true,
+          "readOnly": true,
+          "errorMessage": "Please complete the required survey, this field will autofill."
+        },
+        {
+          "name": "quartech_chefssubmissionid",
+          "label": "CHEFS Submission Id",
+          "hidden": true,
+          "doNotBlank": true
+        }
+      ]
+    },
+    {
+      "name": "DeclarationAndConsentStep",
+      "fields": [
+        {
+          "name": "quartech_declarationandconsent",
+          "required": true
+        },
+        {
+          "name": "quartech_consenttoallowsiteinspectionsoraudits",
+          "required": true
+        },
+        {
+          "name": "quartech_consenttotestimonials",
+          "hidden": true
+        },
+        {
+          "name": "quartech_signature",
+          "label": "Applicant signature",
+          "elementType": "SignatureControl",
+          "validation": {
+            "type": "signature"
+          },
+          "skipWordTemplateGeneration": true
+        }
+      ]
+    },
+    {
+      "name": "Success",
+      "hideHeaderDescription": true
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>0</isdefault>
+    <savedqueryid>{673eaea4-95f5-ed11-8848-0022483ebed2}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="quartech_name" select="1" icon="1" preview="1">
+        <row name="result" id="quartech_grantprojectid">
+          <cell name="a_bacda3fcb2264e5dbe497fe5ab427d80.name" width="182" />
+          <cell name="a_bacda3fcb2264e5dbe497fe5ab427d80.quartech_crabusinessname" width="200" disableSorting="1" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="a_bacda3fcb2264e5dbe497fe5ab427d80.quartech_suppliernumber" width="204" />
+          <cell name="a_65fa021501664fac89bb3627586c9a20.fullname" width="219" />
+          <cell name="a_425dba130d2a498abf8080d275001cab.fullname" width="218" />
+          <cell name="quartech_pt_projectidentifier" width="156" />
+          <cell name="quartech_approvedamount" width="146" />
+          <cell name="quartech_actualamount" width="127" />
+          <cell name="quartech_name" width="200" />
+          <cell name="quartech_enddate" width="136" />
+          <cell name="a_2ce103900d00ee118f6d002248ae080f.quartech_client" width="100" disableSorting="1" />
+          <cell name="a_2ce103900d00ee118f6d002248ae080f.quartech_project" width="100" disableSorting="1" />
+          <cell name="a_2ce103900d00ee118f6d002248ae080f.quartech_respcentre" width="100" disableSorting="1" />
+          <cell name="a_2ce103900d00ee118f6d002248ae080f.quartech_serviceline" width="100" disableSorting="1" />
+          <cell name="a_2ce103900d00ee118f6d002248ae080f.quartech_stob" width="100" disableSorting="1" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" output-format="xml-platform" mapping="logical">
+        <entity name="quartech_grantproject">
+          <attribute name="quartech_name" />
+          <link-entity alias="a_65fa021501664fac89bb3627586c9a20" name="systemuser" to="quartech_qualifiedreceiver" from="systemuserid" link-type="outer" visible="false">
+            <attribute name="fullname" />
+          </link-entity>
+          <link-entity alias="a_425dba130d2a498abf8080d275001cab" name="systemuser" to="quartech_expenseauthority" from="systemuserid" link-type="outer" visible="false">
+            <attribute name="fullname" />
+          </link-entity>
+          <attribute name="quartech_approvedamount" />
+          <attribute name="quartech_actualamount" />
+          <attribute name="quartech_enddate" />
+          <attribute name="quartech_pt_projectidentifier" />
+          <link-entity alias="a_2ce103900d00ee118f6d002248ae080f" name="quartech_financialcodingblock" from="quartech_financialcodingblockid" to="quartech_financialcodingblock" link-type="outer" visible="false">
+            <attribute name="quartech_stob" />
+            <attribute name="quartech_serviceline" />
+            <attribute name="quartech_respcentre" />
+            <attribute name="quartech_project" />
+            <attribute name="quartech_client" />
+          </link-entity>
+          <link-entity alias="a_bacda3fcb2264e5dbe497fe5ab427d80" name="account" to="quartech_recipient" from="accountid" link-type="outer" visible="false">
+            <attribute name="quartech_suppliernumber" />
+            <attribute name="name" />
+            <attribute name="quartech_crabusinessname" />
+          </link-entity>
+          <attribute name="quartech_grantprojectid" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.0.23</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Payment Template" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

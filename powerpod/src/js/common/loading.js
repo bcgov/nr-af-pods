@@ -25,6 +25,7 @@ export function hideLoadingAnimation() {
     return;
   }
 
+  POWERPOD.loading = false;
   const loader = doc.getElementById('loader');
   if (loader) {
     logger.info({
@@ -46,6 +47,7 @@ export function hideLoadingAnimation() {
       message: 'loaderStyle found & finished loading, removing element',
     });
     loaderStyle.parentNode?.removeChild(loaderStyle);
+    window.scrollTo(0, 0);
   } else {
     logger.warn({
       fn: hideLoadingAnimation,

@@ -1,0 +1,163 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_sharedcommondataserviceforapps_f90be"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "e4a15743-08fd-4ccf-a4f5-b92654598f1d"
+          },
+          "type": "Request",
+          "kind": "Button",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "title": "ApplicationGUID",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                }
+              },
+              "required": [
+                "text"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Get_Application_-_Status_Upon_Cancellation": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "faee8dca-fb99-4da1-bff3-4dd6573f8b60"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "parameters": {
+              "entityName": "msgov_businessgrantapplications",
+              "recordId": "@triggerBody()['text']",
+              "$select": "quartech_statusuponcancellation,quartech_applicationstatus"
+            },
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+              "operationId": "GetItem",
+              "connectionName": "shared_commondataserviceforapps"
+            }
+          }
+        },
+        "REACTIVATE_Application_based_on_StatusUponCancellation_and_ApplicationStatus": {
+          "actions": {
+            "Update_Application_-_Application_Status_to_Status_Upon_Cancellation": {
+              "metadata": {
+                "operationMetadataId": "94702de0-a00f-46f1-a755-76ad7e569784"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "parameters": {
+                  "entityName": "msgov_businessgrantapplications",
+                  "recordId": "@triggerBody()['text']",
+                  "item/quartech_applicationstatus": "@outputs('Get_Application_-_Status_Upon_Cancellation')?['body/quartech_statusuponcancellation']",
+                  "item/quartech_statusuponcancellation": "@null"
+                },
+                "host": {
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+                  "operationId": "UpdateRecord",
+                  "connectionName": "shared_commondataserviceforapps"
+                }
+              }
+            },
+            "Response": {
+              "runAfter": {
+                "Update_Application_-_Application_Status_to_Status_Upon_Cancellation": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "01605804-3b00-4aa3-aef5-5d18e5958cfa"
+              },
+              "type": "Response",
+              "kind": "Http",
+              "inputs": {
+                "statusCode": 200,
+                "body": {
+                  "errorMessage": ""
+                }
+              }
+            }
+          },
+          "runAfter": {
+            "Get_Application_-_Status_Upon_Cancellation": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Terminate_by_Skipping_the_flow_with_SUCCEEDED_status": {
+                "metadata": {
+                  "operationMetadataId": "838beaa0-09f6-48d6-a707-d182f920e5c1"
+                },
+                "type": "Terminate",
+                "inputs": {
+                  "runStatus": "Succeeded"
+                }
+              }
+            }
+          },
+          "expression": {
+            "and": [
+              {
+                "greater": [
+                  "@body('Get_Application_-_Status_Upon_Cancellation')?['quartech_statusuponcancellation']",
+                  0
+                ]
+              },
+              {
+                "greaterOrEquals": [
+                  "@body('Get_Application_-_Status_Upon_Cancellation')?['quartech_applicationstatus']",
+                  255550011
+                ]
+              },
+              {
+                "lessOrEquals": [
+                  "@body('Get_Application_-_Status_Upon_Cancellation')?['quartech_applicationstatus']",
+                  255550015
+                ]
+              }
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "60e8630c-1570-46f5-87cf-2b7f0f8fcb46"
+          },
+          "type": "If"
+        }
+      }
+    },
+    "templateName": null
+  },
+  "schemaVersion": "1.0.0.0"
+}

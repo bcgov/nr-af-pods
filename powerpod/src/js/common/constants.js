@@ -17,11 +17,28 @@ export const Hosts = {
 };
 export const ClaimPaths = ['/claim/', '/claim-dev/'];
 export const ApplicationPaths = ['/application/', '/application-dev/'];
+export const HomePaths = ['/', '/home-dev/'];
 
 export const Form = {
   Application: 'Application',
   Claim: 'Claim',
   StaffPortalClaim: 'StaffPortalClaim',
+};
+
+export const Page = {
+  Home: 'Home',
+};
+
+export const BrowserInformationType = {
+  Information: 255550000,
+  Warning: 255550001,
+  Error: 255550002,
+};
+
+export const BrowserInformationAction = {
+  Load: 'Load',
+  Save: 'Save',
+  Next: 'Next',
 };
 
 export const HtmlElementType = {
@@ -31,10 +48,13 @@ export const HtmlElementType = {
   FileInput: 'FileInput',
   SingleOptionSet: 'SingleOptionSet',
   MultiOptionSet: 'MultiOptionSet',
+  MultiSelectPicklist: 'MultiSelectPicklist',
   DropdownSelect: 'DropdownSelect',
   DatePicker: 'DatePicker',
   Checkbox: 'Checkbox',
+  NotesControl: 'NotesControl',
   Unknown: 'Unknown',
+  SignatureControl: 'SignatureControl',
 };
 
 export const FormStep = {
@@ -52,6 +72,7 @@ export const FormStep = {
   ClaimInfo: 'ClaimInfoStep',
   // Unknown
   Unknown: 'UnknownStep',
+  Success: 'Success',
 };
 
 export const TabDisplayNames = {
@@ -63,9 +84,9 @@ export const TabDisplayNames = {
   ],
   // Application Steps:
   [FormStep.ApplicantInfo]: 'Applicant Information',
-  [FormStep.Eligibility]: ['Eligibility', 'Availability'],
-  [FormStep.Project]: ['Project', 'Scope of Practice'],
-  [FormStep.DeliverablesBudget]: 'Deliverables & Budget',
+  [FormStep.Eligibility]: ['Eligibility', 'Availability', 'Practice'],
+  [FormStep.Project]: ['Project', 'Scope of Practice', 'Student Candidates'],
+  [FormStep.DeliverablesBudget]: ['Deliverables & Budget', 'EFT Form'],
   [FormStep.DemographicInfo]: 'Demographic Information',
   // Claim Steps:
   [FormStep.ClaimInfo]: 'Claim Information',
@@ -85,6 +106,10 @@ export const TabNames = {
   // Claim Steps:
   [FormStep.ClaimInfo]: 'claimInfoTab',
   [FormStep.ProjectResults]: 'projectResultsTab',
+};
+
+export const ProgramIds = {
+  VLB: '8806d490-8f44-ef11-a316-002248ae4517',
 };
 
 export const YES_VALUE = '255550000';
@@ -117,4 +142,17 @@ export const POWERPOD = {
   redirectToNewId: false,
   components: {},
   onChangeHandlers: {},
+  customEventHandlers: {},
+  initValuesFns: {},
+  valueGeneration: {},
+  loading: true,
+  loadingFieldsIntoState: true,
+  configuringFields: true,
+  dateUtils: {},
+  utils: {},
+  typesOfFood: {},
+  fieldConditionalLogic: {},
+  fieldConfiguration: {},
+  commodities: {},
+  expenseTypes: {},
 };

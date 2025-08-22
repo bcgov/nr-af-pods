@@ -1,7 +1,12 @@
+import { POWERPOD } from './constants';
 import { getExpenseTypeData } from './fetch';
 import { Logger } from './logger';
 
 const logger = Logger('common/expenseTypes');
+
+POWERPOD.expenseTypes = {
+  processExpenseTypesDataFromProgramData,
+};
 
 type ExpenseTypesDataBlob = {
   value: Array<ExpenseTypeBlob>;
@@ -44,6 +49,18 @@ export async function getExpenseTypes() {
   return Promise.reject(new Error(errorMsg));
 }
 
+export function processExpenseTypesDataFromProgramData(data) {
+  const optionArray = [];
+
+  for (const key in data) {
+    if (data.hasOwnProperty(key) && data[key].Option) {
+      optionArray.push(data[key].Option);
+    }
+  }
+
+  return optionArray;
+}
+
 export function processExpenseTypesData(json: ExpenseTypesDataBlob) {
   const dataArray = json?.value;
 
@@ -65,6 +82,20 @@ export function processExpenseTypesData(json: ExpenseTypesDataBlob) {
 export function getTotalExpenseAmount(rowData: RowItem[]) {
   let floatValue = rowData.reduce((acc: number, row: RowItem) => {
     const amount = row['amount'];
+    const numericValue = amount.replace(/[^\d.-]/g, '');
+    if (!!numericValue) return acc + parseFloat(numericValue);
+    return acc;
+  }, 0.0);
+  const formattedValue = floatValue.toLocaleString('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+  return formattedValue;
+}
+
+export function getTotalInvoicesAmount(rowData: RowItem[]) {
+  let floatValue = rowData.reduce((acc: number, row: RowItem) => {
+    const amount = row['subtotal'];
     const numericValue = amount.replace(/[^\d.-]/g, '');
     if (!!numericValue) return acc + parseFloat(numericValue);
     return acc;

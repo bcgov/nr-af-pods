@@ -1,0 +1,28 @@
+{
+	"name": "Application - ABPP S1 - Project Step - Test Script",
+	"testSteps" : [
+		{   "action" : "open-new-tab", "url": "https://af-pods-dev.powerappsportals.com/application/?programid=bae19fa1-4d52-ee11-be6f-000d3af3ac95" }
+		
+		, { "action" : "Expect", "field" : { "label": "Event/Training Title", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Event/Training Description", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Start Date", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "End Date", "visible" : true, "required" : true } }
+		
+		, { "action" : "Expect", "field" : { "label": "In order to continuously improve communications, we are interested in learning how you heard about this program, please select all options that apply", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Please describe", "visible" : false } }
+		, { "action" : "Select", "field" : { "label": "In order to continuously improve communications, we are interested in learning how you heard about this program, please select all options that apply", "value" : "Other" } }
+		, { "action" : "Expect", "field" : { "label": "Please describe", "visible" : true, "required" : true } }
+		, { "action" : "Select", "field" : { "label": "In order to continuously improve communications, we are interested in learning how you heard about this program, please select all options that apply", "value" : "Word of Mouth" } }
+		, { "action" : "Expect", "field" : { "label": "Please describe", "visible" : false } }
+		
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : true } }
+    
+		, { "action" : "Enter", "field" : { "label": "Event/Training Title", "value" : "Automated Testing" } }
+		, { "action" : "Enter", "field" : { "label": "Event/Training Description", "value" : "Automated Testing" } }
+		, { "action" : "Enter", "field" : { "label": "Start Date", "value" : "3/25/1908" } }
+		, { "action" : "Enter", "field" : { "label": "End Date", "value" : "7/24/2013" } }
+
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : false } }
+
+	]
+}

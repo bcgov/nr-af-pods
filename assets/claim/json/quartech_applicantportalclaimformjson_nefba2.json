@@ -1,9 +1,8 @@
 {
   "tags": ["Claim", "NEFBA2", "NEFBA Phase 2"],
-  "version": "1.1.4",
+  "version": "1.2.0",
   "name": "New Entrant Farm Business Accelerator Phase 2",
   "abbreviation": "NEFBA2",
-  "hiddenSteps": "",
   "sections": [
     {
       "name": "ApplicantInfoStep",
@@ -36,7 +35,12 @@
           "name": "quartech_applicantinformationcorrections",
           "label": "Please provide further detail",
           "required": true,
-          "maxLength": 10000
+          "maxLength": 10000,
+          "visibleIf": {
+            "fieldName": "quartech_applicantinformationconfirmation",
+            "selectedValue": 255550001,
+            "techComment": "No value"
+          }
         },
         {
           "name": "quartech_filenumber",
@@ -62,6 +66,11 @@
             "type": "numeric",
             "value": "0",
             "comparison": "greaterThan"
+          },
+          "visibleIf": {
+            "fieldName": "quartech_adoptedprojectresults",
+            "selectedValue": 255550000,
+            "techComment": "Yes value"
           }
         },
         {
@@ -78,6 +87,11 @@
             "type": "numeric",
             "value": "0",
             "comparison": "greaterThan"
+          },
+          "visibleIf": {
+            "fieldName": "quartech_environmentallybeneficialadoptedresults",
+            "selectedValue": 255550000,
+            "techComment": "Yes value"
           }
         }
       ]
@@ -87,7 +101,9 @@
       "fields": [
         {
           "name": "quartech_eligibleexpenses",
-          "label": "Eligible Expenses"
+          "label": "Eligible Expenses",
+          "additionalTextAboveField": "<div id=claimInfoInstructionsNote style=padding-bottom:20px><b>Instructions:</b><ul style=font-size:inherit><li>List all eligible expenses for which you seek reimbursement in this claim​.<li>Please see the program guide for more details on eligible and ineligible expenses.<li>Do not include expenses that are excluded from reimbursement​.<li>As a condition of reimbursement, you will be required to maintain books of account, invoices, receipts, and vouchers for all expenses incurred in relation to the event until March 31, 2031.<li>You do not need to submit proof of payment (receipts) with your claim. Keep all proof of payment for 7 years in case of audit.</ul></div>",
+          "disableSingleLine": true
         },
         {
           "name": "quartech_totalsumofreportedexpenses",
@@ -136,6 +152,11 @@
           "required": true,
           "tooltipText": "This number is automatically generated when the survey has been submitted",
           "label": "Satisfaction Survey ID number"
+        },
+        {
+          "name": "quartech_satisfactionsurveychefssubmissionid",
+          "hidden": true,
+          "doNotBlank": true
         }
       ]
     }

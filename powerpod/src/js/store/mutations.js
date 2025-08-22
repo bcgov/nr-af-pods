@@ -1,4 +1,8 @@
-import { displayValidationErrors } from '../common/fieldValidation.js';
+import {
+  displayActiveFieldErrors,
+  displayValidationErrors,
+} from '../common/fieldValidation.js';
+import { hideQuestion, showFieldRow } from '../common/html.js';
 import { Logger } from '../common/logger.js';
 
 const logger = Logger('store/mutations');
@@ -74,6 +78,17 @@ export default {
     const currentState = state.validationError;
     state.validationError = currentState.replace(payload, '');
     displayValidationErrors(state.validationError);
+    return state;
+  },
+  addToFieldOrder(state, payload) {
+    logger.info({
+      fn: this.addToFieldOrder,
+      message: 'Add field to fieldOrder array',
+      data: { state, payload },
+    });
+    const newFieldOrder = state.fieldOrder;
+    newFieldOrder.push(payload);
+    state.fieldOrder = newFieldOrder;
     return state;
   },
 };

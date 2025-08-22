@@ -1,6 +1,6 @@
 {
   "tags": ["Global", "ALL", "Application", "StaffPortal"],
-  "version": "1.0.4",
+  "version": "1.2.3",
   "description": "Global JSON config used in Applications",
   "FieldsConfig": {
     "programs": [
@@ -9,6 +9,7 @@
         "sections": [
           {
             "name": "ApplicantInfoStep",
+            "dataName": "tab_ApplicantInfo",
             "fields": [
               {
                 "name": "quartech_legalbusinessororganizationname",
@@ -29,10 +30,12 @@
                 "visibleIf": {
                   "fieldName": "quartech_nocragstnumber",
                   "selectedValue": false
-                }
+                },
+                "tooltipText": "Business or GST number used with CRA first 9#s starts with RC0001"
               },
               {
                 "name": "quartech_nocragstnumber",
+                "label": "My / Our business/organization DOES NOT have a Canada Revenue Agency (CRA) or GST Number",
                 "elementType": "Checkbox"
               },
               {
@@ -44,11 +47,17 @@
                 }
               },
               {
+                "name": "quartech_doingbusinessas",
+                "label": "Doing Business As (if different from Legal Business/Organization Name)"
+              },
+              {
                 "name": "quartech_businesssuitenumberoptional",
+                "label": "Business - Suite Number (optional)",
                 "visible": true
               },
               {
                 "name": "quartech_businessstreetnumber",
+                "label": "Business - Street Number",
                 "required": true,
                 "validation": {
                   "intervalBased": true
@@ -56,6 +65,7 @@
               },
               {
                 "name": "quartech_businessstreet",
+                "label": "Business - Street",
                 "required": true,
                 "validation": {
                   "intervalBased": true
@@ -63,6 +73,7 @@
               },
               {
                 "name": "quartech_businesscity",
+                "label": "Business City",
                 "required": true,
                 "validation": {
                   "intervalBased": true
@@ -70,6 +81,7 @@
               },
               {
                 "name": "quartech_businessprovinceterritory",
+                "label": "Business Province/Territory",
                 "required": true,
                 "validation": {
                   "intervalBased": true
@@ -77,6 +89,7 @@
               },
               {
                 "name": "quartech_businesspostalcode",
+                "label": "Business Postal Code",
                 "format": "postalCode",
                 "required": true,
                 "validation": {
@@ -85,6 +98,7 @@
               },
               {
                 "name": "quartech_businessphonenumber",
+                "label": "Business Phone Number",
                 "format": "phoneNumber",
                 "required": true,
                 "validation": {
@@ -97,23 +111,28 @@
               },
               {
                 "name": "quartech_businessemailaddress",
+                "label": "Business Email Address",
                 "format": "email",
                 "required": true
               },
               {
                 "name": "quartech_legalnamefirst",
+                "label": "First Name",
                 "required": true
               },
               {
                 "name": "quartech_legalnamelast",
+                "label": "Last Name",
                 "required": true
               },
               {
                 "name": "quartech_positionorjobtitle",
+                "label": "Position or Job Title",
                 "required": true
               },
               {
                 "name": "quartech_city",
+                "label": "City",
                 "required": true
               },
               {
@@ -140,11 +159,14 @@
             "fields": [
               {
                 "name": "quartech_inordertocontinuouslyimprovecommunications",
+                "label": "In order to continuously improve communications, we are interested in learning how you heard about this program, please select all options that apply",
                 "required": true,
                 "elementType": "MultiOptionSet"
               },
               {
                 "name": "quartech_ifotherpleasedescribe",
+                "label": "Please describe",
+                "required": true,
                 "visibleIf": {
                   "fieldName": "quartech_inordertocontinuouslyimprovecommunications",
                   "selectedValue": 255550006,
@@ -224,6 +246,15 @@
                 "name": "quartech_unabletoansweridentifysharepercentage",
                 "format": "percentage",
                 "validation": true
+              }
+            ]
+          },
+          {
+            "name": "DeclarationAndConsentStep",
+            "fields": [
+              {
+                "name": "quartech_declarationandconsent",
+                "required": true
               }
             ]
           }

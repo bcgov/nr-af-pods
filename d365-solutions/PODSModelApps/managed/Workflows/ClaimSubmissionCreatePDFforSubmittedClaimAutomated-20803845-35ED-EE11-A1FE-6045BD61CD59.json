@@ -1,0 +1,159 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_sharedcommondataserviceforapps_f90be"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      },
+      "shared_commondataserviceforapps_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_PodsSvcAcctDataverse"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "When_a_Claim_is_SUBMITTED": {
+          "metadata": {
+            "operationMetadataId": "d9e481d5-28b7-4392-ab7a-0ce1c940912c"
+          },
+          "type": "OpenApiConnectionWebhook",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "SubscribeWebhookTrigger",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "subscriptionRequest/message": 3,
+              "subscriptionRequest/entityname": "quartech_claim",
+              "subscriptionRequest/scope": 4,
+              "subscriptionRequest/filteringattributes": "quartech_claimstatus",
+              "subscriptionRequest/filterexpression": "quartech_claimstatus eq 255550001 and quartech_submittedon ne null"
+            },
+            "authentication": "@parameters('$authentication')"
+          },
+          "description": "Claim's SUBMITTED status: 255550001"
+        }
+      },
+      "actions": {
+        "Run_a_Child_Flow:_Create_Claim_PDF_using_Claim_Word_Template": {
+          "runAfter": {
+            "Get_associated_Application_for_correspondence_contact_info": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "1399a53b-86d5-4af7-b3a9-c8e7bc08b817"
+          },
+          "type": "Workflow",
+          "inputs": {
+            "host": {
+              "workflowReferenceName": "1b08b51c-58ed-ee11-a1fe-6045bd61cd59"
+            },
+            "body": {
+              "text_5": "{\n\"claimId\" : \"@{triggerOutputs()?['body/quartech_claimid']}\",\n\"claimName\" : \"@{triggerOutputs()?['body/quartech_name']}\",\n\"submissionDateTime\" : \"@{convertTimeZone(triggerOutputs()?['body/quartech_submittedon'], 'UTC','Pacific Standard Time','M/dd/yyyy h:mm tt')}\",\n\"applicantInfoStep\" : @{if(empty(triggerOutputs()?['body/quartech_wordtemplatedataapplicantinfostep']), '{}', triggerOutputs()?['body/quartech_wordtemplatedataapplicantinfostep'])},\n\"projectResultsStep\" : @{if(empty(triggerOutputs()?['body/quartech_wordtemplatedataprojectresultsstep']), '{}', triggerOutputs()?['body/quartech_wordtemplatedataprojectresultsstep'])},\n\"claimStep\" : @{if(empty(triggerOutputs()?['body/quartech_wordtemplatedataclaiminfostep']), '{}', triggerOutputs()?['body/quartech_wordtemplatedataclaiminfostep'])},\n\"supportingDocumentsStep\" : @{if(empty(triggerOutputs()?['body/quartech_wordtemplatedatadocumentsstep']), '{}', triggerOutputs()?['body/quartech_wordtemplatedatadocumentsstep'])},\n\"applicantDeclarationStep\":@{if(empty(triggerOutputs()?['body/quartech_wordtemplatedataconsentstep']),'{}',triggerOutputs()?['body/quartech_wordtemplatedataconsentstep'])}\n}",
+              "text_6": "{ \n\"fileNameWithoutExtension\": \"Submitted-Claim-@{triggerOutputs()?['body/quartech_name']}\",\n\"parentFolderName\" : \"@{outputs('Get_associated_Application_for_correspondence_contact_info')?['body/quartech_applicationid']}\"\n}",
+              "text_1": "@triggerOutputs()?['body/_quartech_project_value']"
+            }
+          }
+        },
+        "Get_associated_Application_for_correspondence_contact_info": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "04456844-b017-407f-b846-20267557e5e9"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "msgov_businessgrantapplications",
+              "recordId": "@triggerOutputs()?['body/_quartech_application_value']"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Parse_JSON_to_create_PDF_response": {
+          "runAfter": {
+            "Run_a_Child_Flow:_Create_Claim_PDF_using_Claim_Word_Template": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "0b764945-9eb0-4b84-a12e-9b7b3d15da86"
+          },
+          "type": "ParseJson",
+          "inputs": {
+            "content": "@body('Run_a_Child_Flow:_Create_Claim_PDF_using_Claim_Word_Template')",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errorMessage": {
+                  "type": "string"
+                },
+                "pdfSpSiteAddress": {
+                  "type": "string"
+                },
+                "pdfFilePath": {
+                  "type": "string"
+                },
+                "pdfFileNameWithoutExtension": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "Run_a_Child_Flow:_Send_Email_PDF_to_Applicant_for_the_Claim": {
+          "runAfter": {
+            "Parse_JSON_to_create_PDF_response": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "8aadea4a-154e-48c8-84c1-7e35872203a5"
+          },
+          "type": "Workflow",
+          "inputs": {
+            "host": {
+              "workflowReferenceName": "bf19de11-59f0-ee11-a1fe-6045bd5f4613"
+            },
+            "body": {
+              "text_1": "@outputs('Get_associated_Application_for_correspondence_contact_info')?['body/_quartech_program_value']",
+              "text_2": "Claim",
+              "text_3": "{ \n\"spSiteAddress\"  :  \"@{body('Parse_JSON_to_create_PDF_response')?['pdfSpSiteAddress']}\",\n\"pdfFilePath\"  :  \"@{body('Parse_JSON_to_create_PDF_response')?['pdfFilePath']}\",\n\"pdfFileNameWithoutExtension\"  :  \"@{body('Parse_JSON_to_create_PDF_response')?['pdfFileNameWithoutExtension']}\"\n}",
+              "text_7": "{\n\"recordGuid\" : \"@{triggerOutputs()?['body/quartech_claimid']}\",\n\"correspondenceFirstName\": \"@{outputs('Get_associated_Application_for_correspondence_contact_info')?['body/quartech_legalnamefirst']}\",\n\"correspondenceEmailAddress\" : \"@{outputs('Get_associated_Application_for_correspondence_contact_info')?['body/quartech_email']}\"\n}"
+            }
+          }
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

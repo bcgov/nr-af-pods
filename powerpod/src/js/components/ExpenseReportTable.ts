@@ -7,10 +7,12 @@ import './TextField';
 import {
   getTotalExpenseAmount,
   processExpenseTypesData,
+  processExpenseTypesDataFromProgramData,
 } from '../common/expenseTypes';
 import { getExpenseTypeData } from '../common/fetch';
 import { Logger } from '../common/logger';
-import { isLastObjectEmpty } from '../common/utils';
+import { isAnyOfLastThreeObjectsEmpty } from '../common/utils';
+import { getProgramData } from '../common/program';
 
 const logger = Logger('components/ExpenseReportTable');
 
@@ -39,7 +41,7 @@ class ExpenseReportTable extends LitElement {
     super.connectedCallback();
 
     if (!this.readOnly) {
-      this.getExpenseTypes();
+      this.getExpenseTypesFromProgramData();
     }
 
     if (!Array.isArray(this.rows)) {
@@ -74,6 +76,17 @@ class ExpenseReportTable extends LitElement {
     this.expenseTypes = processExpenseTypesData(data);
   }
 
+  getExpenseTypesFromProgramData() {
+    const programData = getProgramData();
+
+    if (!programData) {
+      throw new Error('Failed to get program data');
+    }
+    this.expenseTypes = processExpenseTypesDataFromProgramData(
+      JSON.parse(programData.quartech_expensetypestodisplay)
+    );
+  }
+
   private handleUpdateCell(
     rowIndex: number,
     columnKey: string,
@@ -87,7 +100,7 @@ class ExpenseReportTable extends LitElement {
 
   private handleAddRow() {
     const rowData = this.rows;
-    if (isLastObjectEmpty(rowData)) {
+    if (isAnyOfLastThreeObjectsEmpty(rowData)) {
       return;
     }
     if (rowData) {
@@ -224,6 +237,7 @@ class ExpenseReportTable extends LitElement {
                             <dropdown-search
                               .options=${this.expenseTypes}
                               .selectedValue=${cellValue}
+                              additionalTextBelowField="See program guide for eligible expenses"
                               @onChangeDropdownValue=${(e: CustomEvent) => {
                                 this.handleUpdateCell(
                                   rowIndex,

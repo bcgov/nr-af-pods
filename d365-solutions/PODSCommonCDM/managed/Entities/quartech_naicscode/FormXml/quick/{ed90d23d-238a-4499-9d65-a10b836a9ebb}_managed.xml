@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{ed90d23d-238a-4499-9d65-a10b836a9ebb}</formid>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form maxWidth="400">
+      <tabs>
+        <tab id="{487d935f-e67f-4b48-94d7-757307bdf2bc}" name="tab_1" showlabel="false">
+          <labels>
+            <label description="Tab" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%">
+              <sections>
+                <section id="{776d34ab-0fa5-4a98-87f1-bb47bd18a91f}" name="tab_1_column_1_section_1" columns="1" showlabel="false" showbar="false" IsUserDefined="0">
+                  <labels>
+                    <label description="section" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{a3d7e351-d495-e3e0-63de-c16e1ed8382c}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="NAICS Code" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_name" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="quartech_name" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{abc232e0-396a-ac01-173b-39a8ec065014}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="Code" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_code" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="quartech_code" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{d8e879e7-db90-008d-363d-e1eb3d262159}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="Description" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_description" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="quartech_description" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{45a003e7-2e57-9ae0-219b-960e9b893719}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="Level" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_level" classid="{C6D124CA-7EDA-4a60-AEA9-7FB8D318B68F}" datafieldname="quartech_level" disabled="true" uniqueid="{c9d39375-472d-6b7c-d807-8d2ca51b995b}" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{c0856522-5aa9-b04c-d8d1-90c24c18dd4c}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="Aggregation Level" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_aggregationlevel" classid="{3EF39988-22BB-4f0b-BBBE-64B5A3748AEE}" datafieldname="quartech_aggregationlevel" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{2059a00d-91c2-ccb1-33a5-2d20b135cac1}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="Parent Code" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_parentcode" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="quartech_parentcode" disabled="false" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+      <DisplayConditions Order="2">
+        <Role Id="{627090ff-40a3-4053-8790-584edc5be201}" />
+        <Role Id="{119f245c-3cc8-4b62-b31c-d1a046ced15d}" />
+      </DisplayConditions>
+    </form>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <LocalizedNames>
+      <LocalizedName description="Quick View" languagecode="1033" />
+    </LocalizedNames>
+  </systemform>
+</forms>

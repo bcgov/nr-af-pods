@@ -1,0 +1,277 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_sharedcommondataserviceforapps_f90be"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "When_an_Interim_Claim_is_submitted": {
+          "metadata": {
+            "operationMetadataId": "9b547021-4a92-4410-8fda-905d71a3c21e"
+          },
+          "type": "OpenApiConnectionWebhook",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "SubscribeWebhookTrigger",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "subscriptionRequest/message": 3,
+              "subscriptionRequest/entityname": "quartech_claim",
+              "subscriptionRequest/scope": 4,
+              "subscriptionRequest/filteringattributes": "quartech_claimstatus",
+              "subscriptionRequest/filterexpression": "quartech_claimstatus eq 255550001 and quartech_interimorfinalpayment eq 255550000"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        }
+      },
+      "actions": {
+        "Get_Program_Abbreviation_from_Program": {
+          "runAfter": {
+            "Get_Project_info": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "4daeb738-4032-438e-8fa3-b6d0ae3eecc4"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "msgov_programs",
+              "recordId": "@triggerOutputs()?['body/_quartech_program_value']"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Initialize_CurrentDateTime": {
+          "runAfter": {
+            "Get_Program_Abbreviation_from_Program": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "d8095d0c-7d1b-4409-989e-e692e52613c1"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "CurrentDateTime",
+                "type": "string",
+                "value": "@{formatDateTime(convertFromUtc(utcNow(),'Pacific Standard Time'), 'MM-dd_hh-mm')}"
+              }
+            ]
+          }
+        },
+        "Initialize_ClaimName": {
+          "runAfter": {
+            "Initialize_CurrentDateTime": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "d256bdfd-d5b1-4542-83c7-dd5a0ad32d92"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "ClaimName",
+                "type": "string",
+                "value": "@{concat(outputs('Get_Project_info')?['body/quartech_pt_projectidentifier'],'_',variables('CurrentDateTime'))}"
+              }
+            ]
+          }
+        },
+        "Get_Project_info": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "5f75df46-712f-4a33-8b27-0b87b526acc7"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "quartech_grantprojects",
+              "recordId": "@triggerOutputs()?['body/_quartech_project_value']"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Initialize_Sum_of_Requested_Reimbursement_variable": {
+          "runAfter": {
+            "Initialize_ClaimName": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "f20bd4ba-afb4-430d-b20e-8cf7ca0fcd13"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "RT_RequestedReimbursementAmount",
+                "type": "float",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "List_rows": {
+          "runAfter": {
+            "Initialize_Sum_of_Requested_Reimbursement_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "7c1b1ff5-b573-4a87-ae0c-878dff75786b"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "quartech_claims",
+              "$select": "quartech_claimid, quartech_totalfees",
+              "$filter": "quartech_claimstatus eq 255550001 and _quartech_project_value eq @{outputs('Get_Project_info')?['body/quartech_grantprojectid']}"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Value_check": {
+          "runAfter": {
+            "List_rows": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "5452be23-fb59-4637-80b1-b2595755d18c"
+          },
+          "type": "Compose",
+          "inputs": "@outputs('List_rows')?['body/value']"
+        },
+        "Apply_to_each": {
+          "foreach": "@outputs('List_rows')?['body/value']",
+          "actions": {
+            "Compose": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "842f543b-57af-4487-bb48-2e6218fcae02"
+              },
+              "type": "Compose",
+              "inputs": "@add(items('Apply_to_each')?['quartech_totalfees'],variables('RT_RequestedReimbursementAmount'))"
+            },
+            "Set_variable": {
+              "runAfter": {
+                "Compose": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "6f69533c-8bbd-4973-87cc-651df4106e8b"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "RT_RequestedReimbursementAmount",
+                "value": "@outputs('Compose')"
+              }
+            }
+          },
+          "runAfter": {
+            "Value_check": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "286ca609-3523-40ed-8dcd-6497c097e270"
+          },
+          "type": "Foreach"
+        },
+        "Add_a_Draft_Final_Payment_Claim": {
+          "runAfter": {
+            "Apply_to_each": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "944ea7a4-40be-4211-b6e1-d5d568c50b83"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "CreateRecord",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "quartech_claims",
+              "item/quartech_Applicant@odata.bind": "accounts(@{triggerOutputs()?['body/_quartech_applicant_value']})",
+              "item/quartech_Application@odata.bind": "msgov_businessgrantapplications(@{triggerOutputs()?['body/_quartech_application_value']})",
+              "item/quartech_name": "@variables('ClaimName')",
+              "item/quartech_declarationandconsent": false,
+              "item/quartech_Program@odata.bind": "msgov_programs(@{triggerOutputs()?['body/_quartech_program_value']})",
+              "item/quartech_Project@odata.bind": "quartech_grantprojects(@{triggerOutputs()?['body/_quartech_project_value']})",
+              "item/quartech_authorizedclaimedamount": "@outputs('Get_Project_info')?['body/quartech_approvedamount']",
+              "item/quartech_businessaddress": "@triggerOutputs()?['body/quartech_businessaddress']",
+              "item/quartech_businessstreet": "@triggerOutputs()?['body/quartech_businessstreet']",
+              "item/quartech_businessstreetnumber": "@triggerOutputs()?['body/quartech_businessstreetnumber']",
+              "item/quartech_businesssuitenumberoptional": "@triggerOutputs()?['body/quartech_businesssuitenumberoptional']",
+              "item/quartech_businesscity": "@triggerOutputs()?['body/quartech_businesscity']",
+              "item/quartech_businessemailaddress": "@triggerOutputs()?['body/quartech_businessemailaddress']",
+              "item/quartech_businessphonenumber": "@triggerOutputs()?['body/quartech_businessphonenumber']",
+              "item/quartech_businesspostalcode": "@triggerOutputs()?['body/quartech_businesspostalcode']",
+              "item/quartech_businessprovinceterritory": "@triggerOutputs()?['body/quartech_businessprovinceterritory']",
+              "item/quartech_claimstatus": 255550000,
+              "item/quartech_filenumber": "@outputs('Get_Project_info')?['body/quartech_pt_projectidentifier']",
+              "item/quartech_legalbusinessororganizationname": "@triggerOutputs()?['body/quartech_legalbusinessororganizationname']",
+              "item/quartech_portalcontact@odata.bind": "contacts(@{triggerOutputs()?['body/_quartech_portalcontact_value']})",
+              "item/quartech_requestedinterimpaymentamount": "@variables('RT_RequestedReimbursementAmount')",
+              "item/ownerid@odata.bind": "teams(@{outputs('Get_Project_info')?['body/_owningteam_value']})",
+              "item/quartech_projectenddate": "@outputs('Get_Project_info')?['body/quartech_enddate']",
+              "item/quartech_interimorfinalpayment": 255550001
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

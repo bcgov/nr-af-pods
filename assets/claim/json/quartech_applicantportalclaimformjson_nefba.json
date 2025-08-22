@@ -1,9 +1,8 @@
 {
   "tags": ["Claim", "NEFBA"],
-  "version": "1.0.2",
+  "version": "1.0.7",
   "name": "New Entrant Farm Business Accelerator",
   "abbreviation": "NEFBA",
-  "hiddenSteps": "",
   "sections": [
     {
       "name": "ApplicantInfoStep",
@@ -36,7 +35,12 @@
           "name": "quartech_applicantinformationcorrections",
           "label": "Please provide further detail",
           "required": true,
-          "maxLength": 10000
+          "maxLength": 10000,
+          "visibleIf": {
+            "fieldName": "quartech_applicantinformationconfirmation",
+            "selectedValue": 255550001,
+            "techComment": "No value"
+          }
         },
         {
           "name": "quartech_filenumber",
@@ -51,26 +55,6 @@
         {
           "name": "quartech_businessmanagementtrainingparticipants",
           "label": "How many people participated in the training funded by this project, including the applicant?",
-          "required": true,
-          "format": "number",
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThan"
-          }
-        },
-        {
-          "name": "quartech_adoptednumber",
-          "required": true,
-          "format": "number",
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThan"
-          }
-        },
-        {
-          "name": "quartech_environmentallybeneficialadoptednumber",
           "required": true,
           "format": "number",
           "validation": {
@@ -149,6 +133,11 @@
           "required": true,
           "tooltipText": "This number is automatically generated when the survey has been submitted",
           "label": "Satisfaction Survey ID number"
+        },
+        {
+          "name": "quartech_satisfactionsurveychefssubmissionid",
+          "hidden": true,
+          "doNotBlank": true
         }
       ]
     }

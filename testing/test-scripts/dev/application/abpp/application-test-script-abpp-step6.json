@@ -1,0 +1,11 @@
+{
+	"name": "Application - ABPP - Test Script - Demographic Info Step",
+	"testSteps" : [
+		{   "action" : "open-new-tab", "url": "https://af-pods-dev.powerappsportals.com/application/?programid=188a5355-bf58-ee11-be6f-000d3af3ac95" }
+
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : true } }
+
+		, { "action" : "Expect", "field" : { "label": "Demographic Data Collection Survey ID number", "visible" : true, "required" : true } }		
+	]
+}
+

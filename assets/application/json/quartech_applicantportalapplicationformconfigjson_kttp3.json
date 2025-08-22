@@ -1,9 +1,9 @@
 {
   "tags": ["Application", "StaffPortal", "KTTP-Stream3", "KTTP3"],
-  "version": "1.0.4",
+  "version": "1.1.2",
   "name": "KTTP - Regenerative Agriculture Activities",
   "abbreviation": "KTTP-Stream3",
-  "hiddenSteps": "tab_eligibility",
+  "hiddenSteps": [{ "name": "tab_eligibility" }],
   "sections": [
     {
       "name": "ApplicantInfoStep",
@@ -119,7 +119,7 @@
           "elementType": "DropdownSelect",
           "label": "Has this organization received funding from other Government of British Columbia (the Province) programs in the last year?"
         },
-		    {
+        {
           "name": "quartech_ifyespleaseexplainwhenandfromwhichprogram",
           "visibleIf": {
             "fieldName": "quartech_hasthisorganizationreceivedfundingfrmother",
@@ -183,7 +183,7 @@
         {
           "name": "quartech_subjectmatterexpertsmename",
           "required": true,
-          "label": "Facilitator Name:"
+          "label": "Facilitator Name"
         },
         {
           "name": "quartech_smephonenumber",
@@ -211,7 +211,8 @@
         {
           "name": "quartech_activitystartdate",
           "required": true,
-          "elementType": "DatePicker"
+          "elementType": "DatePicker",
+          "disableSingleLine": true
         },
         {
           "name": "quartech_doestheactivitytakeplaceovermultipleday",
@@ -220,6 +221,7 @@
         },
         {
           "name": "quartech_ifyespleaseprovidetheadditionaldates",
+          "label": "Please provide the additional dates",
           "visibleIf": {
             "fieldName": "quartech_doestheactivitytakeplaceovermultipleday",
             "selectedValue": 255550000,
@@ -254,6 +256,8 @@
         },
         {
           "name": "quartech_ifotherpleasedescribeyouractivitytype",
+          "label": "Please describe your activity type",
+          "required": true,
           "visibleIf": {
             "fieldName": "quartech_pleaseselectthemostapplicableactivitytype",
             "selectedValue": 255550010,
@@ -282,8 +286,9 @@
         },
         {
           "name": "quartech_ifotherpleasedescribetheactivitypurpose",
+          "label": "Please describe the activity purpose",
+          "required": true,
           "maxLength": 10000,
-          "label": "Please describe the priority topic(s).",
           "visibleIf": {
             "fieldName": "quartech_activitypurpose",
             "selectedValue": 255550010,
@@ -483,6 +488,20 @@
             "value": "0",
             "comparison": "greaterThanOrEqualTo"
           }
+        }
+      ]
+    },
+    {
+      "name": "DemographicInfoStep",
+      "fields": [
+        {
+          "name": "quartech_chefsid",
+          "required": true,
+          "tooltipText": "This number is automatically generated when the survey has been submitted",
+          "label": "Demographic Data Collection Survey ID number",
+          "bold": true,
+          "readOnly": true,
+          "errorMessage": "Please complete the required survey, this field will autofill."
         }
       ]
     }

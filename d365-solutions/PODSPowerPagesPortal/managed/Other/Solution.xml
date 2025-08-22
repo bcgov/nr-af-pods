@@ -1,0 +1,746 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ImportExportXml version="9.2.24101.166" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" OrganizationVersion="9.2.24101.166" OrganizationSchemaType="Full" CRMServerServiceabilityVersion="9.2.24101.00166">
+  <SolutionManifest>
+    <UniqueName>PODSPowerPagesPortal</UniqueName>
+    <LocalizedNames>
+      <LocalizedName description="PODS Power Pages Portal" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions />
+    <Version>1.0.0.98</Version>
+    <Managed>1</Managed>
+    <Publisher>
+      <UniqueName>quartech</UniqueName>
+      <LocalizedNames>
+        <LocalizedName description="Quartech" languagecode="1033" />
+      </LocalizedNames>
+      <Descriptions />
+      <EMailAddress xsi:nil="true"></EMailAddress>
+      <SupportingWebsiteUrl>https://www.quartech.com</SupportingWebsiteUrl>
+      <CustomizationPrefix>quartech</CustomizationPrefix>
+      <CustomizationOptionValuePrefix>25555</CustomizationOptionValuePrefix>
+      <Addresses>
+        <Address>
+          <AddressNumber>1</AddressNumber>
+          <AddressTypeCode>1</AddressTypeCode>
+          <City>Victoria</City>
+          <County xsi:nil="true"></County>
+          <Country>Canada</Country>
+          <Fax xsi:nil="true"></Fax>
+          <FreightTermsCode xsi:nil="true"></FreightTermsCode>
+          <ImportSequenceNumber xsi:nil="true"></ImportSequenceNumber>
+          <Latitude xsi:nil="true"></Latitude>
+          <Line1>200 – 1012 Douglas Street</Line1>
+          <Line2 xsi:nil="true"></Line2>
+          <Line3 xsi:nil="true"></Line3>
+          <Longitude xsi:nil="true"></Longitude>
+          <Name xsi:nil="true"></Name>
+          <PostalCode>V8W 2C3</PostalCode>
+          <PostOfficeBox xsi:nil="true"></PostOfficeBox>
+          <PrimaryContactName xsi:nil="true"></PrimaryContactName>
+          <ShippingMethodCode>1</ShippingMethodCode>
+          <StateOrProvince>BC</StateOrProvince>
+          <Telephone1>(250) 380-9686</Telephone1>
+          <Telephone2 xsi:nil="true"></Telephone2>
+          <Telephone3 xsi:nil="true"></Telephone3>
+          <TimeZoneRuleVersionNumber xsi:nil="true"></TimeZoneRuleVersionNumber>
+          <UPSZone xsi:nil="true"></UPSZone>
+          <UTCOffset xsi:nil="true"></UTCOffset>
+          <UTCConversionTimeZoneCode xsi:nil="true"></UTCConversionTimeZoneCode>
+        </Address>
+        <Address>
+          <AddressNumber>2</AddressNumber>
+          <AddressTypeCode>1</AddressTypeCode>
+          <City xsi:nil="true"></City>
+          <County xsi:nil="true"></County>
+          <Country xsi:nil="true"></Country>
+          <Fax xsi:nil="true"></Fax>
+          <FreightTermsCode xsi:nil="true"></FreightTermsCode>
+          <ImportSequenceNumber xsi:nil="true"></ImportSequenceNumber>
+          <Latitude xsi:nil="true"></Latitude>
+          <Line1 xsi:nil="true"></Line1>
+          <Line2 xsi:nil="true"></Line2>
+          <Line3 xsi:nil="true"></Line3>
+          <Longitude xsi:nil="true"></Longitude>
+          <Name xsi:nil="true"></Name>
+          <PostalCode xsi:nil="true"></PostalCode>
+          <PostOfficeBox xsi:nil="true"></PostOfficeBox>
+          <PrimaryContactName xsi:nil="true"></PrimaryContactName>
+          <ShippingMethodCode>1</ShippingMethodCode>
+          <StateOrProvince xsi:nil="true"></StateOrProvince>
+          <Telephone1 xsi:nil="true"></Telephone1>
+          <Telephone2 xsi:nil="true"></Telephone2>
+          <Telephone3 xsi:nil="true"></Telephone3>
+          <TimeZoneRuleVersionNumber xsi:nil="true"></TimeZoneRuleVersionNumber>
+          <UPSZone xsi:nil="true"></UPSZone>
+          <UTCOffset xsi:nil="true"></UTCOffset>
+          <UTCConversionTimeZoneCode xsi:nil="true"></UTCConversionTimeZoneCode>
+        </Address>
+      </Addresses>
+    </Publisher>
+    <RootComponents>
+      <RootComponent type="1" schemaName="account" behavior="1" />
+      <RootComponent type="1" schemaName="contact" behavior="1" />
+      <RootComponent type="1" schemaName="msgov_program" behavior="2" />
+      <RootComponent type="1" schemaName="quartech_applicationprojectbudgetform" behavior="0" />
+      <RootComponent type="1" schemaName="quartech_applicationsupportingdocument" behavior="0" />
+      <RootComponent type="1" schemaName="quartech_demographicinfo" behavior="2" />
+      <RootComponent type="1" schemaName="quartech_projectbudgetform" behavior="0" />
+      <RootComponent type="1" schemaName="quartech_supportingdocument" behavior="0" />
+      <RootComponent type="29" id="{45eca680-9e46-ee11-be6f-000d3af3ac95}" behavior="0" />
+      <RootComponent type="29" id="{5c13dcd4-b404-ee11-8f6e-002248ae080f}" behavior="0" />
+      <RootComponent type="29" id="{6c44c775-b604-ee11-8f6e-002248ae080f}" behavior="0" />
+      <RootComponent type="29" id="{bfb7eb0b-f641-ee11-be6e-002248ae080f}" behavior="0" />
+      <RootComponent type="29" id="{d9eda5ba-d104-ee11-8f6e-002248ae080f}" behavior="0" />
+      <RootComponent type="29" id="{ea63f255-0727-ee11-9965-002248ae080f}" behavior="0" />
+      <RootComponent type="61" schemaName="quartech_ApplicationDeclarationandConsent" behavior="0" />
+      <RootComponent type="9" schemaName="quartech_primarycommoditytype" behavior="0" />
+      <RootComponent type="9" schemaName="quartech_provincesandterritories" behavior="0" />
+      <RootComponent type="9" schemaName="quartech_selectnatureofcompany" behavior="0" />
+      <RootComponent type="9" schemaName="quartech_yesornocustom" behavior="0" />
+    </RootComponents>
+    <MissingDependencies>
+      <MissingDependency>
+        <Required type="1" schemaName="adx_webformsession" displayName="Multistep Form Session" solution="PowerPages_RuntimeCore (1.0.2402.1)">
+          <package>PowerPages_Core (1.0.2407.112)</package>
+        </Required>
+        <Dependent type="29" displayName="Populate WebFormSession on Application" id="{bfb7eb0b-f641-ee11-be6e-002248ae080f}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="msgov_businessgrantapplication" displayName="Application" solution="GovernmentCommonCDM (1.0.3.1)">
+          <package>GovernmentPortalAnchor (1.0.3.5)</package>
+        </Required>
+        <Dependent type="29" displayName="Set Default Value" id="{5c13dcd4-b404-ee11-8f6e-002248ae080f}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="msgov_businessgrantapplication" displayName="Application" solution="GovernmentCommonCDM (1.0.3.1)">
+          <package>GovernmentPortalAnchor (1.0.3.5)</package>
+        </Required>
+        <Dependent type="29" displayName="Set Default Value" id="{6c44c775-b604-ee11-8f6e-002248ae080f}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="msgov_businessgrantapplication" displayName="Application" solution="GovernmentCommonCDM (1.0.3.1)">
+          <package>GovernmentPortalAnchor (1.0.3.5)</package>
+        </Required>
+        <Dependent type="29" displayName="Populate WebFormSession on Application" id="{bfb7eb0b-f641-ee11-be6e-002248ae080f}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="msgov_businessgrantapplication" displayName="Application" solution="GovernmentCommonCDM (1.0.3.1)">
+          <package>GovernmentPortalAnchor (1.0.3.5)</package>
+        </Required>
+        <Dependent type="29" displayName="Move Note Attachement to SharePoint for Application" id="{d9eda5ba-d104-ee11-8f6e-002248ae080f}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="msgov_businessgrantapplication" displayName="Application" solution="GovernmentCommonCDM (1.0.3.1)">
+          <package>GovernmentPortalAnchor (1.0.3.5)</package>
+        </Required>
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="msgov_program" displayName="Program" solution="GovernmentCommonCDM (1.0.3.1)">
+          <package>GovernmentPortalAnchor (1.0.3.5)</package>
+        </Required>
+        <Dependent type="1" schemaName="msgov_program" displayName="Program" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="quartech_demographicinfo" displayName="Demographic Info" solution="Active" />
+        <Dependent type="1" schemaName="quartech_demographicinfo" displayName="Demographic Info" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="quartech_grantproject" displayName="Project" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="quartech_programintake" displayName="Program Intake" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="quartech_projectcode" displayName="Project Code" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="10" schemaName="quartech_Application_Program" displayName="quartech_Application_Program" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="10" schemaName="quartech_msgov_businessgrantapplication_quartech_demographicinfo_Application" displayName="quartech_msgov_businessgrantapplication_quartech_demographicinfo_Application" parentSchemaName="msgov_businessgrantapplication" parentDisplayName="Application" solution="Active" />
+        <Dependent type="60" displayName="Applicant Portal" parentDisplayName="Demographic Info" id="{16c13625-7d26-ee11-9965-000d3af3ac95}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="10" schemaName="quartech_msgov_businessgrantapplication_quartech_demographicinfo_Application" displayName="quartech_msgov_businessgrantapplication_quartech_demographicinfo_Application" parentSchemaName="msgov_businessgrantapplication" parentDisplayName="Application" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Demographic Info" id="{9d692060-927a-4e72-8f71-d396c4362276}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="10" schemaName="quartech_msgov_program_ParentProgram_msgov_program" displayName="quartech_msgov_program_ParentProgram_msgov_program" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="10" schemaName="quartech_msgov_program_quartech_grantproject_program" displayName="quartech_msgov_program_quartech_grantproject_program" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="10" schemaName="quartech_msgov_program_quartech_programintake_Program" displayName="quartech_msgov_program_quartech_programintake_Program" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="10" schemaName="quartech_msgov_program_quartech_projectcode_Program" displayName="quartech_msgov_program_quartech_projectcode_Program" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="10" schemaName="quartech_program_ApplicantPortalConfig" displayName="quartech_program_ApplicantPortalConfig" parentSchemaName="quartech_podsconfiguration" parentDisplayName="Pods Configuration" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="10" schemaName="quartech_program_StaffPortalConfig" displayName="quartech_program_StaffPortalConfig" parentSchemaName="quartech_podsconfiguration" parentDisplayName="Pods Configuration" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="10" schemaName="quartech_quartech_financialcodingblock_msgov_program_FinancialCodingBlock" displayName="quartech_quartech_financialcodingblock_msgov_program_FinancialCodingBlock" parentSchemaName="quartech_financialcodingblock" parentDisplayName="Financial Coding Block" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="10" schemaName="quartech_quartech_fiscalyear_msgov_program_FiscalYear" displayName="quartech_quartech_fiscalyear_msgov_program_FiscalYear" parentSchemaName="quartech_fiscalyear" parentDisplayName="Fiscal Year" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="10" schemaName="quartech_quartech_programintake_msgov_program_CurrentIntake" displayName="quartech_quartech_programintake_msgov_program_CurrentIntake" parentSchemaName="quartech_programintake" parentDisplayName="Program Intake" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="10" schemaName="quartech_systemuser_msgov_program_ExpenseAuthority" displayName="quartech_systemuser_msgov_program_ExpenseAuthority" parentSchemaName="systemuser" parentDisplayName="User" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="10" schemaName="quartech_systemuser_msgov_program_ProgramOwner" displayName="quartech_systemuser_msgov_program_ProgramOwner" parentSchemaName="systemuser" parentDisplayName="User" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="10" schemaName="quartech_systemuser_msgov_program_ProgramStaff" displayName="quartech_systemuser_msgov_program_ProgramStaff" parentSchemaName="systemuser" parentDisplayName="User" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="10" schemaName="quartech_systemuser_msgov_program_QualifiedReceiver" displayName="quartech_systemuser_msgov_program_QualifiedReceiver" parentSchemaName="systemuser" parentDisplayName="User" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="adx_organizationname" displayName="Organization Name" parentSchemaName="contact" parentDisplayName="Contact" solution="PowerPages_RuntimeCoreDependencies (1.0.2305.1)">
+          <package>PowerPages_Core (1.0.2407.112)</package>
+        </Required>
+        <Dependent type="60" displayName="Profile Web Form" parentDisplayName="Contact" id="{0bd832d5-9d6a-456d-bdc1-21129e82cc0f}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="msgov_businessgrantapplicationid" displayName="Business Grant Application" parentSchemaName="msgov_businessgrantapplication" parentDisplayName="Application" solution="GovernmentCommonCDM (1.0.3.1)">
+          <package>GovernmentPortalAnchor (1.0.3.5)</package>
+        </Required>
+        <Dependent type="29" displayName="Set Default Value" id="{5c13dcd4-b404-ee11-8f6e-002248ae080f}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="msgov_businessgrantapplicationid" displayName="Business Grant Application" parentSchemaName="msgov_businessgrantapplication" parentDisplayName="Application" solution="GovernmentCommonCDM (1.0.3.1)">
+          <package>GovernmentPortalAnchor (1.0.3.5)</package>
+        </Required>
+        <Dependent type="29" displayName="Set Default Value" id="{6c44c775-b604-ee11-8f6e-002248ae080f}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="msgov_missionstatement" displayName="Description" parentSchemaName="msgov_program" parentDisplayName="Program" solution="GovernmentCommonCDM (1.0.3.1)">
+          <package>GovernmentPortalAnchor (1.0.3.5)</package>
+        </Required>
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="msgov_name" displayName="Application Name" parentSchemaName="msgov_businessgrantapplication" parentDisplayName="Application" solution="GovernmentCommonCDM (1.0.3.1)">
+          <package>GovernmentPortalAnchor (1.0.3.5)</package>
+        </Required>
+        <Dependent type="10" schemaName="quartech_quartech_applicationprojectbudgetform_App" displayName="quartech_quartech_applicationprojectbudgetform_App" parentSchemaName="msgov_businessgrantapplication" parentDisplayName="Application" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="msgov_name" displayName="Application Name" parentSchemaName="msgov_businessgrantapplication" parentDisplayName="Application" solution="GovernmentCommonCDM (1.0.3.1)">
+          <package>GovernmentPortalAnchor (1.0.3.5)</package>
+        </Required>
+        <Dependent type="10" schemaName="quartech_quartech_applicationsupportingdocument_Ap" displayName="quartech_quartech_applicationsupportingdocument_Ap" parentSchemaName="msgov_businessgrantapplication" parentDisplayName="Application" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="msgov_name" displayName="Application Name" parentSchemaName="msgov_businessgrantapplication" parentDisplayName="Application" solution="GovernmentCommonCDM (1.0.3.1)">
+          <package>GovernmentPortalAnchor (1.0.3.5)</package>
+        </Required>
+        <Dependent type="29" displayName="Set Default Value" id="{5c13dcd4-b404-ee11-8f6e-002248ae080f}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="msgov_name" displayName="Application Name" parentSchemaName="msgov_businessgrantapplication" parentDisplayName="Application" solution="GovernmentCommonCDM (1.0.3.1)">
+          <package>GovernmentPortalAnchor (1.0.3.5)</package>
+        </Required>
+        <Dependent type="29" displayName="Set Default Value" id="{6c44c775-b604-ee11-8f6e-002248ae080f}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="msgov_programname" displayName="Program Name" parentSchemaName="msgov_program" parentDisplayName="Program" solution="GovernmentCommonCDM (1.0.3.1)">
+          <package>GovernmentPortalAnchor (1.0.3.5)</package>
+        </Required>
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="msgov_sortorder" displayName="Stream Sort Order" parentSchemaName="msgov_program" parentDisplayName="Program" solution="GovernmentCommonCDM (1.0.3.1)">
+          <package>GovernmentPortalAnchor (1.0.3.5)</package>
+        </Required>
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="ownerid" displayName="Program Area" parentSchemaName="msgov_businessgrantapplication" parentDisplayName="Application" solution="Active" />
+        <Dependent type="29" displayName="Set Default Value" id="{5c13dcd4-b404-ee11-8f6e-002248ae080f}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="ownerid" displayName="Program Area" parentSchemaName="msgov_businessgrantapplication" parentDisplayName="Application" solution="Active" />
+        <Dependent type="29" displayName="Set Default Value" id="{6c44c775-b604-ee11-8f6e-002248ae080f}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="ownerid" displayName="Program Area" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="ownerid" displayName="Program Area" parentSchemaName="quartech_demographicinfo" parentDisplayName="Demographic Info" solution="Active" />
+        <Dependent type="60" displayName="Applicant Portal" parentDisplayName="Demographic Info" id="{16c13625-7d26-ee11-9965-000d3af3ac95}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="ownerid" displayName="Program Area" parentSchemaName="quartech_demographicinfo" parentDisplayName="Demographic Info" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Demographic Info" id="{9d692060-927a-4e72-8f71-d396c4362276}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_activitiestypestodisplay" displayName="Activities Types to Display" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_activitytype" displayName="Activity Type" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_agreementautocompleteagreement" displayName="Agreement - Auto Complete Agreement" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_agreementchecklistitemstodisplay" displayName="Agreement - Checklist Items to Display" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_agreementsetagreementtomoreinforequired" displayName="Agreement - Set Agreement to More Info Required" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_applicantportalapplicationformconfigjson" displayName="Applicant Portal Application Form Config JSON" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_applicantportalclaimformjson" displayName="Applicant Portal Claim Form JSON" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_applicantportalconfig" displayName="Applicant Portal Config" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_applicantportalprogramname" displayName="Applicant Portal - Program Name" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_applicantportalprogramstreamjsonconfig" displayName="Applicant Portal - Program Stream JSON Config" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_application" displayName="Application" parentSchemaName="quartech_demographicinfo" parentDisplayName="Demographic Info" solution="Active" />
+        <Dependent type="60" displayName="Applicant Portal" parentDisplayName="Demographic Info" id="{16c13625-7d26-ee11-9965-000d3af3ac95}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_application" displayName="Application" parentSchemaName="quartech_demographicinfo" parentDisplayName="Demographic Info" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Demographic Info" id="{9d692060-927a-4e72-8f71-d396c4362276}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_applicationidprefix" displayName="Application ID Prefix" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_applicationnaicscodefieldstodisplay" displayName="Application NAICS Code - Fields to Display" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_applyforextremeheatpreparednesscostsharerei" displayName="Apply for extreme heat preparedness cost-share rei" parentSchemaName="msgov_businessgrantapplication" parentDisplayName="Application" solution="Active" />
+        <Dependent type="29" displayName="Set Default Value" id="{6c44c775-b604-ee11-8f6e-002248ae080f}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_businesslogicsenabled" displayName="Business Logics Enabled?" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_businesssummarychecklistitemstodisplay" displayName="Business Summary - Checklist Items to Display" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_chefsconfirmationid" displayName="CHEFS Confirmation Id" parentSchemaName="quartech_demographicinfo" parentDisplayName="Demographic Info" solution="Active" />
+        <Dependent type="60" displayName="Applicant Portal" parentDisplayName="Demographic Info" id="{16c13625-7d26-ee11-9965-000d3af3ac95}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_chefssubmissionid" displayName="CHEFS Submission Id" parentSchemaName="quartech_demographicinfo" parentDisplayName="Demographic Info" solution="Active" />
+        <Dependent type="60" displayName="Applicant Portal" parentDisplayName="Demographic Info" id="{16c13625-7d26-ee11-9965-000d3af3ac95}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_claimformheaderhtmlcontent" displayName="Claim Form - Header HTML Content" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_claimprocessingchecklistitemstodisplay" displayName="Claim Processing - Checklist Items to Display" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_claimsubmissionautocompleteclaimreceived" displayName="Claim Submission - Auto Complete Claim Received" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_claimsubmissionchecklistitemstodisplay" displayName="Claim Submission - Checklist Items to Display" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_claimwordtemplateforpdfgeneration" displayName="Claim Word Template for PDF Generation" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_commentsondemographicsofbusinessowners" displayName="Comments on demographics of business owners" parentSchemaName="quartech_demographicinfo" parentDisplayName="Demographic Info" solution="Active" />
+        <Dependent type="60" displayName="Applicant Portal" parentDisplayName="Demographic Info" id="{16c13625-7d26-ee11-9965-000d3af3ac95}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_commentsondemographicsofbusinessowners" displayName="Comments on demographics of business owners" parentSchemaName="quartech_demographicinfo" parentDisplayName="Demographic Info" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Demographic Info" id="{9d692060-927a-4e72-8f71-d396c4362276}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_currentintake" displayName="Current Intake" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_designatedprogramname" displayName="Designated Program Name" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_disabledchefsdemographicinfo" displayName="Disabled CHEFS Demographic Info" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_expenseauthority" displayName="Expense Authority" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_extremeheatriskdescription" displayName="Extreme Heat Risk Description" parentSchemaName="msgov_businessgrantapplication" parentDisplayName="Application" solution="Active" />
+        <Dependent type="29" displayName="Set Default Value" id="{5c13dcd4-b404-ee11-8f6e-002248ae080f}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_financialcodingblock" displayName="Financial Coding Block" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_firstnationsgoverningbodymembers" displayName="First Nations governing body members" parentSchemaName="quartech_demographicinfo" parentDisplayName="Demographic Info" solution="Active" />
+        <Dependent type="60" displayName="Applicant Portal" parentDisplayName="Demographic Info" id="{16c13625-7d26-ee11-9965-000d3af3ac95}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_firstnationsgoverningbodymembers" displayName="First Nations governing body members" parentSchemaName="quartech_demographicinfo" parentDisplayName="Demographic Info" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Demographic Info" id="{9d692060-927a-4e72-8f71-d396c4362276}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_firstnationssharepercentage" displayName="First Nations share percentage" parentSchemaName="quartech_demographicinfo" parentDisplayName="Demographic Info" solution="Active" />
+        <Dependent type="60" displayName="Applicant Portal" parentDisplayName="Demographic Info" id="{16c13625-7d26-ee11-9965-000d3af3ac95}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_firstnationssharepercentage" displayName="First Nations share percentage" parentSchemaName="quartech_demographicinfo" parentDisplayName="Demographic Info" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Demographic Info" id="{9d692060-927a-4e72-8f71-d396c4362276}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_fiscalyear" displayName="Fiscal Year" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_indigenousnotspecifiedgoverningbodymember" displayName="Indigenous (not specified) governing body members" parentSchemaName="quartech_demographicinfo" parentDisplayName="Demographic Info" solution="Active" />
+        <Dependent type="60" displayName="Applicant Portal" parentDisplayName="Demographic Info" id="{16c13625-7d26-ee11-9965-000d3af3ac95}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_indigenousnotspecifiedgoverningbodymember" displayName="Indigenous (not specified) governing body members" parentSchemaName="quartech_demographicinfo" parentDisplayName="Demographic Info" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Demographic Info" id="{9d692060-927a-4e72-8f71-d396c4362276}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_indigenoussharepercentage" displayName="Indigenous share percentage" parentSchemaName="quartech_demographicinfo" parentDisplayName="Demographic Info" solution="Active" />
+        <Dependent type="60" displayName="Applicant Portal" parentDisplayName="Demographic Info" id="{16c13625-7d26-ee11-9965-000d3af3ac95}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_indigenoussharepercentage" displayName="Indigenous share percentage" parentSchemaName="quartech_demographicinfo" parentDisplayName="Demographic Info" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Demographic Info" id="{9d692060-927a-4e72-8f71-d396c4362276}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_inukinuitgoverningbodymembers" displayName="Inuk (Inuit) governing body members" parentSchemaName="quartech_demographicinfo" parentDisplayName="Demographic Info" solution="Active" />
+        <Dependent type="60" displayName="Applicant Portal" parentDisplayName="Demographic Info" id="{16c13625-7d26-ee11-9965-000d3af3ac95}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_inukinuitgoverningbodymembers" displayName="Inuk (Inuit) governing body members" parentSchemaName="quartech_demographicinfo" parentDisplayName="Demographic Info" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Demographic Info" id="{9d692060-927a-4e72-8f71-d396c4362276}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_inukinuitsharepercentage" displayName="Inuk (Inuit) share percentage" parentSchemaName="quartech_demographicinfo" parentDisplayName="Demographic Info" solution="Active" />
+        <Dependent type="60" displayName="Applicant Portal" parentDisplayName="Demographic Info" id="{16c13625-7d26-ee11-9965-000d3af3ac95}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_inukinuitsharepercentage" displayName="Inuk (Inuit) share percentage" parentSchemaName="quartech_demographicinfo" parentDisplayName="Demographic Info" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Demographic Info" id="{9d692060-927a-4e72-8f71-d396c4362276}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_mtisgoverningbodymembers" displayName="Métis governing body members" parentSchemaName="quartech_demographicinfo" parentDisplayName="Demographic Info" solution="Active" />
+        <Dependent type="60" displayName="Applicant Portal" parentDisplayName="Demographic Info" id="{16c13625-7d26-ee11-9965-000d3af3ac95}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_mtisgoverningbodymembers" displayName="Métis governing body members" parentSchemaName="quartech_demographicinfo" parentDisplayName="Demographic Info" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Demographic Info" id="{9d692060-927a-4e72-8f71-d396c4362276}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_mtissharepercentage" displayName="Métis share percentage" parentSchemaName="quartech_demographicinfo" parentDisplayName="Demographic Info" solution="Active" />
+        <Dependent type="60" displayName="Applicant Portal" parentDisplayName="Demographic Info" id="{16c13625-7d26-ee11-9965-000d3af3ac95}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_mtissharepercentage" displayName="Métis share percentage" parentSchemaName="quartech_demographicinfo" parentDisplayName="Demographic Info" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Demographic Info" id="{9d692060-927a-4e72-8f71-d396c4362276}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_name" displayName="Name" parentSchemaName="quartech_demographicinfo" parentDisplayName="Demographic Info" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Demographic Info" id="{9d692060-927a-4e72-8f71-d396c4362276}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_nonindiginousnonwomennonyouthgovbodymbrs" displayName="Non-Indiginous, non-women, non-youth gov body mbrs" parentSchemaName="quartech_demographicinfo" parentDisplayName="Demographic Info" solution="Active" />
+        <Dependent type="60" displayName="Applicant Portal" parentDisplayName="Demographic Info" id="{16c13625-7d26-ee11-9965-000d3af3ac95}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_nonindiginousnonwomennonyouthgovbodymbrs" displayName="Non-Indiginous, non-women, non-youth gov body mbrs" parentSchemaName="quartech_demographicinfo" parentDisplayName="Demographic Info" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Demographic Info" id="{9d692060-927a-4e72-8f71-d396c4362276}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_nonindiginousnonwomennonyouthshare" displayName="Non-Indiginous, non-women, non-youth share %" parentSchemaName="quartech_demographicinfo" parentDisplayName="Demographic Info" solution="Active" />
+        <Dependent type="60" displayName="Applicant Portal" parentDisplayName="Demographic Info" id="{16c13625-7d26-ee11-9965-000d3af3ac95}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_nonindiginousnonwomennonyouthshare" displayName="Non-Indiginous, non-women, non-youth share %" parentSchemaName="quartech_demographicinfo" parentDisplayName="Demographic Info" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Demographic Info" id="{9d692060-927a-4e72-8f71-d396c4362276}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_numberofapplications" displayName="Auto-generated Application ID Count" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_numberofmembersofthegoverningbody" displayName="Number of members of the governing body" parentSchemaName="quartech_demographicinfo" parentDisplayName="Demographic Info" solution="Active" />
+        <Dependent type="60" displayName="Applicant Portal" parentDisplayName="Demographic Info" id="{16c13625-7d26-ee11-9965-000d3af3ac95}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_numberofmembersofthegoverningbody" displayName="Number of members of the governing body" parentSchemaName="quartech_demographicinfo" parentDisplayName="Demographic Info" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Demographic Info" id="{9d692060-927a-4e72-8f71-d396c4362276}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_parentprogram" displayName="Parent Program" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_paymentautocompleteprojectcompleted" displayName="Payment - Auto Complete Project Completed" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_paymentchecklistitemstodisplay" displayName="Payment - Checklist Items to Display" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_programemailaddress" displayName="Program Email Address" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_programowner" displayName="Program Owner" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_programstaff" displayName="Program Staff" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_projectsfoldersrelativeurl" displayName="Projects Folder's Relative URL" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_qualifiedreceiver" displayName="Qualified Receiver" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_scap_pa" displayName="SCAP Priority Area" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_sharepointdocumentlibraryfolderpath" displayName="SharePoint Document Library Folder Path" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_sharepointdocumentlibraryname" displayName="SharePoint Document Library Name" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_sharepointdocumentlibraryrelativeurl" displayName="SharePoint Document Library Relative URL" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_sharepointsiteaddress" displayName="SharePoint Site Address" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_staffportalapplicationformjsonconfig" displayName="Staff Portal - Application Form JSON Config" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_staffportalconfig" displayName="Staff Portal Config" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_staffportalprojectformjsonconfig" displayName="Staff Portal - Project Form JSON Config" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_typesofbusinesstodisplay" displayName="Types of Business To Display" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_unabletoansweridentifysharepercentage" displayName="Unable to answer/identify share percentage" parentSchemaName="quartech_demographicinfo" parentDisplayName="Demographic Info" solution="Active" />
+        <Dependent type="60" displayName="Applicant Portal" parentDisplayName="Demographic Info" id="{16c13625-7d26-ee11-9965-000d3af3ac95}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_unabletoansweridentifysharepercentage" displayName="Unable to answer/identify share percentage" parentSchemaName="quartech_demographicinfo" parentDisplayName="Demographic Info" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Demographic Info" id="{9d692060-927a-4e72-8f71-d396c4362276}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_womengoverningbodymembers" displayName="Women governing body members" parentSchemaName="quartech_demographicinfo" parentDisplayName="Demographic Info" solution="Active" />
+        <Dependent type="60" displayName="Applicant Portal" parentDisplayName="Demographic Info" id="{16c13625-7d26-ee11-9965-000d3af3ac95}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_womengoverningbodymembers" displayName="Women governing body members" parentSchemaName="quartech_demographicinfo" parentDisplayName="Demographic Info" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Demographic Info" id="{9d692060-927a-4e72-8f71-d396c4362276}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_womensharepercentage" displayName="Women share percentage" parentSchemaName="quartech_demographicinfo" parentDisplayName="Demographic Info" solution="Active" />
+        <Dependent type="60" displayName="Applicant Portal" parentDisplayName="Demographic Info" id="{16c13625-7d26-ee11-9965-000d3af3ac95}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_womensharepercentage" displayName="Women share percentage" parentSchemaName="quartech_demographicinfo" parentDisplayName="Demographic Info" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Demographic Info" id="{9d692060-927a-4e72-8f71-d396c4362276}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_wordtemplateforprinting" displayName="Word Template for PDF Generation" parentSchemaName="msgov_program" parentDisplayName="Program" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_youth40orundersharepercentage" displayName="Youth (40 or under) share percentage" parentSchemaName="quartech_demographicinfo" parentDisplayName="Demographic Info" solution="Active" />
+        <Dependent type="60" displayName="Applicant Portal" parentDisplayName="Demographic Info" id="{16c13625-7d26-ee11-9965-000d3af3ac95}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_youth40orundersharepercentage" displayName="Youth (40 or under) share percentage" parentSchemaName="quartech_demographicinfo" parentDisplayName="Demographic Info" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Demographic Info" id="{9d692060-927a-4e72-8f71-d396c4362276}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_youthgoverningbodymembers" displayName="Youth governing body members" parentSchemaName="quartech_demographicinfo" parentDisplayName="Demographic Info" solution="Active" />
+        <Dependent type="60" displayName="Applicant Portal" parentDisplayName="Demographic Info" id="{16c13625-7d26-ee11-9965-000d3af3ac95}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="quartech_youthgoverningbodymembers" displayName="Youth governing body members" parentSchemaName="quartech_demographicinfo" parentDisplayName="Demographic Info" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Demographic Info" id="{9d692060-927a-4e72-8f71-d396c4362276}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="20" displayName="Portal Application User" solution="S2SApplicationRoles (1.0.0.95)" id="{a75a6d67-1730-4298-8fc7-af7e93064fa1}">
+          <package>MicrosoftS2SApplicationIdentitiesCoreTst (1.0.1.24)</package>
+        </Required>
+        <Dependent type="60" displayName="Applicant Portal" parentDisplayName="Demographic Info" id="{16c13625-7d26-ee11-9965-000d3af3ac95}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="26" schemaName="Active Applications" displayName="Active Applications" parentSchemaName="msgov_businessgrantapplication" parentDisplayName="Application" solution="GovernmentCommonCDM (1.0.3.1)" id="{841927e1-f445-481a-8340-9010c1962092}">
+          <package>GovernmentPortalAnchor (1.0.3.5)</package>
+        </Required>
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="26" schemaName="Active Program Intakes" displayName="Active Program Intakes" parentSchemaName="quartech_programintake" parentDisplayName="Program Intake" solution="Active" id="{a020d6d9-f2a9-4e26-ac97-a40c254c30a4}" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="26" schemaName="Active Project Codes" displayName="Active Project Codes" parentSchemaName="quartech_projectcode" parentDisplayName="Project Code" solution="Active" id="{bea996ed-858b-43b7-9eb4-2876d1f6809c}" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="26" schemaName="Active Projects" displayName="Active Projects" parentSchemaName="quartech_grantproject" parentDisplayName="Project" solution="Active" id="{dd6a210b-9945-4a97-b11f-ed483d81d960}" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="26" schemaName="Business Grant Application Lookup View" displayName="Business Grant Application Lookup View" parentSchemaName="msgov_businessgrantapplication" parentDisplayName="Application" solution="GovernmentCommonCDM (1.0.3.1)" id="{07d01afc-b667-473c-8346-b6b5461563ef}">
+          <package>GovernmentPortalAnchor (1.0.3.5)</package>
+        </Required>
+        <Dependent type="60" displayName="Applicant Portal" parentDisplayName="Demographic Info" id="{16c13625-7d26-ee11-9965-000d3af3ac95}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="26" schemaName="Business Grant Application Lookup View" displayName="Business Grant Application Lookup View" parentSchemaName="msgov_businessgrantapplication" parentDisplayName="Application" solution="GovernmentCommonCDM (1.0.3.1)" id="{07d01afc-b667-473c-8346-b6b5461563ef}">
+          <package>GovernmentPortalAnchor (1.0.3.5)</package>
+        </Required>
+        <Dependent type="60" displayName="Information" parentDisplayName="Demographic Info" id="{9d692060-927a-4e72-8f71-d396c4362276}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="60" displayName="Profile Web Form" parentDisplayName="Contact" solution="MicrosoftPortalBase (9.3.2407.5)" id="{0bd832d5-9d6a-456d-bdc1-21129e82cc0f}">
+          <package>CDSBasePortal (9.3.2408.141)</package>
+        </Required>
+        <Dependent type="60" displayName="Profile Web Form" parentDisplayName="Contact" id="{0bd832d5-9d6a-456d-bdc1-21129e82cc0f}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="60" displayName="Applicant Portal - Demographic Info step" parentDisplayName="Application" solution="Active" id="{2c85daf4-c1b0-ee11-a568-6045bd5f4328}" />
+        <Dependent type="60" displayName="Applicant Portal" parentDisplayName="Demographic Info" id="{16c13625-7d26-ee11-9965-000d3af3ac95}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="60" displayName="Portal Contact" parentDisplayName="Contact" solution="MicrosoftPortalDependencies (9.3.2307.1)" id="{3fb651a5-cdbf-46c9-87fb-d2c748662bb8}">
+          <package>CDSBasePortal (9.3.2408.141)</package>
+        </Required>
+        <Dependent type="60" displayName="Portal Contact" parentDisplayName="Contact" id="{3fb651a5-cdbf-46c9-87fb-d2c748662bb8}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="60" displayName="Information" parentDisplayName="Financial Coding Block" solution="Active" id="{8a2935e0-5b8c-4770-8c1d-df1e0715c78b}" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="60" displayName="Information" parentDisplayName="Program" solution="GovernmentCommonCDM (1.0.3.1)" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}">
+          <package>GovernmentPortalAnchor (1.0.3.5)</package>
+        </Required>
+        <Dependent type="60" displayName="Information" parentDisplayName="Program" id="{bab2715a-b633-4fa5-bad8-fad20081bbf6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="60" displayName="Portal Contact (Enhanced)" parentDisplayName="Contact" solution="PowerPages_RuntimeCore (1.0.2402.1)" id="{c1c97961-2d42-4103-abf8-2fe2bdf38224}">
+          <package>PowerPages_Core (1.0.2407.112)</package>
+        </Required>
+        <Dependent type="60" displayName="Portal Contact (Enhanced)" parentDisplayName="Contact" id="{c1c97961-2d42-4103-abf8-2fe2bdf38224}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="61" schemaName="msgov_ProgramsPNG16" displayName="msgov_ProgramsPNG16" solution="GovernmentCommonCDM (1.0.3.1)">
+          <package>GovernmentPortalAnchor (1.0.3.5)</package>
+        </Required>
+        <Dependent type="1" schemaName="msgov_program" displayName="Program" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="61" schemaName="msgov_ProgramsPNG32" displayName="msgov_ProgramsPNG32" solution="GovernmentCommonCDM (1.0.3.1)">
+          <package>GovernmentPortalAnchor (1.0.3.5)</package>
+        </Required>
+        <Dependent type="1" schemaName="msgov_program" displayName="Program" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="61" schemaName="msgov_ProgramsSVG" displayName="msgov_ProgramsSVG" solution="GovernmentCommonCDM (1.0.3.1)">
+          <package>GovernmentPortalAnchor (1.0.3.5)</package>
+        </Required>
+        <Dependent type="1" schemaName="msgov_program" displayName="Program" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="66" schemaName="MscrmControls.FieldControls.ToggleControl" displayName="MscrmControls.FieldControls.ToggleControl" solution="BaseCustomControlsCore (9.0.2409.5016)">
+          <package>BaseCustomControlsCore (9.0.2409.5016)</package>
+        </Required>
+        <Dependent type="60" displayName="Applicant Portal" parentDisplayName="Demographic Info" id="{16c13625-7d26-ee11-9965-000d3af3ac95}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="quartech_sharedcommondataserviceforapps_f90be" solution="Active" id.connectionreferencelogicalname="quartech_sharedcommondataserviceforapps_f90be" />
+        <Dependent type="29" displayName="Update Profile Name Created from BCeID" id="{45eca680-9e46-ee11-be6f-000d3af3ac95}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="quartech_sharedcommondataserviceforapps_f90be" solution="Active" id.connectionreferencelogicalname="quartech_sharedcommondataserviceforapps_f90be" />
+        <Dependent type="29" displayName="Populate WebFormSession on Application" id="{bfb7eb0b-f641-ee11-be6e-002248ae080f}" />
+      </MissingDependency>
+    </MissingDependencies>
+  </SolutionManifest>
+</ImportExportXml>

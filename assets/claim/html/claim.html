@@ -1,3 +1,12 @@
+<!--
+  -------------------
+  FILE INFO
+  -------------------
+  version: 1.0.1
+  name: Claim Web Page HTML
+  type: HTML Content
+  description: This is the HTML content for the Claim web page.
+-->
 <div id="loader">
   <div id="spinner"></div>
 </div>
@@ -46,13 +55,24 @@
       <p class="smallText" style="text-align: left"></p>
       <p id="page-description"></p>
       <p></p>
-      <img
-        id="page-logo"
-        src="/PODS-Applicant-Portal-Header-logoUPDATED.jpg"
-        alt=""
-        name="PODS-Applicant-Portal-Header-logo_UPDATED.jpg"
-        style="width: 93.85%; height: 126.05px; max-width: 100%"
-      />
+      <div
+        style="
+          max-height: 160px;
+          max-width: 100%;
+          overflow: hidden;
+          display: flex;
+          justify-content: left;
+          align-items: center;
+        "
+      >
+        <img
+          id="page-logo"
+          src="/PODS-Applicant-Portal-Header-logoUPDATED.jpg"
+          alt=""
+          name="PODS-Applicant-Portal-Header-logo_UPDATED.jpg"
+          style="max-height: 100%; max-width: 100%; object-fit: contain"
+        />
+      </div>
     </div>
   </div>
 </div>

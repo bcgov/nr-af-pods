@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{b550257e-5132-4abd-a8e1-6285a713d9e1}</savedqueryid>
+    <queryapi></queryapi>
+    <layoutxml>
+      <grid name="feedback" jump="rating" select="1" icon="1" preview="1">
+        <row name="feedback" id="feedbackid">
+          <cell name="adx_contactemail" width="200" />
+          <cell name="title" width="150" />
+          <cell name="comments" width="200" />
+          <cell name="source" width="150" />
+          <cell name="ownerid" width="150" />
+          <cell name="statuscode" width="150" />
+          <cell name="modifiedon" width="150" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
+        <entity name="feedback">
+          <attribute name="title" />
+          <attribute name="comments" />
+          <attribute name="source" />
+          <attribute name="ownerid" />
+          <attribute name="statuscode" />
+          <attribute name="modifiedon" />
+          <order attribute="modifiedon" descending="true" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="feedbackid" />
+          <attribute name="adx_contactemail" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>8.1.0.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active Feedback" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

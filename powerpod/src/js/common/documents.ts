@@ -5,7 +5,7 @@ import {
   getDocumentsData,
   postDocumentData,
 } from './fetch.js';
-import { getCurrentUser } from './dynamics.js';
+import { getCurrentUser } from './dynamics.ts';
 import { getCurrentTimeUTC } from './date.js';
 import { getContactName } from './contacts.js';
 import { getFieldLabel } from './html.js';
@@ -13,6 +13,7 @@ import { readFileAsBase64 } from './file.js';
 import { getFormId } from './form.js';
 import { getFormType } from './applicationUtils.js';
 import { getGlobalConfigData } from './config.js';
+import { getProgramAbbreviation } from './program.ts';
 
 const logger = Logger('common/documents');
 
@@ -350,8 +351,17 @@ export async function generateDocumentSubject(
 
   if (fieldName && fieldName.length) {
     const label = getFieldLabel(fieldName);
-    subject += ` for field: ${label} [field:${fieldName}]`;
-  }
+    const fieldSuffix = ` for field: ${label} [field:${fieldName}]`;
+  
+    // Check if adding the fieldSuffix would make subject too long
+    if (subject.length + fieldSuffix.length > 500) {
+      const maxLabelLength = 500 - subject.length - ` for field:  [field:${fieldName}]`.length;
+      const trimmedLabel = label.substring(0, Math.max(0, maxLabelLength));
+      subject += ` for field: ${trimmedLabel} [field:${fieldName}]`;
+    } else {
+      subject += fieldSuffix;
+    }
+  }  
 
   return { subject, fileId };
 }
@@ -546,26 +556,26 @@ export function addDocumentsStepText(
   }
   if (!document.querySelector('#supportingDocumentationNote')) {
     const supportingDocumentationNoteHtmlContent = `
-  <style>
-    sl-tooltip::part(body) {
-      font-size: 1.2rem;
-    }
-  </style>
-  <div id="supportingDocumentationNote" style="padding-bottom: 20px;">
-    Please choose or drag & drop files to the box below to upload the following documents as attachments (as applicable).
-    <br /><br />
-    You can upload a file up to 15MB each in the 
-    ${
-      allowedDocumentsTooltipText
-        ? `<sl-tooltip>
-        <div slot="content">
-          ${allowedDocumentsTooltipText}
-        </div>
-        <a href="" style="font-size: 15px">supported file formats</a>.
-      </sl-tooltip>`
-        : 'supported file formats.'
-    }
-  </div>`;
+    <style>
+      sl-tooltip::part(body) {
+        font-size: 1.2rem;
+      }
+    </style>
+    <div id="supportingDocumentationNote" style="padding-bottom: 20px;">
+      Please choose or drag & drop files to the box below to upload the following documents as attachments (as applicable).
+      <br /><br />
+      You can upload a file up to 15MB each in the 
+      ${
+        allowedDocumentsTooltipText
+          ? `<sl-tooltip>
+          <div slot="content">
+            ${allowedDocumentsTooltipText}
+          </div>
+          <a href="" style="font-size: 15px">supported file formats</a>.
+        </sl-tooltip>`
+          : 'supported file formats.'
+      }
+    </div>`;
 
     if (!overrideWithPrepend) {
       (

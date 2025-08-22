@@ -1,9 +1,8 @@
 {
   "tags": ["Claim", "VVTS"],
-  "version": "1.0.0",
+  "version": "1.0.2",
   "name": "Veterinary and Veterinary Technologist Students Working in BC Food Animal Practices",
   "abbreviation": "VVTS",
-  "hiddenSteps": "",
   "sections": [
     {
       "name": "ApplicantInfoStep",
@@ -104,6 +103,12 @@
       "name": "DocumentsStep",
       "fields": [
         {
+          "name": "quartech_vvts_veterinaryclinicchefssubmissionid",
+          "label": "CHEFS Submission Id",
+          "hidden": true,
+          "doNotBlank": true
+        },
+        {
           "name": "quartech_vvts_programevaluationid",
           "required": true,
           "tooltipText": "This number is automatically generated when the End of program data collection and program evaluation has been submitted"
@@ -170,7 +175,7 @@
             "selectedValue": 255550003,
             "techComment": "3 students"
           }
-        }        
+        }
       ]
     }
   ]

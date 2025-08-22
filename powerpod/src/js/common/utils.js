@@ -1,5 +1,78 @@
 // @ts-nocheck
 import { showFieldRow } from './html.js';
+import {
+  POWERPOD,
+  Form,
+  BrowserInformationAction,
+  BrowserInformationType,
+} from './constants.js';
+import { Logger } from './logger.js';
+import { getFormType } from './applicationUtils.js';
+import { getFormId } from './form.js';
+import {
+  patchApplicationData,
+  patchClaimData,
+  postBrowserInformationData,
+} from './fetch.js';
+import { getCurrentUser } from './dynamics.ts';
+
+const logger = Logger('common/utils');
+
+POWERPOD.utils = {
+  enableDebugging,
+  disableDebugging,
+  enableCanadaPostIntegration,
+  disableCanadaPostIntegration,
+  mergeFieldArrays,
+};
+
+export function enableDebugging() {
+  localStorage.setItem('debug_pp', true);
+  localStorage.getItem('debug_pp');
+  location.reload();
+}
+
+export function disableDebugging() {
+  localStorage.removeItem('debug_pp');
+  location.reload();
+}
+
+export function enableCanadaPostIntegration() {
+  localStorage.setItem('debug_canadapost', true);
+  localStorage.getItem('debug_canadapost');
+  location.reload();
+}
+
+export function disableCanadaPostIntegration() {
+  localStorage.removeItem('debug_canadapost');
+  location.reload();
+}
+
+// Function to check if a value is an object
+export function isObject(value) {
+  return value && typeof value === 'object' && !Array.isArray(value);
+}
+
+// Function to convert an object to a string
+export function convertObjectToString(value) {
+  if (isObject(value)) {
+    return JSON.stringify(value);
+  }
+  return value;
+}
+
+export function isValidJSON(jsonString) {
+  try {
+    JSON.parse(jsonString);
+    return true; // JSON is valid
+  } catch (e) {
+    logger.error({
+      fn: isValidJSON,
+      message: `Invalid JSON for jsonString: ${jsonString}`,
+    });
+    return false; // JSON is invalid
+  }
+}
 
 /**
  * Equivalent of jQuery function $().
@@ -54,6 +127,11 @@ export function mergeObjects(a, b) {
 
 // Merges two arrays of objects joining on a given prop, e.g. "name"
 export function mergeFieldArrays(a, b, prop) {
+  logger.info({
+    fn: mergeFieldArrays,
+    message: `mergeFieldArrays with the following data:`,
+    data: { a, b, prop },
+  });
   const mergedObj = {};
 
   // Merge objects from ArrayB and ArrayA into the object
@@ -69,8 +147,14 @@ export function mergeFieldArrays(a, b, prop) {
     }
   }
 
+  const result = prop ? Object.values(mergedObj) : mergedObj;
   // Check if the result should be an array or object
-  return prop ? Object.values(mergedObj) : mergedObj;
+  logger.info({
+    fn: mergeFieldArrays,
+    message: `mergeFieldArrays done with result:`,
+    data: { a, b, prop, result },
+  });
+  return result;
 }
 
 // Sorts an array of objects by a given property
@@ -99,15 +183,18 @@ export function filterEmptyRows(rowData) {
   });
 }
 
-export function isLastObjectEmpty(array) {
+export function isAnyOfLastThreeObjectsEmpty(array) {
   if (array.length === 0) {
-    return false; // If the array is empty, return false
+    return false;
   }
 
-  const lastObject = array[array.length - 1]; // Get the last object in the array
+  // Get the last 3 objects (or fewer if array has less than 3 items)
+  const lastThree = array.slice(-3);
 
-  // Check if all values of the last object are empty strings
-  return Object.values(lastObject).every((value) => value.trim() === '');
+  // Check if any of the last three objects are "empty"
+  return lastThree.some(obj =>
+    Object.values(obj).every(value => value.trim() === '')
+  );
 }
 
 export function sha256(str) {
@@ -133,3 +220,121 @@ export const isObjectEmpty = (objectName) => {
     objectName.constructor === Object
   );
 };
+
+export function getBrowserInfo() {
+  const userAgent = navigator.userAgent;
+
+  let browserName = 'Unknown';
+  let browserVersion = 'Unknown';
+
+  const browserData = userAgent.match(
+    /(firefox|msie|trident|chrome|safari|opera|edg|opr|crios)\/?\s*(\d+)/i
+  );
+  if (browserData && browserData.length >= 3) {
+    browserName = browserData[1].toLowerCase();
+    browserVersion = browserData[2];
+  }
+
+  let operatingSystem = 'Unknown OS';
+  if (userAgent.indexOf('Windows NT') !== -1) {
+    operatingSystem = 'Windows';
+  } else if (
+    userAgent.indexOf('Macintosh') !== -1 ||
+    userAgent.indexOf('Mac OS X') !== -1
+  ) {
+    operatingSystem = 'macOS';
+  } else if (userAgent.indexOf('Android') !== -1) {
+    operatingSystem = 'Android';
+  } else if (
+    userAgent.indexOf('iPhone') !== -1 ||
+    userAgent.indexOf('iPad') !== -1
+  ) {
+    operatingSystem = 'iOS';
+  } else if (userAgent.indexOf('Linux') !== -1) {
+    operatingSystem = 'Linux';
+  } else if (userAgent.indexOf('CrOS') !== -1) {
+    operatingSystem = 'Chrome OS';
+  }
+
+  const isMobileDevice = /Mobi|Android/i.test(userAgent);
+  const deviceType = isMobileDevice ? 'Mobile' : 'Desktop';
+
+  const jsEnabled = true;
+
+  const userInfo = {
+    userAgent: userAgent,
+    browser: {
+      name: browserName,
+      version: browserVersion,
+    },
+    operatingSystem: operatingSystem,
+    deviceType: deviceType,
+    javascriptEnabled: jsEnabled,
+  };
+
+  return JSON.stringify(userInfo, null, 2);
+}
+
+export async function saveBrowserInfo(action = BrowserInformationAction.Load) {
+  const data = getBrowserInfo();
+
+  if (!data) {
+    logger.error({
+      fn: saveBrowserInfo,
+      message: 'Failed to get browser info',
+    });
+    return;
+  }
+
+  // const payload = {
+  //   quartech_applicantbrowserinformation: data,
+  // };
+
+  let payload = {};
+
+  const formId = getFormId();
+  const formType = getFormType();
+
+  try {
+    let res;
+
+    const { contactId } = getCurrentUser();
+    if (formType === Form.Application) {
+      payload = {
+        applicationId: formId,
+        payload: data,
+        action,
+        type: BrowserInformationType.Information,
+        contactId,
+      };
+      // res = await patchApplicationData({ id: formId, fieldData: payload });
+      res = await postBrowserInformationData(payload);
+    } else if (formType === Form.Claim) {
+      payload = {
+        claimId: formId,
+        payload: data,
+        action,
+        type: BrowserInformationType.Information,
+        contactId,
+      };
+      // res = await patchClaimData({ id: formId, fieldData: payload });
+      res = await postBrowserInformationData(payload);
+    }
+
+    logger.info({
+      fn: saveBrowserInfo,
+      message: `successfully patched form data with browser information payload: ${JSON.stringify(
+        payload
+      )}`,
+      data: { formId, formType, payload },
+    });
+  } catch (e) {
+    logger.error({
+      fn: saveBrowserInfo,
+      message: `failed to patch form data with browser info for formType: ${formType}, payload: ${JSON.stringify(
+        payload
+      )}`,
+      data: { e, formId, formType, payload },
+    });
+  }
+}

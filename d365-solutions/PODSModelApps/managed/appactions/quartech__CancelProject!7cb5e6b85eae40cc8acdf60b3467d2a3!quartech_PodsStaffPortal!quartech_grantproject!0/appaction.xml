@@ -1,0 +1,37 @@
+<appaction uniquename="quartech__CancelProject!7cb5e6b85eae40cc8acdf60b3467d2a3!quartech_PodsStaffPortal!quartech_grantproject!0">
+  <appmoduleid>
+    <uniquename>quartech_PodsStaffPortal</uniquename>
+  </appmoduleid>
+  <buttonlabeltext default="Cancel Project">
+    <label description="Cancel Project" languagecode="1033" />
+  </buttonlabeltext>
+  <context>1</context>
+  <contextentity>
+    <logicalname>quartech_grantproject</logicalname>
+  </contextentity>
+  <contextvalue>quartech_grantproject</contextvalue>
+  <fonticon>$clientsvg:DeactivateOrders</fonticon>
+  <hidden>0</hidden>
+  <iscustomizable>1</iscustomizable>
+  <isdisabled>0</isdisabled>
+  <isgrouptitlehidden>0</isgrouptitlehidden>
+  <location>0</location>
+  <name>CancelProject!7cb5e6b85eae40cc8acdf60b3467d2a3</name>
+  <onclickeventjavascriptfunctionname>PODS.openDialog</onclickeventjavascriptfunctionname>
+  <onclickeventjavascriptparameters>[{"type":5},{"type":4},{"type":8},{"type":21,"value":"quartech_cancelproject_94cf6"},{"type":21,"value":"Cancel Project"}]</onclickeventjavascriptparameters>
+  <onclickeventjavascriptwebresourceid>
+    <webresourceid>e6abea67-82d2-ee11-904d-6045bd5f4613</webresourceid>
+  </onclickeventjavascriptwebresourceid>
+  <onclickeventtype>2</onclickeventtype>
+  <origin>0</origin>
+  <sequence>100100067.5000000000</sequence>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+  <type>0</type>
+  <visibilityformulacomponentlibraryid>
+    <name>quartech_podsstaffportaldefaultcommandlibrary_1b1fa</name>
+  </visibilityformulacomponentlibraryid>
+  <visibilityformulacomponentname>fb247948b1974528b277a5818fc7e680</visibilityformulacomponentname>
+  <visibilityformulafunctionname>Visible</visibilityformulafunctionname>
+  <visibilitytype>1</visibilitytype>
+</appaction>

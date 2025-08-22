@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{86476ebb-99f3-457b-ae18-fcc1c5d20f43}</formid>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form>
+      <tabs>
+        <tab id="{fe59ede7-4324-4bb7-94e9-65621901fcfb}" name="tab_1" showlabel="false">
+          <labels>
+            <label description="Tab" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%">
+              <sections>
+                <section id="{48135b7a-47ea-440b-bb71-1d47181c53ce}" name="tab_1_column_1_section_1" columns="1" showlabel="false" showbar="false" IsUserDefined="0">
+                  <labels>
+                    <label description="section" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{be6447b9-c48c-8a51-50a8-2a85832ac671}" showlabel="true" locklevel="0" visible="false">
+                        <labels>
+                          <label description="Legal Business Name" languagecode="1033" />
+                        </labels>
+                        <control id="name" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="name" disabled="false" uniqueid="{50e4d512-23b6-a742-e1db-ab19b4480aeb}" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{929eb7e5-e519-5307-b240-55207b235988}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="CSNR Business Name" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_crabusinessname" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="quartech_crabusinessname" disabled="false" uniqueid="{3e85c4d3-d61a-538a-b310-85b6389b5434}" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{2741447a-0174-8609-d68b-ee4a54600d1b}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="Supplier Number" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_suppliernumber" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="quartech_suppliernumber" disabled="false" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+      <DisplayConditions Order="4">
+        <Role Id="{627090ff-40a3-4053-8790-584edc5be201}" />
+        <Role Id="{119f245c-3cc8-4b62-b31c-d1a046ced15d}" />
+      </DisplayConditions>
+    </form>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <LocalizedNames>
+      <LocalizedName description="Supplier Details" languagecode="1033" />
+    </LocalizedNames>
+  </systemform>
+</forms>

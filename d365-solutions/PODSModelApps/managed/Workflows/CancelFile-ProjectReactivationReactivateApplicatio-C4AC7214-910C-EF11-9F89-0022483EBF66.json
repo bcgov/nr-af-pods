@@ -1,0 +1,266 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_PodsSvcAcctDataverse"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        }
+      },
+      "triggers": {
+        "When_a_Cancelled_Project_is_REACTIVATED": {
+          "metadata": {
+            "operationMetadataId": "edcad54a-2a89-4fe3-a785-9cb2dc7399c1"
+          },
+          "type": "OpenApiConnectionWebhook",
+          "inputs": {
+            "parameters": {
+              "subscriptionRequest/message": 3,
+              "subscriptionRequest/entityname": "quartech_grantproject",
+              "subscriptionRequest/scope": 4,
+              "subscriptionRequest/filteringattributes": "quartech_projectstatus",
+              "subscriptionRequest/filterexpression": "quartech_statusuponcancellation ne null and (quartech_projectstatus lt 255550011 or quartech_projectstatus gt 255550015)",
+              "subscriptionRequest/name": "c4ac7214-910c-ef11-9f89-0022483ebf66"
+            },
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+              "operationId": "SubscribeWebhookTrigger",
+              "connectionName": "shared_commondataserviceforapps_1"
+            }
+          },
+          "description": "Status Upon Cancell\nAND Project Status is NOT between 255550011 (Application Withdrawn) and 255550015 (Project Expired) including 255550012 (Application Expired), 255550013 (Application Error), 255550014 (Project Withdrawn)."
+        }
+      },
+      "actions": {
+        "Count_Expired_Claims": {
+          "runAfter": {
+            "Run_Reactivate_Application_child_flow": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "00dda99d-5f7b-42d7-9634-c02c567e3778"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "vExpiredClaimCount",
+                "type": "integer"
+              }
+            ]
+          }
+        },
+        "Get_Cancelled_Claim": {
+          "runAfter": {
+            "Count_Expired_Claims": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "6cb8d431-ee31-4ef5-9f70-a547a0fbb0d1"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "parameters": {
+              "entityName": "quartech_claims",
+              "$filter": "(quartech_claimstatus eq 255550011 or quartech_claimstatus eq 255550012) and _quartech_project_value eq @{triggerOutputs()?['body/quartech_grantprojectid']}",
+              "$orderby": "createdon desc",
+              "$top": 1
+            },
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+              "operationId": "ListRecords",
+              "connectionName": "shared_commondataserviceforapps_1"
+            }
+          },
+          "description": "Claim Status: Project Withdrawn 255550011, Project Expired: 255550012"
+        },
+        "Set_variable": {
+          "runAfter": {
+            "Get_Cancelled_Claim": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "199f1f71-e383-4c82-b3f6-8bf56b2c1526"
+          },
+          "type": "SetVariable",
+          "inputs": {
+            "name": "vExpiredClaimCount",
+            "value": "@length(outputs('Get_Cancelled_Claim')?['body/value'])"
+          }
+        },
+        "Check_if_any_cancelled_claims_for_Project_Withdrawn_or_Project_Expired": {
+          "actions": {
+            "Reset_only_one_Claim": {
+              "foreach": "@outputs('Get_Cancelled_Claim')?['body/value']",
+              "actions": {
+                "Set_the_Claim_status_to_Status_upon_Cancellation": {
+                  "metadata": {
+                    "operationMetadataId": "b5083ce6-0bb0-4cca-ab11-65ae0f7900f6"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "parameters": {
+                      "entityName": "quartech_claims",
+                      "recordId": "@items('Reset_only_one_Claim')?['quartech_claimid']",
+                      "item/quartech_claimstatus": "@items('Reset_only_one_Claim')?['quartech_statusuponcancellation']"
+                    },
+                    "host": {
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+                      "operationId": "UpdateRecord",
+                      "connectionName": "shared_commondataserviceforapps_1"
+                    }
+                  }
+                },
+                "Update_a_row": {
+                  "runAfter": {
+                    "Set_the_Claim_status_to_Status_upon_Cancellation": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "ad9873c5-61ac-448b-afe3-f30a9908e6a1"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "parameters": {
+                      "entityName": "quartech_claims",
+                      "recordId": "@outputs('Set_the_Claim_status_to_Status_upon_Cancellation')?['body/quartech_claimid']",
+                      "item/quartech_statusuponcancellation": "@null"
+                    },
+                    "host": {
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+                      "operationId": "UpdateRecord",
+                      "connectionName": "shared_commondataserviceforapps_1"
+                    }
+                  }
+                }
+              },
+              "metadata": {
+                "operationMetadataId": "c6b01933-132c-4ff8-ad3b-0d90826d03c8"
+              },
+              "type": "Foreach"
+            }
+          },
+          "runAfter": {
+            "Set_variable": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "No_existing_cancelled_claim": {
+                "metadata": {
+                  "operationMetadataId": "2e91c3bf-9a21-48a9-a33c-8cce88e1fa6e"
+                },
+                "type": "Terminate",
+                "inputs": {
+                  "runStatus": "Cancelled"
+                }
+              }
+            }
+          },
+          "expression": {
+            "not": {
+              "equals": [
+                "@variables('vExpiredClaimCount')",
+                0
+              ]
+            }
+          },
+          "metadata": {
+            "operationMetadataId": "0c028ec6-08eb-45cb-b28b-55725065c383"
+          },
+          "type": "If"
+        },
+        "Update_StatusUponCancellation_and_Cancel_File_to_NULL": {
+          "runAfter": {
+            "Check_if_any_cancelled_claims_for_Project_Withdrawn_or_Project_Expired": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "377112d4-89d4-4b03-8cdb-424896089b54"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "parameters": {
+              "entityName": "quartech_grantprojects",
+              "recordId": "@triggerOutputs()?['body/quartech_grantprojectid']",
+              "item/quartech_cancelfile": "@null",
+              "item/quartech_statusuponcancellation": "@null"
+            },
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+              "operationId": "UpdateRecord",
+              "connectionName": "shared_commondataserviceforapps_1"
+            }
+          },
+          "description": "Change \"Status Reset\" to No"
+        },
+        "Run_Reactivate_Application_child_flow": {
+          "runAfter": {
+            "Project_REACTIVATION_If_Project_Status_is_set_to_Status_Upon_Cancellation_": [
+              "Succeeded"
+            ]
+          },
+          "type": "Workflow",
+          "inputs": {
+            "host": {
+              "workflowReferenceName": "f2962360-6c15-ef11-9f89-6045bd5c39c6"
+            },
+            "body": {
+              "text": "@triggerBody()?['_quartech_application_value']"
+            }
+          }
+        },
+        "Project_REACTIVATION_If_Project_Status_is_set_to_Status_Upon_Cancellation_": {
+          "actions": {},
+          "runAfter": {},
+          "else": {
+            "actions": {
+              "Terminate_by_Skipping_the_flow_with_SUCCESS": {
+                "type": "Terminate",
+                "inputs": {
+                  "runStatus": "Succeeded"
+                }
+              }
+            }
+          },
+          "expression": {
+            "and": [
+              {
+                "equals": [
+                  "@triggerBody()?['quartech_statusuponcancellation']",
+                  "@triggerBody()?['quartech_projectstatus']"
+                ]
+              }
+            ]
+          },
+          "type": "If"
+        }
+      }
+    },
+    "templateName": null
+  },
+  "schemaVersion": "1.0.0.0"
+}

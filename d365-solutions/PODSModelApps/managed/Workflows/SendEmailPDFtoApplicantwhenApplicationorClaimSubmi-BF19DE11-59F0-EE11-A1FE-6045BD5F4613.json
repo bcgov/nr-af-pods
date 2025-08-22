@@ -1,0 +1,580 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_office365": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_PodsSvcAcctOffice365Outlook"
+        },
+        "api": {
+          "name": "shared_office365"
+        }
+      },
+      "shared_commondataserviceforapps_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_PodsSvcAcctDataverse"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      },
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_sharedcommondataserviceforapps_f90be"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      },
+      "shared_sharepointonline_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_PodsSvcAcctSharePoint"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "PODS Svc Account (quartech_PODSSvcAccount)": {
+          "defaultValue": {
+            "UserGuid": "8c1303c1-2c1c-ee11-8f6d-002248ae0846",
+            "Name": "AF.PODS.Notifications"
+          },
+          "type": "Object",
+          "metadata": {
+            "schemaName": "quartech_PODSSvcAccount"
+          }
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "7250c7b2-e213-4f28-b8c5-97e52ace63b5"
+          },
+          "type": "Request",
+          "kind": "Button",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text_1": {
+                  "title": "programGuid",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Enter the Program's GUID in PODS",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_2": {
+                  "title": "entityType",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Enter the entity name in PODS (eg. Application or Claim)",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_3": {
+                  "title": "pdfFileInfo",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_7": {
+                  "title": "emailParams",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                }
+              },
+              "required": [
+                "text_1",
+                "text_2",
+                "text_3",
+                "text_7"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "If_Entity_Type_from_Trigger_step_is_\"Application\"": {
+          "actions": {
+            "Send_Application_submission_confirmation_via_Outlook": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "da0bdd68-e057-4adf-a092-a79020353806"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_office365",
+                  "operationId": "SendEmailV2",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365"
+                },
+                "parameters": {
+                  "emailMessage/To": "@body('Parse_JSON:_Email_message_required_information')?['correspondenceEmailAddress']",
+                  "emailMessage/Subject": "Your application to @{outputs('Get_associated_Program_record')?['body/msgov_programname']}",
+                  "emailMessage/Body": "<p>Hi @{body('Parse_JSON:_Email_message_required_information')?['correspondenceFirstName']},<br>\n<br>\nThank you for applying to @{outputs('Get_associated_Program_record')?['body/msgov_programname']} offered by B.C. Ministry of Agriculture and Food. Please find attached a copy of your application for your reference. Program staff may reach out to you if they require further information when they review your application.<br>\n<br>\nIf you have any questions or need additional assistance, you can reach us at @{outputs('Get_associated_Program_record')?['body/quartech_programemailaddress']}.<br>\n<br>\n@{outputs('Get_associated_Program_record')?['body/msgov_programname']}</p>",
+                  "emailMessage/Cc": "@outputs('Get_associated_Program_record')?['body/quartech_programemailaddress']",
+                  "emailMessage/Attachments": [
+                    {
+                      "Name": "@{body('Parse_JSON:_PDF_File_Info_including_SpSiteAddress_and_PdfFilePath')?['pdfFileNameWithoutExtension']}.pdf",
+                      "ContentBytes": "@body('Get_file_content_from_Sharepoint')"
+                    }
+                  ],
+                  "emailMessage/ReplyTo": "@outputs('Get_associated_Program_record')?['body/quartech_programemailaddress']",
+                  "emailMessage/Importance": "Normal"
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                }
+              }
+            },
+            "Create_an_Email_Message_in_Timeline": {
+              "runAfter": {
+                "Send_Application_submission_confirmation_via_Outlook": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "39e536e1-2ebe-4dd4-b687-4022ad243a9e"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps_1",
+                  "operationId": "CreateRecord",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "entityName": "emails",
+                  "item/activitypointer_activity_parties": "@variables('vCorrespondenceEmailtoActivityParty')",
+                  "item/description": "Hi @{body('Parse_JSON:_Email_message_required_information')?['correspondenceFirstName']},<br>\n<br>\nThank you for applying to @{outputs('Get_associated_Program_record')?['body/msgov_programname']} offered by B.C. Ministry of Agriculture and Food. Please find attached a copy of your application for your reference. Program staff may reach out to you if they require further information when they review your application.<br>\n<br>\nIf you have any questions or need additional assistance, you can reach us at @{outputs('Get_associated_Program_record')?['body/quartech_programemailaddress']}.<br>\n<br>\n@{outputs('Get_associated_Program_record')?['body/msgov_programname']}<br>\n<br>\nApplication PDF file link to Sharepoint: <a href=\"@{body('Parse_JSON:_PDF_File_Info_including_SpSiteAddress_and_PdfFilePath')?['spSiteAddress']}@{body('Parse_JSON:_PDF_File_Info_including_SpSiteAddress_and_PdfFilePath')?['pdfFilePath']}\">@{body('Parse_JSON:_PDF_File_Info_including_SpSiteAddress_and_PdfFilePath')?['pdfFileNameWithoutExtension']}.pdf</a> \n",
+                  "item/regardingobjectid_msgov_businessgrantapplication_email@odata.bind": "msgov_businessgrantapplications(@{body('Parse_JSON:_Email_message_required_information')?['recordGuid']})",
+                  "item/subject": "Your application to @{outputs('Get_associated_Program_record')?['body/msgov_programname']}"
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                }
+              },
+              "description": "The Email Message record in Timeline is only for the record. The Email Message will NOT be sent up by Outlook Service."
+            },
+            "Perform_a_bound_action_to_flag_this_Email_Record_to_\"Sent\"_in_the_Timeline": {
+              "runAfter": {
+                "Create_an_Email_Message_in_Timeline": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "2d62e248-0ded-4782-80c6-73cd50a8b707"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps_1",
+                  "operationId": "PerformBoundAction",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "entityName": "emails",
+                  "actionName": "Microsoft.Dynamics.CRM.SendEmail",
+                  "recordId": "@outputs('Create_an_Email_Message_in_Timeline')?['body/activityid']",
+                  "item/IssueSend": false
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                }
+              }
+            },
+            "Set_response_from_Application_branch": {
+              "runAfter": {
+                "Perform_a_bound_action_to_flag_this_Email_Record_to_\"Sent\"_in_the_Timeline": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "1c1410f0-01c8-4aa2-9d89-2b65d56513cc"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "vResponse",
+                "value": "@outputs('Create_an_Email_Message_in_Timeline')?['body/activityid']"
+              }
+            }
+          },
+          "runAfter": {
+            "Initialize_variable_vResponse": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "If_Entity_Type_from_Trigger_step_is_\"Claim\"": {
+                "actions": {
+                  "Send_Claim_submission_confirmation_via_Outlook": {
+                    "runAfter": {},
+                    "metadata": {
+                      "operationMetadataId": "6a5c2789-3a08-4b6a-95b2-519de01c1580"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_office365",
+                        "operationId": "SendEmailV2",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365"
+                      },
+                      "parameters": {
+                        "emailMessage/To": "@body('Parse_JSON:_Email_message_required_information')?['correspondenceEmailAddress']",
+                        "emailMessage/Subject": "Your Claim to @{outputs('Get_associated_Program_record')?['body/msgov_programname']}",
+                        "emailMessage/Body": "<p>Hi @{body('Parse_JSON:_Email_message_required_information')?['correspondenceFirstName']},<br>\n<br>\nThank you for submitting a claim to @{outputs('Get_associated_Program_record')?['body/msgov_programname']} offered by B.C. Ministry of Agriculture and Food. Please find attached a copy of your claim for your reference. Program staff may reach out to you if they require further information when they review your claim.<br>\n<br>\nIf you have any questions or need additional assistance, you can reach us at @{outputs('Get_associated_Program_record')?['body/quartech_programemailaddress']}.<br>\n<br>\n@{outputs('Get_associated_Program_record')?['body/msgov_programname']}</p>",
+                        "emailMessage/Cc": "@outputs('Get_associated_Program_record')?['body/quartech_programemailaddress']",
+                        "emailMessage/Attachments": [
+                          {
+                            "Name": "@{body('Parse_JSON:_PDF_File_Info_including_SpSiteAddress_and_PdfFilePath')?['pdfFileNameWithoutExtension']}.pdf",
+                            "ContentBytes": "@body('Get_file_content_from_Sharepoint')"
+                          }
+                        ],
+                        "emailMessage/ReplyTo": "@outputs('Get_associated_Program_record')?['body/quartech_programemailaddress']",
+                        "emailMessage/Importance": "Normal"
+                      },
+                      "authentication": {
+                        "type": "Raw",
+                        "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                      }
+                    }
+                  },
+                  "Create_an_Email_Message_in_Claim_Timeline": {
+                    "runAfter": {
+                      "Send_Claim_submission_confirmation_via_Outlook": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "d3e5e4e9-b470-42e5-986a-5630cb44cc71"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_commondataserviceforapps_1",
+                        "operationId": "CreateRecord",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                      },
+                      "parameters": {
+                        "entityName": "emails",
+                        "item/activitypointer_activity_parties": "@variables('vCorrespondenceEmailtoActivityParty')",
+                        "item/description": "Hi @{body('Parse_JSON:_Email_message_required_information')?['correspondenceFirstName']},<br>\n<br>\nThank you for submitting a claim to @{outputs('Get_associated_Program_record')?['body/msgov_programname']} offered by B.C. Ministry of Agriculture and Food. Please find attached a copy of your claim for your reference. Program staff may reach out to you if they require further information when they review your claim.<br>\n<br>\nIf you have any questions or need additional assistance, you can reach us at @{outputs('Get_associated_Program_record')?['body/quartech_programemailaddress']}.<br>\n<br>\n@{outputs('Get_associated_Program_record')?['body/msgov_programname']}<br>\n<br>\nClaim PDF file link to Sharepoint: <a href=\"@{body('Parse_JSON:_PDF_File_Info_including_SpSiteAddress_and_PdfFilePath')?['spSiteAddress']}@{body('Parse_JSON:_PDF_File_Info_including_SpSiteAddress_and_PdfFilePath')?['pdfFilePath']}\">@{body('Parse_JSON:_PDF_File_Info_including_SpSiteAddress_and_PdfFilePath')?['pdfFileNameWithoutExtension']}.pdf</a> ",
+                        "item/regardingobjectid_quartech_claim_email@odata.bind": "quartech_claims(@{body('Parse_JSON:_Email_message_required_information')?['recordGuid']})",
+                        "item/subject": "Your Claim to @{outputs('Get_associated_Program_record')?['body/msgov_programname']}"
+                      },
+                      "authentication": {
+                        "type": "Raw",
+                        "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                      }
+                    }
+                  },
+                  "Perform_a_bound_action": {
+                    "runAfter": {
+                      "Create_an_Email_Message_in_Claim_Timeline": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "195942f7-9e40-4a04-b52e-1a7daa5850a3"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_commondataserviceforapps",
+                        "operationId": "PerformBoundAction",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                      },
+                      "parameters": {
+                        "entityName": "emails",
+                        "actionName": "Microsoft.Dynamics.CRM.SendEmail",
+                        "recordId": "@outputs('Create_an_Email_Message_in_Claim_Timeline')?['body/activityid']",
+                        "item/IssueSend": false
+                      },
+                      "authentication": {
+                        "type": "Raw",
+                        "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                      }
+                    }
+                  },
+                  "Set_response_in_Claim_branch": {
+                    "runAfter": {
+                      "Perform_a_bound_action": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "8e3e00ad-7cb9-4d13-8b80-3a5116123351"
+                    },
+                    "type": "SetVariable",
+                    "inputs": {
+                      "name": "vResponse",
+                      "value": "@outputs('Create_an_Email_Message_in_Claim_Timeline')?['body/activityid']"
+                    }
+                  }
+                },
+                "runAfter": {},
+                "else": {
+                  "actions": {
+                    "Terminate": {
+                      "runAfter": {},
+                      "metadata": {
+                        "operationMetadataId": "e664c03d-0bb7-4c66-a55e-2d0c583250b4"
+                      },
+                      "type": "Terminate",
+                      "inputs": {
+                        "runStatus": "Cancelled"
+                      }
+                    }
+                  }
+                },
+                "expression": {
+                  "equals": [
+                    "@triggerBody()['text_2']",
+                    "Claim"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "e6e47f18-9400-4f46-b1c2-d28acf27f79d"
+                },
+                "type": "If"
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+              "@triggerBody()?['text_2']",
+              "Application"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "eb877644-e413-4c1a-9378-faa2c28dba13"
+          },
+          "type": "If"
+        },
+        "Get_associated_Program_record": {
+          "runAfter": {
+            "Get_file_content_from_Sharepoint": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "39907d80-4ed7-4b48-9910-d791ac01d1be"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "msgov_programs",
+              "recordId": "@triggerBody()['text_1']"
+            },
+            "authentication": {
+              "type": "Raw",
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+            }
+          }
+        },
+        "Initialize_variable_vCorrespondenceEmailtoActivityParty": {
+          "runAfter": {
+            "Parse_JSON:_PODS_Svc_Account": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "61c82d27-3f73-4f68-ad85-08f925ca6725"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "vCorrespondenceEmailtoActivityParty",
+                "type": "array",
+                "value": [
+                  {
+                    "participationtypemask": 1,
+                    "partyid@odata.bind": "systemusers(@{body('Parse_JSON:_PODS_Svc_Account')?['UserGuid']})"
+                  },
+                  {
+                    "participationtypemask": 2,
+                    "addressused": "@{body('Parse_JSON:_Email_message_required_information')?['correspondenceEmailAddress']}"
+                  }
+                ]
+              }
+            ]
+          },
+          "description": "Set unresolved email in Email Activity Party"
+        },
+        "Response": {
+          "runAfter": {
+            "If_Entity_Type_from_Trigger_step_is_\"Application\"": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "03188d1e-7338-4ff5-8feb-b020827dfa6d"
+          },
+          "type": "Response",
+          "kind": "Http",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+              "entityType": "@{triggerBody()['text_2']}",
+              "recordGuid": "@{body('Parse_JSON:_Email_message_required_information')?['recordGuid']}",
+              "emailrecord": "@{variables('vResponse')}"
+            }
+          }
+        },
+        "Parse_JSON:_PDF_File_Info_including_SpSiteAddress_and_PdfFilePath": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "8d88c8d1-a739-4032-ad04-eb45d3a00bc7"
+          },
+          "type": "ParseJson",
+          "inputs": {
+            "content": "@triggerBody()['text_3']",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "spSiteAddress": {
+                  "type": "string"
+                },
+                "pdfFilePath": {
+                  "type": "string"
+                },
+                "pdfFileNameWithoutExtension": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "Get_file_content_from_Sharepoint": {
+          "runAfter": {
+            "Parse_JSON:_Email_message_required_information": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "be71f1f5-cb5e-4743-8528-bc8cc4c5943f"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "GetFileContentByPath",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "@body('Parse_JSON:_PDF_File_Info_including_SpSiteAddress_and_PdfFilePath')?['SpSiteAddress']",
+              "path": "@body('Parse_JSON:_PDF_File_Info_including_SpSiteAddress_and_PdfFilePath')?['PdfFilePath']",
+              "inferContentType": true
+            },
+            "authentication": {
+              "type": "Raw",
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+            }
+          }
+        },
+        "Parse_JSON:_PODS_Svc_Account": {
+          "runAfter": {
+            "Get_associated_Program_record": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "db3fb5e7-2561-4d40-9ad4-957bce825e33"
+          },
+          "type": "ParseJson",
+          "inputs": {
+            "content": "@parameters('PODS Svc Account (quartech_PODSSvcAccount)')",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "UserGuid": {
+                  "type": "string"
+                },
+                "Name": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "Parse_JSON:_Email_message_required_information": {
+          "runAfter": {
+            "Parse_JSON:_PDF_File_Info_including_SpSiteAddress_and_PdfFilePath": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "90c3ab81-d8c4-4cf3-ae6a-f813ccf2289c"
+          },
+          "type": "ParseJson",
+          "inputs": {
+            "content": "@triggerBody()?['text_7']",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "recordGuid": {
+                  "type": "string"
+                },
+                "correspondenceFirstName": {
+                  "type": "string"
+                },
+                "correspondenceEmailAddress": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "Initialize_variable_vResponse": {
+          "runAfter": {
+            "Initialize_variable_vCorrespondenceEmailtoActivityParty": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "05d771d4-11fb-4127-a250-d028e38e505c"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "vResponse",
+                "type": "string"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

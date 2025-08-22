@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>0</isdefault>
+    <savedqueryid>{bf54e3f7-7d3d-ee11-bdf4-002248ae080f}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="msgov_name" select="1" icon="1" preview="1">
+        <row name="result" id="msgov_businessgrantapplicationid">
+          <cell name="quartech_applicationid" width="167" />
+          <cell name="quartech_account" width="176" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="quartech_program" width="154" />
+          <cell name="quartech_submittedon" width="123" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="createdon" width="100" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
+        <entity name="msgov_businessgrantapplication">
+          <attribute name="quartech_program" />
+          <attribute name="quartech_account" />
+          <attribute name="quartech_applicationid" />
+          <attribute name="quartech_submittedon" />
+          <attribute name="createdon" />
+          <order attribute="createdon" descending="true" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="msgov_businessgrantapplicationid" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.0.4</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active Portal Applications" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="My Applications shown on the Applicant Portal" languagecode="1033" />
+    </Descriptions>
+  </savedquery>
+</savedqueries>

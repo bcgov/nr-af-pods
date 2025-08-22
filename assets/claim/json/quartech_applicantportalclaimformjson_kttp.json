@@ -1,8 +1,7 @@
 {
   "tags": ["Claim", "KTTP", "KTTP-SMEA", "KTTP-StreamTwo", "KTTP-Stream3"],
-  "version": "1.0.8",
+  "version": "1.2.5",
   "description": "Claim form field config used for all KTTP streams",
-  "hiddenSteps": "",
   "sections": [
     {
       "name": "ApplicantInfoStep",
@@ -35,7 +34,12 @@
           "name": "quartech_applicantinformationcorrections",
           "label": "Please provide further detail",
           "required": true,
-          "maxLength": 10000
+          "maxLength": 10000,
+          "visibleIf": {
+            "fieldName": "quartech_applicantinformationconfirmation",
+            "selectedValue": 255550001,
+            "techComment": "No value"
+          }
         },
         {
           "name": "quartech_filenumber",
@@ -57,7 +61,9 @@
         {
           "name": "quartech_trainingcategoryfundedbyproject",
           "label": "Select the category that most closely describes the training funded by this project:",
-          "required": true
+          "hidden": true,
+          "doNotBlank": true,
+          "initialValue": 255550000
         },
         {
           "name": "quartech_businessmanagementtrainingparticipants",
@@ -72,13 +78,62 @@
         },
         {
           "name": "quartech_numberofproducersprocessorparticipants",
-          "label": "If applicable, please provide the estimated number of participants who were producers/processors:",
+          "label": "Please provide the estimated number of participants who were producers/processors",
           "format": "number",
+          "required": true,
           "validation": {
             "type": "numeric",
             "value": "0",
             "comparison": "greaterThanOrEqualTo"
           }
+        },
+        {
+          "name": "quartech_numberofdailyactivityattendees",
+          "label": "If your event or activity took place over multiple days, how many people attended each day? Please list the number of attendees for each date.<p style='font-style: italic;'>Example: April 21: 18 attendees. April 22: 25 attendees. ETC.</p>"
+        },
+        {
+          "name": "quartech_admissionfeerequired",
+          "label": "Was an admission fee required for participants to access any activities or events?",
+          "required": true
+        },
+        {
+          "name": "quartech_admissionfeeamount",
+          "label": "Please specify how much was charged per person per activity or event",
+          "additionalTextBelowField": "<p style='font-style: italic;'>Example: April 21: $10 per person. April 22: $15 per person. ETC.</p>",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_admissionfeerequired",
+            "selectedValue": 255550000,
+            "techComment": "YES value"
+          }
+        },
+        {
+          "name": "quartech_majorchangestoagendaoriginallysubmitted",
+          "label": "Were there any changes to the agenda from what was originally submitted (e.g., adjustments to topics, guest speakers, or activities)?",
+          "required": true,
+          "maxLength": 1000
+        },
+        {
+          "name": "quartech_keytakeawaysfromtheactivity",
+          "label": "What skills or knowledge did the intended audience gain from this project?",
+          "required": true,
+          "maxLength": 1000
+        },
+        {
+          "name": "quartech_anticipatedimpactoftheactivity",
+          "label": "How did the Project impact your organization and community? What stood out as the most valuable part of the Project for you?",
+          "required": true,
+          "maxLength": 1000
+        },
+        {
+          "name": "quartech_lessonslearnedforfutureactivities",
+          "label": "Share any other lessons learned that can inform future knowledge transfer activities",
+          "maxLength": 1000
+        },
+        {
+          "name": "quartech_feedbacktotheprogram",
+          "label": "Do you have any feedback regarding the design and administration of the program? ",
+          "maxLength": 1000
         }
       ]
     },
@@ -87,13 +142,23 @@
       "fields": [
         {
           "name": "quartech_eligibleexpenses",
-          "label": "Eligible Expenses"
+          "label": "Eligible Expenses",
+          "additionalTextAboveField": "<div id=claimInfoInstructionsNote style=padding-bottom:20px><b>Instructions:</b><ul style=font-size:inherit><li>List all eligible expenses for which you seek reimbursement in this claim​.<li>Please see the program guide for more details on eligible and ineligible expenses.<li>Do not include expenses that are excluded from reimbursement​.<li>As a condition of reimbursement, you will be required to maintain books of account, invoices, receipts, and vouchers for all expenses incurred in relation to the event until March 31, 2032.<li>You do not need to submit proof of payment (receipts) with your claim. Keep all proof of payment for 7 years in case of audit.</ul></div>",
+          "disableSingleLine": true
         },
         {
           "name": "quartech_totalsumofreportedexpenses",
           "label": "Total Sum of Reported Expenses ($CAD)",
           "readOnly": true,
           "format": "currency"
+        },
+        {
+          "name": "quartech_costsharecontributioncashorinkind",
+          "label": "Cost share contribution (cash or in-kind)",
+          "required": true,
+          "format": "currency",
+          "tooltipText": "The applicant is expected to cover at least 25% of the eligible expenses",
+          "onChangeHandler": "calculateTotalRequestedAmountForKTTP"
         },
         {
           "name": "quartech_authorizedclaimedamount",
@@ -112,7 +177,8 @@
             "value": "0",
             "comparison": "greaterThan"
           },
-          "emptyInitialValue": true
+          "emptyInitialValue": true,
+          "readOnly": true
         }
       ]
     },
@@ -120,10 +186,34 @@
       "name": "DocumentsStep",
       "fields": [
         {
-          "name": "quartech_activityreport",
-          "label": "Activity Report",
-          "required": true,
+          "name": "quartech_incomestatementdocument",
+          "label": "Your organization charged an admission fee for an event or activity. You are required to submit details on the total income generated from such fees against all expenses incurred. <br />Please upload the Final Income and Expense Statement as part of your claim.",
+          "elementType": "FileInput",
+          "required": true
+        },
+        {
+          "name": "quartech_photosordocsofpurchase",
+          "label": "Include 1 to 3 high-quality photos that best represent the project in action or its results (optional)",
           "elementType": "FileInput"
+        },
+        {
+          "name": "quartech_activityreport",
+          "label": "Supporting Documents (optional)",
+          "elementType": "FileInput"
+        }
+      ]
+    },
+    {
+      "name": "DeclarationAndConsentStep",
+      "fields": [
+        {
+          "name": "quartech_declarationandconsent",
+          "required": true
+        },
+        {
+          "name": "quartech_consenttotestimonials",
+          "label": "I / We agree to the above statement.",
+          "additionalTextAboveField": "<p>Testimonials and images may be used in program reporting, promotional materials, or shared publicly. Do you consent to the use of your submitted testimonial and photos for these purposes?</p>"
         }
       ]
     }

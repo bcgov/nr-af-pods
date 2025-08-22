@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{2eaa2b17-b99a-ee11-be37-0022483ebed2}</formid>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form>
+      <tabs>
+        <tab id="ACBA75B7-97B6-4116-AA55-51312992B721" name="tab_1" showlabel="false" labelid="{a89d1343-5f8c-4726-bc52-abcaa28b3523}">
+          <labels>
+            <label description="New Tab" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%">
+              <sections>
+                <section id="AD49B5BF-256F-46A8-9C75-947146172EB9" name="applicant_contact_information" columns="1" showlabel="true" showbar="false" IsUserDefined="0" labelwidth="130" labelid="{d72fc62b-48b4-409c-a4b1-d856c0923775}">
+                  <labels>
+                    <label description="Applicant Contact Information" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="C0550AC7-0F44-45A4-8EF5-D2911C0689D9" labelid="{d7b9b9f4-92e2-4794-bac2-1bfd1bff2f5f}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{53d2f264-20ec-46c9-a175-6a480c829fde}" locklevel="0" colspan="1" rowspan="1" labelid="{bbfe81de-e3dd-431e-9275-e2e06ca49233}">
+                        <labels>
+                          <label description="First Name" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_legalnamefirst" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="quartech_legalnamefirst" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{552632d6-ce28-4341-8caa-1d76ac221398}" locklevel="0" colspan="1" rowspan="1" labelid="{d5b442fc-37d7-4539-b14d-cc0c0ba7b22f}">
+                        <labels>
+                          <label description="Last Name" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_legalnamelast" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="quartech_legalnamelast" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{0be0c018-3b3b-4146-98ad-5dccaa9e8028}" locklevel="0" colspan="1" rowspan="1" labelid="{73853be5-eb6f-4347-bbc7-1888d96683fd}">
+                        <labels>
+                          <label description="Position or Job Title " languagecode="1033" />
+                        </labels>
+                        <control id="quartech_positionorjobtitle" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="quartech_positionorjobtitle" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{3a80d4e4-6aeb-49c7-b484-4abd03f0ef8e}" locklevel="0" colspan="1" rowspan="1" labelid="{21a1bdf4-d7d0-4325-91d4-11aa7556ba7f}">
+                        <labels>
+                          <label description="City " languagecode="1033" />
+                        </labels>
+                        <control id="quartech_city" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="quartech_city" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{482b935a-44c8-4797-ae2b-3c0abc66d84f}" locklevel="0" colspan="1" rowspan="1" labelid="{e9c4ed8b-d040-4237-9d6d-9fd315c8adb3}">
+                        <labels>
+                          <label description="Telephone" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_telephone" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="quartech_telephone" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{7d47917a-8a0f-4dd1-9e65-f354d6df5586}" locklevel="0" colspan="1" rowspan="1" labelid="{839c0479-b155-40b3-a1f9-a4db44935119}">
+                        <labels>
+                          <label description="Email" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_email" classid="{ADA2203E-B4CD-49BE-9DDF-234642B43B52}" datafieldname="quartech_email" disabled="false" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+      <DisplayConditions Order="3" FallbackForm="true">
+        <Role Id="{627090ff-40a3-4053-8790-584edc5be201}" />
+        <Role Id="{119f245c-3cc8-4b62-b31c-d1a046ced15d}" />
+      </DisplayConditions>
+    </form>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <LocalizedNames>
+      <LocalizedName description="Applicant Contact Information Quick View" languagecode="1033" />
+    </LocalizedNames>
+  </systemform>
+</forms>

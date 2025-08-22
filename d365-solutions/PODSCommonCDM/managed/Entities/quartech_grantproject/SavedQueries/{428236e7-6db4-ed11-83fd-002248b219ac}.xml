@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>0</isdefault>
+    <savedqueryid>{428236e7-6db4-ed11-83fd-002248b219ac}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="quartech_name" select="1" icon="1" preview="1">
+        <row name="result" id="quartech_grantprojectid">
+          <cell name="quartech_recipient" width="196" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="a_e83b70e263aded1183fe000d3a0c247b.quartech_businessnumber" width="125" disableSorting="1" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="quartech_name" width="200" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="a_2a5bd52064aded1183fe000d3a0c247b.msgov_programname" width="161" disableSorting="1" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="a_2a5bd52064aded1183fe000d3a0c247b.quartech_scap_pa" width="125" disableSorting="1" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="quartech_application" width="150" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="quartech_pt_projectidentifier" width="150" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="quartech_projectdecision" width="125" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="quartech_location" width="125" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="a_e83b70e263aded1183fe000d3a0c247b.name" width="242" disableSorting="1" />
+          <cell name="quartech_estimatedprojectcost" width="204" />
+          <cell name="quartech_requestedfunding" width="150" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="quartech_fundingsource" width="125" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="quartech_approvedamount" width="125" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="quartech_actualamount" width="125" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="quartech_startdate" width="163" />
+          <cell name="a_2c8b87d565da425a934b5244bcbbb26a.quartech_recipienttype" width="137" />
+          <cell name="a_2c8b87d565da425a934b5244bcbbb26a.quartech_bmpname" width="177" />
+          <cell name="a_e83b70e263aded1183fe000d3a0c247b.accountcategorycode" width="100" disableSorting="1" />
+          <cell name="a_e83b70e263aded1183fe000d3a0c247b.address1_line3" width="100" disableSorting="1" />
+          <cell name="a_e83b70e263aded1183fe000d3a0c247b.address1_city" width="100" disableSorting="1" />
+          <cell name="a_e83b70e263aded1183fe000d3a0c247b.address1_stateorprovince" width="100" disableSorting="1" />
+          <cell name="a_e83b70e263aded1183fe000d3a0c247b.address1_postalcode" width="100" disableSorting="1" />
+          <cell name="a_e83b70e263aded1183fe000d3a0c247b.quartech_businessprovinceterritory" width="100" disableSorting="1" />
+          <cell name="quartech_projectstatus" width="100" />
+          <cell name="a_2c8b87d565da425a934b5244bcbbb26a.quartech_unitofproduction" width="100" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
+        <entity name="quartech_grantproject">
+          <attribute name="quartech_name" />
+          <attribute name="quartech_recipient" />
+          <attribute name="quartech_pt_projectidentifier" />
+          <attribute name="quartech_location" />
+          <attribute name="quartech_projectdecision" />
+          <attribute name="quartech_application" />
+          <attribute name="quartech_startdate" />
+          <attribute name="quartech_projectstatus" />
+          <attribute name="quartech_estimatedprojectcost" />
+          <attribute name="quartech_requestedfunding" />
+          <attribute name="quartech_fundingsource" />
+          <attribute name="quartech_approvedamount" />
+          <attribute name="quartech_actualamount" />
+          <order attribute="quartech_startdate" descending="true" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <link-entity name="msgov_program" from="msgov_programid" to="quartech_program" visible="false" link-type="outer" alias="a_2a5bd52064aded1183fe000d3a0c247b">
+            <attribute name="quartech_scap_pa" />
+            <attribute name="msgov_programname" />
+          </link-entity>
+          <link-entity name="account" from="accountid" to="quartech_recipient" visible="false" link-type="outer" alias="a_e83b70e263aded1183fe000d3a0c247b">
+            <attribute name="name" />
+            <attribute name="quartech_businessprovinceterritory" />
+            <attribute name="quartech_businessnumber" />
+            <attribute name="address1_postalcode" />
+            <attribute name="address1_line3" />
+            <attribute name="address1_stateorprovince" />
+            <attribute name="address1_city" />
+            <attribute name="accountcategorycode" />
+          </link-entity>
+          <link-entity name="msgov_businessgrantapplication" from="msgov_businessgrantapplicationid" to="quartech_application" visible="false" link-type="outer" alias="a_2c8b87d565da425a934b5244bcbbb26a">
+            <attribute name="quartech_recipienttype" />
+            <attribute name="quartech_bmpname" />
+            <attribute name="quartech_unitofproduction" />
+          </link-entity>
+          <attribute name="quartech_grantprojectid" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.1.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Funding Committed Report (All Programs)" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="Applicants/Project and Funding Committed Report for All Programs" languagecode="1033" />
+    </Descriptions>
+  </savedquery>
+</savedqueries>

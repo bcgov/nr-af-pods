@@ -1,0 +1,175 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_sharedcommondataserviceforapps_f90be"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "c195ed5f-ae34-43c2-8324-c8017c78f042"
+          },
+          "type": "Request",
+          "kind": "Button",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "title": "ProjectGUID",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "number": {
+                  "title": "ApplicationStatus",
+                  "type": "number",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter a number",
+                  "x-ms-content-hint": "NUMBER"
+                }
+              },
+              "required": [
+                "text",
+                "number"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Check_if_Application_Withdrawn_25555011,_Expired_25555012_or_ERROR_25555013": {
+          "actions": {
+            "Get_Project:_Project_Status": {
+              "metadata": {
+                "operationMetadataId": "8ce2f2ad-9189-4824-a85f-81da88f40d23"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "parameters": {
+                  "entityName": "quartech_grantprojects",
+                  "recordId": "@triggerBody()['text']",
+                  "$select": "quartech_projectstatus"
+                },
+                "host": {
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+                  "operationId": "GetItem",
+                  "connectionName": "shared_commondataserviceforapps"
+                }
+              }
+            },
+            "Update_Project:_Status_Upon_Cancellation_and_Project_Status": {
+              "runAfter": {
+                "Get_Project:_Project_Status": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "abd4e0d0-9158-480c-8f48-e75503a6c120"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "parameters": {
+                  "entityName": "quartech_grantprojects",
+                  "recordId": "@triggerBody()['text']",
+                  "item/quartech_projectstatus": "@triggerBody()['number']",
+                  "item/quartech_statusuponcancellation": "@body('Get_Project:_Project_Status')?['quartech_projectstatus']"
+                },
+                "host": {
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+                  "operationId": "UpdateRecord",
+                  "connectionName": "shared_commondataserviceforapps"
+                }
+              }
+            },
+            "Response": {
+              "runAfter": {
+                "Update_Project:_Status_Upon_Cancellation_and_Project_Status": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "982b55d5-4287-4a8e-bf00-cf5d21477d12"
+              },
+              "type": "Response",
+              "kind": "Http",
+              "inputs": {
+                "statusCode": 200,
+                "body": {
+                  "errorMessage": ""
+                }
+              }
+            }
+          },
+          "runAfter": {},
+          "else": {
+            "actions": {
+              "Terminate": {
+                "metadata": {
+                  "operationMetadataId": "e5de3aee-4a34-431c-a2c8-306663ac1a90"
+                },
+                "type": "Terminate",
+                "inputs": {
+                  "runStatus": "Failed",
+                  "runError": {
+                    "code": "INVALID_APPLICATION_CANCELLATION_STATUS",
+                    "message": "Application Status input param must be in Application Withdrawn (25555011), Application Expired (25555012) or Application Error (25555013)"
+                  }
+                }
+              }
+            }
+          },
+          "expression": {
+            "or": [
+              {
+                "equals": [
+                  "@triggerBody()['number']",
+                  255550011
+                ]
+              },
+              {
+                "equals": [
+                  "@triggerBody()['number']",
+                  255550012
+                ]
+              },
+              {
+                "equals": [
+                  "@triggerBody()['number']",
+                  255550013
+                ]
+              }
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "8d277604-26fe-406b-93fc-1604e90b8671"
+          },
+          "type": "If"
+        }
+      }
+    },
+    "templateName": null
+  },
+  "schemaVersion": "1.0.0.0"
+}

@@ -1,0 +1,276 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{894cc46a-b0cb-4ab0-8bf6-200544e46a2d}</formid>
+    <IntroducedVersion>5.0.0.0</IntroducedVersion>
+    <FormPresentation>0</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form showImage="true" shownavigationbar="false" maxWidth="1920" solutionaction="Modified">
+      <tabs>
+        <tab name="general" verticallayout="true" id="{9748ec98-3746-40cc-83bf-d15c7363166f}" IsUserDefined="0" ordinalvalue="1" solutionaction="Modified">
+          <columns>
+            <column width="100%" id="0">
+              <sections>
+                <section name="name" showlabel="false" showbar="false" id="{90b0776f-2977-4695-9cd4-73bb6c820f88}" IsUserDefined="0" ordinalvalue="0">
+                  <rows>
+                    <row>
+                      <cell id="{90317617-38db-4734-aef8-4bb4e8cb9012}" ordinalvalue="10000" solutionaction="Removed" />
+                      <cell id="{f3eec8ff-7b5a-43af-92c4-1a41adaf4b50}" showlabel="true" locklevel="0" ordinalvalue="20001" solutionaction="Modified">
+                        <labels>
+                          <label description="Phone" languagecode="1033" solutionaction="Added" />
+                        </labels>
+                        <control id="telephone1" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="telephone1" uniqueid="{e4de928a-2b0d-edc9-1da7-8676cbd4e692}" disabled="false" solutionaction="Modified" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{478c8803-2686-4d10-8cf0-e6e5b3b6007f}" ordinalvalue="10000" solutionaction="Modified">
+                        <labels>
+                          <label description="First Name" languagecode="1033" solutionaction="Added" />
+                        </labels>
+                      </cell>
+                      <cell id="{0304f83d-bb05-4e72-bf12-c9bfa8a8e152}" ordinalvalue="20003" solutionaction="Removed" />
+                    </row>
+                    <row>
+                      <cell id="{8097efd5-8af7-4944-b7a5-42ece196e23d}" ordinalvalue="10004" solutionaction="Removed" />
+                      <cell id="{70d9cd8f-142b-4a88-bf82-4d2bc2972140}" ordinalvalue="20005" solutionaction="Removed" />
+                    </row>
+                    <row>
+                      <cell id="{4fde05d9-89b1-4acf-a98f-13159f1bdcc8}" ordinalvalue="10002" solutionaction="Modified">
+                        <labels>
+                          <label description="Last Name" languagecode="1033" solutionaction="Added" />
+                        </labels>
+                      </cell>
+                      <cell id="{068c2954-dfdf-4d68-a9da-f70e3feb3e63}" ordinalvalue="20007" solutionaction="Removed" />
+                    </row>
+                    <row>
+                      <cell id="{921eaba2-6044-405e-8354-c3c5dbe3e97f}" ordinalvalue="10008" solutionaction="Removed" />
+                      <cell id="{38d7b950-436b-412f-a71b-ae4187e60c14}" ordinalvalue="20009" solutionaction="Removed" />
+                    </row>
+                    <row>
+                      <cell auto="false" showlabel="true" locklevel="0" rowspan="1" colspan="1" id="{1afed90e-5ba2-4868-b33f-e4ffe086596b}" ordinalvalue="10010" solutionaction="Removed" />
+                      <cell id="{bbe0ad95-9a47-4fff-92db-8165face5f49}" ordinalvalue="20011" solutionaction="Removed" />
+                    </row>
+                    <row>
+                      <cell id="{22ee1eb7-c54c-db2d-44e3-003bd4c4d5a1}" showlabel="true" locklevel="0" ordinalvalue="20003" solutionaction="Added">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="emailaddress1" classid="{ADA2203E-B4CD-49be-9DDF-234642B43B52}" datafieldname="emailaddress1" disabled="false" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+                <section name="address" showlabel="true" showbar="true" id="{f2f6f734-1790-402f-8e2a-1eaecbceb9e3}" IsUserDefined="0" ordinalvalue="1" solutionaction="Removed" />
+                <section name="shipping information" showlabel="false" showbar="true" id="{43e56c39-59b7-4218-ad70-ed0db70d33ac}" IsUserDefined="0" ordinalvalue="2" solutionaction="Removed" />
+                <section name="description" showlabel="true" showbar="true" id="{e165b345-b7ce-4c73-a508-0f42cbf6dd53}" IsUserDefined="0" height="auto" ordinalvalue="3" solutionaction="Removed" />
+                <section name="activities" showlabel="true" showbar="true" id="{f5e95813-3c0a-4385-b2a8-5d88c9edfaf9}" IsUserDefined="0" height="auto" ordinalvalue="1" solutionaction="Added">
+                  <labels>
+                    <label description="Activities" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{98af12b2-d2af-46c6-9bdf-9bc25684abd4}" showlabel="false" colspan="2" auto="true" rowspan="7" ordinalvalue="10000">
+                        <labels>
+                          <label description="Activities" languagecode="1033" />
+                        </labels>
+                        <control id="contactactivitiesgrid" classid="{E7A81278-8635-4d9e-8D4D-59480B391C5B}">
+                          <parameters>
+                            <TargetEntityType>activitypointer</TargetEntityType>
+                            <ViewId>{00000000-0000-0000-00AA-000010001900}</ViewId>
+                            <RelationshipName>Contact_ActivityPointers</RelationshipName>
+                            <AutoExpand>Fixed</AutoExpand>
+                            <EnableQuickFind>false</EnableQuickFind>
+                            <EnableViewPicker>true</EnableViewPicker>
+                            <EnableJumpBar>false</EnableJumpBar>
+                            <EnableChartPicker>false</EnableChartPicker>
+                            <RecordsPerPage>10</RecordsPerPage>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row height="auto" />
+                  </rows>
+                </section>
+                <section name="notes" showlabel="true" showbar="true" id="{B798FA27-F9FC-4580-988C-0BA75C444488}" IsUserDefined="0" height="auto" ordinalvalue="2" solutionaction="Added">
+                  <labels>
+                    <label description="Notes" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell colspan="2" showlabel="false" rowspan="5" auto="false" id="{a9d8114e-4852-4462-84a3-f4b398a4fe71}" ordinalvalue="10000">
+                        <labels>
+                          <label description="Note Text" languagecode="1033" />
+                        </labels>
+                        <control id="notescontrol" classid="{06375649-C143-495E-A496-C962E5B4488E}" />
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+        <tab name="details" id="{cafbf41a-42bf-4665-8562-1e37017eba69}" IsUserDefined="0" ordinalvalue="1" solutionaction="Removed" />
+        <tab name="notes and activities" id="{A6C643C6-E98F-4738-812F-0B7F7FFC80F7}" IsUserDefined="0" expanded="false" ordinalvalue="2" solutionaction="Removed" />
+        <tab name="administration" id="{0dd7233e-247b-4eef-a71b-0185da6d16ad}" IsUserDefined="0" ordinalvalue="3" solutionaction="Removed" />
+        <tab id="{f0c5f929-23ce-438d-8f4e-5df76a451b22}" name="conflictstab" group="solutionconflictstab" ordinalvalue="4" solutionaction="Removed" />
+        <tab name="tab_recordwall" id="{e94e6ac4-12db-bc8c-ec81-8b20c5987655}" IsUserDefined="0" locklevel="0" showlabel="true" expanded="false" labelid="{4aa6cc52-4edc-49c5-b746-84d3fe5bb362}" ordinalvalue="0" solutionaction="Added">
+          <labels>
+            <label description="What's New" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%" id="0">
+              <sections>
+                <section name="tab_recordwall_section_1" showlabel="false" showbar="false" locklevel="0" id="{ac0addcc-a626-6c98-40ee-b11edac36204}" IsUserDefined="0" layout="varwidth" columns="1" labelwidth="115" celllabelalignment="Left" celllabelposition="Left" labelid="{ef435572-eef3-4672-bc8b-ad018379061d}" ordinalvalue="0">
+                  <labels>
+                    <label description="Section" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{be13b312-b6ac-83d7-34e1-e90dc1ecbec7}" showlabel="false" colspan="1" auto="false" rowspan="15" labelid="{728b41e3-30a5-4bc9-ae38-9a636ef0cff0}" ordinalvalue="10000">
+                        <labels>
+                          <label description="RecordWall" languagecode="1033" />
+                        </labels>
+                        <control id="WebResource_RecordWall" classid="{9FDF5F91-88B1-47f4-AD53-C11EFC01A01D}">
+                          <parameters>
+                            <Url>msdyn_/RecordWall.htm</Url>
+                            <PassParameters>true</PassParameters>
+                            <Security>false</Security>
+                            <Scrolling>auto</Scrolling>
+                            <Border>false</Border>
+                          </parameters>
+                        </control>
+                        <events>
+                          <event name="onload" application="0">
+                            <dependencies />
+                          </event>
+                        </events>
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+          <events>
+            <event name="tabstatechange" application="false" active="false">
+              <Handlers>
+                <Handler functionName="ActivityFeeds.Form.CustomizationUtils.updateRecordWallRenderingState" libraryName="msdyn_/ActivityFeeds.Form.js" handlerUniqueId="{9beb6ce6-2666-8033-a406-3d68d44b9592}" enabled="true" parameters="" passExecutionContext="true" ordinalvalue="0" />
+              </Handlers>
+            </event>
+          </events>
+        </tab>
+      </tabs>
+      <header id="{59314f22-396d-45d8-baef-75b09c8dd512}" celllabelposition="Top">
+        <rows>
+          <row>
+            <cell id="{b0074c9c-4bdb-9521-0b2a-468199980643}" ordinalvalue="10000">
+              <labels>
+                <label description="Email" languagecode="1033" solutionaction="Added" />
+              </labels>
+            </cell>
+            <cell id="{9c4cd12a-3da3-d3cc-b902-6ee03bd43729}" ordinalvalue="20001">
+              <labels>
+                <label description="Preferred Method of Contact" languagecode="1033" solutionaction="Added" />
+              </labels>
+            </cell>
+            <cell id="{6eb10c6b-c25e-a2ea-b4c1-b3d4a075d081}" ordinalvalue="30002">
+              <labels>
+                <label description="Owner" languagecode="1033" solutionaction="Added" />
+              </labels>
+            </cell>
+          </row>
+        </rows>
+      </header>
+      <Navigation>
+        <NavBar>
+          <NavBarByRelationshipItem RelationshipName="Contact_CustomerAddress" Id="navAddresses" TitleResourceId="Tab_Label_MoreAddresses" Sequence="10" Area="Info" solutionaction="Modified">
+            <Titles solutionaction="Added">
+              <Title LCID="1033" Text="More Addresses" />
+            </Titles>
+          </NavBarByRelationshipItem>
+          <NavBarByRelationshipItem RelationshipName="contact_customer_contacts" Id="navSubConts" TitleResourceId="Tab_Label_SubContacts" Sequence="40" Area="Info" solutionaction="Modified">
+            <Titles solutionaction="Added">
+              <Title LCID="1033" Text="Sub-Contacts" />
+            </Titles>
+          </NavBarByRelationshipItem>
+          <NavBarByRelationshipItem RelationshipName="Contact_ActivityPointers" Id="navActivities" Icon="/_imgs/ico_18_act.gif" Sequence="20" Area="Info" solutionaction="Modified">
+            <Titles solutionaction="Added">
+              <Title LCID="1033" Text="Activities" />
+            </Titles>
+          </NavBarByRelationshipItem>
+          <NavBarByRelationshipItem RelationshipName="Contact_ActivityPointers" Id="navActivityHistory" TitleResourceId="Tab_Label_History" Icon="/_imgs/ico_18_history.gif" ViewId="21E2B905-6FDB-470d-8517-AD69B4C01268" Sequence="20" Area="Info" solutionaction="Modified">
+            <Titles solutionaction="Added">
+              <Title LCID="1033" Text="Closed Activities" />
+            </Titles>
+          </NavBarByRelationshipItem>
+          <NavBarByRelationshipItem RelationshipName="contact_customer_relationship_customer" Id="navRelationships" TitleResourceId="Left_Nav_Area_Relationships" Sequence="50" Area="Info" solutionaction="Modified">
+            <Titles solutionaction="Added">
+              <Title LCID="1033" Text="Relationships" />
+            </Titles>
+          </NavBarByRelationshipItem>
+        </NavBar>
+        <NavBarAreas solutionaction="Added">
+          <NavBarArea Id="Info">
+            <Titles>
+              <Title LCID="1033" Text="Common" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="Sales">
+            <Titles>
+              <Title LCID="1033" Text="Sales" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="Service">
+            <Titles>
+              <Title LCID="1033" Text="Service" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="Marketing">
+            <Titles>
+              <Title LCID="1033" Text="Marketing" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="ProcessCenter">
+            <Titles>
+              <Title LCID="1033" Text="Process Sessions" />
+            </Titles>
+          </NavBarArea>
+        </NavBarAreas>
+      </Navigation>
+      <formLibraries solutionaction="Added">
+        <Library name="msdyn_/ActivityFeeds.Form.js" libraryUniqueId="{4181da4c-6d13-ba3c-c859-be404e4ee2e3}" />
+      </formLibraries>
+      <controlDescriptions solutionaction="Added" />
+    </form>
+    <LocalizedNames>
+      <LocalizedName description="Information" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="A form for this entity." languagecode="1033" />
+    </Descriptions>
+  </systemform>
+</forms>

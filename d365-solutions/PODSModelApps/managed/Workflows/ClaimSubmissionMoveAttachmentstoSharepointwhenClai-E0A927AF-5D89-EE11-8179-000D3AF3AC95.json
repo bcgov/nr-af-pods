@@ -1,0 +1,359 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_PodsSvcAcctDataverse"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      },
+      "shared_sharepointonline_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_PodsSvcAcctSharePoint"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "When_a_Claim_is_Submitted": {
+          "metadata": {
+            "operationMetadataId": "bff9d0c8-37b8-4244-950a-b8ab1ad59688"
+          },
+          "type": "OpenApiConnectionWebhook",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "SubscribeWebhookTrigger",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "subscriptionRequest/message": 3,
+              "subscriptionRequest/entityname": "quartech_claim",
+              "subscriptionRequest/scope": 4,
+              "subscriptionRequest/filteringattributes": "quartech_claimstatus",
+              "subscriptionRequest/filterexpression": "quartech_claimstatus eq 255550001"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        }
+      },
+      "actions": {
+        "Get_Program_document_location_on_Sharepoint": {
+          "runAfter": {
+            "Get_Application_ID_for_SharePoint_folder_path": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "2dbf3148-8d17-4ffc-b08a-8197e4dad337"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "msgov_programs",
+              "recordId": "@triggerOutputs()?['body/_quartech_program_value']"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Initialize_vProgramSharePointSiteURL_-_Specific_Site_URL_after_the_Root_Site": {
+          "runAfter": {
+            "Get_Program_document_location_on_Sharepoint": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "d6a0917f-02e3-44fd-b89c-be5ff8fa6fb0"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "vProgramSharepointSiteURL",
+                "type": "string",
+                "value": "@outputs('Get_Program_document_location_on_Sharepoint')?['body/quartech_sharepointsiteaddress']"
+              }
+            ]
+          },
+          "description": "This should include and be up to the specific site after the root site. eg. https://rootsite.sharepoint.com/sites/xxxxxx "
+        },
+        "Initialize_vClaimDocumentFolder": {
+          "runAfter": {
+            "Initialize_vProgramRelevantPath": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "a831d781-104e-4f6e-9d13-2e21590faedf"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "vClaimDocumentFolder",
+                "type": "string",
+                "value": "@{variables('vProgramRelevantPath')}/@{outputs('Get_Application_ID_for_SharePoint_folder_path')?['body/quartech_applicationid']}"
+              }
+            ]
+          }
+        },
+        "List_Note_records_of_Claim_that_have_attachments": {
+          "runAfter": {
+            "Initialize_vFileName": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "9b72f163-bb09-4851-9b70-9c66f4ba38c7"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "annotations",
+              "$filter": "_objectid_value eq '@{triggerOutputs()?['body/quartech_claimid']}' and isdocument eq true"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Apply_to_each": {
+          "foreach": "@outputs('List_Note_records_of_Claim_that_have_attachments')?['body/value']",
+          "actions": {
+            "Compose": {
+              "runAfter": {
+                "set_vFileName": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "258a863d-0f78-493b-800d-5b0b7c5d08ac"
+              },
+              "type": "Compose",
+              "inputs": "@items('Apply_to_each')?['documentbody']"
+            },
+            "Create_file": {
+              "runAfter": {
+                "Compose": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "8a4d30bc-b106-43df-beab-2f6c7cecf26c"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline_1",
+                  "operationId": "CreateFile",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@variables('vProgramSharepointSiteURL')",
+                  "folderPath": "/@{variables('vTopLibraryURL')}/@{variables('vClaimDocumentFolder')}/@{triggerOutputs()?['body/quartech_name']}",
+                  "name": "@variables('vFileName')",
+                  "body": "@base64ToBinary(outputs('Compose'))"
+                },
+                "authentication": "@parameters('$authentication')"
+              },
+              "runtimeConfiguration": {
+                "contentTransfer": {
+                  "transferMode": "Chunked"
+                }
+              }
+            },
+            "set_vFileName": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "d38bf71d-2d52-4c21-aa46-86d320e213c7"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "vFileName",
+                "value": "@items('Apply_to_each')?['filename']"
+              }
+            }
+          },
+          "runAfter": {
+            "List_Note_records_of_Claim_that_have_attachments": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "f96d17a5-f125-4046-9b1c-f122585d31df"
+          },
+          "type": "Foreach"
+        },
+        "Initialize_vProgramRelevantPath": {
+          "runAfter": {
+            "Initialize_vTopLibaryURL": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "b72eb6d2-1882-4d07-8823-489a62cf22c3"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "vProgramRelevantPath",
+                "type": "string",
+                "value": "@{Replace(outputs('Get_Program_document_location_on_Sharepoint')?['body/quartech_sharepointdocumentlibraryfolderpath'],'%20',' ')}"
+              }
+            ]
+          }
+        },
+        "Get_Application_ID_for_SharePoint_folder_path": {
+          "runAfter": {
+            "Delay_1_Mins_to_wait_for_other_flow_to_run_PDF_File_generation": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "c0587758-19ad-4103-8014-676b189128d1"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "msgov_businessgrantapplications",
+              "recordId": "@triggerOutputs()?['body/_quartech_application_value']",
+              "$select": "quartech_applicationid"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Create_Claim_Folder_under_the_given_Library_Name": {
+          "runAfter": {
+            "Initialize_vClaimDocumentFolder": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "6077cce3-bdb5-42c1-97b7-56bcc4531c60"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline_1",
+              "operationId": "CreateNewFolder",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "@variables('vProgramSharepointSiteURL')",
+              "table": "@variables('vTopLibraryName')",
+              "parameters/path": "@{variables('vProgramRelevantPath')}/@{outputs('Get_Application_ID_for_SharePoint_folder_path')?['body/quartech_applicationid']}/@{triggerOutputs()?['body/quartech_name']}"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Delay_1_Mins_to_wait_for_other_flow_to_run_PDF_File_generation": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "f2d14968-c6c4-480c-a35a-a3484e29c0de"
+          },
+          "type": "Wait",
+          "inputs": {
+            "interval": {
+              "count": 1,
+              "unit": "Minute"
+            }
+          }
+        },
+        "Initialize_vFileName": {
+          "runAfter": {
+            "Create_Claim_Folder_under_the_given_Library_Name": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "3122dc14-7e41-47ca-b392-fafa205cbd95"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "vFileName",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Initialize_vTopLibraryName": {
+          "runAfter": {
+            "Initialize_vProgramSharePointSiteURL_-_Specific_Site_URL_after_the_Root_Site": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "2e96aeb6-2065-4abd-8c26-9d2316cc555b"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "vTopLibraryName",
+                "type": "string",
+                "value": "@outputs('Get_Program_document_location_on_Sharepoint')?['body/quartech_sharepointdocumentlibraryname']"
+              }
+            ]
+          }
+        },
+        "Initialize_vTopLibaryURL": {
+          "runAfter": {
+            "Initialize_vTopLibraryName": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "ef4ac9ea-8cba-4e48-b444-bf28662a93ee"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "vTopLibraryURL",
+                "type": "string",
+                "value": "@outputs('Get_Program_document_location_on_Sharepoint')?['body/quartech_sharepointdocumentlibraryrelativeurl']"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

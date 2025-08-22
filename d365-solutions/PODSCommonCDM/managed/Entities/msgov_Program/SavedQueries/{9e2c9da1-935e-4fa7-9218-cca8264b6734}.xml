@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{9e2c9da1-935e-4fa7-9218-cca8264b6734}</savedqueryid>
+    <layoutxml>
+      <grid name="msgov_programs" jump="msgov_programname" select="1" icon="1" preview="0">
+        <row name="msgov_program" id="msgov_programid">
+          <cell name="msgov_programname" width="300" />
+          <cell name="quartech_designatedprogramname" width="200" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="quartech_scap_pa" width="200" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>64</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="msgov_program">
+          <attribute name="msgov_programid" />
+          <attribute name="msgov_programname" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <order attribute="msgov_programname" descending="false" />
+          <attribute name="quartech_scap_pa" />
+          <attribute name="quartech_designatedprogramname" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Program Lookup View" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

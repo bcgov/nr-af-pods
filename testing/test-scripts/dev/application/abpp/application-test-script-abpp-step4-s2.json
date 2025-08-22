@@ -1,0 +1,23 @@
+{
+	"name": "Application - ABPP S2 - Deliverables & Budget Step - Test Script",
+	"testSteps" : [
+		{   "action" : "open-new-tab", "url": "https://af-pods-dev.powerappsportals.com/application/?programid=188a5355-bf58-ee11-be6f-000d3af3ac95" }
+
+		, { "action" : "Expect", "field" : { "label": "Total Proposed Budget", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "You can either upload a project budget document as an attachment or explain the proposed budget in the following text box. If you are uploading the budget as an attachment (in the Documents tab), please enter the file name in this text box (1000 words max)", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Training(s)/course(s)/business management conference(s)", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Why you are taking this training(s)/course(s)/business management conference(s)", "visible" : true, "required" : true } }
+		, { "action" : "Expect", "field" : { "label": "Please describe how will this improve your business", "visible" : true, "required" : true } }
+		
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : true } }
+    
+		, { "action" : "Enter", "field" : { "label": "Total Proposed Budget", "value" : "113,000.00" } }
+		, { "action" : "Enter", "field" : { "label": "You can either upload a project budget document as an attachment or explain the proposed budget in the following text box. If you are uploading the budget as an attachment (in the Documents tab), please enter the file name in this text box (1000 words max)", "value" : "Automated Testing" } }
+		, { "action" : "Enter", "field" : { "label": "Training(s)/course(s)/business management conference(s)", "value" : "Automated Testing" } }
+		, { "action" : "Enter", "field" : { "label": "Why you are taking this training(s)/course(s)/business management conference(s)", "value" : "Automated Testing" } }
+		, { "action" : "Enter", "field" : { "label": "Please describe how will this improve your business", "value" : "Automated Testing" } }
+		
+		, { "action" : "Expect", "button" : { "label": "Next", "disabled" : false } }
+
+	]
+}

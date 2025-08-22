@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Workflow WorkflowId="{8b46bb15-c64d-4040-9af4-0afe42d1a161}" Name="Application Business Process Flow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <XamlFileName>/Workflows/ApplicationBusinessProcessFlow-8B46BB15-C64D-4040-9AF4-0AFE42D1A161.xaml</XamlFileName>
+  <Type>1</Type>
+  <Subprocess>0</Subprocess>
+  <Category>4</Category>
+  <Mode>0</Mode>
+  <Scope>4</Scope>
+  <OnDemand>0</OnDemand>
+  <TriggerOnCreate>1</TriggerOnCreate>
+  <TriggerOnDelete>0</TriggerOnDelete>
+  <AsyncAutodelete>0</AsyncAutodelete>
+  <SyncWorkflowLogOnFailure>0</SyncWorkflowLogOnFailure>
+  <StateCode>1</StateCode>
+  <StatusCode>2</StatusCode>
+  <processorder>100</processorder>
+  <RunAs>1</RunAs>
+  <UniqueName>quartech_bpf_grantapplication</UniqueName>
+  <IsTransacted>1</IsTransacted>
+  <IntroducedVersion>1.0.0.0</IntroducedVersion>
+  <IsCustomizable>1</IsCustomizable>
+  <BusinessProcessType>0</BusinessProcessType>
+  <IsCustomProcessingStepAllowedForOtherPublishers>1</IsCustomProcessingStepAllowedForOtherPublishers>
+  <ProcessTriggerScope>1</ProcessTriggerScope>
+  <PrimaryEntity>msgov_BusinessGrantApplication</PrimaryEntity>
+  <LocalizedNames>
+    <LocalizedName languagecode="1033" description="Application Business Process Flow" />
+  </LocalizedNames>
+  <labels>
+    <steplabels id="{c9b4350a-3b7c-4b30-9ee0-89d9ca8e8456}">
+      <label languagecode="1033" description="Application Submission" />
+    </steplabels>
+    <steplabels id="{672dc351-1079-41be-9c82-e03821e8ed4b}">
+      <label languagecode="1033" description="Submission Completed" />
+    </steplabels>
+    <steplabels id="{0d7ae807-969e-4fec-ab24-418b959e3d5a}">
+      <label languagecode="1033" description="Eligibility" />
+    </steplabels>
+    <steplabels id="{f313debe-ddb0-4f86-ae59-9949a61ae870}">
+      <label languagecode="1033" description="Eligibility Requirements Met" />
+    </steplabels>
+    <steplabels id="{9c5b510b-2755-4a5e-ac82-f09e22f2af5b}">
+      <label languagecode="1033" description="Evaluation" />
+    </steplabels>
+    <steplabels id="{98594e14-c726-4031-bc94-8464b50f95ae}">
+      <label languagecode="1033" description="Evaluation Completed" />
+    </steplabels>
+    <steplabels id="{901507cd-c06e-497e-8223-5086c81883bf}">
+      <label languagecode="1033" description="Staff Decision" />
+    </steplabels>
+    <steplabels id="{b94297b3-5408-496a-b57f-d0393cfe7f03}">
+      <label languagecode="1033" description="Recommended for approval" />
+    </steplabels>
+  </labels>
+</Workflow>

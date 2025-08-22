@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{4e7b9f91-6934-4e01-843c-71726f2601e1}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="msgov_programname" select="1" icon="1" preview="1">
+        <row name="result" id="msgov_programid">
+          <cell name="msgov_programname" width="141" />
+          <cell name="quartech_designatedprogramname" width="200" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="quartech_scap_pa" width="200" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="msgov_introductiondate" width="150" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="msgov_programstatus" width="150" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>1</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="msgov_program">
+          <attribute name="msgov_programname" />
+          <order attribute="msgov_programname" descending="false" />
+          <attribute name="msgov_programstatus" />
+          <attribute name="msgov_introductiondate" />
+          <attribute name="quartech_scap_pa" />
+          <attribute name="quartech_designatedprogramname" />
+          <attribute name="msgov_programid" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Program Advanced Find View" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

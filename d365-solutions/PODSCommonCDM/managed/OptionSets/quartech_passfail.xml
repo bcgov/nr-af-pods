@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<optionset Name="quartech_passfail" localizedName="Pass/Fail" description="Pass or Fail option set" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <OptionSetType>picklist</OptionSetType>
+  <IsGlobal>1</IsGlobal>
+  <IntroducedVersion>1.0.0.0</IntroducedVersion>
+  <IsCustomizable>1</IsCustomizable>
+  <ExternalTypeName></ExternalTypeName>
+  <displaynames>
+    <displayname description="Pass/Fail" languagecode="1033" />
+  </displaynames>
+  <Descriptions>
+    <Description description="Pass or Fail option set" languagecode="1033" />
+  </Descriptions>
+  <options>
+    <option value="255550000" ExternalValue="" Color="#0000ff">
+      <labels>
+        <label description="Pass" languagecode="1033" />
+      </labels>
+      <Descriptions>
+        <Description description="" languagecode="1033" />
+      </Descriptions>
+    </option>
+    <option value="255550001" ExternalValue="" Color="#0000ff">
+      <labels>
+        <label description="Fail" languagecode="1033" />
+      </labels>
+      <Descriptions>
+        <Description description="" languagecode="1033" />
+      </Descriptions>
+    </option>
+  </options>
+</optionset>

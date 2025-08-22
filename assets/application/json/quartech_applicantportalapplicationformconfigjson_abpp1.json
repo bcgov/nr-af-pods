@@ -1,59 +1,29 @@
 {
-  "tags": ["Application", "StaffPortal", "ABPP1"],
-  "version": "1.0.5",
+  "tags": ["Application", "StaffPortal", "ABPP1", "Fall 2024"],
+  "version": "1.3.1",
   "name": "ABPP - Agri-Business and Leadership Development",
   "abbreviation": "ABPP1",
-  "hiddenSteps": "",
   "sections": [
     {
       "name": "ApplicantInfoStep",
+      "additionalTextAboveSection": "<p>Your personal information is collected under section 26(c) and 26(e) of the Freedom of Information and Protection of Privacy Act for the purposes of evaluating applications and for the planning and evaluating of the S-CAP Ministry Program. The information you provide will be shared with the federal government to fulfill the provincial obligations under the Sustainable Canadian Agricultural Partnership (S-CAP) bilateral agreement. It may be combined with other survey or administrative data sources and used for statistical, research and evaluation purposes.</p>",
+      "dataName": "tab_ApplicantInfo",
       "fields": [
         {
           "name": "quartech_indigenousapplicant",
+          "label": "Are you an Indigenous Applicant?",
           "required": true,
           "elementType": "DropdownSelect"
         },
         {
-          "name": "quartech_recipienttype",
-          "required": true,
-          "elementType": "DropdownSelect",
-          "label": "Type of Business / Organization. If your operation does both processing and primary production, please select the one that will primarily benefit from this program."
-        },
-        {
-          "name": "quartech_commodity",
-          "visibleIf": {
-            "fieldName": "quartech_recipienttype",
-            "selectedValue": 255550001
-          }
-        },
-        {
-          "name": "quartech_othercommoditiesproducedharvested",
-          "visibleIf": {
-            "fieldName": "quartech_recipienttype",
-            "selectedValue": 255550001
-          }
-        },
-        {
-          "name": "quartech_primarilyprocess",
-          "visibleIf": {
-            "fieldName": "quartech_recipienttype",
-            "selectedValue": 255550002
-          }
-        },
-        {
-          "name": "quartech_otherproductsprocessed",
-          "visibleIf": {
-            "fieldName": "quartech_recipienttype",
-            "selectedValue": 255550002
-          }
-        },
-        {
           "name": "quartech_applicanttype",
+          "label": "Applicant Type",
           "required": true,
           "elementType": "DropdownSelect"
         },
         {
           "name": "quartech_yearproductionestablished",
+          "label": "Year Business Established",
           "required": true,
           "validation": {
             "type": "numeric",
@@ -63,6 +33,7 @@
         },
         {
           "name": "quartech_numberoffulltimeemployees",
+          "label": "How many full-time employees do you employ?",
           "format": "number",
           "required": true,
           "validation": {
@@ -73,6 +44,7 @@
         },
         {
           "name": "quartech_numberofparttimeemployees",
+          "label": "How many part-time employees do you employ (including seasonal)?",
           "format": "number",
           "required": true,
           "validation": {
@@ -83,6 +55,7 @@
         },
         {
           "name": "quartech_previousyeargrossincome",
+          "label": "What was your estimated total gross income in the previous year?",
           "required": true,
           "format": "currency",
           "maxDigits": 13,
@@ -95,6 +68,7 @@
         },
         {
           "name": "quartech_previousyearnetincome",
+          "label": "What was your estimated total net income in the previous year?",
           "required": true,
           "format": "currency",
           "maxDigits": 13,
@@ -102,24 +76,62 @@
           "allowNegatives": true
         },
         {
-          "name": "quartech_operationdoesprocessingandprimaryproducti",
+          "name": "quartech_recipienttype",
+          "label": "Type of Business / Organization. If your operation does both processing and primary production, please select the one that will primarily benefit from this program.",
           "required": true,
+          "initialValue": 255550001,
+          "techComment": "intialValue set to Primary Producer",
           "elementType": "DropdownSelect"
         },
         {
-          "name": "quartech_agriprogramsubscriber",
-          "elementType": "DropdownSelect",
-          "required": true
-        },
-        {
-          "name": "quartech_tipreportenrolled",
+          "name": "quartech_commodity",
+          "label": "What is your primary production?",
+          "required": "true",
+          "elementType": "MultiSelectPicklist",
           "visibleIf": {
-            "fieldName": "quartech_agriprogramsubscriber",
+            "fieldName": "quartech_recipienttype",
             "selectedValue": 255550001
           }
         },
         {
+          "name": "quartech_othercommoditiesproducedharvested",
+          "label": "If you are a multi-commodity producer, please list any other commodities you produce/harvest",
+          "elementType": "MultiSelectPicklist",
+          "visibleIf": {
+            "fieldName": "quartech_recipienttype",
+            "selectedValue": 255550001,
+            "techComment": "Primary Producer"
+          }
+        },
+        {
+          "name": "quartech_primarilyprocess",
+          "label": "What do you primarily process?",
+          "required": true,
+          "visibleIf": {
+            "fieldName": "quartech_recipienttype",
+            "selectedValue": 255550002,
+            "techComment": "Processor"
+          }
+        },
+        {
+          "name": "quartech_otherproductsprocessed",
+          "label": "If you process multiple products, please list any other products you produce",
+          "elementType": "MultiSelectPicklist",
+          "visibleIf": {
+            "fieldName": "quartech_recipienttype",
+            "selectedValue": 255550002,
+            "techComment": "Processor"
+          }
+        },
+        {
+          "name": "quartech_operationdoesprocessingandprimaryproducti",
+          "label": "Does your operation do both processing and primary production",
+          "required": true,
+          "elementType": "DropdownSelect"
+        },
+        {
           "name": "quartech_businessdescription",
+          "label": "Business Description (Maximum 100 words)",
           "required": true
         }
       ]
@@ -149,6 +161,11 @@
           "required": true
         },
         {
+          "name": "quartech_ifyespleaseprovideabriefbackgroundoutlinin",
+          "label": "Please list all partners or shareholders including their first name and last name",
+          "required": true
+        },
+        {
           "name": "quartech_annualgrossrevenueoverlimit",
           "elementType": "DropdownSelect",
           "required": true,
@@ -156,11 +173,14 @@
         },
         {
           "name": "quartech_abppsupportoverlimit",
+          "label": "Have you, or any proprietors, partners or shareholders received support that exceeds the annual maximum funding contribution of $15,000 per fiscal year (April to March), through the B.C. Agri-Business Planning Program?",
           "elementType": "DropdownSelect",
           "required": true
         },
         {
           "name": "quartech_abppsupportoverlimitdetail",
+          "label": "Please provide further detail",
+          "required": true,
           "visibleIf": {
             "fieldName": "quartech_abppsupportoverlimit",
             "selectedValue": 255550000,
@@ -169,11 +189,14 @@
         },
         {
           "name": "quartech_supportreceivedduringscap",
+          "label": "Have you or any proprietors, partners or shareholders received support from any other B.C Ministry of Agriculture and Food Program(s) or any other B.C. Government Program(s) during the Sustainable Canadian Agricultural Partnership (S-CAP) Agreement (the Partnership), which is in effect from April 1, 2023, to March 31, 2028? Please note that you cannot receive support for the same eligible activities under these programs more than once during the Partnership?",
           "elementType": "DropdownSelect",
           "required": true
         },
         {
           "name": "quartech_supportduringscapdetails",
+          "label": "Please provide further detail",
+          "required": true,
           "visibleIf": {
             "fieldName": "quartech_supportreceivedduringscap",
             "selectedValue": 255550000,
@@ -203,6 +226,7 @@
         },
         {
           "name": "quartech_activityenddate",
+          "label": "End Date",
           "required": true,
           "elementType": "DatePicker"
         },
@@ -222,28 +246,22 @@
       "name": "DeliverablesBudgetStep",
       "fields": [
         {
-          "name": "quartech_estimatedbudgettotalactivitycost",
-          "format": "currency",
-          "maxDigits": 11,
-          "required": true,
-          "label": "Total proposed budget",
-          "validation": {
-            "type": "numeric",
-            "value": "0",
-            "comparison": "greaterThanOrEqualTo"
-          }
-        },
-        {
-          "name": "quartech_detailedproposedbudget",
+          "name": "quartech_ifotherpleasedescribetheactivitypurpose",
           "required": true,
           "maxLength": 10000,
-          "label": "You can either upload an event/training budget document as an attachment or explain the proposed budget in the following text box. If you are uploading the budget as an attachment (in the Documents tab), please enter the file name in this text box (1000 words max)."
+          "label": "Training(s)/course(s)/business management conference(s)"
+        },
+        {
+          "name": "quartech_proposedactivitystopicpurposeintent",
+          "label": "Why you are taking this training(s)/course(s)/business management conference(s)",
+          "required": true,
+          "maxLength": 10000
         },
         {
           "name": "quartech_deliverables",
+          "label": "Please describe how will this improve your business",
           "required": true,
-          "maxLength": 10000,
-          "label": "Please describe the expected learnings or takeaways you have of the experience and how this will improve your business."
+          "maxLength": 10000
         }
       ]
     },
@@ -251,10 +269,56 @@
       "name": "DocumentsStep",
       "fields": [
         {
-          "name": "quartech_relatedquotesandplans",
-          "label": "Attach all of the following:",
+          "name": "quartech_partialbudget",
+          "label": "Event/training budget",
           "required": true,
           "elementType": "FileInput"
+        },
+        {
+          "name": "quartech_relatedquotesandplans",
+          "label": "<a href='https://www2.gov.bc.ca/assets/gov/farming-natural-resources-and-industry/agriculture-and-seafood/programs/agribusiness-planning/learning_action_plan_fillable_form.docx' target='_blank' style='font-size: unset; color:blue; margin-left: 0px;'>Learning Action Plan</a>",
+          "techComment": "Learning Action Plan",
+          "required": true,
+          "elementType": "FileInput"
+        },
+        {
+          "name": "quartech_crafarmingincomeverification",
+          "label": "Verification of farming income - Canada Revenue Agency (CRA) Summary/Proof of Gross Income as last reported to the CRA",
+          "required": true,
+          "elementType": "FileInput"
+        },
+        {
+          "name": "quartech_directdepositapplication",
+          "label": "<a href='https://www2.gov.bc.ca/assets/gov/farming-natural-resources-and-industry/agriculture-and-seafood/programs/agribusiness-planning/direct_deposit_application.pdf' target='_blank' style='font-size: unset; color:blue; margin-left: 0px;'>Direct Deposit Application</a>",
+          "techComment": "Direct Deposit Application",
+          "required": true,
+          "elementType": "FileInput"
+        },
+        {
+          "name": "quartech_voidcheque",
+          "label": "Copy of Void Cheque and/or Bank Confirmation Letter confirming bank account information of the business",
+          "required": true,
+          "elementType": "FileInput"
+        }
+      ]
+    },
+    {
+      "name": "DemographicInfoStep",
+      "fields": [
+        {
+          "name": "quartech_chefsid",
+          "required": true,
+          "tooltipText": "This number is automatically generated when the survey has been submitted",
+          "label": "Demographic Data Collection Survey ID number",
+          "bold": true,
+          "readOnly": true,
+          "errorMessage": "Please complete the required survey, this field will autofill."
+        },
+        {
+          "name": "quartech_chefssubmissionid",
+          "label": "CHEFS Submission Id",
+          "hidden": true,
+          "doNotBlank": true
         }
       ]
     }

@@ -1,8 +1,10 @@
 import { YES_VALUE } from '../../common/constants.js';
-import { initOnChange_DependentRequiredField } from '../../common/fieldConditionalLogic.js';
+import { initOnChange_DependentRequiredField } from '../../common/fieldConditionalLogicLegacy.js';
 import {
   addTextAboveField,
   addHtmlToSection,
+  getFieldRow,
+  addHtmlToField,
 } from '../../common/html.js';
 import { getProgramAbbreviation } from '../../common/program.ts';
 import { configureFields } from '../../common/fieldConfiguration.js';
@@ -24,7 +26,12 @@ function setupEligibilityStepFields() {
     customizeEligibilityStepForABPP();
   } else if (programAbbreviation === 'VLB') {
     customizeEligibilityStepForVLB();
+  } else if (programAbbreviation === 'VVTS') {
+    customizeEligbilityStepForVVTS();
   }
+}
+
+function customizeEligbilityStepForVVTS() {
 }
 
 function customizeEligibilityStepForVLB() {
@@ -53,19 +60,19 @@ function customizeEligibilityStepForNEFBA() {
 }
 
 function customizeEligibilityStepForABPP() {
-  addEligibilityNoteText();
+  // addEligibilityNoteText();
   // @ts-ignore
-  initOnChange_DependentRequiredField({
-    dependentOnValue: YES_VALUE,
-    dependentOnElementTag: 'quartech_abppsupportoverlimit',
-    requiredFieldTag: 'quartech_abppsupportoverlimitdetail',
-  });
+  // initOnChange_DependentRequiredField({
+  //   dependentOnValue: YES_VALUE,
+  //   dependentOnElementTag: 'quartech_abppsupportoverlimit',
+  //   requiredFieldTag: 'quartech_abppsupportoverlimitdetail',
+  // });
   // @ts-ignore
-  initOnChange_DependentRequiredField({
-    dependentOnValue: YES_VALUE,
-    dependentOnElementTag: 'quartech_supportreceivedduringscap',
-    requiredFieldTag: 'quartech_supportduringscapdetails',
-  });
+  // initOnChange_DependentRequiredField({
+  //   dependentOnValue: YES_VALUE,
+  //   dependentOnElementTag: 'quartech_supportreceivedduringscap',
+  //   requiredFieldTag: 'quartech_supportduringscapdetails',
+  // });
 }
 
 function customizeEligibilityStepForNEFBA2() {

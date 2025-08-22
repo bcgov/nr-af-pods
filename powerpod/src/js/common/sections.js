@@ -1,10 +1,23 @@
 // @ts-nocheck
+import {
+  addTextBelowSection,
+  addTextAboveSection,
+  addTextAboveSubsection,
+  addTextBelowSubsection,
+} from './html.js';
 import { Logger } from './logger.js';
+import { getCurrentStep } from './program.ts';
 import { setTabName, setHeadings } from './tabs.js';
+import { mergeObjects } from './utils.js';
 
 const logger = Logger('common/sections');
 
-export function configureSections(sections) {
+export function configureSections(sections, globalSections) {
+  logger.info({
+    fn: configureSections,
+    message: `configureSections called with:`,
+    data: { appSections: sections, globalSections },
+  });
   if (!sections || !sections.length) {
     logger.warn({
       fn: configureSections,
@@ -12,7 +25,145 @@ export function configureSections(sections) {
     });
   }
   sections.forEach((section) => {
-    const { name, displayName, headings } = section;
+    // const matchingGlobalSection = globalSections.find(
+    //   (val) => val.name === section.name
+    // );
+
+    // if (matchingGlobalSection) {
+    //   logger.info({
+    //     fn: configureSubsections,
+    //     message: `Found matching global section for section.name: ${section.name}, merging section data...`,
+    //     data: { section, matchingGlobalSection },
+    //   });
+    //   section = mergeObjects(section, matchingGlobalSection);
+    //   logger.info({
+    //     fn: configureSubsections,
+    //     message: `Done merging section + global data for section.name: ${section.name}`,
+    //     data: { section },
+    //   });
+    // }
+    logger.info({
+      fn: configureSubsections,
+      message: `Start configuring section for section.name: ${section.name}...`,
+      data: {
+        section,
+      },
+    });
+    const {
+      name: sectionName,
+      displayName,
+      headings,
+      subsections,
+      dataName,
+      additionalTextAboveSection,
+      additionalTextBelowSection,
+      hideHeaderDescription = false,
+    } = section;
+
+    if (!sectionName) {
+      logger.error({
+        fn: configureSections,
+        message: 'Could not find section name',
+      });
+      return;
+    }
+
+    if (displayName) {
+      setTabName(sectionName, displayName);
+    }
+
+    if (additionalTextAboveSection && dataName) {
+      addTextAboveSection(dataName, additionalTextAboveSection);
+    }
+
+    if (additionalTextBelowSection && dataName) {
+      addTextBelowSection(dataName, additionalTextBelowSection);
+    }
+
+    if (headings && headings.length) {
+      setHeadings(sectionName, headings);
+    }
+
+    if (subsections && subsections.length) {
+      configureSubsections(sectionName, subsections);
+    }
+
+    if (hideHeaderDescription) {
+      hidePageDescription(hideHeaderDescription, sectionName);
+    }
+
+    logger.info({
+      fn: configureSections,
+      message: `Successfully configured section for sectionName: ${sectionName}`,
+      data: { section },
+    });
+  });
+}
+
+export function hidePageDescription(hideHeaderDescription, sectionName = null) {
+  const currentStep = getCurrentStep();
+  const pageDescriptionElement = document.querySelector('p#page-description');
+  if (sectionName && currentStep !== sectionName) {
+    logger.warn({
+      fn: hidePageDescription,
+      message: `Skip setting pageDescriptionElement for nonactive step sectionName: ${sectionName}`,
+    });
+    return;
+  }
+  if (pageDescriptionElement) {
+    if (hideHeaderDescription) {
+      pageDescriptionElement.style.display = 'none';
+    } else {
+      pageDescriptionElement.style.display = '';
+    }
+    logger.info({
+      fn: hidePageDescription,
+      message: `Successfully set pageDescriptionElement to hideHeaderDescription: ${hideHeaderDescription} for sectionName: ${sectionName}`,
+    });
+  } else {
+    logger.error({
+      fn: hidePageDescription,
+      message: `Failed to find pageDescriptionElement for configuring visibility`,
+    });
+  }
+}
+
+export function configureSubsections(sectionName, subsections) {
+  if (!subsections || !subsections.length) {
+    logger.error({
+      fn: configureSubsections,
+      message: 'Configure subsections called with empty data',
+    });
+    return;
+  }
+  const currentStep = getCurrentStep();
+  if (currentStep !== sectionName) {
+    logger.warn({
+      fn: configureSubsections,
+      message: `Skip configuring subsections for nonactive step sectionName: ${sectionName}`,
+    });
+    return;
+  }
+  logger.info({
+    fn: configureSubsections,
+    message: `Start configuring subsections currentStep: ${currentStep} for sectionName: ${sectionName}... ${JSON.stringify(
+      subsections
+    )}`,
+    data: {
+      sectionName,
+      subsections,
+    },
+  });
+  subsections.forEach((subsection) => {
+    const {
+      name,
+      newLabel,
+      hideLabel,
+      hidden,
+      subsectionAriaLabel,
+      additionalTextAboveSubsection,
+      additionalTextBelowSubsection,
+    } = subsection;
 
     if (!name) {
       logger.error({
@@ -22,18 +173,61 @@ export function configureSections(sections) {
       return;
     }
 
-    if (displayName) {
-      setTabName(name, displayName);
+    const sectionElement = $(`fieldset[aria-label="${name}"]`);
+    if (!sectionElement) {
+      logger.warn({
+        fn: configureSubsections,
+        message: `Could not find sectionElement for name: ${name}`,
+      });
+      return;
+    }
+    if (hidden) {
+      sectionElement?.css('display', 'none');
+    }
+    if (hideLabel) {
+      const legendElement = document.querySelector(`fieldset[aria-label="${name}"] > legend`)
+      if (legendElement && legendElement.style) {
+        legendElement.style.display = 'none';
+      }
+    }
+    if (newLabel) {
+      var fieldset = document.querySelector(`fieldset[aria-label="${name}"]`);
+      if (!fieldset) {
+        logger.error({
+          fn: configureSubsections,
+          message: `Failed to find fieldset for name: ${name}, newLabel: ${newLabel}`,
+        });
+        return;
+      }
+      fieldset.setAttribute('aria-label', newLabel);
+      var h3Tag = fieldset.querySelector('h3');
+      if (!h3Tag) {
+        logger.error({
+          fn: configureSubsections,
+          message: `Failed to find h3Tag for name: ${name}, newLabel: ${newLabel}`,
+        });
+        return;
+      }
+      h3Tag.innerHTML = newLabel;
     }
 
-    if (headings && headings.length) {
-      setHeadings(name, headings);
+    if (additionalTextAboveSubsection && subsectionAriaLabel) {
+      addTextAboveSubsection(
+        subsectionAriaLabel,
+        additionalTextAboveSubsection
+      );
+    }
+    if (additionalTextBelowSubsection && subsectionAriaLabel) {
+      addTextBelowSubsection(
+        subsectionAriaLabel,
+        additionalTextBelowSubsection
+      );
     }
 
     logger.info({
-      fn: configureSections,
-      message: `Successfully configured section for name: ${name}`,
-      data: { section },
+      fn: configureSubsections,
+      message: `Successfully configured sectionName: ${sectionName} subsection for subsection: ${name}`,
+      data: { sectionName, subsections },
     });
   });
 }

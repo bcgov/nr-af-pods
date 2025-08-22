@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<optionset Name="quartech_recipienttype" localizedName="Recipient Type" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <OptionSetType>picklist</OptionSetType>
+  <IsGlobal>1</IsGlobal>
+  <IntroducedVersion>1.0.1.1</IntroducedVersion>
+  <IsCustomizable>1</IsCustomizable>
+  <ExternalTypeName></ExternalTypeName>
+  <displaynames>
+    <displayname description="Recipient Type" languagecode="1033" />
+  </displaynames>
+  <options>
+    <option value="255550001" ExternalValue="">
+      <labels>
+        <label description="Primary Producer" languagecode="1033" />
+      </labels>
+      <Descriptions>
+        <Description description="" languagecode="1033" />
+      </Descriptions>
+    </option>
+    <option value="255550002" ExternalValue="">
+      <labels>
+        <label description="Processor" languagecode="1033" />
+      </labels>
+      <Descriptions>
+        <Description description="" languagecode="1033" />
+      </Descriptions>
+    </option>
+    <option value="255550003" ExternalValue="">
+      <labels>
+        <label description="Industry Organization" languagecode="1033" />
+      </labels>
+      <Descriptions>
+        <Description description="" languagecode="1033" />
+      </Descriptions>
+    </option>
+    <option value="255550004" ExternalValue="">
+      <labels>
+        <label description="Research Body (Institution)" languagecode="1033" />
+      </labels>
+      <Descriptions>
+        <Description description="" languagecode="1033" />
+      </Descriptions>
+    </option>
+    <option value="255550005" ExternalValue="">
+      <labels>
+        <label description="Retailer/Wholesaler" languagecode="1033" />
+      </labels>
+      <Descriptions>
+        <Description description="" languagecode="1033" />
+      </Descriptions>
+    </option>
+    <option value="255550006" ExternalValue="">
+      <labels>
+        <label description="Service Provider" languagecode="1033" />
+      </labels>
+      <Descriptions>
+        <Description description="" languagecode="1033" />
+      </Descriptions>
+    </option>
+    <option value="255550007" ExternalValue="">
+      <labels>
+        <label description="Provincial / Territorial / Municipal Government" languagecode="1033" />
+      </labels>
+      <Descriptions>
+        <Description description="" languagecode="1033" />
+      </Descriptions>
+    </option>
+    <option value="255550008" ExternalValue="">
+      <labels>
+        <label description="Indigenous (First Nations, Inuit, Métis) Group   government, community, and/or including Tribal Councils, associations, organizations" languagecode="1033" />
+      </labels>
+      <Descriptions>
+        <Description description="" languagecode="1033" />
+      </Descriptions>
+    </option>
+    <option value="255550009" ExternalValue="">
+      <labels>
+        <label description="Student" languagecode="1033" />
+      </labels>
+      <Descriptions>
+        <Description description="" languagecode="1033" />
+      </Descriptions>
+    </option>
+  </options>
+</optionset>

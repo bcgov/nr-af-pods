@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{f86b3e13-6b68-41d5-85c5-00ff793e6299}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="msgov_programname" select="1" icon="1" preview="1">
+        <row name="result" id="msgov_programid">
+          <cell name="msgov_programname" width="200" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="quartech_designatedprogramname" width="200" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="quartech_scap_pa" width="150" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="quartech_parentprogram" width="146" />
+          <cell name="msgov_sortorder" width="125" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="msgov_program">
+          <attribute name="msgov_programname" />
+          <order attribute="msgov_programname" descending="false" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="quartech_scap_pa" />
+          <attribute name="quartech_parentprogram" />
+          <attribute name="quartech_designatedprogramname" />
+          <attribute name="msgov_sortorder" />
+          <attribute name="msgov_programid" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active Programs" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

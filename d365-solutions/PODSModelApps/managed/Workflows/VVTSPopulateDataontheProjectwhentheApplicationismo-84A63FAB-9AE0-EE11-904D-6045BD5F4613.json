@@ -1,0 +1,203 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "quartech_sharedcommondataserviceforapps_f90be"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "VVTS - Approved Amount Per Student (quartech_VVTSApprovedAmountPerStudent)": {
+          "defaultValue": 6000,
+          "type": "Int",
+          "metadata": {
+            "schemaName": "quartech_VVTSApprovedAmountPerStudent",
+            "description": "Approved Amount per student for the VVTS application"
+          }
+        }
+      },
+      "triggers": {
+        "When_a_VVTS_application_is_submitted": {
+          "metadata": {
+            "operationMetadataId": "6c1cc88c-006c-4ca5-8ad6-345af2847a87"
+          },
+          "type": "OpenApiConnectionWebhook",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "SubscribeWebhookTrigger",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "subscriptionRequest/message": 3,
+              "subscriptionRequest/entityname": "msgov_businessgrantapplication",
+              "subscriptionRequest/scope": 4,
+              "subscriptionRequest/filterexpression": "_quartech_program_value eq 49dbba6b-21dc-ee11-904d-6045bd5f4613 and quartech_applicationstatus eq 919830001"
+            },
+            "authentication": "@parameters('$authentication')"
+          },
+          "description": "VVTS program record GUID = 49dbba6b-21dc-ee11-904d-6045bd5f4613 | UNDER REVIEW application status' value = 919830001"
+        }
+      },
+      "actions": {
+        "Update_the_associated_VVTS_Project": {
+          "runAfter": {
+            "If_the_3rd_Student_Name_is_not_empty": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "0684419e-bb30-415d-9ae6-166aace05d96"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "UpdateRecord",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "quartech_grantprojects",
+              "recordId": "@triggerOutputs()?['body/_quartech_project_value']",
+              "item/quartech_estimatedprojectcost": "@variables('vRequestedAmount')",
+              "item/quartech_enddate": "@triggerOutputs()?['body/quartech_1ststudent_workplacementenddate']",
+              "item/quartech_startdate": "@triggerOutputs()?['body/quartech_1ststudent_workplacementstartdate']",
+              "item/quartech_requestedfunding": "@variables('vRequestedAmount')"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "vRequestedAmount": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "8c94c8d9-395c-43c4-a347-be5557e7ac3c"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "vRequestedAmount",
+                "type": "float",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "If_the_1st_Student_Name_is_not_empty": {
+          "actions": {
+            "Add_the_VVTS_-_Requested_Amount_Per_Student_($6000)_for_the_1st_Student": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "abdd01ad-f64f-4013-8a75-df861be2b7f4"
+              },
+              "type": "IncrementVariable",
+              "inputs": {
+                "name": "vRequestedAmount",
+                "value": "@parameters('VVTS - Approved Amount Per Student (quartech_VVTSApprovedAmountPerStudent)')"
+              }
+            }
+          },
+          "runAfter": {
+            "vRequestedAmount": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "not": {
+              "equals": [
+                "@empty(triggerOutputs()?['body/quartech_1ststudentname'])",
+                true
+              ]
+            }
+          },
+          "metadata": {
+            "operationMetadataId": "f8874858-812a-4789-8ef3-5d69405d874a"
+          },
+          "type": "If"
+        },
+        "If_the_2nd_Student_Name_is_not_empty": {
+          "actions": {
+            "Add_the_VVTS_-_Requested_Amount_Per_Student_($6000)_for_the_2nd_Student": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "abdd01ad-f64f-4013-8a75-df861be2b7f4"
+              },
+              "type": "IncrementVariable",
+              "inputs": {
+                "name": "vRequestedAmount",
+                "value": "@parameters('VVTS - Approved Amount Per Student (quartech_VVTSApprovedAmountPerStudent)')"
+              }
+            }
+          },
+          "runAfter": {
+            "If_the_1st_Student_Name_is_not_empty": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "not": {
+              "equals": [
+                "@empty(triggerOutputs()?['body/quartech_2ndstudentname'])",
+                true
+              ]
+            }
+          },
+          "metadata": {
+            "operationMetadataId": "f8874858-812a-4789-8ef3-5d69405d874a"
+          },
+          "type": "If"
+        },
+        "If_the_3rd_Student_Name_is_not_empty": {
+          "actions": {
+            "Add_the_VVTS_-_Requested_Amount_Per_Student_($6000)_for_the_3rd_Student": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "abdd01ad-f64f-4013-8a75-df861be2b7f4"
+              },
+              "type": "IncrementVariable",
+              "inputs": {
+                "name": "vRequestedAmount",
+                "value": "@parameters('VVTS - Approved Amount Per Student (quartech_VVTSApprovedAmountPerStudent)')"
+              }
+            }
+          },
+          "runAfter": {
+            "If_the_2nd_Student_Name_is_not_empty": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "not": {
+              "equals": [
+                "@empty(triggerOutputs()?['body/quartech_3rdstudentname'])",
+                true
+              ]
+            }
+          },
+          "metadata": {
+            "operationMetadataId": "f8874858-812a-4789-8ef3-5d69405d874a"
+          },
+          "type": "If"
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

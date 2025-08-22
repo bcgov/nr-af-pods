@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<optionset Name="quartech_applicationchecklist" localizedName="Application Checklist" description="The two options (plus the default null) for document and eligibility checklists in the Application entity." xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <OptionSetType>picklist</OptionSetType>
+  <IsGlobal>1</IsGlobal>
+  <IntroducedVersion>1.0.0.0</IntroducedVersion>
+  <IsCustomizable>1</IsCustomizable>
+  <ExternalTypeName></ExternalTypeName>
+  <displaynames>
+    <displayname description="Application Checklist" languagecode="1033" />
+  </displaynames>
+  <Descriptions>
+    <Description description="The two options (plus the default null) for document and eligibility checklists in the Application entity." languagecode="1033" />
+  </Descriptions>
+  <options>
+    <option value="255550000" ExternalValue="" Color="#0000ff">
+      <labels>
+        <label description="Yes" languagecode="1033" />
+      </labels>
+      <Descriptions>
+        <Description description="The document has been received or the eligibility requirement has been met." languagecode="1033" />
+      </Descriptions>
+    </option>
+    <option value="255550001" ExternalValue="" Color="#0000ff">
+      <labels>
+        <label description="More Info Required" languagecode="1033" />
+      </labels>
+      <Descriptions>
+        <Description description="The document is incomplete or not enough information has been received to determine eligibility." languagecode="1033" />
+      </Descriptions>
+    </option>
+    <option value="255550002" ExternalValue="" Color="#0000ff">
+      <labels>
+        <label description="Pending" languagecode="1033" />
+      </labels>
+      <Descriptions>
+        <Description description="Pending" languagecode="1033" />
+      </Descriptions>
+    </option>
+    <option value="255550003" ExternalValue="" Color="#0000ff">
+      <labels>
+        <label description="No" languagecode="1033" />
+      </labels>
+      <Descriptions>
+        <Description description="No" languagecode="1033" />
+      </Descriptions>
+    </option>
+    <option value="255550004" ExternalValue="" Color="#0000ff">
+      <labels>
+        <label description="Not Applicable" languagecode="1033" />
+      </labels>
+      <Descriptions>
+        <Description description="Not applicable" languagecode="1033" />
+      </Descriptions>
+    </option>
+  </options>
+</optionset>

@@ -1,0 +1,14 @@
+<environmentvariabledefinition schemaname="quartech_ChefsVVTSFormId">
+  <defaultvalue>34ea6c98-8fba-4c5d-923b-a70412e2a926</defaultvalue>
+  <description default="Form ID of the VVTS form in CHEFS">
+    <label description="Form ID of the VVTS form in CHEFS" languagecode="1033" />
+  </description>
+  <displayname default="Chefs VVTS Form Id">
+    <label description="Chefs VVTS Form Id" languagecode="1033" />
+  </displayname>
+  <introducedversion>1.0.0.85</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <secretstore>0</secretstore>
+  <type>100000000</type>
+</environmentvariabledefinition>

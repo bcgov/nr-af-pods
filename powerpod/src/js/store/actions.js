@@ -14,4 +14,7 @@ export default {
   removeValidationError(context, payload) {
     context.commit('removeValidationError', payload);
   },
+  addToFieldOrder(context, payload) {
+    context.commit('addToFieldOrder', payload);
+  },
 };

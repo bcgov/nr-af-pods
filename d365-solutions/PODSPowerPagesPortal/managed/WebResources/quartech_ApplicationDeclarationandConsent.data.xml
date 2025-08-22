@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WebResource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <WebResourceId>{c30d049a-4243-ee11-be6e-000d3af3ac95}</WebResourceId>
+  <Name>quartech_ApplicationDeclarationandConsent</Name>
+  <DisplayName>Application Declaration and Consent</DisplayName>
+  <Description>Application Declaration and Consent Text</Description>
+  <LanguageCode>0</LanguageCode>
+  <WebResourceType>1</WebResourceType>
+  <IntroducedVersion>1.0.0.5</IntroducedVersion>
+  <IsEnabledForMobileClient>0</IsEnabledForMobileClient>
+  <IsAvailableForMobileOffline>0</IsAvailableForMobileOffline>
+  <DependencyXml>&lt;Dependencies&gt;&lt;Dependency componentType="WebResource"/&gt;&lt;/Dependencies&gt;</DependencyXml>
+  <IsCustomizable>1</IsCustomizable>
+  <CanBeDeleted>1</CanBeDeleted>
+  <IsHidden>0</IsHidden>
+  <FileName>/WebResources/quartech_ApplicationDeclarationandConsentC30D049A-4243-EE11-BE6E-000D3AF3AC95</FileName>
+</WebResource>

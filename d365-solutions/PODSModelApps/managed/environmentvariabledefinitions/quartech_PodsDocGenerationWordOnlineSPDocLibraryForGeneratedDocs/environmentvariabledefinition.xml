@@ -1,0 +1,11 @@
+<environmentvariabledefinition schemaname="quartech_PodsDocGenerationWordOnlineSPDocLibraryForGeneratedDocs">
+  <defaultvalue>Documents</defaultvalue>
+  <displayname default="PODS Doc Generation - Word Online - Doc Library For Generated Docs">
+    <label description="PODS Doc Generation - Word Online - Doc Library For Generated Docs" languagecode="1033" />
+  </displayname>
+  <introducedversion>1.0.0.80</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <secretstore>0</secretstore>
+  <type>100000000</type>
+</environmentvariabledefinition>

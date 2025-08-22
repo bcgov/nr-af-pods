@@ -1,12 +1,14 @@
 {
   "tags": ["Application", "StaffPortal", "NEFBA2", "NEFBA Phase 2"],
-  "version": "1.2.1",
+  "version": "1.2.6",
   "name": "New Entrant Farm Business Accelerator Phase 2",
   "abbreviation": "NEFBA2",
-  "hiddenSteps": "tab_Project",
+  "hiddenSteps": [{ "name": "tab_Project" }],
   "sections": [
     {
       "name": "ApplicantInfoStep",
+      "additionalTextAboveSection": "<p>Your personal information is collected under section 26(c) and 26(e) of the Freedom of Information and Protection of Privacy Act for the purposes of evaluating applications and for the planning and evaluating of the S-CAP Ministry Program. The information you provide will be shared with the federal government to fulfill the provincial obligations under the Sustainable Canadian Agricultural Partnership (S-CAP) bilateral agreement. It may be combined with other survey or administrative data sources and used for statistical, research and evaluation purposes.</p>",
+      "dataName": "tab_ApplicantInfo",
       "fields": [
         {
           "name": "quartech_nefbaphase1filenumber",
@@ -253,10 +255,13 @@
       "name": "DemographicInfoStep",
       "fields": [
         {
-          "name": "quartech_chefsconfirmationid",
+          "name": "quartech_chefsid",
           "required": true,
           "tooltipText": "This number is automatically generated when the survey has been submitted",
-          "label": "Demographic Data Collection Survey ID number"
+          "label": "Demographic Data Collection Survey ID number",
+          "bold": true,
+          "readOnly": true,
+          "errorMessage": "Please complete the required survey, this field will autofill."
         }
       ]
     }

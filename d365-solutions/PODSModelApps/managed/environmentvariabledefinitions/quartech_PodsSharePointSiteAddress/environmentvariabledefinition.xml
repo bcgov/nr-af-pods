@@ -1,0 +1,14 @@
+<environmentvariabledefinition schemaname="quartech_PodsSharePointSiteAddress">
+  <defaultvalue>https://bcgov.sharepoint.com/sites/AF-PODS-DEV</defaultvalue>
+  <description default="Site Address of the PODS SharePoint">
+    <label description="Site Address of the PODS SharePoint" languagecode="1033" />
+  </description>
+  <displayname default="PODS SharePoint Site Address">
+    <label description="PODS SharePoint Site Address" languagecode="1033" />
+  </displayname>
+  <introducedversion>1.0.0.78</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <secretstore>0</secretstore>
+  <type>100000000</type>
+</environmentvariabledefinition>

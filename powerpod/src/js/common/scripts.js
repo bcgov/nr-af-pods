@@ -12,6 +12,7 @@ export const Scripts = {
   jquery: 'jquery',
   jqueryui: 'jqueryui',
   shoelace: 'shoelace',
+  flatpickr: 'flatpickr'
 };
 
 const script = {
@@ -24,9 +25,10 @@ const script = {
     jquerymask:
       'https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js',
     canadapost:
-      'https://ws1.postescanada-canadapost.ca/js/addresscomplete-2.30.min.js',
+      'https://ws1.postescanada-canadapost.ca/js/addresscomplete-2.50.min.js',
     shoelace:
       'https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/shoelace-autoloader.js',
+    flatpickr: 'https://cdn.jsdelivr.net/npm/flatpickr',
   },
   callstack: {}, // used to handle stacked function calls while loading a script
 };
@@ -56,7 +58,7 @@ function isScriptAdded(id) {
  * @function
  * @param {string} id - The id of the associated script.
  */
-function isScriptFullyLoaded(id) {
+export function isScriptFullyLoaded(id) {
   return id in script.loadmap && script.loadmap[id];
 }
 

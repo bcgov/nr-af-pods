@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{1fed44d1-ae68-4a41-bd2b-f13acac4acfa}</formid>
+    <IntroducedVersion>5.0.0.0</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form showImage="true" headerdensity="HighWithControls" shownavigationbar="false" maxWidth="1920" solutionaction="Modified">
+      <tabs>
+        <tab name="SUMMARY_TAB" id="{15bb2d4b-71da-74ea-3c5b-e497d78a55a2}" IsUserDefined="0" showlabel="true" expanded="true" ordinalvalue="0" solutionaction="Removed" />
+        <tab name="DETAILS_TAB" id="{fe1c5c3b-d556-4552-a444-4781214a6d63}" IsUserDefined="0" expanded="true" showlabel="true" ordinalvalue="1" solutionaction="Removed" />
+        <tab name="documents_sharepoint" id="{1960CA58-ED7E-4E66-A9CB-7566856DC3ED}" IsUserDefined="0" locklevel="0" showlabel="true" expanded="true" ordinalvalue="2" solutionaction="Removed" />
+        <tab name="Contact Information" id="{aa11ac98-a608-7d60-2bde-75ab21424bc8}" IsUserDefined="0" locklevel="0" showlabel="true" expanded="true" ordinalvalue="0" solutionaction="Added">
+          <labels>
+            <label description="Contact Information" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="50%" id="0">
+              <sections>
+                <section name="CONTACT_INFORMATION" showlabel="true" showbar="false" id="{9d943649-0387-1882-caa1-36de40d5a86c}" IsUserDefined="0" layout="varwidth" columns="1" labelwidth="115" celllabelposition="Left" locklevel="0" celllabelalignment="Left" ordinalvalue="0">
+                  <labels>
+                    <label description="Contact Information" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{542e581d-cca1-5e40-e6d9-d67a9d1468b4}" showlabel="true" locklevel="0" ordinalvalue="10000">
+                        <labels>
+                          <label description="Full Name" languagecode="1033" />
+                        </labels>
+                        <control id="fullname" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="fullname" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{7d538a97-98eb-b438-72de-57a808b9a308}" showlabel="true" ordinalvalue="10001">
+                        <labels>
+                          <label description="Email" languagecode="1033" />
+                        </labels>
+                        <control id="emailaddress1" classid="{ADA2203E-B4CD-49be-9DDF-234642B43B52}" datafieldname="emailaddress1" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{215da2d0-2b64-3481-8d2d-16107d4d7e5b}" showlabel="true" locklevel="0" ordinalvalue="10002">
+                        <labels>
+                          <label description="Phone" languagecode="1033" />
+                        </labels>
+                        <control id="telephone1" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="telephone1" disabled="false" uniqueid="{e1c38e68-a232-331c-2457-c1045725da47}" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{6dec7cbc-859d-4845-9fce-17a06ef65ad0}" locklevel="0" colspan="1" rowspan="1" ordinalvalue="10003">
+                        <labels>
+                          <label description="Primary Organization" languagecode="1033" />
+                        </labels>
+                        <control id="parentcustomerid" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="parentcustomerid" disabled="false" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+            <column width="50%" id="1">
+              <sections>
+                <section name="SOCIAL_PANE_TAB" showlabel="false" showbar="false" id="{bea579b8-8901-77b0-1128-351760e68bd4}" IsUserDefined="0" layout="varwidth" columns="1" labelwidth="115" celllabelposition="Top" locklevel="0" celllabelalignment="Left" ordinalvalue="0">
+                  <labels>
+                    <label description="Activities" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{db701364-1d99-369c-c409-11d17878e513}" showlabel="false" rowspan="23" auto="false" colspan="1" ordinalvalue="10000">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                        <control id="notescontrol" classid="{06375649-C143-495E-A496-C962E5B4488E}" disabled="false" uniqueid="{9d0d0ded-d020-ca4c-5bdc-eb5ddc0e9746}" />
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+      <controlDescriptions>
+        <controlDescription forControl="{3FF9A528-DD50-4ACA-8F10-2E5ED73513AD}" solutionaction="Removed" />
+        <controlDescription forControl="{69D839E7-9935-3A7E-D978-85A1CDB50323}" solutionaction="Removed" />
+        <controlDescription forControl="{D1DCD57E-9298-2E88-395B-E30E8D3D05B5}" solutionaction="Removed" />
+        <controlDescription forControl="{5CA8C570-A541-4CF4-9209-99406BA7CBDF}" solutionaction="Removed" />
+        <controlDescription forControl="{5CCC04E4-181C-8622-5B8A-6421C2B797BC}" solutionaction="Removed" />
+        <controlDescription forControl="{2D80DD62-784A-8197-5267-81E514507529}" solutionaction="Removed" />
+        <controlDescription forControl="{7446AADB-1FB8-43C6-9393-A64A365A7257}" solutionaction="Removed" />
+        <controlDescription forControl="{98ECC42A-DB1A-5110-ACB6-5BC5B21787DB}" solutionaction="Removed" />
+      </controlDescriptions>
+      <footer id="{c46a4c3c-6333-4e3c-b909-b7cc1b75629c}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left" solutionaction="Added">
+        <rows></rows>
+      </footer>
+    </form>
+    <LocalizedNames>
+      <LocalizedName description="Contact" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="Updated default Contact form." languagecode="1033" />
+    </Descriptions>
+  </systemform>
+</forms>

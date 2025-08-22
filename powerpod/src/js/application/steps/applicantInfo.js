@@ -1,12 +1,17 @@
 import { getGlobalConfigData } from '../../common/config.js';
 import { YES_VALUE } from '../../common/constants.js';
-import { getOrgbookAutocompleteData } from '../../common/fetch.js';
-import { initOnChange_DependentRequiredField } from '../../common/fieldConditionalLogic.js';
+import {
+  getCommoditiesData,
+  getOrgbookAutocompleteData,
+} from '../../common/fetch.js';
+import { initOnChange_DependentRequiredField } from '../../common/fieldConditionalLogicLegacy.js';
 import {
   addTextAboveField,
   addTextBelowField,
+  getFieldInfoDiv,
   hideFieldsetTitle,
   relocateField,
+  setFieldValue,
 } from '../../common/html.js';
 import { Logger } from '../../common/logger.js';
 import {
@@ -15,6 +20,13 @@ import {
 } from '../../common/program.ts';
 import { useScript } from '../../common/scripts.js';
 import { configureFields } from '../../common/fieldConfiguration.js';
+import {
+  checkAndSetTFCCRFEligbilityNotice,
+  checkAndSetTFCREligbilityNotice,
+  setBusinessOrPersonalAddressLabels,
+  setBusinessOrPersonalStateForVLB,
+} from '../../common/onChangeHandlers.js';
+import { processCommoditiesData } from '../../common/commodities.ts';
 
 const logger = Logger('application/steps/applicantInfo');
 
@@ -47,11 +59,34 @@ export function customizeApplicantInfoStep() {
 
   if (programAbbreviation === 'VLB') {
     customizeApplicantInfoStepForVLB();
+    setBusinessOrPersonalStateForVLB();
   }
+
+  if (programAbbreviation === 'TFCR') {
+    customizeApplicantInfoStepForTFCR();
+  }
+
+  if (programAbbreviation === 'TFCCRF') {
+    customizeApplicantInfoStepForTFCCRF();
+  }
+
+  if (programAbbreviation.includes('KTTP')) {
+    initCommoditiesMultiSelect();
+  }
+}
+
+function customizeApplicantInfoStepForTFCR() {
+  checkAndSetTFCREligbilityNotice();
+}
+
+function customizeApplicantInfoStepForTFCCRF() {
+  checkAndSetTFCCRFEligbilityNotice();
 }
 
 function customizeApplicantInfoStepForVLB() {
   hideFieldsetTitle('Application Contact');
+  const doYouHaveCRANumberInfoDiv = getFieldInfoDiv('quartech_nocragstnumber');
+  doYouHaveCRANumberInfoDiv?.css({ paddingLeft: 0 });
 }
 
 function initOnChange_PreviouslyReceivedKttpFunding() {
@@ -393,63 +428,62 @@ function setupApplicantInfoStepFields() {
   }
 
   if (programAbbreviation && programAbbreviation.includes('ABPP')) {
-    if (!document.querySelector('#tipReportNotice')) {
-      let htmlContentToAddBelowTipReport = `<div id="tipReportNotice" style="padding-top: 50px;">
-      The TIP report is a free, simplified cash-basis farm financial analysis, which provides you with a cost of production (COP) report to compare your own farm’s current year (income and expenses) to your previous 5-year average and to benchmarks with other farms of similar type and income range: <a style="color:blue" href="https://www2.gov.bc.ca/gov/content/industry/agriculture-seafood/business-market-development/agrifood-business-management/running-a-farm-business/towards-increased-profits-report">Towards Increased Profits (TIP) report - Province of British Columbia (gov.bc.ca)​</a>.
-      </div>`;
-      addTextBelowField(
-        'quartech_tipreportenrolled',
-        htmlContentToAddBelowTipReport
-      );
-    }
-
+    // if (!document.querySelector('#tipReportNotice')) {
+    //   let htmlContentToAddBelowTipReport = `<div id="tipReportNotice" style="padding-top: 50px;">
+    //   The TIP report is a free, simplified cash-basis farm financial analysis, which provides you with a cost of production (COP) report to compare your own farm’s current year (income and expenses) to your previous 5-year average and to benchmarks with other farms of similar type and income range: <a style="color:blue" href="https://www2.gov.bc.ca/gov/content/industry/agriculture-seafood/business-market-development/agrifood-business-management/running-a-farm-business/towards-increased-profits-report">Towards Increased Profits (TIP) report - Province of British Columbia (gov.bc.ca)​</a>.
+    //   </div>`;
+    //   addTextBelowField(
+    //     'quartech_tipreportenrolled',
+    //     htmlContentToAddBelowTipReport
+    //   );
+    // }
     // @ts-ignore
-    initOnChange_DependentRequiredField({
-      dependentOnValue: '255550001',
-      dependentOnElementTag: 'quartech_agriprogramsubscriber',
-      requiredFieldTag: 'quartech_tipreportenrolled',
-      customFunc: setShowOrHideTipNotice,
-    });
-
-    setShowOrHideTipNotice();
+    // initOnChange_DependentRequiredField({
+    //   dependentOnValue: '255550001',
+    //   dependentOnElementTag: 'quartech_agriprogramsubscriber',
+    //   requiredFieldTag: 'quartech_tipreportenrolled',
+    //   customFunc: setShowOrHideTipNotice,
+    // });
+    // setShowOrHideTipNotice();
   }
 
   if (
     programAbbreviation &&
     (programAbbreviation.includes('ABPP') ||
       programAbbreviation === 'NEFBA' ||
-      programAbbreviation === 'NEFBA2')
+      programAbbreviation === 'NEFBA2' ||
+      programAbbreviation === 'TFCR')
   ) {
     addTextAboveField(
       'quartech_indigenousapplicant',
-      '<div>The Province is committed to supporting the success of Indigenous businesses in the agriculture and food sector. We understand that Indigenous businesses may have distinct characteristics reflecting regulatory, operational, cultural, and other factors. We aim for flexibility in our program delivery to reduce barriers and ensure the accessibility of our programs. If you are interested in applying to the Program but have questions about the application process or eligibility criteria, please contact Program staff at Agribusiness@gov.bc.ca<br /><br /></div>'
+      '<div>The Province is committed to supporting the success of Indigenous businesses in the agriculture and food sector. We understand that Indigenous businesses may have distinct characteristics reflecting regulatory, operational, cultural, and other factors. We aim for flexibility in our program delivery to reduce barriers and ensure the accessibility of our programs. If you are interested in applying to the Program but have questions about the application process or eligibility criteria, please contact Program staff at PODS@gov.bc.ca<br /><br /></div>'
     );
     // @ts-ignore
-    initOnChange_DependentRequiredField({
-      dependentOnValue: '255550001',
-      dependentOnElementTag: 'quartech_recipienttype',
-      requiredFieldTag: 'quartech_commodity',
-    });
+    // initOnChange_DependentRequiredField({
+    //   dependentOnValue: '255550001',
+    //   dependentOnElementTag: 'quartech_recipienttype',
+    //   requiredFieldTag: 'quartech_commodity',
+    // });
     // @ts-ignore
-    initOnChange_DependentRequiredField({
-      dependentOnValue: '255550001',
-      dependentOnElementTag: 'quartech_recipienttype',
-      requiredFieldTag: 'quartech_othercommoditiesproducedharvested',
-      disableRequiredProp: true,
-    });
+    // initOnChange_DependentRequiredField({
+    //   dependentOnValue: '255550001',
+    //   dependentOnElementTag: 'quartech_recipienttype',
+    //   requiredFieldTag: 'quartech_othercommoditiesproducedharvested',
+    //   disableRequiredProp: true,
+    // });
     // @ts-ignore
-    initOnChange_DependentRequiredField({
-      dependentOnValue: '255550002',
-      dependentOnElementTag: 'quartech_recipienttype',
-      requiredFieldTag: 'quartech_primarilyprocess',
-    });
+    // initOnChange_DependentRequiredField({
+    //   dependentOnValue: '255550002',
+    //   dependentOnElementTag: 'quartech_recipienttype',
+    //   requiredFieldTag: 'quartech_primarilyprocess',
+    // });
     // @ts-ignore
-    initOnChange_DependentRequiredField({
-      dependentOnValue: '255550002',
-      dependentOnElementTag: 'quartech_recipienttype',
-      requiredFieldTag: 'quartech_otherproductsprocessed',
-      disableRequiredProp: true,
-    });
+    // initOnChange_DependentRequiredField({
+    //   dependentOnValue: '255550002',
+    //   dependentOnElementTag: 'quartech_recipienttype',
+    //   requiredFieldTag: 'quartech_otherproductsprocessed',
+    //   disableRequiredProp: true,
+    // });
   }
 
   // Reset "What is your primary production?" value when "Type of Business / Organization" is changed
@@ -513,17 +547,15 @@ function hideTypesOfBusinessOrganization() {
   );
   if (!typesOfBusinessToDisplayDictionary) return;
 
-  // @ts-ignore
   $('#quartech_recipienttype option').each(function () {
-    // @ts-ignore
     const typeOfBusinessValue = this.value;
-    if (typeOfBusinessValue != '') {
-      // Hide/Show option
-      const isOptionToBeHidden =
-        typesOfBusinessToDisplayDictionary[typeOfBusinessValue] == undefined;
+    if (typeOfBusinessValue !== '') {
+      // Determine if the option should be deleted
+      const isOptionToBeDeleted =
+        typesOfBusinessToDisplayDictionary[typeOfBusinessValue] === undefined;
 
-      if (isOptionToBeHidden) {
-        this.hidden = true;
+      if (isOptionToBeDeleted) {
+        $(this).remove(); // Delete the option
       }
     }
   });
@@ -554,7 +586,8 @@ function customizeApplicantInfoStepForABPP() {
     <div>Please provide a brief description of your business e.g.,</div>
     <ul>
       <li>For Primary Producer - farm size in production in units such as acres, metres squared, and number and type of animals, marketing channels (farm gate, wholesale, retail/use of social media)</li>
-      <li>OR For Processor - size of processing area in units such as square feet or metres, number and type of B.C. products used and/or produced, marketing channels (direct, wholesale, retail/use of social media)</li>
+      <span style="margin-left:-18px">OR</span>
+      <li>For Processor - size of processing area in units such as square feet or metres, number and type of B.C. products used and/or produced, marketing channels (direct, wholesale, retail/use of social media)</li>
     </ul>
   </div>`;
   addTextAboveField(
@@ -569,4 +602,108 @@ function customizeApplicantInfoStepForNEFBA() {
   );
   if (businessOverviewFieldSetElement)
     businessOverviewFieldSetElement.css('display', 'none');
+}
+
+function initCommoditiesMultiSelect() {
+  logger.info({
+    fn: initCommoditiesMultiSelect,
+    message: 'start initializing commodities multiselect',
+  });
+  getCommoditiesData({
+    onSuccess: (data) => {
+      if (data) {
+        addCommodityMultiSelect(data);
+      }
+    },
+  });
+}
+
+function addCommodityMultiSelect(commoditiesJson) {
+  const commodityFieldId = 'quartech_organizationsectororcommodity';
+
+  if (!$(`#${commodityFieldId}`)) return;
+
+  const commoditiesGroupedByCategoryKey =
+    processCommoditiesData(commoditiesJson);
+
+  logger.info({
+    fn: addCommodityMultiSelect,
+    message: `got processed commodities data:`,
+    data: commoditiesGroupedByCategoryKey,
+  });
+
+  const fieldControlDiv = $(`#${commodityFieldId}`).closest('div');
+
+  const selectElement = `
+        <select id="commoditiesControl" data-placeholder="Select commodities" class="chosen-select" multiple tabindex="6">
+          <option value=""></option>
+        </select>
+      `;
+  $(fieldControlDiv)?.append(selectElement);
+
+  // hide dynamics field
+  $(`#${commodityFieldId}`).css({ display: 'none' });
+
+  Object.keys(commoditiesGroupedByCategoryKey).forEach((categoryName) => {
+    const group = $('<optgroup label="' + categoryName + '" />');
+    // @ts-ignore
+    commoditiesGroupedByCategoryKey[categoryName].forEach((commodity) => {
+      $(`<option value="${commodity.name}"/>`)
+        .html(commodity.name)
+        .appendTo(group);
+    });
+    group.appendTo($('#commoditiesControl'));
+  });
+
+  useScript('chosen', setupChosen);
+}
+
+function setupChosen() {
+  logger.info({ fn: setupChosen, message: 'setting up chosen...' });
+  // @ts-ignore
+  $('.chosen-select').chosen();
+  // @ts-ignore
+  $('.chosen-select-deselect').chosen({ allow_single_deselect: true });
+
+  // fetch pre-selected options, if any
+  const existingCommodities = $(
+    '#quartech_organizationsectororcommodity'
+  ).val();
+
+  if (existingCommodities) {
+    const existingCommoditiesArray = existingCommodities.split(', ');
+    $('.chosen-select').val(existingCommoditiesArray);
+    $('.chosen-select').trigger('chosen:updated');
+  }
+
+  // @ts-ignore
+  var target = document
+    .getElementById('quartech_organizationsectororcommodity')
+    .closest('tr');
+  var observer = new MutationObserver(function (mutations) {
+    if (target?.style?.display === 'none') {
+      $('.chosen-select').val([]);
+      $('.chosen-select').trigger('chosen:updated');
+    }
+  });
+  if (target && target.nodeType === Node.ELEMENT_NODE) {
+    observer.observe(target, {
+      attributes: true,
+      attributeFilter: ['style'],
+    });
+  }
+
+  // update dynamics field value on change of chosen field
+  $('.chosen-select').on('change', function () {
+    const newSelectedCommodities = $('.chosen-select').val();
+    // @ts-ignore
+    const stringToPassToFieldInput = newSelectedCommodities?.join(', ');
+    // @ts-ignore
+    setFieldValue({
+      name: 'quartech_organizationsectororcommodity',
+      value: stringToPassToFieldInput,
+    });
+  });
+
+  logger.info({ fn: setupChosen, message: 'successfully setup chosen...' });
 }
