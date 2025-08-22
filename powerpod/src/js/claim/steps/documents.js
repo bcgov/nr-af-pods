@@ -108,6 +108,7 @@ async function customizeDocumentsStepForKTTP() {
   }
 }
 
+// logic to add VVTS Chefs form
 async function addChefsVVTSIframe() {
   $('#quartech_vvts_veterinaryclinicchefssubmissionid')
     ?.closest('tr')
