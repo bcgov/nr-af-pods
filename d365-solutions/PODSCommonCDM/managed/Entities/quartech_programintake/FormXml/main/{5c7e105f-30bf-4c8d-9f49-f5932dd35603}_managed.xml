@@ -5,20 +5,33 @@
     <IntroducedVersion>1.2.0.1</IntroducedVersion>
     <FormPresentation>1</FormPresentation>
     <FormActivationState>1</FormActivationState>
-    <form>
+    <form headerdensity="HighWithControls">
       <tabs>
         <tab verticallayout="true" id="{110018e0-6f0e-48b2-8e48-4d4933fa3b2f}" IsUserDefined="1" locklevel="0" expanded="true" showlabel="true">
           <labels>
             <label description="General" languagecode="1033" />
           </labels>
           <columns>
-            <column width="33%">
+            <column width="100%">
               <sections>
-                <section showlabel="false" showbar="false" IsUserDefined="0" id="{f5317181-5d90-4ca8-bb34-822aa4f85039}">
+                <section showlabel="false" showbar="false" IsUserDefined="0" id="{f5317181-5d90-4ca8-bb34-822aa4f85039}" columns="11">
                   <labels>
                     <label description="General" languagecode="1033" />
                   </labels>
                   <rows>
+                    <row>
+                      <cell id="{7e9016a9-6e30-42f3-976f-ceded3cc6163}" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="Program Intake Name" languagecode="1033" />
+                        </labels>
+                        <control id="quartech_name" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="quartech_name" />
+                      </cell>
+                      <cell locklevel="0" id="{c5acf7e0-73b2-4446-9592-fef9052918cc}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
                     <row>
                       <cell id="{dab016ea-c2a7-dd58-a9c2-381e65399b23}" showlabel="true" locklevel="0">
                         <labels>
@@ -26,13 +39,10 @@
                         </labels>
                         <control id="quartech_program" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="quartech_program" disabled="false" />
                       </cell>
-                    </row>
-                    <row>
-                      <cell id="{7e9016a9-6e30-42f3-976f-ceded3cc6163}">
+                      <cell locklevel="0" id="{e173df00-319f-4094-96d5-380188f92f21}">
                         <labels>
-                          <label description="Program Intake Name" languagecode="1033" />
+                          <label description="" languagecode="1033" />
                         </labels>
-                        <control id="quartech_name" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="quartech_name" />
                       </cell>
                     </row>
                     <row>
@@ -42,6 +52,11 @@
                         </labels>
                         <control id="quartech_intakestartdate" classid="{5B773807-9FB2-42db-97C3-7A91EFF8ADFF}" datafieldname="quartech_intakestartdate" disabled="false" />
                       </cell>
+                      <cell locklevel="0" id="{053a411e-edc2-4e34-a638-883f047cb63a}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
                     </row>
                     <row>
                       <cell id="{93434735-c449-8101-e8ee-c2db9cec7276}" showlabel="true" locklevel="0">
@@ -49,6 +64,11 @@
                           <label description="Intake End Date" languagecode="1033" />
                         </labels>
                         <control id="quartech_intakeenddate" classid="{5B773807-9FB2-42db-97C3-7A91EFF8ADFF}" datafieldname="quartech_intakeenddate" disabled="false" />
+                      </cell>
+                      <cell locklevel="0" id="{82fb5238-6d17-4c0a-877a-367884959c76}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
                       </cell>
                     </row>
                     <row>
@@ -58,20 +78,38 @@
                         </labels>
                         <control id="quartech_projectcompletedby" classid="{5B773807-9FB2-42db-97C3-7A91EFF8ADFF}" datafieldname="quartech_projectcompletedby" disabled="false" />
                       </cell>
+                      <cell locklevel="0" id="{d6dd4ef0-f2f5-4616-9c54-a30b7088d02d}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
                     </row>
-                  </rows>
-                </section>
-              </sections>
-            </column>
-            <column width="66%">
-              <sections>
-                <section showlabel="false" showbar="false" id="{e7c368ed-6af4-4a1e-993c-294e065f2052}" IsUserDefined="0" height="auto">
-                  <labels>
-                    <label description="Notes" languagecode="1033" />
-                  </labels>
-                  <rows>
                     <row>
-                      <cell showlabel="false" rowspan="15" auto="false" id="{19da15ad-4a7a-4b88-afb3-94b17c576468}">
+                      <cell locklevel="0" id="{f6c587d1-7ffe-4820-a819-ea130ae96c11}" rowspan="4" colspan="2" auto="false" showlabel="true">
+                        <labels>
+                          <label description="Associated Claim Period" languagecode="1033" />
+                        </labels>
+                        <control indicationOfSubgrid="true" id="Subgrid_claimperiod" classid="{E7A81278-8635-4D9E-8D4D-59480B391C5B}">
+                          <parameters>
+                            <RecordsPerPage>10</RecordsPerPage>
+                            <AutoExpand>Fixed</AutoExpand>
+                            <EnableQuickFind>false</EnableQuickFind>
+                            <EnableViewPicker>false</EnableViewPicker>
+                            <EnableChartPicker>true</EnableChartPicker>
+                            <ChartGridMode>All</ChartGridMode>
+                            <TargetEntityType>quartech_claimperiod</TargetEntityType>
+                            <ViewId>{84100FAA-BADB-44D9-A5CE-301166ED8704}</ViewId>
+                            <ViewIds>{84100FAA-BADB-44D9-A5CE-301166ED8704}</ViewIds>
+                            <RelationshipName>quartech_claimperiod_programintake_quartech_programintake</RelationshipName>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row />
+                    <row>
+                      <cell showlabel="false" rowspan="15" auto="false" id="{19da15ad-4a7a-4b88-afb3-94b17c576468}" colspan="1">
                         <labels>
                           <label description="Note Text" languagecode="1033" />
                         </labels>
@@ -81,21 +119,110 @@
                           </parameters>
                         </control>
                       </cell>
+                      <cell locklevel="0" id="{84da4fb0-5a6e-465b-bbab-fc733f3cb091}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
                     </row>
-                    <row />
-                    <row />
-                    <row />
-                    <row />
-                    <row />
-                    <row />
-                    <row />
-                    <row />
-                    <row />
-                    <row />
-                    <row />
-                    <row />
-                    <row />
-                    <row height="auto" />
+                    <row>
+                      <cell locklevel="0" id="{0b193399-fa06-469f-b41c-b2d5f2ce6d84}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell locklevel="0" id="{660cd98b-e7e8-44cd-b409-ec8b4f55320c}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell locklevel="0" id="{7445059c-d95b-4b43-808b-ae91317e48d0}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell locklevel="0" id="{a4138e10-dec1-4723-a9ce-1a909bd5f185}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell locklevel="0" id="{e18771c7-0994-4413-8b48-0ae3f7bedbbb}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell locklevel="0" id="{8bfbb427-7414-4558-891c-785101d3755d}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell locklevel="0" id="{76ad0160-97ef-4d0e-87da-73ee204faf44}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell locklevel="0" id="{758e3962-04e7-4cb6-8589-62298e45d775}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell locklevel="0" id="{42ff1aab-e8b1-42a8-bc99-17a45dc78822}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell locklevel="0" id="{43512fc7-4301-4593-bed6-2eac0e8dfae1}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell locklevel="0" id="{95ace0cd-627c-480a-9f90-3265b177a4ee}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell locklevel="0" id="{fc08a87f-7ac9-40c4-a393-e196c9fbf5fe}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell locklevel="0" id="{b696800f-8a21-4839-b29c-cd83e20c4f11}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell locklevel="0" id="{07db5e76-99a7-4f39-88bd-258f721c6331}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
                   </rows>
                 </section>
               </sections>
@@ -104,7 +231,7 @@
         </tab>
       </tabs>
       <Navigation>
-        <NavBar></NavBar>
+        <NavBar />
         <NavBarAreas>
           <NavBarArea Id="Info">
             <Titles>
@@ -133,6 +260,51 @@
           </NavBarArea>
         </NavBarAreas>
       </Navigation>
+      <header id="{0235a036-3d9a-4932-88cb-e6be11fd4b05}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{f45a3418-a8b1-4266-8621-310c1245bb47}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{df01b43a-d5d5-4839-9f9e-502b9a249217}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{7335c0b8-95c2-485b-8435-99102c3a6460}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+          </row>
+        </rows>
+      </header>
+      <footer id="{6131f76a-e51a-4900-a54d-61c6e9524f8e}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{0bc14474-27a0-41b6-9024-62c56f36a53a}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{d2e7ea01-afda-45ab-8da6-5cc627aab2a3}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{aa6c3319-9934-47e8-a119-188b7d5bae20}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+          </row>
+        </rows>
+      </footer>
+      <DisplayConditions Order="0" FallbackForm="true">
+        <Everyone />
+      </DisplayConditions>
     </form>
     <IsCustomizable>1</IsCustomizable>
     <CanBeDeleted>1</CanBeDeleted>

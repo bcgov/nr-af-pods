@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ImportExportXml version="9.2.24101.166" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" OrganizationVersion="9.2.24101.166" OrganizationSchemaType="Full" CRMServerServiceabilityVersion="9.2.24101.00166">
+<ImportExportXml version="9.2.24111.180" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" OrganizationVersion="9.2.24111.180" OrganizationSchemaType="Full" CRMServerServiceabilityVersion="9.2.24111.00180">
   <SolutionManifest>
     <UniqueName>PODSCommonCDM</UniqueName>
     <LocalizedNames>
       <LocalizedName description="PODS Common CDM" languagecode="1033" />
     </LocalizedNames>
     <Descriptions />
-    <Version>1.0.0.98</Version>
+    <Version>1.0.0.100</Version>
     <Managed>1</Managed>
     <Publisher>
       <UniqueName>quartech</UniqueName>
@@ -95,6 +95,7 @@
       <RootComponent type="1" schemaName="quartech_browserinformation" behavior="0" />
       <RootComponent type="1" schemaName="quartech_budgetplan" behavior="0" />
       <RootComponent type="1" schemaName="quartech_claim" behavior="0" />
+      <RootComponent type="1" schemaName="quartech_claimperiod" behavior="0" />
       <RootComponent type="1" schemaName="quartech_commodity" behavior="0" />
       <RootComponent type="1" schemaName="quartech_demographicinfo" behavior="0" />
       <RootComponent type="1" schemaName="quartech_expensetype" behavior="0" />
@@ -972,8 +973,8 @@
         <Dependent type="80" schemaName="quartech_PodsStaffPortal" displayName="PODS Staff Portal" />
       </MissingDependency>
       <MissingDependency>
-        <Required type="20" displayName="Portal Application User" solution="S2SApplicationRoles (1.0.0.95)" id="{a75a6d67-1730-4298-8fc7-af7e93064fa1}">
-          <package>MicrosoftS2SApplicationIdentitiesCoreTst (1.0.1.24)</package>
+        <Required type="20" displayName="Portal Application User" solution="S2SApplicationRoles (1.0.0.97)" id="{a75a6d67-1730-4298-8fc7-af7e93064fa1}">
+          <package>MicrosoftS2SApplicationIdentitiesCoreTst (1.0.1.25)</package>
         </Required>
         <Dependent type="60" displayName="Applicant Portal" parentDisplayName="Demographic Info" id="{16c13625-7d26-ee11-9965-000d3af3ac95}" />
       </MissingDependency>
@@ -991,13 +992,13 @@
       </MissingDependency>
       <MissingDependency>
         <Required type="26" schemaName="All Applicants" displayName="All Applicants" parentSchemaName="account" parentDisplayName="Applicant" solution="msdynce_AppCommon (9.0.4.0066)" id="{65ffaf9a-e8c5-432d-860b-32f841b00d87}">
-          <package>msdynce_AppCommonAnchor (9.0.24095.10001)</package>
+          <package>msdynce_AppCommonAnchor (9.0.24111.10001)</package>
         </Required>
         <Dependent type="26" schemaName="All Applicants" displayName="All Applicants" parentSchemaName="account" parentDisplayName="Applicant" id="{65ffaf9a-e8c5-432d-860b-32f841b00d87}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="26" schemaName="All Contacts" displayName="All Contacts" parentSchemaName="contact" parentDisplayName="Contact" solution="msdynce_AppCommon (9.0.4.0066)" id="{0d5d377b-5e7c-47b5-bab1-a5cb8b4ac105}">
-          <package>msdynce_AppCommonAnchor (9.0.24095.10001)</package>
+          <package>msdynce_AppCommonAnchor (9.0.24111.10001)</package>
         </Required>
         <Dependent type="80" schemaName="quartech_PodsStaffPortal" displayName="PODS Staff Portal" />
       </MissingDependency>
@@ -1067,13 +1068,13 @@
       </MissingDependency>
       <MissingDependency>
         <Required type="60" displayName="Customer profile" parentDisplayName="Contact" solution="OmnichannelBase (1.10.0.84)" id="{05ea391a-d034-43fe-849b-b4fa3213a2b2}">
-          <package>UnifiedRoutingPrimeAnchor (1.5.26.149)</package>
+          <package>UnifiedRoutingPrimeAnchor (1.5.26.150)</package>
         </Required>
         <Dependent type="80" schemaName="quartech_PodsStaffPortal" displayName="PODS Staff Portal" />
       </MissingDependency>
       <MissingDependency>
         <Required type="60" displayName="Account Reference Panel" parentDisplayName="Applicant" solution="msdynce_AppCommon (9.0.4.0066)" id="{098ae145-1567-41ec-8398-86dbaac70c9b}">
-          <package>msdynce_AppCommonAnchor (9.0.24095.10001)</package>
+          <package>msdynce_AppCommonAnchor (9.0.24111.10001)</package>
         </Required>
         <Dependent type="80" schemaName="quartech_PodsStaffPortal" displayName="PODS Staff Portal" />
       </MissingDependency>
@@ -1085,19 +1086,19 @@
       </MissingDependency>
       <MissingDependency>
         <Required type="60" displayName="Contact" parentDisplayName="Contact" solution="msdynce_AppCommon (9.0.4.0066)" id="{1fed44d1-ae68-4a41-bd2b-f13acac4acfa}">
-          <package>msdynce_AppCommonAnchor (9.0.24095.10001)</package>
+          <package>msdynce_AppCommonAnchor (9.0.24111.10001)</package>
         </Required>
         <Dependent type="60" displayName="Contact" parentDisplayName="Contact" id="{1fed44d1-ae68-4a41-bd2b-f13acac4acfa}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="60" displayName="Social Profiles" parentDisplayName="Applicant" solution="msdynce_AppCommon (9.0.4.0066)" id="{2205c86d-ed88-4a2f-a447-3b86a8781f2e}">
-          <package>msdynce_AppCommonAnchor (9.0.24095.10001)</package>
+          <package>msdynce_AppCommonAnchor (9.0.24111.10001)</package>
         </Required>
         <Dependent type="80" schemaName="quartech_PodsStaffPortal" displayName="PODS Staff Portal" />
       </MissingDependency>
       <MissingDependency>
         <Required type="60" displayName="account contact card" parentDisplayName="Contact" solution="msdynce_AppCommon (9.0.4.0066)" id="{29de27bc-a257-4f29-99cf-bab4a84e688f}">
-          <package>msdynce_AppCommonAnchor (9.0.24095.10001)</package>
+          <package>msdynce_AppCommonAnchor (9.0.24111.10001)</package>
         </Required>
         <Dependent type="80" schemaName="quartech_PodsStaffPortal" displayName="PODS Staff Portal" />
       </MissingDependency>
@@ -1109,37 +1110,37 @@
       </MissingDependency>
       <MissingDependency>
         <Required type="60" displayName="Recent Cases and Entitlements" parentDisplayName="Applicant" solution="msdynce_Service (9.0.5.56)" id="{43300723-f867-420b-ab28-976a4d12e6c4}">
-          <package>msdynce_ServiceAnchor (9.0.24095.1004)</package>
+          <package>msdynce_ServiceAnchor (9.0.24104.1004)</package>
         </Required>
         <Dependent type="80" schemaName="quartech_PodsStaffPortal" displayName="PODS Staff Portal" />
       </MissingDependency>
       <MissingDependency>
-        <Required type="60" displayName="Live Persona Card Form" parentDisplayName="Contact" solution="msdynce_AppCommonPatch201904 (9.0.24095.10001)" id="{449faa0e-f471-48ec-87d0-4719909546d2}">
-          <package>msdynce_AppCommonAnchor (9.0.24095.10001)</package>
+        <Required type="60" displayName="Live Persona Card Form" parentDisplayName="Contact" solution="msdynce_AppCommonPatch201904 (9.0.24111.10001)" id="{449faa0e-f471-48ec-87d0-4719909546d2}">
+          <package>msdynce_AppCommonAnchor (9.0.24111.10001)</package>
         </Required>
         <Dependent type="80" schemaName="quartech_PodsStaffPortal" displayName="PODS Staff Portal" />
       </MissingDependency>
       <MissingDependency>
         <Required type="60" displayName="In Context Form" parentDisplayName="Contact" solution="msdynce_DealManager (9.0.240905.10002)" id="{4c9c89b9-f909-4b34-8f63-b87d7ff2f0c4}">
-          <package>msdynce_SalesInsightsAnchor (9.0.24095.10007)</package>
+          <package>msdynce_SalesInsightsAnchor (9.0.24104.10004)</package>
         </Required>
         <Dependent type="80" schemaName="quartech_PodsStaffPortal" displayName="PODS Staff Portal" />
       </MissingDependency>
       <MissingDependency>
         <Required type="60" displayName="Contact Quick Create" parentDisplayName="Contact" solution="msdynce_AppCommon (9.0.4.0066)" id="{661157fe-2fc9-4eaa-835f-5bfa2f7b64f7}">
-          <package>msdynce_AppCommonAnchor (9.0.24095.10001)</package>
+          <package>msdynce_AppCommonAnchor (9.0.24111.10001)</package>
         </Required>
         <Dependent type="60" displayName="Contact Quick Create" parentDisplayName="Contact" id="{661157fe-2fc9-4eaa-835f-5bfa2f7b64f7}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="60" displayName="Account Hierarchy Tile Form" parentDisplayName="Applicant" solution="msdynce_AppCommon (9.0.4.0066)" id="{69cff312-cfb6-4289-9631-249ab85d2c62}">
-          <package>msdynce_AppCommonAnchor (9.0.24095.10001)</package>
+          <package>msdynce_AppCommonAnchor (9.0.24111.10001)</package>
         </Required>
         <Dependent type="80" schemaName="quartech_PodsStaffPortal" displayName="PODS Staff Portal" />
       </MissingDependency>
       <MissingDependency>
         <Required type="60" displayName="contact card" parentDisplayName="Contact" solution="msdynce_AppCommon (9.0.4.0066)" id="{707fc57b-c5e6-471b-a180-e37ed28a38e2}">
-          <package>msdynce_AppCommonAnchor (9.0.24095.10001)</package>
+          <package>msdynce_AppCommonAnchor (9.0.24111.10001)</package>
         </Required>
         <Dependent type="80" schemaName="quartech_PodsStaffPortal" displayName="PODS Staff Portal" />
       </MissingDependency>
@@ -1151,19 +1152,19 @@
       </MissingDependency>
       <MissingDependency>
         <Required type="60" displayName="Social Profiles" parentDisplayName="Contact" solution="msdynce_AppCommon (9.0.4.0066)" id="{7bb87dfd-ec3e-4ed9-8e3e-5725d3067295}">
-          <package>msdynce_AppCommonAnchor (9.0.24095.10001)</package>
+          <package>msdynce_AppCommonAnchor (9.0.24111.10001)</package>
         </Required>
         <Dependent type="80" schemaName="quartech_PodsStaffPortal" displayName="PODS Staff Portal" />
       </MissingDependency>
       <MissingDependency>
         <Required type="60" displayName="Applicant" parentDisplayName="Applicant" solution="msdynce_AppCommon (9.0.4.0066)" id="{8448b78f-8f42-454e-8e2a-f8196b0419af}">
-          <package>msdynce_AppCommonAnchor (9.0.24095.10001)</package>
+          <package>msdynce_AppCommonAnchor (9.0.24111.10001)</package>
         </Required>
         <Dependent type="80" schemaName="quartech_PodsStaffPortal" displayName="PODS Staff Portal" />
       </MissingDependency>
       <MissingDependency>
         <Required type="60" displayName="Information" parentDisplayName="Contact" solution="msdynce_AppCommon (9.0.4.0066)" id="{894cc46a-b0cb-4ab0-8bf6-200544e46a2d}">
-          <package>msdynce_AppCommonAnchor (9.0.24095.10001)</package>
+          <package>msdynce_AppCommonAnchor (9.0.24111.10001)</package>
         </Required>
         <Dependent type="60" displayName="Information" parentDisplayName="Contact" id="{894cc46a-b0cb-4ab0-8bf6-200544e46a2d}" />
       </MissingDependency>
@@ -1185,7 +1186,7 @@
       </MissingDependency>
       <MissingDependency>
         <Required type="60" displayName="account card" parentDisplayName="Applicant" solution="msdynce_AppCommon (9.0.4.0066)" id="{b028db32-3619-48a5-ac51-cf3f947b0ef3}">
-          <package>msdynce_AppCommonAnchor (9.0.24095.10001)</package>
+          <package>msdynce_AppCommonAnchor (9.0.24111.10001)</package>
         </Required>
         <Dependent type="80" schemaName="quartech_PodsStaffPortal" displayName="PODS Staff Portal" />
       </MissingDependency>
@@ -1197,13 +1198,13 @@
       </MissingDependency>
       <MissingDependency>
         <Required type="60" displayName="Contact Quick Form" parentDisplayName="Contact" solution="msdynce_AppCommon (9.0.4.0066)" id="{bdb0ae1c-32fa-4374-b637-8dafe107bc44}">
-          <package>msdynce_AppCommonAnchor (9.0.24095.10001)</package>
+          <package>msdynce_AppCommonAnchor (9.0.24111.10001)</package>
         </Required>
         <Dependent type="60" displayName="Contact Quick Form" parentDisplayName="Contact" id="{bdb0ae1c-32fa-4374-b637-8dafe107bc44}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="60" displayName="Account Quick Create" parentDisplayName="Applicant" solution="msdynce_AppCommon (9.0.4.0066)" id="{c9e7ec2d-efca-4e4c-b3e3-f63c4bba5e4b}">
-          <package>msdynce_AppCommonAnchor (9.0.24095.10001)</package>
+          <package>msdynce_AppCommonAnchor (9.0.24111.10001)</package>
         </Required>
         <Dependent type="60" displayName="Account Quick Create" parentDisplayName="Applicant" id="{c9e7ec2d-efca-4e4c-b3e3-f63c4bba5e4b}" />
       </MissingDependency>
@@ -1215,25 +1216,25 @@
       </MissingDependency>
       <MissingDependency>
         <Required type="60" displayName="Contact Reference Panel" parentDisplayName="Contact" solution="msdynce_AppCommon (9.0.4.0066)" id="{d880c3cf-80e2-42f3-82f9-24d040d09f17}">
-          <package>msdynce_AppCommonAnchor (9.0.24095.10001)</package>
+          <package>msdynce_AppCommonAnchor (9.0.24111.10001)</package>
         </Required>
         <Dependent type="80" schemaName="quartech_PodsStaffPortal" displayName="PODS Staff Portal" />
       </MissingDependency>
       <MissingDependency>
         <Required type="60" displayName="Customer profile" parentDisplayName="Applicant" solution="OmnichannelBase (1.10.0.84)" id="{e9a9c8a9-e94d-47a9-a6c3-ec37ddb83b99}">
-          <package>UnifiedRoutingPrimeAnchor (1.5.26.149)</package>
+          <package>UnifiedRoutingPrimeAnchor (1.5.26.150)</package>
         </Required>
         <Dependent type="80" schemaName="quartech_PodsStaffPortal" displayName="PODS Staff Portal" />
       </MissingDependency>
       <MissingDependency>
         <Required type="60" displayName="Recent Cases and Entitlements" parentDisplayName="Contact" solution="msdynce_AppCommon (9.0.4.0066)" id="{f3b707fb-3b5f-45f9-9c6b-5e573bb5d19e}">
-          <package>msdynce_AppCommonAnchor (9.0.24095.10001)</package>
+          <package>msdynce_AppCommonAnchor (9.0.24111.10001)</package>
         </Required>
         <Dependent type="80" schemaName="quartech_PodsStaffPortal" displayName="PODS Staff Portal" />
       </MissingDependency>
       <MissingDependency>
         <Required type="60" displayName="In Context Form" parentDisplayName="Applicant" solution="msdynce_DealManager (9.0.240905.10002)" id="{face3aa6-99c4-4b7e-af07-55f121cdca86}">
-          <package>msdynce_SalesInsightsAnchor (9.0.24095.10007)</package>
+          <package>msdynce_SalesInsightsAnchor (9.0.24104.10004)</package>
         </Required>
         <Dependent type="80" schemaName="quartech_PodsStaffPortal" displayName="PODS Staff Portal" />
       </MissingDependency>
@@ -1245,13 +1246,13 @@
       </MissingDependency>
       <MissingDependency>
         <Required type="61" schemaName="AppCommon/Contact/Contact_main_system_library.js" displayName="AppCommon/Contact/Contact_main_system_library.js" solution="msdynce_AppCommon (9.0.4.0066)">
-          <package>msdynce_AppCommonAnchor (9.0.24095.10001)</package>
+          <package>msdynce_AppCommonAnchor (9.0.24111.10001)</package>
         </Required>
         <Dependent type="60" displayName="Information" parentDisplayName="Contact" id="{894cc46a-b0cb-4ab0-8bf6-200544e46a2d}" />
       </MissingDependency>
       <MissingDependency>
-        <Required type="61" schemaName="images/msdyn_importfromexcel32" displayName="images/msdyn_importfromexcel32" solution="OCISBR (1.0.0.5258)">
-          <package>UnifiedRoutingPrimeAnchor (1.5.26.149)</package>
+        <Required type="61" schemaName="images/msdyn_importfromexcel32" displayName="images/msdyn_importfromexcel32" solution="OCISBR (1.0.0.5260)">
+          <package>UnifiedRoutingPrimeAnchor (1.5.26.150)</package>
         </Required>
         <Dependent type="1" schemaName="quartech_financialcodingblock" displayName="Financial Coding Block" />
       </MissingDependency>
@@ -1263,7 +1264,7 @@
       </MissingDependency>
       <MissingDependency>
         <Required type="61" schemaName="msdyn_/FollowAttachments/Scripts/Email_Engagement_Attachments.js" displayName="msdyn_/FollowAttachments/Scripts/Email_Engagement_Attachments.js" solution="EmailEngagement (9.0.1.7018)">
-          <package>msdynce_SalesInsightsAnchor (9.0.24095.10007)</package>
+          <package>msdynce_SalesInsightsAnchor (9.0.24104.10004)</package>
         </Required>
         <Dependent type="60" displayName="Email" parentDisplayName="Email" id="{0d1e47ff-12b2-4f53-9090-bee951b98cb4}" />
       </MissingDependency>
@@ -1284,8 +1285,8 @@
         <Dependent type="60" displayName="Information" parentDisplayName="Contact" id="{894cc46a-b0cb-4ab0-8bf6-200544e46a2d}" />
       </MissingDependency>
       <MissingDependency>
-        <Required type="61" schemaName="msdyn_/Scripts/WhoKnowsWhomLoader.js" displayName="msdyn_/Scripts/WhoKnowsWhomLoader.js" solution="msdyn_connectiongraph (9.3.24095.10001)">
-          <package>msdynce_SalesInsightsAnchor (9.0.24095.10007)</package>
+        <Required type="61" schemaName="msdyn_/Scripts/WhoKnowsWhomLoader.js" displayName="msdyn_/Scripts/WhoKnowsWhomLoader.js" solution="msdyn_connectiongraph (9.3.24104.10002)">
+          <package>msdynce_SalesInsightsAnchor (9.0.24104.10004)</package>
         </Required>
         <Dependent type="60" displayName="Contact" parentDisplayName="Contact" id="{1fed44d1-ae68-4a41-bd2b-f13acac4acfa}" />
       </MissingDependency>
@@ -1296,27 +1297,27 @@
         <Dependent type="60" displayName="Phone Call" parentDisplayName="Phone Call" id="{a91390a5-99bb-4d10-9eee-3a5c87f841f1}" />
       </MissingDependency>
       <MissingDependency>
-        <Required type="61" schemaName="msdyn_CopilotEmailAssist.js" displayName="msdyn_CopilotEmailAssist.js" solution="msdyn_CSIntelligence (9.2.24095.1028)">
-          <package>msdyn_ServiceExtendedAnchor (9.0.24095.1004)</package>
-          <package>msdyn_ServiceIntelligenceAnchor (9.2.24095.1028)</package>
+        <Required type="61" schemaName="msdyn_CopilotEmailAssist.js" displayName="msdyn_CopilotEmailAssist.js" solution="msdyn_CSIntelligence (9.2.24104.1049)">
+          <package>msdyn_ServiceExtendedAnchor (9.0.24102.1018)</package>
+          <package>msdyn_ServiceIntelligenceAnchor (9.2.24104.1049)</package>
         </Required>
         <Dependent type="60" displayName="Email" parentDisplayName="Email" id="{0d1e47ff-12b2-4f53-9090-bee951b98cb4}" />
       </MissingDependency>
       <MissingDependency>
-        <Required type="61" schemaName="msdyn_SalesCopilot/Copilot.Library.js" displayName="msdyn_SalesCopilot/Copilot.Library.js" solution="msdyn_SalesCopilot (9.1.24095.10003)">
-          <package>msdynce_SalesAnchor (9.0.24095.10003)</package>
+        <Required type="61" schemaName="msdyn_SalesCopilot/Copilot.Library.js" displayName="msdyn_SalesCopilot/Copilot.Library.js" solution="msdyn_SalesCopilot (9.1.24104.10004)">
+          <package>msdynce_SalesAnchor (9.0.24111.10005)</package>
         </Required>
         <Dependent type="60" displayName="Email" parentDisplayName="Email" id="{0d1e47ff-12b2-4f53-9090-bee951b98cb4}" />
       </MissingDependency>
       <MissingDependency>
-        <Required type="61" schemaName="msdyn_SalesOmniChannel/SalesPhoneNumber.Library.js" displayName="msdyn_SalesOmniChannel/SalesPhoneNumber.Library.js" solution="msdyn_SalesOmniChannel (9.1.24095.10005)">
-          <package>msdyn_AcceleratedSalesAnchor (9.1.24095.10005)</package>
+        <Required type="61" schemaName="msdyn_SalesOmniChannel/SalesPhoneNumber.Library.js" displayName="msdyn_SalesOmniChannel/SalesPhoneNumber.Library.js" solution="msdyn_SalesOmniChannel (9.1.24102.10002)">
+          <package>msdyn_AcceleratedSalesAnchor (9.1.24102.10002)</package>
         </Required>
         <Dependent type="60" displayName="Contact" parentDisplayName="Contact" id="{1fed44d1-ae68-4a41-bd2b-f13acac4acfa}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="61" schemaName="msdyn_talkingpointsloader.js" displayName="msdyn_talkingpointsloader.js" solution="msdynce_Talkingpoints (9.1.0.59)">
-          <package>msdynce_SalesInsightsAnchor (9.0.24095.10007)</package>
+          <package>msdynce_SalesInsightsAnchor (9.0.24104.10004)</package>
         </Required>
         <Dependent type="60" displayName="Contact" parentDisplayName="Contact" id="{1fed44d1-ae68-4a41-bd2b-f13acac4acfa}" />
       </MissingDependency>
@@ -1540,7 +1541,7 @@
       </MissingDependency>
       <MissingDependency>
         <Required type="61" schemaName="Sales/Contact/Contact_main_system_library.js" displayName="Sales/Contact/Contact_main_system_library.js" solution="msdynce_SalesPatch201904 (9.0.1912.1007)">
-          <package>msdynce_SalesAnchor (9.0.24095.10003)</package>
+          <package>msdynce_SalesAnchor (9.0.24111.10005)</package>
         </Required>
         <Dependent type="60" displayName="Contact Quick Create" parentDisplayName="Contact" id="{661157fe-2fc9-4eaa-835f-5bfa2f7b64f7}" />
       </MissingDependency>
@@ -1555,20 +1556,20 @@
         <Dependent type="60" displayName="Phone Call" parentDisplayName="Phone Call" id="{a91390a5-99bb-4d10-9eee-3a5c87f841f1}" />
       </MissingDependency>
       <MissingDependency>
-        <Required type="66" schemaName="MscrmControls.FieldControls.ToggleControl" displayName="MscrmControls.FieldControls.ToggleControl" solution="BaseCustomControlsCore (9.0.2409.5016)">
-          <package>BaseCustomControlsCore (9.0.2409.5016)</package>
+        <Required type="66" schemaName="MscrmControls.FieldControls.ToggleControl" displayName="MscrmControls.FieldControls.ToggleControl" solution="BaseCustomControlsCore (9.0.2411.1006)">
+          <package>BaseCustomControlsCore (9.0.2411.1006)</package>
         </Required>
         <Dependent type="60" displayName="Applicant Portal" parentDisplayName="Demographic Info" id="{16c13625-7d26-ee11-9965-000d3af3ac95}" />
       </MissingDependency>
       <MissingDependency>
-        <Required type="66" schemaName="MscrmControls.InputMask.InputMaskControl" displayName="MscrmControls.InputMask.InputMaskControl" solution="CustomControlsCore (9.2.24101.00166)">
-          <package>CustomControlsCore (9.2.24101.00166)</package>
+        <Required type="66" schemaName="MscrmControls.InputMask.InputMaskControl" displayName="MscrmControls.InputMask.InputMaskControl" solution="CustomControlsCore (9.2.24111.00180)">
+          <package>CustomControlsCore (9.2.24111.00180)</package>
         </Required>
         <Dependent type="60" displayName="Information" parentDisplayName="Financial Coding Block" id="{ad6c5e09-18fc-4a3a-bca6-fb053306ee0d}" />
       </MissingDependency>
       <MissingDependency>
-        <Required type="66" schemaName="MscrmControls.RichTextEditor.RichTextEditorControl" displayName="MscrmControls.RichTextEditor.RichTextEditorControl" solution="msdyn_RichTextEditor (1.0.0.3972)">
-          <package>msdyn_TimelineExtended (1.0.0.1408)</package>
+        <Required type="66" schemaName="MscrmControls.RichTextEditor.RichTextEditorControl" displayName="MscrmControls.RichTextEditor.RichTextEditorControl" solution="msdyn_RichTextEditor (1.0.0.4158)">
+          <package>msdyn_TimelineExtended (1.0.0.1587)</package>
           <package>msdynce_EnableUCIByDefault (9.0.1.1996)</package>
         </Required>
         <Dependent type="60" displayName="Email" parentDisplayName="Email" id="{0d1e47ff-12b2-4f53-9090-bee951b98cb4}" />

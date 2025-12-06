@@ -7,6 +7,7 @@
   <EntityRelationship Name="business_unit_quartech_browserinformation" />
   <EntityRelationship Name="business_unit_quartech_budgetplan" />
   <EntityRelationship Name="business_unit_quartech_claim" />
+  <EntityRelationship Name="business_unit_quartech_claimperiod" />
   <EntityRelationship Name="business_unit_quartech_commodity" />
   <EntityRelationship Name="business_unit_quartech_demographicinfo" />
   <EntityRelationship Name="business_unit_quartech_financialcodingblock" />
@@ -40,6 +41,8 @@
   <EntityRelationship Name="lk_quartech_budgetplan_modifiedby" />
   <EntityRelationship Name="lk_quartech_claim_createdby" />
   <EntityRelationship Name="lk_quartech_claim_modifiedby" />
+  <EntityRelationship Name="lk_quartech_claimperiod_createdby" />
+  <EntityRelationship Name="lk_quartech_claimperiod_modifiedby" />
   <EntityRelationship Name="lk_quartech_commodity_createdby" />
   <EntityRelationship Name="lk_quartech_commodity_modifiedby" />
   <EntityRelationship Name="lk_quartech_demographicinfo_createdby" />
@@ -89,6 +92,7 @@
   <EntityRelationship Name="owner_quartech_browserinformation" />
   <EntityRelationship Name="owner_quartech_budgetplan" />
   <EntityRelationship Name="owner_quartech_claim" />
+  <EntityRelationship Name="owner_quartech_claimperiod" />
   <EntityRelationship Name="owner_quartech_commodity" />
   <EntityRelationship Name="owner_quartech_demographicinfo" />
   <EntityRelationship Name="owner_quartech_financialcodingblock" />
@@ -116,6 +120,8 @@
   <EntityRelationship Name="quartech_claim_Application_msgov_businessgrantappl" />
   <EntityRelationship Name="quartech_claim_Program_msgov_program" />
   <EntityRelationship Name="quartech_claim_Project_quartech_grantproject" />
+  <EntityRelationship Name="quartech_claimperiod_program_msgov_program" />
+  <EntityRelationship Name="quartech_claimperiod_programintake_quartech_programintake" />
   <EntityRelationship Name="quartech_contact_account_AlternateContact" />
   <EntityRelationship Name="quartech_contact_quartech_claim_portalcontact" />
   <EntityRelationship Name="quartech_contact_quartech_grantproject_ProjectContact" />
@@ -178,6 +184,7 @@
   <EntityRelationship Name="team_quartech_browserinformation" />
   <EntityRelationship Name="team_quartech_budgetplan" />
   <EntityRelationship Name="team_quartech_claim" />
+  <EntityRelationship Name="team_quartech_claimperiod" />
   <EntityRelationship Name="team_quartech_commodity" />
   <EntityRelationship Name="team_quartech_demographicinfo" />
   <EntityRelationship Name="team_quartech_financialcodingblock" />
@@ -198,6 +205,7 @@
   <EntityRelationship Name="user_quartech_browserinformation" />
   <EntityRelationship Name="user_quartech_budgetplan" />
   <EntityRelationship Name="user_quartech_claim" />
+  <EntityRelationship Name="user_quartech_claimperiod" />
   <EntityRelationship Name="user_quartech_commodity" />
   <EntityRelationship Name="user_quartech_demographicinfo" />
   <EntityRelationship Name="user_quartech_financialcodingblock" />
